@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, "Microsoft Yahei", sans-serif;
+    font-size: 12px;
+    width: 440px;
+    border-radius: 8px;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+.grouppanel {
+    border-radius: 5px;
+    background-color: #f8f2e3;
+    margin: 5px 0;
+    padding: 0 0 3px;
+}
+
+.grouptitle {
+    font-weight: bold;
+    color: white;
+    background-color: #5bd2f8;
+    border-radius: 5px 5px 0 0;
+    margin: 0 0 4px;
+    padding: 4px 15px;
+}
+
+.crosspanel {
+    padding: 0 6px;
+    width: 100%;
+}
+
+.leftpanel, .rightpanel {
+    padding: 0 6px;
+    float: left;
+    width: 50%;
+}
+
+.leftpanel {
+    border-right: 1px solid #e5e5e5;
+}
+
+.clearfix {
+    clear: both;
+}
+
+a {
+    text-decoration: none;
+}
+
+.option-helps {
+    float: right;
+}
+
+.option-helps a {
+    color: white;
+}
+
+label, input, select {
+    width: 95px;
+    padding: 4px;
+    margin: 3px;
+    display: inline-block;
+    color: black;
+    border: 1px solid #d5d5d5;
+    border-radius: 4px;
+}
+
+label {
+    text-align: __MSG_labelAlignment__;
+    border-style: dashed;
+}
+
+.col-2x {
+    width: 212px;
+}
+
+.col-3x {
+    width: 317px;
+}
+
+.gifs {
+    display: inline-block;
+}
+
+.gif{
+    vertical-align: middle;
+}
+
+.button {
+    text-align: center;
+    width: 95px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 4px;
+    margin: 6px 3px 3px;
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+hr {
+    border: 1px;
+    margin: 4px 5px;
+    border-top: 1px solid #e5e5e5;
+}
+
+div.tabmenus {
+    border-bottom: 1px solid #d5d5d5;
+    margin-bottom: 0 !important;
+    padding-bottom: 2px;
+}
+
+a.tabmenu {
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}

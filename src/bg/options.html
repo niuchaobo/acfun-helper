@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/tabmenu.css">
+    <link rel="stylesheet" href="css/checkbox.css">
+    <link rel="stylesheet" href="css/scriptlist.css">
+    <link rel="stylesheet" href="css/options.css">
+    <title data-i18n="optTitle">A站下载助手</title>
+</head>
+
+<body>
+    <div class='container'>
+        <!--<div class="tabmenus">
+            <a href="#" data-contentid="tab-1" class="tabmenu active" data-i18n="tabExtensionTitle">General</a>
+        </div>-->
+
+        <form>
+            <div id="tab-1" class="tabcontent">
+
+                <div class="grouppanel">
+                    <div class="grouptitle">
+                        <span data-i18n="grpGeneral">General Options</span>
+                        <span class="option-helps"></span>
+                    </div>
+                    <div class="leftpanel">
+                        <label data-i18n="lblEnabled">Enable/Disable</label>
+                        <div class="enabled">
+                            <input type="checkbox" value=true id="enabled">
+                            <label for="enabled"></label>
+                        </div>
+                    </div>
+                    <div class="rightpanel">
+                        <label data-i18n="lblHotkey">AuoSel. HotKey</label>
+                        <select id="hotkey">
+                            <option value="0">Off</option>
+                            <option value="16">Shift</option>
+                            <option value="17">Ctrl</option>
+                            <option value="18">Alt</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="grouppanel">
+                    <div class="grouptitle">
+                        <span data-i18n="userInfo">Dictionary Options</span>
+                    </div>
+                    <div class="crosspanel">
+                        <img src="../fg/img/cloud.png" width="15px" height="15px" id="user_headimage">
+                        <span id="nick_name">未登录</span>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </form>
+        <div class="grouppannel">
+            <div class="leftpanel" style="border-right:initial">
+                <label class="button" id="loginOut" data-i18n="loginOut">Save and Load</label>
+                <div class="gifs">
+                    <span class="gif" id="gif-load"><img src="/fg/img/load.gif" alt=""></span>
+                    <span class="gif" id="gif-good"><img src="/fg/img/good.png" alt=""></span>
+                    <span class="gif" id="gif-fail"><img src="/fg/img/fail.png" alt=""></span>
+                </div>
+            </div>
+            <div class="rightpanel">
+                <label class="button" id="saveclose" data-i18n="btnSaveClose">Save and Close</label>
+                <label class="button" id="close" data-i18n="btnClose">Close</label>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <!--script src="js/polyfill.js"></script-->
+    <script src="../lib/jquery-2.2.2.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/tabmenu.js"></script>
+    <script src="js/options.js"></script>
+</body>
+
+</html>

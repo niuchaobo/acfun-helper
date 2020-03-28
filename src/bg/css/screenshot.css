@@ -1,0 +1,117 @@
+body{
+    margin: 0px;
+}
+
+#bg_canvas {
+    position: absolute;
+    z-index: 500;
+    left: 0;
+    top: 0;
+}
+
+#buttons{
+    display: none;
+    position: absolute;
+    z-index: 999;
+    padding: 1px;
+    border-radius: 3px;
+    background-color: #fff;
+    height: 40px;
+}
+.button{
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+}
+#bg_result{
+    display: none;
+}
+.content{
+    margin: 5px;
+    background-color: #ffffff;
+}
+.origin{
+    margin: 35px 5px 5px 5px;
+    background-color: #ffffff;
+}
+
+.topbar{
+    position: fixed;
+    top: 0px;
+    width: 300px;
+    height:30px;
+    background-color: #fff;
+    border-bottom: 1px solid lightgray;
+    z-index: 999999;
+}
+.topbar img{
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    margin: 5px 0px;
+}
+.fixed-btn{
+    transform:rotate(45deg);
+}
+img{
+    cursor: pointer
+}
+#loading{ background:url("../images/loading2.gif") 50% no-repeat #fff; width:100%;
+    height:100%; overflow:hidden; position:fixed; left:0; top:0; z-index:999999;display: none;opacity:0.4}
+#collect-div{
+    display: none;
+    /*position: absolute;*/
+    /* z-index: 9999;
+     padding: 1px;
+     border-radius: 3px;*/
+    background-color: #fff;
+    /*height: 200px;*/
+    border-top: 1px solid #cccccc;
+}
+
+#collect-save{
+    margin-top: 2px;
+}
+.toggle{
+    float: right;
+    height: 16px;
+    margin-top: 13px;
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+    appearance: none;/*关键代码*/
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+.toggle::after{
+    content: url('../images/fxk-false.png');
+}
+
+.toggle:checked::after{
+    content: url('../images/fxk-true.png');
+}
+/*.toggle:disabled{
+    content: url('');
+}
+.toggle:checked:disabled{
+    content: url('');
+}*/
+.collect-list{
+    border-bottom: 1px solid #e6e6e6;width: 80%;margin: auto;
+}
+.collect-list-last{
+    border-bottom: 2px solid #e6e6e6;border-top: 1px solid #e6e6e6;
+}
+.collect-head{
+    border-bottom: 1px solid #e6e6e6;text-align:center;
+}
+.collect-close{
+    float: right;width: 20px;height: 20px;margin-top: 11px;
+}
+
+#tips{
+    margin-top: -2px;
+    margin-left: 5px;
+}

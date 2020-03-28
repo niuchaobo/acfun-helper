@@ -1,0 +1,46 @@
+{
+    "manifest_version": 2,
+    "update_url": "http://clients2.google.com/service/update2/crx",
+    "name": "__MSG_appName__",
+    "version": "1.0.0",
+    "default_locale": "en",
+    "description": "__MSG_appDesc__",
+    "icons": {
+        "16": "img/icon16.png",
+        "32": "img/icon32.png",
+        "48": "img/icon48.png",
+        "64": "img/icon64.png",
+        "128": "img/icon128.png"
+    },
+    "browser_action": {
+        "default_icon": "img/icon16.png",
+      "default_popup": "bg/popup.html"
+    },
+    "author": "ncb",
+    "background": {
+        "page": "bg/background.html"
+    },
+    "content_scripts": [{
+        "matches": ["*://*/*", "file://*/*"],
+        "js": [
+            "fg/js/acfun.js",
+            "fg/js/api.js",
+            "fg/js/popup.js",
+            "fg/js/frontend.js"
+
+        ],
+        "css": ["fg/css/client.css"],
+        "run_at": "document_start"
+    }],
+    "minimum_chrome_version": "50.0.0.0",
+    "options_ui": {
+        "page": "bg/guide.html"
+    },
+    "permissions": ["notifications","tabs","activeTab","webRequest", "webRequestBlocking", "file://*/*", "http://*/*", "https://*/*", "storage","unlimitedStorage"],
+    "sandbox": {
+        "pages": ["bg/sandbox/sandbox.html"]
+    },
+    "web_accessible_resources": [
+
+    ]
+}

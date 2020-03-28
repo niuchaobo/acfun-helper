@@ -1,0 +1,121 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, "Microsoft Yahei", sans-serif;
+    font-size: 14px;
+    width: 300px;
+    border-radius: 5px;
+    margin: 2px 4px;
+    padding: 0;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+}
+
+.grouptitle {
+    font-weight: bold;
+    color: white;
+    background-color: #93a085;
+    border-radius: 5px 5px 0 0;
+    margin: 0 0 4px;
+    padding: 4px 15px;
+}
+
+
+
+a {
+    text-decoration: none;
+}
+
+.container > .head {
+    font-weight: normal;
+    background-color: #F6F6F6;
+}
+
+.container .head .item {
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.17), 0 2px 0 0 rgba(0,0,0,0.13);
+    border-bottom: 0;
+}
+
+.container .item {
+    position: relative;
+    vertical-align: middle;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+
+    border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+.container > .body {
+    max-height: 295px;
+    overflow: auto;
+    min-height: 160px;
+}
+
+.container .head .item .co.title {
+    min-width: calc(100% - 152px);
+    max-width: calc(100% - 152px);
+}
+.pop-title{
+    display: block;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.container .item .col {
+    display: block;
+    float: left;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.container .item .col.action {
+    height: 40px;
+}
+
+.container .item .col.format {
+    min-width: 60px;
+    max-width: 60px;
+    text-align: center;
+}
+.container .item .col.size {
+    text-align: center;
+}
+.container .item .col.action > * {
+    padding: 0 2px;
+}
+
+.icon-download {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 24px;
+
+    background-image: url(../images/download.svg);
+    opacity: 0.7;
+}
+
+.action-btn {
+    display: inline-block;
+    height: 40px;
+    width: 28px;
+}
+.container .item > * {
+    line-height: 40px;
+}
+.pop-empty{
+    text-align: center;
+    border-bottom: 0;
+    margin-top: 70px;
+    color: #aec2db;
+}
+.pop-hide{
+    display: none;
+}

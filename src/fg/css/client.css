@@ -1,0 +1,75 @@
+iframe#odh-popup {
+    all: initial;
+    background-color: #fff;
+    border: 1px solid #666;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+    /*border-radius: 3px;*/
+    position: fixed;
+    resize: both;
+    visibility: hidden;
+    width: 400px !important;
+    z-index: 2147483647;
+    height: 250px;
+
+}
+
+#ncb-div{
+    border-radius: 2px;
+    z-index: 99999;
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    cursor: pointer;
+    background-color: rgb(157, 172, 228);
+    font-family:serif;
+    visibility: hidden;
+}
+
+.loading{
+    width: 150px;
+    height: 4px;
+    border-radius: 2px;
+    margin: 0 auto;
+    margin-top:100px;
+    position: relative;
+    background: lightgreen;
+    -webkit-animation: changeBgColor 1.04s ease-in infinite alternate;
+}
+.loading span{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: lightgreen;
+    position: absolute;
+    margin-top: -7px;
+    margin-left:-8px;
+    -webkit-animation: changePosition 1.04s ease-in infinite alternate;
+}
+@-webkit-keyframes changeBgColor{
+    0%{
+        background: lightgreen;
+    }
+    100%{
+        background: lightblue;
+    }
+}
+@-webkit-keyframes changePosition{
+    0%{
+        background: lightgreen;
+    }
+    100%{
+        margin-left: 142px;
+        background: lightblue;
+    }
+}
+
+#bg_canvas {
+    position: absolute;
+    z-index: 500;
+    left: 0;
+    top: 0;
+}
