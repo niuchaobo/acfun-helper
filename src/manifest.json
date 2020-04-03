@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "update_url": "http://clients2.google.com/service/update2/crx",
     "name": "__MSG_appName__",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "default_locale": "en",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -21,11 +21,13 @@
         "page": "bg/background.html"
     },
     "content_scripts": [{
-        "matches": ["*://*/*", "file://*/*"],
+        "matches": ["*://*/*"],
         "js": [
+            "lib/jquery-2.2.2.min.js",
             "fg/js/acfun.js",
             "fg/js/api.js",
             "fg/js/popup.js",
+            "fg/js/div.js",
             "fg/js/frontend.js"
 
         ],
@@ -33,14 +35,13 @@
         "run_at": "document_start"
     }],
     "minimum_chrome_version": "50.0.0.0",
-    "options_ui": {
-        "page": "bg/guide.html"
-    },
-    "permissions": ["notifications","tabs","activeTab","webRequest", "webRequestBlocking", "file://*/*", "http://*/*", "https://*/*", "storage","unlimitedStorage"],
+    "options_page":"bg/options.html",
+    "permissions": ["notifications","tabs","webRequest", "webRequestBlocking", "http://*/*", "https://*/*", "storage","unlimitedStorage"],
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },
     "web_accessible_resources": [
-
+      "fg/css/frame.css",
+      "fg/js/frame.js"
     ]
 }

@@ -1,40 +1,14 @@
 function sanitizeOptions(options) {
     const defaults = {
-        apidomain: 'http://bdc.zdq1688.com',
-        //apidomain: 'http://localhost:8002',
-        userkey: '',
-        wxenabled: true,
-        enabled: true,
-        hotkey: '16', // 0:off , 16:shift, 17:ctrl, 18:alt
-        maxcontext: '1',
-        maxexample: '2',
-        monolingual: '0', //0: bilingual 1:monolingual
-        preferredaudio: '0',
-        services: 'none',
-        id: '',
-        password: '',
-
-        deckname: 'Default',
-        typename: 'Basic',
-        expression: 'Front',
-        reading: '',
-        extrainfo: '',
-        definition: 'Back',
-        definitions: '',
-        sentence: '',
-        url: '',
-        audio: '',
-
-        sysscripts: 'builtin_encn_Collins,general_Makenotes,cncn_Zdic,encn_Collins',
-        udfscripts: '',
-
-        dictSelected: 'encn_Collins',
-        dictNamelist: [],
-        qr_ticket: '',
-        headimage: '',
-        nickName:'',
+        auto_throw:false,
+        to_attention:true,
+        to_attention_num:5,
+        to_special_items:[],
         activeTabKey:'activeTabId',
         extendsName:'Acfun下载助手',
+        upUrlTemplate:'https://www.acfun.cn/u/{uid}.aspx',
+        banana_notice:true
+
     };
 
     for (const key in defaults) {
@@ -43,6 +17,27 @@ function sanitizeOptions(options) {
         }
     }
     return options;
+}
+
+//只更新这些值
+function transOptions(options) {
+    const defaults = {
+        auto_throw:false,
+        to_attention:true,
+        to_attention_num:5,
+        to_special_items:[],
+        activeTabKey:'activeTabId',
+        extendsName:'Acfun下载助手',
+        upUrlTemplate:'https://www.acfun.cn/u/{uid}.aspx',
+        banana_notice:true
+    };
+
+    for (const key in defaults) {
+        if (options.hasOwnProperty(key)) {
+            defaults[key] = options[key];
+        }
+    }
+    return defaults;
 }
 
 
@@ -56,7 +51,7 @@ async function optionsLoad() {
 
 async function optionsSave(options) {
     return new Promise((resolve, reject) => {
-        chrome.storage.local.set(sanitizeOptions(options), resolve());
+        chrome.storage.local.set(transOptions(options), resolve());
     });
 }
 
@@ -225,5 +220,27 @@ async function updateStorage(progress,id,tabId){
     }
     chrome.storage.local.set({[id]:item}, function () {
 
+    });
+}
+
+function ajax(method, url, data,header) {
+    var request = new XMLHttpRequest();
+    return new Promise(function (resolve, reject) {
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                if (request.status === 200) {
+                    resolve(request.responseText);
+                } else {
+                    reject(request.status);
+                }
+            }
+        };
+        request.open(method, url);
+        if(header){
+            header.forEach(function (key, value) {
+                request.setRequestHeader(key, value);
+            })
+        }
+        request.send(data);
     });
 }

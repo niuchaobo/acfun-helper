@@ -1,82 +1,102 @@
-<!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/tabmenu.css">
-    <link rel="stylesheet" href="css/checkbox.css">
-    <link rel="stylesheet" href="css/scriptlist.css">
+    <meta charset="utf-8">
+    <title>A站下载助手</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="css/options.css">
-    <title data-i18n="optTitle">A站下载助手</title>
+    <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
+    <script src="../lib/jquery-2.2.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.mloading.js"></script>
+    <script type="text/javascript" src="js/options1.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+
 </head>
-
 <body>
-    <div class='container'>
-        <!--<div class="tabmenus">
-            <a href="#" data-contentid="tab-1" class="tabmenu active" data-i18n="tabExtensionTitle">General</a>
-        </div>-->
-
-        <form>
-            <div id="tab-1" class="tabcontent">
-
-                <div class="grouppanel">
-                    <div class="grouptitle">
-                        <span data-i18n="grpGeneral">General Options</span>
-                        <span class="option-helps"></span>
-                    </div>
-                    <div class="leftpanel">
-                        <label data-i18n="lblEnabled">Enable/Disable</label>
-                        <div class="enabled">
-                            <input type="checkbox" value=true id="enabled">
-                            <label for="enabled"></label>
-                        </div>
-                    </div>
-                    <div class="rightpanel">
-                        <label data-i18n="lblHotkey">AuoSel. HotKey</label>
-                        <select id="hotkey">
-                            <option value="0">Off</option>
-                            <option value="16">Shift</option>
-                            <option value="17">Ctrl</option>
-                            <option value="18">Alt</option>
-                        </select>
-                    </div>
-                    <div class="clearfix"></div>
+<div class="container">
+    <h1 style="text-align:center;">A站下载助手|设置</h1>
+    <hr class="head-hr" style="margin-bottom:0;">
+    <div class="autoTranslate" style="background: rgb(255, 255, 255);color: rgb(51, 51, 51);">
+        <div class="autoTranslate-switch">
+            <h2>自动投蕉<img src="images/on.png" class="switch-close" id="switch"></h2>
+            <div id="auto_options" style="color: rgb(204, 204, 204);">
+                <div class="huaci_selections">
+                    <img id="attention_switch" src="images/unselected.png">
+                    <span>给已关注up主投蕉</span>
                 </div>
-
-                <div class="grouppanel">
-                    <div class="grouptitle">
-                        <span data-i18n="userInfo">Dictionary Options</span>
-                    </div>
-                    <div class="crosspanel">
-                        <img src="../fg/img/cloud.png" width="15px" height="15px" id="user_headimage">
-                        <span id="nick_name">未登录</span>
-                    </div>
-                    <hr>
+                <hr style="border-bottom: 1px solid rgb(211,211,211)">
+                <div class="huaci_selections">
+                    <img id="specific_switch" src="images/selected.png">
+                    <span>给指定up主投蕉</span>
                 </div>
             </div>
-        </form>
-        <div class="grouppannel">
-            <div class="leftpanel" style="border-right:initial">
-                <label class="button" id="loginOut" data-i18n="loginOut">Save and Load</label>
-                <div class="gifs">
-                    <span class="gif" id="gif-load"><img src="/fg/img/load.gif" alt=""></span>
-                    <span class="gif" id="gif-good"><img src="/fg/img/good.png" alt=""></span>
-                    <span class="gif" id="gif-fail"><img src="/fg/img/fail.png" alt=""></span>
+        </div>
+
+
+        <div id="attention" style="display: none"  class="table-container">
+            <table id="custom-head" class="table">
+                <tbody>
+                <tr>
+                    <td style="margin-left: 20px" id="thead-tip" class="">
+                        当您浏览已关注的up主的视频时，自动投蕉
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <div id="huaci_options" >
+                <div class="huaci_selections">
+                    <img data-num="1" class="attention_num" id="num1" src="images/unselected.png">
+                    <span>1蕉</span>
+                    <img data-num="2" class="attention_num" style="margin-left: 40px" id="num2" src="images/unselected.png">
+                    <span>2蕉</span>
+                    <img data-num="3" class="attention_num" style="margin-left: 40px" id="num3" src="images/unselected.png">
+                    <span>3蕉</span>
+                    <img data-num="4" class="attention_num" style="margin-left: 40px" id="num4" src="images/unselected.png">
+                    <span>4蕉</span>
+                    <img data-num="5" class="attention_num" style="margin-left: 40px" id="num5" src="images/selected.png">
+                    <span>5蕉</span>
                 </div>
             </div>
-            <div class="rightpanel">
-                <label class="button" id="saveclose" data-i18n="btnSaveClose">Save and Close</label>
-                <label class="button" id="close" data-i18n="btnClose">Close</label>
-            </div>
-            <div class="clearfix"></div>
+        </div>
+        <div id="specific" style="display: none" class="table-container">
+            <table id="custom-head" class="table">
+                <tbody>
+                <tr>
+                    <td id="thead-tip-special" class="">
+                        当您浏览以下up主视频时，将自动投蕉
+                    </td>
+                    <td>
+                        <a href="#" id="add" class="">+添加up主</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table  style="height: 200px;display: block;overflow:auto" id="custom" class="table-custom table-custom-padding wordcontent">
+
+            </table>
         </div>
     </div>
+    <div class="div-lang-detect" style="background: rgb(237, 237, 237);">
+        <table>
+            <tbody>
+            <tr>
+                <td id="detect-switch-l">
+                    <h2>自动投蕉后提醒</h2>
+                    <p style="color: rgb(204, 204, 204);">
+                        当插件帮您自动投蕉后，在右下角弹出提醒消息
+                    </p>
+                </td>
+                <td id="detect-switch-r">
+                    <img src="images/off.png" class="switch-open switch-close" id="detect-switch">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-    <!--script src="js/polyfill.js"></script-->
-    <script src="../lib/jquery-2.2.2.min.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/tabmenu.js"></script>
-    <script src="js/options.js"></script>
 </body>
-
 </html>

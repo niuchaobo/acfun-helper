@@ -327,6 +327,7 @@ function renderTitle(tabId) {
 }
 
 async function renderBody(result) {
+    console.log(result);
     if(result == undefined || typeof(result) == undefined || result == 'undefined'){
         let empty = "<div class='pop-empty'>无资源</div>";
         $("#pop-body").html(empty);

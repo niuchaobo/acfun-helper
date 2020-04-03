@@ -1,5 +1,4 @@
-/*
-/!* global spell *!/
+/* global spell */
 function getImageSource(id) {
     return document.querySelector(`#${id}`).src;
 }
@@ -108,7 +107,7 @@ function spreadDetail(){
     if(document.getElementById("odh-note1").style.display==""){
         document.getElementById("odh-note1").style.display="none";
         document.getElementById("f-detail").innerText='点击展开柯林斯专业翻译';
-        /!*let h = 400;
+        /*let h = 400;
         let w = window.document.body.clientWidth;
         window.parent.postMessage({
             action: 'changeHeight',
@@ -116,12 +115,12 @@ function spreadDetail(){
                 height: h,
                 width: w,
             }
-        }, '*');*!/
+        }, '*');*/
 
     }else{
         document.getElementById("odh-note1").style.display="";
         document.getElementById("f-detail").innerText='点击折叠柯林斯专业翻译';
-        /!*let h = 400;
+        /*let h = 400;
         let w = window.document.body.clientWidth;
         window.parent.postMessage({
             action: 'changeHeight',
@@ -129,7 +128,7 @@ function spreadDetail(){
                 height: h,
                 width: w,
             }
-        }, '*');*!/
+        }, '*');*/
     }
 }
 
@@ -223,7 +222,7 @@ function onMouseWheel(e) {
 }
 
 document.addEventListener('DOMContentLoaded', onDomContentLoaded, false);
-/!*window.onload = function(){
+/*window.onload = function(){
     let h = window.document.body.clientHeight;
     let w = window.document.body.clientWidth;
     window.parent.postMessage({
@@ -233,6 +232,6 @@ document.addEventListener('DOMContentLoaded', onDomContentLoaded, false);
             width: w,
         }
     }, '*');
-}*!/
+}*/
 window.addEventListener('message', onMessage);
-window.addEventListener('wheel', onMouseWheel,{ passive: true });*/
+window.addEventListener('wheel', onMouseWheel,{ passive: true });

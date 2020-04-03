@@ -1,5 +1,4 @@
-/*
-/!* global rangeFromPoint *!/
+/* global rangeFromPoint */
 
 class Popup {
     constructor() {
@@ -90,4 +89,4 @@ class Popup {
         let root = simpread ? simpread : document.body;
         root.appendChild(this.popup);
     }
-}*/
+}

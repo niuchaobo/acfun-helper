@@ -9,21 +9,37 @@ class ODHBack {
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));
         chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
-        chrome.tabs.onCreated.addListener((tab) => this.onTabReady(tab.id));
-        chrome.tabs.onUpdated.addListener(this.onTabReady.bind(this));
+        chrome.tabs.onCreated.addListener((tab) => this.onTabReady(tab));
+        chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
 
 
         //监听浏览器请求
         chrome.webRequest.onBeforeRequest.addListener(
-            async function (req) {
-                let value = await urlExists(req.url, req.tabId + "");
+             function (req) {
+                console.log(req.url);
+                urlExists(req.url, req.tabId + "").then(value=>{
+                    if (req.tabId < 0 || value == 1) {
+                        return;
+                    }
+                    parseM3u8(req.url).then(res=>{
+                        chrome.tabs.get(req.tabId, tab => {
+                            saveTabRes(res, tab, req.url).then(v=>{
+
+                            });
+                        });
+                    });
+                });
+
+
+
+                /*let value = await urlExists(req.url, req.tabId + "");
                 if (req.tabId < 0 || value == 1) {
                     return;
                 }
                 let res = await parseM3u8(req.url);
                 chrome.tabs.get(req.tabId, tab => {
                     saveTabRes(res, tab, req.url);
-                });
+                });*/
             },
             {
                 urls: ["http://*/*m3u8*", "https://*/*m3u8*"]
@@ -35,9 +51,7 @@ class ODHBack {
 
         //当关闭标签页时删除此标签页存储的视频信息
         chrome.tabs.onRemoved.addListener(async function (tabId, removeInfo) {
-            console.log(tabId);
             let result = await getStorage(tabId+"").then(result => {return result[tabId]});
-            console.log(result);
             let obj =await getStorage(result);
             let arr = Object.values(obj);
             for(var lineId of arr){
@@ -129,7 +143,30 @@ class ODHBack {
         return;
     }
 
-    onTabReady(tabId) {
+    onTabReady(tab) {
+        let tabId = tab.id;
+        this.tabInvoke(tabId, 'setFrontendOptions', {options: this.options});
+    }
+
+    onTabUpdate(tabId,changeInfo,tab) {
+        if(changeInfo.status == 'complete'){
+            let url = tab.url;
+            let reg = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)');
+            if(reg.test(url)){
+                let ac = reg.exec(url);
+                let ac_num = ac[2];
+                //autoThrowBanana();
+                let action = 'throwBanana';
+                let params = {"key":ac_num};
+                chrome.tabs.sendMessage(tabId, {action, params}, function (response) {
+                    let resJson = JSON.parse(response);
+                    if(resJson && resJson.result == 0){
+                        notice("投蕉提醒","A站下载助手已为您自动投蕉");
+                    }
+                });
+                //this.callback();
+            }
+        }
         this.tabInvoke(tabId, 'setFrontendOptions', {options: this.options});
     }
 
@@ -184,6 +221,11 @@ class ODHBack {
 
     }
 
+    api_notice(params){
+        let {name,num} = params;
+        notice('自动投蕉通知','您成功给'+name+'投食'+num+'蕉');
+    }
+
     async api_initBackend(params) {
         let options = await optionsLoad();
         //this.ankiweb.initConnection(options);
@@ -234,37 +276,27 @@ class ODHBack {
     async opt_optionsChanged(options) {
         this.setFrontendOptions(options);
 
-        switch (options.services) {
-            case 'none':
-                this.target = null;
-                break;
-            case 'ankiconnect':
-                this.target = this.ankiconnect;
-                break;
-            case 'ankiweb':
-                this.target = this.ankiweb;
-                break;
-            default:
-                this.target = null;
-        }
-
-        let defaultscripts = ['builtin_encn_Collins'];
-        let newscripts = `${options.sysscripts},${options.udfscripts}`;
-        let loadresults = null;
-        if (!this.options || (`${this.options.sysscripts},${this.options.udfscripts}` != newscripts)) {
-            const scriptsset = Array.from(new Set(defaultscripts.concat(newscripts.split(',').filter(x => x).map(x => x.trim()))));
-            loadresults = await this.loadScripts(scriptsset);
-        }
+        //let defaultscripts = ['builtin_encn_Collins'];
+        //let newscripts = `${options.sysscripts},${options.udfscripts}`;
+        //let loadresults = null;
+        //if (!this.options || (`${this.options.sysscripts},${this.options.udfscripts}` != newscripts)) {
+        //    const scriptsset = Array.from(new Set(defaultscripts.concat(newscripts.split(',').filter(x => x).map(x => x.trim()))));
+        //    loadresults = await this.loadScripts(scriptsset);
+        //}
 
         this.options = options;
-        if (loadresults) {
-            let namelist = loadresults.map(x => x.result.objectname);
-            this.options.dictSelected = namelist.includes(options.dictSelected) ? options.dictSelected : namelist[0];
-            this.options.dictNamelist = loadresults.map(x => x.result);
-        }
-        await this.setScriptsOptions(this.options);
+        //if (loadresults) {
+        //    let namelist = loadresults.map(x => x.result.objectname);
+        //    this.options.dictSelected = namelist.includes(options.dictSelected) ? options.dictSelected : namelist[0];
+         //   this.options.dictNamelist = loadresults.map(x => x.result);
+        //}
+        //await this.setScriptsOptions(this.options);
         optionsSave(this.options);
         return this.options;
+    }
+
+    async opt_optionUpdate(options){
+        this.options = options;
     }
 
 
@@ -574,7 +606,8 @@ class ODHBack {
         let segments = res.segments;
         let seArr = new Array();
         if (segments.length == 0) {
-            notice("警告", "该视频无法播放");
+            notice("警告", "视频链接已过期，请重新打开当前页面");
+            return;
         } else {
             let arr = new Array();
             for (let seg of segments) {

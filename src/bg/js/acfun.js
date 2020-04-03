@@ -48,7 +48,7 @@ function getVideo(url) {
 
     return promise;
 };
-function ajax(method, url, data) {
+function ajax(method, url, data,header) {
     var request = new XMLHttpRequest();
     return new Promise(function (resolve, reject) {
         request.onreadystatechange = function () {
@@ -61,6 +61,16 @@ function ajax(method, url, data) {
             }
         };
         request.open(method, url);
+        /*if(header){
+            header.forEach(function (key, value) {
+                request.setRequestHeader(key, value);
+            })
+        }*/
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        request.setRequestHeader("udid", "web_9920269298442E9A");
+        request.setRequestHeader("Origin", 'https://www.acfun.cn');
+        request.setRequestHeader("Origin", 'https://www.acfun.cn');
+
         request.send(data);
     });
 }
@@ -87,6 +97,12 @@ function updatePop(item) {
     if(views.length <= 0) {
         return;
     }
+    var line = document.getElementById(item.lineId);
+    console.log(line);
+    if(line || line != undefined){
+        return;
+    }
+
     let pop = views[0];
     let id = item.urlMd5;
     var itemHtml = '<div class="item">' +
@@ -259,5 +275,12 @@ function notice(title,message) {
         title: title,
         message: message
     });
+}
 
+async function autoThrowBanana(){
+    let options = await optionsLoad();
+    let header = new Map();
+    header.set("Content-Type","application/x-www-form-urlencoded");
+    let response = await ajax('POST',"https://www.acfun.cn/rest/pc-direct/banana/throwBanana","resourceId=14263189&count=1&resourceType=2",header);
+    console.log(response);
 }
