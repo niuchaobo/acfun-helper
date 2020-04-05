@@ -8,7 +8,7 @@ class Div {
 
     show(point,oEvent){
         this.inject();
-        this.popup.inject();
+        //this.popup.inject();
 
         /*const elementRect = this.getRangeRect(point);
         const popupRect = this.div.getBoundingClientRect();
@@ -38,15 +38,19 @@ class Div {
         return rangeFromPoint(point).getBoundingClientRect();
     }
 
-    async showPopup(e){
-        let i = 1;
+    showPopup(e){
+        console.log(1);
+        console.log(window);
+        console.log(e);
+        console.log(window.pageInfo);
+        /*let i = 1;
         while(!this.t_data){
             await this.mysleep(500);
             i++;
             if(i>=20){
                 break;
             }
-        }
+        }*/
         if (this.div != null) {
             this.div.style.visibility = 'hidden';
         }
@@ -118,4 +122,9 @@ class Div {
         let root = document.body;
         root.appendChild(this.div);
     }
+
+}
+
+function test(){
+    console.log(window.pageInfo);
 }

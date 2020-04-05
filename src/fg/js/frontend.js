@@ -7,7 +7,7 @@ class ODHFront {
 
         chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this));
         window.addEventListener('message', e => this.onFrameMessage(e));
-        window.addEventListener('DOMContentLoaded', e => this.onDomContentLoaded(e));
+        window.addEventListener('load', e => this.onDomContentLoaded(e));
     }
 
 
@@ -22,19 +22,31 @@ class ODHFront {
         callback();
     }
 
+
     onDomContentLoaded(e){
-        /*console.log("href",window.location.href);
+        console.log("href",window.location.href);
+        var div = document.createElement('div');
+        div.id="ncb-test";
+        document.body.appendChild(div);
+        div.setAttribute('onclick',  "document.getElementById('ncb-test').innerText=JSON.stringify(window.pageInfo)");
+        div.click();
+        let pageInfo = JSON.parse(document.getElementById('ncb-test').innerText);
+        console.log("page",pageInfo)
         //TODO 判断是acfun页面
         let href = window.location.href;
-        let videoReg = new RegExp("")
+        //视频
+        let video = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/.*');
+        //番剧
+        let bangumi = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*');
+        //文章
+        let article = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/.*');
 
         //获取
-        this.div.show();*/
+        this.div.show();
 
     }
 
     async api_throwBanana(params) {
-        console.log($('.up-name').text());
         var up_name = '';
         var banana_num = 0;
         if(!this.options.auto_throw){
