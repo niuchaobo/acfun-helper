@@ -5,19 +5,37 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
     <link rel="stylesheet" href="../lib/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="css/checkbox.css" />
     <link rel="stylesheet" type="text/css" href="css/popup.css" />
-    <title data-i18n="optTitle">下载助手</title>
+    <title data-i18n="optTitle">Acfun助手</title>
 </head>
 
-<body style="width: 500px">
+<body style="width: 200px">
 <div class="container">
     <div class="head">
         <div class="item">
             <div id="pop-title" class="pop-title">
-
+                <label class="comment-label">打开关闭插件</label>
+                <div style="float: right;" class="enabled">
+                    <input type="checkbox" checked id="extends-enbaled">
+                    <label for="extends-enbaled"></label>
+                </div>
             </div>
         </div>
-
+    </div>
+    <div id="pop-introduce" style="" class="odh-definition">
+        <ul class="ec">
+            <li class="ec">
+                <img style="margin-right: 30px" width="14px" height="14px" src="images/instruction.png"><span  class="pos simple">使用说明</span>
+            </li>
+        </ul>
+    </div>
+    <div id="pop-setting" class="odh-definition">
+        <ul class="ec">
+            <li class="ec">
+                <img style="margin-right: 30px" width="14px" height="14px" src="images/setting.png"><span  class="pos simple">设置</span>
+            </li>
+        </ul>
     </div>
     <div id="pop-body" class="body">
 

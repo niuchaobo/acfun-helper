@@ -8,6 +8,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin-top: 53px;
+    margin-bottom: 50px;
 }
 
 .table {
@@ -38,6 +39,14 @@ h2 {
 }
 
 .fail {
+    margin-top: 4px;
+    padding-left: 4px;
+    font-size: 12px;
+    color: #ff0000;
+    display: none;
+}
+
+.mark-fail {
     margin-top: 4px;
     padding-left: 4px;
     font-size: 12px;
@@ -119,6 +128,25 @@ h2 {
     text-align: left;
     width: 500px;
 }
+#mark-add-text{
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    text-align: left;
+    width: 500px;
+}
+
+#mark-add{
+    font-size: 14px;
+    font-weight: bold;
+    color: #0066ff;
+    text-decoration: none;
+    float: right;
+    text-align: right;
+    width: 186px;
+    margin-right: 20px;
+    cursor: pointer;
+}
 
 #add {
     font-size: 14px;
@@ -152,7 +180,7 @@ h2 {
 
 .add-table input {
     height: 25px;
-    width: 235px;
+    width: 190px;
     font-size: 14px;
     border: 1px solid #e3e3e3;
     padding-left: 10px;
@@ -218,6 +246,49 @@ h2 {
 #custom .site-remove a{
     text-decoration: none;
     color: #0066ff;
+}
+
+
+#scan-users {
+    height: 47px;
+    line-height: 47px;
+}
+
+#scan-users .site {
+    width: 100px;
+    padding-left: 10px;
+}
+
+#scan-users .site a{
+    text-decoration: none;
+    color: #0066ff;
+}
+
+#scan-users .site-tag {
+    width: 250px;
+}
+
+#scan-users .site-name {
+    width: 250px;
+}
+#scan-users .site-name a{
+    text-decoration: none;
+    color: #0066ff;
+}
+#scan-users .site-remove {
+    width: 136px;
+    padding-right: 10px;
+    text-align: right;
+}
+
+#scan-users .site-remove a{
+    text-decoration: none;
+    color: #0066ff;
+}
+
+#scan-users .scan-remove{
+    color: #0066ff;
+    cursor: pointer;
 }
 
 .table-container {
@@ -380,4 +451,71 @@ h2 {
     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
     border-radius: 10px;
     background: #EDEDED;
+}
+
+
+.div-common-mark {
+     margin-top: 16px;
+     color: #333333;
+     padding-left: 23px;
+     /*padding-top: 4px;*/
+     padding-top: 1px;
+     padding-right: 23px;
+     padding-bottom: 20px;
+     background: #fff;
+ }
+
+.div-common-mark p {
+    /*margin-top: -10px;*/
+    color: #333333;
+    font-size: 14px;
+}
+
+#mark-switch-l {
+    height: 21px;
+    line-height: 21px;
+    width: 500px;
+}
+
+#mark-switch-r {
+    width: 186px;
+}
+
+.div-common-scan {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+}
+
+.div-common-scan p {
+    /*margin-top: -10px;*/
+    color: #333333;
+    font-size: 14px;
+}
+
+#scan-switch-l {
+    height: 21px;
+    line-height: 21px;
+    width: 500px;
+}
+
+#scan-switch-r {
+    width: 186px;
+}
+
+
+.div-user-list {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
 }

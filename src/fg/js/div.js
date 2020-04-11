@@ -4,11 +4,17 @@ class Div {
         this.offset = 1;
         this.popup = new Popup();
         this.t_point = null;
+        this.options = null;
     }
 
-    show(point,oEvent){
+    show(pageInfo,options,type){
+        this.options = options;
+        //注入插件按钮
         this.inject();
-        //this.popup.inject();
+        //注入展示页面
+        this.popup.inject(options);
+        //生成展示页面内容
+        let content = this.popup.renderPopup(pageInfo,type);
 
         /*const elementRect = this.getRangeRect(point);
         const popupRect = this.div.getBoundingClientRect();
@@ -30,7 +36,7 @@ class Div {
         this.div.style.left=posX+'px';
         this.div.style.top=posY+'px';*/
         this.div.style.visibility = 'visible';
-        this.div.innerText='译';
+        this.div.innerText='助手';
         document.body.appendChild(this.div);
 
     }
@@ -39,23 +45,18 @@ class Div {
     }
 
     showPopup(e){
-        console.log(1);
-        console.log(window);
-        console.log(e);
-        console.log(window.pageInfo);
-        /*let i = 1;
-        while(!this.t_data){
-            await this.mysleep(500);
-            i++;
-            if(i>=20){
-                break;
-            }
-        }*/
-        if (this.div != null) {
-            this.div.style.visibility = 'hidden';
+
+        if(status=='visible'){
+            this.popup.hide();
         }
-        this.div.style.visibility = 'hidden';
-        this.popup.showNextTo(this.t_point, this.t_data);
+        let height=document.documentElement.clientHeight;//取得浏览器页面可视区域的宽度
+        let popTop = parseInt(this.div.style.top)+20+2;
+        //let popTop = (height/2+20)/2+2;
+        let pos = {
+            x:0,
+            y:popTop
+        }
+        this.popup.showAt(pos);
 
     }
 
@@ -106,11 +107,10 @@ class Div {
         if (this.div !== null) {
             return;
         }
-        var height=document.documentElement.clientHeight;//取得浏览器页面可视区域的宽度
-        var width=document.documentElement.clientWidth;//取得浏览器页面可视区域的宽度
+        let height=document.documentElement.clientHeight;//取得浏览器页面可视区域的宽度
         this.div = document.createElement('div');
         this.div.style.right='0px';
-        this.div.style.top=(height-20)/2+'px';
+        this.div.style.top=(height/2-20)/2+'px';
         this.div.style.width='40px'; // 指定宽度
         this.div.style.height='20px'; // 指定高度
         this.div.id = 'acfun-helper-div';
@@ -126,5 +126,4 @@ class Div {
 }
 
 function test(){
-    console.log(window.pageInfo);
 }

@@ -1,13 +1,17 @@
 function sanitizeOptions(options) {
     const defaults = {
+        enabled:true,//开启关闭插件
         auto_throw:false,
         to_attention:true,
         to_attention_num:5,
         to_special_items:[],
         activeTabKey:'activeTabId',
-        extendsName:'Acfun下载助手',
+        extendsName:'Acfun助手',
         upUrlTemplate:'https://www.acfun.cn/u/{uid}.aspx',
-        banana_notice:true
+        banana_notice:true,
+        mark:false,//评论用户标记
+        scan:false,//评论用户扫描
+        receive:false,//接收用户情报
 
     };
 
@@ -22,14 +26,19 @@ function sanitizeOptions(options) {
 //只更新这些值
 function transOptions(options) {
     const defaults = {
+        enabled:true,//开启关闭插件
         auto_throw:false,
         to_attention:true,
         to_attention_num:5,
         to_special_items:[],
         activeTabKey:'activeTabId',
-        extendsName:'Acfun下载助手',
+        extendsName:'Acfun助手',
         upUrlTemplate:'https://www.acfun.cn/u/{uid}.aspx',
-        banana_notice:true
+        banana_notice:true,
+        mark:false,//评论用户标记
+        scan:false,//评论用户扫描
+        receive:false,//接收用户情报
+
     };
 
     for (const key in defaults) {
@@ -38,6 +47,15 @@ function transOptions(options) {
         }
     }
     return defaults;
+}
+function userMap(options) {
+    let map = new Map();
+    for(const key in options){
+        if(key.indexOf("AC_")!=-1){
+            map.set(key,options[key]);
+        }
+    }
+    return map;
 }
 
 
@@ -243,4 +261,70 @@ function ajax(method, url, data,header) {
         }
         request.send(data);
     });
+}
+
+function getPageData(href){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: href,
+            type: 'GET',
+            timeout: 10000,
+            contentType: 'text/html; charset=utf-8',
+            success: (data) => {resolve(data)},
+            error: (xhr, status, err) => resolve(null),
+        });
+    });
+}
+
+async function parseM3u8(url) {
+    let m3u8Data =await getPageData(url);
+    //解析文件
+    let parser = new m3u8Parser.Parser();
+    parser.push(m3u8Data);
+    parser.end();
+    let parsedManifest = parser.manifest;
+    return parsedManifest;
+    //计算总时长
+    /*let totalSecond = countTotal(parsedManifest);
+    let time = formateSeconds(totalSecond);
+    alert(time);*/
+}
+
+function getVideo(url) {
+    const promise = new Promise(function(resolve, reject){
+        const handler = function() {
+            if (this.readyState !== 4) {
+                return;
+            }
+            if (this.status === 200) {
+                resolve(this.response);
+            } else {
+                reject(new Error(this.statusText));
+            }
+        };
+        const client = new XMLHttpRequest();
+        client.open("GET", url);
+        client.timeout = 10000;
+        client.onreadystatechange = handler;
+        client.responseType = "blob";
+        client.send();
+
+    });
+
+    return promise;
+}
+
+function isValidElement() {
+    const invalidTags = ['A'];
+    const invalidClass = ['thumb']
+    const nodeName = document.activeElement.nodeName.toUpperCase();
+    const className = document.activeElement.className;
+    console.log("nodeName",nodeName);
+    console.log("className",className);
+    console.log(document.activeElement);
+    if (invalidTags.includes(nodeName) && invalidClass.includes(className)) {
+        return true;
+    } else {
+        return false;
+    }
 }

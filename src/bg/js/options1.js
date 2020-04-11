@@ -4,7 +4,7 @@ var clickFlag = true;
 function save_options() {
     var items = [];
 
-    $('.site-tr').each(function () {
+    $('#custom .site-tr').each(function () {
         var uid = $(this).children('td').eq(0).text();
         var up_url = $(this).children('td').eq(0).find('a').attr('href');
         var name = $(this).children('td').eq(1).text();
@@ -37,8 +37,9 @@ function updateUi() {
         $('#thead-tip-special').removeClass('text-closed');
         $('#add').removeClass('text-closed');
         $('.remove').removeClass('text-closed');
-        $('.site a').removeClass('text-closed');
+        $('#custom .site a').removeClass('text-closed');
         $('.autoTranslate').css('background', '#fff');
+        $('.autoTranslate h3').css('color', '#333');
     } else {
         $('#switch').removeClass('switch-close').addClass('switch-open').attr('src', 'images/off.png');
         $('#custom').addClass('closed');
@@ -47,9 +48,10 @@ function updateUi() {
         $('#thead-tip-special').addClass('text-closed');
         $('#add').addClass('text-closed');
         $('.remove').addClass('text-closed');
-        $('.site a').addClass('text-closed');
+        $('#custom .site a').addClass('text-closed');
         $('.autoTranslate').css('background', '#ededed');
         $(".huaci_selections").css('color','#d8d8d8');
+        $('.autoTranslate h3').css('color', '#ccc');
     }
 }
 
@@ -58,10 +60,12 @@ function detectUi() {
         $('#detect-switch').addClass('switch-close').attr('src', 'images/on.png');
         $('.div-lang-detect').css('background', '#fff');
         $('#detect-switch-l p').css('color', '#333');
+        $(".div-lang-detect h3").css('color', '#333');
     } else {
         $('#detect-switch').addClass('switch-open').attr('src', 'images/off.png');
         $('.div-lang-detect').css('background', '#ededed');
         $('#detect-switch-l p').css('color', '#ccc');
+        $(".div-lang-detect h3").css('color', '#ccc');
     }
 }
 
@@ -103,6 +107,50 @@ function attentionNumUi() {
     $("#"+id).siblings().attr('src', 'images/unselected.png');
 }
 
+function commentUi(){
+    if (mark) {
+        $('#mark-switch').addClass('switch-close').attr('src', 'images/on.png');
+        $('.div-common-mark').css('background', '#fff');
+        $('#mark-switch-l p').css('color', '#333');
+        $('.div-common-mark h3').css('color', '#333');
+
+        $(".div-user-list").css('background', '#fff');
+        $('.div-user-list td').css('color', '#333');
+        $('.div-user-list .site a').removeClass('text-closed');
+        $('.div-user-list .site-name a').removeClass('text-closed');
+        $('.div-user-list .scan-remove').removeClass('text-closed');
+        $('#mark-add').removeClass('text-closed');
+
+
+    } else {
+        $('#mark-switch').addClass('switch-open').attr('src', 'images/off.png');
+        $('.div-common-mark').css('background', '#ededed');
+        $('#mark-switch-l p').css('color', '#ccc');
+        $('.div-common-mark h3').css('color', '#ccc');
+
+        $(".div-user-list").css('background', '#ededed');
+        $('.div-user-list td').css('color', '#ccc');
+        $('.div-user-list .site a').addClass('text-closed');
+        $('.div-user-list .site-name a').addClass('text-closed');
+        $('.div-user-list .scan-remove').addClass('text-closed');
+        $('#mark-add').addClass('text-closed');
+    }
+
+    if (scan) {
+        $('#scan-switch').addClass('switch-close').attr('src', 'images/on.png');
+        $('.div-common-scan').css('background', '#fff');
+        $('#scan-switch-l p').css('color', '#333');
+        $('.div-common-scan h3').css('color', '#333');
+    } else {
+        $('#scan-switch').addClass('switch-open').attr('src', 'images/off.png');
+        $('.div-common-scan').css('background', '#ededed');
+        $('#scan-switch-l p').css('color', '#ccc');
+        $('.div-common-scan h3').css('color', '#ccc');
+    }
+
+
+}
+
 /*
     auto_throw:自动投蕉
     to_attention:给已关注up主投
@@ -128,6 +176,9 @@ function restore_options() {
         to_attention_num = options['to_attention_num'];
         to_special_items = options['to_special_items'];
         banana_notice = options['banana_notice'];
+        mark = options['mark'];
+        scan = options['scan'];
+        scanUserMap = userMap(items);
         attentionUi();
         attentionNumUi();
         detectUi();
@@ -159,12 +210,42 @@ function restore_options() {
         }
 
         updateUi();
+
+        if(scanUserMap && scanUserMap.size>0){
+            $('#scan-users').addClass('table-custom-padding');
+            scanUserMap.forEach(function(value,key) {
+                let userId = key.replace("AC_","");
+                let user_home = options.upUrlTemplate.replace("{uid}",userId);
+                $('#scan-users').append('\
+          <tr class="site-tr">\
+              <td class="site"><a href="' + user_home + '" target="_blank">' + userId + '</a></td>\
+              <td class="site-name"><a href="' + user_home + '" target="_blank">' + value.name + '</a></td>\
+              <td class="site-tag">' + value.tag + '</td>\
+              <td class="site-remove"><span href="#" class="scan-remove">移除</span></td>\
+            </tr>');
+                $('.scan-remove').click(function () {
+                    if (mark) {
+                        $(this).parent().parent().remove();
+                        chrome.storage.local.remove(key, function(){
+                            //do something
+                        });
+                    }
+                });
+            })
+        }else{
+            $('#scan-users').append('\
+                <tr id="mark-blank">\
+                  <td class="custom-nothing">无</td>\
+                </tr>');
+        }
+        commentUi();
     });
 }
 
-restore_options();
 
 $(document).ready(function () {
+    restore_options();
+
     $('#switch').click(function () {
         if (auto_throw) {
             options.auto_throw=false;
@@ -217,9 +298,9 @@ $(document).ready(function () {
 
 
     $("h1").click(function () {
-        chrome.storage.local.remove('options', function() {
-            console.log('remove ');
-        });
+        /*chrome.storage.local.clear(function(){
+            console.log('clear');
+        });*/
     });
 
 
@@ -277,6 +358,61 @@ $(document).ready(function () {
     });
 
 
+    $('#scan-switch-r').click(function () {
+        if (scan) {
+            options.scan=false;
+            chrome.storage.local.set({
+                'scan':false
+            }, function () {
+                // location.reload();
+                scan = false;
+                commentUi()
+                odhback().opt_optionUpdate(options);
+            });
+        } else {
+            /* globals bridge */
+            options.scan=true;
+            chrome.storage.local.set({
+                'scan':true
+            }, function () {
+                // location.reload();
+                scan = true;
+                commentUi();
+                odhback().opt_optionUpdate(options);
+            });
+        }
+    });
+
+    $('#mark-switch-r').click(function () {
+        if (mark) {
+            options.mark=false;
+            chrome.storage.local.set({
+                'mark':false
+            }, function () {
+                // location.reload();
+                mark = false;
+                commentUi()
+                odhback().opt_optionUpdate(options);
+            });
+        } else {
+            /* globals bridge */
+            options.mark=true;
+            chrome.storage.local.set({
+                'mark':true
+            }, function () {
+                // location.reload();
+                mark = true;
+                commentUi();
+                odhback().opt_optionUpdate(options);
+            });
+        }
+    });
+
+
+
+
+
+
 
     $('#save').click(function () {
         save_options();
@@ -312,7 +448,7 @@ $(document).ready(function () {
         </table>');
             $('.add-remove').on('click',async function () {
                 $(this).parent().parent().parent().parent().remove();
-                if ($('.site').length <= 0) {
+                if ($('#custom .site').length <= 0) {
                     $('#custom').removeClass('table-custom-padding');
                 }
             });
@@ -383,7 +519,7 @@ $(document).ready(function () {
               <td class="site"><a href="' + up_url + '" target="_blank">' + uid_input + '</a></td>\
               <td class="site"><a href="' + up_url + '" target="_blank">' + up_name + '</a></td>\
               <td class="site-name">' + bananaNum + '蕉</td>\
-              <td class="site-remove"><a href="#" class="remove">移除</a></td>\
+              <td class="site-remove"><a href="#" class="remove">移除</a href="#"></td>\
             </tr>');
                     $(this).parent().parent().parent().parent().remove();
                     $('.remove').on('click', function () {
@@ -400,4 +536,139 @@ $(document).ready(function () {
             c_id += 1;
         }
     });
+
+
+
+
+
+
+
+
+    var m_id = 0;
+    $('#mark-add').on('click', function () {
+        if ($('.mark-add-tr').length <= 0 && mark) {
+            if (!$('#scan-users').hasClass('table-custom-padding')) {
+                $('#scan-users').addClass('table-custom-padding');
+            }
+            $('#scan-users').before('\
+        <table id="mark' + m_id + '" class="add-table">\
+          <tr class="add-tr">\
+            <td class="td-add-input">\
+              <input type="text" class="form-control site" placeholder="请输入用户uid" required>\
+            </td>\
+            <td class="td-add-input">\
+                <input type="text" class="form-control site" placeholder="请输入标记，最多10个字符" required>\
+            </td>\
+            <td class="td-add-button">\
+              <button type="button" class="switch-open mark-add-confirm" style="width:79px;float: none;margin-left:16px;">添加</button>\
+            </td>\
+            <td class="td-add-remove-button">\
+              <button type="button" class="switch-close mark-add-remove" style="width:79px;float: none;">取消</button>\
+            </td>\
+          </tr>\
+          <tr><td class="mark-fail"></td></tr>\
+        </table>');
+            $('.mark-add-remove').on('click',async function () {
+                $(this).parent().parent().parent().parent().remove();
+                if ($('#scan-users .site').length <= 0) {
+                    $('##scan-users').removeClass('table-custom-padding');
+                }
+            });
+            $('#mark' + m_id + ' .mark-add-confirm').on('click',async function () {
+                $('.mark-fail').hide();
+
+
+
+                var input_valid = true;
+                var uid_input = $(this).parent().prev().prev().children('input').val();
+                var _tag = $(this).parent().prev().children('input').val();
+                let user_key = "AC_"+uid_input;
+                var tag = _tag.trim();
+                if (uid_input === '') {
+                    $('.mark-fail').text('输入内容不能为空');
+                    $('.mark-fail').show();
+                    input_valid = false;
+                }else if(tag==''){
+                    $('.mark-fail').text('请输入标记');
+                    $('.mark-fail').show();
+                    input_valid = false;
+                }else if(tag.length>10){
+                    $('.mark-fail').text('标记最多10个字符');
+                    $('.mark-fail').show();
+                    input_valid = false;
+                } else if (!uid_input.match(uidReg)) {
+                    $('.mark-fail').text('uid必须为数字');
+                    $('.mark-fail').show();
+                    input_valid = false;
+                }
+                if(!input_valid){
+                    return;
+                }
+                //判断此uid是否存在
+                let ac_res =await getStorage("AC_"+uid_input).then(value=>{return value["AC_"+uid_input]});
+                if(ac_res!=undefined && ac_res!=null && ac_res.tag!=''){
+                    input_valid = false;
+                    $('.mark-fail').text('此用户已被标记');
+                    $('.mark-fail').show();
+                }
+
+                if (input_valid) {
+                    //根据uid解析出up主姓名
+                    $("body").mLoading("show");
+                    let up_url = options.upUrlTemplate.replace('{uid}',uid_input);
+                    var up_html_str ;
+                    try{
+                        up_html_str = await ajax('GET',up_url);
+                    }catch (e) {
+                        $("body").mLoading("hide");
+                        $('.mark-fail').text('此uid不存在');
+                        $('.mark-fail').show();
+                        return;
+                    }
+                    let up_name = $('<div></div>').html(up_html_str).find('.name.fl.text-overflow')[0].innerText;
+
+                    if(up_name=='' || up_name==undefined){
+                        $("body").mLoading("hide");
+                        $('.mark-fail').text('此uid不存在');
+                        $('.mark-fail').show();
+                        return;
+                    }
+
+                    let user_scan={
+                        name:up_name,
+                        tag:tag
+                    }
+                    chrome.storage.local.set({[user_key]:user_scan}, function(){
+                        $('#scan-users #mark-blank').remove();
+                        $('#scan-users').prepend('\
+                      <tr class="site-tr">\
+                          <td class="site"><a href="' + up_url + '" target="_blank">' + uid_input + '</a></td>\
+                          <td class="site-name"><a href="' + up_url + '" target="_blank">' + up_name + '</a></td>\
+                          <td class="site-tag">' + tag + '</td>\
+                          <td class="site-remove"><span href="#" class="scan-remove">移除</span></td>\
+                        </tr>');
+                    });
+
+                    $(this).parent().parent().parent().parent().remove();
+                    $('.scan-remove').on('click', function () {
+                        if (mark) {
+                            $(this).parent().parent().remove();
+                            chrome.storage.local.remove(user_key, function(){
+                                //do something
+                            });
+                        }
+                    });
+                    $("body").mLoading("hide");
+                }
+            });
+
+            m_id += 1;
+        }
+    });
+
+
+
+
+
+
 });

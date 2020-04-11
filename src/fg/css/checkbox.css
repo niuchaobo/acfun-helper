@@ -3,21 +3,19 @@
 }
 
 .enabled {
-    width: 55px;
-    height: 20px;
+    width: 65px;
+    height: 24px;
     display:inline-block;
     background: #e4e4e4;
-    margin: 3px;
     border-radius: 25px;
-    top:0px;
     position: relative;
+    float: right;
 }
 
 .enabled:before {
-    font-size: 10px;
     content: 'On';
     position: absolute;
-    top: -2px;
+    top: 3px;
     left: 10px;
     height: 1px;
     color: #e47e50;
@@ -25,32 +23,31 @@
 }
 
 .enabled:after {
-    font-size: 10px;
     content: 'Off';
     position: absolute;
-    top: -2px;
-    left: 30px;
+    top: 3px;
+    left: 35px;
     height: 1px;
-    color: #999;
+    color: #666;
     font-weight: bold;
 }
 
 .enabled label {
     display: block;
-    width: 20px;
+    width: 24px;
     height: 16px;
     border: none;
     border-radius: 37px;
     transition: all .5s ease;
     cursor: pointer;
     position: absolute;
-    top: 2px;
+    top: 4px;
     z-index: 1;
     left: 6px;
     background: #c4c4c4;
 }
 
 .enabled input[type=checkbox]:checked+label {
-    left: 28px;
-    background: rgb(214, 154, 204);
+    left: 32px;
+    background: #d69acc;
 }

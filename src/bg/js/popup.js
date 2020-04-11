@@ -10,10 +10,7 @@ async function onOptionChanged(e) {
     if (!e.originalEvent) return;
 
     let options = await optionsLoad();
-    options.enabled = $('#enabled').prop('checked');
-    options.hotkey = $('#hotkey').val();
-    options.dictSelected = $('#dict').val();
-    options.wxenabled = $("#wxenabled").prop('checked');
+    options.enabled = $('#extends-enbaled').prop('checked');
     let newOptions = await odhback().opt_optionsChanged(options);
     optionsSave(newOptions);
 }
@@ -283,15 +280,6 @@ function popupFooter() {
         </html>`;
 }
 
-function spreadDetail(){
-    if($('#odh-note1').is(':hidden')){
-        $('#odh-note1').show();
-        $('.detail').text('点击折叠柯林斯专业翻译');
-    }else{
-        $('#odh-note1').hide();
-        $('.detail').text('点击展开柯林斯专业翻译');
-    }
-}
 
 function playaudio(e){
     e.stopPropagation();
@@ -416,86 +404,21 @@ async function tabQuery(option) {
     });
 }
 
-function observerPop(mutationsList) {
-    mutationsList.forEach(function(item,index){
-        if (item.type == 'childList') {
-            //console.log(item.target.innerHTML);
-        } else if (item.type == 'attributes') {
-            //console.log('修改了'+item.attributeName+'属性');
-        }
-    });
-    layui.element.render('collapse');
-    layui.element.render('progress');
+function openIntroduce() {
+    window.open("chrome-extension://nikaflocjolhbkoolhcnddojhaionhfa/bg/guide.html","_blank");
 }
-
-async function downloadVideo(e) {
-    var text = $(this).text();
-    if(text != '下载'){
-        return;
-    }
-    let m3u8 = $(this).data('segments');
-    let title = $(this).data('title');
-    let id = $(this).data('id');
-    $(this).text('下载中');
-    let tabId =await tabQuery({"active":true,"currentWindow":true}).then(tabs=>{let t = tabs[0];return t.id});
-
-    let lineItem = await getStorage(id).then(result => {return result[id]});
-    lineItem.progress = 0+"%";
-    lineItem.lineText = '下载中';
-
-    //修改在storage中的数据
-    chrome.storage.local.set({[id]: lineItem}, function () {
-        if (chrome.runtime.lastError) {
-            notice('Acfun下载助手', chrome.runtime.lastError.message)
-        }
-    });
-
-    //让 background.js 执行下载逻辑
-    var bg = chrome.extension.getBackgroundPage();
-    odhback().downloadVideo(m3u8,title,id,tabId);
-
+function openSetting() {
+    window.open("chrome-extension://nikaflocjolhbkoolhcnddojhaionhfa/bg/options.html","_blank");
 }
 
 async function onReady() {
-    //监听dom结构变化,layui重新渲染
-    var targetNode = document.getElementById('pop-body');
-
-    // 观察者的选项(要观察哪些突变)
-    var config = {childList: true};
-    //var config = { attributes: true, childList: true, subtree: true };
-
-    // 创建一个链接到回调函数的观察者实例
-    var observer = new MutationObserver(observerPop);
-
-    // 开始观察已配置突变的目标节点
-    observer.observe(targetNode, config);
-
-    layui.use(['element', 'layer'], function(){
-        var element = layui.element;
-        var layer = layui.layer;
-        //element.progress('demo', '5%');
-
-        element.on('collapse(test)', function(data){
-
-        });
-    });
-    let tabId =await tabQuery({"active":true,"currentWindow":true}).then(tabs=>{let t = tabs[0];return t.id});
-
-
-    //获取当前tab存储的视频信息
-    //let tabId =await getStorage('activeTabId').then(result => {return result['activeTabId']});
-    let result = await getStorage(tabId.toString()).then(result => {return result[tabId.toString()]});
-
-
-    //生成页面
-    renderTitle(tabId);
-    renderBody(result);
-
-    //监听下载按钮点击事件
-    $("#pop-body").on('click','.pop-download',downloadVideo);
-
     localizeHtmlPage();
     let options = await optionsLoad();
+    $("#extends-enbaled").prop('checked', options.enabled);
+
+    $("#extends-enbaled").change(onOptionChanged);
+    $("#pop-introduce").click(openIntroduce);
+    $("#pop-setting").click(openSetting);
 }
 
 

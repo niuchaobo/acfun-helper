@@ -3,7 +3,7 @@
     "update_url": "http://clients2.google.com/service/update2/crx",
     "name": "__MSG_appName__",
     "version": "1.0.1",
-    "default_locale": "en",
+    "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
         "16": "img/icon16.png",
@@ -21,9 +21,12 @@
         "page": "bg/background.html"
     },
     "content_scripts": [{
-        "matches": ["*://*/*"],
+        "matches": ["https://www.acfun.cn/*"],
         "js": [
             "lib/jquery-2.2.2.min.js",
+            "bg/js/lib/m3u8-parser.min.js",
+            "bg/js/lib/md5.js",
+            "bg/js/utils.js",
             "fg/js/acfun.js",
             "fg/js/api.js",
             "fg/js/popup.js",
@@ -31,17 +34,21 @@
             "fg/js/frontend.js"
 
         ],
-        "css": ["fg/css/client.css"],
+        "css": [
+            "fg/css/client.css"
+        ],
         "run_at": "document_start"
     }],
     "minimum_chrome_version": "50.0.0.0",
     "options_page":"bg/options.html",
-    "permissions": ["notifications","tabs","webRequest", "webRequestBlocking", "http://*/*", "https://*/*", "storage","unlimitedStorage"],
+    "permissions": ["notifications","tabs","webRequest", "webRequestBlocking", "https://tx-safety-video.acfun.cn/*", "https://www.acfun.cn/*", "storage","unlimitedStorage"],
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },
     "web_accessible_resources": [
-      "fg/css/frame.css",
-      "fg/js/frame.js"
+        "fg/css/frame.css",
+        "fg/js/frame.js",
+        "fg/css/checkbox.css",
+        "lib/jquery-2.2.2.min.js"
     ]
 }

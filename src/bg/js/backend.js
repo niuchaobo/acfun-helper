@@ -13,36 +13,10 @@ class ODHBack {
         chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
 
 
-        //监听浏览器请求
         chrome.webRequest.onBeforeRequest.addListener(
-             function (req) {
-                console.log(req.url);
-                urlExists(req.url, req.tabId + "").then(value=>{
-                    if (req.tabId < 0 || value == 1) {
-                        return;
-                    }
-                    parseM3u8(req.url).then(res=>{
-                        chrome.tabs.get(req.tabId, tab => {
-                            saveTabRes(res, tab, req.url).then(v=>{
-
-                            });
-                        });
-                    });
-                });
-
-
-
-                /*let value = await urlExists(req.url, req.tabId + "");
-                if (req.tabId < 0 || value == 1) {
-                    return;
-                }
-                let res = await parseM3u8(req.url);
-                chrome.tabs.get(req.tabId, tab => {
-                    saveTabRes(res, tab, req.url);
-                });*/
-            },
+             this.onCommentRequest.bind(this),
             {
-                urls: ["http://*/*m3u8*", "https://*/*m3u8*"]
+                urls: ["https://www.acfun.cn/rest/pc-direct/comment/*"]
             },
             []
         );
@@ -75,14 +49,14 @@ class ODHBack {
 
 
         //当激活某个tab页时
-        /*chrome.tabs.onActivated.addListener(function (tab) {
+        chrome.tabs.onActivated.addListener(function (tab) {
             let tabId = tab.tabId;
             chrome.storage.local.set({activeTabId: tabId}, function () {
                 if (chrome.runtime.lastError) {
-                    notice('Acfun下载助手', chrome.runtime.lastError.message)
+                    notice('发生错误', chrome.runtime.lastError.message);
                 }
             });
-        });*/
+        });
 
         //监听存储变化,更新页面
         chrome.storage.onChanged.addListener(function (changes,areaName){
@@ -124,6 +98,22 @@ class ODHBack {
 
     }
 
+    onCommentRequest(req){
+        if(!this.options.enabled){
+            return;
+        }
+        let url = req.url;
+        let tabId = req.tabId;
+        let commentListReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/list\\?.*");
+        let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");
+        if(commentListReg.test(url)){
+            this.tabInvoke(tabId, 'renderList', {url:url});
+        }else if(commentSubReg.test(url)){
+            let rootCommentId = url.match(commentSubReg)[1];
+            this.tabInvoke(tabId, 'renderSub', {rootCommentId: rootCommentId,url:url});
+        }
+    }
+
 
     onInstalled(details) {
         if (details.reason === 'install') {
@@ -143,12 +133,14 @@ class ODHBack {
         return;
     }
 
-    onTabReady(tab) {
+    async onTabReady(tab) {
+        this.options =await optionsLoad();
         let tabId = tab.id;
         this.tabInvoke(tabId, 'setFrontendOptions', {options: this.options});
     }
 
-    onTabUpdate(tabId,changeInfo,tab) {
+    async onTabUpdate(tabId,changeInfo,tab) {
+        this.options =await optionsLoad();
         if(changeInfo.status == 'complete'){
             let url = tab.url;
             let reg = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)');
@@ -222,8 +214,8 @@ class ODHBack {
     }
 
     api_notice(params){
-        let {name,num} = params;
-        notice('自动投蕉通知','您成功给'+name+'投食'+num+'蕉');
+        let {title,msg} = params;
+        notice(title,msg);
     }
 
     async api_initBackend(params) {

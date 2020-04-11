@@ -14,11 +14,13 @@
 </head>
 <body>
 <div class="container">
-    <h1 style="text-align:center;">A站下载助手|设置</h1>
+    <h1 style="text-align:center;">Acfun助手|设置</h1>
     <hr class="head-hr" style="margin-bottom:0;">
     <div class="autoTranslate" style="background: rgb(255, 255, 255);color: rgb(51, 51, 51);">
+
         <div class="autoTranslate-switch">
-            <h2>自动投蕉<img src="images/on.png" class="switch-close" id="switch"></h2>
+            <h2 style="text-align: center">投蕉设置</h2>
+            <h3>自动投蕉<img src="images/on.png" class="switch-close" id="switch"></h3>
             <div id="auto_options" style="color: rgb(204, 204, 204);">
                 <div class="huaci_selections">
                     <img id="attention_switch" src="images/unselected.png">
@@ -79,12 +81,12 @@
             </table>
         </div>
     </div>
-    <div class="div-lang-detect" style="background: rgb(237, 237, 237);">
+    <div class="div-lang-detect" style="background: rgb(237, 237, 237);margin-top: 0px">
+        <h3>自动投蕉后提醒</h3>
         <table>
             <tbody>
             <tr>
                 <td id="detect-switch-l">
-                    <h2>自动投蕉后提醒</h2>
                     <p style="color: rgb(204, 204, 204);">
                         当插件帮您自动投蕉后，在右下角弹出提醒消息
                     </p>
@@ -96,6 +98,61 @@
             </tbody>
         </table>
     </div>
+
+    <div class="div-common-scan" style="background: rgb(237, 237, 237);">
+        <h2 style="text-align: center">评论才是本体</h2>
+        <h3>开启人物扫描</h3>
+        <table>
+            <tbody>
+            <tr>
+                <td id="scan-switch-l">
+                    <p style="color: rgb(204, 204, 204);">
+                        开启之后，会在其名字后面显示你做的标记
+                    </p>
+                </td>
+                <td id="scan-switch-r">
+                    <img src="images/off.png" class="switch-open switch-close" id="scan-switch">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="div-common-mark" style="background: rgb(237, 237, 237);margin-top: 0px">
+        <h3>开启人物标记</h3>
+        <table>
+            <tbody>
+            <tr>
+                <td id="mark-switch-l">
+                    <p style="color: rgb(204, 204, 204);">
+                        开启之后，会在举报按钮下增加标记按钮
+                    </p>
+                </td>
+                <td id="mark-switch-r">
+                    <img src="images/off.png" class="switch-open switch-close" id="mark-switch">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="div-user-list" style="background: rgb(237, 237, 237);margin-top: 0px">
+        <table id="custom-head" class="table">
+            <tbody>
+            <tr>
+                <td id="mark-add-text" class="">
+                    已标记用户
+                </td>
+                <td>
+                    <span id="mark-add" class="">+添加用户</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table  style="height: 200px;display: block;overflow:auto" id="scan-users" class="table-custom table-custom-padding wordcontent">
+
+        </table>
+    </div>
+
 </div>
 
 </body>

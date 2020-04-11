@@ -140,13 +140,81 @@ function hideTranslation(){
     }
 }
 
+function registVideoClick() {
+    for (let link of document.getElementsByClassName('pos simple')) {
+        link.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const ds = e.currentTarget.dataset;
+            if(ds.run=="true"){
+
+                window.parent.postMessage({
+                    action: 'notice',
+                    params: {
+                        title: '',
+                        msg:'请耐心等待，视频正在下载中',
+                    }
+                }, '*');
+
+                return;
+            }
+            window.parent.postMessage({
+                action: 'download',
+                params: {
+                    url: ds.url,
+                    title:ds.title,
+                    id:ds.id,
+                    qualityLabel:ds.quality
+                }
+            }, '*');
+            e.currentTarget.dataset.run="true";
+        });
+    }
+}
+
+function markChange(e) {
+    let value = $(this).prop('checked');
+    window.parent.postMessage({
+        action: 'mark',
+        params: {
+            value: value,
+        }
+    }, '*');
+}
+
+function scanChange(e) {
+    let value = $(this).prop('checked');
+    window.parent.postMessage({
+        action: 'scan',
+        params: {
+            value: value,
+        }
+    }, '*');
+}
+function receiveChange(e) {
+    let value = $(this).prop('checked');
+    window.parent.postMessage({
+        action: 'receive',
+        params: {
+            value: value,
+        }
+    }, '*');
+}
+
+
+
+
 function onDomContentLoaded() {
-    registSpreadDetail();
+    registVideoClick();
+    $("#comment-scan").change(scanChange);
+    $("#comment-mark").change(markChange);
+    $("#comment-receive").change(receiveChange);
+   /* registSpreadDetail();
     registAddFavourite();
     registerAddNoteLinks();
     registerAudioLinks();
     registerSoundLinks();
-    registerHiddenClass();
+    registerHiddenClass();*/
     //initSpellnTranslation();
 }
 
@@ -156,6 +224,12 @@ function onMessage(e) {
     if (typeof(method) === 'function') {
         method(params);
     }
+}
+
+function api_updateProgress(params) {
+    let {progress,id} = params;
+    document.getElementById(id+"-bar").style.width=progress+"%";
+    document.getElementById(id+"-text").innerText=progress+"%";
 }
 
 function api_setActionState(result) {
