@@ -405,10 +405,10 @@ async function tabQuery(option) {
 }
 
 function openIntroduce() {
-    window.open("chrome-extension://nikaflocjolhbkoolhcnddojhaionhfa/bg/guide.html","_blank");
+    window.open("guide.html","_blank");
 }
 function openSetting() {
-    window.open("chrome-extension://nikaflocjolhbkoolhcnddojhaionhfa/bg/options.html","_blank");
+    window.open("options.html","_blank");
 }
 
 async function onReady() {

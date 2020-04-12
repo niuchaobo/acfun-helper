@@ -368,7 +368,7 @@ class ODHFront {
                             let userNode = $(this).parent().parent().parent().find('.name').eq(0);
                             let username = userNode.text();
                             let userId = userNode.data("userid");
-                            let title = '为『'+username+'』添加标记，最多5个字符';
+                            let title = '为『'+username+'』添加标记，最多10个字符';
                             let tag=prompt(title,"");
                             let tag_trim = tag.trim();
                             if(tag_trim!='' && tag_trim!=null && tag_trim.length<=10){
@@ -440,7 +440,7 @@ class ODHFront {
                             let userNode = $(this).parent().parent().parent().find('.name').eq(0);
                             let username = userNode.text();
                             let userId = userNode.data("userid");
-                            let title = '为『'+username+'』添加标记，最多5个字符';
+                            let title = '为『'+username+'』添加标记，最多10个字符';
                             let tag=prompt(title,"");
                             let tag_trim = tag.trim();
                             if(tag_trim!='' && tag_trim!=null && tag_trim.length<=10){
