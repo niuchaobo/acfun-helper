@@ -405,22 +405,32 @@ async function tabQuery(option) {
 }
 
 function openIntroduce() {
-    window.open("guide.html","_blank");
+    //window.open("guide.html","_blank");
+    var a = $("<a href='guide.html' target='_blank'></a>").get(0);
+    var e = document.createEvent('MouseEvents');
+    e.initEvent('click', true, true);
+    a.dispatchEvent(e);
 }
 function openSetting() {
-    window.open("options.html","_blank");
+    //window.open("options.html","_blank");
+    var a = $("<a href='options.html' target='_blank'></a>").get(0);
+    var e = document.createEvent('MouseEvents');
+    e.initEvent('click', true, true);
+    a.dispatchEvent(e);
+
 }
 
-async function onReady() {
+function onReady() {
     localizeHtmlPage();
-    let options = await optionsLoad();
-    $("#extends-enbaled").prop('checked', options.enabled);
+    optionsLoad().then(options=>{
+        $("#extends-enbaled").prop('checked', options.enabled);
+        $("#extends-enbaled").change(onOptionChanged);
+        $("#pop-introduce").click(openIntroduce);
+        $("#pop-setting").click(openSetting);
+    });
 
-    $("#extends-enbaled").change(onOptionChanged);
-    $("#pop-introduce").click(openIntroduce);
-    $("#pop-setting").click(openSetting);
 }
 
 
 
-$(document).ready(utilAsync(onReady));
+$(document).ready(onReady);
