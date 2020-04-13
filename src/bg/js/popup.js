@@ -420,17 +420,16 @@ function openSetting() {
 
 }
 
-function onReady() {
+async function onReady() {
     localizeHtmlPage();
-    optionsLoad().then(options=>{
-        $("#extends-enbaled").prop('checked', options.enabled);
-        $("#extends-enbaled").change(onOptionChanged);
-        $("#pop-introduce").click(openIntroduce);
-        $("#pop-setting").click(openSetting);
-    });
+    let options = await optionsLoad();
+    $("#extends-enbaled").prop('checked', options.enabled);
+    $("#extends-enbaled").change(onOptionChanged);
+    $("#pop-introduce").click(openIntroduce);
+    $("#pop-setting").click(openSetting);
 
 }
 
 
 
-$(document).ready(onReady);
+$(document).ready(utilAsync(onReady));
