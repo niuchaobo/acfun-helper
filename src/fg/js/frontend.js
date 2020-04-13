@@ -8,11 +8,13 @@ class ODHFront {
 
         chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this));
         window.addEventListener('message', e => this.onFrameMessage(e));
-        window.addEventListener('load', e => this.onDomContentLoaded(e));
+        window.addEventListener('load', e => this.onLoad(e));
 
         chrome.storage.onChanged.addListener(function (changes,areaName) {
 
         });
+
+        document.addEventListener('DOMContentLoaded',e=>this.onDomContentLoaded(e));
 
 
 
@@ -57,8 +59,25 @@ class ODHFront {
 
     }
 
+    addNightStyle(){
+        let div = document.createElement("div");
+        div.id="acfun_night_conver";
+        div.style='width: 100%; height: 100%; transition: -webkit-transform 10s ease-in-out 0s; z-index: 2147483647; opacity: 0.25; position: fixed !important; left: 0px !important; bottom: 0px !important; overflow: hidden !important; background: rgb(0, 0, 0) !important; pointer-events: none !important;';
+        //let cover = '<div id="__nightingale_view_cover" ' +
+          //  'style="width: 100%; height: 100%; transition: -webkit-transform 10s ease-in-out 0s; z-index: 2147483647; opacity: 0.25; position: fixed !important; left: 0px !important; bottom: 0px !important; overflow: hidden !important; background: rgb(0, 0, 0) !important; pointer-events: none !important;"></div>';
+        document.body.appendChild(div);
+    }
 
-    async onDomContentLoaded(e){
+    onDomContentLoaded(e){
+        //夜间模式
+        if(this.options.night){
+            this.addNightStyle();
+        }
+
+    }
+
+    async onLoad(e){
+
         //tab页创建时会从bg发消息过来写入options数据,但可能存在延迟
         this.options = await optionsLoad();
         if(!this.options.enabled){
@@ -66,8 +85,6 @@ class ODHFront {
         }
         //添加自定义样式
         this.addStyle();
-        //添加标记弹出框
-        this.addMarkDiv();
         var pageInfo = null;
 
         let href = window.location.href;
