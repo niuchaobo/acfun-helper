@@ -202,8 +202,8 @@ async function renderDiv(notes) {
             for (const [dindex, audio] of note.audios.entries()) {
                 if (audio)
                     audioImg = `<img class="odh-playaudio" data-url="${audio}" data-nindex="${nindex}" data-dindex="${dindex}" src="${chrome.runtime.getURL('fg/img/play.png')}"/>`;
-                    audioArr[dindex]=audioImg;
-                    audiosegment += `${audioImg}`;
+                audioArr[dindex]=audioImg;
+                audiosegment += `${audioImg}`;
             }
         }
         if(nindex == 0){
@@ -405,20 +405,29 @@ async function tabQuery(option) {
 }
 
 function openIntroduce() {
-    window.open("guide.html","_blank");
+    //window.open("guide.html","_blank");
+    var a = $("<a href='guide.html' target='_blank'></a>").get(0);
+    var e = document.createEvent('MouseEvents');
+    e.initEvent('click', true, true);
+    a.dispatchEvent(e);
 }
 function openSetting() {
-    window.open("options.html","_blank");
+    //window.open("options.html","_blank");
+    var a = $("<a href='options.html' target='_blank'></a>").get(0);
+    var e = document.createEvent('MouseEvents');
+    e.initEvent('click', true, true);
+    a.dispatchEvent(e);
+
 }
 
 async function onReady() {
     localizeHtmlPage();
     let options = await optionsLoad();
     $("#extends-enbaled").prop('checked', options.enabled);
-
     $("#extends-enbaled").change(onOptionChanged);
     $("#pop-introduce").click(openIntroduce);
     $("#pop-setting").click(openSetting);
+
 }
 
 
