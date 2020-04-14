@@ -45,18 +45,8 @@ class ODHFront {
             "span.simple {background-color: #d69acc !important;cursor: pointer;}" +
             "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}";
         nod.type="text/css";
-        nod.innerHTML = str;
+        nod.textContent = str;
         document.getElementsByTagName('head')[0].appendChild(nod);
-    }
-
-    addMarkDiv(){
-        let div = document.createElement("div");
-        div.id="mark-div";
-        div.className='';
-        let str = "<label for='mark-input'>name:</label><input id='mark-input'>";
-        div.innerHTML = str;
-        document.body.appendChild(div);
-
     }
 
     addNightStyle(){
@@ -77,7 +67,6 @@ class ODHFront {
     }
 
     async onLoad(e){
-
         //tab页创建时会从bg发消息过来写入options数据,但可能存在延迟
         this.options = await optionsLoad();
         if(!this.options.enabled){
