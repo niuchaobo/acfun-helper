@@ -41,7 +41,7 @@
     }],
     "minimum_chrome_version": "50.0.0.0",
     "options_page":"bg/options.html",
-    "permissions": ["notifications","tabs","webRequest", "webRequestBlocking", "https://tx-safety-video.acfun.cn/*", "https://www.acfun.cn/*", "storage","unlimitedStorage"],
+    "permissions": ["notifications","tabs","webRequest", "webRequestBlocking","https://*.acfun.cn/*", "https://tx-safety-video.acfun.cn/*", "https://www.acfun.cn/*", "storage","unlimitedStorage"],
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },

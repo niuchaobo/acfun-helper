@@ -12,6 +12,7 @@ function sanitizeOptions(options) {
         mark:false,//评论用户标记
         scan:false,//评论用户扫描
         receive:false,//接收用户情报
+        filter:false,//屏蔽up
 
     };
 
@@ -38,6 +39,7 @@ function transOptions(options) {
         mark:false,//评论用户标记
         scan:false,//评论用户扫描
         receive:false,//接收用户情报
+        filter:false,//屏蔽up
 
     };
 
@@ -53,6 +55,29 @@ function userMap(options) {
     for(const key in options){
         if(key.indexOf("AC_")!=-1){
             map.set(key,options[key]);
+        }
+    }
+    return map;
+}
+
+function upMap(options) {
+    let map = new Map();
+    for(const key in options){
+        if(key.indexOf("FILTER_")!=-1){
+            map.set(key,options[key]);
+        }
+    }
+    return map;
+}
+
+function upMapReverse(options) {
+    let map = new Map();
+    for(const key in options){
+        if(key.indexOf("FILTER_")!=-1){
+            let v = options[key].name;
+            if(v!=null && v!=undefined){
+                map.set(v,key);
+            }
         }
     }
     return map;

@@ -21,6 +21,16 @@ class ODHBack {
             []
         );
 
+        chrome.webRequest.onCompleted.addListener(
+            function (req) {
+                console.log(req.url);
+            },
+            {
+                urls: ["https://webapi.acfun.cn/query/article/list?*"]
+            },
+            []
+        );
+
 
 
         //当关闭标签页时删除此标签页存储的视频信息

@@ -151,6 +151,35 @@ function commentUi(){
 
 }
 
+function filterUi() {
+    if(filter){
+        $('#filter-switch').addClass('switch-close').attr('src', 'images/on.png');
+        $('.div-filter-switch').css('background', '#fff');
+        $('#filter-switch-l p').css('color', '#333');
+        $('.div-filter-switch h3').css('color', '#333');
+
+        $(".div-filter-list").css('background', '#fff');
+        $('.div-filter-list td').css('color', '#333');
+        $('.div-filter-list .site a').removeClass('text-closed');
+        $('.div-filter-list .site-name a').removeClass('text-closed');
+        $('.div-filter-list .filter-remove').removeClass('text-closed');
+        $('#filter-add').removeClass('text-closed');
+    }else{
+        $('#filter-switch').addClass('switch-open').attr('src', 'images/off.png');
+        $('.div-filter-switch').css('background', '#ededed');
+        $('#filter-switch-l p').css('color', '#ccc');
+        $('.div-filter-switch h3').css('color', '#ccc');
+
+        $(".div-filter-list").css('background', '#ededed');
+        $('.div-filter-list td').css('color', '#ccc');
+        $('.div-filter-list .site a').addClass('text-closed');
+        $('.div-filter-list .site-name a').addClass('text-closed');
+        $('.div-filter-list .filter-remove').addClass('text-closed');
+        $('#filter-add').addClass('text-closed');
+    }
+    
+}
+
 /*
     auto_throw:自动投蕉
     to_attention:给已关注up主投
@@ -179,6 +208,8 @@ function restore_options() {
         mark = options['mark'];
         scan = options['scan'];
         scanUserMap = userMap(items);
+        filter = options['filter'];
+        filterUps = upMap(items);
         attentionUi();
         attentionNumUi();
         detectUi();
@@ -239,6 +270,36 @@ function restore_options() {
                 </tr>');
         }
         commentUi();
+
+
+
+        if(filterUps && filterUps.size>0){
+            $('#filter-ups').addClass('table-custom-padding');
+            filterUps.forEach(function(value,key) {
+                let userId = key.replace("FILTER_","");
+                let user_home = options.upUrlTemplate.replace("{uid}",userId);
+                $('#filter-ups').append('\
+          <tr class="site-tr">\
+              <td style="width: 200px;" class="site"><a href="' + user_home + '" target="_blank">' + userId + '</a></td>\
+              <td class="site-name"><a href="' + user_home + '" target="_blank">' + value.name + '</a></td>\
+              <td class="site-remove"><span href="#" class="filter-remove">移除</span></td>\
+            </tr>');
+                $('.filter-remove').click(function () {
+                    if (filter) {
+                        $(this).parent().parent().remove();
+                        chrome.storage.local.remove(key, function(){
+                            //do something
+                        });
+                    }
+                });
+            })
+        }else{
+            $('#filter-ups').append('\
+                <tr id="filter-blank">\
+                  <td class="custom-nothing">无</td>\
+                </tr>');
+        }
+        filterUi()
     });
 }
 
@@ -408,6 +469,31 @@ $(document).ready(function () {
         }
     });
 
+    $('#filter-switch-r').click(function () {
+        if (filter) {
+            options.filter=false;
+            chrome.storage.local.set({
+                'filter':false
+            }, function () {
+                // location.reload();
+                filter = false;
+                filterUi();
+                odhback().opt_optionUpdate(options);
+            });
+        } else {
+            /* globals bridge */
+            options.filter=true;
+            chrome.storage.local.set({
+                'filter':true
+            }, function () {
+                // location.reload();
+                filter = true;
+                filterUi();
+                odhback().opt_optionUpdate(options);
+            });
+        }
+    });
+
 
 
 
@@ -552,7 +638,7 @@ $(document).ready(function () {
             }
             $('#scan-users').before('\
         <table id="mark' + m_id + '" class="add-table">\
-          <tr class="add-tr">\
+          <tr class="mark-add-tr">\
             <td class="td-add-input">\
               <input type="text" class="form-control site" placeholder="请输入用户uid" required>\
             </td>\
@@ -571,7 +657,7 @@ $(document).ready(function () {
             $('.mark-add-remove').on('click',async function () {
                 $(this).parent().parent().parent().parent().remove();
                 if ($('#scan-users .site').length <= 0) {
-                    $('##scan-users').removeClass('table-custom-padding');
+                    $('#scan-users').removeClass('table-custom-padding');
                 }
             });
             $('#mark' + m_id + ' .mark-add-confirm').on('click',async function () {
@@ -667,8 +753,151 @@ $(document).ready(function () {
     });
 
 
+    $("#banana-img").click(function () {
+        let src = $(this).attr("src");
+        if(src=='images/cos.png'){
+            $("#banana-div").fadeOut(100);
+            $(this).attr("src","images/unfold.png");
+            $(this).attr('title','点击展开',);
+        }else{
+            $("#banana-div").fadeIn(100);
+            $(this).attr("src","images/cos.png");
+            $(this).attr('title','点击折叠',);
+        }
+    });
 
 
+    $("#comment-img").click(function () {
+        let src = $(this).attr("src");
+        if(src=='images/cos.png'){
+            $("#comment-div").fadeOut(100);
+            $(this).attr("src","images/unfold.png");
+            $(this).attr('title','点击展开',);
+        }else{
+            $("#comment-div").fadeIn(100);
+            $(this).attr("src","images/cos.png");
+            $(this).attr('title','点击折叠',);
+        }
+    });
+
+
+    $("#filter-img").click(function () {
+        let src = $(this).attr("src");
+        if(src=='images/cos.png'){
+            $("#filter-div").fadeOut(100);
+            $(this).attr("src","images/unfold.png");
+            $(this).attr('title','点击展开',);
+        }else{
+            $("#filter-div").fadeIn(100);
+            $(this).attr("src","images/cos.png");
+            $(this).attr('title','点击折叠',);
+        }
+    });
+
+
+    $('#filter-add').on('click', function () {
+        if ($('.filter-add-tr').length <= 0 && filter) {
+            if (!$('#filter-ups').hasClass('table-custom-padding')) {
+                $('#filter-ups').addClass('table-custom-padding');
+            }
+            $('#filter-ups').before('\
+        <table id="filter_table" class="add-table">\
+          <tr class="filter-add-tr">\
+            <td style="width: 400px" class="td-add-input">\
+              <input style="width: 400px" type="text" class="form-control site" placeholder="请输入up主uid" required>\
+            </td>\
+            <td class="td-add-button">\
+              <button type="button" class="switch-open filter-add-confirm" style="width:79px;float: none;margin-left:16px;">添加</button>\
+            </td>\
+            <td class="td-add-remove-button">\
+              <button type="button" class="switch-close filter-add-remove" style="width:79px;float: none;">取消</button>\
+            </td>\
+          </tr>\
+          <tr><td class="filter-fail"></td></tr>\
+        </table>');
+            $('.filter-add-remove').on('click',async function () {
+                $(this).parent().parent().parent().parent().remove();
+                if ($('#filter-ups .site').length <= 0) {
+                    $('#filter-ups').removeClass('table-custom-padding');
+                }
+            });
+            $('#filter_table .filter-add-confirm').on('click',async function () {
+                $('.filter-fail').hide();
+                var input_valid = true;
+                var uid_input = $(this).parent().prev().children('input').val();
+                let user_key = "FILTER_"+uid_input;
+                if (uid_input === '') {
+                    $('.filter-fail').text('输入内容不能为空');
+                    $('.filter-fail').show();
+                    input_valid = false;
+                }else if (!uid_input.match(uidReg)) {
+                    $('.mark-fail').text('uid必须为数字');
+                    $('.mark-fail').show();
+                    input_valid = false;
+                }
+                if(!input_valid){
+                    return;
+                }
+                //判断此uid是否存在
+                let ac_res =await getStorage("FILTER_"+uid_input).then(value=>{return value["FILTER_"+uid_input]});
+                console.log(ac_res)
+                if(ac_res!=undefined && ac_res!=null && ac_res.name!=''){
+                    input_valid = false;
+                    $('.filter-fail').text('此up已被屏蔽');
+                    $('.filter-fail').show();
+                }
+
+                if (input_valid) {
+                    //根据uid解析出up主姓名
+                    $("body").mLoading("show");
+                    let up_url = options.upUrlTemplate.replace('{uid}',uid_input);
+                    var up_html_str ;
+                    try{
+                        up_html_str = await ajax('GET',up_url);
+                    }catch (e) {
+                        $("body").mLoading("hide");
+                        $('.mark-fail').text('此uid不存在');
+                        $('.mark-fail').show();
+                        return;
+                    }
+                    let up_name = $('<div></div>').html(up_html_str).find('.name.fl.text-overflow')[0].innerText;
+
+                    if(up_name=='' || up_name==undefined){
+                        $("body").mLoading("hide");
+                        $('.mark-fail').text('此uid不存在');
+                        $('.mark-fail').show();
+                        return;
+                    }
+
+                    let user_scan={
+                        name:up_name,
+                    }
+                    chrome.storage.local.set({[user_key]:user_scan}, function(){
+                        $('#filter-ups #filter-blank').remove();
+                        $('#filter-ups').prepend('\
+                      <tr class="site-tr">\
+                          <td style="width: 200px" class="site"><a href="' + up_url + '" target="_blank">' + uid_input + '</a></td>\
+                          <td class="site-name"><a href="' + up_url + '" target="_blank">' + up_name + '</a></td>\
+                          <td class="site-remove"><span href="#" class="filter-remove">移除</span></td>\
+                        </tr>');
+                    });
+
+                    $(this).parent().parent().parent().parent().remove();
+                    $('.filter-remove').on('click', function () {
+                        if (filter) {
+                            $(this).parent().parent().remove();
+                            chrome.storage.local.remove(user_key, function(){
+                                //do something
+                            });
+                        }
+                    });
+                    $("body").mLoading("hide");
+                }
+            });
+
+            m_id += 1;
+        }
+    });
 
 
 });

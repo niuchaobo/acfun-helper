@@ -16,10 +16,11 @@
 <div class="container">
     <h1 style="text-align:center;">Acfun助手|设置</h1>
     <hr class="head-hr" style="margin-bottom:0;">
-    <div style="background-color: #0C0C0C">
-        <h2 style="text-align: center">投蕉设置</h2>
+    <div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;">
+        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">投蕉设置</span>
+        <img id="banana-img" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
     </div>
-    <div class="autoTranslate" style="background: rgb(255, 255, 255);color: rgb(51, 51, 51);">
+    <div id="banana-div" class="autoTranslate" style="display:none;background: rgb(255, 255, 255);color: rgb(51, 51, 51);">
         <div class="autoTranslate-switch">
             <h3>自动投蕉<img src="images/on.png" class="switch-close" id="switch"></h3>
             <div id="auto_options" style="color: rgb(204, 204, 204);">
@@ -37,7 +38,7 @@
 
 
         <div id="attention" style="display: none"  class="table-container">
-            <table id="custom-head" class="table">
+            <table class="table custom-head">
                 <tbody>
                 <tr>
                     <td style="margin-left: 20px" id="thead-tip" class="">
@@ -64,7 +65,7 @@
             </div>
         </div>
         <div id="specific" style="display: none" class="table-container">
-            <table id="custom-head" class="table">
+            <table class="table custom-head">
                 <tbody>
                 <tr>
                     <td id="thead-tip-special" class="">
@@ -77,81 +78,135 @@
                 </tbody>
             </table>
 
-            <table  style="height: 200px;display: block;overflow:auto" id="custom" class="table-custom table-custom-padding wordcontent">
+            <table id="custom" class="table-custom table-custom-padding wordcontent">
+
+            </table>
+        </div>
+
+
+        <div class="div-lang-detect" style="background: rgb(237, 237, 237);margin-top: 0px">
+            <h3>自动投蕉后提醒</h3>
+            <table>
+                <tbody>
+                <tr>
+                    <td id="detect-switch-l">
+                        <p style="color: rgb(204, 204, 204);">
+                            当插件帮您自动投蕉后，在右下角弹出提醒消息
+                        </p>
+                    </td>
+                    <td id="detect-switch-r">
+                        <img src="images/off.png" class="switch-open switch-close" id="detect-switch">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;margin-top: 20px">
+        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">评论才是本体</span>
+        <img id="comment-img" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
+    </div>
+
+    <div id="comment-div" style="display: none">
+        <div class="div-common-scan" style="background: rgb(237, 237, 237);">
+            <h3>开启人物扫描</h3>
+            <table>
+                <tbody>
+                <tr>
+                    <td id="scan-switch-l">
+                        <p style="color: rgb(204, 204, 204);">
+                            开启之后，会在其名字后面显示你做的标记
+                        </p>
+                    </td>
+                    <td id="scan-switch-r">
+                        <img src="images/off.png" class="switch-open switch-close" id="scan-switch">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="div-common-mark" style="background: rgb(237, 237, 237);margin-top: 0px">
+            <h3>开启人物标记</h3>
+            <table>
+                <tbody>
+                <tr>
+                    <td id="mark-switch-l">
+                        <p style="color: rgb(204, 204, 204);">
+                            开启之后，会在举报按钮下增加标记按钮
+                        </p>
+                    </td>
+                    <td id="mark-switch-r">
+                        <img src="images/off.png" class="switch-open switch-close" id="mark-switch">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="div-user-list" style="background: rgb(237, 237, 237);margin-top: 0px">
+            <table class="table custom-head">
+                <tbody>
+                <tr>
+                    <td id="mark-add-text" class="">
+                        已标记用户
+                    </td>
+                    <td>
+                        <span id="mark-add" class="">+添加用户</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table  id="scan-users" class="table-custom table-custom-padding wordcontent">
 
             </table>
         </div>
     </div>
-    <div class="div-lang-detect" style="background: rgb(237, 237, 237);margin-top: 0px">
-        <h3>自动投蕉后提醒</h3>
-        <table>
-            <tbody>
-            <tr>
-                <td id="detect-switch-l">
-                    <p style="color: rgb(204, 204, 204);">
-                        当插件帮您自动投蕉后，在右下角弹出提醒消息
-                    </p>
-                </td>
-                <td id="detect-switch-r">
-                    <img src="images/off.png" class="switch-open switch-close" id="detect-switch">
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <div class="div-common-scan" style="background: rgb(237, 237, 237);">
-        <h2 style="text-align: center">评论才是本体</h2>
-        <h3>开启人物扫描</h3>
-        <table>
-            <tbody>
-            <tr>
-                <td id="scan-switch-l">
-                    <p style="color: rgb(204, 204, 204);">
-                        开启之后，会在其名字后面显示你做的标记
-                    </p>
-                </td>
-                <td id="scan-switch-r">
-                    <img src="images/off.png" class="switch-open switch-close" id="scan-switch">
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="div-common-mark" style="background: rgb(237, 237, 237);margin-top: 0px">
-        <h3>开启人物标记</h3>
-        <table>
-            <tbody>
-            <tr>
-                <td id="mark-switch-l">
-                    <p style="color: rgb(204, 204, 204);">
-                        开启之后，会在举报按钮下增加标记按钮
-                    </p>
-                </td>
-                <td id="mark-switch-r">
-                    <img src="images/off.png" class="switch-open switch-close" id="mark-switch">
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <div class="div-user-list" style="background: rgb(237, 237, 237);margin-top: 0px">
-        <table id="custom-head" class="table">
-            <tbody>
-            <tr>
-                <td id="mark-add-text" class="">
-                    已标记用户
-                </td>
-                <td>
-                    <span id="mark-add" class="">+添加用户</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <table  style="height: 200px;display: block;overflow:auto" id="scan-users" class="table-custom table-custom-padding wordcontent">
+    <div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;margin-top: 20px">
+        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">内容屏蔽</span>
+        <img id="filter-img" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
+    </div>
+    <div id="filter-div" style="display: none">
+        <div class="div-filter-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+            <h3>开启up主屏蔽</h3>
+            <table>
+                <tbody>
+                <tr>
+                    <td id="filter-switch-l">
+                        <p style="color: rgb(204, 204, 204);">
+                            开启之后，将看不到以下up视频和文章
+                        </p>
+                    </td>
+                    <td id="filter-switch-r">
+                        <img src="images/off.png" class="switch-open switch-close" id="filter-switch">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-        </table>
+
+        <div class="div-filter-list" style="background: rgb(237, 237, 237);margin-top: 0px">
+            <table class="table custom-head">
+                <tbody>
+                <tr>
+                    <td id="filter-add-text" class="">
+                        已屏蔽up主
+                    </td>
+                    <td>
+                        <span id="filter-add" class="">+添加up主</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table   id="filter-ups" class="table-custom table-custom-padding wordcontent">
+
+            </table>
+        </div>
     </div>
 
 </div>

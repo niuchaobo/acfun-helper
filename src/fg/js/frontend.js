@@ -58,6 +58,52 @@ class ODHFront {
         document.body.appendChild(div);
     }
 
+    homePageFilter(map){
+        $(".rank-right").find('li a').each(function () {
+            let title = $(this).attr("title");
+            if(title=='' || title==undefined){
+                return;
+            }
+            let href = $(this).attr("href");
+            let hrefReg = new RegExp("/u/\\d+\\.aspx");
+            if(hrefReg.test(href)){
+                $(this).parent().parent().parent().parent().parent().remove();
+                return;
+            }
+
+            title = title.replace(/[\r\n]/g,"");
+            title  = title.replace(/[\n]/g,"");
+            let reg = new RegExp("UP\\:(.*)发布于");
+            let res = reg.exec(title);
+            if(res!=null && res!=undefined && res.length>1){
+                let up_name = res[1];
+                console.log(up_name);
+                if(up_name!=null&&up_name!=''){
+                    let uid = map.get(up_name);
+                    console.log("uid",uid)
+                    if(uid!=null && uid!='' && uid!=undefined){
+                        $(this).parent().remove();
+                    }
+                }
+            }
+        });
+
+
+    }
+    articlePageFilter(map){
+        $(".atc-info.clearfix>a.atc-up").each(function () {
+            let up_name = $(this).attr('title');
+            if(up_name!=''&&up_name!=null && up_name!=undefined){
+                let uid = map.get(up_name);
+                if(uid!=''&&uid!=null && uid!=undefined){
+                    $(this).parent().parent().parent().remove();
+                }
+            }
+        })
+
+    }
+
+
     onDomContentLoaded(e){
         //夜间模式
         if(this.options.night){
@@ -72,13 +118,23 @@ class ODHFront {
         if(!this.options.enabled){
             return;
         }
+        //开启屏蔽功能
+        if(this.options.filter){
+            let allFilter = await getStorage(null);
+            let upMap = upMapReverse(allFilter);
+            console.log(upMap);
+            this.homePageFilter(upMap);
+            this.articlePageFilter(upMap);
+
+        }
+
         //添加自定义样式
         this.addStyle();
         var pageInfo = null;
 
         let href = window.location.href;
         //视频
-        let video = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/.*');
+        let video = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+');
         //番剧
         let bangumi = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*');
         //文章
