@@ -165,7 +165,7 @@ class Popup {
 
         return `
             </div>
-            <script charset="UTF-8" src="${root+'lib/jquery-2.2.2.min.js'}"></script>
+            <script charset="UTF-8" src="${root+'lib/jquery-3.5.0.min.js'}"></script>
             <script charset="UTF-8" src="${root+'fg/js/frame.js'}"></script>
             </body>
         </html>`;

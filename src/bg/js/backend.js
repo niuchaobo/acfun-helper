@@ -58,44 +58,6 @@ class ODHBack {
             });
         });
 
-        //监听存储变化,更新页面
-        chrome.storage.onChanged.addListener(function (changes,areaName){
-            var views = chrome.extension.getViews({type:'popup'});
-            if(views.length <= 0) {
-                return;
-            }
-            let pop = views[0];
-
-            for (var key in changes) {
-                var value = changes[key];
-                var newValue = value.newValue;
-                if(newValue ==undefined || newValue.lineId == undefined || newValue.progress == undefined){
-                    continue;
-                }
-                var progressValue = newValue.progress;
-                var img = pop.document.getElementById(key).getElementsByTagName('img')[0];
-                if(img.className.indexOf('pop-hide')==-1){
-                    img.classList.add('pop-hide');
-                }
-                var progress = pop.document.getElementById(key).getElementsByTagName('div')[0];
-                if(progress != undefined && !(progress.className.indexOf('pop-hide')==-1)){
-                    progress.classList.remove('pop-hide');
-                }
-                var span = pop.document.getElementById(key).getElementsByTagName('span')[0];
-                span.innerText=progressValue;
-                var progressBar = pop.document.getElementById(key).getElementsByTagName('div')[1];
-                progressBar.setAttribute('lay-percent',progressValue);
-                progressBar.style.width=progressValue;
-
-                //修改 下载 文字
-                var a_dom = pop.document.getElementById(key).nextElementSibling.getElementsByTagName('a')[0];
-                a_dom.innerText=newValue.lineText;
-                a_dom.setAttribute('title',newValue.innerText);
-
-            }
-        });
-
-
     }
 
     onCommentRequest(req){
@@ -418,19 +380,6 @@ class ODHBack {
         });
     }*/
 
-
-    async updateStorage(progress,id,tabId){
-        let item = await getStorage(id).then(result => {return result[id]});
-        item.progress = progress+"%";
-        if(progress==100){
-            item.lineText="已完成";
-        }
-        chrome.storage.local.set({[id]:item}, function () {
-
-        });
-    }
-
-
     /*async downloadVideo(m3u8) {
         console.log(m3u8);
         let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/');
@@ -570,106 +519,6 @@ class ODHBack {
 
     }*/
 
-    async downloadVideo(m3u8,title,id,tabId){
-        var MyBlobBuilder = function() {
-            this.parts = [];
-        }
-        MyBlobBuilder.prototype.append = function(part) {
-            this.parts.push(part);
-            this.blob = undefined; // Invalidate the blob
-        };
-
-        MyBlobBuilder.prototype.getBlob = function() {
-            if (!this.blob) {
-                this.blob = new Blob(this.parts, { type: "" });
-            }
-            return this.blob;
-        };
-
-
-
-        var fileName = title+".mp4";
-        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/');
-        var prefix = "";
-        if (reg.test(m3u8)) {
-            prefix = m3u8.match(reg)[0];
-        }
-        let res = await parseM3u8(m3u8);
-        let segments = res.segments;
-        let seArr = new Array();
-        if (segments.length == 0) {
-            notice("警告", "视频链接已过期，请重新打开当前页面");
-            return;
-        } else {
-            let arr = new Array();
-            for (let seg of segments) {
-                let uri = prefix + seg.uri;
-                //acfun的视频片段路径是不完整的,缺少http:// ,需要补全
-                // eg:"EKT8PxpARFg1bzNoUldlcTQ2MU5POWFpVms5cWVDOFl1anVNMzgxV3p3d2pqSkxvMVdhMDBXejJnZ3NGTC1aUE1CbjlkRw.ts?safety_id=AALXcXOtLbPnEichVENCciwF&pkey=AAPvrDb0ntD0obeNv1goe2Rn2rC1sdIAik9UsCzQq_yxTY3W9WNrUlN1eGpSjV-EjVmxl3z99SlX5TCzpithT_DZBDZJL5mAj1f41Be5oIKqNr_qiZ2Xv1OwUCkEyborQJqcBylYF4EpLvIeYh2EWlkfo_ONzw51ohvTuV1bx_9XQcb8nHDciQGrbRNOkym05eDAKVb9_7zd3I4fK5RbscRXsJBO8NLJe4ER9XTyf32L0dSuPhNFzn5ik58aF4Lp1zzOw9sGyCps8tsI10NDewh_K5_Jw5aJclpKhYOjHLnO6A"
-                seArr.push(uri);
-
-            }
-        }
-        //let buffer = require('buffer');
-        //var all;
-        //var total = new Array();
-        //let  b =buffer.Buffer;
-        //let all = b.alloc(0);
-        let index = 0;
-        var myBlobBuilder = new MyBlobBuilder();
-        for(let url of seArr){
-            index++;
-            //let aa= await ajax('get',url);
-            let a = await getVideo(url);
-            myBlobBuilder.append(a);
-            //let data = new ArrayBuffer(999999999);
-            //data=null;
-            //let u8 = new Uint8Array(data);
-            //let tt = b.from(all);
-            /*let str = this.Uint8ArrayToString(u8);
-            chrome.storage.local.set({[tabId]: arr}, function () {
-
-            });*/
-            //total.push(u8);
-            //let tmp = b.from(data);
-            //let his = new buffer.Buffer(all.length);
-            //all.copy(his,0,0,all.length);
-            //console.log(his.length);
-            /*try{
-                let tmp = all;
-                all = b.concat([tt,u8]);
-                u8=null;
-                data = null;
-                tt = null;
-            }catch (e) {
-                console.log(e);
-                //notice("警告","内存不足,下载失败");
-            }*/
-
-            //计算当前进度
-            let progress = parseInt(index/seArr.length*100);
-            //console.log(progress);
-            //更新storage数据
-            this.updateStorage(progress,id,tabId);
-
-
-        }
-
-        if ('download' in document.createElement('a')) {
-            let elink = document.createElement('a');
-            elink.download = fileName;
-            elink.style.display = 'none';
-            elink.href = URL.createObjectURL(myBlobBuilder.getBlob());
-            document.body.appendChild(elink);
-            elink.click();
-            URL.revokeObjectURL(elink.href);
-            document.body.removeChild(elink);
-        } else {
-             navigator.msSaveBlob(myBlobBuilder.getBlob(), fileName);
-        }
-
-
-    }
 }
 
 

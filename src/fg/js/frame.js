@@ -56,13 +56,6 @@ function registerSoundLinks() {
     }
 }
 
-function initSpellnTranslation(){
-    document.querySelector('#odh-container').appendChild(spell());
-    document.querySelector('.spell-content').innerHTML=document.querySelector('#context').innerHTML;
-    if (document.querySelector('#monolingual').innerText == '1')
-        hideTranslation();
-}
-
 function registerHiddenClass() {
     for (let div of document.getElementsByClassName('odh-definition')) {
         div.addEventListener('click', (e) => {

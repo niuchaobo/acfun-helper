@@ -92,7 +92,7 @@ function localizeHtmlPage() {
                 el.setAttribute('value',chrome.i18n.getMessage(el.getAttribute('data-i18n')));
             }
         }
-        el.innerHTML = chrome.i18n.getMessage(el.getAttribute('data-i18n'));
+        el.innerHTML = DOMPurify.sanitize(chrome.i18n.getMessage(el.getAttribute('data-i18n')));
     }
 }
 

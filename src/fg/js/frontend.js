@@ -43,18 +43,8 @@ class ODHFront {
             "span.simple {background-color: #d69acc !important;cursor: pointer;}" +
             "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}";
         nod.type="text/css";
-        nod.innerHTML = str;
+        nod.textContent = str;
         document.getElementsByTagName('head')[0].appendChild(nod);
-    }
-
-    addMarkDiv(){
-        let div = document.createElement("div");
-        div.id="mark-div";
-        div.className='';
-        let str = "<label for='mark-input'>name:</label><input id='mark-input'>";
-        div.innerHTML = str;
-        document.body.appendChild(div);
-
     }
 
 
@@ -66,8 +56,6 @@ class ODHFront {
         }
         //添加自定义样式
         this.addStyle();
-        //添加标记弹出框
-        this.addMarkDiv();
         var pageInfo = null;
 
         let href = window.location.href;
