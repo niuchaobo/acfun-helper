@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "update_url": "http://clients2.google.com/service/update2/crx",
     "name": "__MSG_appName__",
-    "version": "1.0.4.200412",
+    "version": "1.0.4.0412",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
