@@ -840,7 +840,6 @@ $(document).ready(function () {
                 }
                 //判断此uid是否存在
                 let ac_res =await getStorage("FILTER_"+uid_input).then(value=>{return value["FILTER_"+uid_input]});
-                console.log(ac_res)
                 if(ac_res!=undefined && ac_res!=null && ac_res.name!=''){
                     input_valid = false;
                     $('.filter-fail').text('此up已被屏蔽');

@@ -97,7 +97,7 @@ class ODHBack {
             chrome.notifications.create(null, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
-                title: 'A站下载助手',
+                title: 'Acfun助手',
                 message: '更新了！'
             });
             return;

@@ -43,10 +43,13 @@ class ODHFront {
         let str = ".comment-mark-parent{bottom: -80px!important;}" +
             "#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
             "span.simple {background-color: #d69acc !important;cursor: pointer;}" +
-            "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}";
+            "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}" +
+            ".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
+            "";
         nod.type="text/css";
         nod.textContent = str;
         document.getElementsByTagName('head')[0].appendChild(nod);
+
     }
 
     addNightStyle(){
@@ -67,8 +70,12 @@ class ODHFront {
             let href = $(this).attr("href");
             let hrefReg = new RegExp("/u/\\d+\\.aspx");
             if(hrefReg.test(href)){
-                $(this).parent().parent().parent().parent().parent().remove();
-                return;
+                let up_name = $(this).attr('title');
+                let uid = map.get(up_name);
+                if(uid!=null && uid!='' && uid!=undefined){
+                    $(this).parent().parent().parent().parent().parent().remove();
+                    return;
+                }
             }
 
             title = title.replace(/[\r\n]/g,"");
@@ -77,10 +84,8 @@ class ODHFront {
             let res = reg.exec(title);
             if(res!=null && res!=undefined && res.length>1){
                 let up_name = res[1];
-                console.log(up_name);
                 if(up_name!=null&&up_name!=''){
                     let uid = map.get(up_name);
-                    console.log("uid",uid)
                     if(uid!=null && uid!='' && uid!=undefined){
                         $(this).parent().remove();
                     }
@@ -96,6 +101,7 @@ class ODHFront {
             if(up_name!=''&&up_name!=null && up_name!=undefined){
                 let uid = map.get(up_name);
                 if(uid!=''&&uid!=null && uid!=undefined){
+                    $(this).parent().parent().parent().next().remove();
                     $(this).parent().parent().parent().remove();
                 }
             }
@@ -104,7 +110,20 @@ class ODHFront {
     }
 
 
-    onDomContentLoaded(e){
+    async onDomContentLoaded(e){
+        this.options = await optionsLoad();
+        if(!this.options.enabled){
+            return;
+        }
+        if(this.options.filter){
+            let script = document.createElement("script");
+            script.src = chrome.extension.getURL("fg/js/acfunxhr.js");
+            script.addEventListener('load', () => {
+                let ups = upMapReverse(this.options);
+                window.postMessage({ups:ups , to:'acfunxhr'});
+            });
+            (document.head || document.documentElement).appendChild(script);
+        }
         //夜间模式
         if(this.options.night){
             this.addNightStyle();
@@ -118,28 +137,29 @@ class ODHFront {
         if(!this.options.enabled){
             return;
         }
-        //开启屏蔽功能
-        if(this.options.filter){
-            let allFilter = await getStorage(null);
-            let upMap = upMapReverse(allFilter);
-            console.log(upMap);
-            this.homePageFilter(upMap);
-            this.articlePageFilter(upMap);
-
-        }
-
-        //添加自定义样式
-        this.addStyle();
-        var pageInfo = null;
-
         let href = window.location.href;
         //视频
         let video = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+');
         //番剧
         let bangumi = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*');
         //文章
-        let article = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/.*');
+        let article = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+');
 
+        //开启屏蔽功能
+        if(this.options.filter){
+            let allFilter = await getStorage(null);
+            let upMap = upMapReverse(allFilter);
+            this.homePageFilter(upMap);
+            this.articlePageFilter(upMap);
+            //如果是文章区详情页，添加屏蔽按钮
+            if(article.test(href)){
+                this.renderFilter();
+            }
+
+        }
+        //添加自定义样式
+        this.addStyle();
+        var pageInfo = null;
         //视频
         if(video.test(href) || bangumi.test(href)){
             var div = document.createElement('div');
@@ -163,6 +183,37 @@ class ODHFront {
         if(article.test(href)){
             this.div.show(pageInfo,this.options,'article');
         }
+    }
+
+    renderFilter(){
+        $('.action-up').append('<a class="ext-filter-up">屏蔽</a>');
+        $('.up-abstract').css("width","600px");
+        $('.action-up').css("width","100px");
+        $('.action-up').on('click','.ext-filter-up',function () {
+            let up_name = $('.up-name').find('a:first').text();
+            let msg = '确定屏蔽『'+up_name+'』吗？';
+            if (confirm(msg)) {
+                let hrefReg = new RegExp("/u/(\\d+)\\.aspx");
+                let href = $('.up-name').find('a:first').attr("href");
+                let regRes = hrefReg.exec(href);
+                if(regRes!=undefined && regRes!=null){
+                    let key = "FILTER_"+regRes[1];
+                    let v = {name:up_name};
+                    chrome.storage.local.set({[key]:v}, function () {
+                        let params={
+                            title:'Acfun助手',
+                            msg:'『'+up_name+'』已被屏蔽'
+                        }
+                        chrome.runtime.sendMessage({action:'notice',params:params}, function(response) {
+
+                        });
+                    });
+                }
+            } else {
+                return;
+            }
+        });
+
     }
 
     async api_throwBanana(params) {

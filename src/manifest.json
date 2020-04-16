@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "update_url": "http://clients2.google.com/service/update2/crx",
     "name": "__MSG_appName__",
-    "version": "1.2.1.200412",
+    "version": "1.0.4.200412",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -46,6 +46,7 @@
         "pages": ["bg/sandbox/sandbox.html"]
     },
     "web_accessible_resources": [
+        "fg/js/acfunxhr.js",
         "fg/css/frame.css",
         "fg/js/frame.js",
         "fg/css/checkbox.css",
