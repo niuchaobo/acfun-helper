@@ -12,6 +12,7 @@ function sanitizeOptions(options) {
         mark:false,//评论用户标记
         scan:false,//评论用户扫描
         receive:false,//接收用户情报
+        filter:false,//屏蔽up
 
     };
 
@@ -38,6 +39,7 @@ function transOptions(options) {
         mark:false,//评论用户标记
         scan:false,//评论用户扫描
         receive:false,//接收用户情报
+        filter:false,//屏蔽up
 
     };
 
@@ -53,6 +55,29 @@ function userMap(options) {
     for(const key in options){
         if(key.indexOf("AC_")!=-1){
             map.set(key,options[key]);
+        }
+    }
+    return map;
+}
+
+function upMap(options) {
+    let map = new Map();
+    for(const key in options){
+        if(key.indexOf("FILTER_")!=-1){
+            map.set(key,options[key]);
+        }
+    }
+    return map;
+}
+
+function upMapReverse(options) {
+    let map = new Map();
+    for(const key in options){
+        if(key.indexOf("FILTER_")!=-1){
+            let v = options[key].name;
+            if(v!=null && v!=undefined){
+                map.set(v,key);
+            }
         }
     }
     return map;
@@ -241,8 +266,39 @@ async function updateStorage(progress,id,tabId){
     });
 }
 
+function myBrowser(){
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+    var isOpera = userAgent.indexOf("Opera") > -1;
+    if (isOpera) {
+        return "Opera"
+    }; //判断是否Opera浏览器
+    if (userAgent.indexOf("Firefox") > -1) {
+        return "FF";
+    } //判断是否Firefox浏览器
+    if (userAgent.indexOf("Chrome") > -1){
+        return "Chrome";
+    }
+    if (userAgent.indexOf("Safari") > -1) {
+        return "Safari";
+    } //判断是否Safari浏览器
+    if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+        return "IE";
+    }; //判断是否IE浏览器
+}
+
+//content script发送同源请求，需要区分chrome和FF
 function ajax(method, url, data,header) {
-    var request = new XMLHttpRequest();
+    let browser = myBrowser();
+    let request = null;
+    if(browser=='FF'){
+        request = new content.XMLHttpRequest();
+    }else{
+        request = new XMLHttpRequest();
+    }
+    console.log('url',url);
+    //var request = new content.XMLHttpRequest();
+    //var request = content.XMLHttpRequest;
+    console.log(request);
     return new Promise(function (resolve, reject) {
         request.onreadystatechange = function () {
             if (request.readyState === 4) {
@@ -255,7 +311,7 @@ function ajax(method, url, data,header) {
         };
         request.open(method, url);
         if(header){
-            header.forEach(function (key, value) {
+            header.forEach(function (value, key) {
                 request.setRequestHeader(key, value);
             })
         }
@@ -312,6 +368,12 @@ function getVideo(url) {
     });
 
     return promise;
+}
+
+function mysleep(ms) {
+    return new Promise(resolve =>
+        setTimeout(resolve, ms)
+    )
 }
 
 function isValidElement() {

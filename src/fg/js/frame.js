@@ -194,7 +194,21 @@ function receiveChange(e) {
     }, '*');
 }
 
-
+function copyLink() {
+    let live_url = $("#live-url").text();
+    if(live_url!=''){
+        var aux = document.createElement("input");
+        aux.setAttribute("value", live_url);
+        document.body.appendChild(aux);
+        aux.select();
+        document.execCommand("copy");
+        document.body.removeChild(aux);
+        $("#live-msg").text("链接已复制到剪贴板");
+        $("#live-msg").fadeIn(200,function () {
+            $("#live-msg").fadeOut(2000);
+        });
+    }
+}
 
 
 function onDomContentLoaded() {
@@ -202,6 +216,7 @@ function onDomContentLoaded() {
     $("#comment-scan").change(scanChange);
     $("#comment-mark").change(markChange);
     $("#comment-receive").change(receiveChange);
+    $("#copy-link").click(copyLink);
    /* registSpreadDetail();
     registAddFavourite();
     registerAddNoteLinks();
@@ -223,6 +238,12 @@ function api_updateProgress(params) {
     let {progress,id} = params;
     document.getElementById(id+"-bar").style.width=progress+"%";
     document.getElementById(id+"-text").innerText=progress+"%";
+}
+
+function api_updateLiveUrl(params) {
+    console.log("update:"+params);
+    let {live_url} = params;
+    $("#live-url").text(live_url);
 }
 
 function api_setActionState(result) {

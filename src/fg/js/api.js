@@ -45,24 +45,4 @@ async function parsePage(href){
         return null;
     }
 }
-function ajax(method, url, data,header) {
-    var request = new XMLHttpRequest();
-    return new Promise(function (resolve, reject) {
-        request.onreadystatechange = function () {
-            if (request.readyState === 4) {
-                if (request.status === 200) {
-                    resolve(request.responseText);
-                } else {
-                    reject(request.status);
-                }
-            }
-        };
-        request.open(method, url);
-        if(header){
-            header.forEach(function (value, key) {
-                request.setRequestHeader(key, value);
-            })
-        }
-        request.send(data);
-    });
-}
+

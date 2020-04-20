@@ -1,8 +1,7 @@
 {
     "manifest_version": 2,
-    "update_url": "http://clients2.google.com/service/update2/crx",
     "name": "__MSG_appName__",
-    "version": "1.0.3",
+    "version": "1.0.6.419",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -21,7 +20,7 @@
         "page": "bg/background.html"
     },
     "content_scripts": [{
-        "matches": ["https://www.acfun.cn/*"],
+        "matches": ["https://*.acfun.cn/*"],
         "js": [
             "lib/jquery-3.5.0.min.js",
             "bg/js/lib/m3u8-parser.min.js",
@@ -35,20 +34,24 @@
 
         ],
         "css": [
-            "fg/css/client.css"
+            "fg/css/client.css",
+            "fg/css/home_nav.css"
         ],
         "run_at": "document_start"
     }],
     "minimum_chrome_version": "50.0.0.0",
     "options_page":"bg/options.html",
-    "permissions": ["notifications","tabs","webRequest", "webRequestBlocking", "https://tx-safety-video.acfun.cn/*", "https://www.acfun.cn/*", "storage","unlimitedStorage"],
+    "permissions": ["notifications","tabs","webRequest", "webRequestBlocking","https://*/*","http://*/*", "storage","unlimitedStorage"],
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },
     "web_accessible_resources": [
+        "fg/js/acfunxhr.js",
         "fg/css/frame.css",
         "fg/js/frame.js",
         "fg/css/checkbox.css",
-        "lib/jquery-3.5.0.min.js"
+        "lib/jquery-3.5.0.min.js",
+        "bg/images/copy_link.png",
+        "fg/js/nav.js"
     ]
 }

@@ -8,11 +8,13 @@ class ODHFront {
 
         chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this));
         window.addEventListener('message', e => this.onFrameMessage(e));
-        window.addEventListener('load', e => this.onDomContentLoaded(e));
+        window.addEventListener('load', e => this.onLoad(e));
 
         chrome.storage.onChanged.addListener(function (changes,areaName) {
 
         });
+
+        document.addEventListener('DOMContentLoaded',e=>this.onDomContentLoaded(e));
 
 
 
@@ -41,33 +43,207 @@ class ODHFront {
         let str = ".comment-mark-parent{bottom: -80px!important;}" +
             "#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
             "span.simple {background-color: #d69acc !important;cursor: pointer;}" +
-            "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}";
+            "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}" +
+            ".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
+            "";
         nod.type="text/css";
         nod.textContent = str;
         document.getElementsByTagName('head')[0].appendChild(nod);
+
+    }
+
+    addNightStyle(){
+        let div = document.createElement("div");
+        div.id="acfun_night_conver";
+        div.style='width: 100%; height: 100%; transition: -webkit-transform 10s ease-in-out 0s; z-index: 2147483647; opacity: 0.25; position: fixed !important; left: 0px !important; bottom: 0px !important; overflow: hidden !important; background: rgb(0, 0, 0) !important; pointer-events: none !important;';
+        //let cover = '<div id="__nightingale_view_cover" ' +
+          //  'style="width: 100%; height: 100%; transition: -webkit-transform 10s ease-in-out 0s; z-index: 2147483647; opacity: 0.25; position: fixed !important; left: 0px !important; bottom: 0px !important; overflow: hidden !important; background: rgb(0, 0, 0) !important; pointer-events: none !important;"></div>';
+        document.body.appendChild(div);
+    }
+
+    homePageFilter(map){
+        $(".rank-right").find('li a').each(function () {
+            let title = $(this).attr("title");
+            if(title=='' || title==undefined){
+                return;
+            }
+            let href = $(this).attr("href");
+            let hrefReg = new RegExp("/u/\\d+\\.aspx");
+            if(hrefReg.test(href)){
+                let up_name = $(this).attr('title');
+                let uid = map.get(up_name);
+                if(uid!=null && uid!='' && uid!=undefined){
+                    $(this).parent().parent().parent().parent().parent().remove();
+                    return;
+                }
+            }
+
+            title = title.replace(/[\r\n]/g,"");
+            title  = title.replace(/[\n]/g,"");
+            let reg = new RegExp("UP\\:(.*)发布于");
+            let res = reg.exec(title);
+            if(res!=null && res!=undefined && res.length>1){
+                let up_name = res[1];
+                if(up_name!=null&&up_name!=''){
+                    let uid = map.get(up_name);
+                    if(uid!=null && uid!='' && uid!=undefined){
+                        $(this).parent().remove();
+                    }
+                }
+            }
+        });
+
+
+    }
+    articlePageFilter(map){
+        $(".atc-info.clearfix>a.atc-up").each(function () {
+            let up_name = $(this).attr('title');
+            if(up_name!=''&&up_name!=null && up_name!=undefined){
+                let uid = map.get(up_name);
+                if(uid!=''&&uid!=null && uid!=undefined){
+                    $(this).parent().parent().parent().next().remove();
+                    $(this).parent().parent().parent().remove();
+                }
+            }
+        })
+
     }
 
 
     async onDomContentLoaded(e){
+        this.options = await optionsLoad();
+        if(!this.options.enabled){
+            return;
+        }
+        if(this.options.filter){
+            let script = document.createElement("script");
+            script.src = chrome.extension.getURL("fg/js/acfunxhr.js");
+            script.addEventListener('load', () => {
+                let ups = upMapReverse(this.options);
+                window.postMessage({ups:ups , to:'acfunxhr'});
+            });
+            (document.head || document.documentElement).appendChild(script);
+        }
+
+        //夜间模式
+        if(this.options.night){
+            this.addNightStyle();
+        }
+
+        //开启右侧导航
+        if(this.options.enabled){
+            this.addRightNav();
+            var length = $('.home-main-content>div').length;
+            $(document).scroll(function(){
+                for(let i =0;i<length;i++){
+                    let top = $('.home-main-content>div').eq(i).offset().top;//获取当前元素离顶部的距离
+                    let scrop = $(document).scrollTop();//获取页面滚动条离顶部的距离
+                    if(scrop>top){
+                        $('.rightnav>div').eq(i).css({'background-color':'#fd4c5d',"color":'#fff'});
+                        $('.rightnav>div').eq(i).siblings().css({'background-color':'',"color":''});
+                    }
+                }
+            })
+        }
+    }
+
+    addRightNav(){
+        //右侧导航样式
+        let style_link = document.createElement("link");
+        style_link.href = chrome.extension.getURL("fg/css/home_nav.css");
+        style_link.type="text/css";
+        style_link.real="stylesheet";
+        (document.head || document.documentElement).appendChild(style_link);
+
+
+
+        $("#back-top").css({"font-size": "12px","background-color": "rgb(250, 249, 249)","line-height": "30px","border": "1px solid rgb(235, 233, 233)","color": "rgb(182, 170, 170)","height":"auto"});
+        //右侧导航html
+        let root = chrome.runtime.getURL('/');
+        let fn = ()=>{
+            return `<script charset="UTF-8" src="${root+'fg/js/nav.js'}"></script>`;
+        }
+        let content = `
+                        ${fn()}
+                        <div class="rightnav none">
+                            <div onclick="scrollToTop(event);" data-id="pagelet_monkey_recommend">
+                                推荐
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_list_banana">
+                                香蕉榜
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_amusement">
+                                娱乐
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_game">
+                                游戏
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_douga">
+                                动画
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_bangumi_list">
+                                番剧
+                            </div>   
+                            <div onclick="scrollToTop(event);" data-id="pagelet_life">
+                                生活
+                            </div>   
+                            <div onclick="scrollToTop(event);" data-id="pagelet_tech">
+                                科技
+                            </div>  
+                            <div onclick="scrollToTop(event);" data-id="pagelet_dance">
+                                舞蹈
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_music">
+                                音乐
+                            </div> 
+                            <div onclick="scrollToTop(event);" data-id="pagelet_film">
+                                影视
+                            </div> 
+                            <div onclick="scrollToTop(event);" data-id="pagelet_fishpond">
+                                鱼塘
+                            </div> 
+                            <div onclick="scrollToTop(event);" data-id="pagelet_sport">
+                                体育
+                            </div>        
+                            
+                        </div>`;
+        $("#back-top").prepend(content);
+    }
+
+    async onLoad(e){
         //tab页创建时会从bg发消息过来写入options数据,但可能存在延迟
         this.options = await optionsLoad();
         if(!this.options.enabled){
             return;
         }
+        let href = window.location.href;
+        //视频
+        let video = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+');
+        //番剧
+        //let bangumi = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*');
+        //文章
+        let article = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+');
+        //从我的消息-评论跳转
+        let msg_comment =  new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)');
+        //直播
+        let live = new RegExp("https://m.acfun.cn/live/detail/*")
+        //开启屏蔽功能
+        if(this.options.filter){
+            let allFilter = await getStorage(null);
+            let upMap = upMapReverse(allFilter);
+            this.homePageFilter(upMap);
+            this.articlePageFilter(upMap);
+            //如果是文章区详情页，添加屏蔽按钮
+            if(article.test(href)){
+                this.renderFilter();
+            }
+
+        }
         //添加自定义样式
         this.addStyle();
         var pageInfo = null;
-
-        let href = window.location.href;
         //视频
-        let video = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/.*');
-        //番剧
-        let bangumi = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*');
-        //文章
-        let article = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/.*');
-
-        //视频
-        if(video.test(href) || bangumi.test(href)){
+        if(video.test(href)){
             var div = document.createElement('div');
             div.style.display="none";
             let uuid = this.uuid();
@@ -89,6 +265,71 @@ class ODHFront {
         if(article.test(href)){
             this.div.show(pageInfo,this.options,'article');
         }
+
+        //从消息中心(评论)跳转
+        if(msg_comment.test(href)){
+            let res = msg_comment.exec(href);
+            if(res!=null && res!=undefined && res.length==4){
+                let cid = res[3];
+                let retry = 10;
+                while (retry>0){
+                    let node = $('div[data-commentid='+cid+']').eq(0);
+                    let node_offset = node.offset();
+                    if(node_offset!=undefined && node_offset!=null){
+                        let top = Number(node_offset.top)-Number(node.height());
+                        $("html, body").animate({
+                            scrollTop: top
+                        }, {
+                            duration: 500,
+                            easing: "swing"
+                        });
+                        break;
+                    }else{
+                       await mysleep(1000);
+                    }
+                    retry--;
+                }
+            }
+        }
+
+        if(live.test(href)){
+            $(".open-app-confirm").hide();
+            this.div.show(pageInfo,this.options,'live');
+
+        }
+
+
+    }
+
+    renderFilter(){
+        $('.action-up').append('<a class="ext-filter-up">屏蔽</a>');
+        $('.up-abstract').css("width","600px");
+        $('.action-up').css("width","100px");
+        $('.action-up').on('click','.ext-filter-up',function () {
+            let up_name = $('.up-name').find('a:first').text();
+            let msg = '确定屏蔽『'+up_name+'』吗？';
+            if (confirm(msg)) {
+                let hrefReg = new RegExp("/u/(\\d+)\\.aspx");
+                let href = $('.up-name').find('a:first').attr("href");
+                let regRes = hrefReg.exec(href);
+                if(regRes!=undefined && regRes!=null){
+                    let key = "FILTER_"+regRes[1];
+                    let v = {name:up_name};
+                    chrome.storage.local.set({[key]:v}, function () {
+                        let params={
+                            title:'Acfun助手',
+                            msg:'『'+up_name+'』已被屏蔽'
+                        }
+                        chrome.runtime.sendMessage({action:'notice',params:params}, function(response) {
+
+                        });
+                    });
+                }
+            } else {
+                return;
+            }
+        });
+
     }
 
     async api_throwBanana(params) {
@@ -304,6 +545,33 @@ class ODHFront {
     clearScan(){
         $(".area-comment-title .pos.simple").remove();
     }
+
+    async api_renderLive(params){
+        console.log('live--------------');
+        let href = window.location.href;
+        let {url} = params;
+        let retry = 10;
+        while(retry>0){
+            //发送
+            console.log("retry:"+retry);
+            var obj = document.getElementById("acfun-popup-helper");
+            if(obj!=null && obj!=undefined){
+                var frameWindow = obj.contentWindow;
+                frameWindow.postMessage({
+                    action: 'updateLiveUrl',
+                    params: {
+                        live_url:url,
+                    }
+                }, href);
+                break;
+            }else{
+                await mysleep(100);
+            }
+            retry--;
+        }
+
+    }
+
 
 
     api_renderSub(params){

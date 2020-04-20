@@ -16,9 +16,25 @@ class ODHBack {
         chrome.webRequest.onBeforeRequest.addListener(
              this.onCommentRequest.bind(this),
             {
-                urls: ["https://www.acfun.cn/rest/pc-direct/comment/*"]
+                urls: ["https://www.acfun.cn/rest/pc-direct/comment/*","*://*/livecloud*"]
             },
             []
+        );
+
+        chrome.webRequest.onBeforeSendHeaders.addListener(
+            function (req) {
+                for (var i = 0; i < req.requestHeaders.length; ++i) {
+                    if (req.requestHeaders[i].name === 'User-Agent') {
+                        req.requestHeaders[i].value='Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36';
+                        break;
+                    }
+                }
+                return {requestHeaders: req.requestHeaders};
+            },
+            {
+                urls: ["https://m.acfun.cn/live/detail/*"]
+            },
+            ["blocking", "requestHeaders"]
         );
 
 
@@ -65,14 +81,20 @@ class ODHBack {
             return;
         }
         let url = req.url;
+        console.log("url",url);
         let tabId = req.tabId;
         let commentListReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/list\\?.*");
         let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");
+
+        let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.hlspull.etoote.com/.*m3u8");
         if(commentListReg.test(url)){
             this.tabInvoke(tabId, 'renderList', {url:url});
         }else if(commentSubReg.test(url)){
             let rootCommentId = url.match(commentSubReg)[1];
             this.tabInvoke(tabId, 'renderSub', {rootCommentId: rootCommentId,url:url});
+        }else if(liveReg.test(url)){
+            console.log("url1",url);
+            this.tabInvoke(tabId, 'renderLive', {url:url});
         }
     }
 
@@ -87,7 +109,7 @@ class ODHBack {
             chrome.notifications.create(null, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
-                title: 'A站下载助手',
+                title: 'Acfun助手',
                 message: '更新了！'
             });
             return;

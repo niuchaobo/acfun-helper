@@ -54,6 +54,14 @@ h2 {
     display: none;
 }
 
+.filter-fail {
+    margin-top: 4px;
+    padding-left: 4px;
+    font-size: 12px;
+    color: #ff0000;
+    display: none;
+}
+
 /*.switch-open {
     float: right;
     background-color: #4395FF;
@@ -148,6 +156,26 @@ h2 {
     cursor: pointer;
 }
 
+#filter-add-text{
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    text-align: left;
+    width: 500px;
+}
+
+#filter-add{
+    font-size: 14px;
+    font-weight: bold;
+    color: #0066ff;
+    text-decoration: none;
+    float: right;
+    text-align: right;
+    width: 186px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
 #add {
     font-size: 14px;
     font-weight: bold;
@@ -157,6 +185,7 @@ h2 {
     text-align: right;
     width: 186px;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 .add-table {
@@ -189,6 +218,10 @@ h2 {
 .table-custom {
     font-size: 14px;
     color: #333333;
+    min-height: 50px;
+    max-height: 200px;
+    display: block;
+    overflow:auto
 }
 
 .table-custom-padding {
@@ -209,7 +242,7 @@ h2 {
 #custom {
     background-color: #ffffff;
 }
-#custom-head {
+.custom-head {
     margin-top: 20px;
     margin-bottom: 15px;
     margin-left: 20px;
@@ -219,7 +252,6 @@ h2 {
 }*/
 
 #custom {
-    height: 47px;
     line-height: 47px;
 }
 
@@ -250,7 +282,6 @@ h2 {
 
 
 #scan-users {
-    height: 47px;
     line-height: 47px;
 }
 
@@ -291,6 +322,9 @@ h2 {
     cursor: pointer;
 }
 
+
+
+
 .table-container {
     /*margin-top: 16px;*/
     border-top: 1px solid #f5f5f5;
@@ -323,6 +357,7 @@ h2 {
     padding-right: 23px;
     padding-bottom: 20px;
     background: #fff;
+    border-top: 1px solid lightgrey;
 }
 
 .div-lang-detect p {
@@ -463,6 +498,7 @@ h2 {
      padding-right: 23px;
      padding-bottom: 20px;
      background: #fff;
+    border-top: 1px solid lightgrey;
  }
 
 .div-common-mark p {
@@ -482,7 +518,6 @@ h2 {
 }
 
 .div-common-scan {
-    margin-top: 16px;
     color: #333333;
     padding-left: 23px;
     /*padding-top: 4px;*/
@@ -518,4 +553,89 @@ h2 {
     padding-right: 23px;
     padding-bottom: 20px;
     background: #fff;
+    border-top: 1px solid lightgrey;
+}
+
+.div-filter-list {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+    border-top: 1px solid lightgrey;
+}
+
+.hidden{
+    display: none;
+}
+#filter-ups{
+    line-height: 47px;
+}
+
+#filter-ups .site {
+    width: 100px;
+    padding-left: 10px;
+}
+
+#filter-ups .site a{
+    text-decoration: none;
+    color: #0066ff;
+}
+
+#filter-ups .site-tag {
+    width: 250px;
+}
+
+#filter-ups .site-name {
+    width: 250px;
+}
+#filter-ups .site-name a{
+    text-decoration: none;
+    color: #0066ff;
+}
+#filter-ups .site-remove {
+    width: 136px;
+    padding-right: 10px;
+    text-align: right;
+}
+
+#filter-ups .site-remove a{
+    text-decoration: none;
+    color: #0066ff;
+}
+
+#filter-ups .filter-remove{
+    color: #0066ff;
+    cursor: pointer;
+}
+
+.div-filter-switch {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+    border-top: 1px solid lightgrey;
+}
+
+.div-filter-switch p {
+    /*margin-top: -10px;*/
+    color: #333333;
+    font-size: 14px;
+}
+
+#filter-switch-l {
+    height: 21px;
+    line-height: 21px;
+    width: 500px;
+}
+
+#filter-switch-r {
+    width: 186px;
 }
