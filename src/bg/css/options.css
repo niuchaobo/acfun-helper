@@ -185,6 +185,7 @@ h2 {
     text-align: right;
     width: 186px;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 .add-table {
@@ -251,7 +252,6 @@ h2 {
 }*/
 
 #custom {
-    height: 47px;
     line-height: 47px;
 }
 

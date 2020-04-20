@@ -1,0 +1,20 @@
+
+
+.rightnav>div{
+    color: #333;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+.rightnav>div:hover{
+    background-color: #fd4c5d;
+    color: #fff;
+
+}
+
+.rightnav a{
+
+}
+
+

@@ -105,7 +105,26 @@ class Popup {
                         </div>`;
             }
         }
-        let html = this.popupHeader() + content+ this.popComment() + this.popupFooter();
+        if(type=='live'){
+            //直播测试
+            let src = chrome.runtime.getURL('/')+"bg/images/copy_link.png";
+            content+=`<div class="odh-headsection">
+                    <span class="odh-expression">网页端直播</span>
+                    <img id="copy-link" title="点击复制链接" style="cursor: pointer;vertical-align: middle" width="16px" height="16px" src="${src}"/>
+                    <span style="margin-left: 20px;color:#d69acc" id="live-msg"></span>
+                </div>
+                <div class="odh-definition">
+                    <div style="min-height: 50px" class="">
+                        <span style="min-height: 30px" id="live-url"></span>
+                    </div>
+                </div>
+                `;
+        }
+        let html = this.popupHeader(type)+content;
+        if(type!='live'){
+            html+=this.popComment();
+        }
+        html+=this.popupFooter(type);
         this.setContent(html);
     }
 
@@ -143,28 +162,39 @@ class Popup {
     }
 
 
-    popupHeader() {
+    popupHeader(type) {
         let root = chrome.runtime.getURL('/');
+        let fn = ()=>{
+            /*if(type=='live'){
+                return `<link rel="stylesheet" href="${root+'lib/video-js.css'}">`;
+            }*/
+            return '';
+        }
         return `
         <html lang="en">
             <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title></title>
                 <link rel="stylesheet" href="${root+'fg/css/checkbox.css'}">
                 <link rel="stylesheet" href="${root+'fg/css/frame.css'}">
-                
+                ${fn()}
             </head>
             <body style="margin:0px;">
             <div class="odh-notes" id="ncb-notes">`;
     }
 
-    popupFooter() {
+    popupFooter(type) {
         let root = chrome.runtime.getURL('/');
-        let services = this.options ? this.options.services : '';
-        let image = (services == 'ankiconnect') ? 'plus.png' : 'cloud.png';
-        let button = chrome.runtime.getURL('fg/img/' + image);
-        let monolingual = this.options ? (this.options.monolingual == '1' ? 1 : 0) : 0;
-
+        let fn = ()=>{
+            /*if(type=='live'){
+                return `<script charset="UTF-8" src="${root+'lib/video.js'}"></script>
+                        <script charset="UTF-8" src="${root+'lib/videojs-contrib-hls.min.js'}"></script>
+                        <script charset="UTF-8" src="${root+'fg/js/live.js'}"></script>
+                        `;
+            }*/
+            return '';
+        };
         return `
             </div>
+            ${fn()}
             <script charset="UTF-8" src="${root+'lib/jquery-3.5.0.min.js'}"></script>
             <script charset="UTF-8" src="${root+'fg/js/frame.js'}"></script>
             </body>

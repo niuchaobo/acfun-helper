@@ -124,11 +124,90 @@ class ODHFront {
             });
             (document.head || document.documentElement).appendChild(script);
         }
+
         //夜间模式
         if(this.options.night){
             this.addNightStyle();
         }
 
+        //开启右侧导航
+        if(this.options.enabled){
+            this.addRightNav();
+            var length = $('.home-main-content>div').length;
+            $(document).scroll(function(){
+                for(let i =0;i<length;i++){
+                    let top = $('.home-main-content>div').eq(i).offset().top;//获取当前元素离顶部的距离
+                    let scrop = $(document).scrollTop();//获取页面滚动条离顶部的距离
+                    if(scrop>top){
+                        $('.rightnav>div').eq(i).css({'background-color':'#fd4c5d',"color":'#fff'});
+                        $('.rightnav>div').eq(i).siblings().css({'background-color':'',"color":''});
+                    }
+                }
+            })
+        }
+    }
+
+    addRightNav(){
+        //右侧导航样式
+        let style_link = document.createElement("link");
+        style_link.href = chrome.extension.getURL("fg/css/home_nav.css");
+        style_link.type="text/css";
+        style_link.real="stylesheet";
+        (document.head || document.documentElement).appendChild(style_link);
+
+
+
+        $("#back-top").css({"font-size": "12px","background-color": "rgb(250, 249, 249)","line-height": "30px","border": "1px solid rgb(235, 233, 233)","color": "rgb(182, 170, 170)","height":"auto"});
+        //右侧导航html
+        let root = chrome.runtime.getURL('/');
+        let fn = ()=>{
+            return `<script charset="UTF-8" src="${root+'fg/js/nav.js'}"></script>`;
+        }
+        let content = `
+                        ${fn()}
+                        <div class="rightnav none">
+                            <div onclick="scrollToTop(event);" data-id="pagelet_monkey_recommend">
+                                推荐
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_list_banana">
+                                香蕉榜
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_amusement">
+                                娱乐
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_game">
+                                游戏
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_douga">
+                                动画
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_bangumi_list">
+                                番剧
+                            </div>   
+                            <div onclick="scrollToTop(event);" data-id="pagelet_life">
+                                生活
+                            </div>   
+                            <div onclick="scrollToTop(event);" data-id="pagelet_tech">
+                                科技
+                            </div>  
+                            <div onclick="scrollToTop(event);" data-id="pagelet_dance">
+                                舞蹈
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_music">
+                                音乐
+                            </div> 
+                            <div onclick="scrollToTop(event);" data-id="pagelet_film">
+                                影视
+                            </div> 
+                            <div onclick="scrollToTop(event);" data-id="pagelet_fishpond">
+                                鱼塘
+                            </div> 
+                            <div onclick="scrollToTop(event);" data-id="pagelet_sport">
+                                体育
+                            </div>        
+                            
+                        </div>`;
+        $("#back-top").prepend(content);
     }
 
     async onLoad(e){
@@ -141,10 +220,13 @@ class ODHFront {
         //视频
         let video = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+');
         //番剧
-        let bangumi = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*');
+        //let bangumi = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*');
         //文章
         let article = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+');
-
+        //从我的消息-评论跳转
+        let msg_comment =  new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)');
+        //直播
+        let live = new RegExp("https://m.acfun.cn/live/detail/*")
         //开启屏蔽功能
         if(this.options.filter){
             let allFilter = await getStorage(null);
@@ -161,7 +243,7 @@ class ODHFront {
         this.addStyle();
         var pageInfo = null;
         //视频
-        if(video.test(href) || bangumi.test(href)){
+        if(video.test(href)){
             var div = document.createElement('div');
             div.style.display="none";
             let uuid = this.uuid();
@@ -183,6 +265,40 @@ class ODHFront {
         if(article.test(href)){
             this.div.show(pageInfo,this.options,'article');
         }
+
+        //从消息中心(评论)跳转
+        if(msg_comment.test(href)){
+            let res = msg_comment.exec(href);
+            if(res!=null && res!=undefined && res.length==4){
+                let cid = res[3];
+                let retry = 10;
+                while (retry>0){
+                    let node = $('div[data-commentid='+cid+']').eq(0);
+                    let node_offset = node.offset();
+                    if(node_offset!=undefined && node_offset!=null){
+                        let top = Number(node_offset.top)-Number(node.height());
+                        $("html, body").animate({
+                            scrollTop: top
+                        }, {
+                            duration: 500,
+                            easing: "swing"
+                        });
+                        break;
+                    }else{
+                       await mysleep(1000);
+                    }
+                    retry--;
+                }
+            }
+        }
+
+        if(live.test(href)){
+            $(".open-app-confirm").hide();
+            this.div.show(pageInfo,this.options,'live');
+
+        }
+
+
     }
 
     renderFilter(){
@@ -429,6 +545,33 @@ class ODHFront {
     clearScan(){
         $(".area-comment-title .pos.simple").remove();
     }
+
+    async api_renderLive(params){
+        console.log('live--------------');
+        let href = window.location.href;
+        let {url} = params;
+        let retry = 10;
+        while(retry>0){
+            //发送
+            console.log("retry:"+retry);
+            var obj = document.getElementById("acfun-popup-helper");
+            if(obj!=null && obj!=undefined){
+                var frameWindow = obj.contentWindow;
+                frameWindow.postMessage({
+                    action: 'updateLiveUrl',
+                    params: {
+                        live_url:url,
+                    }
+                }, href);
+                break;
+            }else{
+                await mysleep(100);
+            }
+            retry--;
+        }
+
+    }
+
 
 
     api_renderSub(params){

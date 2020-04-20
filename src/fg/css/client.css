@@ -24,6 +24,7 @@ iframe#acfun-popup-helper {
     background-color: #d69acc;
     font-family:serif;
     visibility: hidden;
+    font-size: 12px;
 }
 
 .loading{

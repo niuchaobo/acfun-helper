@@ -22,8 +22,8 @@ function save_options() {
         to_special_items: items
     }, function () {
         options.to_special_items = items;
-        odhback().opt_optionUpdate(options);
-        location.reload();
+        //odhback().opt_optionUpdate(options);
+        //location.reload();
     });
 }
 
@@ -608,7 +608,7 @@ $(document).ready(function () {
               <td class="site-remove"><a href="#" class="remove">移除</a href="#"></td>\
             </tr>');
                     $(this).parent().parent().parent().parent().remove();
-                    $('.remove').on('click', function () {
+                    $('#specific').on('click','.remove', function () {
                         if (auto_throw) {
                             $(this).parent().parent().remove();
                             save_options();
@@ -736,7 +736,7 @@ $(document).ready(function () {
                     });
 
                     $(this).parent().parent().parent().parent().remove();
-                    $('.scan-remove').on('click', function () {
+                    $('#scan-users').on('click','.scan-remove', function () {
                         if (mark) {
                             $(this).parent().parent().remove();
                             chrome.storage.local.remove(user_key, function(){
@@ -882,7 +882,7 @@ $(document).ready(function () {
                     });
 
                     $(this).parent().parent().parent().parent().remove();
-                    $('.filter-remove').on('click', function () {
+                    $('#filter-ups').on('click','.filter-remove', function () {
                         if (filter) {
                             $(this).parent().parent().remove();
                             chrome.storage.local.remove(user_key, function(){

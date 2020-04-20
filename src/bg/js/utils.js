@@ -370,6 +370,12 @@ function getVideo(url) {
     return promise;
 }
 
+function mysleep(ms) {
+    return new Promise(resolve =>
+        setTimeout(resolve, ms)
+    )
+}
+
 function isValidElement() {
     const invalidTags = ['A'];
     const invalidClass = ['thumb']
