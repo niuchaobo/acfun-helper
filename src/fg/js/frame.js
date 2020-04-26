@@ -194,8 +194,9 @@ function receiveChange(e) {
     }, '*');
 }
 
-function copyLink() {
-    let live_url = $("#live-url").text();
+function copyLink(event) {
+    let id = event.data.id;
+    let live_url = $(id).text();
     if(live_url!=''){
         var aux = document.createElement("input");
         aux.setAttribute("value", live_url);
@@ -216,7 +217,8 @@ function onDomContentLoaded() {
     $("#comment-scan").change(scanChange);
     $("#comment-mark").change(markChange);
     $("#comment-receive").change(receiveChange);
-    $("#copy-link").click(copyLink);
+    $("#copy-link-super").bind('click',{"id":'#live-url-super'},copyLink);
+    $("#copy-link-high").bind('click',{"id":'#live-url-high'},copyLink);
    /* registSpreadDetail();
     registAddFavourite();
     registerAddNoteLinks();
@@ -243,7 +245,9 @@ function api_updateProgress(params) {
 function api_updateLiveUrl(params) {
     console.log("update:"+params);
     let {live_url} = params;
-    $("#live-url").text(live_url);
+    let super_url = live_url.replace('_sd1000','');
+    $("#live-url-high").text(live_url);
+    $("#live-url-super").text(super_url);
 }
 
 function api_setActionState(result) {

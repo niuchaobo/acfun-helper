@@ -1,21 +1,27 @@
+const defaults = {
+    enabled:true,//开启关闭插件
+    auto_throw:false,
+    to_attention:true,
+    to_attention_num:5,
+    to_special_items:[],
+    activeTabKey:'activeTabId',
+    extendsName:'Acfun助手',
+    upUrlTemplate:'https://www.acfun.cn/u/{uid}.aspx',
+    userInfo:'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId={uid}',
+    banana_notice:true,
+    mark:false,//评论用户标记
+    scan:false,//评论用户扫描
+    upHighlight:true,//up主评论高亮
+    receive:false,//接收用户情报
+    filter:false,//屏蔽up
+
+};
+const readOnlyKey = ["extendsName","upUrlTemplate","userInfo"];
+
+
+
+//以传过来的options为主体,如果其中没有就取默认值
 function sanitizeOptions(options) {
-    const defaults = {
-        enabled:true,//开启关闭插件
-        auto_throw:false,
-        to_attention:true,
-        to_attention_num:5,
-        to_special_items:[],
-        activeTabKey:'activeTabId',
-        extendsName:'Acfun助手',
-        upUrlTemplate:'https://www.acfun.cn/u/{uid}.aspx',
-        banana_notice:true,
-        mark:false,//评论用户标记
-        scan:false,//评论用户扫描
-        receive:false,//接收用户情报
-        filter:false,//屏蔽up
-
-    };
-
     for (const key in defaults) {
         if (!options.hasOwnProperty(key)) {
             options[key] = defaults[key];
@@ -24,27 +30,13 @@ function sanitizeOptions(options) {
     return options;
 }
 
-//只更新这些值
+//以default为主体,如果传过来的options有对应的key,就用传过来的
 function transOptions(options) {
-    const defaults = {
-        enabled:true,//开启关闭插件
-        auto_throw:false,
-        to_attention:true,
-        to_attention_num:5,
-        to_special_items:[],
-        activeTabKey:'activeTabId',
-        extendsName:'Acfun助手',
-        upUrlTemplate:'https://www.acfun.cn/u/{uid}.aspx',
-        banana_notice:true,
-        mark:false,//评论用户标记
-        scan:false,//评论用户扫描
-        receive:false,//接收用户情报
-        filter:false,//屏蔽up
-
-    };
-
     for (const key in defaults) {
         if (options.hasOwnProperty(key)) {
+            if(readOnlyKey.indexOf(key)>-1){
+                continue;
+            }
             defaults[key] = options[key];
         }
     }
@@ -295,7 +287,6 @@ function ajax(method, url, data,header) {
     }else{
         request = new XMLHttpRequest();
     }
-    console.log('url',url);
     //var request = new content.XMLHttpRequest();
     //var request = content.XMLHttpRequest;
     console.log(request);

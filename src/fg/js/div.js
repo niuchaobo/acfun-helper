@@ -124,6 +124,3 @@ class Div {
     }
 
 }
-
-function test(){
-}

@@ -21,6 +21,7 @@ class Popup {
         this.popup.style.right = pos.x + 'px';
         this.popup.style.top = pos.y + 'px';
         this.popup.style.visibility = 'visible';
+        this.popup.style.resize = 'none';//iframe禁止拉伸
     }
 
     showNextTo(point, content) {
@@ -110,12 +111,23 @@ class Popup {
             let src = chrome.runtime.getURL('/')+"bg/images/copy_link.png";
             content+=`<div class="odh-headsection">
                     <span class="odh-expression">网页端直播</span>
-                    <img id="copy-link" title="点击复制链接" style="cursor: pointer;vertical-align: middle" width="16px" height="16px" src="${src}"/>
                     <span style="margin-left: 20px;color:#d69acc" id="live-msg"></span>
                 </div>
                 <div class="odh-definition">
+                    <p style="margin: 0px">超清
+                         <img id="copy-link-super" title="点击复制链接" style="cursor: pointer;vertical-align: middle" width="16px" height="16px" src="${src}"/>
+                    </p>
                     <div style="min-height: 50px" class="">
-                        <span style="min-height: 30px" id="live-url"></span>
+                        <span style="min-height: 30px" id="live-url-super"></span>
+                    </div>
+                </div>
+                
+                <div class="odh-definition">
+                    <p style="margin: 0px">高清
+                         <img id="copy-link-high" title="点击复制链接" style="cursor: pointer;vertical-align: middle" width="16px" height="16px" src="${src}"/>
+                    </p>
+                    <div style="min-height: 50px" class="">
+                        <span style="min-height: 30px" id="live-url-high"></span>
                     </div>
                 </div>
                 `;

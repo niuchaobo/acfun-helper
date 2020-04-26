@@ -50,18 +50,42 @@ class ODHBack {
             delStorage(tabId + "");
         });
 
-        //当刷新标签页时删除此标签页存储的视频信息
-        /*chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab){
-            if(changeInfo.status=='loading'){
-                let result = await getStorage(tabId+"").then(result => {return result[tabId]});
-                let obj =await getStorage(result);
-                let arr = Object.values(obj);
-                for(var lineId of arr){
-                    delStorage(lineId + "");
-                }
-                delStorage(tabId + "");
+
+        //右键菜单
+        chrome.contextMenus.create({
+            title: '下载封面', // %s表示选中的文字
+            contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
+            id:'1'
+        });
+
+        chrome.contextMenus.create({
+            title: '下载原始封面', // %s表示选中的文字
+            contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
+            parentId:'1',
+            onclick: function(params,tab){
+                let link_url = params.linkUrl;
+                this.tabInvoke(tab.id, 'downloadCover', {link_url:link_url,type:'normal'});
+
+            }.bind(this)
+        });
+        chrome.contextMenus.create({
+            title: '下载高清封面', // %s表示选中的文字
+            contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
+            parentId:'1',
+            onclick: function(params,tab){
+                let link_url = params.linkUrl;
+                this.tabInvoke(tab.id, 'downloadCover', {link_url:link_url,type:'high'});
+
+            }.bind(this)
+        });
+
+        chrome.contextMenus.create({
+            title: '使用Acfun搜索【%s】', // %s表示选中的文字
+            contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
+            onclick: function (params) {
+                chrome.tabs.create({url: 'https://www.acfun.cn/search?keyword=' + encodeURI(params.selectionText)});
             }
-        })*/
+        });
 
 
         //当激活某个tab页时
@@ -76,12 +100,18 @@ class ODHBack {
 
     }
 
+    test(params,tab){
+        console.log(params);
+        //this.odhback.test.apply();
+        console.log("this",this)
+        this.tabInvoke(tab.id, 'downloadCover', {link_url:'123'});
+    }
+
     onCommentRequest(req){
         if(!this.options.enabled){
             return;
         }
         let url = req.url;
-        console.log("url",url);
         let tabId = req.tabId;
         let commentListReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/list\\?.*");
         let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");

@@ -45,6 +45,7 @@ class ODHFront {
             "span.simple {background-color: #d69acc !important;cursor: pointer;}" +
             "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}" +
             ".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
+            "span.up {background-color: #4a8eff !important;cursor: pointer;}" +
             "";
         nod.type="text/css";
         nod.textContent = str;
@@ -131,6 +132,7 @@ class ODHFront {
         }
 
         //开启右侧导航
+        //todo 改变判断条件
         if(this.options.enabled){
             this.addRightNav();
             var length = $('.home-main-content>div').length;
@@ -297,9 +299,8 @@ class ODHFront {
             this.div.show(pageInfo,this.options,'live');
 
         }
-
-
     }
+
 
     renderFilter(){
         $('.action-up').append('<a class="ext-filter-up">屏蔽</a>');
@@ -332,6 +333,56 @@ class ODHFront {
 
     }
 
+    //下载封面
+    api_downloadCover(params) {
+        let {link_url,type} = params;
+        link_url = link_url.replace("https://www.acfun.cn","");
+        $('.home-main-content a,.main a,.tab-content a').each(function () {
+            let href = $(this).attr('href');
+            if(link_url==href){
+                if($(this).has('img').length){
+                    let _img = $(this).find('img').eq(0);
+                    let img_url = _img.attr('src');
+                    let fileName = _img.attr('alt');
+                    if(fileName==undefined){
+                        fileName = "cover";
+                    }
+
+                    img_url = img_url.replace(/(webp)/,'gif').replace("http://","https://");
+                    //如果是高清
+                    if(type=='high'){
+                        //   /w/320/h/180
+                        img_url = img_url.replace(/\/w\/\d+\/h\/\d+/,"").replace(/(\?.*)/,'');
+                    }
+                    let suffix = img_url.replace(/(.*\.)/, '').replace(/(\?.*)/,'');
+                    let reg = new RegExp("jpg|jpeg|gif|bmp|png");
+                    if(!reg.test(suffix)){
+                        suffix = 'png';
+                    }
+                    let filename =fileName +"."+ suffix;
+                    fetch(img_url) // 返回一个Promise对象
+                        .then((res)=>{
+                            //console.log(res.blob()) // res.blob()是一个Promise对象
+                            return res.blob();
+                        })
+                        .then((res)=>{
+                            //console.log(res) // res是最终的结果
+                            let a = document.createElement('a');
+                            let blob = new Blob([res]);
+                            let url = window.URL.createObjectURL(blob);
+                            a.href = url;
+                            a.download = filename;
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        });
+                    return false;
+                }
+            }
+        })
+
+
+    }
+    //自动投蕉
     async api_throwBanana(params) {
         if(!this.options.enabled){
             return;
@@ -530,6 +581,7 @@ class ODHFront {
         optionsSave(this.options);
         if(value){
             this.renderScan();
+            this.renderScanForUp();
         }else{
             this.clearScan();
         }
@@ -565,7 +617,7 @@ class ODHFront {
                 }, href);
                 break;
             }else{
-                await mysleep(100);
+                await mysleep(1000);
             }
             retry--;
         }
@@ -574,6 +626,7 @@ class ODHFront {
 
 
 
+    //评论区折叠部分的标记渲染入口
     api_renderSub(params){
         let {url,rootCommentId} = params;
         if(this.options.mark){
@@ -581,6 +634,9 @@ class ODHFront {
         }
         if(this.options.scan){
             this.renderSubScan(rootCommentId);
+        }
+        if(this.options.upHighlight){
+            this.renderSubScanForUp(rootCommentId);
         }
     }
 
@@ -606,6 +662,37 @@ class ODHFront {
                 clearInterval(timer);
             }
         },1000);
+    }
+
+
+    //评论区(折叠或翻页中)显示up主名字
+    renderSubScanForUp(rootCommentId){
+        var timer = setInterval(function () {
+            let url = window.location.toString();
+            let avr = new RegExp("/v/");
+            let aar = new RegExp("/a/");
+            let av = avr.exec(url);
+            let aa=aar.exec(url);
+            let up = '';
+            if(av!=null && av!=undefined && av.length>=1){
+                up=$('a.up-name').text();
+            }else if(aa!=null && aa!=undefined && aa.length>=1){
+                up=$('div.up-name a.upname').text();
+            }
+            let nodes = $("div[data-commentid='"+rootCommentId+"']").find('a.name');
+            if(nodes.length>0){
+                nodes.each(function () {
+                    let exists = $(this).parent().find('.pos.up');
+                    if(exists.length==0){
+                        let userName = $(this).text();
+                        if(userName==up){
+                            $(this).after('<span class="pos up">UP主</span>');
+                        }
+                    }
+                });
+                clearInterval(timer);
+            }
+        },1020);
     }
 
 
@@ -644,6 +731,7 @@ class ODHFront {
         },1000);
     }
 
+    //评论区整体部分的标记渲染入口
     api_renderList(params){
         let {url} = params.url;
         if(this.options.mark){
@@ -651,6 +739,9 @@ class ODHFront {
         }
         if(this.options.scan){
             this.renderScan();
+        }
+        if(this.options.upHighlight){
+            this.renderScanForUp();
         }
 
     }
@@ -714,6 +805,36 @@ class ODHFront {
                 clearInterval(timer);
             }
         },1000);
+    }
+
+    //评论区显示up主名字
+    renderScanForUp(){
+        var timer = setInterval(function () {
+            var url = window.location.toString();
+            let avr = new RegExp("/v/");
+            let aar = new RegExp("/a/");
+            let av = avr.exec(url);
+            let aa=aar.exec(url);
+            if(av!=null && av!=undefined && av.length>=1){
+                var up=$('a.up-name').text();
+            }else if(aa!=null && aa!=undefined && aa.length>=1){
+                var up=$('div.up-name a.upname').text();
+            }
+            let nodes = $('.area-comment-title a.name');
+            let loading = $('.ac-comment-loading').html();
+            if(nodes.length>0 && loading==''){
+                nodes.each(async function () {
+                    let exists = $(this).parent().find('.pos.up');
+                    if(exists.length==0){
+                        let userName = $(this).text();
+                        if(userName==up){
+                            $(this).after('<span class="pos up">UP主</span>');
+                        }
+                    }
+                });
+                clearInterval(timer);
+            }
+        },1020);
     }
 }
 

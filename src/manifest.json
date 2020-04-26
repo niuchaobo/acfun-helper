@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.0.6.419",
+    "version": "1.2.3.426",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -41,7 +41,7 @@
     }],
     "minimum_chrome_version": "50.0.0.0",
     "options_page":"bg/options.html",
-    "permissions": ["notifications","tabs","webRequest", "webRequestBlocking","https://*/*","http://*/*", "storage","unlimitedStorage"],
+    "permissions": ["contextMenus","notifications","tabs","webRequest", "webRequestBlocking","https://*/*","http://*/*", "storage","unlimitedStorage"],
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },

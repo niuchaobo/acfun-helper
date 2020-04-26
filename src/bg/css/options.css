@@ -639,3 +639,35 @@ h2 {
 #filter-switch-r {
     width: 186px;
 }
+
+
+.div-common-up {
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+}
+
+.div-common-up p {
+    /*margin-top: -10px;*/
+    color: #333333;
+    font-size: 14px;
+}
+
+#up-switch-l {
+    height: 21px;
+    line-height: 21px;
+    width: 600px;
+}
+
+#up-switch-r {
+    width: 186px;
+}
+
+.gray-img {
+    -webkit-filter: grayscale(1);/* Webkit */
+    filter: grayscale(1);/* W3C */
+}

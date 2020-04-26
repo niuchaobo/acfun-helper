@@ -148,6 +148,21 @@ function commentUi(){
         $('.div-common-scan h3').css('color', '#ccc');
     }
 
+    //up主的评论显示up主标记
+    if (upHighlight) {
+        $('#up-switch').addClass('switch-close').attr('src', 'images/on.png');
+        $('.div-common-up').css('background', '#fff');
+        $('#up-switch-l p').css('color', '#333');
+        $('.div-common-up h3').css('color', '#333');
+        $('.div-common-up img').removeClass('gray-img');
+    } else {
+        $('#up-switch').addClass('switch-open').attr('src', 'images/off.png');
+        $('.div-common-up').css('background', '#ededed');
+        $('#up-switch-l p').css('color', '#ccc');
+        $('.div-common-up h3').css('color', '#ccc');
+        $('.div-common-up img').addClass('gray-img');
+    }
+
 
 }
 
@@ -207,6 +222,7 @@ function restore_options() {
         banana_notice = options['banana_notice'];
         mark = options['mark'];
         scan = options['scan'];
+        upHighlight = options['upHighlight'];
         scanUserMap = userMap(items);
         filter = options['filter'];
         filterUps = upMap(items);
@@ -418,6 +434,31 @@ $(document).ready(function () {
         }
     });
 
+    $('#up-switch-r').click(function () {
+        if (upHighlight) {
+            options.upHighlight=false;
+            chrome.storage.local.set({
+                'upHighlight':false
+            }, function () {
+                // location.reload();
+                upHighlight = false;
+                commentUi()
+                odhback().opt_optionUpdate(options);
+            });
+        } else {
+            /* globals bridge */
+            options.upHighlight=true;
+            chrome.storage.local.set({
+                'upHighlight':true
+            }, function () {
+                // location.reload();
+                upHighlight = true;
+                commentUi();
+                odhback().opt_optionUpdate(options);
+            });
+        }
+    });
+
 
     $('#scan-switch-r').click(function () {
         if (scan) {
@@ -578,17 +619,18 @@ $(document).ready(function () {
                 if (input_valid) {
                     //根据uid解析出up主姓名
                     $("body").mLoading("show");
-                    let up_url = options.upUrlTemplate.replace('{uid}',uid_input);
+                    let up_url = options.userInfo.replace('{uid}',uid_input);
                     var up_html_str ;
                     try{
                         up_html_str = await ajax('GET',up_url);
+                        console.log(up_html_str);
                     }catch (e) {
                         $("body").mLoading("hide");
                         $('.fail').text('此uid不存在');
                         $('.fail').show();
                         return;
                     }
-                    let up_name = $('<div></div>').html(up_html_str).find('.name.fl.text-overflow')[0].innerText;
+                    let up_name = JSON.parse(up_html_str).profile.name;
 
                     if(up_name=='' || up_name==undefined){
                         $("body").mLoading("hide");
@@ -701,7 +743,7 @@ $(document).ready(function () {
                 if (input_valid) {
                     //根据uid解析出up主姓名
                     $("body").mLoading("show");
-                    let up_url = options.upUrlTemplate.replace('{uid}',uid_input);
+                    let up_url = options.userInfo.replace('{uid}',uid_input);
                     var up_html_str ;
                     try{
                         up_html_str = await ajax('GET',up_url);
@@ -711,7 +753,7 @@ $(document).ready(function () {
                         $('.mark-fail').show();
                         return;
                     }
-                    let up_name = $('<div></div>').html(up_html_str).find('.name.fl.text-overflow')[0].innerText;
+                    let up_name = JSON.parse(up_html_str).profile.name;
 
                     if(up_name=='' || up_name==undefined){
                         $("body").mLoading("hide");
@@ -795,6 +837,20 @@ $(document).ready(function () {
     });
 
 
+    $("#skin-img").click(function () {
+        let src = $(this).attr("src");
+        if(src=='images/cos.png'){
+            $("#skin-div").fadeOut(100);
+            $(this).attr("src","images/unfold.png");
+            $(this).attr('title','点击展开',);
+        }else{
+            $("#skin-div").fadeIn(100);
+            $(this).attr("src","images/cos.png");
+            $(this).attr('title','点击折叠',);
+        }
+    });
+
+
     $('#filter-add').on('click', function () {
         if ($('.filter-add-tr').length <= 0 && filter) {
             if (!$('#filter-ups').hasClass('table-custom-padding')) {
@@ -849,7 +905,7 @@ $(document).ready(function () {
                 if (input_valid) {
                     //根据uid解析出up主姓名
                     $("body").mLoading("show");
-                    let up_url = options.upUrlTemplate.replace('{uid}',uid_input);
+                    let up_url = options.userInfo.replace('{uid}',uid_input);
                     var up_html_str ;
                     try{
                         up_html_str = await ajax('GET',up_url);
@@ -859,7 +915,7 @@ $(document).ready(function () {
                         $('.mark-fail').show();
                         return;
                     }
-                    let up_name = $('<div></div>').html(up_html_str).find('.name.fl.text-overflow')[0].innerText;
+                    let up_name = JSON.parse(up_html_str).profile.name;
 
                     if(up_name=='' || up_name==undefined){
                         $("body").mLoading("hide");

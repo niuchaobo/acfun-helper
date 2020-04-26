@@ -127,8 +127,7 @@ a {
     display: none;
 }
 
-.odh-definition,
-.odh-sentence {
+.odh-definition,.pop-live,.odh-sentence {
     display: block;
     background-color: #fefefe;
     border: 1px solid;

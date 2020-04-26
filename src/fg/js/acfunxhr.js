@@ -27,7 +27,6 @@ function modifyResponse(response) {
 }
 
 function openBypass(original_function) {
-
     return function(method, url, async) {
         // 保存请求相关参数
         this.requestMethod = method;
