@@ -16,25 +16,6 @@ class Div {
         //生成展示页面内容
         let content = this.popup.renderPopup(pageInfo,type);
 
-        /*const elementRect = this.getRangeRect(point);
-        const popupRect = this.div.getBoundingClientRect();
-
-        var posX = elementRect.left;
-        if (posX + popupRect.width >= window.innerWidth) {
-            posX = window.innerWidth - popupRect.width;
-        }
-
-        var posY = elementRect.bottom + this.offset;
-        if (posY + popupRect.height >= window.innerHeight) {
-            posY = elementRect.top - popupRect.height - this.offset;
-        }
-
-
-        posX = (posX < 0) ? 0 : posX;
-        posY = (posY < 0) ? 0 : posY;
-
-        this.div.style.left=posX+'px';
-        this.div.style.top=posY+'px';*/
         this.div.style.visibility = 'visible';
         this.div.innerText='助手';
         document.body.appendChild(this.div);
