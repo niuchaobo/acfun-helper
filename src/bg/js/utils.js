@@ -6,7 +6,7 @@ const defaults = {
     to_special_items:[],
     activeTabKey:'activeTabId',
     extendsName:'Acfun助手',
-    upUrlTemplate:'https://www.acfun.cn/u/{uid}.aspx',
+    upUrlTemplate:'https://www.acfun.cn/u/{uid}',
     userInfo:'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId={uid}',
     banana_notice:true,
     mark:false,//评论用户标记
@@ -380,4 +380,22 @@ function isValidElement() {
     } else {
         return false;
     }
+}
+
+function delStorage(key) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.remove(key, (res) => {
+            resolve(res);
+        });
+    });
+}
+
+
+function notice(title,message) {
+    chrome.notifications.create(null, {
+        type: 'basic',
+        iconUrl: 'images/notice.png',
+        title: title,
+        message: message
+    });
 }

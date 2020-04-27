@@ -426,6 +426,12 @@ class ODHFront {
         header.set("Content-Type","application/x-www-form-urlencoded");
         let data = "resourceId="+key+"&count="+banana_num+"&resourceType=2";
         let result = await ajax('POST',"https://www.acfun.cn/rest/pc-direct/banana/throwBanana",data,header);
+        let res_obj = JSON.parse(result);
+        if(res_obj==undefined || res_obj.extData==undefined || res_obj.extData.bananaRealCount==undefined){
+            return;
+        }
+        //改变页面上的投蕉状态
+        $('.right-area .banana').addClass('active');
         //如果开启投蕉通知,通知background发提醒
         if(this.options.banana_notice){
             let action = "notice";

@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.3.426",
+    "version": "1.2.3.427",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -26,7 +26,6 @@
             "bg/js/lib/m3u8-parser.min.js",
             "bg/js/lib/md5.js",
             "bg/js/utils.js",
-            "fg/js/acfun.js",
             "fg/js/api.js",
             "fg/js/popup.js",
             "fg/js/div.js",
