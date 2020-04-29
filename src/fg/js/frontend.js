@@ -46,6 +46,8 @@ class ODHFront {
             "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}" +
             ".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
             "span.up {background-color: #4a8eff !important;cursor: pointer;}" +
+            "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center}"+
+            "p.crx-member-p{height: 20px !important;line-height: 20px !important;}"+
             "";
         nod.type="text/css";
         nod.textContent = str;
@@ -131,9 +133,10 @@ class ODHFront {
             this.addNightStyle();
         }
 
+
         //开启右侧导航
         //todo 改变判断条件
-        if(this.options.enabled){
+        if(this.options.beautify_nav){
             this.addRightNav();
             var length = $('.home-main-content>div').length;
             $(document).scroll(function(){
@@ -228,7 +231,12 @@ class ODHFront {
         //从我的消息-评论跳转
         let msg_comment =  new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)');
         //直播
-        let live = new RegExp("https://m.acfun.cn/live/detail/*")
+        let live = new RegExp("https://m.acfun.cn/live/detail/*");
+        //顶栏头像下拉个人信息栏内容
+        if(this.options.beautify_personal){
+            this.renderPersonInfo();
+        }
+
         //开启屏蔽功能
         if(this.options.filter){
             let allFilter = await getStorage(null);
@@ -299,6 +307,48 @@ class ODHFront {
             this.div.show(pageInfo,this.options,'live');
 
         }
+    }
+
+
+    //时间戳到日期
+    formatDate(now) {
+        var year=now.getFullYear();
+        var month=now.getMonth()+1;
+        var date=now.getDate();
+        var hour=now.getHours();
+        return year+"-"+month+"-"+date;
+    }
+
+    async renderPersonInfo(){
+        fetch('https://www.acfun.cn/rest/pc-direct/user/personalInfo')
+            .then((res) => {
+                return res.text();
+            })
+            .then((res) => {
+                let a = JSON.parse(res);
+                var url = window.location.toString();
+                let member = new RegExp("https://www.acfun.cn/member/.?")
+                let memberRes = member.exec(url);
+                if(memberRes){
+                    let node = $('#win-info-guide>div').find('a').eq(0);
+                    if(node){
+                        node.after('<p class="crx-member-p">UID: '+a.info.userId+'</p>');
+                        node.after('<p class="crx-member-p">金香蕉: '+a.info.goldBanana+'</p>');
+                        node.after('<p class="crx-member-p">香蕉: '+a.info.banana+'</p>');
+                        node.after('<p class="crx-member-p">听众: '+a.info.followed+'</p>');
+                        node.after('<p class="crx-member-p">注册时间: '+this.formatDate(new Date(a.info.registerTime))+'</p>');
+                    }
+                }else{
+                    let node = $('#header-guide .guide-item-con').find('p').eq(0);
+                    if(node){
+                        node.after('<p class="crx-guid-p">UID: '+a.info.userId+'</p>');
+                        node.after('<p class="crx-guid-p">金香蕉: '+a.info.goldBanana+'</p>');
+                        node.after('<p class="crx-guid-p">香蕉: '+a.info.banana+'</p>');
+                        node.after('<p class="crx-guid-p">听众: '+a.info.followed+'</p>');
+                        node.after('<p class="crx-guid-p">注册时间: '+this.formatDate(new Date(a.info.registerTime))+'</p>');
+                    }
+                }
+            });
     }
 
 

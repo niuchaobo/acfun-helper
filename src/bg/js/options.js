@@ -195,6 +195,32 @@ function filterUi() {
     
 }
 
+
+function beautifyUi() {
+    if (beautify_nav) {
+        $('#nav-switch').addClass('switch-close').attr('src', 'images/on.png');
+        $('.div-nav-switch').css('background', '#fff');
+        $('#nav-switch-l p').css('color', '#333');
+        $('.div-nav-switch h3').css('color', '#333');
+    } else {
+        $('#nav-switch').addClass('switch-open').attr('src', 'images/off.png');
+        $('.div-nav-switch').css('background', '#ededed');
+        $('#nav-switch-l p').css('color', '#ccc');
+        $('.div-nav-switch h3').css('color', '#ccc');
+    }
+    if (beautify_personal) {
+        $('#personal-switch').addClass('switch-close').attr('src', 'images/on.png');
+        $('.div-personal-switch').css('background', '#fff');
+        $('#personal-switch-l p').css('color', '#333');
+        $('.div-personal-switch h3').css('color', '#333');
+    } else {
+        $('#personal-switch').addClass('switch-open').attr('src', 'images/off.png');
+        $('.div-personal-switch').css('background', '#ededed');
+        $('#personal-switch-l p').css('color', '#ccc');
+        $('.div-personal-switch h3').css('color', '#ccc');
+    }
+}
+
 /*
     auto_throw:自动投蕉
     to_attention:给已关注up主投
@@ -226,9 +252,14 @@ function restore_options() {
         scanUserMap = userMap(items);
         filter = options['filter'];
         filterUps = upMap(items);
+        beautify_nav = options['beautify_nav'];
+        beautify_personal = options['beautify_personal'];
+
         attentionUi();
         attentionNumUi();
         detectUi();
+        beautifyUi();
+
 
 
         if (to_special_items && to_special_items.length > 0) {
@@ -530,6 +561,56 @@ $(document).ready(function () {
                 // location.reload();
                 filter = true;
                 filterUi();
+                odhback().opt_optionUpdate(options);
+            });
+        }
+    });
+
+    $('#nav-switch-r').click(function () {
+        if (beautify_nav) {
+            options.beautify_nav=false;
+            chrome.storage.local.set({
+                'beautify_nav':false
+            }, function () {
+                // location.reload();
+                beautify_nav = false;
+                beautifyUi();
+                odhback().opt_optionUpdate(options);
+            });
+        } else {
+            /* globals bridge */
+            options.beautify_nav=true;
+            chrome.storage.local.set({
+                'beautify_nav':true
+            }, function () {
+                // location.reload();
+                beautify_nav = true;
+                beautifyUi();
+                odhback().opt_optionUpdate(options);
+            });
+        }
+    });
+
+    $('#personal-switch-r').click(function () {
+        if (beautify_personal) {
+            options.beautify_personal=false;
+            chrome.storage.local.set({
+                'beautify_personal':false
+            }, function () {
+                // location.reload();
+                beautify_personal = false;
+                beautifyUi();
+                odhback().opt_optionUpdate(options);
+            });
+        } else {
+            /* globals bridge */
+            options.beautify_personal=true;
+            chrome.storage.local.set({
+                'beautify_personal':true
+            }, function () {
+                // location.reload();
+                beautify_personal = true;
+                beautifyUi();
                 odhback().opt_optionUpdate(options);
             });
         }
@@ -846,6 +927,19 @@ $(document).ready(function () {
             $(this).attr('title','点击展开',);
         }else{
             $("#skin-div").fadeIn(100);
+            $(this).attr("src","images/cos.png");
+            $(this).attr('title','点击折叠',);
+        }
+    });
+
+    $("#beautify-img").click(function () {
+        let src = $(this).attr("src");
+        if(src=='images/cos.png'){
+            $("#beautify-div").fadeOut(100);
+            $(this).attr("src","images/unfold.png");
+            $(this).attr('title','点击展开',);
+        }else{
+            $("#beautify-div").fadeIn(100);
             $(this).attr("src","images/cos.png");
             $(this).attr('title','点击折叠',);
         }

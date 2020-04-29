@@ -671,3 +671,62 @@ h2 {
     -webkit-filter: grayscale(1);/* Webkit */
     filter: grayscale(1);/* W3C */
 }
+
+
+.div-nav-switch {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+    border-top: 1px solid lightgrey;
+}
+
+.div-nav-switch p {
+    /*margin-top: -10px;*/
+    color: #333333;
+    font-size: 14px;
+}
+
+#nav-switch-l {
+    height: 21px;
+    line-height: 21px;
+    width: 500px;
+}
+
+#nav-switch-r {
+    width: 186px;
+}
+
+
+
+.div-personal-switch {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+    border-top: 1px solid lightgrey;
+}
+
+.div-personal-switch p {
+    /*margin-top: -10px;*/
+    color: #333333;
+    font-size: 14px;
+}
+
+#personal-switch-l {
+    height: 21px;
+    line-height: 21px;
+    width: 500px;
+}
+
+#personal-switch-r {
+    width: 186px;
+}

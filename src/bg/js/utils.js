@@ -14,6 +14,9 @@ const defaults = {
     upHighlight:true,//up主评论高亮
     receive:false,//接收用户情报
     filter:false,//屏蔽up
+    beautify_nav:true,//首页右侧导航
+    beautify_personal:true//个人中心入口
+
 
 };
 const readOnlyKey = ["extendsName","upUrlTemplate","userInfo"];
