@@ -177,14 +177,14 @@ class ODHFront {
                             <div onclick="scrollToTop(event);" data-id="pagelet_list_banana">
                                 香蕉榜
                             </div>
-                            <div onclick="scrollToTop(event);" data-id="pagelet_amusement">
-                                娱乐
+                            <div onclick="scrollToTop(event);" data-id="pagelet_douga">
+                                动画
                             </div>
                             <div onclick="scrollToTop(event);" data-id="pagelet_game">
                                 游戏
                             </div>
-                            <div onclick="scrollToTop(event);" data-id="pagelet_douga">
-                                动画
+                            <div onclick="scrollToTop(event);" data-id="pagelet_amusement">
+                                娱乐
                             </div>
                             <div onclick="scrollToTop(event);" data-id="pagelet_bangumi_list">
                                 番剧
