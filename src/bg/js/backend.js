@@ -16,7 +16,7 @@ class ODHBack {
         chrome.webRequest.onBeforeRequest.addListener(
              this.onCommentRequest.bind(this),
             {
-                urls: ["https://www.acfun.cn/rest/pc-direct/comment/*","*://*/livecloud*"]
+                urls: ["https://www.acfun.cn/rest/pc-direct/comment/*","*://*/livecloud*","https://www.acfun.cn/v/*"]
             },
             []
         );
@@ -117,6 +117,9 @@ class ODHBack {
         let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");
 
         let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.hlspull.etoote.com/.*m3u8");
+
+        let videoPage = new RegExp("http(s)?://www.acfun.cn/v/ac(\\d+)$");
+
         if(commentListReg.test(url)){
             this.tabInvoke(tabId, 'renderList', {url:url});
         }else if(commentSubReg.test(url)){
@@ -125,6 +128,20 @@ class ODHBack {
         }else if(liveReg.test(url)){
             console.log("url1",url);
             this.tabInvoke(tabId, 'renderLive', {url:url});
+        }else if(videoPage.test(url)){
+            console.log("url2",url)
+            let acr=videoPage.exec(url)[2];
+            let acVid=acr;
+            fetch('https://api-new.app.acfun.cn/rest/app/douga/info?dougaId='+acVid)
+                .then((res) => {
+                    return res.text();
+                })
+                .then((res) => {
+                    let data=JSON.parse(res);
+                    console.log(acVid);
+                    console.log(data);
+                    this.tabInvoke(tabId,'renderComExtraInfo',{Vid:acVid,res:data});
+                })
         }
     }
 
