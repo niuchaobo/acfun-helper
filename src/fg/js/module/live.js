@@ -1,3 +1,6 @@
+/**
+ * 直播
+ */
 class Live {
     constructor(){
 

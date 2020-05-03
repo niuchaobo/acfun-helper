@@ -1,3 +1,6 @@
+/**
+ * 自动投蕉
+ */
 class Banana{
     constructor(){
 
