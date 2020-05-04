@@ -35,6 +35,7 @@
             "fg/js/module/download.js",
             "fg/js/module/live.js",
             "fg/js/module/banana.js",
+            "fg/js/module/videoSetting.js",
             "fg/js/frontend.js"
 
         ],

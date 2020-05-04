@@ -8,7 +8,8 @@ class ODHFront {
         this.ce = new CommentEnhance();//评论区增强
         this.download = new Download();//下载(视频、封面)
         this.live = new Live();//直播
-        this.banana = new Banana();
+        this.banana = new Banana();//自动投蕉
+        this.videoSetting = new VideoSetting();//视频播放设置
 
 
 
@@ -153,6 +154,9 @@ class ODHFront {
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live');
 
+        }
+        if(REG.video.test(href) || REG.bangumi.test(href)){
+            this.videoSetting.customPlaybackRate();
         }
     }
 

@@ -7,7 +7,6 @@ class Live {
     }
 
     async renderLive(params){
-        console.log('live--------------');
         let href = window.location.href;
         let {url} = params;
         let retry = 10;
