@@ -471,6 +471,10 @@ h2 {
     margin-bottom: -3px;
 }
 
+.player_mode{
+    margin-bottom: -3px;
+}
+
 
 
 .wordcontent::-webkit-scrollbar {/*滚动条整体样式*/
@@ -729,4 +733,81 @@ h2 {
 
 #personal-switch-r {
     width: 186px;
+}
+
+
+.div-like-switch {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+    border-top: 1px solid lightgrey;
+}
+
+.div-like-switch p {
+    /*margin-top: -10px;*/
+    color: #333333;
+    font-size: 14px;
+}
+
+#like-switch-l {
+    height: 21px;
+    line-height: 21px;
+    width: 500px;
+}
+
+#like-switch-r {
+    width: 186px;
+}
+
+
+.div-rate-switch {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+    border-top: 1px solid lightgrey;
+}
+
+.div-rate-switch p {
+    /*margin-top: -10px;*/
+    color: #333333;
+    font-size: 14px;
+}
+
+#rate-switch-l {
+    height: 21px;
+    line-height: 21px;
+    width: 500px;
+}
+
+#rate-switch-r {
+    width: 186px;
+}
+
+
+.thead-tip {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333333;
+    text-align: left;
+    width: 500px;
+}
+
+
+.mode_selections {
+    vertical-align: middle;
+    line-height: 47px;
+}
+.mode_selections span {
+    display: inline-block;
+    height: 16px;
 }

@@ -219,6 +219,33 @@ function beautifyUi() {
         $('#personal-switch-l p').css('color', '#ccc');
         $('.div-personal-switch h3').css('color', '#ccc');
     }
+
+    if (show_like) {
+        $('#like-switch').addClass('switch-close').attr('src', 'images/on.png');
+        $('.div-like-switch').css('background', '#fff');
+        $('#like-switch-l p').css('color', '#333');
+        $('.div-like-switch h3').css('color', '#333');
+    } else {
+        $('#like-switch').addClass('switch-open').attr('src', 'images/off.png');
+        $('.div-like-switch').css('background', '#ededed');
+        $('#like-switch-l p').css('color', '#ccc');
+        $('.div-like-switch h3').css('color', '#ccc');
+    }
+}
+
+
+function customVideoUi(){
+    if (custom_rate) {
+        $('#rate-switch').addClass('switch-close').attr('src', 'images/on.png');
+        $('.div-rate-switch').css('background', '#fff');
+        $('#rate-switch-l p').css('color', '#333');
+        $('.div-rate-switch h3').css('color', '#333');
+    } else {
+        $('#rate-switch').addClass('switch-open').attr('src', 'images/off.png');
+        $('.div-rate-switch').css('background', '#ededed');
+        $('#rate-switch-l p').css('color', '#ccc');
+        $('.div-rate-switch h3').css('color', '#ccc');
+    }
 }
 
 /*
@@ -254,11 +281,14 @@ function restore_options() {
         filterUps = upMap(items);
         beautify_nav = options['beautify_nav'];
         beautify_personal = options['beautify_personal'];
+        show_like = options['show_like'];
+        custom_rate = options['custom_rate'];
 
         attentionUi();
         attentionNumUi();
         detectUi();
         beautifyUi();
+        customVideoUi();
 
 
 
@@ -616,6 +646,79 @@ $(document).ready(function () {
         }
     });
 
+    $('#like-switch-r').click(function () {
+        if (show_like) {
+            options.show_like=false;
+            chrome.storage.local.set({
+                'show_like':false
+            }, function () {
+                // location.reload();
+                show_like = false;
+                beautifyUi();
+                odhback().opt_optionUpdate(options);
+            });
+        } else {
+            /* globals bridge */
+            options.show_like=true;
+            chrome.storage.local.set({
+                'show_like':true
+            }, function () {
+                // location.reload();
+                show_like = true;
+                beautifyUi();
+                odhback().opt_optionUpdate(options);
+            });
+        }
+    });
+
+
+    $('#rate-switch-r').click(function () {
+        if (custom_rate) {
+            options.custom_rate=false;
+            chrome.storage.local.set({
+                'custom_rate':false
+            }, function () {
+                // location.reload();
+                custom_rate = false;
+                customVideoUi();
+                odhback().opt_optionUpdate(options);
+            });
+        } else {
+            /* globals bridge */
+            options.custom_rate=true;
+            chrome.storage.local.set({
+                'custom_rate':true
+            }, function () {
+                // location.reload();
+                custom_rate = true;
+                customVideoUi();
+                odhback().opt_optionUpdate(options);
+            });
+        }
+    });
+
+
+    $(".player_mode").click(function () {
+        if(auto_throw && to_attention){
+            let flag = $(this).attr('src');
+            let attention_num = $(this).data('num');
+            if(flag == 'images/unselected.png'){
+                $(this).attr('src', 'images/selected.png');
+                $(this).siblings().attr('src', 'images/unselected.png');
+            }else{
+                //$(this).attr('src', 'images/unselected.png');
+                //$(this).siblings().attr('src', 'images/selected.png');
+            }
+            options.to_attention_num = attention_num;
+            chrome.storage.local.set({
+                'to_attention_num': attention_num
+            }, function () {
+                to_attention_num = attention_num;
+                odhback().opt_optionUpdate(options);
+            });
+        }
+    });
+
 
 
 
@@ -940,6 +1043,19 @@ $(document).ready(function () {
             $(this).attr('title','点击展开',);
         }else{
             $("#beautify-div").fadeIn(100);
+            $(this).attr("src","images/cos.png");
+            $(this).attr('title','点击折叠',);
+        }
+    });
+
+    $("#customvideo-img").click(function () {
+        let src = $(this).attr("src");
+        if(src=='images/cos.png'){
+            $("#customvideo-div").fadeOut(100);
+            $(this).attr("src","images/unfold.png");
+            $(this).attr('title','点击展开',);
+        }else{
+            $("#customvideo-div").fadeIn(100);
             $(this).attr("src","images/cos.png");
             $(this).attr('title','点击折叠',);
         }

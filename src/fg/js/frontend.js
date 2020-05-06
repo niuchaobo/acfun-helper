@@ -9,7 +9,7 @@ class ODHFront {
         this.download = new Download();//下载(视频、封面)
         this.live = new Live();//直播
         this.banana = new Banana();//自动投蕉
-        this.videoSetting = new VideoSetting();//视频播放设置
+        this.videoSetting = new VideoSetting();//视频播放设置：自定义倍速、观影模式等
 
 
 
@@ -90,19 +90,19 @@ class ODHFront {
         if(this.options.beautify_nav){
             this.pageBeautify.navBeautify();
         }
+        //显示点赞数
+        if(this.options.show_like){
+            this.pageBeautify.showLikeCount();
+        }
     }
 
 
     async onLoad(e){
-        /*let v = document.getElementsByTagName("video")[0];
-        console.log(v);
-        //console.log(v.defaultPlaybackRate);
-        //v.playbackRate  = 0.1;
-
-        $(".speed-panel").find('li:last').after('<li id="test123">自定义</li>')
-        $('.speed-panel').on('click','#test123',function () {
-            alert(1);
-        })*/
+        console.log($(".control-btn .btn-film-model").find('span:first')[0]);
+        let node = $(".control-btn .btn-film-model").find('span:first')[0];
+        var e = document.createEvent("MouseEvents");
+        e.initEvent("click", true, false);
+        //node.dispatchEvent(e);
         //tab页创建时会从bg发消息过来写入options数据,但可能存在延迟
         this.options = await optionsLoad();
         if(!this.options.enabled){
@@ -153,12 +153,13 @@ class ODHFront {
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live');
-
         }
-        if(REG.video.test(href) || REG.bangumi.test(href)){
+        //自定义倍速
+        if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
         }
     }
+
 
     //下载封面
     api_downloadCover(params) {

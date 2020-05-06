@@ -58,6 +58,7 @@
         "fg/css/checkbox.css",
         "lib/jquery-3.5.0.min.js",
         "bg/images/copy_link.png",
-        "fg/js/nav.js"
+        "fg/js/nav.js",
+        "fg/js/module/videoSettingInject.js"
     ]
 }
