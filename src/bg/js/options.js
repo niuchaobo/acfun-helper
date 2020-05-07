@@ -248,6 +248,12 @@ function customVideoUi(){
     }
 }
 
+function playModeUi() {
+    let id = "mode_"+player_mode;
+    $("#"+id).attr('src', 'images/selected.png');
+    $("#"+id).siblings().attr('src', 'images/unselected.png');
+}
+
 /*
     auto_throw:自动投蕉
     to_attention:给已关注up主投
@@ -283,12 +289,15 @@ function restore_options() {
         beautify_personal = options['beautify_personal'];
         show_like = options['show_like'];
         custom_rate = options['custom_rate'];
+        player_mode = options['player_mode'];
+
 
         attentionUi();
         attentionNumUi();
         detectUi();
         beautifyUi();
         customVideoUi();
+        playModeUi();
 
 
 
@@ -699,9 +708,8 @@ $(document).ready(function () {
 
 
     $(".player_mode").click(function () {
-        if(auto_throw && to_attention){
             let flag = $(this).attr('src');
-            let attention_num = $(this).data('num');
+            let mode = $(this).data('mode');
             if(flag == 'images/unselected.png'){
                 $(this).attr('src', 'images/selected.png');
                 $(this).siblings().attr('src', 'images/unselected.png');
@@ -709,14 +717,13 @@ $(document).ready(function () {
                 //$(this).attr('src', 'images/unselected.png');
                 //$(this).siblings().attr('src', 'images/selected.png');
             }
-            options.to_attention_num = attention_num;
+            options.player_mode = mode;
             chrome.storage.local.set({
-                'to_attention_num': attention_num
+                'player_mode': mode
             }, function () {
-                to_attention_num = attention_num;
+                player_mode = mode;
                 odhback().opt_optionUpdate(options);
             });
-        }
     });
 
 
