@@ -126,7 +126,6 @@ class PageBeautify{
         let url = window.location.toString();
         let videoPage = new RegExp("http(s)?://www.acfun.cn/v/ac(.*)");
         let acVid=videoPage.exec(url)[2];
-        console.log('renderComExtraInfoDrct acVid:'+acVid);
         let node = $('div.video-description.clearfix.dark-style>div').find('div.left-area').eq(0);
         let node2 = $('div.video-description.clearfix>div.action-area').find('div.left-area').eq(0);
         fetch('https://mini.pocketword.cn/api/acfun/info?dougaId='+acVid)
@@ -135,7 +134,6 @@ class PageBeautify{
             })
             .then((res2) => {
                 let a = JSON.parse(res2);
-                console.log(a);
                 if(node.length){
                     node.append('<div class="like" style="padding-right: 15px;"><span class="likeCount">'+a.likeCount+'</span>点赞</div>');
                 }else if(node2.length){

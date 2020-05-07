@@ -98,11 +98,6 @@ class ODHFront {
 
 
     async onLoad(e){
-        console.log($(".control-btn .btn-film-model").find('span:first')[0]);
-        let node = $(".control-btn .btn-film-model").find('span:first')[0];
-        var e = document.createEvent("MouseEvents");
-        e.initEvent("click", true, false);
-        //node.dispatchEvent(e);
         //tab页创建时会从bg发消息过来写入options数据,但可能存在延迟
         this.options = await optionsLoad();
         if(!this.options.enabled){
@@ -157,6 +152,10 @@ class ODHFront {
         //自定义倍速
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
+        }
+        //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
+        if((REG.video.test(href) || REG.bangumi.test(href))){
+            this.videoSetting.monitorFullScreen();
         }
     }
 

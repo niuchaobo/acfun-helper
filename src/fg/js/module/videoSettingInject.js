@@ -1,7 +1,6 @@
 //----------------------------------------播放器模式（观影、网页全屏、桌面全屏）-----------------------------------------------------------------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
 var hiddenDiv = document.getElementById('myCustomEventDiv');
-console.log("div",hiddenDiv);
 if(!hiddenDiv) {
     hiddenDiv = document.createElement('div');
     hiddenDiv.style.display = 'none';
@@ -9,9 +8,9 @@ if(!hiddenDiv) {
 }
 hiddenDiv.addEventListener('myCustomEvent', function() {
     console.log(window.player);
+    let w1 = document.getElementsByTagName("video")[0].offsetWidth;
     var eventData = document.getElementById('myCustomEventDiv').innerText;
     let options = JSON.parse(eventData);
-    console.log("op:",options);
     switch(options.player_mode) {
         case 'default':
             break;
@@ -26,6 +25,7 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
                 //如果不判断直接调用会报错，toolbar节点可能还没加载
                 if(_header && _main && _vd && _toolbar && _rc){
                     window.player.emit('filmModeChanged', true);
+                    let w2 = document.getElementsByTagName("video")[0].offsetWidth;
                     clearInterval(_timer);
                 }
 
@@ -35,8 +35,15 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
             window.player.emit('fullScreenChange', "web");
             break;
         case 'screen':
-            window.player.emit('fullScreenChange', "screen");
-            break;
+            //Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
+            //此功能只能由用户触发
+
+            /*console.log("screen--------------------------------")
+            //window.player.emit('fullScreenChange','screen');
+            document.getElementsByClassName('container-player')[0].requestFullscreen();
+
+            //window.player.requestFullscreen();
+            break;*/
     }
 
 });
