@@ -73,9 +73,11 @@ class ODHFront {
 
     async onDomContentLoaded(e){
         this.options = await optionsLoad();
+        console.log("options",this.options);
         if(!this.options.enabled){
             return;
         }
+        let href = window.location.href;
         //添加自定义样式
         this.addStyle();
 
@@ -91,7 +93,7 @@ class ODHFront {
             this.pageBeautify.navBeautify();
         }
         //显示点赞数
-        if(this.options.show_like){
+        if(REG.video.test(href) || REG.bangumi.test(href) && this.options.show_like){
             this.pageBeautify.showLikeCount();
         }
     }

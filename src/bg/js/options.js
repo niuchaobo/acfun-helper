@@ -338,17 +338,19 @@ function restore_options() {
               <td class="site"><a href="' + user_home + '" target="_blank">' + userId + '</a></td>\
               <td class="site-name"><a href="' + user_home + '" target="_blank">' + value.name + '</a></td>\
               <td class="site-tag">' + value.tag + '</td>\
-              <td class="site-remove"><span href="#" class="scan-remove">移除</span></td>\
+              <td class="site-remove"><span href="#" data-key="'+key+'" class="scan-remove">移除</span></td>\
             </tr>');
-                $('.scan-remove').click(function () {
-                    if (mark) {
-                        $(this).parent().parent().remove();
-                        chrome.storage.local.remove(key, function(){
-                            //do something
-                        });
-                    }
-                });
+
             })
+            $('.scan-remove').click(function () {
+                if (mark) {
+                    let key = $(this).data("key");
+                    $(this).parent().parent().remove();
+                    chrome.storage.local.remove(key, function(){
+                        //do something
+                    });
+                }
+            });
         }else{
             $('#scan-users').append('\
                 <tr id="mark-blank">\
@@ -368,17 +370,19 @@ function restore_options() {
           <tr class="site-tr">\
               <td style="width: 200px;" class="site"><a href="' + user_home + '" target="_blank">' + userId + '</a></td>\
               <td class="site-name"><a href="' + user_home + '" target="_blank">' + value.name + '</a></td>\
-              <td class="site-remove"><span href="#" class="filter-remove">移除</span></td>\
+              <td class="site-remove"><span href="#" data-key="'+key+'" class="filter-remove">移除</span></td>\
             </tr>');
-                $('.filter-remove').click(function () {
-                    if (filter) {
-                        $(this).parent().parent().remove();
-                        chrome.storage.local.remove(key, function(){
-                            //do something
-                        });
-                    }
-                });
+
             })
+            $('.filter-remove').click(function () {
+                if (filter) {
+                    let key = $(this).data("key");
+                    $(this).parent().parent().remove();
+                    chrome.storage.local.remove(key, function(){
+                        //do something
+                    });
+                }
+            });
         }else{
             $('#filter-ups').append('\
                 <tr id="filter-blank">\

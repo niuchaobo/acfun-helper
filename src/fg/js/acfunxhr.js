@@ -1,4 +1,42 @@
 const reg = new RegExp("https://webapi.acfun.cn/query/article/list\\?.*");
+const fill = {
+    allowed_add_tag: false,
+    attitudes: [],
+    banana_count: 0,
+    big_cover_image: "",
+    channel_id: 110,
+    channel_name: "综合",
+    channel_path: "a",
+    comment_count: 0,
+    contribute_time: 1588857632000,
+    cover_image: "https://imgs.aixifan.com/FvHGj3sOzp9d2jsjlBfqFFuUgBAJ",
+    description: "",
+    essense: false,
+    favorite_count: 6,
+    id: 15387968,
+    isSignedUpCollege: false,
+    latest_active_time: 1588861593000,
+    latest_comment_time: 1588861593000,
+    like_count: 0,
+    link: "",
+    parent_channel_id: 63,
+    parent_channel_name: "文章",
+    parent_realm_id: 0,
+    realm_id: 5,
+    realm_name: "杂谈",
+    recommended: false,
+    status: 2,
+    title: "下一页内容已全部屏蔽",
+    top_level: false,
+    tudou_domain: false,
+    type_id: 1,
+    user_avatar: "",
+    user_id: 7054138,
+    username: "acfun助手",
+    view_count: 0,
+    view_only: true,
+}
+
 var ups = null;
 function modifyResponse(response) {
     var original_response, modified_response;
@@ -20,6 +58,11 @@ function modifyResponse(response) {
                     i--; // 如果不减，将漏掉一个元素
                 }
             }
+            console.log("articleList.length="+articleList.length)
+            if(articleList.length==0){
+                articleList[0]=fill;
+            }
+            console.log(articleList);
             modified_response.data.articleList = articleList;
             this.responseText = JSON.stringify(modified_response);
         }

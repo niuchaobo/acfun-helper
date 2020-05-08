@@ -8,7 +8,6 @@ if(!hiddenDiv) {
 }
 hiddenDiv.addEventListener('myCustomEvent', function() {
     console.log(window.player);
-    let w1 = document.getElementsByTagName("video")[0].offsetWidth;
     var eventData = document.getElementById('myCustomEventDiv').innerText;
     let options = JSON.parse(eventData);
     switch(options.player_mode) {
