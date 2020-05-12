@@ -811,3 +811,16 @@ h2 {
     display: inline-block;
     height: 16px;
 }
+
+.setting-top {
+    height: 50px;
+    background-color: rgb(214, 154, 204);
+    line-height: 50px;
+    text-align: left;
+    border-radius: 4px 4px 0 0;
+}
+
+.setting-unfold {
+
+}
+
