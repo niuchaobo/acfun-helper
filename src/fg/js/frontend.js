@@ -93,7 +93,7 @@ class ODHFront {
             this.pageBeautify.navBeautify();
         }
         //显示点赞数
-        if(REG.video.test(href) || REG.bangumi.test(href) && this.options.show_like){
+        if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.show_like){
             this.pageBeautify.showLikeCount();
         }
     }
