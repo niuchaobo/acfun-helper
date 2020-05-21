@@ -812,15 +812,14 @@ h2 {
     height: 16px;
 }
 
-.setting-top {
-    height: 50px;
-    background-color: rgb(214, 154, 204);
-    line-height: 50px;
-    text-align: left;
-    border-radius: 4px 4px 0 0;
+.div-export-settings {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+    border-top: 1px solid lightgrey;
 }
-
-.setting-unfold {
-
-}
-
