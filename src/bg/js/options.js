@@ -1110,7 +1110,11 @@ $(document).ready(function () {
                   var reader=new FileReader();
                   reader.readAsText(file,"utf-8");
                   reader.onload=function () {
-                    jsonfy_config=JSON.parse(this.result);
+                    try {
+                        jsonfy_config=JSON.parse(this.result);
+                    } catch (error) {
+                        alert("奇怪的配置文件导入进去了~");
+                    }
                     for(i in jsonfy_config){
                         if(i !='AcpushList'){
                             chrome.storage.local.set({[i]:jsonfy_config[i]});
