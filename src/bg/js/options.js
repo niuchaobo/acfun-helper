@@ -1072,7 +1072,64 @@ $(document).ready(function () {
         }
     });
 
+    $("#export-set").click(function () {
+        let src = $(this).attr("src");
+        if(src=='images/cos.png'){
+            $("#export-div").fadeOut(100);
+            $(this).attr("src","images/unfold.png");
+            $(this).attr('title','点击展开',);
+        }else{
+            $("#export-div").fadeIn(100);
+            $(this).attr("src","images/cos.png");
+            $(this).attr('title','点击折叠',);
+        }
+    });
 
+    let config_downloadObj=document.getElementById('configExport');
+    config_downloadObj.addEventListener('click', function createDownload(){
+        options_data=chrome.storage.local.get(null, function (items) {
+            var options_data = sanitizeOptions(items);
+            var blob = new Blob([JSON.stringify(options_data)], { type: 'application/octet-stream' });
+            var url = window.URL.createObjectURL(blob);
+            var saveas = document.createElement('a');
+            saveas.href = url;
+            saveas.style.display = 'none';
+            document.body.appendChild(saveas);
+            saveas.download = 'AcFun-Helper.conf';
+            saveas.click();
+            setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
+            document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
+            console.log(options_data);
+        });
+      });
+
+      let jsonfy_config;
+      let input=document.getElementById("input_emlwX3V0aWxz_file");
+          input.onchange=function () {
+              var file = this.files[0];
+              if(!!file){
+                  var reader=new FileReader();
+                  reader.readAsText(file,"utf-8");
+                  reader.onload=function () {
+                    jsonfy_config=JSON.parse(this.result);
+                    for(i in jsonfy_config){
+                        if(i !='AcpushList'){
+                            console.log('key: '+i+' ; '+'value: '+jsonfy_config[i]);
+                            console.log(jsonfy_config['AC_13399372']);
+                            chrome.storage.local.set({[i]:jsonfy_config[i]});
+                    }}
+                    console.log(jsonfy_config);
+                  };
+              }
+      };
+
+      let config_CleanObj=document.getElementById('configExport');
+      config_CleanObj.addEventListener('click', function createClean(){
+          chrome.storage.local.clear(function(){
+            console.log('Zero');
+          });
+      });
+  
     $('#filter-add').on('click', function () {
         if ($('.filter-add-tr').length <= 0 && filter) {
             if (!$('#filter-ups').hasClass('table-custom-padding')) {
