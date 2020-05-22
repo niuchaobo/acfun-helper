@@ -1099,7 +1099,6 @@ $(document).ready(function () {
             saveas.click();
             setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
             document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
-            console.log(options_data);
         });
       });
 
@@ -1114,8 +1113,6 @@ $(document).ready(function () {
                     jsonfy_config=JSON.parse(this.result);
                     for(i in jsonfy_config){
                         if(i !='AcpushList'){
-                            console.log('key: '+i+' ; '+'value: '+jsonfy_config[i]);
-                            console.log(jsonfy_config['AC_13399372']);
                             chrome.storage.local.set({[i]:jsonfy_config[i]});
                     }}
                     console.log(jsonfy_config);
@@ -1123,11 +1120,14 @@ $(document).ready(function () {
               }
       };
 
-      let config_CleanObj=document.getElementById('configExport');
+      let config_CleanObj=document.getElementById('configClean');
       config_CleanObj.addEventListener('click', function createClean(){
+          console.log("clicked.");
+          let notice_this=prompt("确认清除小助手的所有配置吗？请考虑清楚哦。Y/N",'');
+          if(notice_this=='Y'){
           chrome.storage.local.clear(function(){
             console.log('Zero');
-          });
+          });}
       });
   
     $('#filter-add').on('click', function () {
