@@ -1,5 +1,5 @@
 /**
- * 评论区增强 1.用户标记 2.up主评论显示【up主】标记
+ * 评论区增强 1.用户标记 2.up主评论显示【up主】标记 3.在评论区添加快速跳转至视频对应时间的链接
  */
 class CommentEnhance{
     constructor() {
@@ -234,18 +234,15 @@ class CommentEnhance{
     }
 
 
-
+    // 在评论区添加快速跳转至视频对应时间的链接
     searchScanForPlayerTime(){
-        // console.log("well done!")
         var timer = setInterval(function () {
             let nodes = $('.area-comment-des-content');
             let loading = $('.ac-comment-loading').html();
-            let reg_for_time=new RegExp('[0-9].?:[0-9].?');
+            let reg_for_time=new RegExp('^[0-9].?:[0-9].?');
             let reg_for_mtline=new RegExp('<br>')
-            // console.log(nodes.length);
             if(nodes.length>0 && loading==''){
                 nodes.each(async function () {
-                        // let comment_content = $(this)[0].innerText.toString();
                         let comment_content = $(this)[0].innerText.toString();
                         let comment_html = $(this)[0].innerHTML.toString();
                         let if_matchTime=reg_for_time.exec(comment_content);
@@ -253,22 +250,18 @@ class CommentEnhance{
                         if(if_mtline && if_matchTime){
                             //多行包含了<br>的情况
                             let a=comment_html.split('<br>')
-                            // console.log(a);
                             after_html_out='';
                             for(let i=0;i<=(a.length-1);i++){
                                 let x1=a[i].split(' ');
                                 var after_html='';
                                 for(let j=0;j<x1.length;j++){
-                                    // console.log(x1[j]);
                                     if(reg_for_time.exec(x1[j])){
                                         var after_html=after_html+'<a id=\'quickJump\' onclick=\"quickJump(\''+x1[0]+'\');\">'+x1[0]+'</a>';
                                     }
                                     var after_html=after_html+' '+x1[j];
                                 }
-                                // console.log(after_html);
                                 var after_html_out=after_html_out+after_html+"<br>";
                             }
-                            // console.log(after_html_out);
                             $(this).html(after_html_out);
                         }else{
                             //一行的情况
@@ -281,7 +274,6 @@ class CommentEnhance{
                                 for(let i=1;i<=ie;i++){
                                     after_html=after_html+z[i]+' ';
                                 }
-                                // console.log(after_html);
                                 $(this).html(after_html);
                             }
                         }
