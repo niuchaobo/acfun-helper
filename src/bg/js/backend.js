@@ -5,12 +5,19 @@ class ODHBack {
         this.target = null;
 
         this.agent = new Agent(document.getElementById('sandbox').contentWindow);
+        this.timer4Unread();
+        this.fetchPushList();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));
         chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
         chrome.tabs.onCreated.addListener((tab) => this.onTabReady(tab));
         chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
+
+        //监听storage变化,可用于数据云同步
+        chrome.storage.onChanged.addListener(function (changes,areaName) {
+
+        });
 
 
         chrome.webRequest.onBeforeRequest.addListener(
@@ -101,6 +108,62 @@ class ODHBack {
 
     }
 
+    async timer4Unread(){
+        // console.log("timer start!");
+        window.setInterval(function(){
+            console.log("timer4Unread");
+            fetch('https://member.acfun.cn/common/api/getUnreadMess',{method:"POST",headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded','Accept':"accept: application/json, text/plain, */*"},body:""})
+                .then((res=>{return res.text()}))
+                // .then(response => console.log(response))
+                // fetch('https://www.acfun.cn/member/unRead.aspx')
+                //     .then((res)=>{return res.text();})
+                .then((res)=>{
+                    let b=JSON.parse(res);
+                    // console.log(b.unReadCount);
+                    let a0=b.unReadCount.new_comment;
+                    let a1=b.unReadCount.new_comment_like;
+                    let a2=b.unReadFollowFeedCount;
+                    let a3=b.unReadCount.new_content_notify;
+                    let a4=b.redirectFollowFeed
+                    // let a2=b.mention;
+                    var pushNum=a0+a1+a2+a3+a4;
+                    console.log(pushNum);
+                    chrome.browserAction.setBadgeText({ text: pushNum.toString() });
+                })
+        },60000)
+    }
+
+    fetchPushList(){
+        window.setInterval(function(){
+            fetch('https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=0&gid=-1&count=30&pcursor=1')
+                .then((res)=>{return res.text();})
+                .then((res)=>{
+                    let rawdata=JSON.parse(res);
+                    let out_data='';
+                    // console.log(rawdata.feedList[0].username);
+                    for(let i=0;i<=29;i++){
+                        // console.log(i);
+                        let data=rawdata.feedList[i];
+                        let xmlData="<div class=\"inner\" id=\"";
+                        xmlData+=data.aid+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
+                        xmlData+="https://www.acfun.cn"+data.url+"\"";
+                        xmlData+=" class=\"thumb thumb-preview\"><img data-aid=\"";
+                        xmlData+=data.aid + "\" src=\""+data.titleImg+"\" class=\"preview\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+data.aid+" \"target=\"_blank\" href=\"" +"https://www.acfun.cn"+data.url+"\" class=\"title\">";
+                        xmlData+=data.title+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
+                        xmlData+=data.aid+"\" href=\"https://www.acfun.cn/u/"+data.userId+"\" class=\"name\">";
+                        xmlData+=data.username+"</a>&nbsp;/&nbsp;<span class=\"time\">"+formatDate(new Date(data.releaseDate),1)+"发布</span> </div> </div> </div> ";
+                        // console.log(xmlData);
+                        out_data+=xmlData;
+                    }
+                    chrome.storage.local.set({'AcpushList': out_data});
+                    // chrome.storage.local.get(['AcpushList'],function(datao){
+                    //     console.log(datao);
+                    // })
+                });
+        },60000)
+    }
+
     test(params,tab){
         console.log(params);
         //this.odhback.test.apply();
@@ -170,7 +233,7 @@ class ODHBack {
                 chrome.tabs.sendMessage(tabId, {action, params}, function (response) {
                     let resJson = JSON.parse(response);
                     if(resJson && resJson.result == 0){
-                        notice("投蕉提醒","A站下载助手已为您自动投蕉");
+                        notice("投蕉提醒","AcFun助手已为您自动投蕉");
                     }
                 });
                 //this.callback();

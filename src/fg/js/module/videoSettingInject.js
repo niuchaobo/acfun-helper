@@ -71,3 +71,25 @@ function setCustomPlaybackRate(event) {
         }
     }
 }
+
+
+function quickJump(time) {
+    let v_obj = document.getElementsByTagName("video")[0];
+    // console.log(v_obj);
+    v_obj.currentTime = Duration2Seconds(time);
+    // console.log(Duration2Seconds(time));
+    // createDownload('2333','2333.txt');
+    console.log('Jump_ok');
+}
+
+function Duration2Seconds(time){
+    // console.log(time);
+    // console.log(typeof(time));
+    let str = time;
+    let arr = str.split(':');
+    // console.log(arr);
+    let Tm=Number(arr[0]*60);
+    let Ts=Number(arr[1]);
+    let seconds=Tm+Ts;
+    return seconds;
+}

@@ -21,7 +21,8 @@ class ODHFront {
         document.addEventListener('DOMContentLoaded',e=>this.onDomContentLoaded(e));
         //监听storage变化,可用于数据云同步
         chrome.storage.onChanged.addListener(function (changes,areaName) {
-
+            console.log('11111111111111111')
+            console.log(document.cookie);
         });
     }
 
@@ -158,6 +159,8 @@ class ODHFront {
         //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
         if((REG.video.test(href) || REG.bangumi.test(href))){
             this.videoSetting.monitorFullScreen();
+            //todo 加开关
+            this.ce.searchScanForPlayerTime();
         }
     }
 

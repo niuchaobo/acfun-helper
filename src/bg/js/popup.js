@@ -184,10 +184,18 @@ function watchLive() {
     e.initEvent('click', true, true);
     a.dispatchEvent(e);
 }
+function fetchPushContent(){
+    chrome.storage.local.get(['AcpushList'],function(data){
+        console.log(data);
+        $('#pop-push').append(data.AcpushList);
+    })
+}
+
 
 async function onReady() {
     localizeHtmlPage();
     let options = await optionsLoad();
+    fetchPushContent();
     $("#extends-enbaled").prop('checked', options.enabled);
     $("#extends-enbaled").change(onOptionChanged);
     $("#pop-introduce").click(openIntroduce);

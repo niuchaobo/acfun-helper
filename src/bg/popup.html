@@ -7,6 +7,67 @@
     <link rel="stylesheet" type="text/css" href="css/checkbox.css" />
     <link rel="stylesheet" type="text/css" href="css/popup.css" />
     <title data-i18n="optTitle">Acfun助手</title>
+    <style>
+        .r {
+           /* float: right;*/
+            position: relative;
+            /* border: solid 1px red; */
+            /*position: absolute;
+            margin-left: 45%;*/
+            /*height: 100px;*/
+            /* width: 30%; */
+            overflow: hidden;
+            font-size: 12px;
+        }
+
+        .l {
+            /*width: 45%;
+            float: left;*/
+            position: relative;
+            /*height: 100px;*/
+            /*position: absolute;*/
+            /* border: solid 1px red; */
+            overflow: hidden;
+        }
+
+        .inner {
+            /* border: solid 1px blue; */
+            /*top: 100px;
+            bottom: 100px;
+            height: 95px;*/
+            /* height: 312px; */
+            background-color: #fefefe;
+            border: 1px solid;
+            border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+            border-radius: 3px;
+            padding: 5px;
+            margin-top: 5px;
+        }
+
+        .pop-push-list {
+            background-color: azure;
+            /* border-color: red; */
+            padding: 4px 4px 4px 4px;
+            border: 1px;
+            border-style: solid;
+            border-spacing: 2px;
+            border-width: 1px 1px 1px 1px;
+        }
+
+        .preview {
+            height: auto;
+            /* width: auto; */
+            width: 100%;
+        }
+
+        .r .avatar {
+            border-radius: 50%;
+            height: auto;
+            width: 100%;
+            /* width: 10%; */
+        }
+
+    </style>
 </head>
 
 <body style="width: 200px">
@@ -42,6 +103,9 @@
         <input id="live-id" style="line-height:16px;width: 140px;margin: 0 2px;font-size: 12px" type="text" placeholder="请输入uid"/><span id="go-live"  class="go-live">看直播</span>
     </div>
 
+    <div id="pop-push" class="pop-push">
+
+    </div>
     <!--<div id="pop-setting" class="odh-definition">
         <ul class="ec">
             <li class="ec">
