@@ -203,7 +203,13 @@ async function onReady() {
     $("#go-live").click(watchLive);
 
 }
-
+document.addEventListener('DOMContentLoaded',function (e) {
+    //处理pop页面宽度
+    let browser = myBrowser();
+    if(browser=='FF'){
+        document.getElementById("pop-push").style.width="95%";
+    }
+});
 
 
 $(document).ready(utilAsync(onReady));

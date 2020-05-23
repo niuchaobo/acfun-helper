@@ -121,15 +121,20 @@ class ODHBack {
                 .then((res)=>{
                     let b=JSON.parse(res);
                     // console.log(b.unReadCount);
-                    let a0=b.unReadCount.new_comment;
-                    let a1=b.unReadCount.new_comment_like;
-                    let a2=b.unReadFollowFeedCount;
-                    let a3=b.unReadCount.new_content_notify;
-                    let a4=b.redirectFollowFeed
+                    let a0=b.unReadCount.new_comment;//评论
+                    let a1=b.unReadCount.new_comment_like;//赞
+                    let a2=b.unReadFollowFeedCount;//动态
+                    let a3=b.unReadCount.new_content_notify;//系统通知
+                    let a4=b.unReadCount.new_system_notify;//站内公告
                     // let a2=b.mention;
                     var pushNum=a0+a1+a2+a3+a4;
                     console.log(pushNum);
-                    chrome.browserAction.setBadgeText({ text: pushNum.toString() });
+                    if(pushNum>0){
+
+                        chrome.browserAction.setBadgeText({ text: pushNum.toString() });
+                    }else{
+                        chrome.browserAction.setBadgeText({ text: "" });
+                    }
                 })
         },60000)
     }

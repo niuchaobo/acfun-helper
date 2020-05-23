@@ -1110,12 +1110,17 @@ $(document).ready(function () {
                   var reader=new FileReader();
                   reader.readAsText(file,"utf-8");
                   reader.onload=function () {
-                    jsonfy_config=JSON.parse(this.result);
+                      try{
+                          jsonfy_config=JSON.parse(this.result);
+                      }catch (e) {
+                          alert("文件格式不正确");
+                          return;
+                      }
                     for(i in jsonfy_config){
                         if(i !='AcpushList'){
                             chrome.storage.local.set({[i]:jsonfy_config[i]});
                     }}
-                    console.log(jsonfy_config);
+                    notice("AcFun助手","导入配置成功~");
                   };
               }
       };
