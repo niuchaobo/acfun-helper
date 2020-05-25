@@ -10,8 +10,7 @@ class ODHFront {
         this.live = new Live();//直播
         this.banana = new Banana();//自动投蕉
         this.videoSetting = new VideoSetting();//视频播放设置：自定义倍速、观影模式等
-
-
+        this.playerconfig = new PlayerConfig();//播放器和部分页面配置处理
 
         chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this));//接收来自后台的消息
         window.addEventListener('message', e => this.onFrameMessage(e));//接收来自iframe的消息
@@ -97,6 +96,9 @@ class ODHFront {
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.show_like){
             this.pageBeautify.showLikeCount();
         }
+
+        this.playerconfig.PConfProc();
+
     }
 
 
