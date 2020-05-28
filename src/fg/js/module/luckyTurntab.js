@@ -158,6 +158,27 @@ class LuckyTtab {
         })
     }
 
+    async isFollowed(QueryUserId,FollowUserId,Count=300){
+        //判断查询用户关注列表是否存在Follow的用户UID
+        let followApi='https://api-new.app.acfun.cn/rest/app/relation/getFollows?toUserId='+QueryUserId+'&pcursor=&count='+Count+'&page=0&groupId=0&action=7';
+        return new Promise((resolve, reject) => {
+            fetch(followApi)
+                .then((res)=>{return res.text();})
+                .then((res)=>{
+                    let x=JSON.parse(res);
+                    for(let i=0;i<=x.friendList.length;i++){
+                        if(x.friendList.userId == FollowUserId){
+                            resolve(true)
+                            break
+                        }else{
+                            resolve(false)
+                            break
+                        }
+                    }
+                });
+        })    
+    }
+    
     async getVCdetailCommentData(acid,){
         let acCommentApi='https://www.acfun.cn/rest/pc-direct/comment/list?sourceId='+acid+'&sourceType=3&page=';
         let totalPageNum = await this.getTotalPageNum(acid).then((res)=>{return res});
@@ -184,12 +205,9 @@ class LuckyTtab {
         //主函数
         let y = await this.getVCdetailCommentData(acid).then((res)=>{return res});
         let x = this.genNum(2,num,1,y['Comm_data_UIDList'].length);
-        if(!isFollowed){
         for(let i of x){
             console.log(y['Comm_data_UIDList'][i]);
             console.log(y['Comm_data_byUID'][y['Comm_data_UIDList'][i]]);
-        }}else{
-            console.log('isFollowed Valid');
         }
     }
 }
