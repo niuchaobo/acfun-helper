@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.5.527",
+    "version": "1.2.5.529",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -36,6 +36,7 @@
             "fg/js/module/live.js",
             "fg/js/module/banana.js",
             "fg/js/module/playerConfig.js",
+            "fg/js/module/luckyTurntab.js",
             "fg/js/module/videoSetting.js",
             "fg/js/frontend.js"
 
