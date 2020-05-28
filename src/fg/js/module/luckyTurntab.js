@@ -167,7 +167,7 @@ class LuckyTtab {
                 .then((res)=>{
                     let x=JSON.parse(res);
                     for(let i=0;i<=x.friendList.length;i++){
-                        if(x.friendList.userId == FollowUserId){
+                        if(x.friendList.userId[i] == FollowUserId){
                             resolve(true)
                             break
                         }else{
