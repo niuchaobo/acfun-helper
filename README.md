@@ -64,6 +64,10 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
     - 评论去重抽奖
     - 插件和播放器配置网络同步
 
+#### 开源许可证
+
+    Released under the MIT License.
+
 #### 提要
     * jquery 3.5.0
 ---
