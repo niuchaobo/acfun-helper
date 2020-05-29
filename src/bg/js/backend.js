@@ -6,7 +6,7 @@ class ODHBack {
 
         this.agent = new Agent(document.getElementById('sandbox').contentWindow);
         this.timer4Unread();
-        // this.fetchPushList();
+        this.fetchPushList();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));
