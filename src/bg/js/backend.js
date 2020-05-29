@@ -157,7 +157,7 @@ class ODHBack {
                         xmlData+=data.aid + "\" src=\""+data.titleImg+"\" class=\"preview\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+data.aid+" \"target=\"_blank\" href=\"" +"https://www.acfun.cn"+data.url+"\" class=\"title\">";
                         xmlData+=data.title+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
                         xmlData+=data.aid+"\" href=\"https://www.acfun.cn/u/"+data.userId+"\" class=\"name\">";
-                        xmlData+=data.username+"</a>&nbsp;/&nbsp;<span class=\"time\">"+formatDate(new Date(data.releaseDate),1)+"发布</span> </div> </div> </div> ";
+                        xmlData += data.username + " </a><span class=\"time\">" + getTimeSinceNow(data.releaseDate) + "</span> </div> </div> </div> ";
                         // console.log(xmlData);
                         out_data+=xmlData;
                     }
