@@ -30,11 +30,14 @@ class Download{
             return this.blob;
         };
         let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/');
+        let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/');
         var prefix = "";
+        console.log(m3u8);
         if (reg.test(m3u8)) {
             prefix = m3u8.match(reg)[0];
+        }else if(reg_new.test(m3u8)){
+            prefix = m3u8.match(reg_new)[0];
         }
-        console.log(m3u8);
         let res = await parseM3u8(m3u8);
         let segments = res.segments;
         let seArr = new Array();

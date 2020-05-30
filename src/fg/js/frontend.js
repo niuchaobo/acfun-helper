@@ -10,6 +10,8 @@ class ODHFront {
         this.live = new Live();//直播
         this.banana = new Banana();//自动投蕉
         this.videoSetting = new VideoSetting();//视频播放设置：自定义倍速、观影模式等
+
+
         this.playerconfig = new PlayerConfig();//播放器和部分页面配置处理
         this.luckyTurntab = new LuckyTtab();//幸运轮盘（抽奖）
 
@@ -99,6 +101,7 @@ class ODHFront {
         }
         this.playerconfig.PConfProc();
         this.videoSetting.callPicktureInPictureMode();
+
     }
 
 
