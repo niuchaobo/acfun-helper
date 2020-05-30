@@ -198,8 +198,12 @@ var pushListData = {
     arriveEnd: false, // 到达终点
 }
 function renderPushInnerHtml() {
-
     pushListData.busy = true
+    if(pushListData.index==1){
+    chrome.storage.local.get(['AcpushList1'],function(data){
+        $('#pop-push').append(data.AcpushList1);
+    })}
+    pushListData.index++;
     fetch('https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=0&gid=-1&count=30&pcursor=' + pushListData.index)
         .then((res) => { return res.text(); })
         .then((res) => {
@@ -210,9 +214,7 @@ function renderPushInnerHtml() {
                 return
             }
             pushListData.innerText = '';
-            // console.log(rawdata.feedList[0].username);
             for (let i = 0; i < rawdata.feedList.length; i++) {
-                // console.log(i);
                 let data = rawdata.feedList[i];
                 let xmlData = "<div class=\"inner\" id=\"";
                 xmlData += data.aid + "\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
@@ -220,13 +222,12 @@ function renderPushInnerHtml() {
                 xmlData += " class=\"thumb thumb-preview\"><img data-aid=\"";
                 xmlData += data.aid + "\" src=\"" + data.titleImg + "\" class=\"preview\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\"" + data.aid + " \"target=\"_blank\" href=\"" + "https://www.acfun.cn" + data.url + "\" class=\"title\">";
                 xmlData += data.title + "</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
-                xmlData += data.aid + "\" href=\"https://www.acfun.cn/u/" + data.userId + "\" class=\"name\">";
-                xmlData += data.username + "</a><span class=\"time\">" + getTimeSinceNow(data.releaseDate) + "</span> </div> </div> </div> ";
-                // console.log(xmlData);
+                xmlData += data.aid + "\" href=\"https://www.acfun.cn/u/" + data.userId + "\" class=\"name\"> ";
+                xmlData += data.username + " </a><span class=\"time\">" + getTimeSinceNow(data.releaseDate) + "</span> </div> </div> </div> ";
                 pushListData.innerText += xmlData;
             }
             $('#pop-push').append(pushListData.innerText)
-            pushListData.index++
+            // pushListData.index++
             setTimeout(() => {
                 pushListData.busy = false
             }, 0)

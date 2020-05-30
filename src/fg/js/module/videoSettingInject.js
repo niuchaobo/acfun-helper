@@ -72,6 +72,13 @@ function setCustomPlaybackRate(event) {
     }
 }
 
+//调用画中画模式
+function setPictureInPictureMode() {
+    let v = document.getElementsByTagName("video")[0];
+    v.requestPictureInPicture();
+    console.log('Calling PictureInPicture Mode.');
+}
+
 
 function quickJump(time) {
     let v_obj = document.getElementsByTagName("video")[0];

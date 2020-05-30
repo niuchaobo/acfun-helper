@@ -99,6 +99,9 @@ class ODHFront {
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.show_like){
             this.pageBeautify.showLikeCount();
         }
+        this.playerconfig.PConfProc();
+        this.videoSetting.callPicktureInPictureMode();
+
     }
 
 
