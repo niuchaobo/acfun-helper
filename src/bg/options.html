@@ -6,388 +6,580 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="css/options.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
+    <link rel="stylesheet" type="text/css" href="mdui/css/mdui.min.css" />
     <script src="../lib/jquery-3.5.0.min.js"></script>
     <script type="text/javascript" src="js/jquery.mloading.js"></script>
+    <script type="text/javascript" src="mdui/js/mdui.min.js"></script>
     <script type="text/javascript" src="js/options.js"></script>
     <script type="text/javascript" src="../common/utils.js"></script>
+    <style>
+    ::-webkit-scrollbar {
+        width: 8px;
+        background-color: #fff;
+    }
 
+    ::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+        border-radius: 3px;
+    }
+
+    body { line-height: 150%; }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1 style="text-align:center;">AcFun助手|设置</h1>
-    <!--<div style="text-align: center;font-weight: lighter"><span>acfun助手官网:<a href="https://pocketword.cn/">https://pocketword.cn/</a></span></div>-->
-    <hr class="head-hr" style="margin-bottom:0;">
-    <div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;">
-        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">投蕉设置</span>
-        <img id="banana-img" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
-    </div>
-    <div id="banana-div" class="autoTranslate" style="display:none;background: rgb(255, 255, 255);color: rgb(51, 51, 51);">
-        <div class="autoTranslate-switch">
-            <h3>自动投蕉<img src="images/on.png" class="switch-close" id="switch"></h3>
-            <div id="auto_options" style="color: rgb(204, 204, 204);">
-                <div class="huaci_selections">
-                    <img id="attention_switch" src="images/unselected.png">
-                    <span>给已关注up主投蕉</span>
+    <h1 style="text-align:center;">AcFun助手 | 设置</h1>
+
+    <div class="mdui-container doc-container">
+        <div class="mdui-tab mdui-tab-centered" mdui-tab>
+            <a href="#tab1" class="mdui-ripple">主站配置</a>
+            <a href="#tab2" class="mdui-ripple">内容设置</a>
+            <a href="#tab3" class="mdui-ripple">界面设置</a>
+            <a href="#tab4" class="mdui-ripple">播放器设置</a>
+            <a href="#tab5" class="mdui-ripple">插件设置</a>
+            <a href="#tab6" class="mdui-ripple">关于 & 注意</a>
+          </div>
+          
+          <div id="tab1" class="mdui-p-a-2">
+
+            <div class="mdui-panel" mdui-panel>
+  
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">自动投蕉</div>
+                    <div class="mdui-panel-item-summary">在选定的Up投稿中自动给Up投蕉</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+                    <div class="autoTranslate-switch">
+                        <h3>自动投蕉<img src="images/on.png" class="switch-close" id="switch"></h3>
+                        <div id="auto_options" style="color: rgb(204, 204, 204);">
+                            <div class="huaci_selections">
+                                <img id="attention_switch" src="images/unselected.png">
+                                <span> 给已关注Up主投蕉</span>
+                            </div>
+                            <hr style="border-bottom: 1px solid rgb(211,211,211)">
+                            <div class="huaci_selections">
+                                <img id="specific_switch" src="images/selected.png">
+                                <span> 给指定Up主投蕉</span>
+                            </div>
+                        </div>
+                    </div>
+            
+            
+                    <div id="attention" style="display: none"  class="table-container">
+                        <table class="table custom-head">
+                            <tbody>
+                            <tr>
+                                <td style="margin-left: 20px" id="thead-tip" class="">
+                                    当您浏览已关注的Up主的视频时，自动投蕉
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+            
+            
+                        <div id="huaci_options" >
+                            <div class="huaci_selections">
+                                <img data-num="1" class="attention_num" id="num1" src="images/unselected.png">
+                                <span>1蕉</span>
+                                <img data-num="2" class="attention_num" style="margin-left: 40px" id="num2" src="images/unselected.png">
+                                <span>2蕉</span>
+                                <img data-num="3" class="attention_num" style="margin-left: 40px" id="num3" src="images/unselected.png">
+                                <span>3蕉</span>
+                                <img data-num="4" class="attention_num" style="margin-left: 40px" id="num4" src="images/unselected.png">
+                                <span>4蕉</span>
+                                <img data-num="5" class="attention_num" style="margin-left: 40px" id="num5" src="images/selected.png">
+                                <span>5蕉</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="specific" style="display: none" class="table-container">
+                        <table class="table custom-head">
+                            <tbody>
+                            <tr>
+                                <td id="thead-tip-special" class="">
+                                    当您浏览以下Up主视频时，将自动投蕉
+                                </td>
+                                <td>
+                                    <span  id="add" class="">+ 添加Up主</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+            
+                        <table id="custom" class="table-custom table-custom-padding wordcontent">
+            
+                        </table>
+                    </div>
+            
+            
+                    <div class="div-lang-detect" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <h3>自动投蕉后提醒</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td id="detect-switch-l">
+                                    <p style="color: rgb(204, 204, 204);">
+                                        当插件帮您自动投蕉后，在右下角弹出提醒消息
+                                    </p>
+                                </td>
+                                <td id="detect-switch-r">
+                                    <img src="images/off.png" class="switch-open switch-close" id="detect-switch">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                                <div class="mdui-panel-item-actions">
+                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>cancel</button>
+                      <button class="mdui-btn mdui-ripple">save</button>
+                    </div>
+                  </div>
                 </div>
-                <hr style="border-bottom: 1px solid rgb(211,211,211)">
-                <div class="huaci_selections">
-                    <img id="specific_switch" src="images/selected.png">
-                    <span>给指定up主投蕉</span>
+                
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">评论是本体</div>
+                    <div class="mdui-panel-item-summary">给予用户一个Tag，就算改名了小助手也能帮您标记出来</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+                    <div class="div-common-up" style="background: rgb(237, 237, 237);">
+                        <h3>开启Up主标记</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td id="up-switch-l">
+                                    <p style="color: rgb(204, 204, 204);">
+                                        开启之后，Up主的评论将会这样显示<img style="vertical-align: top" height="20px" src="images/upname.png">
+                                    </p>
+                                </td>
+                                <td id="up-switch-r">
+                                    <img src="images/off.png" class="switch-open switch-close" id="up-switch">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            
+                    <div class="div-common-scan" style="background: rgb(237, 237, 237);">
+                        <h3>开启人物扫描</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td id="scan-switch-l">
+                                    <p style="color: rgb(204, 204, 204);">
+                                        开启之后，会在其名字后面显示你做的标记
+                                    </p>
+                                </td>
+                                <td id="scan-switch-r">
+                                    <img src="images/off.png" class="switch-open switch-close" id="scan-switch">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="div-common-mark" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <h3>开启人物标记</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td id="mark-switch-l">
+                                    <p style="color: rgb(204, 204, 204);">
+                                        开启之后，会在举报按钮下增加标记按钮
+                                    </p>
+                                </td>
+                                <td id="mark-switch-r">
+                                    <img src="images/off.png" class="switch-open switch-close" id="mark-switch">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            
+                    <div class="div-user-list" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <table class="table custom-head">
+                            <tbody>
+                            <tr>
+                                <td id="mark-add-text" class="">
+                                    已标记用户
+                                </td>
+                                <td>
+                                    <span id="mark-add" class="">+ 添加用户</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table  id="scan-users" class="table-custom table-custom-padding wordcontent">
+            
+                        </table>
+                    </div>
+                                <div class="mdui-panel-item-actions">
+                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>cancel</button>
+                      <button class="mdui-btn mdui-ripple">save</button>
+                    </div>
+                  </div>
                 </div>
+
+                <div class="mdui-panel-item">
+                    <div class="mdui-panel-item-header">
+                      <div class="mdui-panel-item-title">更新预留</div>
+                      <div class="mdui-panel-item-summary">A</div>
+                      <div class="mdui-panel-item-summary">B</div>
+                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                      <p>更新预留</p>
+                      <div class="mdui-panel-item-actions">
+                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                        <button class="mdui-btn mdui-ripple">保存</button>
+                      </div>
+                    </div>
+                  </div>
+                               
+              </div>              
+          </div>
+
+          <div id="tab2" class="mdui-p-a-2">
+
+            <div class="mdui-panel" mdui-panel>
+  
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">屏蔽指定Up的内容</div>
+                    <div class="mdui-panel-item-summary">我不喜欢你说的</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+                    <div class="div-filter-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <h3>开启Up主屏蔽</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td id="filter-switch-l">
+                                    <p style="color: rgb(204, 204, 204);">
+                                        开启之后，将看不到以下Up主的文章
+                                    </p>
+                                </td>
+                                <td id="filter-switch-r">
+                                    <img src="images/off.png" class="switch-open switch-close" id="filter-switch">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            
+            
+                    <div class="div-filter-list" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <table class="table custom-head">
+                            <tbody>
+                            <tr>
+                                <td id="filter-add-text" class="">
+                                    已屏蔽Up主
+                                </td>
+                                <td>
+                                    <span id="filter-add" class="">+ 添加Up主</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table   id="filter-ups" class="table-custom table-custom-padding wordcontent">
+            
+                        </table>
+                    </div>
+                                <div class="mdui-panel-item-actions">
+                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>cancel</button>
+                      <button class="mdui-btn mdui-ripple">save</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mdui-panel-item">
+                    <div class="mdui-panel-item-header">
+                      <div class="mdui-panel-item-title">更新预留</div>
+                      <div class="mdui-panel-item-summary">A</div>
+                      <div class="mdui-panel-item-summary">B</div>
+                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                      <p>更新预留</p>
+                      <div class="mdui-panel-item-actions">
+                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                        <button class="mdui-btn mdui-ripple">保存</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+              </div>
+          </div>
+
+          <div id="tab3" class="mdui-p-a-2">
+
+            <div class="mdui-panel" mdui-panel>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">主站界面优化</div>
+                    <div class="mdui-panel-item-summary">为主站界面增加更多实用信息或功能</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+                    <div class="div-nav-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <h3>首页右侧导航</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td id="nav-switch-l">
+                                    <p style="color: rgb(204, 204, 204);">
+                                        开启之后，在A站首页的右侧会出现导航条
+                                    </p>
+                                </td>
+                                <td id="nav-switch-r">
+                                    <img src="images/off.png" class="switch-open switch-close" id="nav-switch">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            
+                    <div class="div-personal-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <h3>个人中心优化</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td id="personal-switch-l">
+                                    <p style="color: rgb(204, 204, 204);">
+                                        开启之后，在个人中心的入口处显示你的听众、香蕉、金香蕉、UID等
+                                    </p>
+                                </td>
+                                <td id="personal-switch-r">
+                                    <img src="images/off.png" class="switch-open switch-close" id="personal-switch">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            
+                    <div class="div-like-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <h3>显示点赞数</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td id="like-switch-l">
+                                    <p style="color: rgb(204, 204, 204);">
+                                        开启之后，在视频播放页面显示点赞数
+                                    </p>
+                                </td>
+                                <td id="like-switch-r">
+                                    <img src="images/off.png" class="switch-open switch-close" id="like-switch">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+                <div class="mdui-panel-item">
+                    <div class="mdui-panel-item-header">
+                      <div class="mdui-panel-item-title">更新预留</div>
+                      <div class="mdui-panel-item-summary">A</div>
+                      <div class="mdui-panel-item-summary">B</div>
+                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                      <p>更新预留</p>
+                      <div class="mdui-panel-item-actions">
+                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                        <button class="mdui-btn mdui-ripple">保存</button>
+                      </div>
+                    </div>
+                  </div>
+                  
             </div>
-        </div>
+          </div>       
+          
+          <div id="tab4" class="mdui-p-a-2">
 
-
-        <div id="attention" style="display: none"  class="table-container">
-            <table class="table custom-head">
-                <tbody>
-                <tr>
-                    <td style="margin-left: 20px" id="thead-tip" class="">
-                        当您浏览已关注的up主的视频时，自动投蕉
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-
-            <div id="huaci_options" >
-                <div class="huaci_selections">
-                    <img data-num="1" class="attention_num" id="num1" src="images/unselected.png">
-                    <span>1蕉</span>
-                    <img data-num="2" class="attention_num" style="margin-left: 40px" id="num2" src="images/unselected.png">
-                    <span>2蕉</span>
-                    <img data-num="3" class="attention_num" style="margin-left: 40px" id="num3" src="images/unselected.png">
-                    <span>3蕉</span>
-                    <img data-num="4" class="attention_num" style="margin-left: 40px" id="num4" src="images/unselected.png">
-                    <span>4蕉</span>
-                    <img data-num="5" class="attention_num" style="margin-left: 40px" id="num5" src="images/selected.png">
-                    <span>5蕉</span>
+            <div class="mdui-panel" mdui-panel>
+  
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">播放器配置</div>
+                    <div class="mdui-panel-item-summary">定义播放器的种种~</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+                    <div class="div-rate-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <h3>自定义倍速</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td id="rate-switch-l">
+                                    <p style="color: rgb(204, 204, 204);">
+                                        开启之后，在视频倍速栏增加自定义倍速功能
+                                    </p>
+                                </td>
+                                <td id="rate-switch-r">
+                                    <img src="images/off.png" class="switch-open switch-close" id="rate-switch">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            
+                    <div id="player_mode"  style="background: rgb(250, 250, 250);margin-top: 0px;padding: 20px">
+                        <table class="">
+                            <tbody>
+                            <tr>
+                                <td style="margin-left: 20px" id="thead-tip" class="">
+                                    当进入视频播放页面时，播放器状态
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+            
+            
+                        <div id="mode_options" >
+                            <div class="mode_selections" style="color: rgb(51, 51, 51);">
+                                <img data-mode="default" class="player_mode" id="mode_default"  src="images/selected.png">
+                                <span>默认</span>
+                                <img data-mode="film" class="player_mode" id="mode_film" style="margin-left: 40px"  src="images/unselected.png">
+                                <span>观影模式</span>
+                                <img data-mode="web" class="player_mode" id="mode_web" style="margin-left: 40px"  src="images/unselected.png">
+                                <span>网页全屏</span>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="mdui-panel-item-actions">
+                          <button class="mdui-btn mdui-ripple" mdui-panel-item-close>cancel</button>
+                          <button class="mdui-btn mdui-ripple">save</button>
+                  </div>
                 </div>
-            </div>
-        </div>
-        <div id="specific" style="display: none" class="table-container">
-            <table class="table custom-head">
-                <tbody>
-                <tr>
-                    <td id="thead-tip-special" class="">
-                        当您浏览以下up主视频时，将自动投蕉
-                    </td>
-                    <td>
-                        <span  id="add" class="">+添加up主</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <table id="custom" class="table-custom table-custom-padding wordcontent">
-
-            </table>
-        </div>
-
-
-        <div class="div-lang-detect" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <h3>自动投蕉后提醒</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="detect-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            当插件帮您自动投蕉后，在右下角弹出提醒消息
-                        </p>
-                    </td>
-                    <td id="detect-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="detect-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-
-
-    <div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;margin-top: 20px">
-        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">评论才是本体</span>
-        <img id="comment-img" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
-    </div>
-
-    <div id="comment-div" style="display: none">
-        <div class="div-common-up" style="background: rgb(237, 237, 237);">
-            <h3>开启up主标记</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="up-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            开启之后，up主的评论将会这样显示<img style="vertical-align: top" height="20px" src="images/upname.png">
-                        </p>
-                    </td>
-                    <td id="up-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="up-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="div-common-scan" style="background: rgb(237, 237, 237);">
-            <h3>开启人物扫描</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="scan-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            开启之后，会在其名字后面显示你做的标记
-                        </p>
-                    </td>
-                    <td id="scan-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="scan-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="div-common-mark" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <h3>开启人物标记</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="mark-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            开启之后，会在举报按钮下增加标记按钮
-                        </p>
-                    </td>
-                    <td id="mark-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="mark-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="div-user-list" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <table class="table custom-head">
-                <tbody>
-                <tr>
-                    <td id="mark-add-text" class="">
-                        已标记用户
-                    </td>
-                    <td>
-                        <span id="mark-add" class="">+添加用户</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <table  id="scan-users" class="table-custom table-custom-padding wordcontent">
-
-            </table>
-        </div>
-    </div>
-
-
-    <div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;margin-top: 20px">
-        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">内容屏蔽</span>
-        <img id="filter-img" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
-    </div>
-    <div id="filter-div" style="display: none">
-        <div class="div-filter-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <h3>开启up主屏蔽</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="filter-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            开启之后，将看不到以下up主的文章
-                        </p>
-                    </td>
-                    <td id="filter-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="filter-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-        <div class="div-filter-list" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <table class="table custom-head">
-                <tbody>
-                <tr>
-                    <td id="filter-add-text" class="">
-                        已屏蔽up主
-                    </td>
-                    <td>
-                        <span id="filter-add" class="">+添加up主</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <table   id="filter-ups" class="table-custom table-custom-padding wordcontent">
-
-            </table>
-        </div>
-    </div>
-
-    <div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;margin-top: 20px">
-        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">界面优化</span>
-        <img id="beautify-img" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
-    </div>
-    <div id="beautify-div" style="display: none">
-        <div class="div-nav-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <h3>首页右侧导航</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="nav-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            开启之后，在A站首页的右侧会出现导航条
-                        </p>
-                    </td>
-                    <td id="nav-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="nav-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="div-personal-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <h3>个人中心优化</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="personal-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            开启之后，在个人中心的入口处显示你的听众、香蕉、金香蕉、UID等
-                        </p>
-                    </td>
-                    <td id="personal-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="personal-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="div-like-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <h3>显示点赞数</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="like-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            开启之后，在视频播放页面显示点赞数
-                        </p>
-                    </td>
-                    <td id="like-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="like-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-
-
-
-
-    <div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;margin-top: 20px">
-        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">播放器设置</span>
-        <img id="customvideo-img" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
-    </div>
-    <div id="customvideo-div" style="display: none">
-        <div class="div-rate-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <h3>自定义倍速</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="rate-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            开启之后，在视频倍速栏增加自定义倍速功能
-                        </p>
-                    </td>
-                    <td id="rate-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="rate-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="player_mode"  style="background: rgb(250, 250, 250);margin-top: 0px;padding: 20px">
-            <table class="">
-                <tbody>
-                <tr>
-                    <td style="margin-left: 20px" id="thead-tip" class="">
-                        当进入视频播放页面时，播放器状态
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-
-            <div id="mode_options" >
-                <div class="mode_selections" style="color: rgb(51, 51, 51);">
-                    <img data-mode="default" class="player_mode" id="mode_default"  src="images/selected.png">
-                    <span>默认</span>
-                    <img data-mode="film" class="player_mode" id="mode_film" style="margin-left: 40px"  src="images/unselected.png">
-                    <span>观影模式</span>
-                    <img data-mode="web" class="player_mode" id="mode_web" style="margin-left: 40px"  src="images/unselected.png">
-                    <span>网页全屏</span>
+              </div>     
+              
+              <div class="mdui-panel-item">
+                <div class="mdui-panel-item-header">
+                  <div class="mdui-panel-item-title">更新预留</div>
+                  <div class="mdui-panel-item-summary">A</div>
+                  <div class="mdui-panel-item-summary">B</div>
+                  <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                 </div>
+                <div class="mdui-panel-item-body">
+                  <p>更新预留</p>
+                  <div class="mdui-panel-item-actions">
+                    <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                    <button class="mdui-btn mdui-ripple">保存</button>
+                  </div>
+                </div>
+              </div>
+            
+          </div>
+          
+          
+        </div>
+
+        <div id="tab5" class="mdui-p-a-2">
+
+            <div class="mdui-panel" mdui-panel>
+  
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">插件&主站 配置导入导出</div>
+                    <div class="mdui-panel-item-summary">将插件或者主站的配置作为配置文件导入导出</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+                    <div class="div-export-settings" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <h3>导入导出插件配置</h3><br>
+                    <a style="cursor: pointer" class='configExport' id='configExport'>点击此处下载插件的配置文件</a><br><br>
+                    <a style="cursor: pointer" class='configPlayerExport' id='configPlayerExport'>点击此处导出播放器配置文件</a>
+                    <br><br>
+                    <div id="div_emlwX3V0aWxz_input"><span id="span_emlwX3V0aWxz_s1">导入插件配置文件:</span><input id="input_emlwX3V0aWxz_file" type="file"></div><br><br>
+                    <div id="div_emlwX3V0aWxp_input"><span id="span_emlwX3V0aWxp_s1">导入播放器配置文件:</span><input id="emlwX3V0aWxp_file" type="file"></div><br><br>
+                    <a style="cursor: pointer" class='configClean' id='configClean'>点击此处清除插件的所有配置</a>
+                    </div>
+                                <div class="mdui-panel-item-actions">
+                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>cancel</button>
+                      <button class="mdui-btn mdui-ripple">save</button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mdui-panel-item">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">更新预留</div>
+                    <div class="mdui-panel-item-summary">A</div>
+                    <div class="mdui-panel-item-summary">B</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+                    <p>更新预留</p>
+                    <div class="mdui-panel-item-actions">
+                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                      <button class="mdui-btn mdui-ripple">保存</button>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>            
+        </div>
+        
+        <div id="tab6" class="mdui-p-a-2">
+
+            <div class="mdui-col-sm-6 mdui-col-md-4">
+                AcFun-Helper是一个适用于AcFun（www.acfun.cn）的浏览器插件。<br><br>
+                AcFun-Helper 开源地址： 
+                <a href="https://github.com/niuchaobo/acfun-helper" target="_blank">Github</a><br><br>
+                <p>主要功能：</p>
+                <p>1.视频下载<br>
+                2.用户紫色标记（再也不怕别人改名了，是你？女装Up？）<br>
+                3.自动投蕉、并显示投蕉通知（香蕉烂掉？不可能的！）<br>
+                4.Up主屏蔽功能（你说的对，但是说得太不好听了吧）<br>
+                5.增加首页右侧导航栏，方便快速跳转至目标分区</p>
+                <p>6.右键下载视频封面（再也不用害羞地问封面了）<br>
+                7.右键AC搜索<br>
+                8.在PC端获取直播间m3u8直链看A站直播（现在有超清了，少主换成超清的来了！）<br>
+                9.在个人中心的入口处显示你的听众、香蕉、金香蕉、UID等信息<br>
+                10.视频投稿页面显示点赞数</p>
+                <p>11.在评论区给Up添加一个蓝色标记（终于不用翻到顶看看Up主是谁了，然来Up和我互动了？）<br>
+                12.播放器自定义倍速（0.1倍看老婆！？）<br>
+                13.设置进入视频播放页面时播放器自动进入观影模式或网页全屏<br>
+                14.已关注up主动态【弹出栏查看动态投稿动态列表】<br>
+                15.通过点击评论区时间跳转到视频指定位置（空降大成功！）</p>
+                <p>16.配置文件导入导出【插件配置（包含了屏蔽列表，Up主标记列表和自动投蕉、播放器自动化配置）、播放器配置（弹幕关键词屏蔽列表、播放器配置等）】<br>
+                17.一键清除插件配置</p>
+                <hr>                
+
             </div>
+            <div class="mdui-col-sm-6 mdui-col-md-4">
+                免责声明<br><br>下载的视频版权归视频所有者所有，除非视频所有者同意，否则下载的视频仅限作离线播放用途。任何未经授权的剪辑和再发布等行为均为侵犯版权的行为，请尊重创作者的劳动成果。
+                <br><br>本项目作者对下载者本人因使用此工具下载视频后剪辑、再发布等任何侵权行而产生的法律纠纷概不负责。
+                <br><br>请支持正版，本插件不支持下载任何非用户自行发布的内容（番剧、电影等），望谅解
+                <br><br>
+                <br><br>
+                隐私协议
+                <br><br><a href="/bg/privacy.md">Privacy</a>
+            </div>
+            <div class="mdui-col-sm-6 mdui-col-md-4">
+            
+            <div class="mdui-card">
+                <div class="mdui-card-header">
+                  <img class="mdui-card-header-avatar" src="images/lalazhuibushang-github.jpg"/>
+                  <div class="mdui-card-header-title"><a href="https://www.acfun.cn/u/7054138" target="_blank">啦啦追不上</a></div>
+                  <div class="mdui-card-header-subtitle">主导开发者</div>
+                </div>
+                <div class="mdui-card-media">
+                  <img src="../img/icon128.png"  style="width: 50%;margin-left: 90px;"/>
+                <div class="mdui-card-primary">
+                  <div class="mdui-card-primary-title">AcFun助手</div>
+                  <div class="mdui-card-primary-subtitle">浏览器插件</div>
+                </div>
+                <div class="mdui-card-content">是一个适用于AcFun（www.acfun.cn）的浏览器插件。</div>
+                
+              </div>       
+              </div>       
         </div>
 
-
-
     </div>
-    <div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;margin-top: 20px">
-        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">插件设置</span>
-        <img id="export-set" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
-    </div>
-    <div id="export-div" style="display: none">
-        <div class="div-export-settings" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <h3>导入导出插件配置</h3><br>
-        <a style="cursor: pointer" class='configExport' id='configExport'>点击此处下载插件的配置文件</a><br><br>
-        <a style="cursor: pointer" class='configPlayerExport' id='configPlayerExport'>点击此处导出播放器配置文件</a>
-        <br><br>
-        <div id="div_emlwX3V0aWxz_input"><span id="span_emlwX3V0aWxz_s1">导入插件配置文件:</span><input id="input_emlwX3V0aWxz_file" type="file"></div><br><br>
-        <div id="div_emlwX3V0aWxp_input"><span id="span_emlwX3V0aWxp_s1">导入播放器配置文件:</span><input id="emlwX3V0aWxp_file" type="file"></div><br><br>
-        <a style="cursor: pointer" class='configClean' id='configClean'>点击此处清除插件的所有配置</a>
-        </div>
-    </div>
-
-    <!--<div style="height: 50px;background-color: rgb(214, 154, 204);line-height: 50px;text-align: left;margin-top: 20px">
-        <span style="font-size: 16px;font-weight:bold;margin-left: 10px">换肤</span>
-        <img id="skin-img" title="点击展开" style="cursor:pointer;float: right;margin-right: 10px;margin-top: 12px" width="25px" height="25px" src="images/unfold.png"/>
-    </div>
-    <div id="skin-div" style="display: none">
-        <div class="div-filter-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-            <h3>开启A站换肤</h3>
-            <table>
-                <tbody>
-                <tr>
-                    <td id="skin-switch-l">
-                        <p style="color: rgb(204, 204, 204);">
-                            开启之后，A站的界面将采用指定的背景颜色和文字颜色
-                        </p>
-                    </td>
-                    <td id="skin-switch-r">
-                        <img src="images/off.png" class="switch-open switch-close" id="skin-switch">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-        <div class="div-skin-list" style="background: rgb(237, 237, 237);margin-top: 0px">
-
-        </div>
-    </div>-->
-
-</div>
-
 </body>
 </html>
