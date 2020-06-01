@@ -70,5 +70,6 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 
 #### 提要
     * jquery 3.5.0
+    * mdui 0.4.3
 ---
-#### 如果喜欢此插件，请务必给我们来一个Star，如果不喜欢，请不要浪费你的口水，来一个Star，然后在提交Issue来diss；总之欢迎提出各种建议或者意见，这些宝贵的意见对以后的体验是非常重要的，不喜欢就大声说出来。![阿部高和脸](https://js2.a.yximgs.com/bs2/emotion/1587040895463third_party_b35465999.png)
+#### 如果喜欢此插件，请务必给我们来一个Star，如果不喜欢，请不要浪费你的口水，来一个Star，然后再提交Issue来diss；总之欢迎提出各种建议或者意见，这些宝贵的意见对以后的体验是非常重要的，不喜欢就大声说出来。![阿部高和脸](https://js2.a.yximgs.com/bs2/emotion/1587040895463third_party_b35465999.png)
