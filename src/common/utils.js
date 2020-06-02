@@ -425,3 +425,45 @@ function getTimeSinceNow(date) {
         return `发布于${publishTime.getFullYear()}-${publishTime.getMonth + 1}-${publishTime.getDate()}`
     }
 }
+
+function getcookie(keys){
+    var arr=document.cookie.split(";");
+    for(var i=0; i<arr.length; i++){
+        var ass=arr[i].split("=");
+        if(ass[0].trim()==keys){
+            return  ass[1];
+        }
+    }
+    return false;
+
+}
+
+function adjustVideoUp(){
+    let currentUserNameEncode = getcookie("ac_username");
+    if(currentUserNameEncode!='' && currentUserNameEncode!=undefined){
+        let userName = decodeURI(currentUserNameEncode);
+        let name = document.getElementsByClassName("up-name")[0].innerText;
+        if(userName == name){
+            return 1;//是up主
+        }else{
+            return 2;//不是up主
+        }
+    }else{
+        return 0;//未登录
+    }
+}
+function adjustArticleUp(){
+    let currentUserNameEncode = getcookie("ac_username");
+    if(currentUserNameEncode!='' && currentUserNameEncode!=undefined){
+        let userName = decodeURI(currentUserNameEncode);
+        let name = document.getElementsByClassName("up-name")[0].firstChild.innerText;
+        console.log(name);
+        if(userName == name){
+            return 1;//是up主
+        }else{
+            return 2;//不是up主
+        }
+    }else{
+        return 0;//未登录
+    }
+}

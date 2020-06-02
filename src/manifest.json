@@ -44,6 +44,7 @@
         "css": [
             "fg/css/client.css",
             "fg/css/home_nav.css"
+
         ],
         "run_at": "document_start"
     }],
@@ -56,6 +57,7 @@
     "web_accessible_resources": [
         "fg/js/acfunxhr.js",
         "fg/css/frame.css",
+        "fg/css/lucy.css",
         "fg/js/frame.js",
         "fg/css/checkbox.css",
         "lib/jquery-3.5.0.min.js",

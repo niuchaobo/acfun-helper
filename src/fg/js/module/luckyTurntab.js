@@ -3,7 +3,7 @@
  */
 class LuckyTtab {
     constructor(){
-
+        this.messageFormat = "https://message.acfun.cn/im?targetId={userId}"
     }
 
     genNum(mode,num=0,min=0,max){
@@ -213,9 +213,29 @@ class LuckyTtab {
         let y = await this.getVCdetailCommentData(acid).then((res)=>{return res});
         let x = this.genNum(2,num,1,y['Comm_data_UIDList'].length-1);
         console.log(x);
+        var arr = new Array();
         for(let i in x){
             console.log(y['Comm_data_UIDList'][i]);
             console.log(y['Comm_data_byUID'][y['Comm_data_UIDList'][i]]);
+            let userId = y['Comm_data_UIDList'][i];
+            let commentInfo = y['Comm_data_byUID'][userId];
+            let url = this.messageFormat.replace("{userId}",userId);
+            let lucyUser = {
+                name : commentInfo.userName,
+                url : url,
+                comment : commentInfo.content,
+                floor: commentInfo.floor,
+            }
+            arr.push(lucyUser);
         }
+        //显示抽奖结果
+        var obj = document.getElementById("acfun-popup-helper");
+        var frameWindow = obj.contentWindow;
+        frameWindow.postMessage({
+            action: 'showLucyResult',
+            params: {
+                arr:JSON.stringify(arr),
+            }
+        }, '*');
     }
 }

@@ -111,6 +111,8 @@ class ODHFront {
         if(!this.options.enabled){
             return;
         }
+        //根据cookie判断当前登录用户是不是up
+        //let is_up = this.adjuatUp();
         let href = window.location.href;
         //顶栏头像下拉个人信息栏内容
         if(this.options.beautify_personal){
@@ -140,11 +142,13 @@ class ODHFront {
             if(currentVideoInfo==undefined || currentVideoInfo=="" || currentVideoInfo==null){
                 return;
             }
-            this.div.show(pageInfo,this.options,'video');
+            let isUp = adjustVideoUp();
+            this.div.show(pageInfo,this.options,'video',isUp);
         }
         //文章
         if(REG.article.test(href)){
-            this.div.show(pageInfo,this.options,'article');
+            let isUp = adjustArticleUp();
+            this.div.show(pageInfo,this.options,'article',isUp);
         }
 
         //从消息中心(评论)跳转
@@ -155,7 +159,7 @@ class ODHFront {
         //直播
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
-            this.div.show(pageInfo,this.options,'live');
+            this.div.show(pageInfo,this.options,'live','');
         }
         //自定义倍速
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
@@ -167,6 +171,15 @@ class ODHFront {
             //todo 加开关
             this.ce.searchScanForPlayerTime();
         }
+    }
+
+    //抽奖
+    api_lottery(params){
+        let {number,follow} = params;
+        let href = window.location.href;
+        let reg = /ac(\d+)/;
+        let acId = reg.exec(href)[1];
+        console.log(this.luckyTurntab.RollOut(acId,number))
     }
 
 

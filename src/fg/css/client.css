@@ -8,6 +8,7 @@ iframe#acfun-popup-helper {
     resize: both;
     visibility: hidden;
     z-index: 2147483647;
+    max-height: 500px;
 
 }
 

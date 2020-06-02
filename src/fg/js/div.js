@@ -7,7 +7,7 @@ class Div {
         this.options = null;
     }
 
-    show(pageInfo,options,type){
+    show(pageInfo,options,type,isUp){
         console.log(window.odhfront.options);
         this.options = options;
         //注入插件按钮
@@ -15,7 +15,7 @@ class Div {
         //注入展示页面
         this.popup.inject(options);
         //生成展示页面内容
-        let content = this.popup.renderPopup(pageInfo,type);
+        let content = this.popup.renderPopup(pageInfo,type,isUp);
 
         this.div.style.visibility = 'visible';
         this.div.innerText='助手';

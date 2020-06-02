@@ -82,6 +82,52 @@ function copyLink(event) {
     }
 }
 
+function lottery() {
+    let number = $("#lucy-number").val();
+    if(number=='' || Number(number)<=0){
+        return false;
+    }
+    let isFollow = $("#lucy-follow").val();
+    window.parent.postMessage({
+        action: 'lottery',
+        params: {
+            number: number,
+            isFollow: isFollow
+        }
+    }, '*');
+
+}
+
+function checkNumber() {
+    var value = $("#lucy-number").val();
+    var re = /^[1-9]+[0-9]*]*$/;
+    if(!re.test(value)) {
+        $("#lucy-number").val("");
+        //return false;
+
+    }
+}
+
+function api_showLucyResult(params) {
+    let src = "bg/images/copy_link.png";
+    let {arr} = params;
+    let lucyUser = JSON.parse(arr);
+    console.log(lucyUser);
+    let html = "";
+    for(let i=0;i<lucyUser.length;i++){
+        let obj = lucyUser[i];
+        console.log(obj);
+        html += ' <div class="odh-definition">\n' +
+            '         <a target="_blank" href="'+obj.url+'" class="comment-label">'+obj.name+'</a>\n' +
+            '             <span style="margin-right: 10px">#'+obj.floor+'</span>\n' +
+            '             <div id="ncb-div" style="">\n' +
+            '                                 '+obj.comment+'\n' +
+            '             </div>\n' +
+            '      </div>'
+    }
+    $("#lucy-result").html(html);
+
+}
 
 function onDomContentLoaded() {
     registVideoClick();
@@ -90,6 +136,12 @@ function onDomContentLoaded() {
     $("#comment-receive").change(receiveChange);
     $("#copy-link-super").bind('click',{"id":'#live-url-super'},copyLink);
     $("#copy-link-high").bind('click',{"id":'#live-url-high'},copyLink);
+    //抽奖
+    $("#lucy-chou").bind('click',lottery);
+    $("#lucy-number").bind('keyup',checkNumber);
+    $("#ncb").click(function () {
+        $("#ncb-div").show();
+    })
 }
 
 function onMessage(e) {

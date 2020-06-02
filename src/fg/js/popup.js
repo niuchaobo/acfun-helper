@@ -72,7 +72,7 @@ class Popup {
         }
     }
 
-    renderPopup(pageInfo,type) {
+    renderPopup(pageInfo,type,isUp) {
         let content = '';
         if(type=='video'){
             let videoInfo =  pageInfo.currentVideoInfo;
@@ -136,6 +136,10 @@ class Popup {
         if(type!='live'){
             html+=this.popComment();
         }
+        //抽奖部分
+        if(isUp==1){
+            html+=this.popLottery();
+        }
         html+=this.popupFooter(type);
         this.setContent(html);
     }
@@ -173,6 +177,32 @@ class Popup {
                 `;
     }
 
+    popLottery(){
+        let src = chrome.runtime.getURL('/')+"bg/images/copy_link.png";
+        let str = "[img=图片]https://imgs.aixifan.com/content/2020_05_25/1.5904184183999112E9.jpg[/img]"
+        return `<div class="odh-headsection">
+                    <span class="odh-expression">评论区抽奖</span>
+                </div>
+                <div class="odh-definition basic-grey">
+                     <label>
+                        <span>抽多少个acer :</span> 
+                        <input id="lucy-number" type="text" autocomplete="off" name="number" placeholder="请输入数字"/></label>
+                        <!--<label>
+                        <span>是否关注up主 :</span> 
+                        <input id="lucy-follow" type="checkbox" name="uniq" />
+                        </label> -->
+                        <label style="display:block">
+                        <span >抽奖结果 :</span> 
+                        <div id=lucy-result></div>
+                        
+                        </label> 
+                        
+                        <span>&nbsp;</span> 
+                        <input type="button"  id="lucy-chou" class="button" value="抽~" /></label>
+                </div>
+                `;
+    }
+
 
     popupHeader(type) {
         let root = chrome.runtime.getURL('/');
@@ -187,6 +217,7 @@ class Popup {
             <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title></title>
                 <link rel="stylesheet" href="${root+'fg/css/checkbox.css'}">
                 <link rel="stylesheet" href="${root+'fg/css/frame.css'}">
+                <link rel="stylesheet" href="${root+'fg/css/lucy.css'}">
                 ${fn()}
             </head>
             <body style="margin:0px;">
