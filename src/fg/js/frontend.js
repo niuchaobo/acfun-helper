@@ -143,12 +143,12 @@ class ODHFront {
                 return;
             }
             let isUp = adjustVideoUp();
-            this.div.show(pageInfo,this.options,'video',isUp);
+            this.div.show(pageInfo,this.options,'video',1);
         }
         //文章
         if(REG.article.test(href)){
             let isUp = adjustArticleUp();
-            this.div.show(pageInfo,this.options,'article',isUp);
+            this.div.show(pageInfo,this.options,'article',1);
         }
 
         //从消息中心(评论)跳转

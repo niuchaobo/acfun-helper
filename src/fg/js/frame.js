@@ -83,6 +83,7 @@ function copyLink(event) {
 }
 
 function lottery() {
+    $('#lucy-chou').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
     let number = $("#lucy-number").val();
     if(number=='' || Number(number)<=0){
         return false;
@@ -109,15 +110,14 @@ function checkNumber() {
 }
 
 function api_showLucyResult(params) {
-    let src = "bg/images/copy_link.png";
     let {arr} = params;
     let lucyUser = JSON.parse(arr);
-    console.log(lucyUser);
     let html = "";
     for(let i=0;i<lucyUser.length;i++){
+        let seq = i+1;
         let obj = lucyUser[i];
-        console.log(obj);
         html += ' <div class="odh-definition">\n' +
+            '         <span class="lucy-seq">'+seq+'</span>'+
             '         <a target="_blank" href="'+obj.url+'" class="comment-label">'+obj.name+'</a>\n' +
             '             <span style="margin-right: 10px">#'+obj.floor+'</span>\n' +
             '             <div id="ncb-div" style="">\n' +
@@ -126,6 +126,13 @@ function api_showLucyResult(params) {
             '      </div>'
     }
     $("#lucy-result").html(html);
+    let height = $("#lucy-result").height();
+    let node = window.parent.document.getElementById("acfun-popup-helper");
+    let _h = node.clientHeight;
+    let t = height+_h
+    node.style.height=t+"px";
+    $('#lucy-chou').loading('stop');
+    $("#lucy-result-label").show();
 
 }
 

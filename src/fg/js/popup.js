@@ -191,11 +191,12 @@ class Popup {
                         <span>是否关注up主 :</span> 
                         <input id="lucy-follow" type="checkbox" name="uniq" />
                         </label> -->
-                        <label style="display:block">
+                        <label id=lucy-result-label style="display:none">
                         <span >抽奖结果 :</span> 
-                        <div id=lucy-result></div>
+                        
                         
                         </label> 
+                        <div id=lucy-result></div>
                         
                         <span>&nbsp;</span> 
                         <input type="button"  id="lucy-chou" class="button" value="抽~" /></label>
@@ -239,6 +240,7 @@ class Popup {
             </div>
             ${fn()}
             <script charset="UTF-8" src="${root+'lib/jquery-3.5.0.min.js'}"></script>
+            <script charset="UTF-8" src="${root+'bg/js/jqueryExtend.js'}"></script>
             <script charset="UTF-8" src="${root+'fg/js/frame.js'}"></script>
             </body>
         </html>`;

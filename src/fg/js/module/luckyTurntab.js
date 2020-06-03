@@ -10,7 +10,7 @@ class LuckyTtab {
         //输出随机数或随机数列表
         if(mode==1){
             //输出一个数字
-            return Math.floor(Math.random() * Math.floor(max))+min;
+            return Math.floor(Math.random() * (max - min)) + min;
         }else if(mode==2){
             //输出一个不重复的字典
             let result={};
@@ -158,9 +158,15 @@ class LuckyTtab {
             //循环获取分页下的评论
             for(let i=1;i<=totalPageNum;i++){
                 let jsonfy_comment =JSON.parse(await this.getResult(acCommentApi+i).then((res)=>{return res}));
+                console.log(jsonfy_comment)
                 for(let j=0;j<jsonfy_comment.rootComments.length;j++){
-                    Comm_data_UIDList.push(jsonfy_comment.rootComments[j].userId);
-                    Comm_data_byUID[jsonfy_comment.rootComments[j].userId]=jsonfy_comment.rootComments[j];
+                    let obj = jsonfy_comment.rootComments[j];
+                    //跳过up主自己
+                    if(obj.isUp){
+                        continue;
+                    }
+                    Comm_data_UIDList.push(obj.userId);
+                    Comm_data_byUID[obj.userId]=obj;
             }}
         }
         Comm_data['Comm_data_UIDList']=Comm_data_UIDList;
@@ -211,10 +217,37 @@ class LuckyTtab {
     async RollOut(acid,num){
         //主函数
         let y = await this.getVCdetailCommentData(acid).then((res)=>{return res});
-        let x = this.genNum(2,num,1,y['Comm_data_UIDList'].length-1);
-        console.log(x);
+        let max = y['Comm_data_UIDList'].length;
+        if(num>max){
+            num = max;
+        }
+        //let x = this.genNum(2,num,0,max);
+        //console.log(x);
         var arr = new Array();
-        for(let i in x){
+        let min = 0;
+        while(arr.length<num){
+            //获取随机下标
+            let i = Math.floor(Math.random() * (max - min)) + min;
+
+            console.log(y['Comm_data_UIDList'][i]);
+            console.log(y['Comm_data_byUID'][y['Comm_data_UIDList'][i]]);
+            let userId = y['Comm_data_UIDList'][i];
+            let commentInfo = y['Comm_data_byUID'][userId];
+            let url = this.messageFormat.replace("{userId}",userId);
+            let lucyUser = {
+                name : commentInfo.userName,
+                url : url,
+                comment : commentInfo.content,
+                floor: commentInfo.floor,
+            };
+            arr.push(lucyUser);
+            y['Comm_data_UIDList'].splice(i,1);
+            max--;
+        }
+
+
+
+        /*for(let i in x){
             console.log(y['Comm_data_UIDList'][i]);
             console.log(y['Comm_data_byUID'][y['Comm_data_UIDList'][i]]);
             let userId = y['Comm_data_UIDList'][i];
@@ -227,7 +260,7 @@ class LuckyTtab {
                 floor: commentInfo.floor,
             }
             arr.push(lucyUser);
-        }
+        }*/
         //显示抽奖结果
         var obj = document.getElementById("acfun-popup-helper");
         var frameWindow = obj.contentWindow;
