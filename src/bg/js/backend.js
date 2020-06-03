@@ -161,7 +161,7 @@ class ODHBack {
                         // console.log(xmlData);
                         out_data+=xmlData;
                     }
-                    chrome.storage.local.set({'AcpushList': out_data});
+                    chrome.storage.local.set({'AcpushList1': out_data});
                     // chrome.storage.local.get(['AcpushList'],function(datao){
                     //     console.log(datao);
                     // })
