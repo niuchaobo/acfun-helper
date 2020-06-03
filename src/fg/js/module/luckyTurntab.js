@@ -88,7 +88,6 @@ class LuckyTtab {
         let Comm_data_byUID={};
         if(totalPageNum && totalPageNum >=1){
             //循环获取分页下的评论
-            console.log('LuckyTtab.getNRdetailCommentData');
             for(let i=0;i<=totalPageNum-1;i++){
                 fetch(acCommentApi+i).then((res)=>{return res.text();})
                 .then((res)=>{
@@ -101,7 +100,6 @@ class LuckyTtab {
                 }
                 )
             }
-            console.log(Comm_data_UIDList);
         }
         Comm_data['Comm_data_UIDList']=Comm_data_UIDList;
         Comm_data['Comm_data_byUID']=Comm_data_byUID;
@@ -158,7 +156,6 @@ class LuckyTtab {
             //循环获取分页下的评论
             for(let i=1;i<=totalPageNum;i++){
                 let jsonfy_comment =JSON.parse(await this.getResult(acCommentApi+i).then((res)=>{return res}));
-                console.log(jsonfy_comment)
                 for(let j=0;j<jsonfy_comment.rootComments.length;j++){
                     let obj = jsonfy_comment.rootComments[j];
                     //跳过up主自己
@@ -171,7 +168,6 @@ class LuckyTtab {
         }
         Comm_data['Comm_data_UIDList']=Comm_data_UIDList;
         Comm_data['Comm_data_byUID']=Comm_data_byUID;
-        console.log(Comm_data);
         return Comm_data;
     }
 
@@ -200,7 +196,6 @@ class LuckyTtab {
                 .then((res)=>{return res.text();})
                 .then((res)=>{
                     let x=JSON.parse(res);
-                    console.log(x);
                     for(let i=0;i<=x.friendList.length;i++){
                         if(x.friendList.userId[i] == FollowUserId){
                             resolve(true)
@@ -229,8 +224,6 @@ class LuckyTtab {
             //获取随机下标
             let i = Math.floor(Math.random() * (max - min)) + min;
 
-            console.log(y['Comm_data_UIDList'][i]);
-            console.log(y['Comm_data_byUID'][y['Comm_data_UIDList'][i]]);
             let userId = y['Comm_data_UIDList'][i];
             let commentInfo = y['Comm_data_byUID'][userId];
             let url = this.messageFormat.replace("{userId}",userId);
