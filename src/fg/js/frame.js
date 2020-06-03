@@ -249,4 +249,4 @@ document.addEventListener('DOMContentLoaded', onDomContentLoaded, false);
     }, '*');
 }*/
 window.addEventListener('message', onMessage);
-window.addEventListener('wheel', onMouseWheel,{ passive: true });
+// window.addEventListener('wheel', onMouseWheel,{ passive: true });
