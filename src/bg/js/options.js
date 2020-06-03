@@ -1174,6 +1174,25 @@ $(document).ready(function () {
             console.log('Zero');
           });}
       });
+
+      $('.Getresult_act').on('click', function(){
+        chrome.storage.local.get(['LocalUserId'],function(datao){
+            console.log(datao);
+            let x=$('p.read_result')[0];
+            let Uid=Number(datao.LocalUserId)
+            x.innerText = '[ AcFun-Uid : '+Uid+ ' ]';
+            console.log(this.options);
+            chrome.storage.local.get(null, function (items) {
+            var options_data = JSON.stringify(sanitizeOptions(items));
+            if(typeof(Uid)=='number'){
+                fetch('http://127.0.0.1:5000/test',{method:"POST",headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded','Accept':"accept: application/json, text/plain, */*"},body:`userId=${Uid};options_data=${options_data}`})
+                .then((res=>{return res.text()}))
+                .then((res)=>{console.log(res)})
+            }
+        })
+        });
+    });
   
     $('#filter-add').on('click', function () {
         if ($('.filter-add-tr').length <= 0 && filter) {
