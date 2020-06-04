@@ -1,7 +1,7 @@
 .container {
     font-family: "Segoe UI", Arial, "Microsoft Yahei", sans-serif;
     font-size: 14px;
-    width: 640px;
+    width: 75%;
     border-radius: 5px;
     margin: 5px auto;
     padding: 15px;
@@ -10,17 +10,36 @@
     border-color: #e5e6e9 #dfe0e4 #d0d1d5;
     overflow: auto;
 }
+h1 {
+    font-size: 2rem;
+}
 
-/*h3 {
-    margin: 0 auto 5px;
-    text-align: center;
-}*/
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.6rem;
+}
+
+h4 {
+    font-size: 1.4rem;
+}
+
+h5 {
+    font-size: 1.2rem;
+}
 
 ol {
     margin: 0;
     padding: 5px 10px;
 }
 
+ul {
+    list-style-type: none;
+    padding: 0px 10px 0px 20px;
+    border-left: 1px dashed #CCCCCC;
+}
 li {
     margin: 5px;
     line-height: 1.5em;
