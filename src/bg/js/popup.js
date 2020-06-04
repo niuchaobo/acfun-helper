@@ -178,7 +178,7 @@ function openSetting() {
 
 function watchLive() {
     let uid = $("#live-id").val();
-    let url = `https://m.acfun.cn/live/detail/${uid}?platform=Android&uid=${uid}`;
+    let url = `http://live.acfun.cn/live/${uid}`;
     var a = $("<a href='" + url + "' target='_blank'></a>").get(0);
     var e = document.createEvent('MouseEvents');
     e.initEvent('click', true, true);
