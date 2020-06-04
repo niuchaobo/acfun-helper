@@ -82,6 +82,59 @@ function copyLink(event) {
     }
 }
 
+function lottery() {
+    $('#lucy-chou').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
+    let number = $("#lucy-number").val();
+    if(number=='' || Number(number)<=0){
+        return false;
+    }
+    let isFollow = $("#lucy-follow").val();
+    window.parent.postMessage({
+        action: 'lottery',
+        params: {
+            number: number,
+            isFollow: isFollow
+        }
+    }, '*');
+
+}
+
+function checkNumber() {
+    var value = $("#lucy-number").val();
+    var re = /^[1-9]+[0-9]*]*$/;
+    if(!re.test(value)) {
+        $("#lucy-number").val("");
+        //return false;
+
+    }
+}
+
+function api_showLucyResult(params) {
+    let {arr} = params;
+    let lucyUser = JSON.parse(arr);
+    let html = "";
+    for(let i=0;i<lucyUser.length;i++){
+        let seq = i+1;
+        let obj = lucyUser[i];
+        html += ' <div class="odh-definition">\n' +
+            '         <span class="lucy-seq">'+seq+'</span>'+
+            '         <a target="_blank" href="'+obj.url+'" class="comment-label">'+obj.name+'</a>\n' +
+            '             <span style="margin-right: 10px">#'+obj.floor+'</span>\n' +
+            '             <div id="ncb-div" style="">\n' +
+            '                                 '+obj.comment+'\n' +
+            '             </div>\n' +
+            '      </div>'
+    }
+    $("#lucy-result").html(html);
+    let height = $("#lucy-result").height();
+    let node = window.parent.document.getElementById("acfun-popup-helper");
+    let _h = node.clientHeight;
+    let t = height+_h
+    node.style.height=t+"px";
+    $('#lucy-chou').loading('stop');
+    $("#lucy-result-label").show();
+
+}
 
 function onDomContentLoaded() {
     registVideoClick();
@@ -90,6 +143,12 @@ function onDomContentLoaded() {
     $("#comment-receive").change(receiveChange);
     $("#copy-link-super").bind('click',{"id":'#live-url-super'},copyLink);
     $("#copy-link-high").bind('click',{"id":'#live-url-high'},copyLink);
+    //抽奖
+    $("#lucy-chou").bind('click',lottery);
+    $("#lucy-number").bind('keyup',checkNumber);
+    $("#ncb").click(function () {
+        $("#ncb-div").show();
+    })
 }
 
 function onMessage(e) {
@@ -190,4 +249,4 @@ document.addEventListener('DOMContentLoaded', onDomContentLoaded, false);
     }, '*');
 }*/
 window.addEventListener('message', onMessage);
-window.addEventListener('wheel', onMouseWheel,{ passive: true });
+//window.addEventListener('wheel', onMouseWheel,{ passive: true });

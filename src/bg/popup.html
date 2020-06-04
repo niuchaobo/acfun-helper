@@ -3,45 +3,161 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
-    <link rel="stylesheet" type="text/css" href="css/checkbox.css" />
-    <link rel="stylesheet" type="text/css" href="css/popup.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css"/>
+    <link rel="stylesheet" type="text/css" href="css/checkbox.css"/>
+    <link rel="stylesheet" type="text/css" href="css/popup.css"/>
     <title data-i18n="optTitle">Acfun助手</title>
+    <style>
+        .r {
+            /* float: right;*/
+            position: relative;
+            /* border: solid 1px red; */
+            /*position: absolute;
+            margin-left: 45%;*/
+            /*height: 100px;*/
+            /* width: 30%; */
+            overflow: hidden;
+            font-size: 12px;
+        }
+
+        .r>a {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            color: #7B68EE;
+            padding-left: 1px;
+        }
+
+        .l {
+            /*width: 45%;
+            float: left;*/
+            position: relative;
+            /*height: 100px;*/
+            /*position: absolute;*/
+            /* border: solid 1px red; */
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 4px;
+        }
+        .l img{
+            border-radius: 4px;
+        }
+        .inner {
+            /* border: solid 1px blue; */
+            /*top: 100px;
+            bottom: 100px;
+            height: 95px;*/
+            /* height: 312px; */
+            background-color: #fefefe;
+            border: 1px solid;
+            border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+            border-radius: 3px;
+            padding: 3px;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+
+        .pop-push-list {
+            background-color: azure;
+            /* border-color: red; */
+            padding: 4px 4px 4px 4px;
+            border: 1px;
+            border-style: solid;
+            border-spacing: 2px;
+            border-width: 1px 1px 1px 1px;
+        }
+
+        .preview {
+            height: auto;
+            /* width: auto; */
+            width: 100%;
+        }
+
+        .r .avatar {
+            border-radius: 50%;
+            height: auto;
+            width: 100%;
+            /* width: 10%; */
+        }
+        .r .time{
+            margin-left: 8px;
+            color: #aaa;
+        }
+        .r .info {
+            padding-left: 8px;
+            margin-top: 5px;
+        }
+        .r .info a {
+            color: #666;
+        }
+        .push_end{
+            color: #999;
+            text-align: center;
+            line-height: 200%;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            background-color: #fff;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #ddd;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 
-<body style="width: 200px">
+<body style="width: 250px;overflow-x: hidden;">
 <div class="container">
-    <div class="head">
-        <div class="item">
-            <div id="pop-title" class="pop-title">
-                <label class="comment-label">打开关闭插件</label>
-                <div style="float: right;" class="enabled">
-                    <input type="checkbox" checked id="extends-enbaled">
-                    <label for="extends-enbaled"></label>
+    <div class="top-fixed">
+        <div class="head">
+            <div class="item">
+                <div id="pop-title" class="pop-title">
+                    <label class="comment-label">打开关闭插件</label>
+                    <div style="float: right;" class="enabled">
+                        <input type="checkbox" checked id="extends-enbaled">
+                        <label for="extends-enbaled"></label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="pop-introduce" style="" class="odh-definition">
-        <ul class="ec">
-            <li class="ec">
-                <img style="margin-right: 30px" width="14px" height="14px" src="images/instruction.png"><span  class="pos simple">使用说明</span>
-            </li>
-        </ul>
-    </div>
-    <div id="pop-setting" class="odh-definition">
-        <ul class="ec">
-            <li class="ec">
-                <img style="margin-right: 30px" width="14px" height="14px" src="images/setting.png"><span  class="pos simple">设置</span>
-            </li>
-        </ul>
-    </div>
+        <div id="pop-introduce" style="" class="odh-definition">
+            <ul class="ec">
+                <li class="ec">
+                    <img style="margin-right: 30px" width="14px" height="14px" src="images/instruction.png"><span
+                        class="pos simple">使用说明</span>
+                </li>
+            </ul>
+        </div>
+        <div id="pop-setting" class="odh-definition">
+            <ul class="ec">
+                <li class="ec">
+                    <img style="margin-right: 30px" width="14px" height="14px" src="images/setting.png"><span
+                        class="pos simple">设置</span>
+                </li>
+            </ul>
+        </div>
 
 
-    <div id="pop-live" class="pop-live">
-        <input id="live-id" style="line-height:16px;width: 140px;margin: 0 2px;font-size: 12px" type="text" placeholder="请输入uid"/><span id="go-live"  class="go-live">看直播</span>
-    </div>
+        <div id="pop-live" class="pop-live">
+            <input id="live-id" style="line-height:16px;width: 130px;margin: 0 2px;font-size: 12px" type="text"
+                   placeholder="请输入uid"/><span id="go-live" class="go-live">看直播</span>
+        </div>
 
+    </div>
+    <div>
+        <!--<div class="push-msg">
+            <span style="background-color: #5bd2f8">评论</span>(1)
+            <span style="background-color: #3dae4a">赞</span>(2)
+            <span style="background-color: #93a085">私信</span>(3)
+        </div>-->
+
+        <div id="pop-push" class="pop-push">
+
+        </div>
+    </div>
     <!--<div id="pop-setting" class="odh-definition">
         <ul class="ec">
             <li class="ec">

@@ -12,6 +12,8 @@ class ODHFront {
         this.videoSetting = new VideoSetting();//视频播放设置：自定义倍速、观影模式等
 
 
+        this.playerconfig = new PlayerConfig();//播放器和部分页面配置处理
+        this.luckyTurntab = new LuckyTtab();//幸运轮盘（抽奖）
 
         chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this));//接收来自后台的消息
         window.addEventListener('message', e => this.onFrameMessage(e));//接收来自iframe的消息
@@ -21,7 +23,8 @@ class ODHFront {
         document.addEventListener('DOMContentLoaded',e=>this.onDomContentLoaded(e));
         //监听storage变化,可用于数据云同步
         chrome.storage.onChanged.addListener(function (changes,areaName) {
-
+            console.log('11111111111111111')
+            console.log(document.cookie);
         });
     }
 
@@ -93,9 +96,12 @@ class ODHFront {
             this.pageBeautify.navBeautify();
         }
         //显示点赞数
-        if(REG.video.test(href) || REG.bangumi.test(href) && this.options.show_like){
+        if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.show_like){
             this.pageBeautify.showLikeCount();
         }
+        this.playerconfig.PConfProc();
+        this.videoSetting.callPicktureInPictureMode();
+
     }
 
 
@@ -105,6 +111,8 @@ class ODHFront {
         if(!this.options.enabled){
             return;
         }
+        //根据cookie判断当前登录用户是不是up
+        //let is_up = this.adjuatUp();
         let href = window.location.href;
         //顶栏头像下拉个人信息栏内容
         if(this.options.beautify_personal){
@@ -134,11 +142,13 @@ class ODHFront {
             if(currentVideoInfo==undefined || currentVideoInfo=="" || currentVideoInfo==null){
                 return;
             }
-            this.div.show(pageInfo,this.options,'video');
+            let isUp = adjustVideoUp();
+            this.div.show(pageInfo,this.options,'video',isUp);
         }
         //文章
         if(REG.article.test(href)){
-            this.div.show(pageInfo,this.options,'article');
+            let isUp = adjustArticleUp();
+            this.div.show(pageInfo,this.options,'article',isUp);
         }
 
         //从消息中心(评论)跳转
@@ -149,7 +159,7 @@ class ODHFront {
         //直播
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
-            this.div.show(pageInfo,this.options,'live');
+            this.div.show(pageInfo,this.options,'live','');
         }
         //自定义倍速
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
@@ -158,7 +168,18 @@ class ODHFront {
         //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
         if((REG.video.test(href) || REG.bangumi.test(href))){
             this.videoSetting.monitorFullScreen();
+            //todo 加开关
+            this.ce.searchScanForPlayerTime();
         }
+    }
+
+    //抽奖
+    api_lottery(params){
+        let {number,follow} = params;
+        let href = window.location.href;
+        let reg = /ac(\d+)/;
+        let acId = reg.exec(href)[1];
+        console.log(this.luckyTurntab.RollOut(acId,number))
     }
 
 

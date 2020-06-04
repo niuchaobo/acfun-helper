@@ -71,3 +71,26 @@ function setCustomPlaybackRate(event) {
         }
     }
 }
+
+//调用画中画模式
+function setPictureInPictureMode() {
+    let v = document.getElementsByTagName("video")[0];
+    v.requestPictureInPicture();
+    console.log('Calling PictureInPicture Mode.');
+}
+
+
+function quickJump(time) {
+    let v_obj = document.getElementsByTagName("video")[0];
+    v_obj.currentTime = Duration2Seconds(time);
+    console.log('Jump_ok');
+}
+
+function Duration2Seconds(time){
+    let str = time;
+    let arr = str.split(':');
+    let Tm=Number(arr[0]*60);
+    let Ts=Number(arr[1]);
+    let seconds=Tm+Ts;
+    return seconds;
+}

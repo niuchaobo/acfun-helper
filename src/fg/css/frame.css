@@ -187,3 +187,15 @@ ul.ec, li.ec {margin:0; padding:0;}
 .comment-label{
   line-height: 26px
 }
+
+.lucy-seq{
+  width: 5px;
+  height: 5px;
+  margin-right: 10px;
+  background-color: #d69acc;
+  border-radius: 20%;
+  color:black;
+  font-weight: lighter;
+  padding: 2px;
+  font-family: 'Open Sans', Helvetica, Arial, 'Microsoft Yahei', Sans-serif;
+}

@@ -26,13 +26,21 @@ class VideoSetting{
             hiddenDiv.innerText = JSON.stringify(window.odhfront.options);
             hiddenDiv.dispatchEvent(customEvent);
         }
-
-
-
-
     }
 
-
+    //增加画中画模式的按钮（暂时用全屏按钮样式代替下）
+    callPicktureInPictureMode(){
+        let html = `<div class="fullscreen fullscreen-web" style="position: relative;width: 38px;height: 20px;">
+        <div class="control-btn btn-fullscreen"><span class="btn-span" style="" onClick=setPictureInPictureMode()></span></div><span class="tip-fullscreen">进入画中画</span></div>`;
+        let _timer = setInterval(function () {
+            let node = $("div.control-btn.setting");
+            if(node.length>0){
+                node.after(html);
+                clearInterval(_timer);
+            }
+        },1000);
+    }
+    
     //增加自定义播放速度
     customPlaybackRate(){
         let html = `

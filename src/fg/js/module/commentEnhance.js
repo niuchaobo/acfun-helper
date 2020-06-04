@@ -1,5 +1,5 @@
 /**
- * 评论区增强 1.用户标记 2.up主评论显示【up主】标记
+ * 评论区增强 1.用户标记 2.up主评论显示【up主】标记 3.在评论区添加快速跳转至视频对应时间的链接
  */
 class CommentEnhance{
     constructor() {
@@ -231,6 +231,58 @@ class CommentEnhance{
 
     clearScan(){
         $(".area-comment-title .pos.simple").remove();
+    }
+
+
+    // 在评论区添加快速跳转至视频对应时间的链接
+    searchScanForPlayerTime(){
+        var timer = setInterval(function () {
+            let nodes = $('.area-comment-des-content');
+            let loading = $('.ac-comment-loading').html();
+            let reg_for_time=new RegExp('^[0-9].?:[0-9].?');
+            let reg_for_mtline=new RegExp('<br>')
+            if(nodes.length>0 && loading==''){
+                nodes.each(async function () {
+                        let comment_content = $(this)[0].innerText.toString();
+                        let comment_html = $(this)[0].innerHTML.toString();
+                        let if_matchTime=reg_for_time.exec(comment_content);
+                        let if_mtline=reg_for_mtline.exec(comment_html);
+                        if(if_mtline && if_matchTime){
+                            //多行包含了<br>的情况
+                            let a=comment_html.split('<br>')
+                            after_html_out='';
+                            for(let i=0;i<=(a.length-1);i++){
+                                let x1=a[i].split(' ');
+                                var after_html='';
+                                for(let j=0;j<x1.length;j++){
+                                    if(reg_for_time.exec(x1[j])){
+                                        var after_html=after_html+'<a id=\'quickJump\' onclick=\"quickJump(\''+x1[0]+'\');\">'+x1[0]+'</a>';
+                                    }
+                                    var after_html=after_html+' '+x1[j];
+                                }
+                                var after_html_out=after_html_out+after_html+"<br>";
+                            }
+                            $(this).html(after_html_out);
+                        }else{
+                            //一行的情况
+                            if(if_matchTime){
+                                let x=comment_content.split(' ');
+                                let y=$(this)[0].innerHTML;
+                                let z=y.split(' ');
+                                let ie=z.length-1;
+                                var after_html='<a id=\'quickJump\' onclick=\"quickJump(\''+x[0]+'\');\">'+x[0]+'</a> ';
+                                for(let i=1;i<=ie;i++){
+                                    after_html=after_html+z[i]+' ';
+                                }
+                                $(this).html(after_html);
+                            }
+                        }
+                    }
+                );
+                clearInterval(timer);
+            }
+        },1000);
+
     }
 
 }

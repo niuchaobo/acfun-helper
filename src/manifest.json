@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.4.508",
+    "version": "1.2.6.603",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -35,6 +35,8 @@
             "fg/js/module/download.js",
             "fg/js/module/live.js",
             "fg/js/module/banana.js",
+            "fg/js/module/playerConfig.js",
+            "fg/js/module/luckyTurntab.js",
             "fg/js/module/videoSetting.js",
             "fg/js/frontend.js"
 
@@ -42,6 +44,7 @@
         "css": [
             "fg/css/client.css",
             "fg/css/home_nav.css"
+
         ],
         "run_at": "document_start"
     }],
@@ -54,9 +57,11 @@
     "web_accessible_resources": [
         "fg/js/acfunxhr.js",
         "fg/css/frame.css",
+        "fg/css/lucy.css",
         "fg/js/frame.js",
         "fg/css/checkbox.css",
         "lib/jquery-3.5.0.min.js",
+        "bg/js/jqueryExtend.js",
         "bg/images/copy_link.png",
         "fg/js/nav.js",
         "fg/js/module/videoSettingInject.js"

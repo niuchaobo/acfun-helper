@@ -811,3 +811,15 @@ h2 {
     display: inline-block;
     height: 16px;
 }
+
+.div-export-settings {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+    border-top: 1px solid lightgrey;
+}

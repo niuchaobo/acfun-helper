@@ -1072,7 +1072,109 @@ $(document).ready(function () {
         }
     });
 
+    $("#export-set").click(function () {
+        let src = $(this).attr("src");
+        if(src=='images/cos.png'){
+            $("#export-div").fadeOut(100);
+            $(this).attr("src","images/unfold.png");
+            $(this).attr('title','点击展开',);
+        }else{
+            $("#export-div").fadeIn(100);
+            $(this).attr("src","images/cos.png");
+            $(this).attr('title','点击折叠',);
+        }
+    });
 
+    let config_downloadObj=document.getElementById('configExport');
+    config_downloadObj.addEventListener('click', function createDownload(){
+        options_data=chrome.storage.local.get(null, function (items) {
+            var options_data = sanitizeOptions(items);
+            var blob = new Blob([JSON.stringify(options_data)], { type: 'application/octet-stream' });
+            var url = window.URL.createObjectURL(blob);
+            var saveas = document.createElement('a');
+            saveas.href = url;
+            saveas.style.display = 'none';
+            document.body.appendChild(saveas);
+            saveas.download = 'AcFun-Helper.conf';
+            saveas.click();
+            setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
+            document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
+        });
+      });
+
+      let playerConfig_downloadObj=document.getElementById('configPlayerExport');
+      playerConfig_downloadObj.addEventListener('click', function createPconfDownload(){
+        player_conf=chrome.storage.local.get(['AcGConf'], function (items) {
+              var player_conf = sanitizeOptions(items);
+              var blob = new Blob([JSON.stringify(player_conf)], { type: 'application/octet-stream' });
+              var url = window.URL.createObjectURL(blob);
+              var saveas = document.createElement('a');
+              saveas.href = url;
+              saveas.style.display = 'none';
+              document.body.appendChild(saveas);
+              saveas.download = 'AcFun-Player.conf';
+              saveas.click();
+              setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
+              document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
+          });
+        });
+
+        let jsonfy_pconfig;
+        let input2=document.getElementById("emlwX3V0aWxp_file");
+            input2.onchange=function () {
+                var file = this.files[0];
+                if(!!file){
+                    var reader=new FileReader();
+                    reader.readAsText(file,"utf-8");
+                    reader.onload=function () {
+                        try{
+                            jsonfy_pconfig=JSON.parse(this.result);
+                        }catch (e) {
+                            alert("文件格式不正确");
+                            return;
+                        }
+                        chrome.storage.local.set({AcGConf:jsonfy_pconfig.AcGConf});
+                        // console.log(jsonfy_pconfig);
+                        chrome.storage.local.set({SyncPlayerConfigNeed: 1});
+                      notice("AcFun助手","播放器导入配置成功;请在主站非视频页面刷新一次以导入配置。");
+                    };
+                }
+        };
+          
+
+      let jsonfy_config;
+      let input=document.getElementById("input_emlwX3V0aWxz_file");
+          input.onchange=function () {
+              var file = this.files[0];
+              if(!!file){
+                  var reader=new FileReader();
+                  reader.readAsText(file,"utf-8");
+                  reader.onload=function () {
+                      try{
+                          jsonfy_config=JSON.parse(this.result);
+                      }catch (e) {
+                          alert("文件格式不正确");
+                          return;
+                      }
+                    for(i in jsonfy_config){
+                        if(i !='AcpushList'){
+                            chrome.storage.local.set({[i]:jsonfy_config[i]});
+                    }}
+                    notice("AcFun助手","导入配置成功~");
+                  };
+              }
+      };
+
+      let config_CleanObj=document.getElementById('configClean');
+      config_CleanObj.addEventListener('click', function createClean(){
+          console.log("clicked.");
+          let notice_this=prompt("确认清除小助手的所有配置吗？请考虑清楚哦。Y/N",'');
+          if(notice_this=='Y'){
+          chrome.storage.local.clear(function(){
+            console.log('Zero');
+          });}
+      });
+  
     $('#filter-add').on('click', function () {
         if ($('.filter-add-tr').length <= 0 && filter) {
             if (!$('#filter-ups').hasClass('table-custom-padding')) {

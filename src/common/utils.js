@@ -401,3 +401,69 @@ function S4() {
 function uuidBuild() {
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
 }
+
+// 将时间转为最近
+function getTimeSinceNow(date) {
+    let currentDate = new Date()
+    let publishTime = new Date(date)
+    let oneDay = 3600 * 24 * 1000
+    let oneWeek = oneDay * 7
+    let oneMinute = 60 * 1000
+    let oneHour = oneMinute * 60
+    let during = currentDate.getTime() - publishTime.getTime()
+    if (during < oneMinute) {
+        return Math.floor(during / 1000) + '秒前发布'
+    }
+    else if (during >= oneMinute && during < oneHour) {
+        return Math.floor(during / oneMinute) + '分前发布'
+    } else if (during > oneHour && during < oneDay) {
+        return Math.floor(during / oneHour) + '小时前发布'
+    }
+    else if (during >= oneDay && during < oneWeek) {
+        return Math.floor(during / oneDay) + '天前发布'
+    } else if (during >= oneWeek) {
+        return `发布于${publishTime.getFullYear()}-${publishTime.getMonth + 1}-${publishTime.getDate()}`
+    }
+}
+
+function getcookie(keys){
+    var arr=document.cookie.split(";");
+    for(var i=0; i<arr.length; i++){
+        var ass=arr[i].split("=");
+        if(ass[0].trim()==keys){
+            return  ass[1];
+        }
+    }
+    return false;
+
+}
+
+function adjustVideoUp(){
+    let currentUserNameEncode = getcookie("ac_username");
+    if(currentUserNameEncode!='' && currentUserNameEncode!=undefined){
+        let userName = decodeURI(currentUserNameEncode);
+        let name = document.getElementsByClassName("up-name")[0].innerText;
+        if(userName == name){
+            return 1;//是up主
+        }else{
+            return 2;//不是up主
+        }
+    }else{
+        return 0;//未登录
+    }
+}
+function adjustArticleUp(){
+    let currentUserNameEncode = getcookie("ac_username");
+    if(currentUserNameEncode!='' && currentUserNameEncode!=undefined){
+        let userName = decodeURI(currentUserNameEncode);
+        let name = document.getElementsByClassName("up-name")[0].firstChild.innerText;
+        console.log(name);
+        if(userName == name){
+            return 1;//是up主
+        }else{
+            return 2;//不是up主
+        }
+    }else{
+        return 0;//未登录
+    }
+}
