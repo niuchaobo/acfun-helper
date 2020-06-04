@@ -263,6 +263,12 @@ class Popup {
         this.popup.addEventListener('scroll', (e) => e.stopPropagation(),false);
 
         //this.wapper.appendChild(this.popup);
+        try {
+            var UidInCookies = document.cookie.match("auth_key=(.*); ac_username")[1];
+        } catch (TypeError) {
+            var UidInCookies = 0;
+        }
+        chrome.storage.local.set({LocalUserId : `${UidInCookies}`});
 
         window.addEventListener('scroll', (e) => e.stopPropagation(),{ passive: true });
         let root =  document.body;
