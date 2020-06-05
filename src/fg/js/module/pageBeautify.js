@@ -102,6 +102,7 @@ class PageBeautify{
                 if(memberRes){
                     let node = $('#win-info-guide>div').find('a').eq(0);
                     if(node){
+                        node.after('<p class="crx-member-p"><a target="_blank" href="https://live.acfun.cn/live/'+a.info.userId+'">我的直播间</a></p>');
                         node.after('<p class="crx-member-p">UID: '+a.info.userId+'</p>');
                         node.after('<p class="crx-member-p">金香蕉: '+a.info.goldBanana+'</p>');
                         node.after('<p class="crx-member-p">香蕉: '+a.info.banana+'</p>');
@@ -111,6 +112,7 @@ class PageBeautify{
                 }else{
                     let node = $('#header-guide .guide-item-con').find('p').eq(0);
                     if(node){
+                        node.after('<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/'+a.info.userId+'">我的直播间</a></p>');
                         node.after('<p class="crx-guid-p">UID: '+a.info.userId+'</p>');
                         node.after('<p class="crx-guid-p">金香蕉: '+a.info.goldBanana+'</p>');
                         node.after('<p class="crx-guid-p">香蕉: '+a.info.banana+'</p>');
