@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.6.603",
+    "version": "1.2.6.606",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -31,6 +31,7 @@
             "fg/js/div.js",
             "fg/js/module/block.js",
             "fg/js/module/pageBeautify.js",
+            "fg/js/module/livepageBeautify.js",
             "fg/js/module/commentEnhance.js",
             "fg/js/module/download.js",
             "fg/js/module/live.js",
