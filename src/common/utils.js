@@ -30,7 +30,8 @@ const REG = {
     bangumi:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*'),//番剧
     article:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+'),//文章
     msg_comment:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)'),//从我的消息-评论跳转
-    live:new RegExp("https://m.acfun.cn/live/detail/*")//直播
+    mlive:new RegExp("https://m.acfun.cn/live/detail/*"),//移动版直播
+    live:new RegExp("https://live.acfun.cn/live/*")//直播
 }
 
 

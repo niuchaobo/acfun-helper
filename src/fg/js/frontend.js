@@ -77,6 +77,11 @@ class ODHFront {
     async onDomContentLoaded(e){
         this.options = await optionsLoad();
         console.log("options",this.options);
+
+        if(REG.live.test(href)){
+            this.livepageBeautify.appendWidePlayer();
+            this.livepageBeautify.simplifyDanmu();
+        }
         if(!this.options.enabled){
             return;
         }
