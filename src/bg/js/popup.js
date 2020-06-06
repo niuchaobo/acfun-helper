@@ -160,6 +160,13 @@ async function tabQuery(option) {
     });
 }
 
+function openUpdateLog() {
+    //window.open("update-log.html","_blank");
+    var a = $("<a href='update-log.html' target='_blank'></a>").get(0);
+    var e = document.createEvent('MouseEvents');
+    e.initEvent('click', true, true);
+    a.dispatchEvent(e);
+}
 function openIntroduce() {
     //window.open("guide.html","_blank");
     var a = $("<a href='guide.html' target='_blank'></a>").get(0);
@@ -281,6 +288,7 @@ async function onReady() {
     renderPushInnerHtml()
     $("#extends-enbaled").prop('checked', options.enabled);
     $("#extends-enbaled").change(onOptionChanged);
+    $("#pop-update-log").click(openUpdateLog);
     $("#pop-introduce").click(openIntroduce);
     $("#pop-setting").click(openSetting);
     $("#go-live").click(watchLive);
