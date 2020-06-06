@@ -5,6 +5,7 @@ class ODHFront {
         this.div = new Div();//右侧助手
         this.block = new Block();//up主过滤
         this.pageBeautify = new PageBeautify();//界面美化
+        this.livepageBeautify = new LivePageButfy();//生放送界面美化
         this.ce = new CommentEnhance();//评论区增强
         this.download = new Download();//下载(视频、封面)
         this.live = new Live();//直播
@@ -78,6 +79,7 @@ class ODHFront {
         this.options = await optionsLoad();
         console.log("options",this.options);
 
+        let href = window.location.href;
         if(REG.live.test(href)){
             this.livepageBeautify.appendWidePlayer();
             this.livepageBeautify.simplifyDanmu();
@@ -85,10 +87,8 @@ class ODHFront {
         if(!this.options.enabled){
             return;
         }
-        let href = window.location.href;
         //添加自定义样式
         this.addStyle();
-
         if(this.options.filter){
             this.block.injectScript();
         }
