@@ -185,7 +185,7 @@ class ODHBack {
         let commentListReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/list\\?.*");
         let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");
 
-        let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.hlspull.etoote.com/.*m3u8");
+        let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.pull.etoote.com/livecloud/.*");
 
 
         if(commentListReg.test(url)){

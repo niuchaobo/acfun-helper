@@ -17,22 +17,22 @@ class LivePageButfy {
             if(checknode.length>0){
                 //加入按钮
                 $('.box-right').find('.danmaku-setting').after('<div class="control-btn" id="toggleWide">' + toggleWideicon + '</div>');
+                let nod = document.createElement("style");
+                let cssStr = '.main{transiton: all 0.5s}.main_wide{width: calc(100% - 5px)!important; margin-left: 0.5%; max-width:calc(100% - 5px)!important;} .control-btn svg{width: 20px; height: auto;} .main_wide .live-info{display:none;} .wide_app #header{display: none!important};}';
+                nod.type="text/css";
+                nod.textContent = cssStr;
+                document.getElementsByClassName('main')[0].appendChild(nod);
                 //点击事件
                 $('div.box-right').on('click','#toggleWide',function () {
-                    let nod = document.createElement("style");
-                    let cssStr = '.main{transiton: all 0.5s}.main_wide{width: calc(100% - 5px)!important; margin-left: 0.5%; max-width:calc(100% - 5px)!important;} .control-btn svg{width: 20px; height: auto;} .main_wide .live-info{display:none;} .wide_app #header{display: none!important};}';
-                    nod.type="text/css";
-                    nod.textContent = cssStr;
-                    document.getElementsByClassName('main')[0].appendChild(nod);
                     if (!isWidePlayer) {
                         //样式
-                        $('.main').addClass('main_wide')
-                        $('#app').addClass('wide_app')
+                        document.getElementsByClassName('main')[0].classList.add('main_wide');
+                        document.getElementById('app').classList.add('wide_app');
                         $(window).scrollTop(15)
                         isWidePlayer = true
                     } else {
-                        $('.main').removeClass('main_wide')
-                        $('#app').removeClass('wide_app')
+                        document.getElementsByClassName('main')[0].classList.remove('main_wide');
+                        document.getElementById('app').classList.remove('wide_app');
                         isWidePlayer = false
                     }
                 });
@@ -55,7 +55,7 @@ class LivePageButfy {
             document.getElementsByClassName('notice_icon')[0].style.cssText='position: absolute; width: 18px; heigth: auto; left: 35px; top: 0px; cursor: default;';
             document.getElementsByClassName('notice_icon')[0].children[0].style.cssText='width: 100%; height: auto';
             $('#noticeBtn').click((e) => {
-                $('.hide_popup').css({ left: e.pageX + 'px', top: e.pageY + 'px' }).show()
+                $('.hide_popup').css({ left: e.pageX -50+ 'px', top: e.pageY-180 + 'px' }).show()
                 $('.hide_popup').bind('mouseenter', function (e) {
                     $(this).bind('mouseleave', function () {
                         $(this).unbind('mouseleave').hide()
@@ -66,7 +66,7 @@ class LivePageButfy {
                 let _type = $(this).attr('data-type')
                 let isChecked = $(this).prop('checked')
                 console.log(isChecked)
-                if ('live message filter state change: '+isChecked) {
+                if (isChecked) {
                     $('.live-feed-messages').addClass('ban_' + _type)
                 } else {
                     $('.live-feed-messages').removeClass('ban_' + _type)
@@ -79,7 +79,7 @@ class LivePageButfy {
             nod.textContent = cssStr;
             document.getElementsByClassName('live-feed-messages')[0].appendChild(nod);
             clearInterval(timer);
-        },3000)
+        },3500)
     }
 
 }
