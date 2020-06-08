@@ -272,7 +272,7 @@ var default_options={
 function restore_options() {
     chrome.storage.local.get(null, function (items) {
         options = transOptions(items);
-        //console.log('options', options);
+        console.log('options', options);
         auto_throw = options['auto_throw'];
         to_attention = options['to_attention'];
         to_special = options['to_special'];
@@ -991,100 +991,125 @@ $(document).ready(function () {
     });
 
 
-    $("#banana-img").click(function () {
-        let src = $(this).attr("src");
-        if(src=='images/cos.png'){
-            $("#banana-div").fadeOut(100);
-            $(this).attr("src","images/unfold.png");
-            $(this).attr('title','点击展开',);
+
+
+    //=============================关注直播推送==========================
+    chrome.storage.local.get(['liveFloowNotif'],function(items){
+        var liveFloowingsw_status= items.liveFloowNotif;
+        if(liveFloowingsw_status){
+            document.getElementById('liveFollowNotifsw').checked='true';
         }else{
-            $("#banana-div").fadeIn(100);
-            $(this).attr("src","images/cos.png");
-            $(this).attr('title','点击折叠',);
+            document.getElementById('liveFollowNotifsw').checked=false;
         }
+        $('#liveFollowNotifsw').on('click', function () {
+            if(!document.getElementById('liveFollowNotifsw').checked){
+                document.getElementById('liveFollowNotifsw').checked=false;
+                chrome.storage.local.set({'liveFloowNotif':false});
+            }else{
+                document.getElementById('liveFollowNotifsw').checked=true;
+                chrome.storage.local.set({'liveFloowNotif':true});
+            }
+        });
+
     });
-
-
-    $("#comment-img").click(function () {
-        let src = $(this).attr("src");
-        if(src=='images/cos.png'){
-            $("#comment-div").fadeOut(100);
-            $(this).attr("src","images/unfold.png");
-            $(this).attr('title','点击展开',);
-        }else{
-            $("#comment-div").fadeIn(100);
-            $(this).attr("src","images/cos.png");
-            $(this).attr('title','点击折叠',);
+    // chrome.storage.local.set({'liveFloowNotif':true});
+    // let a={16416041:16416041,31541670:31541670,16012499:16012499,2888736:2888736}
+    chrome.storage.local.get(['liveFloowings'],function(items){
+    if(JSON.stringify(items) == '{}'){
+        let a={}
+        chrome.storage.local.set({'liveFloowings':a});
+        mdui.alert("列表初始化完成，请刷新页面");
+    }else{
+    console.log(items);
+    $('#liveFollowAdd').on('click', function () {
+        mdui.prompt('请输入你需要关注的用户UID', '添加关注',
+        async function (value) {
+            if(!value==''){
+                var up_url = options.userInfo.replace('{uid}',value);
+                for(i in items.liveFloowings){
+                    if(i==value){
+                        console.log('repeat');
+                        var errN = 1;
+                        break
+                    }else{
+                        var errN = 0;
+                    }
+                }
+                if(errN!=1){
+                    var up_html_str;
+                    try{
+                        up_html_str = await ajax('GET',up_url);
+                    }catch (e) {
+                        var errN = 2
+                        return;
+                    }
+                    let status = JSON.parse(up_html_str).result;
+                    if(status==0){
+                        console.log('233');
+                        var liveup_name = JSON.parse(up_html_str).profile.name;
+                        var errN = 0;
+                    }else {var errN = 2};
+                }
+                if(errN==0){
+                    items.liveFloowings[value]=liveup_name;
+                    chrome.storage.local.set({'liveFloowings':items.liveFloowings})
+                    console.log(items);
+                    mdui.snackbar({message: ` ${liveup_name} 已被加入关注列表`});
+                    $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${value} style="cursor:pointer">delete</i><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${i} style="cursor:pointer">desktop_windows</i><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
+                    $('.liveFloowingsItems').click(function () {
+                        let this_uid=$(this).data("key");
+                        $(this).parent().hide();
+                        console.log(this_uid);
+                        mdui.snackbar({
+                            message: `已移除 ${items.liveFloowings[this_uid]}`,
+                          });
+                          delete items.liveFloowings[this_uid];
+                          console.log(items);
+                          chrome.storage.local.set({'liveFloowings':items.liveFloowings},function(){console.log(items)});
+                        });
+                }else if(errN == 1){
+                    mdui.alert('你添加的用户已关注');
+                }else if(errN == 2){
+                    mdui.alert('用户不存在');
+                }
+            }else{
+                mdui.alert('UID未输入');
+            }
+        },
+        function () {
         }
-    });
+      );
+    })}});
+    chrome.storage.local.get(['liveFloowings'],function(items){
+        if(JSON.stringify(items) !== '{}'){
+            for(i in items.liveFloowings){
+                $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${i} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${i} style="cursor:pointer">delete</i><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${i} style="cursor:pointer">desktop_windows</i><div class="mdui-list-item-content">Uid:${i} UserName:${items.liveFloowings[i]}</div></li>`);
+            }
+            $('.liveFloowingsItems').click(function () {
+                let this_uid=$(this).data("key");
+                $(this).parent().hide();
+                console.log(this_uid);
+                mdui.snackbar({
+                    message: `已移除 ${items.liveFloowings[this_uid]}`,
+                  });
+                delete items.liveFloowings[this_uid];
+                chrome.storage.local.set({'liveFloowings':items.liveFloowings});
+                });
+            $('.liveWatch').click(function () {
+                let this_uid=$(this).data("key");
+                window.open('https://live.acfun.cn/live/'+this_uid);
+            });
+            }
+        });
 
 
-    $("#filter-img").click(function () {
-        let src = $(this).attr("src");
-        if(src=='images/cos.png'){
-            $("#filter-div").fadeOut(100);
-            $(this).attr("src","images/unfold.png");
-            $(this).attr('title','点击展开',);
-        }else{
-            $("#filter-div").fadeIn(100);
-            $(this).attr("src","images/cos.png");
-            $(this).attr('title','点击折叠',);
-        }
-    });
 
 
-    $("#skin-img").click(function () {
-        let src = $(this).attr("src");
-        if(src=='images/cos.png'){
-            $("#skin-div").fadeOut(100);
-            $(this).attr("src","images/unfold.png");
-            $(this).attr('title','点击展开',);
-        }else{
-            $("#skin-div").fadeIn(100);
-            $(this).attr("src","images/cos.png");
-            $(this).attr('title','点击折叠',);
-        }
-    });
+    
 
-    $("#beautify-img").click(function () {
-        let src = $(this).attr("src");
-        if(src=='images/cos.png'){
-            $("#beautify-div").fadeOut(100);
-            $(this).attr("src","images/unfold.png");
-            $(this).attr('title','点击展开',);
-        }else{
-            $("#beautify-div").fadeIn(100);
-            $(this).attr("src","images/cos.png");
-            $(this).attr('title','点击折叠',);
-        }
-    });
 
-    $("#customvideo-img").click(function () {
-        let src = $(this).attr("src");
-        if(src=='images/cos.png'){
-            $("#customvideo-div").fadeOut(100);
-            $(this).attr("src","images/unfold.png");
-            $(this).attr('title','点击展开',);
-        }else{
-            $("#customvideo-div").fadeIn(100);
-            $(this).attr("src","images/cos.png");
-            $(this).attr('title','点击折叠',);
-        }
-    });
 
-    $("#export-set").click(function () {
-        let src = $(this).attr("src");
-        if(src=='images/cos.png'){
-            $("#export-div").fadeOut(100);
-            $(this).attr("src","images/unfold.png");
-            $(this).attr('title','点击展开',);
-        }else{
-            $("#export-div").fadeIn(100);
-            $(this).attr("src","images/cos.png");
-            $(this).attr('title','点击折叠',);
-        }
-    });
-
+    //=======================配置导入导出================================//
     let config_downloadObj=document.getElementById('configExport');
     config_downloadObj.addEventListener('click', function createDownload(){
         options_data=chrome.storage.local.get(null, function (items) {

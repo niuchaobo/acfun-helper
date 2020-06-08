@@ -7,6 +7,8 @@ class ODHBack {
         this.agent = new Agent(document.getElementById('sandbox').contentWindow);
         this.timer4Unread();
         this.fetchPushList();
+        this.liveOnlineNotif();
+
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));
@@ -167,6 +169,46 @@ class ODHBack {
                     // })
                 });
         },60000)
+    }
+
+    liveOnlineNotif(){
+        window.setInterval(function(){
+            chrome.storage.local.get(['liveFloowNotif'],function(Ifswitch){
+            if(Ifswitch.liveFloowNotif){
+                chrome.storage.local.get(['liveFloowings'],function(items){
+                chrome.storage.local.get(['broadcastingUIDlist'],function(broadcastingUIDlist){
+                    let y={}
+                    for(let i in items.liveFloowings){
+                        let ApiUrl='https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='
+                        fetch(ApiUrl+i).then((res)=>{return res.text()})
+                        .then((res)=>{
+                            let x=JSON.parse(res);
+                            if(x.profile.liveId != undefined){
+                                var state=true;
+                            }else{
+                                var state=false;
+                            }
+                            y[i]=state;
+                            if(state==broadcastingUIDlist.broadcastingUIDlist[i]){
+                            }else{
+                                let lastState=broadcastingUIDlist.broadcastingUIDlist[i]
+                                if(lastState==false){
+                                chrome.notifications.create(null, {
+                                    type: 'basic',
+                                    iconUrl: 'images/notice.png',
+                                    title: 'AcFun助手',
+                                    message: `${x.profile.name}  正在直播了！`
+                                });
+                                }else{
+                            }}
+                            chrome.storage.local.set({'broadcastingUIDlist':y});
+                        });
+                    }
+                });
+                });
+            }
+            });
+        },5000);
     }
 
     test(params,tab){
