@@ -7,6 +7,8 @@ class ODHBack {
         this.agent = new Agent(document.getElementById('sandbox').contentWindow);
         this.timer4Unread();
         this.fetchPushList();
+        this.liveOnlineNotif();
+
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));
@@ -88,7 +90,7 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
-            title: '使用Acfun搜索【%s】', // %s表示选中的文字
+            title: '使用AcFun搜索【%s】', // %s表示选中的文字
             contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
             onclick: function (params) {
                 chrome.tabs.create({url: 'https://www.acfun.cn/search?keyword=' + encodeURI(params.selectionText)});
@@ -169,6 +171,46 @@ class ODHBack {
         },60000)
     }
 
+    liveOnlineNotif(){
+        window.setInterval(function(){
+            chrome.storage.local.get(['liveFloowNotif'],function(Ifswitch){
+            if(Ifswitch.liveFloowNotif){
+                chrome.storage.local.get(['liveFloowings'],function(items){
+                chrome.storage.local.get(['broadcastingUIDlist'],function(broadcastingUIDlist){
+                    let y={}
+                    for(let i in items.liveFloowings){
+                        let ApiUrl='https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='
+                        fetch(ApiUrl+i).then((res)=>{return res.text()})
+                        .then((res)=>{
+                            let x=JSON.parse(res);
+                            if(x.profile.liveId != undefined){
+                                var state=true;
+                            }else{
+                                var state=false;
+                            }
+                            y[i]=state;
+                            if(state==broadcastingUIDlist.broadcastingUIDlist[i]){
+                            }else{
+                                let lastState=broadcastingUIDlist.broadcastingUIDlist[i]
+                                if(lastState==false){
+                                chrome.notifications.create(null, {
+                                    type: 'basic',
+                                    iconUrl: 'images/notice.png',
+                                    title: 'AcFun助手',
+                                    message: `${x.profile.name}  正在直播了！`
+                                });
+                                }else{
+                            }}
+                            chrome.storage.local.set({'broadcastingUIDlist':y});
+                        });
+                    }
+                });
+                });
+            }
+            });
+        },5000);
+    }
+
     test(params,tab){
         console.log(params);
         //this.odhback.test.apply();
@@ -210,7 +252,7 @@ class ODHBack {
             chrome.notifications.create(null, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
-                title: 'Acfun助手',
+                title: 'AcFun助手',
                 message: '更新了！'
             });
             return;
