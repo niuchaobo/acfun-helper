@@ -90,7 +90,7 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
-            title: '使用Acfun搜索【%s】', // %s表示选中的文字
+            title: '使用AcFun搜索【%s】', // %s表示选中的文字
             contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
             onclick: function (params) {
                 chrome.tabs.create({url: 'https://www.acfun.cn/search?keyword=' + encodeURI(params.selectionText)});
@@ -252,7 +252,7 @@ class ODHBack {
             chrome.notifications.create(null, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
-                title: 'Acfun助手',
+                title: 'AcFun助手',
                 message: '更新了！'
             });
             return;
