@@ -1200,24 +1200,85 @@ $(document).ready(function () {
           });}
       });
 
-      $('.Getresult_act').on('click', function(){
-        chrome.storage.local.get(['LocalUserId'],function(datao){
+    $('.Pushresult_act').on('click', function(){
+        chrome.storage.local.get(['AcCookies'],function(datao){
             console.log(datao);
+            let prob=$('.SyncWait1');
+            prob.show();        
             let x=$('p.read_result')[0];
-            let Uid=Number(datao.LocalUserId)
+            let UidReg = new RegExp('auth_key=(.*); ac_username');
+            let Uid = Number(UidReg.exec(datao.AcCookies)[1]);
             x.innerText = '[ AcFun-Uid : '+Uid+ ' ]';
-            console.log(this.options);
             chrome.storage.local.get(null, function (items) {
-            var options_data = JSON.stringify(sanitizeOptions(items));
-            if(typeof(Uid)=='number'){
-                fetch('http://127.0.0.1:5000/test',{method:"POST",headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded','Accept':"accept: application/json, text/plain, */*"},body:`userId=${Uid};options_data=${options_data}`})
-                .then((res=>{return res.text()}))
-                .then((res)=>{console.log(res)})
-            }
-        })
+                if(typeof(Uid)=='number'){
+                    chrome.storage.local.get(null, function (items) {
+                        if(typeof(Uid)=='number'){
+                            chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
+                                delete items["AcpushList1"];
+                                var options_data = JSON.stringify(sanitizeOptions(items));
+                                if(JSON.stringify(rawtoken) == '{}'){token=0}else{token=JSON.stringify(rawtoken)};
+                                let uploadData = new FormData();
+                                uploadData.append("options_data",`${options_data}`);
+                                console.log(`${options_data}`);
+                                fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload',{method:"POST", body:uploadData})
+                                .then((res=>{return res.text()}))
+                                .then((res)=>{
+                                    // console.log(res);
+                                    // if(res!=''){chrome.storage.local.set({'AcHlp-SyncToken':`${res}`})};
+                                })
+                            });
+                        }           
+                    });
+                }           
+            });
+            prob.hide();
         });
     });
+
+    $('.Pullresult_act').on('click', function(){
+        var inst = new mdui.Dialog('#dialog');
+        inst.open();
+        var dialog = document.getElementById('dialog');
+        dialog.addEventListener('confirm.mdui.dialog', function () {
+          console.log('confirm');
+          chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
+            if(JSON.stringify(rawtoken)!='{}'){
+            }else{
+                chrome.storage.local.get(null, function (items) {
+                    let svrCookies={}
+                    console.log(items);
+                    svrCookies['AcCookies']=items['AcCookies'];
+                    svrCookies['AcPassToken']=items['AcPassToken'];
+                    console.log(svrCookies)
+                    let upCookies = new FormData();
+                    upCookies.set("authCookie",`${JSON.stringify(svrCookies)}`);
+                    fetch('https://mini.pocketword.cn/api/acfun-helper/options/download',{method:"POST", body:upCookies})
+                    .then((res=>{return res.text()}))
+                    .then((res)=>{
+                        let x = unescape(res.replace(/\\u/g, "%u"));
+                        try{
+                            jsonfy_config=JSON.parse(x);
+                        }catch (e) {
+                            mdui.alert("格式不正确");
+                            return;
+                        }
+                        for(i in jsonfy_config){
+                            chrome.storage.local.set({[i]:jsonfy_config[i]});
+                        }
+                        notice("AcFun助手","配置同步成功~");
+                        });
+                });
+            }
+        });
+        });
+    });
+
+
+
+
+
+
+
   
     $('#filter-add').on('click', function () {
         if ($('.filter-add-tr').length <= 0 && filter) {

@@ -9,6 +9,7 @@ class ODHFront {
         this.ce = new CommentEnhance();//评论区增强
         this.download = new Download();//下载(视频、封面)
         this.live = new Live();//直播
+        this.authInfo = new AuthInfo();//必要信息获取
         this.banana = new Banana();//自动投蕉
         this.videoSetting = new VideoSetting();//视频播放设置：自定义倍速、观影模式等
 
@@ -24,8 +25,8 @@ class ODHFront {
         document.addEventListener('DOMContentLoaded',e=>this.onDomContentLoaded(e));
         //监听storage变化,可用于数据云同步
         chrome.storage.onChanged.addListener(function (changes,areaName) {
-            console.log('11111111111111111')
-            console.log(document.cookie);
+            // console.log('11111111111111111')
+            // console.log(document.cookie);
         });
     }
 
@@ -176,6 +177,7 @@ class ODHFront {
             //todo 加开关
             this.ce.searchScanForPlayerTime();
         }
+        this.authInfo.cookInfo();
     }
 
     //抽奖
