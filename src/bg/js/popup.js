@@ -258,6 +258,8 @@ function renderPushInnerHtml() {
         });
 }
 
+$('.toTop').click(function(){$('html,body').animate({scrollTop: '0px'}, 600);});
+
 // 将时间转为最近
 function getTimeSinceNow(date) {
     let currentDate = new Date()
