@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="css/options.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
-    <link rel="stylesheet" type="text/css" href="mdui/css/mdui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css" />
     <script src="../lib/jquery-3.5.0.min.js"></script>
     <script type="text/javascript" src="js/jquery.mloading.js"></script>
-    <script type="text/javascript" src="mdui/js/mdui.min.js"></script>
+    <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
     <script type="text/javascript" src="js/options.js"></script>
     <script type="text/javascript" src="../common/utils.js"></script>
     <style>
@@ -43,6 +43,7 @@
 
             <div class="mdui-panel" mdui-panel>
   
+                <!-- <div class="mdui-panel-item"> -->
                 <div class="mdui-panel-item mdui-panel-item-open">
                   <div class="mdui-panel-item-header">
                     <div class="mdui-panel-item-title">自动投蕉</div>
@@ -130,13 +131,14 @@
                             </tbody>
                         </table>
                     </div>
-                        <div class="mdui-panel-item-actions">
+                    <div class="mdui-panel-item-actions">
                       <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
                       <button class="mdui-btn mdui-ripple">保存</button>
                     </div>
                   </div>
                 </div>
                 
+                <!-- <div class="mdui-panel-item"> -->
                 <div class="mdui-panel-item mdui-panel-item-open">
                   <div class="mdui-panel-item-header">
                     <div class="mdui-panel-item-title">评论是本体</div>
@@ -214,6 +216,7 @@
             
                         </table>
                     </div>
+                            
                     <div class="mdui-panel-item-actions">
                       <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
                       <button class="mdui-btn mdui-ripple">保存</button>
@@ -255,6 +258,7 @@
                     </div>
                   </div>
                 </div>
+                               
 
                 <div class="mdui-panel-item">
                     <div class="mdui-panel-item-header">
@@ -271,8 +275,8 @@
                       </div>
                     </div>
                   </div>
-                               
-              </div>              
+
+                </div>              
           </div>
 
           <div id="tab2" class="mdui-p-a-2">
@@ -322,7 +326,7 @@
             
                         </table>
                     </div>
-                                <div class="mdui-panel-item-actions">
+                    <div class="mdui-panel-item-actions">
                       <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
                       <button class="mdui-btn mdui-ripple">保存</button>
                     </div>
@@ -485,9 +489,9 @@
                             </div>
                         </div>
                     </div>
-                        <div class="mdui-panel-item-actions">
-                          <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                          <button class="mdui-btn mdui-ripple">保存</button>
+                    <div class="mdui-panel-item-actions">
+                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                      <button class="mdui-btn mdui-ripple">保存</button>
                   </div>
                 </div>
               </div>     
@@ -533,15 +537,11 @@
                     <div id="div_emlwX3V0aWxp_input"><span id="span_emlwX3V0aWxp_s1">导入播放器配置文件:</span><input id="emlwX3V0aWxp_file" type="file"></div><br><br>
                     <a style="cursor: pointer" class='configClean' id='configClean'>点击此处清除插件的所有配置</a>
                     </div>
-
-                    <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
                   </div>
                 </div>
                 
-                <!-- <div class="mdui-panel-item mdui-panel-item-open">
+
+                <div class="mdui-panel-item mdui-panel-item-open">
                   <div class="mdui-panel-item-header">
                     <div class="mdui-panel-item-title">插件&主站 配置 网络同步</div>
                     <div class="mdui-panel-item-summary">将配置同步到服务器端</div>
@@ -549,18 +549,37 @@
                   </div>
                   <div class="mdui-panel-item-body">
 
-                    <button class="mdui-btn mdui-btn-raised mdui-ripple Getresult_act">检查配置 & 同步配置信息</button>
-                    <div class="cookies-readpannel"><p>个人信息确认：</p>
-                        <p class="read_result">[ -正在等待连接AcFun小助手- ]</p>
-                    </div>
-
-                    <div class="mdui-panel-item-actions">
-                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                      <button class="mdui-btn mdui-ripple">保存</button>
-                    </div>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-12 SyncWait1" style="display: none;">
+                        <div class="mdui-progress">
+                          <div class="mdui-progress-indeterminate"></div>
+                        </div>
+                      </div>
+                      <div class="mdui-col-xs-9">
+                        <h3>触发同步</h3>
+                          <div class="mdui-row">
+                            <div class="mdui-col-xs-8 mdui-col-sm-4"><button class="mdui-btn mdui-btn-raised mdui-ripple Pushresult_act">检查配置 & 向上同步配置信息</button>
+                            </div>
+                            <div class="mdui-col-xs-8 mdui-col-sm-4"><p>个人信息确认：</p></div>
+                            <div class="mdui-col-xs-4 mdui-col-sm-4"><p class="read_result">[ -正在等待连接AcFun小助手- ]</p></div>
+                            <div class="mdui-col-xs-8 mdui-col-sm-4"><button class="mdui-btn mdui-btn-raised mdui-ripple Pullresult_act ">检查配置 & 向下同步配置信息</button>
+                              <div class="mdui-dialog" id="dialog">
+                                <div class="mdui-dialog-title">提问一</div>
+                                <div class="mdui-dialog-content">你确定要将服务器上的配置同步到本地？它将会覆盖你本地的配置！</div>
+                                <div class="mdui-dialog-actions ">
+                                  <button class="mdui-btn mdui-ripple" mdui-dialog-cancel>算了</button>
+                                  <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>确定</button>
+                                </div>
+                              </div>
+                            
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </div>
                   </div>
-                </div> -->
-
+                </div>
+              
                 <div class="mdui-panel-item mdui-p-o">
                     <div class="mdui-panel-item-header">
                       <div class="mdui-panel-item-title">更新预留</div>
@@ -615,7 +634,7 @@
                 <br><br>
                 <br><br>
                 隐私协议
-                <br><br><a href="/bg/privacy.html">Privacy</a>
+                <br><br><a href="/bg/privacy.md">Privacy</a>
             </div>
             <div class="mdui-col-sm-6 mdui-col-md-4">
             

@@ -8,7 +8,7 @@ class Div {
     }
 
     show(pageInfo,options,type,isUp){
-        console.log(window.odhfront.options);
+        // console.log(window.odhfront.options);
         this.options = options;
         //注入插件按钮
         this.inject();

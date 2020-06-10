@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.6.608",
+    "version": "1.2.6.610",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -35,6 +35,7 @@
             "fg/js/module/commentEnhance.js",
             "fg/js/module/download.js",
             "fg/js/module/live.js",
+            "fg/js/module/authInfo.js",
             "fg/js/module/banana.js",
             "fg/js/module/playerConfig.js",
             "fg/js/module/luckyTurntab.js",
@@ -51,7 +52,7 @@
     }],
     "minimum_chrome_version": "50.0.0.0",
     "options_page":"bg/options.html",
-    "permissions": ["contextMenus","notifications","tabs","webRequest", "webRequestBlocking","https://*/*","http://*/*", "storage","unlimitedStorage"],
+    "permissions": ["contextMenus","notifications","tabs","webRequest", "webRequestBlocking","https://*/*","http://*/*", "storage","unlimitedStorage","cookies"],
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },
