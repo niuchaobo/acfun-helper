@@ -38,7 +38,8 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 20.直播站播放界面的宽屏模式（#感谢@Sinyupl）
 
 21.屏蔽直播右侧信息中的礼物、关注、点赞、进场信息 （#感谢@Sinyupl）（就单纯听大伙儿吹逼吧）  
-22.增加直播Up开播提醒（哎符逼哎，楼梯负一开审）
+22.增加直播Up开播提醒（哎符逼哎，楼梯负一开审）  
+23.网络同步插件配置（可以与服务器来同步配置了！）
 
 ---
 #### 插件本体获取
@@ -72,7 +73,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
     - 直接提交 Pull Request
 
 #### TodoList
-    - 插件和播放器配置网络同步
+    - 完善插件和播放器配置网络同步
     - 评论投票图表
 
 #### 开源许可证
@@ -83,6 +84,9 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
     * jquery 3.5.0
     * mdui 0.4.3
 
+#### 相关项目
+插件配置同步服务:  
+    *@heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
 ---
 
 ### 致谢
