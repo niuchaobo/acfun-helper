@@ -50,7 +50,7 @@ class LivePageButfy {
             let checknode=$('div.box-right');
             if(checknode.length>0){
                 $('.face-text').append(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`)
-                $('.main').append('<div class="hide_popup"><ul><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></ul></div>')
+                $('#app').append('<div class="hide_popup"><ul><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></ul></div>')
             }
             document.getElementsByClassName('notice_icon')[0].style.cssText='position: absolute; width: 18px; heigth: auto; left: 35px; top: 0px; cursor: default;';
             document.getElementsByClassName('notice_icon')[0].children[0].style.cssText='width: 100%; height: auto';
