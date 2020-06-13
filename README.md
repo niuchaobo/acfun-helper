@@ -40,6 +40,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 21.屏蔽直播右侧信息中的礼物、关注、点赞、进场信息 （#感谢@Sinyupl）（就单纯听大伙儿吹逼吧）  
 22.增加直播Up开播提醒（哎符逼哎，楼梯负一开审）  
 23.网络同步插件配置（可以与服务器来同步配置了！）
+24.现在弹出栏也能看部分广场动态和广场直播推荐了！
 
 ---
 #### 插件本体获取
