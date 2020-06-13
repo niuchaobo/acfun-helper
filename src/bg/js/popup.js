@@ -301,8 +301,8 @@ async function onReady() {
     let options = await optionsLoad();
     //fetchPushContent();
     renderPushInnerHtml();
-    // renderMomentCircleHtml();
-    // renderLives();
+    renderMomentCircleHtml();
+    renderLives();
     $("#extends-enbaled").prop('checked', options.enabled);
     $("#extends-enbaled").change(onOptionChanged);
     $("#pop-update-log").click(openUpdateLog);
