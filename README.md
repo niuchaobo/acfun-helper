@@ -89,6 +89,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 #### 相关项目
 插件配置同步服务:  
 ##### @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
+独立项目：
 ##### @orzogc - [acfunlive AcFun直播桌面通知和下载助手（命令行版本）](https://github.com/orzogc/acfunlive "项目地址")
 ---
 
