@@ -40,7 +40,8 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 21.屏蔽直播右侧信息中的礼物、关注、点赞、进场信息 （#感谢@Sinyupl）（就单纯听大伙儿吹逼吧）  
 22.增加直播Up开播提醒（哎符逼哎，楼梯负一开审）  
 23.网络同步插件配置（可以与服务器来同步配置了！）
-24.现在弹出栏也能看部分广场动态和广场直播推荐了！
+24.现在弹出栏也能看部分广场动态和广场直播推荐了！  
+25.联合 AcFun直播桌面通知和下载助手 桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将Up加入/取消开播通知列表中。
 
 ---
 #### 插件本体获取
@@ -88,6 +89,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 #### 相关项目
 插件配置同步服务:  
 ##### @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
+##### @orzogc - [acfunlive AcFun直播桌面通知和下载助手（命令行版本）](https://github.com/orzogc/acfunlive "项目地址")
 ---
 
 ### 致谢
@@ -97,6 +99,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
     * @Sinyupl https://github.com/Sinyupl
     * @condy0919 https://github.com/condy0919
     * @flydrz https://github.com/flydrz
+    * @orzogc https://github.com/orzogc
 
 ---
 #### 如果喜欢此插件，请务必给我们来一个Star，如果不喜欢，请不要浪费你的口水，来一个Star，然后再提交Issue来diss；总之欢迎提出各种建议或者意见，这些宝贵的意见对以后的体验是非常重要的，不喜欢就大声说出来。![阿部高和脸](https://js2.a.yximgs.com/bs2/emotion/1587040895463third_party_b35465999.png)

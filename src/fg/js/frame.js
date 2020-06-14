@@ -109,6 +109,48 @@ function checkNumber() {
     }
 }
 
+function liveSubscribe(){
+    fetch("http://localhost:51880/liststreamer").then((res)=>{return res.text()})
+    .then((res)=>{
+        let x = JSON.parse(res);
+        let ureg = new RegExp('/u/([0-9].*[0-9]$)');
+        let this_userUchref=window.parent.document.getElementsByClassName('up-name')[0].href;
+        let Uid = ureg.exec(this_userUchref)[1];
+        for(let i=0;i<x.length;i++){
+            if(Uid==Number(Uid) & Uid == x[i].UID){
+                alert("已经订阅关注了");
+                return;
+            }else{
+                fetch('http://localhost:51880/addnotify/'+Uid).then((res)=>{return res.text()})
+                .then((res)=>{
+                    alert("订阅成功");
+                })
+                break;
+            }
+        }
+    })
+}
+
+function liveRemoveSub(){
+    fetch("http://localhost:51880/liststreamer").then((res)=>{return res.text()})
+        .then((res)=>{
+        let x = JSON.parse(res);
+        let ureg = new RegExp('/u/([0-9].*[0-9]$)');
+        let this_userUchref=window.parent.document.getElementsByClassName('up-name')[0].href;
+        let Uid = ureg.exec(this_userUchref)[1];
+        for(let i=0;i<x.length;i++){
+            if(Uid == x[i].UID){
+                fetch('http://localhost:51880/delnotify/'+Uid).then((res)=>{return res.text()})
+                .then((res)=>{
+                    alert("取消订阅成功");
+                    return;
+                })
+            }
+        }
+    })      
+}
+
+
 function api_showLucyResult(params) {
     let {arr} = params;
     let lucyUser = JSON.parse(arr);
@@ -146,6 +188,9 @@ function onDomContentLoaded() {
     //抽奖
     $("#lucy-chou").bind('click',lottery);
     $("#lucy-number").bind('keyup',checkNumber);
+    //AcFun-live桌面程序
+    $("#subscribe").bind('click',liveSubscribe);
+    $("#removeSubscribe").bind('click',liveRemoveSub);
     $("#ncb").click(function () {
         $("#ncb-div").show();
     })
