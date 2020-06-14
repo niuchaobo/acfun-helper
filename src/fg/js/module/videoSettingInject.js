@@ -72,6 +72,13 @@ function setCustomPlaybackRate(event) {
     }
 }
 
+//从Player获取douga信息，传递给父级
+window.parent.postMessage({
+    to:'pageBtfy' ,
+    msg:`${JSON.stringify(window.player.videoInfo)}`
+},'*');
+
+
 //调用画中画模式
 function setPictureInPictureMode() {
     let v = document.getElementsByTagName("video")[0];
