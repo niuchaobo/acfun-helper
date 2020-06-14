@@ -62,6 +62,12 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 方法二：将.crx的文件的扩展名改为.zip，并解压到指定的文件夹（这个文件夹不能删除！！！！【而且更新的时候你可以关掉浏览器再删掉内容再覆盖新版本的文件，注意只有在关闭浏览器的时候才能删除哦，这样就不会损失配置文件了。但是更建议使用配置导出。】）例如解压到了test文件夹，打开浏览器，地址栏输入 chrome://extensions/ （进入扩展管理页面）, 勾择开发者模式，点击'加载已解压的扩展程序'，选择到你刚刚.zip文件解压出来的的test文件夹，点击确定。扩展程序列表随即出现你导入的扩展程序，并在地址栏旁的工具栏会显示一个红色的‘A’字母图标，即为成功。
 
 ---
+#### 如何与 acfunlive 程序协作
+
+    首先我们找到acfunlive所下载的路径（找到名为acfunlive.exe所在的目录），然后我们按住shift + 右键 ，右键菜单会有一条“在此处打开命令行窗口”（windows 10版本的显示为“在此处打开powershell窗口”），然后点击进入，在命令行窗口中输入“./acfunlive.exe -weblisten”（powershell 则输入：“.\acfunlive.exe -weblisten”），然后保持命令行窗口后台运行即可。
+
+    如果还想查看其它用法可以在命令行中输入“./acfunlive.exe -h”。更多食用方法请在下面的#相关项目 的项目地址中查看。
+---
 #### 联系我们
 [用户QQ群 296107184](https://shang.qq.com/wpa/qunwpa?idkey=fe451dc2e5c33980a1f92725370f80a21048ca5fe2e325b3e0c15f494a8001e3)
 
