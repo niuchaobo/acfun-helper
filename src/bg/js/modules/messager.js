@@ -124,28 +124,38 @@ class MsgNotifs{
             fetch('https://api-new.app.acfun.cn/rest/app/feed/feedSquareV2?pcursor=&count=20')
                 .then((res)=>{return res.text();})
                 .then((res)=>{
+                    // chrome.storage.local.get(['AcMomentCircle1'],function(datao){
+                    //     console.log(datao);
+                    // })
                     let rawdata=JSON.parse(res);
                     let out_data='';
-                    console.log(rawdata);
                     try {
                         for(let i=0;i<=19;i++){
-                            // console.log(i);
-                            let data=rawdata.feedList[i];
-                            let xmlData="<div class=\"inner\" id=\"";
-                            xmlData+=data.resourceId+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\""+data.shareUrl;
-                            xmlData+=" class=\"thumb thumb-preview\"><div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+data.resourceId+" \"target=\"_blank\" href=\"" +data.shareUrl+"\" class=\"title\">";
-                            xmlData+=data.moment.text+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
-                            xmlData+=data.resourceId+"\" href=\"https://www.acfun.cn/u/"+data.user.userId+"\" class=\"name\">";
-                            xmlData += data.user.userName + " </a><span class=\"time\">" + getTimeSinceNow(data.createTime) + "</span> </div> </div> </div> ";
-                            // console.log(xmlData);
-                            out_data+=xmlData;
+                            if(rawdata.feedList.length==0){
+                                break
+                            }else{
+                                let data=rawdata.feedList[i];
+                                let xmlData="<div class=\"inner\" id=\"";
+                                xmlData+=data.resourceId+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\""+data.shareUrl;
+                                xmlData+=" class=\"thumb thumb-preview\"><div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+data.resourceId+" \"target=\"_blank\" href=\"" +data.shareUrl+"\" class=\"title\">";
+                                xmlData+=data.moment.text+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
+                                xmlData+=data.resourceId+"\" href=\"https://www.acfun.cn/u/"+data.user.userId+"\" class=\"name\">";
+                                xmlData += data.user.userName + " </a><span class=\"time\">" + getTimeSinceNow(data.createTime) + "</span> </div> </div> </div> ";
+                                // console.log(xmlData);
+                                out_data+=xmlData;
+                            }
+                            if(out_data!=''){
+                                chrome.storage.local.set({'AcMomentCircle1': out_data});
+                            }
                         }
                     } catch (error) {
-                        let out_data = '';
+                        
                     }
                     let live_Data='';
-                    try {
-                        for(let i=0;i<=3;i++){
+                    for(let i=0;i<=3;i++){
+                        if(rawdata.liveUsers==[]){
+                            break
+                        }else{
                             let livedata=rawdata.liveUsers[i];
                             let livexmlData="<div class=\"inner\" id=\"";
                             livexmlData+=livedata.authorId+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
@@ -157,15 +167,10 @@ class MsgNotifs{
                             livexmlData += livedata.user.name + " </a></div> </div> </div> ";
                             live_Data+=livexmlData;
                         }
-                    } catch (error) {
-                        let live_Data = '';
                     }
-                console.log(live_Data)
-                    chrome.storage.local.set({'AcLives1': live_Data});
-                    chrome.storage.local.set({'AcMomentCircle1': out_data});
-                    // chrome.storage.local.get(['AcLives1'],function(datao){
-                    //     console.log(datao);
-                    // })
+                    if(live_Data==''){
+                        chrome.storage.local.set({'AcLives1': live_Data});
+                    }
                 });
         },65000)
     }
