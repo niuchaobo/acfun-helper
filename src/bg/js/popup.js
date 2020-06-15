@@ -258,6 +258,19 @@ function renderPushInnerHtml() {
         });
 }
 
+function renderMomentCircleHtml() {
+    chrome.storage.local.get(['AcMomentCircle1'], function (data) {
+        console.log(data);
+        $('#pop-push-momentcircle').append(data.AcMomentCircle1);
+    })
+}
+function renderLives(){
+    chrome.storage.local.get(['AcLives1'], function (data) {
+        // console.log(data);
+        $('#pop-push-lives').append(data.AcLives1);
+    })
+}
+
 $('.toTop').click(function(){$('html,body').animate({scrollTop: '0px'}, 600);});
 
 // 将时间转为最近
@@ -287,7 +300,9 @@ async function onReady() {
     localizeHtmlPage();
     let options = await optionsLoad();
     //fetchPushContent();
-    renderPushInnerHtml()
+    renderPushInnerHtml();
+    renderMomentCircleHtml();
+    renderLives();
     $("#extends-enbaled").prop('checked', options.enabled);
     $("#extends-enbaled").change(onOptionChanged);
     $("#pop-update-log").click(openUpdateLog);

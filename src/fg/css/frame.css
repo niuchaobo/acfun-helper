@@ -169,6 +169,10 @@ span.simple {
   background-color: #d69acc !important;
   cursor: pointer;
 }
+span.livesimple {
+  background-color: #d69acc !important;
+  cursor: pointer;
+}
 ul.ec, li.ec {margin:0; padding:0;}
 
 .progress-bar{

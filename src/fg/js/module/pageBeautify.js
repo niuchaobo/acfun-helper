@@ -123,8 +123,8 @@ class PageBeautify{
             });
     }
 
-    //-------------------------------------------pc端视频点赞数-------------------------------------------------------------------
-    showLikeCount(){
+    //------------------------------Pc端视频点赞、投桃数----------------------------------------------
+    showLikeCount_old(){
         let url = window.location.toString();
         let videoPage = new RegExp("http(s)?://www.acfun.cn/v/ac(.*)");
         let acVid=videoPage.exec(url)[2];
@@ -144,7 +144,22 @@ class PageBeautify{
             })
     }
 
-
+    showLikeCount(){
+        window.addEventListener('message',function(e){
+            // console.log(e);
+            if(e.data.to == 'pageBtfy'){
+                let node = $('div.video-description.clearfix.dark-style>div').find('div.left-area').eq(0);
+                let node2 = $('div.video-description.clearfix>div.action-area').find('div.left-area').eq(0);
+                let a = JSON.parse(e.data.msg);
+                if(node.length){
+                    node.append('<div class="like" style="padding-right: 15px;"><span class="likeCount">'+a.likeCount+'</span>点赞</div>');
+                }else if(node2.length){
+                    node2.append('<div class="like" style="padding-right: 15px;"><span class="likeCount">'+a.likeCount+'</span>点赞</div><div class="peach" style="padding-right: 15px;"><span class="likeCount">'+a.giftPeachCount+'</span>桃子</div>');
+                }
+            }else{
+            }
+        });
+    }
 
 }
 
