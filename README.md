@@ -13,7 +13,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 ---
 主要功能：
 
-1.视频下载  
+1.视频下载、弹幕下载  
 2.用户紫色标记 （再也不怕别人改名了，是你？女装Up？）  
 3.自动投蕉、并显示投蕉通知（香蕉烂掉？不可能的！）  
 4.Up主屏蔽功能（你说的对，但是说得太不好听了吧( ´_ゝ`)）  
