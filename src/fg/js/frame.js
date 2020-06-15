@@ -3,6 +3,14 @@ function getImageSource(id) {
     return document.querySelector(`#${id}`).src;
 }
 
+function downloadDanmaku(){
+    let danmaku_dldBtn = document.getElementById('danmakuDownload');
+    danmaku_dldBtn.addEventListener('click',function(){
+        window.parent.postMessage({
+            action: 'downloadDanmaku',
+        }, '*');
+    })
+}
 
 function registVideoClick() {
     for (let link of document.getElementsByClassName('pos simple')) {
@@ -180,6 +188,7 @@ function api_showLucyResult(params) {
 
 function onDomContentLoaded() {
     registVideoClick();
+    downloadDanmaku();
     $("#comment-scan").change(scanChange);
     $("#comment-mark").change(markChange);
     $("#comment-receive").change(receiveChange);

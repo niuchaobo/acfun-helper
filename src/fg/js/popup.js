@@ -83,7 +83,12 @@ class Popup {
             if(infos==undefined){
                 return;
             }
-            content += `
+            content += `<div class="odh-headsection">
+            <span class="odh-expression">弹幕资源</span>
+            <span style="margin-left: 20px;color:#d69acc" id="danmaku-sources"></span></div>
+            <div class="odh-definition">
+            <span id="danmakuDownload" class="pos danmakuDownload" style="cursor:pointer">下载此视频弹幕资源</span>
+            </div>
                 <div class="odh-headsection">
                     <span class="odh-expression">视频资源</span>
                 </div>`;
