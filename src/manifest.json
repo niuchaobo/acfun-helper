@@ -23,6 +23,7 @@
         "matches": ["https://*.acfun.cn/*"],
         "js": [
             "lib/jquery-3.5.0.min.js",
+            "mdui/js/mdui.min.js",
             "bg/js/lib/m3u8-parser.min.js",
             "bg/js/lib/md5.js",
             "common/utils.js",
