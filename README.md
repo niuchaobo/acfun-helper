@@ -39,7 +39,9 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 
 21.屏蔽直播右侧信息中的礼物、关注、点赞、进场信息 （#感谢@Sinyupl）（就单纯听大伙儿吹逼吧）  
 22.增加直播Up开播提醒（哎符逼哎，楼梯负一开审）  
-23.网络同步插件配置（可以与服务器来同步配置了！）
+23.网络同步插件配置（可以与服务器来同步配置了！）  
+24.现在弹出栏也能看部分广场动态和广场直播推荐了！  
+25.联合 AcFun直播桌面通知和下载助手 桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将Up加入/移出 开播通知列表中。
 
 ---
 #### 插件本体获取
@@ -59,6 +61,12 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 
 方法二：将.crx的文件的扩展名改为.zip，并解压到指定的文件夹（这个文件夹不能删除！！！！【而且更新的时候你可以关掉浏览器再删掉内容再覆盖新版本的文件，注意只有在关闭浏览器的时候才能删除哦，这样就不会损失配置文件了。但是更建议使用配置导出。】）例如解压到了test文件夹，打开浏览器，地址栏输入 chrome://extensions/ （进入扩展管理页面）, 勾择开发者模式，点击'加载已解压的扩展程序'，选择到你刚刚.zip文件解压出来的的test文件夹，点击确定。扩展程序列表随即出现你导入的扩展程序，并在地址栏旁的工具栏会显示一个红色的‘A’字母图标，即为成功。
 
+---
+#### 如何与 acfunlive 程序协作
+
+    首先我们找到acfunlive所下载的路径（找到名为acfunlive.exe所在的目录），然后我们按住shift + 右键 ，右键菜单会有一条“在此处打开命令行窗口”（windows 10版本的显示为“在此处打开powershell窗口”），然后点击进入，在命令行窗口中输入“./acfunlive.exe -weblisten”（powershell 则输入：“.\acfunlive.exe -weblisten”），然后保持命令行窗口后台运行即可。
+
+    如果还想查看其它用法可以在命令行中输入“./acfunlive.exe -h”。更多食用方法请在下面的#相关项目 的项目地址中查看。
 ---
 #### 联系我们
 [用户QQ群 296107184](https://shang.qq.com/wpa/qunwpa?idkey=fe451dc2e5c33980a1f92725370f80a21048ca5fe2e325b3e0c15f494a8001e3)
@@ -87,6 +95,8 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 #### 相关项目
 插件配置同步服务:  
 ##### @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
+独立项目：
+##### @orzogc - [acfunlive AcFun直播桌面通知和下载助手（命令行版本）](https://github.com/orzogc/acfunlive "项目地址")
 ---
 
 ### 致谢
@@ -96,6 +106,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
     * @Sinyupl https://github.com/Sinyupl
     * @condy0919 https://github.com/condy0919
     * @flydrz https://github.com/flydrz
+    * @orzogc https://github.com/orzogc
 
 ---
 #### 如果喜欢此插件，请务必给我们来一个Star，如果不喜欢，请不要浪费你的口水，来一个Star，然后再提交Issue来diss；总之欢迎提出各种建议或者意见，这些宝贵的意见对以后的体验是非常重要的，不喜欢就大声说出来。![阿部高和脸](https://js2.a.yximgs.com/bs2/emotion/1587040895463third_party_b35465999.png)

@@ -1,4 +1,4 @@
-* {
+﻿* {
     box-sizing: border-box;
 }
 
@@ -169,11 +169,15 @@ span.go-live {
 }
 
 .pop-push{
-    margin-top: 105px;
+    margin-top: 155px;
 }
 .pop-push :before{
     content: '';
 }
+.pop-common{
+    background-color: #F6F6F6;
+}
+
 
 .push-msg{
     margin-top: 100px;

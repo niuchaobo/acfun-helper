@@ -109,7 +109,16 @@ class Popup {
         if(type=='live'){
             //直播测试
             let src = chrome.runtime.getURL('/')+"bg/images/copy_link.png";
-            content+=`<div class="odh-headsection">
+            content+=`
+            <div class="odh-headsection">
+                    <span class="odh-expression">桌面版AcFun-Live程序</span>
+                    <span style="margin-left: 20px;color:#d69acc" id="exec-live-msg"></span>
+                    <br><div style="text-align: center;">
+                    <span id="subscribe" class="pos livesimple">订阅Up</span>
+                    <span id="removeSubscribe" class="pos livesimple">取消订阅Up</span>
+                    </div>
+                </div>
+            <div class="odh-headsection">
                     <span class="odh-expression">网页端直播</span>
                     <span style="margin-left: 20px;color:#d69acc" id="live-msg"></span>
                 </div>

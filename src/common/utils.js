@@ -5,7 +5,7 @@ const defaults = {
     to_attention_num:5,
     to_special_items:[],
     activeTabKey:'activeTabId',
-    extendsName:'Acfun助手',
+    extendsName:'AcFun助手',
     upUrlTemplate:'https://www.acfun.cn/u/{uid}',
     userInfo:'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId={uid}',
     banana_notice:true,
@@ -16,7 +16,7 @@ const defaults = {
     filter:false,//屏蔽up
     beautify_nav:true,//首页右侧导航
     beautify_personal:true,//个人中心入口
-    show_like:true,//显示点赞数
+    show_like:false,//显示点赞数
     custom_rate:true,//开启自定义倍速
     player_mode:'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
 
