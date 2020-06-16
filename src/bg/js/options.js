@@ -1213,20 +1213,20 @@ $(document).ready(function () {
                 if(typeof(Uid)=='number'){
                     chrome.storage.local.get(null, function (items) {
                         if(typeof(Uid)=='number'){
-                            chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
+                            // chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
                                 delete items["AcpushList1"];
                                 var options_data = JSON.stringify(sanitizeOptions(items));
-                                if(JSON.stringify(rawtoken) == '{}'){token=0}else{token=JSON.stringify(rawtoken)};
+                                // if(JSON.stringify(rawtoken) == '{}'){token=0}else{token=JSON.stringify(rawtoken)};
                                 let uploadData = new FormData();
                                 uploadData.append("options_data",`${options_data}`);
                                 console.log(`${options_data}`);
-                                fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload',{method:"POST", body:uploadData})
+                                fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload',{method:"POST", credentials: 'include', body:uploadData})
                                 .then((res=>{return res.text()}))
                                 .then((res)=>{
                                     // console.log(res);
                                     // if(res!=''){chrome.storage.local.set({'AcHlp-SyncToken':`${res}`})};
                                 })
-                            });
+                            // });
                         }           
                     });
                 }           
@@ -1241,9 +1241,9 @@ $(document).ready(function () {
         var dialog = document.getElementById('dialog');
         dialog.addEventListener('confirm.mdui.dialog', function () {
           console.log('confirm');
-          chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
-            if(JSON.stringify(rawtoken)!='{}'){
-            }else{
+        //   chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
+        //     if(JSON.stringify(rawtoken)!='{}'){
+        //     }else{
                 chrome.storage.local.get(null, function (items) {
                     let svrCookies={}
                     console.log(items);
@@ -1252,7 +1252,7 @@ $(document).ready(function () {
                     console.log(svrCookies)
                     let upCookies = new FormData();
                     upCookies.set("authCookie",`${JSON.stringify(svrCookies)}`);
-                    fetch('https://mini.pocketword.cn/api/acfun-helper/options/download',{method:"POST", body:upCookies})
+                    fetch('https://mini.pocketword.cn/api/acfun-helper/options/download',{method:"POST", credentials: 'include', body:upCookies})
                     .then((res=>{return res.text()}))
                     .then((res)=>{
                         let x = unescape(res.replace(/\\u/g, "%u"));
@@ -1268,8 +1268,8 @@ $(document).ready(function () {
                         notice("AcFun助手","配置同步成功~");
                         });
                 });
-            }
-        });
+        //     }
+        // });
         });
     });
 
