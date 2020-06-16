@@ -10,8 +10,8 @@ class ODHBack {
 
         this.MsgNotfs.timer4Unread();
         this.MsgNotfs.fetchPushList();
-        this.MsgNotfs.liveOnlineNotif();
-        this.MsgNotfs.fetchMcircle();
+        // this.MsgNotfs.liveOnlineNotif();
+        // this.MsgNotfs.fetchMcircle();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));
