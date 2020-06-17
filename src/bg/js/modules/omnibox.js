@@ -11,32 +11,44 @@ class Ohminibox{
         chrome.omnibox.onInputStarted.addListener(() => {
         });
         chrome.omnibox.onInputChanged.addListener((text, suggest) => {
-            fetch(`https://www.acfun.cn/rest/pc-direct/search/suggest?count=6&keyword=${text}&callback=jQuery35104624576750465499_1592378440178&_=1592378440180`).then((res)=>{return res.text();})
-            .then((res)=>{
-                let regX=RegExp("jQuery35104624576750465499_1592378440178(.*)");
-                let result = regX.exec(res)[1].replace('(','').replace(')','');
-                let x = JSON.parse(result);
-                let y=[];
-                try {
-                    var keywordNum = x.suggestKeywords.length;
-                } catch (error) {
-                    var keywordNum = 1;
-                }
-                for(let i = 0;i<keywordNum;i++){
+            let x0 = RegExp('-ac(.*)');
+            let y0 = x0.exec(text);
+            if(y0==null){
+                fetch(`https://www.acfun.cn/rest/pc-direct/search/suggest?count=6&keyword=${text}&callback=jQuery35104624576750465499_1592378440178&_=1592378440180`).then((res)=>{return res.text();})
+                .then((res)=>{
+                    let regX=RegExp("jQuery35104624576750465499_1592378440178(.*)");
+                    let result = regX.exec(res)[1].replace('(','').replace(')','');
+                    let x = JSON.parse(result);
+                    let y=[];
                     try {
-                        let z = `{"content": "${x.suggestKeywords[i]}","description": "是否要查看 ${x.suggestKeywords[i]} 在主站有关的内容？"}`;
-                        var zo = JSON.parse(z);
+                        var keywordNum = x.suggestKeywords.length;
                     } catch (error) {
-                        var zo={};
+                        var keywordNum = 1;
                     }
-                    y.push(zo);
-                }
-                suggest(y);
-            })
+                    for(let i = 0;i<keywordNum;i++){
+                        try {
+                            let z = `{"content": "${x.suggestKeywords[i]}","description": "是否要查看 ${x.suggestKeywords[i]} 在主站有关的内容？"}`;
+                            var zo = JSON.parse(z);
+                        } catch (error) {
+                            var zo={};
+                        }
+                        y.push(zo);
+                    }
+                    try {
+                        suggest(y);
+                    } catch (error) {}
+                })
+            }
         });
         
         chrome.omnibox.onInputEntered.addListener((text) => {
-            window.open('https://www.acfun.cn/search?keyword='+String(encodeURI(text)));
+            let x0 = RegExp('-ac(.*)');
+            let y0 = x0.exec(text);
+            if(y0==null){
+                window.open('https://www.acfun.cn/search?keyword='+String(encodeURI(text)));
+            }else{
+                window.open('https://www.acfun.cn/v/ac'+String(encodeURI(y0[1])));
+            }
         });
         
         chrome.omnibox.setDefaultSuggestion({
