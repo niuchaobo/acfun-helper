@@ -1055,7 +1055,7 @@ $(document).ready(function () {
                     chrome.storage.local.set({'liveFloowings':items.liveFloowings})
                     console.log(items);
                     mdui.snackbar({message: ` ${liveup_name} 已被加入关注列表`});
-                    $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${value} style="cursor:pointer">delete</i><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${i} style="cursor:pointer">desktop_windows</i><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
+                    $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${value} style="cursor:pointer">delete</i><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${value} style="cursor:pointer">desktop_windows</i><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
                     $('.liveFloowingsItems').click(function () {
                         let this_uid=$(this).data("key");
                         $(this).parent().hide();
