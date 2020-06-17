@@ -72,17 +72,21 @@ function setCustomPlaybackRate(event) {
     }
 }
 
-//从Player获取douga信息，传递给父级
-window.parent.postMessage({
-    to:'pageBtfy' ,
-    msg:`${JSON.stringify(window.player.videoInfo)}`
-},'*');
-
-window.parent.postMessage({
-    to:'frame_danmaku',
-    acId:`${window.player.acId}`,
-    msg:`${JSON.stringify(window.player._danmaku.list)}`
-},'*');
+//从Player获取douga danmaku 信息，传递给父级
+try {
+    window.parent.postMessage({
+        to:'pageBtfy' ,
+        msg:`${JSON.stringify(window.player.videoInfo)}`
+    },'*');
+    
+    window.parent.postMessage({
+        to:'frame_danmaku',
+        acId:`${window.player.acId}`,
+        msg:`${JSON.stringify(window.player._danmaku.list)}`
+    },'*');   
+} catch (error) {
+    
+}
 
 
 //调用画中画模式
