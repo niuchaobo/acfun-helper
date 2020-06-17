@@ -124,7 +124,7 @@ class ODHFront {
         //let is_up = this.adjuatUp();
         let href = window.location.href;
         //顶栏头像下拉个人信息栏内容
-        if(this.options.beautify_personal){
+        if(this.options.beautify_personal & !REG.live.test(href)){
             this.pageBeautify.personBeautify();
         }
 
