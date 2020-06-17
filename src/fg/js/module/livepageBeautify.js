@@ -1,5 +1,5 @@
 /**
- * 生放送页面优化
+ * 生放送优化
  */
 class LivePageButfy {
     constructor(){
@@ -26,11 +26,15 @@ class LivePageButfy {
                 $('div.box-right').on('click','#toggleWide',function () {
                     if (!isWidePlayer) {
                         //样式
+                        // $('.main').addClass('main_wide')
+                        // $('#app').addClass('wide_app')
                         document.getElementsByClassName('main')[0].classList.add('main_wide');
                         document.getElementById('app').classList.add('wide_app');
                         $(window).scrollTop(15)
                         isWidePlayer = true
                     } else {
+                        // $('.main').removeClass('main_wide')
+                        // $('#app').removeClass('wide_app')
                         document.getElementsByClassName('main')[0].classList.remove('main_wide');
                         document.getElementById('app').classList.remove('wide_app');
                         isWidePlayer = false
@@ -40,7 +44,7 @@ class LivePageButfy {
                 $(window).scrollTop(0)
                 clearInterval(timer);
             }
-        },1000)
+        },3000)
         this.isWidePlayer = isWidePlayer;
     }
 
@@ -62,13 +66,22 @@ class LivePageButfy {
                     })
                 })
             })
+            clearInterval(timer);
+        },5000)
+    }
+
+    loopToBan(){
+        var timer = setInterval(function () {
+            console.log('ban running');
             $('.hide_popup').find('input').click(function (e) {
                 let _type = $(this).attr('data-type')
                 let isChecked = $(this).prop('checked')
                 console.log(isChecked)
                 if (isChecked) {
+                    console.log('ready to block '+_type);
                     $('.live-feed-messages').addClass('ban_' + _type)
                 } else {
+                    console.log('cancal to block '+_type);
                     $('.live-feed-messages').removeClass('ban_' + _type)
                 }
             })
@@ -78,8 +91,7 @@ class LivePageButfy {
             nod.type="text/css";
             nod.textContent = cssStr;
             document.getElementsByClassName('live-feed-messages')[0].appendChild(nod);
-            clearInterval(timer);
-        },3500)
+        },5000);
     }
 
 }
