@@ -44,6 +44,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 25.联合 AcFun直播桌面通知和下载助手 桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将Up加入/移出 开播通知列表中。
 
 26.增加了浏览器地址栏直接搜索主站相关关键字（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入ACid跳转到相应投稿哦。^3^）
+
 ---
 #### 插件本体获取
 - [Chrome 扩展商店](https://chrome.google.com/webstore/detail/acfun%E5%8A%A9%E6%89%8B/jmpmiaajjammeafdklfobkfaobinefef)
