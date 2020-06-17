@@ -7,17 +7,23 @@ class MsgNotifs{
     }
 
     liveOnlineNotif(){
+        console.log('Start LiveUp Notificate.')
         window.setInterval(function(){
             chrome.storage.local.get(['liveFloowNotif'],function(Ifswitch){
             if(Ifswitch.liveFloowNotif){
                 chrome.storage.local.get(['liveFloowings'],function(items){
                 chrome.storage.local.get(['broadcastingUIDlist'],function(broadcastingUIDlist){
-                    // let broadcastingUIDlist={674544:true}
-                    console.log(broadcastingUIDlist);
+                    // console.log(broadcastingUIDlist);
                     let y={}
+                    if(JSON.stringify(broadcastingUIDlist)=='{}'){
+                        chrome.storage.local.get(['liveFloowings'],function(a){for(let j in items.liveFloowings){y[j]=false}});
+                        chrome.storage.local.set({'broadcastingUIDlist':y});
+                        console.log('BroadcastingUIDlist Is Blank. Filling...')
+                        return;
+                    }
                     for(let i in items.liveFloowings){
                         //i就是UID
-                        console.log(i);
+                        // console.log(i);
                         let ApiUrl='https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='
                         fetch(ApiUrl+i).then((res)=>{return res.text()})
                         .then((res)=>{
@@ -39,24 +45,24 @@ class MsgNotifs{
                                     title: 'AcFun助手',
                                     message: `${x.profile.name}  正在直播了！`
                                 });
-                            }else{
-                                // console.log(`${x.profile.name}  下播了！`);
-                                // chrome.notifications.create(null, {
-                                //     type: 'basic',
-                                //     iconUrl: 'images/notice.png',
-                                //     title: 'AcFun助手',
-                                //     message: `${x.profile.name}  下播了！`
-                                // chrome.notifications.onClicked.addListener(function (){mdui.alert('2333')})
-                                // });
+                                }else{
+                                    // console.log(`${x.profile.name}  下播了！`);
+                                    // chrome.notifications.create(null, {
+                                    //     type: 'basic',
+                                    //     iconUrl: 'images/notice.png',
+                                    //     title: 'AcFun助手',
+                                    //     message: `${x.profile.name}  下播了！`
+                                    // });
                             }}
                             chrome.storage.local.set({'broadcastingUIDlist':y});
+                            // chrome.storage.local.get(['broadcastingUIDlist'],function(e){console.log(e)});
                         });
                     }
                 });
                 });
             }
             });
-        },20000);
+        },60000);
     }
 
     async timer4Unread(){
