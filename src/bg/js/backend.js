@@ -7,7 +7,9 @@ class ODHBack {
         this.agent = new Agent(document.getElementById('sandbox').contentWindow);
         this.MsgNotfs = new MsgNotifs();
         this.authInfo = new AuthInfo();
+        this.Ominibox = new Ohminibox();
 
+        this.Ominibox.registerOmnibox();
         this.MsgNotfs.timer4Unread();
         this.MsgNotfs.fetchPushList();
         // this.MsgNotfs.liveOnlineNotif();

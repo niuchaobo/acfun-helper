@@ -43,6 +43,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 24.现在弹出栏也能看部分广场动态和广场直播推荐了！  
 25.联合 AcFun直播桌面通知和下载助手 桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将Up加入/移出 开播通知列表中。
 
+26.增加了浏览器地址栏直接搜索主站相关关键字（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入ACid跳转到相应投稿哦。^3^）
 ---
 #### 插件本体获取
 - [Chrome 扩展商店](https://chrome.google.com/webstore/detail/acfun%E5%8A%A9%E6%89%8B/jmpmiaajjammeafdklfobkfaobinefef)
@@ -61,6 +62,13 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 
 方法二：将.crx的文件的扩展名改为.zip，并解压到指定的文件夹（这个文件夹不能删除！！！！【而且更新的时候你可以关掉浏览器再删掉内容再覆盖新版本的文件，注意只有在关闭浏览器的时候才能删除哦，这样就不会损失配置文件了。但是更建议使用配置导出。】）例如解压到了test文件夹，打开浏览器，地址栏输入 chrome://extensions/ （进入扩展管理页面）, 勾择开发者模式，点击'加载已解压的扩展程序'，选择到你刚刚.zip文件解压出来的的test文件夹，点击确定。扩展程序列表随即出现你导入的扩展程序，并在地址栏旁的工具栏会显示一个红色的‘A’字母图标，即为成功。
 
+---
+#### 如何食用地址栏搜索
+
+    首先我们点击地址栏，然后输入 ac ，按下tab键，接下来就可以直接搜索了
+        1.我们可以输入关键字，插件将会请求主站搜索关键字API，我们可以在地址栏项目的返回中选择对应的条目；或者直接回车查看主站与此条目的相关搜索结果。
+        2.我们可以直接输入相关ac号（例如 ac16240438 ）我们就能直接得到稿件的搜索结果了（一般都是唯一一个结果，我们可以直接点击进入）。
+        3.我们可以输入 - （<=对，这就是一个减号），然后直接接ac号，跳转【注意，番剧的ac号还没有做适配，所以番剧跳转是没有的哦】;例如：-ac16240438
 ---
 #### 如何与 acfunlive 程序协作
 
@@ -107,6 +115,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
     * @condy0919 https://github.com/condy0919
     * @flydrz https://github.com/flydrz
     * @orzogc https://github.com/orzogc
+    * @BDPO https://github.com/BDPO
 
 ---
 #### 如果喜欢此插件，请务必给我们来一个Star，如果不喜欢，请不要浪费你的口水，来一个Star，然后再提交Issue来diss；总之欢迎提出各种建议或者意见，这些宝贵的意见对以后的体验是非常重要的，不喜欢就大声说出来。![阿部高和脸](https://js2.a.yximgs.com/bs2/emotion/1587040895463third_party_b35465999.png)

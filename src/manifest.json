@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.6.615",
+    "version": "1.2.6.617",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -57,6 +57,7 @@
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },
+    "omnibox": { "keyword" : "ac" },
     "web_accessible_resources": [
         "fg/js/acfunxhr.js",
         "fg/css/frame.css",
