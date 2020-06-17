@@ -7,11 +7,13 @@ class ODHBack {
         this.agent = new Agent(document.getElementById('sandbox').contentWindow);
         this.MsgNotfs = new MsgNotifs();
         this.authInfo = new AuthInfo();
+        this.Ominibox = new Ohminibox();
 
+        this.Ominibox.registerOmnibox();
         this.MsgNotfs.timer4Unread();
         this.MsgNotfs.fetchPushList();
-        this.MsgNotfs.liveOnlineNotif();
-        this.MsgNotfs.fetchMcircle();
+        // this.MsgNotfs.liveOnlineNotif();
+        // this.MsgNotfs.fetchMcircle();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));

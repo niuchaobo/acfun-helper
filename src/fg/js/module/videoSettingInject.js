@@ -78,6 +78,12 @@ window.parent.postMessage({
     msg:`${JSON.stringify(window.player.videoInfo)}`
 },'*');
 
+window.parent.postMessage({
+    to:'frame_danmaku',
+    acId:`${window.player.acId}`,
+    msg:`${JSON.stringify(window.player._danmaku.list)}`
+},'*');
+
 
 //调用画中画模式
 function setPictureInPictureMode() {

@@ -993,6 +993,7 @@ $(document).ready(function () {
 
 
 
+
     //=============================关注直播推送==========================
     chrome.storage.local.get(['liveFloowNotif'],function(items){
         var liveFloowingsw_status= items.liveFloowNotif;
@@ -1014,6 +1015,28 @@ $(document).ready(function () {
     });
     // chrome.storage.local.set({'liveFloowNotif':true});
     // let a={16416041:16416041,31541670:31541670,16012499:16012499,2888736:2888736}
+    chrome.storage.local.get(['liveFloowings'],function(items){
+        if(JSON.stringify(items) !== '{}'){
+            for(i in items.liveFloowings){
+                $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${i} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${i} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${i}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons liveWatchOrig" data-key=${i} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${i} UserName:${items.liveFloowings[i]}</div></li>`);
+            }
+            $('.liveFloowingsItems').click(function () {
+                let this_uid=$(this).data("key");
+                $(this).parent().hide();
+                console.log(this_uid);
+                mdui.snackbar({
+                    message: `已移除 ${items.liveFloowings[this_uid]}`,
+                  });
+                delete items.liveFloowings[this_uid];
+                chrome.storage.local.set({'liveFloowings':items.liveFloowings});
+                });
+            // $('.liveWatchOrig').click(function () {
+            //     console.log('origin clicked.');
+            //     let this_uid=$(this).data("key");
+            //     window.open('https://live.acfun.cn/live/'+this_uid);
+            // });
+            }
+        });
     chrome.storage.local.get(['liveFloowings'],function(items){
     if(JSON.stringify(items) == '{}'){
         let a={}
@@ -1055,7 +1078,12 @@ $(document).ready(function () {
                     chrome.storage.local.set({'liveFloowings':items.liveFloowings})
                     console.log(items);
                     mdui.snackbar({message: ` ${liveup_name} 已被加入关注列表`});
-                    $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${value} style="cursor:pointer">delete</i><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${i} style="cursor:pointer">desktop_windows</i><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
+                    $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${value} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${value}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${value} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
+                    // $('.liveWatch').click(function () {
+                    //     console.log('action clicked.')
+                    //     let this_uid=$(this).data("key");
+                    //     window.open('https://live.acfun.cn/live/'+this_uid);
+                    // });
                     $('.liveFloowingsItems').click(function () {
                         let this_uid=$(this).data("key");
                         $(this).parent().hide();
@@ -1080,27 +1108,6 @@ $(document).ready(function () {
         }
       );
     })}});
-    chrome.storage.local.get(['liveFloowings'],function(items){
-        if(JSON.stringify(items) !== '{}'){
-            for(i in items.liveFloowings){
-                $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${i} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${i} style="cursor:pointer">delete</i><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${i} style="cursor:pointer">desktop_windows</i><div class="mdui-list-item-content">Uid:${i} UserName:${items.liveFloowings[i]}</div></li>`);
-            }
-            $('.liveFloowingsItems').click(function () {
-                let this_uid=$(this).data("key");
-                $(this).parent().hide();
-                console.log(this_uid);
-                mdui.snackbar({
-                    message: `已移除 ${items.liveFloowings[this_uid]}`,
-                  });
-                delete items.liveFloowings[this_uid];
-                chrome.storage.local.set({'liveFloowings':items.liveFloowings});
-                });
-            $('.liveWatch').click(function () {
-                let this_uid=$(this).data("key");
-                window.open('https://live.acfun.cn/live/'+this_uid);
-            });
-            }
-        });
 
 
 
@@ -1213,20 +1220,23 @@ $(document).ready(function () {
                 if(typeof(Uid)=='number'){
                     chrome.storage.local.get(null, function (items) {
                         if(typeof(Uid)=='number'){
-                            chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
+                            // chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
                                 delete items["AcpushList1"];
+                                delete items["danmakuCache"];
+                                delete items["AcMomentCircle1"];
+                                delete items["AcLives1"];
                                 var options_data = JSON.stringify(sanitizeOptions(items));
-                                if(JSON.stringify(rawtoken) == '{}'){token=0}else{token=JSON.stringify(rawtoken)};
+                                // if(JSON.stringify(rawtoken) == '{}'){token=0}else{token=JSON.stringify(rawtoken)};
                                 let uploadData = new FormData();
                                 uploadData.append("options_data",`${options_data}`);
                                 console.log(`${options_data}`);
-                                fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload',{method:"POST", body:uploadData})
+                                fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload',{method:"POST", credentials: 'include', body:uploadData})
                                 .then((res=>{return res.text()}))
                                 .then((res)=>{
                                     // console.log(res);
                                     // if(res!=''){chrome.storage.local.set({'AcHlp-SyncToken':`${res}`})};
                                 })
-                            });
+                            // });
                         }           
                     });
                 }           
@@ -1241,9 +1251,9 @@ $(document).ready(function () {
         var dialog = document.getElementById('dialog');
         dialog.addEventListener('confirm.mdui.dialog', function () {
           console.log('confirm');
-          chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
-            if(JSON.stringify(rawtoken)!='{}'){
-            }else{
+        //   chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
+        //     if(JSON.stringify(rawtoken)!='{}'){
+        //     }else{
                 chrome.storage.local.get(null, function (items) {
                     let svrCookies={}
                     console.log(items);
@@ -1252,7 +1262,7 @@ $(document).ready(function () {
                     console.log(svrCookies)
                     let upCookies = new FormData();
                     upCookies.set("authCookie",`${JSON.stringify(svrCookies)}`);
-                    fetch('https://mini.pocketword.cn/api/acfun-helper/options/download',{method:"POST", body:upCookies})
+                    fetch('https://mini.pocketword.cn/api/acfun-helper/options/download',{method:"POST", credentials: 'include', body:upCookies})
                     .then((res=>{return res.text()}))
                     .then((res)=>{
                         let x = unescape(res.replace(/\\u/g, "%u"));
@@ -1268,8 +1278,8 @@ $(document).ready(function () {
                         notice("AcFun助手","配置同步成功~");
                         });
                 });
-            }
-        });
+        //     }
+        // });
         });
     });
 
