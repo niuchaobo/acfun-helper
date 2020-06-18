@@ -81,9 +81,11 @@ class ODHFront {
         console.log("options",this.options);
 
         let href = window.location.href;
+        //直播站功能
         if(REG.live.test(href)){
             this.livepageBeautify.appendWidePlayer();
             this.livepageBeautify.simplifyDanmu();
+            this.livepageBeautify.loopToBan();
         }
         if(!this.options.enabled){
             return;
