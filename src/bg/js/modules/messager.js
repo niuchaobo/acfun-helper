@@ -46,7 +46,7 @@ class MsgNotifs{
                                     message: `${x.profile.name}  正在直播了！`
                                 });
                                 chrome.notifications.onClicked.addListener(function() {
-                                    chrome.tabs.create({url: "https://live.acfun.cn/live/"+x.profile.userId});
+                                    chrome.tabs.create({url: "https://live.acfun.cn/live/"+i});
                                 });
                                 }else{
                                     // console.log(`${x.profile.name}  下播了！`);
