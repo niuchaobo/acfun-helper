@@ -109,10 +109,12 @@ class ODHFront {
         }
         if(REG.video.test(href)){
             this.danmaku.cacheStore();
+            this.videoSetting.callPicktureInPictureMode();
         }
         this.playerconfig.PConfProc();
-        this.videoSetting.callPicktureInPictureMode();
-
+        if(REG.live.test(href)){
+            this.videoSetting.callPicktureInPictureModeForLive();
+        }
     }
 
 

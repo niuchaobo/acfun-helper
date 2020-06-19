@@ -7,7 +7,7 @@ class MsgNotifs{
     }
 
     liveOnlineNotif(){
-        console.log('Start LiveUp Mod.')
+        console.log('Start LiveUp Notificate.')
         window.setInterval(function(){
             chrome.storage.local.get(['liveFloowNotif'],function(Ifswitch){
             if(Ifswitch.liveFloowNotif){
