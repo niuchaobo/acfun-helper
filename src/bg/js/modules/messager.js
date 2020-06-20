@@ -13,7 +13,6 @@ class MsgNotifs{
             if(Ifswitch.liveFloowNotif){
                 chrome.storage.local.get(['liveFloowings'],function(items){
                 chrome.storage.local.get(['broadcastingUIDlist'],function(broadcastingUIDlist){
-                    // console.log(broadcastingUIDlist);
                     let y={}
                     if(JSON.stringify(broadcastingUIDlist)=='{}'){
                         chrome.storage.local.get(['liveFloowings'],function(a){for(let j in items.liveFloowings){y[j]=false}});
@@ -23,7 +22,6 @@ class MsgNotifs{
                     }
                     for(let i in items.liveFloowings){
                         //i就是UID
-                        // console.log(i);
                         let ApiUrl='https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='
                         fetch(ApiUrl+i).then((res)=>{return res.text()})
                         .then((res)=>{
@@ -44,9 +42,6 @@ class MsgNotifs{
                                     iconUrl: 'images/notice.png',
                                     title: 'AcFun助手',
                                     message: `${x.profile.name}  正在直播了！`
-                                });
-                                chrome.notifications.onClicked.addListener(function() {
-                                    chrome.tabs.create({url: "https://live.acfun.cn/live/"+i});
                                 });
                                 }else{
                                     // console.log(`${x.profile.name}  下播了！`);
@@ -69,24 +64,18 @@ class MsgNotifs{
     }
 
     async timer4Unread(){
-        // console.log("timer start!");
+        console.log("Start timer4Unread Mod");
         window.setInterval(function(){
-            // console.log("start timer4Unread_thread");
             fetch('https://member.acfun.cn/common/api/getUnreadMess',{method:"POST",headers: {
                     'Content-Type': 'application/x-www-form-urlencoded','Accept':"accept: application/json, text/plain, */*"},body:""})
                 .then((res=>{return res.text()}))
-                // .then(response => console.log(response))
-                // fetch('https://www.acfun.cn/member/unRead.aspx')
-                //     .then((res)=>{return res.text();})
                 .then((res)=>{
                     let b=JSON.parse(res);
-                    // console.log(b.unReadCount);
                     let a0=b.unReadCount.new_comment;//评论
                     let a1=b.unReadCount.new_comment_like;//赞
                     let a2=b.unReadFollowFeedCount;//动态
                     let a3=b.unReadCount.new_content_notify;//系统通知
                     let a4=b.unReadCount.new_system_notify;//站内公告
-                    // let a2=b.mention;
                     var pushNum=a0+a1+a2+a3+a4;
                     console.log(pushNum);
                     if(pushNum>0){
@@ -99,6 +88,7 @@ class MsgNotifs{
     }
 
     fetchPushList(){
+        console.log("Start PushListFetching Mod");
         window.setInterval(function(){
             fetch('https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=0&gid=-1&count=30&pcursor=1')
                 .then((res)=>{return res.text();})
@@ -117,25 +107,20 @@ class MsgNotifs{
                         xmlData+=data.title+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
                         xmlData+=data.aid+"\" href=\"https://www.acfun.cn/u/"+data.userId+"\" class=\"name\">";
                         xmlData += data.username + " </a><span class=\"time\">" + getTimeSinceNow(data.releaseDate) + "</span> </div> </div> </div> ";
-                        // console.log(xmlData);
                         out_data+=xmlData;
                     }
                     chrome.storage.local.set({'AcpushList1': out_data});
-                    // chrome.storage.local.get(['AcpushList'],function(datao){
-                    //     console.log(datao);
-                    // })
+                    // chrome.storage.local.get(['AcpushList'],function(datao){console.log(datao);})
                 });
         },60000)
     }
     
     fetchMcircle(){
+        console.log("Start MomentCircleFetching Mod");
         window.setInterval(function(){
             fetch('https://api-new.app.acfun.cn/rest/app/feed/feedSquareV2?pcursor=&count=20')
                 .then((res)=>{return res.text();})
                 .then((res)=>{
-                    // chrome.storage.local.get(['AcMomentCircle1'],function(datao){
-                    //     console.log(datao);
-                    // })
                     let rawdata=JSON.parse(res);
                     let out_data='';
                     try {
