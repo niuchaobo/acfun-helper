@@ -73,7 +73,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 ---
 #### 如何与 acfunlive 程序协作
 
-    首先我们找到acfunlive所下载的路径（找到名为acfunlive.exe所在的目录），然后我们按住shift + 右键 ，右键菜单会有一条“在此处打开命令行窗口”（windows 10版本的显示为“在此处打开powershell窗口”），然后点击进入，在命令行窗口中输入“./acfunlive.exe -weblisten”（powershell 则输入：“.\acfunlive.exe -weblisten”），然后保持命令行窗口后台运行即可。
+    首先我们找到acfunlive所下载的路径（找到名为acfunlive.exe所在的目录），然后我们按住shift + 右键 ，右键菜单会有一条“在此处打开命令行窗口”（windows 10版本的显示为“在此处打开powershell窗口”），然后点击进入，在命令行窗口中输入“./acfunlive.exe -web -listen”（powershell 则输入：“.\acfunlive.exe -web -listen”），然后保持命令行窗口后台运行即可。
 
     如果还想查看其它用法可以在命令行中输入“./acfunlive.exe -h”。更多食用方法请在下面的#相关项目 的项目地址中查看。
 ---
@@ -106,6 +106,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 ##### @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
 独立项目：
 ##### @orzogc - [acfunlive AcFun直播桌面通知和下载助手（命令行版本）](https://github.com/orzogc/acfunlive "项目地址")
+##### @orzogc - [acfundanmu AcFun直播弹幕下载](https://github.com/orzogc/acfundanmu "项目地址")
 ---
 
 ### 致谢
