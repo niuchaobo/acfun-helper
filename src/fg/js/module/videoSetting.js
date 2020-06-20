@@ -37,9 +37,7 @@ class VideoSetting{
     callPicktureInPictureMode(){
         let cPIP_div = this.cPIP_div;
         let cPIP_span = this.cPIP_span;
-        console.log(cPIP_span)
         let html = cPIP_div + cPIP_span;
-        console.log(html)
         let _timer = setInterval(function () {
             let node = $("div.control-btn.setting");
             if(node.length>0){
@@ -53,9 +51,7 @@ class VideoSetting{
     callPicktureInPictureModeForLive(){
         let cPIP_Livediv = this.cPIP_div;
         let cPIP_span = this.cPIP_span;
-        console.log(cPIP_span)
         let html = cPIP_Livediv + cPIP_span;
-        console.log(html)
         let _timer = setInterval(function () {
             let node = $("div.control-btn.setting");
             if(node.length>0){
