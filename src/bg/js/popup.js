@@ -285,6 +285,8 @@ function renderLives(){
                 })
             }
         }
+        let No_data = '<center>没有更多数据了</center>'
+        $('#pop-push-lives').append(No_data);
     })
 }
 
