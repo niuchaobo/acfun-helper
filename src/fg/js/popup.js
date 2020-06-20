@@ -117,10 +117,13 @@ class Popup {
             content+=`
             <div class="odh-headsection">
                     <span class="odh-expression">桌面版AcFun-Live程序</span>
-                    <span style="margin-left: 20px;color:#d69acc" id="exec-live-msg"></span>
-                    <br><div style="text-align: center;">
+                    <span style="margin-left: 20px;color:#d69acc" id="exec-live-msg"></span></div>
+                    <div class="odh-definition">
+                    <div style="text-align: center;">
                     <span id="subscribe" class="pos livesimple">订阅Up</span>
-                    <span id="removeSubscribe" class="pos livesimple">取消订阅Up</span>
+                    <span id="removeSubscribe" class="pos livesimple">取消订阅Up</span><br>
+                    <span id="record-danmu" class="pos livesimple">弹幕录制</span>
+                    <span id="record-canceldanmu" class="pos livesimple">取消弹幕录制</span>
                     </div>
                 </div>
             <div class="odh-headsection">

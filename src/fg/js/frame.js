@@ -117,35 +117,58 @@ function checkNumber() {
     }
 }
 
+function getParentUid(){
+    let ureg = new RegExp('/u/([0-9].*[0-9]$)');
+    let this_userUchref=window.parent.document.getElementsByClassName('up-name')[0].href;
+    let Uid = ureg.exec(this_userUchref)[1];
+    return Uid
+}
+
 function liveSubscribe(){
-    fetch("http://localhost:51880/liststreamer").then((res)=>{return res.text()})
+    fetch("http://localhost:51880/liststreamer").then((res)=>{
+        if(res.ok) {
+            return res.text();
+          }
+          throw new Error('Network response was not ok.');
+    })
     .then((res)=>{
         let x = JSON.parse(res);
-        let ureg = new RegExp('/u/([0-9].*[0-9]$)');
-        let this_userUchref=window.parent.document.getElementsByClassName('up-name')[0].href;
-        let Uid = ureg.exec(this_userUchref)[1];
+        console.log(x);
+        let Uid = getParentUid();
         for(let i=0;i<x.length;i++){
             if(Uid==Number(Uid) & Uid == x[i].UID){
                 alert("已经订阅关注了");
                 return;
-            }else{
-                fetch('http://localhost:51880/addnotify/'+Uid).then((res)=>{return res.text()})
-                .then((res)=>{
-                    alert("订阅成功");
-                })
-                break;
             }
         }
+        fetch('http://localhost:51880/addnotify/'+Uid).then((res)=>{return res.text()})
+        .then((res)=>{
+            alert("订阅成功");
+        })
+    })
+}
+
+function livecacelDanmuFtch(){
+    let Uid = getParentUid();
+    fetch("http://localhost:51880/deldanmu/"+Uid).then((res)=>{return res.text();})
+    .then((res)=>{
+        if(res=='true'){alert('已成功取消弹幕下载关注')}else{alert('未知错误')};
+    })
+}
+
+function liveDanmuFtch(){
+    let Uid = getParentUid();
+    fetch("http://localhost:51880/adddanmu/"+Uid).then((res)=>{return res.text();})
+    .then((res)=>{
+        if(res=='true'){alert('已成功启动弹幕下载关注')}else{alert('未知错误')};
     })
 }
 
 function liveRemoveSub(){
     fetch("http://localhost:51880/liststreamer").then((res)=>{return res.text()})
-        .then((res)=>{
+    .then((res)=>{
         let x = JSON.parse(res);
-        let ureg = new RegExp('/u/([0-9].*[0-9]$)');
-        let this_userUchref=window.parent.document.getElementsByClassName('up-name')[0].href;
-        let Uid = ureg.exec(this_userUchref)[1];
+        let Uid = getParentUid();
         for(let i=0;i<x.length;i++){
             if(Uid == x[i].UID){
                 fetch('http://localhost:51880/delnotify/'+Uid).then((res)=>{return res.text()})
@@ -155,7 +178,7 @@ function liveRemoveSub(){
                 })
             }
         }
-    })      
+    })
 }
 
 
@@ -200,6 +223,8 @@ function onDomContentLoaded() {
     //AcFun-live桌面程序
     $("#subscribe").bind('click',liveSubscribe);
     $("#removeSubscribe").bind('click',liveRemoveSub);
+    $("#record-danmu").bind('click',liveDanmuFtch);
+    $("#record-canceldanmu").bind('click',livecacelDanmuFtch);
     $("#ncb").click(function () {
         $("#ncb-div").show();
     })
