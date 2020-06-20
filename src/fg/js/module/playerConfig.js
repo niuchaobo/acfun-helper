@@ -18,8 +18,8 @@ class PlayerConfig {
             let AcSearchHist = localStorage['searchCache'];
             AcGConf['AcPlayerConfig']=AcPlayerConfig;
             AcGConf['AcExPlayerConfig']=AcExPlayerConfig;
-            AcGConf['AcPlayHist']=AcPlayHist;
-            AcGConf['AcSearchHist']=AcSearchHist;
+            //AcGConf['AcPlayHist']=AcPlayHist;
+            //AcGConf['AcSearchHist']=AcSearchHist;
             chrome.storage.local.set({AcGConf: AcGConf});
         }else{
             chrome.storage.local.get(['AcGConf'],function(data){
