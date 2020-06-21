@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css"/>
     <link rel="stylesheet" type="text/css" href="css/checkbox.css"/>
-    <link rel="stylesheet" type="text/css" href="css/popup.css"/>
     <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/popup.css"/>
     <title data-i18n="optTitle">AcFun助手</title>
     <style>
         .r {
@@ -124,7 +124,7 @@
                 </div>
             </div>
         </div>
-        <div class="mdui-row-xs-2 mdui-row-gapless" >
+        <div class="popup-mdui-row-xs-2 mdui-row-xs-2 mdui-row-gapless" >
             <!-- <div class="mdui-col" id="pop-introduce" >
               <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default">
                   <i class="mdui-icon material-icons">book</i>使用说明</button>
@@ -133,28 +133,29 @@
                 <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">settings</i>设置</button>
             </div>
             <div class="mdui-col" id="pop-setting">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">settings</i>设置</button>
+                <button class="popup-mdui-btn mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">settings</i>设置</button>
             </div> -->
+            <div class="mdui-col-xs-4" id="pop-setting">
+                <button class="popup-mdui-btn mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">settings</i>设置</button>
+            </div>
             <div class="mdui-col-xs-4" id="pop-introduce">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default">
+                <button class="popup-mdui-btn mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default">
                     <i class="mdui-icon material-icons">book</i>使用说明</button>
             </div>
-            <div class="mdui-col-xs-4" id="pop-setting">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">settings</i>设置</button>
-            </div>
+
             <div class="mdui-col-xs-4" id="pop-update-log">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">chrome_reader_mode</i>更新书</button>
+                <button class="popup-mdui-btn mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">chrome_reader_mode</i>更新日志</button>
 
             </div>
         </div>
             
         <div class="mdui-row">
-            <div class="mdui-col-xs-6">
+            <div class="popup-mdui-col-xs-6 mdui-col-xs-6">
                 <div class="mdui-textfield" style="padding-top:0px;padding-left:5px">
-                    <input id="live-id" class="mdui-textfield-input" style="cursor: default;" type="text" placeholder="直播Up的UID"/>
+                    <input id="live-id" class="popup-mdui-textfield-input mdui-textfield-input" style="cursor: default;" type="text" placeholder="直播UP的UID"/>
                   </div>
             </div>
-            <div class="mdui-col-xs-6">
+            <div class="popup-mdui-col-xs-6 mdui-col-xs-6">
                 <button id="go-live" class="mdui-btn mdui-ripple" style="cursor:default;left:5px">加入直播间</button>
             </div>
         </div>

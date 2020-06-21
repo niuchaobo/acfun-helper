@@ -32,7 +32,6 @@ body {
 }
 
 
-
 a {
     text-decoration: none;
 }
@@ -196,4 +195,24 @@ span.go-live {
     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
     border-radius: 10px;
     background: #EDEDED;
+}
+
+.popup-mdui-textfield-input {
+    font-size: 14px;
+}
+
+.popup-mdui-row-xs-2 {
+    margin-right: 8px;
+}
+
+.popup-mdui-col-xs-6 {
+    width: auto;
+}
+
+.popup-mdui-textfield-input{
+    padding: 0 0 0 16px;
+}
+
+.popup-mdui-btn {
+    padding: 0;
 }
