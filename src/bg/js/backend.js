@@ -12,7 +12,7 @@ class ODHBack {
         this.Ominibox.registerOmnibox();
         this.MsgNotfs.timer4Unread();
         this.MsgNotfs.fetchPushList();
-        // this.MsgNotfs.liveOnlineNotif();
+        this.MsgNotfs.liveOnlineNotif();
         // this.MsgNotfs.fetchMcircle();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));

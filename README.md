@@ -39,7 +39,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 
 21.屏蔽直播右侧信息中的礼物、关注、点赞、进场信息 （#感谢@Sinyupl）（就单纯听大伙儿吹逼吧）  
 22.增加直播Up开播提醒（哎符逼哎，楼梯负一开审）  
-23.网络同步插件配置（可以与服务器来同步配置了！）  
+23.网络同步插件配置（可以与服务器来同步配置了！）【服务器后端适配中和问题修复中，上线时间另定...】 
 24.现在弹出栏也能看部分广场动态和广场直播推荐了！  
 25.联合 AcFun直播桌面通知和下载助手 桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将Up加入/移出 开播通知列表中。
 
@@ -73,7 +73,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 ---
 #### 如何与 acfunlive 程序协作
 
-    首先我们找到acfunlive所下载的路径（找到名为acfunlive.exe所在的目录），然后我们按住shift + 右键 ，右键菜单会有一条“在此处打开命令行窗口”（windows 10版本的显示为“在此处打开powershell窗口”），然后点击进入，在命令行窗口中输入“./acfunlive.exe -weblisten”（powershell 则输入：“.\acfunlive.exe -weblisten”），然后保持命令行窗口后台运行即可。
+    首先我们找到acfunlive所下载的路径（找到名为acfunlive.exe所在的目录），然后我们按住shift + 右键 ，右键菜单会有一条“在此处打开命令行窗口”（windows 10版本的显示为“在此处打开powershell窗口”），然后点击进入，在命令行窗口中输入“./acfunlive.exe -web -listen”（powershell 则输入：“.\acfunlive.exe -web -listen”），然后保持命令行窗口后台运行即可。
 
     如果还想查看其它用法可以在命令行中输入“./acfunlive.exe -h”。更多食用方法请在下面的#相关项目 的项目地址中查看。
 ---
@@ -92,6 +92,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 #### TodoList
     - 完善插件和播放器配置网络同步
     - 评论投票图表
+    - 添加 稿件下抽奖、画中画模式、插件直播通知、地址栏（omnibox）支持【浏览器跳转】、弹幕下载 功能的使用说明
 
 #### 开源许可证
 
@@ -106,6 +107,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 ##### @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
 独立项目：
 ##### @orzogc - [acfunlive AcFun直播桌面通知和下载助手（命令行版本）](https://github.com/orzogc/acfunlive "项目地址")
+##### @orzogc - [acfundanmu AcFun直播弹幕下载](https://github.com/orzogc/acfundanmu "项目地址")
 ---
 
 ### 致谢

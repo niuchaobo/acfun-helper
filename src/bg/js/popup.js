@@ -185,7 +185,10 @@ function openSetting() {
 
 function watchLive() {
     let uid = $("#live-id").val();
-    let url = `http://live.acfun.cn/live/${uid}`;
+    //不输入uid时，跳转到直播首页（以前是404）
+    let reg = /^\d{1,}$/
+    let pattern= new RegExp(reg);
+    let url = pattern.test(uid) ? url = `http://live.acfun.cn/live/${uid}` : `https://live.acfun.cn/`
     var a = $("<a href='" + url + "' target='_blank'></a>").get(0);
     var e = document.createEvent('MouseEvents');
     e.initEvent('click', true, true);
@@ -260,19 +263,50 @@ function renderPushInnerHtml() {
 
 function renderMomentCircleHtml() {
     chrome.storage.local.get(['AcMomentCircle1'], function (data) {
-        console.log(data);
         $('#pop-push-momentcircle').append(data.AcMomentCircle1);
     })
 }
 function renderLives(){
-    chrome.storage.local.get(['AcLives1'], function (data) {
-        // console.log(data);
-        $('#pop-push-lives').append(data.AcLives1);
+    chrome.storage.local.get(['broadcastingUIDlist'],function(data){
+        console.log(data);
+        for(let i in data.broadcastingUIDlist){
+            if(data.broadcastingUIDlist[i]==true){
+                fetch('https://live.acfun.cn/api/live/info?authorId='+i).then((res)=>{return res.text()})
+                .then((res)=>{
+                    let live_Data = '';
+                    let livedata = JSON.parse(res);
+                    let livexmlData="<div class=\"inner\" id=\"";
+                    livexmlData+=livedata.authorId+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
+                    livexmlData+="https://live.acfun.cn/live/"+livedata.authorId+"\"";
+                    livexmlData+=" class=\"thumb thumb-preview\"><img data-aid=\"";
+                    livexmlData+=livedata.authorId + "\" src=\""+livedata.coverUrls[0]+"\" class=\"preview\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+livedata.authorId+" \"target=\"_blank\" href=\"" +"https://live.acfun.cn/live/"+livedata.authorId+"\" class=\"title\">";
+                    livexmlData+=livedata.title+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
+                    livexmlData+=livedata.authorId+"\" href=\"https://www.acfun.cn/u/"+livedata.authorId+"\" class=\"name\">";
+                    livexmlData += livedata.user.name + " </a></div> </div> </div> ";
+                    live_Data+=livexmlData;
+                    $('#pop-push-lives').append(live_Data);
+                })
+            }
+        }
+        let No_data = '<p class="push_end" style="margin: 5px 5px 5px 5px;">没有更多数据了</p>'
+        $('#pop-push-lives').append(No_data);
     })
 }
 
 $('.toTop').click(function(){$('html,body').animate({scrollTop: '0px'}, 600);});
-
+function toTopHidden(){
+    $(document).scroll(function () {
+          let top = $(".mdui-fab").offset().top;
+          if (top < 2000) {
+            $(".mdui-fab")
+              .css({ "opacity":'0'});
+        }else{
+            $(".mdui-fab")
+              .css({ "opacity":'1'});
+        }
+      });
+}
+toTopHidden()
 // 将时间转为最近
 function getTimeSinceNow(date) {
     let currentDate = new Date()
