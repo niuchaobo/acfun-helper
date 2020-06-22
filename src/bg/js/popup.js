@@ -285,7 +285,7 @@ function renderLives(){
                 })
             }
         }
-        let No_data = '<center>没有更多数据了</center>'
+        let No_data = '<p class="push_end" style="margin: 5px 5px 5px 5px;">没有更多数据了</p>'
         $('#pop-push-lives').append(No_data);
     })
 }

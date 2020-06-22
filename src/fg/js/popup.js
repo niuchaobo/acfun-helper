@@ -122,8 +122,14 @@ class Popup {
                     <div style="text-align: center;">
                     <span id="subscribe" class="pos livesimple">订阅Up</span>
                     <span id="removeSubscribe" class="pos livesimple">取消订阅Up</span><br>
+                    <span id="record-liverec" class="pos livesimple">录制</span>
+                    <span id="record-cancelLiverec" class="pos livesimple">取消录制</span>
+                    <span id="record-subliverec" class="pos livesimple">自动录制</span>
+                    <span id="record-cancelsubLiverec" class="pos livesimple">取消自动录制</span><br>
                     <span id="record-danmu" class="pos livesimple">弹幕录制</span>
-                    <span id="record-canceldanmu" class="pos livesimple">取消弹幕录制</span>
+                    <span id="record-canceldanmu" class="pos livesimple">取消弹幕录制</span><br>
+                    <span id="record-subdanmu" class="pos livesimple">弹幕自动录制</span>
+                    <span id="record-subcanceldanmu" class="pos livesimple">取消弹幕自动录制</span>
                     </div>
                 </div>
             <div class="odh-headsection">
