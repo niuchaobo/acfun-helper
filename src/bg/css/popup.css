@@ -2,10 +2,32 @@
     box-sizing: border-box;
 }
 
-blockquote, body, button, dd, div, dl, dt, form, h1, h2, h3, h4, h5, h6, input, li, ol, p, pre, td, textarea, th, ul {
+blockquote,
+body,
+button,
+dd,
+div,
+dl,
+dt,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+li,
+ol,
+p,
+pre,
+td,
+textarea,
+th,
+ul {
     margin: 0;
     padding: 0;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 body {
@@ -31,19 +53,17 @@ body {
     padding: 4px 15px;
 }
 
-
-
 a {
     text-decoration: none;
 }
 
-.container > .head {
+.container>.head {
     font-weight: normal;
     background-color: #F6F6F6;
 }
 
 .container .head .item {
-    box-shadow: 0 1px 0 0 rgba(0,0,0,0.17), 0 2px 0 0 rgba(0,0,0,0.13);
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.17), 0 2px 0 0 rgba(0, 0, 0, 0.13);
     border-bottom: 0;
 }
 
@@ -53,20 +73,31 @@ a {
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
-
-    border-bottom: 1px solid rgba(0,0,0,.12);
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
 }
 
-.container > .body {
+.container>.body {
     max-height: 295px;
     overflow: auto;
+}
+
+.container>.top-fixed {
+    height: 30px;
+    transition-property: all;
+    transition-duration: 1s;
+    overflow: hidden;
+}
+
+.container>.top-fixed:hover {
+    height: 106px;
 }
 
 .container .head .item .co.title {
     min-width: calc(100% - 152px);
     max-width: calc(100% - 152px);
 }
-.pop-title{
+
+.pop-title {
     display: block;
     box-sizing: border-box;
     position: relative;
@@ -82,6 +113,7 @@ a {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .container .item .col.action {
     height: 40px;
 }
@@ -91,10 +123,12 @@ a {
     max-width: 60px;
     text-align: center;
 }
+
 .container .item .col.size {
     text-align: center;
 }
-.container .item .col.action > * {
+
+.container .item .col.action>* {
     padding: 0 2px;
 }
 
@@ -102,7 +136,6 @@ a {
     background-position: center;
     background-repeat: no-repeat;
     background-size: 24px;
-
     background-image: url(../images/download.svg);
     opacity: 0.7;
 }
@@ -112,22 +145,27 @@ a {
     height: 40px;
     width: 28px;
 }
-.container .item > * {
+
+.container .item>* {
     line-height: 26px;
     height: 26px;
     margin: 0px 5px;
 }
-.pop-empty{
+
+.pop-empty {
     text-align: center;
     border-bottom: 0;
     margin-top: 70px;
     color: #aec2db;
 }
-.pop-hide{
+
+.pop-hide {
     display: none;
 }
 
-.odh-definition,.pop-live,.odh-sentence {
+.odh-definition,
+.pop-live,
+.odh-sentence {
     display: block;
     background-color: #fefefe;
     border: 1px solid;
@@ -136,64 +174,141 @@ a {
     padding: 2px;
     margin-top: 1px;
     word-wrap: break-word;
-
 }
-.comment-label{
+
+.comment-label {
     line-height: 26px
 }
-ul{
+
+ul {
     margin: 0px 5px;
     cursor: pointer;
     list-style: none;
 }
 
-.odh-definition:hover
-{
-    background-color:rgb(214, 154, 204);
+.odh-definition:hover {
+    background-color: rgb(214, 154, 204);
 }
-
 
 span.go-live {
     float: right;
     background-color: #d69acc !important;
     cursor: pointer;
-    text-transform:lowercase; font-size:0.9em; margin-right:2px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;
+    text-transform: lowercase;
+    font-size: 0.9em;
+    margin-right: 2px;
+    padding: 2px 4px;
+    color: white;
+    background-color: #0d47a1;
+    border-radius: 3px;
 }
 
-.top-fixed{
-    position: fixed;
-    top:0px;
+.top-fixed {
     background-color: #f6f2f2;
     z-index: 999;
-    width:100%;
+    width: 100%;
 }
 
-.pop-push{
-    margin-top: 155px;
+.pop-push {
+    /*无数据时增加最小高度*/
+    min-height: 30px;
+    line-height: 30px;
 }
-.pop-push :before{
+
+.pop-push>.inner {
+    z-index: 1;
+    height: 150px;
+    position: relative;
+}
+
+.pop-push>.inner>.l>a {
+    display: block;
+    height: 150px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.pop-push>.inner>.l>a>img {
+    filter: brightness(0.4);
+    transition-duration: .5s;
+}
+
+.pop-push>.inner:hover>.l>a>img {
+    filter: brightness(0.8);
+}
+
+.pop-push>.inner>.r {
+    z-index: 1;
+    position: absolute;
+    left: 10px;
+    bottom: 5px;
+    right: 10px;
+}
+
+.pop-push>.inner>.r>.info {
+    margin-top: 0;
+}
+
+.pop-push>.inner>.r>a {
+    color: white;
+    white-space: nowrap;
+    line-height: 15px;
+    text-overflow: ellipsis;
+}
+
+.pop-push :before {
     content: '';
 }
-.pop-common{
+
+.pop-common {
     background-color: #F6F6F6;
 }
 
-
-.push-msg{
+.push-msg {
     margin-top: 100px;
 }
 
-.popup-overflow::-webkit-scrollbar {/*滚动条整体样式*/
-    width: 5px;     /*高宽分别对应横竖滚动条的尺寸*/
+.popup-overflow::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 5px;
+    /*高宽分别对应横竖滚动条的尺寸*/
     height: 1px;
 }
-.popup-overflow::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+
+.popup-overflow::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     background: #ccc;
 }
-.popup-overflow::-webkit-scrollbar-track {/*滚动条里面轨道*/
-    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+
+.popup-overflow::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     background: #EDEDED;
+}
+
+
+/*按钮大小位置*/
+
+.mdui-fab {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+}
+
+.mdui-fab-fixed,
+.mdui-fab-wrapper {
+    position: fixed!important;
+    right: 16px;
+    bottom: 41px
+}
+
+.toTop-bg-color {
+    background-color: #0000008c!important;
+}
+
+.toTop-bg-color i {
+    color: white;
 }

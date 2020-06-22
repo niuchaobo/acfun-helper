@@ -185,7 +185,10 @@ function openSetting() {
 
 function watchLive() {
     let uid = $("#live-id").val();
-    let url = `http://live.acfun.cn/live/${uid}`;
+    //不输入uid时，跳转到直播首页（以前是404）
+    let reg = /^\d{1,}$/
+    let pattern= new RegExp(reg);
+    let url = pattern.test(uid) ? url = `http://live.acfun.cn/live/${uid}` : `https://live.acfun.cn/`
     var a = $("<a href='" + url + "' target='_blank'></a>").get(0);
     var e = document.createEvent('MouseEvents');
     e.initEvent('click', true, true);
@@ -291,7 +294,19 @@ function renderLives(){
 }
 
 $('.toTop').click(function(){$('html,body').animate({scrollTop: '0px'}, 600);});
-
+function toTopHidden(){
+    $(document).scroll(function () {
+          let top = $(".mdui-fab").offset().top;
+          if (top < 2000) {
+            $(".mdui-fab")
+              .css({ "opacity":'0'});
+        }else{
+            $(".mdui-fab")
+              .css({ "opacity":'1'});
+        }
+      });
+}
+toTopHidden()
 // 将时间转为最近
 function getTimeSinceNow(date) {
     let currentDate = new Date()

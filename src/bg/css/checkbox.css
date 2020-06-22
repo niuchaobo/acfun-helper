@@ -5,11 +5,11 @@
 .enabled {
     width: 55px;
     height: 20px;
-    display:inline-block;
+    display: inline-block;
     background: #e4e4e4;
     margin: 3px;
     border-radius: 25px;
-    top:0px;
+    top: 0px;
     position: relative;
 }
 
@@ -20,7 +20,7 @@
     top: -2px;
     left: 10px;
     height: 1px;
-    color: #e47e50;
+    color: #ff0000;
     font-weight: bold;
 }
 
@@ -51,6 +51,20 @@
 }
 
 .enabled input[type=checkbox]:checked+label {
-    left: 28px;
-    background: rgb(214, 154, 204);
+    left: 29px;
+    top: 3px;
+    /* 换了个按钮颜色 */
+    border-radius: 10px;
+    background-size: 200% 100%;
+    background-image: -webkit-linear-gradient(left, #1ED884 30%, #43FB4E 50%, #1ed884 70%);
+    animation: masked-animation 1.8s infinite linear;
+}
+
+@keyframes masked-animation {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
