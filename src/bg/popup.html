@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css"/>
-    <link rel="stylesheet" type="text/css" href="css/checkbox.css"/>
-    <link rel="stylesheet" type="text/css" href="css/popup.css"/>
-    <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css"/>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
+    <link rel="stylesheet" type="text/css" href="css/checkbox.css" />
+    <link rel="stylesheet" type="text/css" href="css/popup.css" />
+    <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css" />
     <title data-i18n="optTitle">AcFun助手</title>
     <style>
         .r {
@@ -20,17 +20,17 @@
             overflow: hidden;
             font-size: 12px;
         }
-
+        
         .r>a {
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-            color: #7B68EE;
+            color: #7b68ee;
             padding-left: 1px;
         }
-
+        
         .l {
             /*width: 45%;
             float: left;*/
@@ -40,11 +40,12 @@
             /* border: solid 1px red; */
             overflow: hidden;
             box-sizing: border-box;
-            padding: 4px;
         }
-        .l img{
+        
+        .l img {
             border-radius: 4px;
         }
+        
         .inner {
             /* border: solid 1px blue; */
             /*top: 100px;
@@ -55,11 +56,10 @@
             border: 1px solid;
             border-color: #e5e6e9 #dfe0e4 #d0d1d5;
             border-radius: 3px;
-            padding: 3px;
             box-sizing: border-box;
             margin-top: 5px;
         }
-
+        
         .pop-push-list {
             background-color: azure;
             /* border-color: red; */
@@ -69,63 +69,68 @@
             border-spacing: 2px;
             border-width: 1px 1px 1px 1px;
         }
-
+        
         .preview {
             height: auto;
             /* width: auto; */
             width: 100%;
         }
-
+        
         .r .avatar {
             border-radius: 50%;
             height: auto;
             width: 100%;
             /* width: 10%; */
         }
-        .r .time{
+        
+        .r .time {
             margin-left: 8px;
             color: #aaa;
         }
+        
         .r .info {
             padding-left: 8px;
             margin-top: 5px;
         }
+        
         .r .info a {
-            color: #666;
+            color: whitesmoke;
         }
-        .push_end{
+        
+        .push_end {
             color: #999;
             text-align: center;
             line-height: 200%;
         }
-        ::-webkit-scrollbar {
+        
+         ::-webkit-scrollbar {
             width: 8px;
             background-color: #fff;
         }
-
-        ::-webkit-scrollbar-thumb {
+        
+         ::-webkit-scrollbar-thumb {
             background-color: #ddd;
             border-radius: 3px;
         }
     </style>
 </head>
 
-<body style="width: 300px;overflow-x: hidden;">
-<div class="container">
-    <div class="top-fixed mdui-hoverable">
-        <div class="head">
-            <div class="item">
-                <div id="pop-title" class="pop-title">
-                    <label class="comment-label">打开关闭插件</label>
-                    <div style="float: right;" class="enabled">
-                        <input type="checkbox" checked id="extends-enbaled">
-                        <label for="extends-enbaled"></label>
+<body style="width: 300px; overflow-x: hidden;">
+    <div class="container">
+        <div class="top-fixed mdui-hoverable">
+            <div class="head">
+                <div class="item">
+                    <div id="pop-title" class="pop-title">
+                        <label class="comment-label">打开关闭插件</label>
+                        <div style="float: right;" class="enabled">
+                            <input type="checkbox" checked id="extends-enbaled" />
+                            <label for="extends-enbaled"></label>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mdui-row-xs-2 mdui-row-gapless" >
-            <!-- <div class="mdui-col" id="pop-introduce" >
+            <div class="mdui-row-xs-2 mdui-row-gapless">
+                <!-- <div class="mdui-col" id="pop-introduce" >
               <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default">
                   <i class="mdui-icon material-icons">book</i>使用说明</button>
             </div>
@@ -135,64 +140,65 @@
             <div class="mdui-col" id="pop-setting">
                 <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">settings</i>设置</button>
             </div> -->
-            <div class="mdui-col-xs-4" id="pop-introduce">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default">
-                    <i class="mdui-icon material-icons">book</i>使用说明</button>
+                <div class="mdui-col-xs-4" id="pop-introduce">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
+              <i class="mdui-icon material-icons">book</i>使用说明
+            </button>
+                </div>
+                <div class="mdui-col-xs-4" id="pop-setting">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
+              <i class="mdui-icon material-icons">settings</i>设置
+            </button>
+                </div>
+                <div class="mdui-col-xs-4" id="pop-update-log">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
+              <i class="mdui-icon material-icons">chrome_reader_mode</i>更新书
+            </button>
+                </div>
             </div>
-            <div class="mdui-col-xs-4" id="pop-setting">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">settings</i>设置</button>
-            </div>
-            <div class="mdui-col-xs-4" id="pop-update-log">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">chrome_reader_mode</i>更新书</button>
 
+            <div class="mdui-row">
+                <div class="mdui-col-xs-6">
+                    <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
+                        <input id="live-id" class="mdui-textfield-input" style="cursor: default;" type="text" placeholder="直播Up的UID" />
+                    </div>
+                </div>
+                <div class="mdui-col-xs-6">
+                    <button id="go-live" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">
+              加入直播间
+            </button>
+                </div>
             </div>
+            <div class="mdui-divider"></div>
         </div>
-            
-        <div class="mdui-row">
-            <div class="mdui-col-xs-6">
-                <div class="mdui-textfield" style="padding-top:0px;padding-left:5px">
-                    <input id="live-id" class="mdui-textfield-input" style="cursor: default;" type="text" placeholder="直播Up的UID"/>
-                  </div>
-            </div>
-            <div class="mdui-col-xs-6">
-                <button id="go-live" class="mdui-btn mdui-ripple" style="cursor:default;left:5px">加入直播间</button>
-            </div>
-        </div>
-        <div class="mdui-divider"></div>
 
-    </div>
-
-    <div>
-        <!--<div class="push-msg">
+        <div>
+            <!--<div class="push-msg">
             <span style="background-color: #5bd2f8">评论</span>(1)
             <span style="background-color: #3dae4a">赞</span>(2)
             <span style="background-color: #93a085">私信</span>(3)
         </div>-->
 
-        <div class="mdui-tab pop-common mdui-tab-centered" mdui-tab mdui-headroom style="position: fixed; top: 105px; left: 0; right: 0;z-index: 992;">
-            <a href="#PushList" class="mdui-ripple">稿件动态</a>
-            <!-- <a href="#MomentCircle" class="mdui-ripple">动态广场</a> -->
-            <a href="#SubLive" class="mdui-ripple">生放送</a>
-            <!-- <a href="#Special" class="mdui-ripple">Special</a> -->
-          </div>
-          <div id="PushList">
-            <div id="pop-push" class="pop-push">
-
+            <div class="mdui-tab pop-common mdui-tab-centered" mdui-tab mdui-headroom>
+                <a href="#PushList" class="mdui-ripple">稿件动态</a>
+                <!-- <a href="#MomentCircle" class="mdui-ripple">动态广场</a> -->
+                <a href="#SubLive" class="mdui-ripple">生放送</a>
+                <!-- <a href="#Special" class="mdui-ripple">Special</a> -->
             </div>
-          </div>
-          <!-- <div id="MomentCircle">
+            <div id="PushList">
+                <div id="pop-push" class="pop-push"></div>
+            </div>
+            <!-- <div id="MomentCircle">
             <div id="pop-push-momentcircle" class="pop-push">
 
             </div>
         </div> -->
-        <div id="SubLive">
-            <div id="pop-push-lives" class="pop-push">
-
+            <div id="SubLive">
+                <div id="pop-push-lives" class="pop-push"></div>
             </div>
-          </div>
-          <!-- <div id="Special">Special</div> -->
-    </div>
-    <!--<div id="pop-setting" class="odh-definition">
+            <!-- <div id="Special">Special</div> -->
+        </div>
+        <!--<div id="pop-setting" class="odh-definition">
         <ul class="ec">
             <li class="ec">
                 <img style="margin-right: 30px" width="14px" height="14px" src="images/setting.png">
@@ -204,21 +210,40 @@
             </li>
         </ul>
     </div>-->
-    <div id="pop-body" class="body">
-
-
+        <div id="pop-body" class="body"></div>
     </div>
-</div>
-<button class="mdui-fab mdui-fab-fixed mdui-color-pink-700 toTop" mdui-headroom><i class="mdui-icon material-icons">arrow_upward</i></button>
-<!--script src="js/polyfill.js"></script-->
-<script src="../lib/jquery-3.5.0.min.js"></script>
-<script src="js/lib/purify.min.js"></script>
-<script src="../common/utils.js"></script>
-<script src="js/popup.js"></script>
-<script src="js/lib/md5.js"></script>
-<script type="text/javascript" src="js/jquery.mloading.js"></script>
-<script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
-<!--<script src="../fg/js/frame.js"></script>-->
+    <button class="mdui-fab mdui-fab-fixed mdui-color-pink-700 toTop toTop-bg-color" mdui-headroom style="
+        opacity: 0;
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        position: fixed !important;
+        right: 16px;
+        bottom: 41px;
+        background-color: rgba(239, 19, 19, 0.9) !important;
+        z-index: 1000;
+      ">
+      <i
+        class="mdui-icon material-icons"
+        style="
+          height: 40px;
+          line-height: 40px;
+          margin-top: 0;
+          margin-left: 0;
+          width: 40px;
+        "
+        >arrow_upward</i
+      >
+    </button>
+    <!--script src="js/polyfill.js"></script-->
+    <script src="../lib/jquery-3.5.0.min.js"></script>
+    <script src="js/lib/purify.min.js"></script>
+    <script src="../common/utils.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/lib/md5.js"></script>
+    <script type="text/javascript" src="js/jquery.mloading.js"></script>
+    <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
+    <!--<script src="../fg/js/frame.js"></script>-->
 </body>
 
 </html>
