@@ -93,7 +93,6 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
     - 完善插件和播放器配置网络同步
     - 评论投票图表
     - 添加 稿件下抽奖、画中画模式、插件直播通知、地址栏（omnibox）支持【浏览器跳转】、弹幕下载 功能的使用说明
-    - 考虑更新日志与使用说明合并
 
 #### 开源许可证
 
