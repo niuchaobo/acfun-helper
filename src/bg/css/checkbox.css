@@ -20,7 +20,7 @@
     top: -2px;
     left: 10px;
     height: 1px;
-    color: #ff0000;
+    color: black;
     font-weight: bold;
 }
 
@@ -56,11 +56,11 @@
     /* 换了个按钮颜色 */
     border-radius: 10px;
     background-size: 200% 100%;
-    background-image: -webkit-linear-gradient(left, #1ED884 30%, #43FB4E 50%, #1ed884 70%);
-    animation: masked-animation 1.8s infinite linear;
+    background-image: -webkit-linear-gradient(left, #ff0000ad 30%, #ff0000 40%, #ff0000ad 70%);
+    animation: masked-animation 2.8s infinite linear;
 }
 
-@keyframes masked-animation {
+@-webkit-keyframes masked-animation {
     0% {
         background-position: 0 0;
     }
