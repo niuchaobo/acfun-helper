@@ -993,6 +993,25 @@ $(document).ready(function () {
 
 
 
+    //====================配置播放器自动跳转到上次观看时间===============
+    chrome.storage.local.get(['autoJumpLastWatchSw'],function(items){
+        var autoJumpLastWatchSw_status= items.autoJumpLastWatchSw;
+        if(autoJumpLastWatchSw_status){
+            document.getElementById('autoJumpLastWatchSw').checked='true';
+        }else{
+            document.getElementById('autoJumpLastWatchSw').checked=false;
+        }
+        $('#autoJumpLastWatchSw').on('click', function () {
+            if(!document.getElementById('autoJumpLastWatchSw').checked){
+                document.getElementById('autoJumpLastWatchSw').checked=false;
+                chrome.storage.local.set({'autoJumpLastWatchSw':false});
+            }else{
+                document.getElementById('autoJumpLastWatchSw').checked=true;
+                chrome.storage.local.set({'autoJumpLastWatchSw':true});
+            }
+        });
+    });
+
 
     //=============================关注直播推送==========================
     chrome.storage.local.get(['liveFloowNotif'],function(items){

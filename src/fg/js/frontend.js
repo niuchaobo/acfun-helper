@@ -110,6 +110,9 @@ class ODHFront {
         if(REG.video.test(href)){
             this.danmaku.cacheStore();
             this.videoSetting.callPicktureInPictureMode();
+            if(this.options.autoJumpLastWatchSw){
+                this.videoSetting.jumpLastWatchTime();
+            }
         }
         this.playerconfig.PConfProc();
         if(REG.live.test(href)){

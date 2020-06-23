@@ -33,6 +33,17 @@ class VideoSetting{
         }
     }
 
+    //跳转到上次观看(只支持1p投稿的跳转)
+    jumpLastWatchTime(){
+        window.addEventListener('message',function(e){
+            if(e.data.to=='vs_videoInfo'){
+                let videoInfo_data = JSON.parse(e.data.msg);
+                let lastTime = videoInfo_data[0].userPlayedSeconds;
+                document.getElementsByTagName("video")[0].currentTime = lastTime;
+            }
+        })
+    }
+
     //增加画中画模式
     callPicktureInPictureMode(){
         let cPIP_div = this.cPIP_div;
