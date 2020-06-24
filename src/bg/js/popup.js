@@ -362,6 +362,7 @@ function renderLives() {
       }
     }
   });
+
 }
 
 $(".toTop").click(function () {
