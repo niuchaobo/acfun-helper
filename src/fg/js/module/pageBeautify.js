@@ -10,24 +10,36 @@ class PageBeautify {
   navBeautify() {
     this.addRightNav();
     this.macNavPosition(); //导航常显（导航更像导航），mbp（13寸）导航条位置调整（别的mac版本不知道会不会爆炸）
-    var length = $(".home-main-content>div").length;
-    $(document).scroll(function () {
+    let homeDiv = $(".home-main-content>div");
+    let targetDiv = $("#back-top>.rightnav>div");
+    let length = homeDiv.length;
+    let ticking = false;
+    let b = () => {
+      let scrop = $(document).scrollTop(); //获取页面滚动条离顶部的距离
+      let a = [];
       for (let i = 0; i < length; i++) {
-        let top = $(".home-main-content>div").eq(i).offset().top; //获取当前元素离顶部的距离
-        let scrop = $(document).scrollTop(); //获取页面滚动条离顶部的距离
-        if (scrop > top) {
-          $(".rightnav>div")
-            .eq(i)
-            .css({ "background-color": "#fd4c5d", color: "#fff" });
-          $(".rightnav>div")
-            .eq(i)
-            .siblings()
-            .css({ "background-color": "", color: "" });
+        a.push(homeDiv.eq(i).offset().top);
+      }
+      for (let i = 0; i < length; i++) {
+        if (scrop < a[0]) {
+          targetDiv.removeClass("isSelected").eq(i).addClass("isSelected");
+          break;
+        }
+        if ((scrop >= a[i]) & (scrop <= a[i + 1])) {
+          targetDiv.removeClass("isSelected").eq(i).addClass("isSelected");
+          break;
         }
       }
+      ticking = false;
+    };
+    $(document).scroll(() => {
+      if (!ticking) {
+        requestAnimationFrame(b);
+        ticking = true;
+      }
     });
-    
   }
+
 
   addRightNav() {
     //右侧导航样式
@@ -53,7 +65,7 @@ class PageBeautify {
     let content = `
                         ${fn()}
                         <div class="rightnav none">
-                            <div onclick="scrollToTop(event);" data-id="pagelet_monkey_recommend">
+                            <div onclick="scrollToTop(event);" data-id="pagelet_monkey_recommend" class='isSelected'>
                                 推荐
                             </div>
                             <div onclick="scrollToTop(event);" data-id="pagelet_list_banana">
@@ -97,11 +109,14 @@ class PageBeautify {
     $("#back-top").prepend(content);
   }
 
-  macNavPosition(){
-    let style = document.createElement('style');
-    let str = '@media screen and (max-width: 1440px){#back-top {display:block !important;opacity:1 !important;'
-    str += /macintosh|mac os x/i.test(navigator.userAgent) ? 'margin-Left: 624px;}}' :'}}'
-    style.innerHTML = str
+  macNavPosition() {
+    let style = document.createElement("style");
+    let str =
+      "@media screen and (max-width: 1440px){#back-top {display:block !important;opacity:1 !important;";
+    str += /macintosh|mac os x/i.test(navigator.userAgent)
+      ? "margin-Left: 624px;}}"
+      : "}}";
+    style.innerHTML = str;
     window.document.head.appendChild(style);
   }
   //-------------------------------------------------个人中心-----------------------------------------------------------------------
