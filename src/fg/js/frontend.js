@@ -133,6 +133,8 @@ class ODHFront {
         //顶栏头像下拉个人信息栏内容
         if(this.options.beautify_personal & !REG.live.test(href)){
             this.pageBeautify.personBeautify();
+            this.pageBeautify.adjustArticleUp();
+            this.pageBeautify.hideAds();
         }
 
         //开启屏蔽功能
@@ -176,6 +178,7 @@ class ODHFront {
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live','');
+            this.livepageBeautify.LivehideAds();
         }
         //自定义倍速
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){

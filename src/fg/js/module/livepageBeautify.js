@@ -94,4 +94,10 @@ class LivePageButfy {
         },5000);
     }
 
+    LivehideAds(){
+        try {
+            document.querySelector(".banner").remove();
+        } catch (error) {}
+    }
+    
 }
