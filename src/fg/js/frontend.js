@@ -131,10 +131,14 @@ class ODHFront {
         //let is_up = this.adjuatUp();
         let href = window.location.href;
         //顶栏头像下拉个人信息栏内容
-        if(this.options.beautify_personal & !REG.live.test(href)){
-            this.pageBeautify.personBeautify();
-            this.pageBeautify.adjustArticleUp();
-            this.pageBeautify.hideAds();
+        if(this.options.beautify_personal & !REG.live.test(href) ){
+            if(REG.liveIndex.test(href)){
+                this.livepageBeautify.LivehideAds();
+            }else{
+                this.pageBeautify.personBeautify();
+                this.pageBeautify.hideAds();
+                this.pageBeautify.addMouseAnimation();
+            }
         }
 
         //开启屏蔽功能

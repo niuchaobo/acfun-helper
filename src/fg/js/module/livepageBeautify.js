@@ -96,7 +96,7 @@ class LivePageButfy {
 
     LivehideAds(){
         try {
-            document.querySelector(".banner").remove();
+            document.querySelector(".banner").hidden = true;
         } catch (error) {}
     }
     
