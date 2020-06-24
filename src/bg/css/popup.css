@@ -84,7 +84,8 @@ a {
 .container>.top-fixed {
     height: 30px;
     transition-property: all;
-    transition-duration: 1s;
+    transition-duration: .5s;
+    transition-delay: 1.5s;
     overflow: hidden;
 }
 
@@ -177,7 +178,30 @@ a {
 }
 
 .comment-label {
-    line-height: 26px
+    color: red;
+    font-weight: bold;
+    font-size: 0;
+}
+
+.top-fixed>.head>.item>.pop-title>.comment-label>.letter {
+    line-height: 26px;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.top-fixed:hover>.head>.item>.pop-title>.comment-label :nth-child(1) {
+    animation: dd .4s .2s linear 1;
+}
+
+.top-fixed:hover>.head>.item>.pop-title>.comment-label :nth-child(2) {
+    animation: dd .4s .6s linear 1;
+}
+
+.top-fixed:hover>.head>.item>.pop-title>.comment-label :nth-child(3) {
+    animation: dd .73s 1s ease-out 1;
 }
 
 ul {
@@ -243,17 +267,30 @@ span.go-live {
     left: 10px;
     bottom: 5px;
     right: 10px;
+    transition-duration: .5s;
+    padding: 0 5px 5px 5px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .pop-push>.inner>.r>.info {
     margin-top: 0;
+    line-height: 15px;
 }
 
 .pop-push>.inner>.r>a {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 20px;
+    padding: 5px;
+    transition-duration: .5s;
+}
+
+.pop-push>.inner>.r:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.pop-push>.inner>.r:hover>a {
     color: white;
-    white-space: nowrap;
-    line-height: 15px;
-    text-overflow: ellipsis;
 }
 
 .pop-push :before {
@@ -262,6 +299,7 @@ span.go-live {
 
 .pop-common {
     background-color: #F6F6F6;
+    height: 28px;
 }
 
 .push-msg {
@@ -311,4 +349,19 @@ span.go-live {
 
 .toTop-bg-color i {
     color: white;
+}
+
+@-webkit-keyframes dd {
+    0% {
+        transform: translateY(0px)
+    }
+    70% {
+        transform: translateY(-5px)
+    }
+    80% {
+        transform: translateY(2px)
+    }
+    100% {
+        transform: translateY(0px)
+    }
 }
