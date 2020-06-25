@@ -58,6 +58,51 @@ class VideoSetting{
         },1000);
     }
 
+    //初始画质策略
+    videoQuality(){
+        var timer = setInterval(function () {
+            let nodes = $('.quality-panel');
+            var vqregexp = RegExp('p60');
+            if(nodes.length>0){
+                //模式标准：0=自动；1=默认最高；2=平衡（非60帧的最高画质）；3=强制标清
+                chrome.storage.local.get(['videoQualityStrategy'],function(items){
+                let mode = Number(items.videoQualityStrategy);
+                // console.log(mode);
+                let qualitys = document.querySelector(".quality-panel > ul").children;
+                switch (mode) {
+                    case 0:
+                        return;
+                    case 1:
+                        qualitys[0].click();
+                        // console.log(qualitys[0].dataset.qualityType);
+                        // console.log('ok');
+                        break;
+                    case 2:
+                        for(let i=0;i<=qualitys.length;i++){
+                            let result = vqregexp.exec(qualitys[i].dataset.qualityType);
+                            if(result==null){
+                                qualitys[i].click();
+                                // console.log(qualitys[i].dataset.qualityType);
+                                // console.log('ok');
+                                break;
+                            }
+                        }
+                        break;
+                    case 3:
+                        let Lowest = qualitys.length - 2; //减去1的话就是播放器的自动模式
+                        qualitys[Lowest].click();
+                        // console.log(qualitys[Lowest].dataset.qualityType);
+                        // console.log('ok');
+                        break;
+                    default:
+                        break;
+                }
+                clearInterval(timer);
+            });
+            }
+        },5000);
+    }
+
     //直播站增加画中画模式
     callPicktureInPictureModeForLive(){
         let cPIP_Livediv = this.cPIP_div;

@@ -99,6 +99,10 @@ class ODHFront {
         if(this.options.night){
             this.addNightStyle();
         }
+        //播放器画质策略
+        if((REG.video.test(href) || REG.bangumi.test(href))){
+            this.videoSetting.videoQuality();
+        }
         //开启右侧导航
         if(this.options.beautify_nav){
             this.pageBeautify.navBeautify();

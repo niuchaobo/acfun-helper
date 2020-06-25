@@ -1012,6 +1012,15 @@ $(document).ready(function () {
         });
     });
 
+    //====================配置播放器画质策略===============
+    chrome.storage.local.get(['videoQualityStrategy'],function(items){
+        console.log(items.videoQualityStrategy);
+        $('#videoQualityStrategy_state').append(items.videoQualityStrategy)
+        var inst = new mdui.Select('#videoQualityStrategy');
+        $('#videoQualityStrategy').on('close.mdui.select', function () {
+            chrome.storage.local.set({'videoQualityStrategy':inst.value});
+        });
+    });
 
     //=============================关注直播推送==========================
     chrome.storage.local.get(['liveFloowNotif'],function(items){
