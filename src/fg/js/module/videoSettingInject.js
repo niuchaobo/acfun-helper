@@ -97,10 +97,20 @@ function setPictureInPictureMode() {
 }
 
 
-function quickJump(time) {
+quickJump = (time, part)=> {
     let v_obj = document.getElementsByTagName("video")[0];
-    v_obj.currentTime = Duration2Seconds(time);
-    console.log('Jump_ok');
+    let url = window.location.href
+    if($('.part .part-wrap .scroll-div .single-p').length && part){
+        if (!(url.split('_')[1] == part || (url.search('_') == -1 && part == 1))){ //判断是否为当前part，符合要求直接操作进度条
+            url = url.split('_')[0] + '_' + part
+            $('.part .part-wrap .scroll-div .single-p').eq(part - 1).trigger("click")
+        }
+    }
+    setTimeout(() => {
+        v_obj.currentTime = Duration2Seconds(time);
+        console.log('Jump_ok');
+    }, 500);
+    
 }
 
 function Duration2Seconds(time){

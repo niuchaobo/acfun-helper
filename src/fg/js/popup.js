@@ -21,6 +21,8 @@ class Popup {
         this.popup.style.right = pos.x + 'px';
         this.popup.style.top = pos.y + 'px';
         this.popup.style.visibility = 'visible';
+        this.popup.style.opacity = '1';
+        this.popup.style.transition = '.5s';
         this.popup.style.resize = 'none';//iframe禁止拉伸
     }
 
@@ -51,6 +53,7 @@ class Popup {
 
     hide() {
         this.popup.style.visibility = 'hidden';
+        this.popup.style.opacity = '0';
     }
 
     setContent(content) {

@@ -32,7 +32,7 @@ class Div {
             this.popup.hide();
         }
         let height=document.documentElement.clientHeight;//取得浏览器页面可视区域的宽度
-        let popTop = parseInt(this.div.style.top)+20+2;
+        let popTop = parseInt(this.div.style.top)+26+2;
         //let popTop = (height/2+20)/2+2;
         let pos = {
             x:0,
@@ -92,9 +92,15 @@ class Div {
         let height=document.documentElement.clientHeight;//取得浏览器页面可视区域的宽度
         this.div = document.createElement('div');
         this.div.style.right='0px';
-        this.div.style.top=(height/2-20)/2+'px';
+        //this.div.style.top=(height/2-20)/2+'px';
+        this.div.style.top = 225 + 60 + 2 + 'px';  //小窗口高度+顶部导航栏高度+间隙 (不会挡道小窗口播放默认播放位置)
+        this.div.style.background = '#fd4c5b';
+        this.div.style.color = '#fff'; 
+        this.div.style['user-select'] = 'none';
+        this.div.style['border-radius'] = '5px';
+        this.div.style['line-height'] = '26px';
         this.div.style.width='40px'; // 指定宽度
-        this.div.style.height='20px'; // 指定高度
+        this.div.style.height='26px'; // 指定高度
         this.div.id = 'acfun-helper-div';
         this.div.style.position='fixed';
         this.div.style.visibility='hidden';
