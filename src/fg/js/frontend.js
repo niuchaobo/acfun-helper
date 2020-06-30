@@ -196,57 +196,18 @@ class ODHFront {
     if (REG.video.test(href) || REG.bangumi.test(href)) {
       this.videoSetting.monitorFullScreen();
       //todo 加开关
-      this.ce.searchScanForPlayerTime();
-      
-      
+      //pagelet_newcomment
+      getAsyncDom('ac-comment-list',this.ce.searchScanForPlayerTime,2000)
+      //this.ce.searchScanForPlayerTime();
         //只能绑定到父元素，换p后分p按钮的列表会重新加载，导致绑定失效
         $(".right-column").on("click", (e) => {
-            if(e.target.className === 'single-p' || e.target.className === 'single-p active'){
-          let i = 0;
-          let re = () => {
-            //TODO:切换分p后评论区刷新但是方法不会重新加载,需要找到评论区刷新完毕的钩子，递归怕爆炸!
-            if ($(".btn-load").length) {
-              i = 0;
-              console.log("加载动画出现");
-              let btn = () => {
-                if ($(".btn-load").length) {
-                  console.log("还在转...");
-                  setTimeout(() => {
-                    i++;
-                    if (i >= 50) {
-                      console.warn("5s还没转完?用的神州行?再转爆炸！溜！");
-                      i = 0;
-                      return;
-                    }
-                    btn()
-                  }, 100);
-                } else {
-                  console.log("加载动画消失,100ms后开始加载方法");
-                  setTimeout(()=>{
-                    this.ce.searchScanForPlayerTime();
-                    console.log("重新加载方法完成");
-                    i=0
-                  },100)
-                }
-              };
-              btn();
-            } else {
-              setTimeout(() => {
-                i++;
-                console.log(i)
-                if (i >= 30) {
-                  console.warn("还不出现？A站可算把这个加载动画改了？溜！");
-                  i = 0;
-                  return;
-                }
-                  re()
-                }, 100);
-            }
-          };
-          re();
-        }
+          if (
+            e.target.className === "single-p" ||
+            e.target.className === "single-p active"
+          ) {
+            watchCommentLoading(this.ce.searchScanForPlayerTime);
+          }
         });
-      
     }
     this.authInfo.cookInfo();
   }

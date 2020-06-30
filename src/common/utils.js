@@ -493,18 +493,63 @@ function domToString (node) {
     return str;  
 }  
 
-function getAsyncDom(str,target,fn) {
+function getAsyncDom(target,fn,time = 3000) {
     //TODO:轮询上限
-  var e = document.createElement("script");
-  e.text = str;
-  e.setAttribute("charset", "utf-8");
+  //var e = document.createElement("script");
+  //e.text = str;
+  //e.setAttribute("charset", "utf-8");
   re = ()=>{
-      if(document.getElementById(target)){
-        document.body.appendChild(e);
+      if(document.getElementsByClassName(target)){
+        //document.body.appendChild(e);
         fn()
       }else{
-        setTimeout(()=>re(),3000)
+        setTimeout(()=>re(),time)
       }
   }
   re()
+}
+
+function watchCommentLoading(fn) {
+  let i = 0;
+  let re = () => {
+    //TODO:切换分p后评论区刷新但是方法不会重新加载,需要找到评论区刷新完毕的钩子，递归怕爆炸!
+    if ($(".btn-load").length) {
+      i = 0;
+      console.log("加载动画出现");
+      let btn = () => {
+        if ($(".btn-load").length) {
+          console.log("还在转...");
+          setTimeout(() => {
+            i++;
+            if (i >= 50) {
+              console.warn("5s还没转完?用的神州行?再转爆炸！溜！");
+              i = 0;
+              return;
+            }
+            btn();
+          }, 100);
+        } else {
+          console.log("加载动画消失,100ms后开始加载方法");
+          setTimeout(() => {
+            fn();
+            console.log("重新加载方法完成");
+            i = 0;
+          }, 100);
+        }
+      };
+      btn();
+    } else {
+      setTimeout(() => {
+        i++;
+        console.log(i);
+        if (i >= 30) {
+          console.warn("还不出现？A站可算把这个加载动画改了？溜！");
+          i = 0;
+          return;
+        }
+        re();
+      }, 100);
+    }
+  };
+  re();
 }
