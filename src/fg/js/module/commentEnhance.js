@@ -269,20 +269,6 @@ class CommentEnhance{
                             after_html_out=after_html_out+after_html;
                             $(this).html(after_html_out);
                         }
-                        // }else{
-                        //     //一行的情况
-                        //     if(if_matchTime){
-                        //         let x=comment_content.split(' ');
-                        //         let y=$(this)[0].innerHTML;
-                        //         let z=y.split(' ');
-                        //         let ie=z.length-1;
-                        //         var after_html='<a id=\'quickJump\' onclick=\"quickJump(\''+x[0]+'\');\">'+x[0]+'</a> ';
-                        //         for(let i=1;i<=ie;i++){
-                        //             after_html=after_html+z[i]+' ';
-                        //         }
-                        //         $(this).html(after_html);
-                        //     }
-                        // }
                     }
                 );
                 clearInterval(timer);

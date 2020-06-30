@@ -140,20 +140,11 @@ class Popup {
                     <span style="margin-left: 20px;color:#d69acc" id="live-msg"></span>
                 </div>
                 <div class="odh-definition">
-                    <p style="margin: 0px">超清
+                    <p style="margin: 0px">获取url地址
                          <img id="copy-link-super" title="点击复制链接" style="cursor: pointer;vertical-align: middle" width="16px" height="16px" src="${src}"/>
                     </p>
                     <div style="min-height: 50px" class="">
                         <span style="min-height: 30px" id="live-url-super"></span>
-                    </div>
-                </div>
-                
-                <div class="odh-definition">
-                    <p style="margin: 0px">高清
-                         <img id="copy-link-high" title="点击复制链接" style="cursor: pointer;vertical-align: middle" width="16px" height="16px" src="${src}"/>
-                    </p>
-                    <div style="min-height: 50px" class="">
-                        <span style="min-height: 30px" id="live-url-high"></span>
                     </div>
                 </div>
                 `;
