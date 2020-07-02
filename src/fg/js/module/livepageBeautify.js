@@ -18,7 +18,7 @@ class LivePageButfy {
                 //加入按钮
                 $('.box-right').find('.danmaku-setting').after('<div class="control-btn" id="toggleWide">' + toggleWideicon + '</div>');
                 let nod = document.createElement("style");
-                let cssStr = '.main{transiton: all 0.5s}.main_wide{width: calc(100% - 5px)!important; margin-left: 0.5%; max-width:calc(100% - 5px)!important;} .control-btn svg{width: 20px; height: auto;} .main_wide .live-info{display:none;} .wide_app #header{display: none!important};}';
+                let cssStr = '.main{transiton: all 0.5s}.main_wide{width: calc(100% - 5px)!important; margin-left: 0.5%; max-width:calc(100% - 5px)!important;} .control-btn svg{width: 20px; height: auto;} .main_wide .live-info{display:none;} .wide_app #header{display: none!important} .hide_do{display:none!important}';
                 nod.type="text/css";
                 nod.textContent = cssStr;
                 document.getElementsByClassName('main')[0].appendChild(nod);
@@ -30,6 +30,8 @@ class LivePageButfy {
                         // $('#app').addClass('wide_app')
                         document.getElementsByClassName('main')[0].classList.add('main_wide');
                         document.getElementById('app').classList.add('wide_app');
+                        $('.player-outer-wrapper').addClass('main_wide');
+                        $(".container-list").addClass('hide_do');
                         $(window).scrollTop(15)
                         isWidePlayer = true
                     } else {
@@ -37,6 +39,8 @@ class LivePageButfy {
                         // $('#app').removeClass('wide_app')
                         document.getElementsByClassName('main')[0].classList.remove('main_wide');
                         document.getElementById('app').classList.remove('wide_app');
+                        $('.player-outer-wrapper').removeClass('main_wide');
+                        $('.container-list').removeClass('hide_do');
                         isWidePlayer = false
                     }
                 });
@@ -94,4 +98,10 @@ class LivePageButfy {
         },5000);
     }
 
+    LivehideAds(){
+        try {
+            document.querySelector(".banner").hidden = true;
+        } catch (error) {}
+    }
+    
 }

@@ -19,7 +19,8 @@ const defaults = {
     show_like:false,//显示点赞数
     custom_rate:true,//开启自定义倍速
     player_mode:'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
-
+    liveFloowNotif:false,
+    videoQualityStrategy:'0',
 
 };
 const readOnlyKey = ["extendsName","upUrlTemplate","userInfo"];
@@ -31,7 +32,8 @@ const REG = {
     article:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+'),//文章
     msg_comment:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)'),//从我的消息-评论跳转
     mlive:new RegExp("https://m.acfun.cn/live/detail/*"),//移动版直播
-    live:new RegExp("https://live.acfun.cn/live/*")//直播
+    live:new RegExp("https://live.acfun.cn/live/*"),//直播
+    liveIndex:new RegExp("https://live.acfun.cn")//直播主页
 }
 
 
@@ -468,3 +470,15 @@ function adjustArticleUp(){
         return 0;//未登录
     }
 }
+
+//从Up名称解析为UID
+async function toUpInfo(upName){
+    let upUrl = fetch('https://www.acfun.cn/u/' + upName.toString()).then((response)=>{
+        let upUrl = response.url
+        return upUrl
+    })
+    return upUrl
+}
+
+// let uil =await toUpInfo('qyqx')
+//   console.log(uil)
