@@ -993,6 +993,34 @@ $(document).ready(function () {
 
 
 
+    //====================配置播放器自动跳转到上次观看时间===============
+    chrome.storage.local.get(['autoJumpLastWatchSw'],function(items){
+        var autoJumpLastWatchSw_status= items.autoJumpLastWatchSw;
+        if(autoJumpLastWatchSw_status){
+            document.getElementById('autoJumpLastWatchSw').checked='true';
+        }else{
+            document.getElementById('autoJumpLastWatchSw').checked=false;
+        }
+        $('#autoJumpLastWatchSw').on('click', function () {
+            if(!document.getElementById('autoJumpLastWatchSw').checked){
+                document.getElementById('autoJumpLastWatchSw').checked=false;
+                chrome.storage.local.set({'autoJumpLastWatchSw':false});
+            }else{
+                document.getElementById('autoJumpLastWatchSw').checked=true;
+                chrome.storage.local.set({'autoJumpLastWatchSw':true});
+            }
+        });
+    });
+
+    //====================配置播放器画质策略===============
+    chrome.storage.local.get(['videoQualityStrategy'],function(items){
+        console.log(items.videoQualityStrategy);
+        $('#videoQualityStrategy_state').append(items.videoQualityStrategy)
+        var inst = new mdui.Select('#videoQualityStrategy');
+        $('#videoQualityStrategy').on('close.mdui.select', function () {
+            chrome.storage.local.set({'videoQualityStrategy':inst.value});
+        });
+    });
 
     //=============================关注直播推送==========================
     chrome.storage.local.get(['liveFloowNotif'],function(items){

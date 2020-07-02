@@ -168,6 +168,40 @@ class PageBeautify {
       });
   }
 
+  hideAds(){
+    try {
+        document.querySelector(".app-guide").remove();
+    } catch (error) {}
+    try {
+        document.querySelector(".download-app").remove();
+    } catch (error) {}
+    try {
+        document.querySelector(".pause-display-container").remove();
+    } catch (error) {}
+  }
+
+  async addMouseAnimation(){
+    let obj = document.querySelector('[data-c-w-header] .header-guide .guide-item');
+    let imgObj = document.querySelector('[data-c-w-header] .header-guide .guide-user .user-avatar img');
+    const wave_style = document.createElement('style');
+    const before_style = document.createElement('style');
+    wave_style.style = 'text/css';
+    before_style.style = 'text/css';
+    wave_style.innerHTML = this.wave_frames;
+    before_style.innerHTML = '[data-c-w-header] .header-guide .guide-user .user-avatar img:before{animaition: avatar-wave cubic-bezier(0.22, 0.58, 0.12, 0.98) 0.6s forwards}';
+    document.getElementsByTagName('head')[0].appendChild(wave_style);
+    document.getElementsByTagName('head')[0].appendChild(before_style);
+    obj.addEventListener('mouseenter',function(){
+        imgObj.style.transform = "scale(1.6)";
+        imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
+        imgObj.style.boxShadow = "0 0 2px 0px #ff0505;";
+    })
+    obj.addEventListener('mouseleave',function(){
+        imgObj.style.transform = "scale(1)";
+        imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
+    })
+}
+
   //------------------------------Pc端视频点赞、投桃数----------------------------------------------
   showLikeCount_old() {
     let url = window.location.toString();

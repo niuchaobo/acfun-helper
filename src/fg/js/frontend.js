@@ -99,6 +99,10 @@ class ODHFront {
         if(this.options.night){
             this.addNightStyle();
         }
+        //播放器画质策略
+        if((REG.video.test(href) || REG.bangumi.test(href))){
+            this.videoSetting.videoQuality();
+        }
         //开启右侧导航
         if(this.options.beautify_nav){
             this.pageBeautify.navBeautify();
@@ -110,6 +114,9 @@ class ODHFront {
         if(REG.video.test(href)){
             this.danmaku.cacheStore();
             this.videoSetting.callPicktureInPictureMode();
+            if(this.options.autoJumpLastWatchSw){
+                this.videoSetting.jumpLastWatchTime();
+            }
         }
         this.playerconfig.PConfProc();
         if(REG.live.test(href)){
@@ -128,8 +135,14 @@ class ODHFront {
         //let is_up = this.adjuatUp();
         let href = window.location.href;
         //顶栏头像下拉个人信息栏内容
-        if(this.options.beautify_personal & !REG.live.test(href)){
-            this.pageBeautify.personBeautify();
+        if(this.options.beautify_personal & !REG.live.test(href) ){
+            if(REG.liveIndex.test(href)){
+                this.livepageBeautify.LivehideAds();
+            }else{
+                this.pageBeautify.personBeautify();
+                this.pageBeautify.hideAds();
+                this.pageBeautify.addMouseAnimation();
+            }
         }
 
         //开启屏蔽功能
@@ -173,6 +186,7 @@ class ODHFront {
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live','');
+            this.livepageBeautify.LivehideAds();
         }
         //自定义倍速
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
