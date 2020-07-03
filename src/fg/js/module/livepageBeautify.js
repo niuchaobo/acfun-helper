@@ -28,7 +28,6 @@ class LivePageButfy {
                         //样式
                         document.getElementsByClassName('player-outer-wrapper')[0].classList.add('main_wide');
                         document.getElementById('app').classList.add('wide_app');
-                        $('.list-container').hide();
                         $('#footer').hide();
                         $('.container-live').addClass('main_wide');
                         $('.player-outer-wrapper').addClass('main_wide');
@@ -38,8 +37,8 @@ class LivePageButfy {
                     } else {
                         document.getElementsByClassName('player-outer-wrapper')[0].classList.remove('main_wide');
                         document.getElementById('app').classList.remove('wide_app');
-                        $('.list-container').hide();
-                        $('#footer').hide();
+                        $('#footer').show();
+                        $('.container-live').removeClass('main_wide');
                         $('.player-outer-wrapper').removeClass('main_wide');
                         $('.container-list').removeClass('hide_do');
                         isWidePlayer = false
