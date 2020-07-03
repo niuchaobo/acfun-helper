@@ -494,16 +494,25 @@ function domToString (node) {
 }  
 
 function getAsyncDom(target,fn,time = 3000) {
-    //TODO:轮询上限
   //var e = document.createElement("script");
   //e.text = str;
   //e.setAttribute("charset", "utf-8");
+  let i = 0
   re = ()=>{
-      if(document.getElementsByClassName(target)){
+      targetDom = document.getElementById(target) ? document.getElementsByClassName(target) : ''
+      if(targetDom){
         //document.body.appendChild(e);
+        i=0
         fn()
       }else{
-        setTimeout(()=>re(),time)
+        setTimeout(()=>{
+            if(i >= 9000/time){
+                i=0
+                return
+            }
+            i++
+            re()
+        },time)
       }
   }
   re()
