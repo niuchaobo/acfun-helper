@@ -26,19 +26,20 @@ class LivePageButfy {
                 $('div.box-right').on('click','#toggleWide',function () {
                     if (!isWidePlayer) {
                         //样式
-                        // $('.main').addClass('main_wide')
-                        // $('#app').addClass('wide_app')
-                        document.getElementsByClassName('main')[0].classList.add('main_wide');
+                        document.getElementsByClassName('player-outer-wrapper')[0].classList.add('main_wide');
                         document.getElementById('app').classList.add('wide_app');
+                        $('.list-container').hide();
+                        $('#footer').hide();
+                        $('.container-live').addClass('main_wide');
                         $('.player-outer-wrapper').addClass('main_wide');
                         $(".container-list").addClass('hide_do');
                         $(window).scrollTop(15)
                         isWidePlayer = true
                     } else {
-                        // $('.main').removeClass('main_wide')
-                        // $('#app').removeClass('wide_app')
-                        document.getElementsByClassName('main')[0].classList.remove('main_wide');
+                        document.getElementsByClassName('player-outer-wrapper')[0].classList.remove('main_wide');
                         document.getElementById('app').classList.remove('wide_app');
+                        $('.list-container').hide();
+                        $('#footer').hide();
                         $('.player-outer-wrapper').removeClass('main_wide');
                         $('.container-list').removeClass('hide_do');
                         isWidePlayer = false
