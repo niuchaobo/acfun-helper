@@ -18,7 +18,7 @@ class LivePageButfy {
                 //加入按钮
                 $('.box-right').find('.danmaku-setting').after('<div class="control-btn" id="toggleWide">' + toggleWideicon + '</div>');
                 let nod = document.createElement("style");
-                let cssStr = '.main{transiton: all 0.5s}.main_wide{width: calc(100% - 10px)!important; margin-left: 0.5%; max-width:calc(100% - 5px)!important;} .control-btn svg{width: 20px; height: auto;} .main_wide .live-info{display:none;} .wide_app #header{display: none!important} .hide_do{display:none!important}';
+                let cssStr = '.main{transiton: all 0.5s} .main_wide{width: calc(100% - 10px)!important; margin-left: 0.5%; max-width:calc(100% - 5px)!important;} .control-btn svg{width: 20px; height: auto;} .main_wide .live-info{display:none;} .wide_app #header{display: none!important} .hide_do{display:none!important}';
                 nod.type="text/css";
                 nod.textContent = cssStr;
                 document.getElementsByClassName('main')[0].appendChild(nod);

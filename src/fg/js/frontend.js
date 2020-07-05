@@ -144,7 +144,7 @@ class ODHFront {
                 this.pageBeautify.addMouseAnimation();
             }
         }
-
+        this.block.liveUserBlock();
         //开启屏蔽功能
         if(this.options.filter){
             this.block.block();

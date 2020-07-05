@@ -111,5 +111,24 @@ class Block {
 
     }
 
+    liveUserBlock(){
+        chrome.storage.local.get(['liveBansw'],function(sw){
+            if(sw.liveBansw){
+                chrome.storage.local.get(['liveBans'],function(items){
+                    let LiveUsers = document.querySelectorAll('div.live-list-item');
+                    LiveUsers.forEach(function(e){
+                        let this_obj = e.children[1].children[1].children[1];
+                        if(this_obj.getAttribute('data-uid') in items.liveBans){
+                            var timer = setInterval(function () {
+                                e.remove();
+                                clearInterval(timer);
+                            },2000);
+                        }
+                    });
+                })
+            }
+        })
+    }
+
 
 }
