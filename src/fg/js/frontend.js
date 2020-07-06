@@ -144,7 +144,10 @@ class ODHFront {
                 this.pageBeautify.addMouseAnimation();
             }
         }
-
+        //直播站首页屏蔽
+        if(this.options.liveBansw){
+            this.block.liveUserBlock();
+        }
         //开启屏蔽功能
         if(this.options.filter){
             this.block.block();

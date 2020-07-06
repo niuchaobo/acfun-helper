@@ -247,7 +247,7 @@
                                   </div>
                                 </div>
                               </div>
-                          <ul class="mdui-list">
+                          <ul id="liveFollowNotifList" class="mdui-list">
                           </ul>
                       </div>
 
@@ -343,6 +343,37 @@
                     <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/setting-bridge.html" target="_blank">进入设置页面</a></button>
                   </div>
                 </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">屏蔽直播站首页的主播</div>
+                    <div class="mdui-panel-item-summary">将你所不喜欢的主播在直播站首页屏蔽掉</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-row">
+
+                          <div class="mdui-row">
+                              <div class="mdui-col-xs-9">
+                                  <h3>屏蔽列表</h3>
+                                <div class="mdui-row">
+                                  <div class="mdui-col-xs-8 mdui-col-sm-6"><button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="liveBanAdd"><i class="mdui-icon material-icons">add</i></button>添加屏蔽用户</div>
+                                  <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                      <input id="liveBansw" type="checkbox"/>开关 
+                                      <i class="mdui-switch-icon"></i>
+                                      </label></div>
+                                </div>
+                              </div>
+                            </div>
+                        <ul id = "liveBanList" class="mdui-list">
+                        </ul>
+                    </div>
+
+                    </div>
+              </div>
+              </div>
 
                 <div class="mdui-panel-item mdui-panel-item-open">
                     <div class="mdui-panel-item-header">

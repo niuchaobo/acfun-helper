@@ -1046,7 +1046,7 @@ $(document).ready(function () {
     chrome.storage.local.get(['liveFloowings'],function(items){
         if(JSON.stringify(items) !== '{}'){
             for(i in items.liveFloowings){
-                $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${i} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${i} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${i}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons liveWatchOrig" data-key=${i} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${i} UserName:${items.liveFloowings[i]}</div></li>`);
+                $('ul#liveFollowNotifList').append(`<li class="mdui-list-item mdui-ripple" data-key=${i} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${i} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${i}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons liveWatchOrig" data-key=${i} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${i} UserName:${items.liveFloowings[i]}</div></li>`);
             }
             $('.liveFloowingsItems').click(function () {
                 let this_uid=$(this).data("key");
@@ -1106,7 +1106,7 @@ $(document).ready(function () {
                     chrome.storage.local.set({'liveFloowings':items.liveFloowings})
                     console.log(items);
                     mdui.snackbar({message: ` ${liveup_name} 已被加入关注列表`});
-                    $('ul.mdui-list').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${value} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${value}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${value} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
+                    $('ul#liveFollowNotifList').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${value} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${value}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${value} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
                     // $('.liveWatch').click(function () {
                     //     console.log('action clicked.')
                     //     let this_uid=$(this).data("key");
@@ -1138,7 +1138,107 @@ $(document).ready(function () {
     })}});
 
 
-
+    //===================直播屏蔽配置相关==========================//
+    chrome.storage.local.get(['liveBansw'],function(items){
+        var liveBans_status= items.liveBansw;
+        if(liveBans_status){
+            document.getElementById('liveBansw').checked='true';
+        }else{
+            document.getElementById('liveBansw').checked=false;
+        }
+        $('#liveBansw').on('click', function () {
+            if(!document.getElementById('liveBansw').checked){
+                document.getElementById('liveBansw').checked=false;
+                chrome.storage.local.set({'liveBansw':false});
+            }else{
+                document.getElementById('liveBansw').checked=true;
+                chrome.storage.local.set({'liveBansw':true});
+            }
+        });
+    });
+    chrome.storage.local.get(['liveBans'],function(items){
+        if(JSON.stringify(items) !== '{}'){
+            console.log(items);
+            for(i in items.liveBans){
+                $('ul#liveBanList').append(`<li class="mdui-list-item mdui-ripple" data-key=${i} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveBansItems" data-key=${i} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${i}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons BanWatchOrig" data-key=${i} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${i} UserName:${items.liveBans[i]}</div></li>`);
+            }
+            $('.liveBansItems').click(function () {
+                let this_uid=$(this).data("key");
+                $(this).parent().hide();
+                console.log(this_uid);
+                mdui.snackbar({
+                    message: `已移除 ${items.liveBans[this_uid]}`,
+                  });
+                delete items.liveBans[this_uid];
+                chrome.storage.local.set({'liveBans':items.liveBans});
+                });
+            }
+        });
+    chrome.storage.local.get(['liveBans'],function(items){
+        if(JSON.stringify(items) == '{}'){
+            let a={}
+            chrome.storage.local.set({'liveBans':a});
+        }else{
+        console.log(items);
+        $('#liveBanAdd').on('click', function () {
+            mdui.prompt('请输入你需要屏蔽的用户UID', '添加用户',
+            async function (value) {
+                if(!value==''){
+                    var up_url = options.userInfo.replace('{uid}',value);
+                    for(i in items.liveFloowings){
+                        if(i==value){
+                            console.log('repeat');
+                            var errN = 1;
+                            break
+                        }else{
+                            var errN = 0;
+                        }
+                    }
+                    if(errN!=1){
+                        var up_html_str;
+                        try{
+                            up_html_str = await ajax('GET',up_url);
+                        }catch (e) {
+                            var errN = 2
+                            return;
+                        }
+                        let status = JSON.parse(up_html_str).result;
+                        if(status==0){
+                            console.log('233');
+                            var liveup_name = JSON.parse(up_html_str).profile.name;
+                            var errN = 0;
+                        }else {var errN = 2};
+                    }
+                    if(errN==0){
+                        items.liveBans[value]=liveup_name;
+                        chrome.storage.local.set({'liveBans':items.liveBans})
+                        console.log(items);
+                        mdui.snackbar({message: ` ${liveup_name} 已被加入关注列表`});
+                        $('ul#liveBanList').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveBansItems" data-key=${value} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${value}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons BanWatchOrig" data-key=${value} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
+                        $('.liveBansItems').click(function () {
+                            let this_uid=$(this).data("key");
+                            $(this).parent().hide();
+                            console.log(this_uid);
+                            mdui.snackbar({
+                                message: `已移除 ${items.liveBans[this_uid]}`,
+                                });
+                                delete items.liveBans[this_uid];
+                                console.log(items);
+                                chrome.storage.local.set({'liveBans':items.liveBans},function(){console.log(items)});
+                            });
+                    }else if(errN == 1){
+                        mdui.alert('你添加的用户已关注');
+                    }else if(errN == 2){
+                        mdui.alert('用户不存在');
+                    }
+                }else{
+                    mdui.alert('UID未输入');
+                }
+            },
+            function () {
+            }
+            );
+        })}});
 
     
 
