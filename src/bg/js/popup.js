@@ -328,7 +328,7 @@ function renderLives() {
           })
           .then((res) => {
             let live_Data = "";
-            let livedata = JSON.parse(res);
+            let livedata = JSON.parse(res).liveInfo;
             let livexmlData = '<div class="inner" id="';
             livexmlData +=
               livedata.authorId +

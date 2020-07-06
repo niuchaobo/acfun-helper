@@ -13,7 +13,7 @@
     },
     "browser_action": {
         "default_icon": "img/icon16.png",
-      "default_popup": "bg/popup.html"
+        "default_popup": "bg/popup.html"
     },
     "author": "ncb",
     "background": {
@@ -27,6 +27,7 @@
             "bg/js/lib/md5.js",
             "common/utils.js",
             "fg/js/api.js",
+            "fg/js/danmakuSearch.js",
             "fg/js/popup.js",
             "fg/js/div.js",
             "fg/js/module/block.js",
@@ -52,12 +53,12 @@
         "run_at": "document_start"
     }],
     "minimum_chrome_version": "50.0.0.0",
-    "options_page":"bg/options.html",
-    "permissions": ["contextMenus","notifications","tabs","webRequest", "webRequestBlocking","https://*/*","http://*/*", "storage","unlimitedStorage","cookies"],
+    "options_page": "bg/options.html",
+    "permissions": ["contextMenus", "notifications", "tabs", "webRequest", "webRequestBlocking", "https://*/*", "http://*/*", "storage", "unlimitedStorage", "cookies"],
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },
-    "omnibox": { "keyword" : "ac" },
+    "omnibox": { "keyword": "ac" },
     "web_accessible_resources": [
         "fg/js/acfunxhr.js",
         "fg/css/frame.css",

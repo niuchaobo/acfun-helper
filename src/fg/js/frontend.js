@@ -197,17 +197,18 @@ class ODHFront {
       this.videoSetting.monitorFullScreen();
       //todo 加开关
       //pagelet_newcomment
-      getAsyncDom('ac-comment-list',this.ce.searchScanForPlayerTime,2000)
-      //this.ce.searchScanForPlayerTime();
+      getAsyncDom('ac-comment-list',this.ce.searchScanForPlayerTime,2000).then(res=>{
+        //this.ce.searchScanForPlayerTime();
         //只能绑定到父元素，换p后分p按钮的列表会重新加载，导致绑定失效
         $(".right-column").on("click", (e) => {
-          if (
-            e.target.className === "single-p" ||
-            e.target.className === "single-p active"
-          ) {
-            watchCommentLoading(this.ce.searchScanForPlayerTime);
-          }
-        });
+            if (
+              e.target.className === "single-p" ||
+              e.target.className === "single-p active"
+            ) {
+              watchCommentLoading(this.ce.searchScanForPlayerTime);
+            }
+          });
+      })
     }
     this.authInfo.cookInfo();
   }

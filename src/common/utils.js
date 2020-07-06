@@ -485,37 +485,40 @@ function adjustArticleUp() {
   }
 }
 
-function domToString (node) {  
-    var tmpNode = document.createElement('div')
-    tmpNode.appendChild(node) 
-    let str = tmpNode.innerHTML
-    tmpNode = node = null;
-    return str;  
-}  
+function domToString(node) {
+  var tmpNode = document.createElement("div");
+  tmpNode.appendChild(node);
+  let str = tmpNode.innerHTML;
+  tmpNode = node = null;
+  return str;
+}
 
-function getAsyncDom(target,fn,time = 3000) {
-  //var e = document.createElement("script");
-  //e.text = str;
-  //e.setAttribute("charset", "utf-8");
-  let i = 0
-  re = ()=>{
-      targetDom = document.getElementById(target) ? document.getElementsByClassName(target) : ''
-      if(targetDom){
-        //document.body.appendChild(e);
-        i=0
-        fn()
-      }else{
-        setTimeout(()=>{
-            if(i >= 9000/time){
-                i=0
-                return
-            }
-            i++
-            re()
-        },time)
-      }
-  }
-  re()
+function getAsyncDom(target, fn, time = 3000) {
+  let timer = null;
+  let i = 0;
+  re = (fn) => {
+    targetDom = document.getElementsByClassName(target)[0];
+    if (target) {
+      i = 0;
+      return new Promise((res)=>{
+          res(fn())
+      })
+    } else {
+      if (i >= 9000 / time) {
+        i = 0;
+        return new Promise((res) => {
+          res('DOM没找到!')
+      })
+    };
+      i++;
+      return new Promise((res) => {
+        setTimeout(() => {
+          res(re(fn));
+        }, time);
+      });
+    }
+  };
+  return re(fn);
 }
 
 function watchCommentLoading(fn) {
