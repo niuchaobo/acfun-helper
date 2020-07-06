@@ -13,7 +13,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 ---
 主要功能：
 
-1.视频下载、弹幕下载  
+1.视频下载、弹幕下载（注意，插件不支持下载番剧）  
 2.用户紫色标记 （再也不怕别人改名了，是你？女装Up？）  
 3.自动投蕉、并显示投蕉通知（香蕉烂掉？不可能的！）  
 4.Up主屏蔽功能（你说的对，但是说得太不好听了吧( ´_ゝ`)）  
@@ -39,11 +39,12 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 
 21.屏蔽直播右侧信息中的礼物、关注、点赞、进场信息 （#感谢@Sinyupl）（就单纯听大伙儿吹逼吧）  
 22.增加直播Up开播提醒（哎符逼哎，楼梯负一开审）  
-23.网络同步插件配置（可以与服务器来同步配置了！）【服务器后端适配中和问题修复中，上线时间另定...】 
+23.网络同步插件配置（可以与服务器来同步配置了！）【服务器后端适配中和问题修复中，上线时间另定...】   
 24.现在弹出栏也能看部分广场动态和广场直播推荐了！  
 25.联合 AcFun直播桌面通知和下载助手 桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将Up加入/移出 开播通知列表中。
 
-26.增加了浏览器地址栏直接搜索主站相关关键字（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入ACid跳转到相应投稿哦。^3^）
+26.增加了浏览器地址栏直接搜索主站相关关键字（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入ACid跳转到相应投稿哦。^3^）   
+27.添加播放器“上次观看到”时间跳转（暂时只支持1P的视频投稿，并且不支持番剧）
 
 ---
 #### 插件本体获取
@@ -93,6 +94,8 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
     - 完善插件和播放器配置网络同步
     - 评论投票图表
     - 添加 稿件下抽奖、画中画模式、插件直播通知、地址栏（omnibox）支持【浏览器跳转】、弹幕下载 功能的使用说明
+    - 直播站首页的用户屏蔽
+    - 在直播关注推送模块中，插件获取个人关注，并通过一个列表供用户直接选择是否添加到插件的直播关注列表
 
 #### 开源许可证
 
@@ -119,12 +122,13 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
     * @flydrz https://github.com/flydrz
     * @orzogc https://github.com/orzogc
     * @BDPO https://github.com/BDPO
+    * @DontBeAlarmed https://github.com/DontBeAlarmed
 
 ---
 #### 如果喜欢此插件，请务必给我们来一个Star，如果不喜欢，请不要浪费你的口水，来一个Star，然后再提交Issue来diss；总之欢迎提出各种建议或者意见，这些宝贵的意见对以后的体验是非常重要的，不喜欢就大声说出来。![阿部高和脸](https://js2.a.yximgs.com/bs2/emotion/1587040895463third_party_b35465999.png)
 
 ---
-<center>缺~ 逼~ 乐~</center>
+<h1 align="center">缺~ 逼~ 乐~</h1>
 
 
 

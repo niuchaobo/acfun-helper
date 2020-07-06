@@ -1,37 +1,41 @@
 const defaults = {
-  enabled: true, //开启关闭插件
-  auto_throw: false,
-  to_attention: true,
-  to_attention_num: 5,
-  to_special_items: [],
-  activeTabKey: "activeTabId",
-  extendsName: "AcFun助手",
-  upUrlTemplate: "https://www.acfun.cn/u/{uid}",
-  userInfo: "https://www.acfun.cn/rest/pc-direct/user/userInfo?userId={uid}",
-  banana_notice: true,
-  mark: false, //评论用户标记
-  scan: false, //评论用户扫描
-  upHighlight: true, //up主评论高亮
-  receive: false, //接收用户情报
-  filter: false, //屏蔽up
-  beautify_nav: true, //首页右侧导航
-  beautify_personal: true, //个人中心入口
-  show_like: false, //显示点赞数
-  custom_rate: true, //开启自定义倍速
-  player_mode: "default", //进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
+    enabled:true,//开启关闭插件
+    auto_throw:false,
+    to_attention:true,
+    to_attention_num:5,
+    to_special_items:[],
+    activeTabKey:'activeTabId',
+    extendsName:'AcFun助手',
+    upUrlTemplate:'https://www.acfun.cn/u/{uid}',
+    userInfo:'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId={uid}',
+    banana_notice:true,
+    mark:false,//评论用户标记
+    scan:false,//评论用户扫描
+    upHighlight:true,//up主评论高亮
+    receive:false,//接收用户情报
+    filter:false,//屏蔽up
+    beautify_nav:true,//首页右侧导航
+    beautify_personal:true,//个人中心入口
+    show_like:false,//显示点赞数
+    custom_rate:true,//开启自定义倍速
+    player_mode:'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
+    liveFloowNotif:false,
+    videoQualityStrategy:'0',
+
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
 const REG = {
-  video: new RegExp("http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+"), //视频
-  bangumi: new RegExp("http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*"), //番剧
-  article: new RegExp("http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+"), //文章
-  msg_comment: new RegExp(
-    "http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)"
-  ), //从我的消息-评论跳转
-  mlive: new RegExp("https://m.acfun.cn/live/detail/*"), //移动版直播
-  live: new RegExp("https://live.acfun.cn/live/*"), //直播
-};
+    video:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+'),//视频
+    bangumi:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*'),//番剧
+    article:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+'),//文章
+    msg_comment:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)'),//从我的消息-评论跳转
+    mlive:new RegExp("https://m.acfun.cn/live/detail/*"),//移动版直播
+    live:new RegExp("https://live.acfun.cn/live/*"),//直播
+    liveIndex:new RegExp("https://live.acfun.cn")//直播主页
+}
+
+
 
 //以传过来的options为主体,如果其中没有就取默认值
 function sanitizeOptions(options) {
@@ -565,3 +569,16 @@ function watchCommentLoading(fn) {
   };
   re();
 }
+
+
+//从Up名称解析为UID
+async function toUpInfo(upName){
+    let upUrl = fetch('https://www.acfun.cn/u/' + upName.toString()).then((response)=>{
+        let upUrl = response.url
+        return upUrl
+    })
+    return upUrl
+}
+
+// let uil =await toUpInfo('qyqx')
+//   console.log(uil)

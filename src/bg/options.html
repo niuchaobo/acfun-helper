@@ -247,7 +247,7 @@
                                   </div>
                                 </div>
                               </div>
-                          <ul class="mdui-list">
+                          <ul id="liveFollowNotifList" class="mdui-list">
                           </ul>
                       </div>
 
@@ -343,6 +343,37 @@
                     <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/setting-bridge.html" target="_blank">进入设置页面</a></button>
                   </div>
                 </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">屏蔽直播站首页的主播</div>
+                    <div class="mdui-panel-item-summary">将你所不喜欢的主播在直播站首页屏蔽掉</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-row">
+
+                          <div class="mdui-row">
+                              <div class="mdui-col-xs-9">
+                                  <h3>屏蔽列表</h3>
+                                <div class="mdui-row">
+                                  <div class="mdui-col-xs-8 mdui-col-sm-6"><button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="liveBanAdd"><i class="mdui-icon material-icons">add</i></button>添加屏蔽用户</div>
+                                  <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                      <input id="liveBansw" type="checkbox"/>开关 
+                                      <i class="mdui-switch-icon"></i>
+                                      </label></div>
+                                </div>
+                              </div>
+                            </div>
+                        <ul id = "liveBanList" class="mdui-list">
+                        </ul>
+                    </div>
+
+                    </div>
+              </div>
+              </div>
 
                 <div class="mdui-panel-item mdui-panel-item-open">
                     <div class="mdui-panel-item-header">
@@ -500,6 +531,39 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-col-xs-9">
+                        <h2>播放器播放前配置</h2>
+                      </div>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">自动跳转到上次观看的时间（只支持1P的视频）</div>
+                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                          <label class="mdui-switch">
+                            <input id="autoJumpLastWatchSw" type="checkbox"/>启用
+                            <i class="mdui-switch-icon"></i>
+                            </label>
+                          </div>            
+                      </div>
+                    </div>
+                    
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-col-xs-9">
+                        <h2>播放器播放画质策略</h2><br><p id="videoQualityStrategy_state">现在的直播策略： </p>
+                      </div>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">选择播放器画质策略</div>
+                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                          <select id="videoQualityStrategy" class="mdui-select" mdui-select="{position: 'top'}">
+                            <option value="0">0 - 自动</option>
+                            <option value="1" disabled>1 - 默认最高</option>
+                            <option value="2">2 - 非60帧的最高画质</option>
+                            <option value="3">3 - 默认最低</option>
+                          </select>
+                        </div>            
+                      </div>
+                    </div>
+
                     <div class="mdui-panel-item-actions">
                       <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
                       <button class="mdui-btn mdui-ripple">保存</button>

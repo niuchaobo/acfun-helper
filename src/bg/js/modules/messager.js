@@ -13,6 +13,7 @@ class MsgNotifs{
             if(Ifswitch.liveFloowNotif){
                 chrome.storage.local.get(['liveFloowings'],function(items){
                 chrome.storage.local.get(['broadcastingUIDlist'],function(broadcastingUIDlist){
+                    console.log(broadcastingUIDlist);
                     let y={}
                     if(JSON.stringify(broadcastingUIDlist)=='{}'){
                         chrome.storage.local.get(['liveFloowings'],function(a){for(let j in items.liveFloowings){y[j]=false}});
