@@ -89,6 +89,18 @@ iframe#acfun-popup-helper {
     bottom: -80px!important;
 }
 
+#acfun-helper-search {
+    position: absolute;
+    overflow: hidden;
+    right: 0px;
+    z-index: 1000;
+    height: 30px;
+    width: 184px;
+    line-height: 30px;
+    margin-left: 5px;
+    padding-left: 5px;
+}
+
 #acfun-helper-search>div {
     transition-duration: .5s;
 }
@@ -97,7 +109,9 @@ iframe#acfun-popup-helper {
     display: inline-block;
     cursor: pointer;
     user-select: none;
+    text-align: center;
     transition-duration: .5s;
+    padding: 0 5px;
 }
 
 #acfun-helper-search:hover>div {
@@ -110,4 +124,10 @@ iframe#acfun-popup-helper {
 
 #acfun-helper-search>.acfun-helper-search-content>.acfun-helper-search-button:hover {
     color: red;
+    background-color: #ddd;
+}
+
+#acfun-helper-search-input {
+    width: 100px;
+    font-size: 10px;
 }

@@ -9,14 +9,13 @@ class Search {
   inject = () => {
     this.searchContent();
     this.searchBind();
-    console.log(window.player);
-    console.log('----------window.player----------⬆️⬆️')
   };
   searchBind() {
     $("#acfun-helper-search-input").bind("focus", () => {
-      const danmakuFold = $("#danmaku .danmaku-fold");
-      danmakuFold.hasClass("unfold") ? "" : danmakuFold.click();
-      this.lock = true
+      //const danmakuFold = $("#danmaku .danmaku-fold");
+      //danmakuFold.hasClass("unfold") ? "" : danmakuFold.click();
+      this.lock = true;
+      
     });
     $("#acfun-helper-search").bind("click", this.danmakuSearchProgress);
     $("#acfun-helper-search").bind("keypress", this.danmakuSearchProgress);
@@ -24,17 +23,20 @@ class Search {
 
   danmakuSearchProgress = (e) => {
     let action = e.target.id;
-    const danmakuFold = $("#danmaku .danmaku-fold");
-    danmakuFold.hasClass("unfold") ? "" : danmakuFold.click();
+    //const danmakuFold = $("#danmaku .danmaku-fold");
+    //danmakuFold.hasClass("unfold") ? "" : danmakuFold.click();
     let range = this.searchList.length;
-    if (this.lock && action === "acfun-helper-search-button" || e.keyCode === 13) {
+    if (
+      (this.lock && action === "acfun-helper-search-button") ||
+      e.keyCode === 13
+    ) {
       let text = $("#acfun-helper-search-input").val();
       getAsyncDom(
         "danmaku-item",
         this.danmakuSearch.bind(this, text),
         200
       ).then((res) => {
-        this.lock=false
+        this.lock = false;
         this.searchList = res;
         this.danmakuSearchJump(this.searchList, 0);
         $(".danmaku-items").bind(
@@ -55,7 +57,6 @@ class Search {
           }, 500)
         );
       });
-      
     }
     if (action === "acfun-helper-search-next") {
       this.i >= range ? (this.i = 0) : "";
@@ -104,23 +105,15 @@ class Search {
   }
   searchContent = () => {
     $(`
-        <div id='acfun-helper-search' class="" style=" position: absolute;
-        overflow:hidden;
-        right: 0px;
-        z-index: 1000;
-        height: 30px;
-        width: 184px;
-        line-height: 30px;
-        margin-left: 5px;
-        padding-left: 5px;">
-            <div class="acfun-helper-search-title">搜索</div>
-            <div class="acfun-helper-search-content">
-                <input id='acfun-helper-search-input' style="width:100px">
-                <div id='acfun-helper-search-button' class="acfun-helper-search-button">弹幕搜索</div>
-                <div id='acfun-helper-search-last' class="acfun-helper-search-button">
+        <div id='acfun-helper-search'>
+            <div class="acfun-helper-search-title">弹幕搜索</div>
+            <div class="acfun-helper-search-content" style="display:flex">
+                <input id='acfun-helper-search-input' style="flex:1">
+                <div id='acfun-helper-search-button' class="acfun-helper-search-button" style="flex:.4">搜索</div>
+                <div id='acfun-helper-search-last' class="acfun-helper-search-button" style="flex:.2">
                     <
                 </div>
-                <div id='acfun-helper-search-next' class="acfun-helper-search-button">
+                <div id='acfun-helper-search-next' class="acfun-helper-search-button" style="flex:.2">
                     >
                 </div>
             </div>
