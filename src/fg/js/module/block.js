@@ -96,7 +96,7 @@ class Block {
                     let v = {name:up_name};
                     chrome.storage.local.set({[key]:v}, function () {
                         let params={
-                            title:'Acfun助手',
+                            title:'AcFun助手',
                             msg:'『'+up_name+'』已被屏蔽'
                         }
                         chrome.runtime.sendMessage({action:'notice',params:params}, function(response) {

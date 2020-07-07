@@ -143,7 +143,7 @@ class ODHFront {
         let href = window.location.href;
         //页面优化
         if(!REG.live.test(href) ){
-          if(this.options.beautify_personal){
+          if(this.options.beautify_personal&!REG.liveIndex.test(href) & !REG.liveIndex.test(href)){
               this.pageBeautify.addMouseAnimation();
               this.pageBeautify.personBeautify();
           }
