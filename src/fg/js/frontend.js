@@ -87,7 +87,7 @@ class ODHFront {
 
         let href = window.location.href;
         //直播站功能
-        if(REG.live.test(href)){
+        if(REG.live.test(href) & this.options.livePlayerEnhc){
             this.livepageBeautify.appendWidePlayer();
             this.livepageBeautify.simplifyDanmu();
             this.livepageBeautify.loopToBan();
@@ -116,6 +116,7 @@ class ODHFront {
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.show_like){
             this.pageBeautify.showLikeCount();
         }
+        //播放器和弹幕功能
         if(REG.video.test(href)){
             this.danmaku.cacheStore();
             this.videoSetting.callPicktureInPictureMode();
@@ -123,6 +124,7 @@ class ODHFront {
                 this.videoSetting.jumpLastWatchTime();
             }
         }
+        //配置同步
         this.playerconfig.PConfProc();
         if(REG.live.test(href)){
             this.videoSetting.callPicktureInPictureModeForLive();
@@ -139,24 +141,26 @@ class ODHFront {
         //根据cookie判断当前登录用户是不是up
         //let is_up = this.adjuatUp();
         let href = window.location.href;
-        //顶栏头像下拉个人信息栏内容
-        if(this.options.beautify_personal & !REG.live.test(href) ){
-            if(REG.liveIndex.test(href)){
-                this.livepageBeautify.LivehideAds();
-            }else{
-                this.pageBeautify.personBeautify();
-                this.pageBeautify.hideAds();
-                this.pageBeautify.addMouseAnimation();
-            }
+        //页面优化
+        if(!REG.live.test(href) ){
+          if(this.options.beautify_personal){
+              this.pageBeautify.addMouseAnimation();
+              this.pageBeautify.personBeautify();
+          }
+          if(this.options.hideAd){
+              this.pageBeautify.hideAds();
+          }
         }
-        //直播站首页屏蔽
-        if(this.options.liveBansw){
-            this.block.liveUserBlock();
+        if(this.options.liveHideAd & REG.liveIndex.test(href)){
+            this.livepageBeautify.LivehideAds();
+        }
+      //直播站首页屏蔽
+        if(this.options.liveBansw & REG.liveIndex.test(href)){
+          this.block.liveUserBlock();
         }
         //开启屏蔽功能
         if(this.options.filter){
             this.block.block();
-
         }
         var pageInfo = null;
         //视频
@@ -194,7 +198,6 @@ class ODHFront {
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live','');
-            this.livepageBeautify.LivehideAds();
         }
         //自定义倍速
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
