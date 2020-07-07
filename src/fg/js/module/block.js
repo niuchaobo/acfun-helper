@@ -229,10 +229,14 @@ class Block {
                 })            
             }
             var observer = new MutationObserver(obsrvcall);
-            observer.observe(elementWeb2[0],config);
-            observer.observe(elementWeb2[1],config);
-            observer.observe(elementWeb2[2],config);
-            observer.observe(elementWeb2[3],config);
+            try {
+                observer.observe(elementWeb2[0],config);
+                observer.observe(elementWeb2[1],config);
+                observer.observe(elementWeb2[2],config);
+                observer.observe(elementWeb2[3],config);
+            } catch (error) {
+                clearInterval(timer);
+            }
             if(document.querySelectorAll("a.pager__btn").length>0){
                 clearInterval(timer);
             }
