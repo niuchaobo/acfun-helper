@@ -162,6 +162,9 @@ class LuckyTtab {
                     if(obj.isUp){
                         continue;
                     }
+                    if(Comm_data_UIDList.indexOf(obj.userId) > -1){
+                        continue;
+                    }
                     Comm_data_UIDList.push(obj.userId);
                     Comm_data_byUID[obj.userId]=obj;
             }}
@@ -209,6 +212,7 @@ class LuckyTtab {
         })    
     }
 
+    //code by Sokwva
     async RollOut(acid,num){
         //主函数
         let y = await this.getVCdetailCommentData(acid).then((res)=>{return res});
