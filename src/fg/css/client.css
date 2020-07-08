@@ -9,10 +9,9 @@ iframe#acfun-popup-helper {
     visibility: hidden;
     z-index: 2147483647;
     max-height: 500px;
-
 }
 
-#acfun-helper-div{
+#acfun-helper-div {
     border-radius: 0px;
     z-index: 99999;
     position: fixed;
@@ -23,22 +22,23 @@ iframe#acfun-popup-helper {
     text-align: center;
     cursor: pointer;
     background-color: #d69acc;
-    font-family:serif;
+    font-family: serif;
     visibility: hidden;
     font-size: 12px;
 }
 
-.loading{
+.loading {
     width: 150px;
     height: 4px;
     border-radius: 2px;
     margin: 0 auto;
-    margin-top:100px;
+    margin-top: 100px;
     position: relative;
     background: lightgreen;
     -webkit-animation: changeBgColor 1.04s ease-in infinite alternate;
 }
-.loading span{
+
+.loading span {
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -46,22 +46,24 @@ iframe#acfun-popup-helper {
     background: lightgreen;
     position: absolute;
     margin-top: -7px;
-    margin-left:-8px;
+    margin-left: -8px;
     -webkit-animation: changePosition 1.04s ease-in infinite alternate;
 }
-@-webkit-keyframes changeBgColor{
-    0%{
+
+@-webkit-keyframes changeBgColor {
+    0% {
         background: lightgreen;
     }
-    100%{
+    100% {
         background: lightblue;
     }
 }
-@-webkit-keyframes changePosition{
-    0%{
+
+@-webkit-keyframes changePosition {
+    0% {
         background: lightgreen;
     }
-    100%{
+    100% {
         margin-left: 142px;
         background: lightblue;
     }
@@ -74,7 +76,7 @@ iframe#acfun-popup-helper {
     top: 0;
 }
 
-.comment-mark{
+.comment-mark {
     display: block;
     width: 100%;
     height: 40px;
@@ -83,6 +85,49 @@ iframe#acfun-popup-helper {
     margin: 2px 0 2px 0;
 }
 
-.comment-mark-parent{
+.comment-mark-parent {
     bottom: -80px!important;
+}
+
+#acfun-helper-search {
+    position: absolute;
+    overflow: hidden;
+    right: 0px;
+    z-index: 1000;
+    height: 30px;
+    width: 184px;
+    line-height: 30px;
+    margin-left: 5px;
+    padding-left: 5px;
+}
+
+#acfun-helper-search>div {
+    transition-duration: .5s;
+}
+
+#acfun-helper-search>.acfun-helper-search-content>.acfun-helper-search-button {
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    transition-duration: .5s;
+    padding: 0 5px;
+}
+
+#acfun-helper-search:hover>div {
+    transform: translateY(-30px);
+    -webkit-transform: translateY(-30px);
+    -moz-transform: translateY(-30px);
+    -ms-transform: translateY(-30px);
+    -o-transform: translateY(-30px);
+}
+
+#acfun-helper-search>.acfun-helper-search-content>.acfun-helper-search-button:hover {
+    color: red;
+    background-color: #ddd;
+}
+
+#acfun-helper-search-input {
+    width: 100px;
+    font-size: 10px;
 }

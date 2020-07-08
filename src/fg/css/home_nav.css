@@ -1,20 +1,21 @@
-
-
-.rightnav>div{
+.rightnav>div {
     color: #333;
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* transition-duration: .2s; */
+    translate: translateZ(0);
 }
-.rightnav>div:hover{
+
+.rightnav>.isSelected {
     background-color: #fd4c5d;
     color: #fff;
-
 }
 
-.rightnav a{
-
+.rightnav>div:hover {
+    background-color: #fd4c5d;
+    color: #fff;
 }
 
-
+.rightnav a {}

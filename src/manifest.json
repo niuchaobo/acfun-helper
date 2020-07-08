@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.6.705",
+    "version": "1.2.6.707",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -13,7 +13,7 @@
     },
     "browser_action": {
         "default_icon": "img/icon16.png",
-      "default_popup": "bg/popup.html"
+        "default_popup": "bg/popup.html"
     },
     "author": "ncb",
     "background": {
@@ -30,6 +30,7 @@
             "fg/js/api.js",
             "fg/js/popup.js",
             "fg/js/div.js",
+            "fg/js/module/danmakuSearch.js",
             "fg/js/module/block.js",
             "fg/js/module/pageBeautify.js",
             "fg/js/module/livepageBeautify.js",
@@ -43,7 +44,6 @@
             "fg/js/module/luckyTurntab.js",
             "fg/js/module/videoSetting.js",
             "fg/js/frontend.js"
-
         ],
         "css": [
             "fg/css/client.css",
@@ -53,12 +53,12 @@
         "run_at": "document_start"
     }],
     "minimum_chrome_version": "50.0.0.0",
-    "options_page":"bg/options.html",
-    "permissions": ["contextMenus","notifications","tabs","webRequest", "webRequestBlocking","https://*/*","http://*/*", "storage","unlimitedStorage","cookies"],
+    "options_page": "bg/options.html",
+    "permissions": ["contextMenus", "notifications", "tabs", "webRequest", "webRequestBlocking", "https://*/*", "http://*/*", "storage", "unlimitedStorage", "cookies"],
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },
-    "omnibox": { "keyword" : "ac" },
+    "omnibox": { "keyword": "ac" },
     "web_accessible_resources": [
         "fg/js/acfunxhr.js",
         "fg/css/frame.css",

@@ -243,6 +243,18 @@ span.go-live {
     z-index: 1;
     height: 150px;
     position: relative;
+    transform: scale(0.97, 0.97);
+    -moz-transform: scale(0.97, 0.97);
+    -webkit-transform: scale(0.97, 0.97);
+    -o-transform: scale(0.97, 0.97);
+    transition-duration: .5s;
+}
+
+.pop-push>.inner:hover {
+    transform: scale(1, 1);
+    -moz-transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    -o-transform: scale(1, 1);
 }
 
 .pop-push>.inner>.l>a {
