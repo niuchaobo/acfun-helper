@@ -990,7 +990,60 @@ $(document).ready(function () {
         }
     });
 
+    //=====================页面优化============================
+    chrome.storage.local.get(['hideAd'],function(items){
+        var ifHideAd= items.hideAd;
+        if(ifHideAd){
+            document.getElementById('hideAd').checked='true';
+        }else{
+            document.getElementById('hideAd').checked=false;
+        }
+        $('#hideAd').on('click', function () {
+            if(!document.getElementById('hideAd').checked){
+                document.getElementById('hideAd').checked=false;
+                chrome.storage.local.set({'hideAd':false});
+            }else{
+                document.getElementById('hideAd').checked=true;
+                chrome.storage.local.set({'hideAd':true});
+            }
+        });
+    });
 
+    chrome.storage.local.get(['liveHideAd'],function(items){
+        var liveHideAd= items.liveHideAd;
+        if(liveHideAd){
+            document.getElementById('liveHideAd').checked='true';
+        }else{
+            document.getElementById('liveHideAd').checked=false;
+        }
+        $('#liveHideAd').on('click', function () {
+            if(!document.getElementById('liveHideAd').checked){
+                document.getElementById('liveHideAd').checked=false;
+                chrome.storage.local.set({'liveHideAd':false});
+            }else{
+                document.getElementById('liveHideAd').checked=true;
+                chrome.storage.local.set({'liveHideAd':true});
+            }
+        });
+    });
+
+    chrome.storage.local.get(['livePlayerEnhc'],function(items){
+        var livePlayerEnhc= items.livePlayerEnhc;
+        if(livePlayerEnhc){
+            document.getElementById('livePlayerEnhc').checked='true';
+        }else{
+            document.getElementById('livePlayerEnhc').checked=false;
+        }
+        $('#livePlayerEnhc').on('click', function () {
+            if(!document.getElementById('livePlayerEnhc').checked){
+                document.getElementById('livePlayerEnhc').checked=false;
+                chrome.storage.local.set({'livePlayerEnhc':false});
+            }else{
+                document.getElementById('livePlayerEnhc').checked=true;
+                chrome.storage.local.set({'livePlayerEnhc':true});
+            }
+        });
+    });
 
 
     //====================配置播放器自动跳转到上次观看时间===============
