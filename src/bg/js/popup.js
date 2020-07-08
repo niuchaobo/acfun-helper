@@ -319,7 +319,7 @@ function renderLives() {
       list_num === 0
         ? '<a href = "options.html" target = "_blank" style="color:black"> <center style="padding:5px">前往助手添加你的第一个关注吧</center></a>'
         : '<a href = "https://live.acfun.cn/" target = "_blank" style="color:black"> <center style="padding:5px">主播正在路上,去直播首页逛逛吧</center></a>';
-    is_blank ? $("#pop-push-lives").append(No_data) : ""; 
+    is_blank ? $("#pop-push-lives").append(No_data) : "";
     for (let i in data.broadcastingUIDlist) {
       if (data.broadcastingUIDlist[i] == true) {
         fetch("https://live.acfun.cn/api/live/info?authorId=" + i)
@@ -362,7 +362,6 @@ function renderLives() {
       }
     }
   });
-
 }
 
 $(".toTop").click(function () {
@@ -402,22 +401,23 @@ function getTimeSinceNow(date) {
     }-${publishTime.getDate()}`;
   }
 }
-function settingHidden(){
-    let show = false
-    $('.top-fixed>.head').click((e)=>{
-        if (e.target.className === 'letter'){
-            window.open("https://www.acfun.cn/")
-        }else{
-            show ? $('.top-fixed').removeClass('setting-hidden') : $('.top-fixed').addClass('setting-hidden');
-            show = !show
-        }
-    })
-    
+function settingHidden() {
+  let show = false;
+  $(".top-fixed>.head").click((e) => {
+    if (e.target.className === "letter") {
+      window.open("https://www.acfun.cn/");
+    } else {
+      show
+        ? $(".top-fixed").removeClass("setting-hidden")
+        : $(".top-fixed").addClass("setting-hidden");
+      show = !show;
+    }
+  });
 }
 
 async function onReady() {
   localizeHtmlPage();
-  settingHidden()
+  settingHidden();
   let options = await optionsLoad();
   //fetchPushContent();
   renderPushInnerHtml();

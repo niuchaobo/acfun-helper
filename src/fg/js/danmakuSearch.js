@@ -4,7 +4,7 @@ class Search {
   constructor() {
     this.searchList = [];
     this.i = 0;
-    this.lock = false;
+    this.lock = true;
     this.pageNum = 1;
   }
   inject = () => {
@@ -14,14 +14,30 @@ class Search {
   searchBind() {
     $("#acfun-helper-search-input").bind("focus", () => {
       this.lock = true;
+      this.buttonStatusChange(true);
     });
-    $("#acfun-helper-search").bind("click", this.throttle(this.danmakuSearchProgress,200));
+    $("#acfun-helper-search").bind(
+      "click",
+      throttle(this.danmakuSearchProgress, 200)
+    );
     $("#acfun-helper-search").bind("keypress", this.danmakuSearchProgress);
-    $('.danmaku-page').bind('click',()=>{
-        this.pageNum = $('.cur-page span:first').text().trim().slice(1, -1);
-    })
+    $(".danmaku-page").bind("click", () => {
+      this.pageNum = $(".cur-page span:first").text().trim().slice(1, -1);
+    });
   }
 
+  buttonStatusChange(von) {
+    if (von) {
+      $("#acfun-helper-search-button").css("display", "inline-block");
+      $("#acfun-helper-search-last").css("display", "none");
+      $("#acfun-helper-search-next").css("display", "none");
+    } else {
+      $("#acfun-helper-search-button").css("display", "none");
+      $("#acfun-helper-search-last").css("display", "inline-block");
+      $("#acfun-helper-search-next").css("display", "inline-block");
+    }
+  }
+  
   danmakuSearchProgress = (e) => {
     let action = e.target.id;
     let range = this.searchList.length;
@@ -29,45 +45,8 @@ class Search {
       $("#acfun-helper-search>div").addClass("search-hidden");
     }
     if (action === "acfun-helper-search-button" || e.keyCode === 13) {
-      let input = $("#acfun-helper-search-input");
-      input.blur();
-      this.searchList = [];
-      this.i = 0;
-      $("#danmaku .list-body").scrollTop(0);
-      this.searchList.forEach((item, index) => {
-        $(item.item).css({ background: "", color: "" });
-      });
-      let text = input.val();
-      getAsyncDom(
-        "danmaku-item",
-        this.danmakuSearch.bind(this, text),
-        200
-      ).then((res) => {
-        this.lock = false;
-        this.searchList = res;
-        this.danmakuSearchJump(this.searchList, this.i);
-        $(".danmaku-items").unbind("DOMNodeInserted");
-        $(".danmaku-items").bind(
-          "DOMNodeInserted",
-          this.debounce(() => {
-            this.pageChange(this.pageNum).then((res) => {
-              if (res) {
-                return;
-              }
-              $("#danmaku .list-body").scrollTop(0);
-              let text = $("#acfun-helper-search-input").val();
-              getAsyncDom(
-                "danmaku-item",
-                this.danmakuSearch.bind(this, text),
-                200
-              ).then((res) => {
-                this.searchList = res;
-                this.danmakuSearchJump(this.searchList, this.i);
-              });
-            });
-          }, 500)
-        );
-      });
+      if (!this.lock) return;
+      this.startSearch();
     }
     if (action === "acfun-helper-search-next") {
       let changePage = !$(".next-page").hasClass("disabled");
@@ -88,11 +67,11 @@ class Search {
     if (action === "acfun-helper-search-last") {
       let changePage = !$(".last-page").hasClass("disabled");
       this.i = this.i - 1;
-      if (this.i == -1 || range === 0) {
+      if (this.i === -1 || range === 0) {
         if (changePage) {
           $(".last-page").click();
           this.pageNum--;
-          this.i = 'end';
+          this.i = "end";
           return;
         } else {
           this.i = range - 1;
@@ -102,6 +81,7 @@ class Search {
       this.danmakuSearchJump(this.searchList, target);
     }
     if (action === "acfun-helper-search-close") {
+      this.buttonStatusChange(true);
       $("#acfun-helper-search-input").val("");
       $("#acfun-helper-search>div").removeClass("search-hidden");
       $(".danmaku-items").unbind("DOMNodeInserted");
@@ -113,11 +93,34 @@ class Search {
     }
   };
 
+  startSearch() {
+    let input = $("#acfun-helper-search-input");
+    input.blur();
+    this.searchList = [];
+    this.i = 0;
+    $("#danmaku .list-body").scrollTop(0);
+    let text = input.val();
+    if (!text) return;
+    getAsyncDom("danmaku-item", this.danmakuSearch.bind(this, text), 200).then(
+      (res) => {
+        this.lock = false;
+        this.buttonStatusChangeu(false);
+        this.searchList = res;
+        this.danmakuSearchJump(this.searchList, this.i);
+        this.danmakuSearchCounterReload();
+      }
+    );
+  }
+
   danmakuSearchJump(searchList = [], i) {
     if (searchList == []) {
       return "无结果";
     }
-    i = i === 'end' ? searchList.length - 1 : i
+    if (i === "end") {
+      i = searchList.length - 1;
+      this.i = i;
+    }
+
     searchList.forEach((item, index) => {
       if (index !== i) {
         $(searchList[index].item).css({
@@ -132,6 +135,30 @@ class Search {
       }
     });
     this.pageNum = $(".cur-page").text().trim().slice(1, -1);
+  }
+
+  danmakuSearchCounterReload() {
+    $(".danmaku-items").unbind("DOMNodeInserted");
+    $(".danmaku-items").bind(
+      "DOMNodeInserted",
+      debounce(() => {
+        this.pageChange(this.pageNum).then((res) => {
+          if (res) {
+            return;
+          }
+          $("#danmaku .list-body").scrollTop(0);
+          let text = $("#acfun-helper-search-input").val();
+          getAsyncDom(
+            "danmaku-item",
+            this.danmakuSearch.bind(this, text),
+            200
+          ).then((res) => {
+            this.searchList = res;
+            this.danmakuSearchJump(this.searchList, this.i);
+          });
+        });
+      }, 500)
+    );
   }
 
   pageChange(pageNum) {
@@ -158,7 +185,8 @@ class Search {
       res(false);
     });
   }
-  danmakuSearch(text = "") {
+
+  danmakuSearch(text) {
     const danmakuList = [];
     const a = $("#danmaku .danmaku-item").get();
     a.forEach((item, index) => {
@@ -180,10 +208,10 @@ class Search {
             <div class="acfun-helper-search-content" style="display:flex">
                 <input id='acfun-helper-search-input' style="flex:1">
                 <div id='acfun-helper-search-button' class="acfun-helper-search-button" style="flex:.4">⏎</div>
-                <div id='acfun-helper-search-last' class="acfun-helper-search-button" style="flex:.2">
+                <div id='acfun-helper-search-last' class="acfun-helper-search-button" style="flex:.2;display:none">
                     △
                 </div>
-                <div id='acfun-helper-search-next' class="acfun-helper-search-button" style="flex:.2">
+                <div id='acfun-helper-search-next' class="acfun-helper-search-button" style="flex:.2;display:none">
                     ▽
                 </div>
                 <div id='acfun-helper-search-close' class="acfun-helper-search-button" style="flex:.2;font-weight:bold">
@@ -193,33 +221,4 @@ class Search {
         </div>
     `).appendTo($(".list-title"));
   };
-  debounce = (fn, delay) => {
-    let timer = null;
-    return function (args) {
-      let _this = this;
-      let _args = args;
-      if (timer) {
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-          fn.call(_this, _args);
-        }, delay);
-      } else {
-        timer = setTimeout(function () {
-          fn.call(_this, _args);
-        }, delay);
-      }
-    };
-  };
-  throttle = (func, delay)=> {            
-    　　var prev = Date.now();            
-    　　return function() {                
-    　　　　var context = this;                
-    　　　　var args = arguments;                
-    　　　　var now = Date.now();                
-    　　　　if (now - prev >= delay) {                    
-    　　　　　　func.apply(context, args);                    
-    　　　　　　prev = Date.now();                
-    　　　　}            
-    　　}        
-    }   
 }

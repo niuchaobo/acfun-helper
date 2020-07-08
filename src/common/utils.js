@@ -582,3 +582,33 @@ async function toUpInfo(upName){
 
 // let uil =await toUpInfo('qyqx')
 //   console.log(uil)
+
+debounce = (fn, delay) => {
+    let timer = null;
+    return function (args) {
+      let _this = this;
+      let _args = args;
+      if (timer) {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          fn.call(_this, _args);
+        }, delay);
+      } else {
+        timer = setTimeout(function () {
+          fn.call(_this, _args);
+        }, delay);
+      }
+    };
+  };
+  throttle = (func, delay)=> {            
+    　　var prev = Date.now();            
+    　　return function() {                
+    　　　　var context = this;                
+    　　　　var args = arguments;                
+    　　　　var now = Date.now();                
+    　　　　if (now - prev >= delay) {                    
+    　　　　　　func.apply(context, args);                    
+    　　　　　　prev = Date.now();                
+    　　　　}            
+    　　}        
+  }   
