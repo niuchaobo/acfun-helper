@@ -151,13 +151,18 @@ class VideoSetting{
             });
         });
 
-        observer.observe(element, {
-            //characterData: true,
-            //characterDataOldValue: true
-            attributes: true, //configure it to listen to attribute changes
-            attributeOldValue: true,
-            attributeFilter :['data-bind-attr']
-        });
+        try {
+            observer.observe(element, {
+                //characterData: true,
+                //characterDataOldValue: true
+                attributes: true, //configure it to listen to attribute changes
+                attributeOldValue: true,
+                attributeFilter :['data-bind-attr']
+            });
+        } catch (error) {
+            // console.log(error)
+            console.log('[ERROR] Module:videoSetting 对象监听失败，可能会影响到助手按钮隐藏,请尽量不要在后台打开稿件')
+        }
 
 
         //网页全屏
@@ -175,16 +180,20 @@ class VideoSetting{
             });
         });
 
-        observerWeb.observe(elementWeb, {
-            //characterData: true,
-            //characterDataOldValue: true
-            attributes: true, //configure it to listen to attribute changes
-            attributeOldValue: true,
-            attributeFilter :['data-bind-attr']
-        });
-    }
+        try {
+            observerWeb.observe(elementWeb, {
+                //characterData: true,
+                //characterDataOldValue: true
+                attributes: true, //configure it to listen to attribute changes
+                attributeOldValue: true,
+                attributeFilter :['data-bind-attr']
+            });
+            } catch (error) {
+            // console.log(error)
+            console.log('[ERROR] Module:videoSetting 对象监听失败，可能会影响到助手按钮隐藏,请尽量不要在后台打开稿件')
+            }
 
-
+        }
 
 
 

@@ -260,8 +260,13 @@ class PageBeautify {
         let node2 = $("div.video-description.clearfix>div.action-area")
           .find("div.left-area")
           .eq(0);
-        let a = JSON.parse(e.data.msg);
-        if (node.length) {
+          if(e.data.msg!=="undefined"){
+            var a = JSON.parse(e.data.msg);
+          }else{
+            console.log("[ERROR] Module:pageBeautify 获取稿件信息失败，请尽量不要在后台打开稿件");
+            return
+          }
+          if (node.length) {
           node.append(
             '<div class="like" style="padding-right: 15px;"><span class="likeCount">' +
               a.likeCount +
