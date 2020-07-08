@@ -104,7 +104,7 @@ class Search {
     getAsyncDom("danmaku-item", this.danmakuSearch.bind(this, text), 200).then(
       (res) => {
         this.lock = false;
-        this.buttonStatusChangeu(false);
+        this.buttonStatusChange(false);
         this.searchList = res;
         this.danmakuSearchJump(this.searchList, this.i);
         this.danmakuSearchCounterReload();
