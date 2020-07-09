@@ -96,7 +96,7 @@ class Block {
                     let v = {name:up_name};
                     chrome.storage.local.set({[key]:v}, function () {
                         let params={
-                            title:'Acfun助手',
+                            title:'AcFun助手',
                             msg:'『'+up_name+'』已被屏蔽'
                         }
                         chrome.runtime.sendMessage({action:'notice',params:params}, function(response) {
@@ -229,10 +229,14 @@ class Block {
                 })            
             }
             var observer = new MutationObserver(obsrvcall);
-            observer.observe(elementWeb2[0],config);
-            observer.observe(elementWeb2[1],config);
-            observer.observe(elementWeb2[2],config);
-            observer.observe(elementWeb2[3],config);
+            try {
+                observer.observe(elementWeb2[0],config);
+                observer.observe(elementWeb2[1],config);
+                observer.observe(elementWeb2[2],config);
+                observer.observe(elementWeb2[3],config);
+            } catch (error) {
+                clearInterval(timer);
+            }
             if(document.querySelectorAll("a.pager__btn").length>0){
                 clearInterval(timer);
             }
