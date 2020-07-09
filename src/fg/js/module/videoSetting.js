@@ -140,8 +140,8 @@ class VideoSetting{
         var element = $(".control-btn.btn-film-model").find('.btn-span:first')[0];
         var observer = new MutationObserver((mutations)=> {
             mutations.forEach((mutation)=> {
-                let flag = document.getElementsByClassName("tip-film-model")[0].innerText;
-                if(flag == '退出观影模式'){
+                let flag = document.getElementsByClassName("tip-film-model")[0].innerText;//TODO:已知bug 全屏模式下进入观影模式 
+                if(flag == '退出观影模式'){ 
                     document.getElementById("acfun-popup-helper").style.display="none";
                     document.getElementById("acfun-helper-div").style.display="none";
                     this.fullScreenStyle(true)
@@ -198,6 +198,7 @@ class VideoSetting{
             $('.left-column').css({
                 "width": "100%",
                 "max-width":"100%",
+                "padding-left":"10px"
             })
             $('.right-column').css({
                 "position": "absolute",
@@ -230,7 +231,8 @@ class VideoSetting{
         }else{
             $('.left-column').css({
                 "width": "calc(100% - 370px)",
-                "max-width": "calc(100% - 370px)"
+                "max-width": "calc(100% - 370px)",
+                "padding-left":'',
             })
             $('#main-content').css({
                 "background":"",
@@ -239,6 +241,7 @@ class VideoSetting{
             })
             $('.right-column').css({
                 "position": "static",
+                "border":"",
                 "background": "",
                 "padding-left": "",
                 "transition-duration":"",
