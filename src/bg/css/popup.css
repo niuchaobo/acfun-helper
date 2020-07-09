@@ -82,7 +82,7 @@ a {
 }
 
 .container>.top-fixed {
-    height: 27px;
+    /* height: 27px; */
     transition-property: all;
     transition-duration: .5s;
     overflow: hidden;
