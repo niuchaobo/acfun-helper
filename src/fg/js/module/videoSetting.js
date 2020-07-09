@@ -144,7 +144,9 @@ class VideoSetting{
                 if(flag == '退出观影模式'){ 
                     document.getElementById("acfun-popup-helper").style.display="none";
                     document.getElementById("acfun-helper-div").style.display="none";
-                    this.fullScreenStyle(true)
+                    setTimeout(()=>{ //全屏模式切换时会重新渲染样式（页面宽度改变）？扔进异步队列等主程跑完再渲染
+                        this.fullScreenStyle(true)
+                    })
                 }else{
                     document.getElementById("acfun-popup-helper").style.display="";
                     document.getElementById("acfun-helper-div").style.display="";
@@ -164,15 +166,17 @@ class VideoSetting{
 
         //网页全屏
         var elementWeb = $(".control-btn.btn-fullscreen").find('.btn-span:first')[0];
-        var observerWeb = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
+        var observerWeb = new MutationObserver((mutations)=> {
+            mutations.forEach((mutation)=> {
                 let flag = document.getElementsByClassName("tip-fullscreen")[0].innerText;
                 if(flag == '退出网页全屏'){
                     document.getElementById("acfun-popup-helper").style.display="none";
                     document.getElementById("acfun-helper-div").style.display="none";
                 }else{
+                    if(document.getElementsByClassName("tip-film-model")[0].innerText == '退出观影模式')return
                     document.getElementById("acfun-popup-helper").style.display="";
                     document.getElementById("acfun-helper-div").style.display="";
+                    this.fullScreenStyle(false)
                 }
             });
         });
@@ -188,7 +192,7 @@ class VideoSetting{
 
     fullScreenStyle(on){
         if(on){
-            $('#main-content').css({
+            $('#main>#main-content').css({
                 "background": "black",
                 "margin": "0px",
                 "max-width":"100%",
