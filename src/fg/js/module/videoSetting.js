@@ -138,15 +138,17 @@ class VideoSetting{
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         //var element = document.querySelector(".tip-film-model").childNodes[0];
         var element = $(".control-btn.btn-film-model").find('.btn-span:first')[0];
-        var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
+        var observer = new MutationObserver((mutations)=> {
+            mutations.forEach((mutation)=> {
                 let flag = document.getElementsByClassName("tip-film-model")[0].innerText;
                 if(flag == '退出观影模式'){
                     document.getElementById("acfun-popup-helper").style.display="none";
                     document.getElementById("acfun-helper-div").style.display="none";
+                    this.fullScreenStyle(true)
                 }else{
                     document.getElementById("acfun-popup-helper").style.display="";
                     document.getElementById("acfun-helper-div").style.display="";
+                    this.fullScreenStyle(false)
                 }
             });
         });
@@ -184,7 +186,82 @@ class VideoSetting{
         });
     }
 
+    fullScreenStyle(on){
+        if(on){
+            $('#main-content').css({
+                "background": "black",
+                "margin": "0px",
+                "max-width":"100%",
+                "width": "100%",
+                "overflow":"hidden",
+            })
+            $('.left-column').css({
+                "width": "100%",
+                "max-width":"100%",
+            })
+            $('.right-column').css({
+                "position": "absolute",
+                "right": "-342px",
+                "top": "160px",
+                "padding-left": "1px",
+                "transition-duration":".2s",
+                "border-left": "6px  solid rgba(62, 62, 62, 0.4)",
+            }).bind('mouseenter',()=>{
+                $('.right-column').css({'right':'0px', "background": "white","border-left-width":"0px"})
+            }).bind('mouseleave',()=>{
+                $('.right-column').css({'right':'-342px', "background": "","border-left-width":"6px"}) 
+            })
+            $('.ac-pc-comment').css({
+                'padding-right':'15px'
+            })
+            $('#toolbar').css({
+                'transform': 'scale(0.8)',
+                'transform-origin': 'bottom right',
+            })
+            $('.player-box').css({
+                "border-bottom-color": "black"
+            })
+            $('.nav-parent').css({
+                "border-bottom-color": "black" 
+            })
+            $('.video-description').css({
+                "border-bottom-color": "black"  
+            })
+        }else{
+            $('.left-column').css({
+                "width": "calc(100% - 370px)",
+                "max-width": "calc(100% - 370px)"
+            })
+            $('#main-content').css({
+                "background":"",
+                "width": "calc(100% - 100px)",
+                "margin": "auto 50px"
+            })
+            $('.right-column').css({
+                "position": "static",
+                "background": "",
+                "padding-left": "",
+                "transition-duration":"",
+            }).unbind('mouseenter').unbind('mouseleave')
+            $('#toolbar').css({
+                'transform': '',
+                'transform-origin': '',
+            })
+            $('.ac-pc-comment').css({
+                'padding-right':''
+            })
+            $('.player-box').css({
+                "border-bottom-color": "#f5f5f5"
+            })
+            $('.nav-parent').css({
+                "border-bottom-color": "#f5f5f5" 
+            })
+            $('.video-description').css({
+                "border-bottom-color": "#f5f5f5"  
+            })
+        }
 
+    }
 
 
 

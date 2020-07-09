@@ -1,5 +1,5 @@
 /* global rangeFromPoint */
-
+//视频播放页面弹幕列表搜索功能
 class Search {
   constructor() {
     this.searchList = [];
@@ -37,7 +37,7 @@ class Search {
       $("#acfun-helper-search-next").css("display", "inline-block");
     }
   }
-  
+
   danmakuSearchProgress = (e) => {
     let action = e.target.id;
     let range = this.searchList.length;
@@ -107,7 +107,7 @@ class Search {
         this.buttonStatusChange(false);
         this.searchList = res;
         this.danmakuSearchJump(this.searchList, this.i);
-        this.danmakuSearchCounterReload();
+        this.searchCounterReload();
       }
     );
   }
@@ -137,7 +137,7 @@ class Search {
     this.pageNum = $(".cur-page").text().trim().slice(1, -1);
   }
 
-  danmakuSearchCounterReload() {
+  searchCounterReload() {
     $(".danmaku-items").unbind("DOMNodeInserted");
     $(".danmaku-items").bind(
       "DOMNodeInserted",
@@ -146,6 +146,7 @@ class Search {
           if (res) {
             return;
           }
+          this.buttonStatusChange(true);
           $("#danmaku .list-body").scrollTop(0);
           let text = $("#acfun-helper-search-input").val();
           getAsyncDom(
@@ -155,6 +156,7 @@ class Search {
           ).then((res) => {
             this.searchList = res;
             this.danmakuSearchJump(this.searchList, this.i);
+            this.buttonStatusChange(false);
           });
         });
       }, 500)
