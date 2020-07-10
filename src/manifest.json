@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.6.707",
+    "version": "1.2.6.710",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -58,6 +58,14 @@
         "pages": ["bg/sandbox/sandbox.html"]
     },
     "omnibox": { "keyword": "ac" },
+    "commands": {
+        "_execute_browser_action": {
+          "suggested_key": {
+            "default": "Alt+A"
+          },
+          "description": "激活AcFun助手前台页"
+        }
+      },
     "web_accessible_resources": [
         "fg/js/acfunxhr.js",
         "fg/css/frame.css",
