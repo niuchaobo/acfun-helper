@@ -140,7 +140,7 @@ class VideoSetting{
         var element = $(".control-btn.btn-film-model").find('.btn-span:first')[0];
         var observer = new MutationObserver((mutations)=> {
             mutations.forEach((mutation)=> {
-                let flag = document.getElementsByClassName("tip-film-model")[0].innerText;//TODO:已知bug 全屏模式下进入观影模式 
+                let flag = document.getElementsByClassName("tip-film-model")[0].innerText;
                 if(flag == '退出观影模式'){ 
                     document.getElementById("acfun-popup-helper").style.display="none";
                     document.getElementById("acfun-helper-div").style.display="none";
@@ -154,14 +154,15 @@ class VideoSetting{
                 }
             });
         });
-
-        observer.observe(element, {
-            //characterData: true,
-            //characterDataOldValue: true
-            attributes: true, //configure it to listen to attribute changes
-            attributeOldValue: true,
-            attributeFilter :['data-bind-attr']
-        });
+        if(element){
+            this.serveStart(element,observer)
+        }else{
+            getAsyncDom(".control-btn.btn-film-mode>.btn-span:first",()=>{
+                return $(".control-btn.btn-film-model").find('.btn-span:first')[0]
+            },500).then(res=>{
+                this.serveStart(res,observer)
+            })
+        }
 
 
         //网页全屏
@@ -176,11 +177,23 @@ class VideoSetting{
                     if(document.getElementsByClassName("tip-film-model")[0].innerText == '退出观影模式')return
                     document.getElementById("acfun-popup-helper").style.display="";
                     document.getElementById("acfun-helper-div").style.display="";
-                    this.fullScreenStyle(false)
                 }
             });
         });
 
+        
+        if(elementWeb){
+            this.serveStart(elementWeb,observerWeb)
+        }else{
+                getAsyncDom(".control-btn.btn-fullscreen>.btn-span:first",()=>{
+                    return $(".control-btn.btn-fullscreen").find('.btn-span:first')[0]
+                },500).then(res=>{
+                    this.serveStart(res,observerWeb)
+                })
+        }
+    }
+
+    serveStart(elementWeb,observerWeb){
         observerWeb.observe(elementWeb, {
             //characterData: true,
             //characterDataOldValue: true
@@ -189,7 +202,6 @@ class VideoSetting{
             attributeFilter :['data-bind-attr']
         });
     }
-
     fullScreenStyle(on){
         if(on){
             $('#main>#main-content').css({
