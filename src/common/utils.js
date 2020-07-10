@@ -497,79 +497,32 @@ function domToString(node) {
   return str;
 }
 
-function getAsyncDom(target, fn, time = 3000) {
-  let timer = null;
-  let i = 0;
-  re = (fn) => {
-    targetDom = document.getElementsByClassName(target)[0];
-    if (target) {
-      i = 0;
-      return new Promise((res)=>{
-          res(fn())
-      })
-    } else {
-      if (i >= 9000 / time) {
-        i = 0;
-        return new Promise((res) => {
-          res('DOM没找到!')
-      })
-    };
-      i++;
-      return new Promise((res) => {
-        setTimeout(() => {
-          res(re(fn));
-        }, time);
-      });
-    }
-  };
-  return re(fn);
-}
-
-function watchCommentLoading(fn) {
-  let i = 0;
-  let re = () => {
-    //TODO:切换分p后评论区刷新但是方法不会重新加载,需要找到评论区刷新完毕的钩子，递归怕爆炸!
-    if ($(".btn-load").length) {
-      i = 0;
-      console.log("加载动画出现");
-      let btn = () => {
-        if ($(".btn-load").length) {
-          console.log("还在转...");
-          setTimeout(() => {
-            i++;
-            if (i >= 50) {
-              console.warn("5s还没转完?用的神州行?再转爆炸！溜！");
-              i = 0;
-              return;
-            }
-            btn();
-          }, 100);
-        } else {
-          console.log("加载动画消失,100ms后开始加载方法");
-          setTimeout(() => {
-            fn();
-            console.log("重新加载方法完成");
-            i = 0;
-          }, 100);
+async function getAsyncDom(target, fn, time = 3000) {
+    let i = 0;
+  re = (fn)=>{
+    console.log(`开始监听${target}`);
+      return new Promise(resolve=>{
+        targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
+        if(targetDom){
+            i = 0; 
+            console.log("DOM加载");
+            resolve(fn())
+        }else{
+            if (i >= 9000 / time) {
+                i = 0;
+                resolve(`${target}没找到`)
+                return 
+            };
+              i++; 
+              setTimeout(() => {
+                console.log(`正在监听${target}`);
+                resolve(re(fn));
+              }, time); 
         }
-      };
-      btn();
-    } else {
-      setTimeout(() => {
-        i++;
-        console.log(i);
-        if (i >= 30) {
-          console.warn("还不出现？A站可算把这个加载动画改了？溜！");
-          i = 0;
-          return;
-        }
-        re();
-      }, 100);
-    }
-  };
-  re();
+      })
+  }
+  return await re(fn)
 }
-
 
 //从Up名称解析为UID
 async function toUpInfo(upName){
