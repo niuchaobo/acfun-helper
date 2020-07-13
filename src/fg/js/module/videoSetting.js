@@ -205,16 +205,20 @@ class VideoSetting{
     fullScreenStyle(on){
         if(on){
             $('#main>#main-content').css({
-                "background": "black",
+                "mix-blend-mode": "difference",
+                "background": "white",
                 "margin": "0px",
                 "max-width":"100%",
-                "width": "100%",
+                "width": "calc(100% - 20px)",
                 "overflow":"hidden",
+                "padding":"0px 10px",
+            })
+            $('#main>#main-content').find('img').css({
+                'mix-blend-mode': 'exclusion'
             })
             $('.left-column').css({
                 "width": "100%",
                 "max-width":"100%",
-                "padding-left":"10px"
             })
             $('.right-column').css({
                 "position": "absolute",
@@ -250,8 +254,12 @@ class VideoSetting{
                 "max-width": "calc(100% - 370px)",
                 "padding-left":'',
             })
+            $('#main>#main-content').find('img').css({
+                'mix-blend-mode': 'normal'
+            })
             $('#main-content').css({
                 "background":"",
+                'mix-blend-mode': 'normal',
                 "width": "calc(100% - 100px)",
                 "margin": "auto 50px"
             })
@@ -265,6 +273,10 @@ class VideoSetting{
             $('#toolbar').css({
                 'transform': '',
                 'transform-origin': '',
+            })
+            $('.columen-left').css({
+                'mix-blend-mode': '',
+                'background': ''
             })
             $('.ac-pc-comment').css({
                 'padding-right':''
