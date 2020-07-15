@@ -295,7 +295,7 @@ class VideoSetting{
     }
 
 
-//倍速快捷键
+//倍速快捷键 TODO:开关(现在依赖于自定义倍速功能开启状态) 自定义快捷键(现在默认shift + ↑/↓) 绑定位置
     PlaybackRateKeyCode(keyCode){
         const videoDom = document.getElementById('player');
         document.onkeydown = ()=> {
