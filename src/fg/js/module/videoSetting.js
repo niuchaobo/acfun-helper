@@ -297,13 +297,13 @@ class VideoSetting{
 
 //倍速快捷键 TODO:开关(现在依赖于自定义倍速功能开启状态) 自定义快捷键(现在默认shift + ↑/↓) 绑定位置
     PlaybackRateKeyCode(keyCode){
-        const videoDom = document.getElementById('player');
-        document.onkeydown = ()=> {
-            this.changeRateKeyCode(keyCode)
-        }
+        const videoDom = document.getElementById('ACPlayer');
+        videoDom.setAttribute("tabindex","0")
+        videoDom.addEventListener('keydown',(e)=>{
+            this.changeRateKeyCode(keyCode,e)
+        })
     }
-    changeRateKeyCode(keyCode){
-        const e = window.event;
+    changeRateKeyCode(keyCode,e){
         let code = e.keyCode
         e.shiftKey && (code === keyCode[0] || code === keyCode[1]) && this.getRate(code, keyCode)
     }
