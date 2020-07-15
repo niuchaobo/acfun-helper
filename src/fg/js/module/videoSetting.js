@@ -295,5 +295,38 @@ class VideoSetting{
     }
 
 
-
+//倍速快捷键
+    PlaybackRateKeyCode(keyCode){
+        const videoDom = document.getElementById('player');
+        document.onkeydown = ()=> {
+            this.changeRateKeyCode(keyCode)
+        }
+    }
+    changeRateKeyCode(keyCode){
+        const e = window.event;
+        let code = e.keyCode
+        e.shiftKey && (code === keyCode[0] || code === keyCode[1]) && this.getRate(code, keyCode)
+    }
+    getRate(code ,keyCode){
+        const v = document.getElementsByTagName("video")[0];
+        let rate = this.getRateFlag(code,keyCode,v)
+        v.playbackRate = rate;
+        event.stopPropagation();
+    }
+    getRateFlag(code,keyCode,v){
+        let videoRate = v.playbackRate;
+        const [addRate,reduceRate] = keyCode
+        code === addRate
+          ? (videoRate += 0.25)
+          : code === reduceRate
+          ? (videoRate -= 0.25)
+          : "";
+        videoRate <= 0
+          ? (videoRate = 0.25)
+          : videoRate >= 2
+          ? (videoRate = 2)
+          : "";
+        return videoRate
+    }
+    
 }
