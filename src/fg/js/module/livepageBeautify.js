@@ -18,7 +18,7 @@ class LivePageButfy {
                 //加入按钮
                 $('.box-right').find('.danmaku-setting').after('<div class="control-btn" id="toggleWide">' + toggleWideicon + '</div>');
                 let nod = document.createElement("style");
-                let cssStr = '.main{transiton: all 0.5s}.main_wide{width: calc(100% - 5px)!important; margin-left: 0.5%; max-width:calc(100% - 5px)!important;} .control-btn svg{width: 20px; height: auto;} .main_wide .live-info{display:none;} .wide_app #header{display: none!important} .notice_icon{position: absolute; z-index: 10;width: 18px; heigth: auto; left: 35px; bottom: 63px; cursor: pointer;} .notice_icon svg{ width: 100%; height: auto}.hide_popup{position: absolute; z-index: 100;display: none;top:-155px; left: -30px;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;} .ban_like .like{display:none;} .hide_popup{background-color:#fff; width: 105px; height: 140px; padding: 8px;border-radius: 4px;box-sizing:border-box;margin-top: -150px;margin-left:-15px;} .hide_popup li{height: 35px;display: flex; align-items: center;}.hide_popup::before{content:""; display: block; position: absolute;top: 140px; left: 15px; width:0;height:0; border-top: 10px solid #fff; border-left: 5px solid transparent;border-right: 5px solid transparent;}'
+                let cssStr = '.main{transiton: all 0.5s}.main_wide{width: calc(100% - 5px)!important; margin-left: 0%; max-width:calc(100% - 5px)!important;} .control-btn svg{width: 20px; height: auto;} .main_wide .live-info{display:none;} .wide_app #header{display: none!important} .notice_icon{position: absolute; z-index: 10;width: 18px; heigth: auto; left: 35px; bottom: 63px;} .notice_icon svg{ width: 100%; height: auto}.hide_popup{position: absolute; z-index: 100;display: none;top:-155px; left: -30px;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;} .ban_like .like{display:none;} .hide_popup{background-color:#fff; width: 105px; height: 150px; padding: 8px;border-radius: 4px;box-sizing:border-box;margin-top: -150px;margin-left:-15px;} .hide_popup li{height: 35px;display: flex; align-items: center;}.hide_popup::before{content:""; display: block; position: absolute;top: 140px; left: 15px; width:0;height:0; border-top: 10px solid #fff; border-left: 5px solid transparent;border-right: 5px solid transparent;}'
                 nod.type="text/css";
                 nod.textContent = cssStr;
                 document.getElementsByClassName('main')[0].appendChild(nod);
@@ -31,8 +31,9 @@ class LivePageButfy {
                         $('#footer').hide();
                         $('.container-live').addClass('main_wide');
                         $('.player-outer-wrapper').addClass('main_wide');
-                        $(".container-list").addClass('hide_do');
-                        $(window).scrollTop(15)
+                        $('.list-container').hide();
+                        console.log("removed css style");
+                        $(window).scrollTop(20)
                         isWidePlayer = true
                     } else {
                         document.getElementsByClassName('player-outer-wrapper')[0].classList.remove('main_wide');
@@ -40,7 +41,7 @@ class LivePageButfy {
                         $('#footer').show();
                         $('.container-live').removeClass('main_wide');
                         $('.player-outer-wrapper').removeClass('main_wide');
-                        $('.container-list').removeClass('hide_do');
+                        $('.list-container').show();
                         isWidePlayer = false
                     }
                 });
@@ -57,10 +58,9 @@ class LivePageButfy {
         var timer = setInterval(function () {
             let checknode=$('div.box-right');
             if(checknode.length>0){
-                // $('.face-text').append(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`)
-                $('.live-feed').append(`<i class="notice_icon">${noticeIcon}<div class="hide_popup"><ul><li><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li><input type="checkbox" data-type="like">屏蔽点赞</input></li></ul><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></div></i>`)
+                $('.live-feed').append(`<i class="notice_icon">${noticeIcon}<div class="hide_popup"><ul><li><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li><input type="checkbox" data-type="like">屏蔽点赞</input></li><li><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></ul></div></i>`)
             }
-            document.getElementsByClassName('notice_icon')[0].style.cssText='position: absolute; width: 18px; heigth: auto; left: 35px; top: 510px; cursor: default;';
+            // document.getElementsByClassName('notice_icon')[0].style.cssText='position: absolute; width: 18px; heigth: auto; left: 35px; top: 510px; cursor: default;';
             document.getElementsByClassName('notice_icon')[0].children[0].style.cssText='width: 100%; height: auto';
             $('#noticeBtn').on('click',(e)=> {
                 // $('.hide_popup').css({ left: e.pageX -50+ 'px', top: e.pageY-180 + 'px' }).show()
