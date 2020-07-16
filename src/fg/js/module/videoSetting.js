@@ -296,26 +296,29 @@ class VideoSetting{
 
 
 //倍速快捷键 TODO:开关(现在依赖于自定义倍速功能开启状态) 自定义快捷键(现在默认shift + ↑/↓) 绑定位置
-    PlaybackRateKeyCode(keyCode){
-        const videoDom = document.getElementById('ACPlayer');
-        videoDom.setAttribute("tabindex","0")
-        videoDom.addEventListener('keydown',(e)=>{
-            this.changeRateKeyCode(keyCode,e)
-        })
+    PlaybackRateKeyCode(settingKeyCode){
+        // const videoDom = document.getElementById('player');
+        // videoDom.setAttribute("tabindex","-1")
+        // v.addEventListener('keydown',(e)=>{
+        //     this.changeRateKeyCode(settingKeyCode,e)
+        // })
+        document.onkeydown = (e)=> {
+            this.changeRateKeyCode(e,settingKeyCode)
+        }
     }
-    changeRateKeyCode(keyCode,e){
-        let code = e.keyCode
-        e.shiftKey && (code === keyCode[0] || code === keyCode[1]) && this.getRate(code, keyCode)
+    changeRateKeyCode(e,settingKeyCode){
+        let code = e.settingKeyCode
+        e.shiftKey && (code === settingKeyCode[0] || code === settingKeyCode[1]) && this.getRate(code, settingKeyCode)
     }
-    getRate(code ,keyCode){
+    getRate(code ,settingKeyCode){
         const v = document.getElementsByTagName("video")[0];
-        let rate = this.getRateFlag(code,keyCode,v)
+        let rate = this.getRateFlag(code,settingKeyCode,v)
         v.playbackRate = rate;
         event.stopPropagation();
     }
-    getRateFlag(code,keyCode,v){
+    getRateFlag(code,settingKeyCode,v){
         let videoRate = v.playbackRate;
-        const [addRate,reduceRate] = keyCode
+        const [addRate,reduceRate] = settingKeyCode
         code === addRate
           ? (videoRate += 0.25)
           : code === reduceRate
