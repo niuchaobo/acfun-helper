@@ -32,19 +32,19 @@ class LivePageButfy {
           .main_wide .container-gift-bar{display:none;} 
           .wide_app #header{display: none!important;} 
           .hide_do{display:none!important;}
-          .main_wide>.container-live-feed{margin:0 !important;position:relative;}
+          .main_wide>.container-live-feed{margin:0 !important;position:relative;transition-duration: .15s;}
           .main_wide>.width_hidden{width:0!important;}
           #wide-player-right{
             position: absolute;
             top: calc(50% - 50px);
-            background: white;
+            background: #ccc;
             left: -15px;
             z-index: 1000;
             height: 100px;
             width: 15px;
             line-height: 100px;
             border-radius: 15px 0px 0 15px;
-            opacity:0.6;
+            opacity:0.3;
             text-align: center;
             cursor: pointer;
            }
@@ -70,13 +70,15 @@ class LivePageButfy {
                 $('.container-live').addClass('main_wide');
                 $('.player-outer-wrapper').addClass('main_wide');
                 $(".container-list").addClass('hide_do');
-                $('.main_wide>.right').append('<div id="wide-player-right">⇥</div>');
+                $('.main_wide>.right').append('<div id="wide-player-right">▶︎</div>');
                 $("#wide-player-right").on('click',(e)=>{
                     if($(".live-feed").css("display") === "none"){
                         $(".live-feed").show()    
+                        $("#wide-player-right").html("▶︎")
                         $(".container-live-feed").removeClass('width_hidden')
                     }else{
                         $(".live-feed").hide()
+                        $("#wide-player-right").html("◀︎")
                         $(".container-live-feed").addClass("width_hidden")
                     }
                 })
