@@ -32,13 +32,32 @@ class LivePageButfy {
           .main_wide .container-gift-bar{display:none;} 
           .wide_app #header{display: none!important;} 
           .hide_do{display:none!important;}
-          .main_wide .container-live-feed{margin:0 !important;}
+          .main_wide>.container-live-feed{margin:0 !important;position:relative;}
+          .main_wide>.width_hidden{width:0!important;}
+          #wide-player-right{
+            position: absolute;
+            top: calc(50% - 50px);
+            background: white;
+            left: -15px;
+            z-index: 1000;
+            height: 100px;
+            width: 15px;
+            line-height: 100px;
+            border-radius: 15px 0px 0 15px;
+            opacity:0.6;
+            text-align: center;
+            cursor: pointer;
+           }
+           #wide-player-right:hover{
+               opacity:1
+           }
+
           `;
         nod.type="text/css";
         nod.textContent = cssStr;
         document.getElementsByClassName('main')[0].appendChild(nod);
     }
-    
+
     widePlayerButtonEvent(){
         let isWidePlayer = false;
         $('div.box-right').on('click','#toggleWide',() => {
@@ -51,12 +70,26 @@ class LivePageButfy {
                 $('.container-live').addClass('main_wide');
                 $('.player-outer-wrapper').addClass('main_wide');
                 $(".container-list").addClass('hide_do');
+                $('.main_wide>.right').append('<div id="wide-player-right">⇥</div>');
+                $("#wide-player-right").on('click',(e)=>{
+                    if($(".live-feed").css("display") === "none"){
+                        $(".live-feed").show()    
+                        $(".container-live-feed").removeClass('width_hidden')
+                    }else{
+                        $(".live-feed").hide()
+                        $(".container-live-feed").addClass("width_hidden")
+                    }
+                })
+                
             } else {
                 playerOuterWrapper.classList.remove('main_wide');
                 app.classList.remove('wide_app');
                 $('.container-live').removeClass('main_wide');
                 $('.player-outer-wrapper').removeClass('main_wide');
                 $('.container-list').removeClass('hide_do');
+                $('#wide-player-right').remove()
+                $(".live-feed").show()    
+                $(".container-live-feed").removeClass('width_hidden')
             }
             isWidePlayer = !isWidePlayer
         });
