@@ -141,13 +141,15 @@ class LivePageButfy {
         document.getElementsByClassName('hide_popup')[0].style.cssText='position: absolute; z-index: 100;display: none;position: absolute; z-index: 100;display: none;background-color: #dedede;margin: 10px;padding: 5px;box-shadow: rgb(197, 197, 197) 5px 5px 5px 1px;';
         document.getElementsByClassName('notice_icon')[0].style.cssText='position: absolute; width: 18px; heigth: auto; left: 35px; top: 0px; cursor: pointer;';
         document.getElementsByClassName('notice_icon')[0].children[0].style.cssText='width: 100%; height: auto';
+        $(".left").on('mouseenter',()=>{
+            $('.hide_popup').hide()
+        })
         $('#noticeBtn').click((e) => {
             e.preventDefault();
             e.stopPropagation();
             $('.hide_popup').css('display') === "none" ?
             $('.hide_popup').css({ left: e.pageX -50+ 'px', top: e.pageY-180 + 'px' }).show():
             $('.hide_popup').hide()
-            
         })
         this.loopToBan()
     }
