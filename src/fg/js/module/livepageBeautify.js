@@ -17,6 +17,7 @@ class LivePageButfy {
         //点击事件
         this.widePlayerButtonEvent()
     }
+    
     addWidePlayerButton(){
         let toggleWideicon = this.toggleWideicon;
         $('.box-right').find('.danmaku-setting').after('<div class="control-btn" id="toggleWide">' + toggleWideicon + '</div>');
@@ -75,50 +76,58 @@ class LivePageButfy {
 
     widePlayerButtonEvent(){
         $('div.box-right').on('click','#toggleWide',() => {
-            //TODO:判断当前为 正常/全屏/桌面全屏 ？  或者直接监听视频状态
             let flag = this.judgeIsFullScreen()
             flag ? $(flag.parentElement).trigger('click') : '';
-            $('#footer').css("opacity") === "none" ?$('#footer').show() :$('#footer').hide();
-            if (!this.isWidePlayer) {
-                this.enterWidePlayerModel()
-            } else {
-                this.exitWidePlayerModel()
-            }
-            this.isWidePlayer = !this.isWidePlayer
+            this.isWidePlayer ? this.exitWidePlayerModel() : this.enterWidePlayerModel()
+            this.helperDivHide("")
         });
-        //TODO:点击 全屏 和 桌面全屏 判断当前 iswideplayer 状态 
+        $(".fullscreen.fullscreen-web,.fullscreen.fullscreen-screen").on('click',(e)=>{
+            this.isWidePlayer ? this.exitWidePlayerModel() : ''
+            let status = this.judgeIsFullScreen()
+            status ? this.helperDivHide('none'):this.helperDivHide("")
+        })
+    }
 
+    helperDivHide(i){
+        document.getElementById("acfun-popup-helper").style.display=i;
+        document.getElementById("acfun-helper-div").style.display=i;
     }
 
     enterWidePlayerModel(){
+        this.isWidePlayer = true
+        $('.toggle-tip').html('退出宽屏模式')
         document.getElementsByClassName('player-outer-wrapper')[0].classList.add('main_wide');
         document.getElementById('app').classList.add('wide_app');
+        $('#footer').hide()
         $('.container-live').addClass('main_wide');
         $('.player-outer-wrapper').addClass('main_wide');
         $(".container-list").addClass('hide_do');
         $('.main_wide>.right').append('<div id="wide-player-right">▶︎</div>');
-        $('.toggle-tip').html('退出宽屏模式')
+       
         $("#wide-player-right").on('click',(e)=>{
             if($(".live-feed").css("display") === "none"){
                 $(".live-feed").show()    
                 $("#wide-player-right").html("▶︎")
                 $(".container-live-feed").removeClass('width_hidden')
+                this.helperDivHide("")
             }else{
                 $(".live-feed").hide()
                 $("#wide-player-right").html("◀︎")
                 $(".container-live-feed").addClass("width_hidden")
+                this.helperDivHide("none")
             }
         })
-        
     }
 
     exitWidePlayerModel(){
+        this.isWidePlayer = false
+        $('.toggle-tip').html('进入宽屏模式')
         document.getElementsByClassName('player-outer-wrapper')[0].classList.remove('main_wide');
         document.getElementById('app').classList.remove('wide_app');
+        $('#footer').show();
         $('.container-live').removeClass('main_wide');
         $('.player-outer-wrapper').removeClass('main_wide');
         $('.container-list').removeClass('hide_do');
-        $('.toggle-tip').html('进入宽屏模式')
         $('#wide-player-right').remove()
         $(".live-feed").show()    
         $(".container-live-feed").removeClass('width_hidden')
