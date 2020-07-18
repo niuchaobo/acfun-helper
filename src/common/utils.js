@@ -27,6 +27,7 @@ const defaults = {
     liveHideAd:true,
     liveBansw:false,
     PlayerDamakuSearchSw:false,
+    PlayerTimeCommentEasyJump:true,
 
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
