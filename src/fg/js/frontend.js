@@ -88,9 +88,14 @@ class ODHFront {
         let href = window.location.href;
         //直播站功能
         if(REG.live.test(href) & this.options.livePlayerEnhc){
-            this.livepageBeautify.appendWidePlayer();
-            this.livepageBeautify.simplifyDanmu();
-            this.livepageBeautify.loopToBan();
+            let timer = setInterval(()=>{
+            let checknode=$('div.box-right');
+            if(checknode.length>0){
+                this.livepageBeautify.appendWidePlayer();
+                this.livepageBeautify.simplifyDanmu();
+                clearInterval(timer)
+            }
+        },3000)
         }
         if(!this.options.enabled){
             return;
@@ -202,6 +207,7 @@ class ODHFront {
         //自定义倍速
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
+            this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
         }
         //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
         if((REG.video.test(href) || REG.bangumi.test(href))){

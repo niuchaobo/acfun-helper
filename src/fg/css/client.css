@@ -114,7 +114,11 @@ iframe#acfun-popup-helper {
     padding: 0 5px;
 }
 
-#acfun-helper-search:hover>div {
+#acfun-helper-search-title {
+    cursor: pointer;
+}
+
+#acfun-helper-search>.search-hidden {
     transform: translateY(-30px);
     -webkit-transform: translateY(-30px);
     -moz-transform: translateY(-30px);
@@ -130,4 +134,6 @@ iframe#acfun-popup-helper {
 #acfun-helper-search-input {
     width: 100px;
     font-size: 10px;
+    height: 18px;
+    margin-top: 5px;
 }

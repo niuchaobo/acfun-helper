@@ -82,14 +82,19 @@ a {
 }
 
 .container>.top-fixed {
-    height: 30px;
+    /* height: 27px; */
     transition-property: all;
     transition-duration: .5s;
-    transition-delay: 1.5s;
     overflow: hidden;
+    user-select: none;
 }
 
-.container>.top-fixed:hover {
+.container:hover {
+    animation: cc 0.5s easy-in 0;
+    -webkit-animation: cc 0.5s easy-in 0;
+}
+
+.container>.setting-hidden {
     height: 106px;
 }
 
@@ -181,6 +186,7 @@ a {
     color: red;
     font-weight: bold;
     font-size: 0;
+    cursor: pointer;
 }
 
 .top-fixed>.head>.item>.pop-title>.comment-label>.letter {
@@ -192,15 +198,15 @@ a {
     display: inline-block;
 }
 
-.top-fixed:hover>.head>.item>.pop-title>.comment-label :nth-child(1) {
+.top-fixed>.head>.item>.pop-title>.comment-label:hover :nth-child(1) {
     animation: dd .4s .2s linear 1;
 }
 
-.top-fixed:hover>.head>.item>.pop-title>.comment-label :nth-child(2) {
+.top-fixed>.head>.item>.pop-title>.comment-label:hover :nth-child(2) {
     animation: dd .4s .6s linear 1;
 }
 
-.top-fixed:hover>.head>.item>.pop-title>.comment-label :nth-child(3) {
+.top-fixed>.head>.item>.pop-title>.comment-label:hover :nth-child(3) {
     animation: dd .73s 1s ease-out 1;
 }
 
