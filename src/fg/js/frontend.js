@@ -83,7 +83,7 @@ class ODHFront {
 
     async onDomContentLoaded(e){
         this.options = await optionsLoad();
-        console.log("options",this.options);
+        // console.log("options",this.options);
 
         let href = window.location.href;
         //直播站功能
@@ -147,8 +147,8 @@ class ODHFront {
         //let is_up = this.adjuatUp();
         let href = window.location.href;
         //页面优化
-        if(!REG.live.test(href) ){
-          if(this.options.beautify_personal&!REG.liveIndex.test(href) & !REG.liveIndex.test(href)){
+        if(!REG.live.test(href) && !REG.liveIndex.test(href)){
+          if(this.options.beautify_personal){
               this.pageBeautify.addMouseAnimation();
               this.pageBeautify.personBeautify();
           }
@@ -156,10 +156,10 @@ class ODHFront {
               this.pageBeautify.hideAds();
           }
         }
-        if(this.options.liveHideAd & REG.liveIndex.test(href)){
+        if(this.options.liveHideAd && REG.liveIndex.test(href)){
             this.livepageBeautify.LivehideAds();
         }
-      //直播站首页屏蔽
+        //直播站首页用户屏蔽
         if(this.options.liveBansw & REG.liveIndex.test(href)){
           this.block.liveUserBlock();
         }
@@ -195,8 +195,8 @@ class ODHFront {
         }
 
         //从消息中心(评论)跳转
-        if(REG.msg_comment.test(href)){
-            this.ce.jumpToComment();
+        if(REG.msg_comment.test(href) && this.options.commentEasyJump){
+            this.ce.jumpToComment(href);
         }
 
         //直播
@@ -212,8 +212,9 @@ class ODHFront {
         //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
         if((REG.video.test(href) || REG.bangumi.test(href))){
             this.videoSetting.monitorFullScreen();
-            //todo 加开关
-            this.ce.searchScanForPlayerTime();
+            if(this.options.PlayerTimeCommentEasyJump){
+              this.ce.searchScanForPlayerTime();
+            }
         }
         this.authInfo.cookInfo();
     }

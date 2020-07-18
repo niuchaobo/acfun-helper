@@ -676,6 +676,17 @@ h2 {
     filter: grayscale(1);/* W3C */
 }
 
+.div-common-switch {
+    margin-top: 16px;
+    color: #333333;
+    padding-left: 23px;
+    /*padding-top: 4px;*/
+    padding-top: 1px;
+    padding-right: 23px;
+    padding-bottom: 20px;
+    background: #fff;
+    border-top: 1px solid lightgrey;
+}
 
 .div-nav-switch {
     margin-top: 16px;
@@ -764,6 +775,14 @@ h2 {
     width: 186px;
 }
 
+#common-switch-r {
+    width: 186px;
+}
+#common-switch-l {
+    height: 21px;
+    line-height: 21px;
+    width: 500px;
+}
 
 .div-rate-switch {
     margin-top: 16px;

@@ -272,7 +272,7 @@ var default_options={
 function restore_options() {
     chrome.storage.local.get(null, function (items) {
         options = transOptions(items);
-        console.log('options', options);
+        // console.log('options', options);
         auto_throw = options['auto_throw'];
         to_attention = options['to_attention'];
         to_special = options['to_special'];
@@ -990,6 +990,25 @@ $(document).ready(function () {
         }
     });
 
+    //=====================评论区评论ID快速跳转================
+    chrome.storage.local.get(['commentEasyJump'],function(items){
+        var commentEasyJumpsw= items.commentEasyJump;
+        if(commentEasyJumpsw){
+            document.getElementById('commentEasyJump').checked='true';
+        }else{
+            document.getElementById('commentEasyJump').checked=false;
+        }
+        $('#commentEasyJump').on('click', function () {
+            if(!document.getElementById('commentEasyJump').checked){
+                document.getElementById('commentEasyJump').checked=false;
+                chrome.storage.local.set({'commentEasyJump':false});
+            }else{
+                document.getElementById('commentEasyJump').checked=true;
+                chrome.storage.local.set({'commentEasyJump':true});
+            }
+        });
+    });
+
     //=====================页面优化============================
     chrome.storage.local.get(['hideAd'],function(items){
         var ifHideAd= items.hideAd;
@@ -1045,6 +1064,44 @@ $(document).ready(function () {
         });
     });
 
+    //=====================弹幕搜索================
+    chrome.storage.local.get(['PlayerDamakuSearchSw'],function(items){
+        var PlayerDamakuSearchSw= items.PlayerDamakuSearchSw;
+        if(PlayerDamakuSearchSw){
+            document.getElementById('PlayerDamakuSearchSw').checked='true';
+        }else{
+            document.getElementById('PlayerDamakuSearchSw').checked=false;
+        }
+        $('#PlayerDamakuSearchSw').on('click', function () {
+            if(!document.getElementById('PlayerDamakuSearchSw').checked){
+                document.getElementById('PlayerDamakuSearchSw').checked=false;
+                chrome.storage.local.set({'PlayerDamakuSearchSw':false});
+            }else{
+                document.getElementById('PlayerDamakuSearchSw').checked=true;
+                chrome.storage.local.set({'PlayerDamakuSearchSw':true});
+            }
+        });
+    });
+
+    //=====================评论区时间播放器快速跳转================
+    chrome.storage.local.get(['PlayerTimeCommentEasyJump'],function(items){
+        var PlayerTimeCommentEasyJumpsw= items.PlayerTimeCommentEasyJump;
+        if(PlayerTimeCommentEasyJumpsw){
+            document.getElementById('PlayerTimeCommentEasyJump').checked='true';
+        }else{
+            document.getElementById('PlayerTimeCommentEasyJump').checked=false;
+        }
+        $('#PlayerTimeCommentEasyJump').on('click', function () {
+            if(!document.getElementById('PlayerTimeCommentEasyJump').checked){
+                document.getElementById('PlayerTimeCommentEasyJump').checked=false;
+                chrome.storage.local.set({'PlayerTimeCommentEasyJump':false});
+            }else{
+                document.getElementById('PlayerTimeCommentEasyJump').checked=true;
+                chrome.storage.local.set({'PlayerTimeCommentEasyJump':true});
+            }
+        });
+    });
+
 
     //====================配置播放器自动跳转到上次观看时间===============
     chrome.storage.local.get(['autoJumpLastWatchSw'],function(items){
@@ -1067,7 +1124,6 @@ $(document).ready(function () {
 
     //====================配置播放器画质策略===============
     chrome.storage.local.get(['videoQualityStrategy'],function(items){
-        console.log(items.videoQualityStrategy);
         $('#videoQualityStrategy_state').append(items.videoQualityStrategy)
         var inst = new mdui.Select('#videoQualityStrategy');
         $('#videoQualityStrategy').on('close.mdui.select', function () {
@@ -1124,7 +1180,6 @@ $(document).ready(function () {
         chrome.storage.local.set({'liveFloowings':a});
         mdui.alert("列表初始化完成，请刷新页面");
     }else{
-    console.log(items);
     $('#liveFollowAdd').on('click', function () {
         mdui.prompt('请输入你需要关注的用户UID', '添加关注',
         async function (value) {
@@ -1211,7 +1266,6 @@ $(document).ready(function () {
     });
     chrome.storage.local.get(['liveBans'],function(items){
         if(JSON.stringify(items) !== '{}'){
-            console.log(items);
             for(i in items.liveBans){
                 $('ul#liveBanList').append(`<li class="mdui-list-item mdui-ripple" data-key=${i} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveBansItems" data-key=${i} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${i}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons BanWatchOrig" data-key=${i} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${i} UserName:${items.liveBans[i]}</div></li>`);
             }
@@ -1232,7 +1286,6 @@ $(document).ready(function () {
             let a={}
             chrome.storage.local.set({'liveBans':a});
         }else{
-        console.log(items);
         $('#liveBanAdd').on('click', function () {
             mdui.prompt('请输入你需要屏蔽的用户UID', '添加用户',
             async function (value) {

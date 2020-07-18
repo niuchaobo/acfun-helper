@@ -17,7 +17,11 @@ class Div {
     this.popup.inject(options);
     //生成展示页面内容
     let content = this.popup.renderPopup(pageInfo, type, isUp);
-    this.search.inject();
+    chrome.storage.local.get(['PlayerDamakuSearchSw'],function(items){
+      if(items.PlayerDamakuSearchSw){
+        this.search.inject();
+      }
+    });
     this.div.style.visibility = "visible";
     this.div.innerText = "助手";
     document.body.appendChild(this.div);

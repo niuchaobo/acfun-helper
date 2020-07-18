@@ -258,7 +258,37 @@
                     </div>
                   </div>
                 </div>
-                               
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">评论区其他小功能</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-col-xs-9">
+                        <h2>自动格式化评论区的时间以便点击跳转</h2>
+                      </div>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">启用</div>
+                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                            <input id="commentEasyJump" type="checkbox" />
+                            <i class="mdui-switch-icon"></i>
+                          </label>
+                        </div>
+                        </div>            
+                      </div>
+                    </div>
+
+                    <div class="mdui-panel-item-actions">
+                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                      <button class="mdui-btn mdui-ripple">保存</button>
+                    </div>
+                  </div>
+                </div>
+
 
                 <div class="mdui-panel-item">
                     <div class="mdui-panel-item-header">
@@ -441,13 +471,13 @@
                         </table>
                     </div>
             
-                    <div class="div-like-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                    <div class="div-like-switch">
                         <h3>显示点赞、投桃数</h3>
                         <table>
                             <tbody>
                             <tr>
                                 <td id="like-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
+                                    <p>
                                       开启之后，在视频播放页面显示点赞、投桃数
                                     </p>
                                 </td>
@@ -459,25 +489,21 @@
                         </table>
                     </div>
 
-                    <div class="div-like-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>取消显示推广弹出窗</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="like-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
-                                      开启之后，在视频播放页、主站删除推广窗口
-                                    </p>
-                                </td>
-                                <td id="like-switch-r">
-                                  <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                                    <input id="hideAd" type="checkbox" />
-                                    <i class="mdui-switch-icon"></i>
-                                  </label></div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-row">
+                          <div class="mdui-row">
+                              <div class="mdui-col-xs-9">
+                                  <h3>取消显示推广弹出窗</h3>
+                                <div class="mdui-row">
+                                  <div class="mdui-col-xs-8 mdui-col-sm-6"><p>取消播放器弹出的站内活动推广窗口</p></div>
+                                  <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                      <input id="hideAd" type="checkbox"/>开关 
+                                      <i class="mdui-switch-icon"></i>
+                                      </label></div>
+                                </div>
+                              </div>
+                            </div>
+                      </div>
                     </div>
 
                   </div>
@@ -491,50 +517,40 @@
                     </div>
                     <div class="mdui-panel-item-body">
 
-                      <div class="div-like-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>删除直播页推广</h3>
-                        <table>
-                          <tbody>
-                            <tr>
-                              <td id="like-switch-l">
-                                <p style="color: rgb(204, 204, 204);">
-                                  删除直播页banner
-                                </p>
-                              </td>
-                              <td id="like-switch-r">
-                                <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                                    <input id="liveHideAd" type="checkbox" />
-                                    <i class="mdui-switch-icon"></i>
-                                  </label>
+                      <div class="mdui-container-fluid">
+                        <div class="mdui-row">
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-9">
+                                    <h3>删除直播页推广</h3>
+                                  <div class="mdui-row">
+                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>删除直播页banner</p></div>
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                        <input id="liveHideAd" type="checkbox"/>开关 
+                                        <i class="mdui-switch-icon"></i>
+                                        </label></div>
+                                  </div>
                                 </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                              </div>
+                        </div>
                       </div>
-            
-                      <div class="div-like-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>直播页宽屏和弹幕屏蔽</h3>
-                        <table>
-                          <tbody>
-                            <tr>
-                              <td id="like-switch-l">
-                                <p style="color: rgb(204, 204, 204);">
-                                  为直播页播放器和弹幕列表增加宽屏模式，并允许按类型屏蔽弹幕
-                                </p>
-                              </td>
-                              <td id="like-switch-r">
-                                <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                                    <input id="livePlayerEnhc" type="checkbox" />
-                                    <i class="mdui-switch-icon"></i>
-                                  </label>
+              
+                      <div class="mdui-container-fluid">
+                        <div class="mdui-row">
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-9">
+                                    <h3>直播页宽屏和弹幕屏蔽</h3>
+                                  <div class="mdui-row">
+                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>为直播页播放器和弹幕列表增加宽屏模式，并允许按类型屏蔽弹幕信息</p></div>
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                        <input id="livePlayerEnhc" type="checkbox"/>开关 
+                                        <i class="mdui-switch-icon"></i>
+                                        </label></div>
+                                  </div>
                                 </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                              </div>
+                        </div>
                       </div>
-      
+                    
                     </div>
                   </div>
 
@@ -546,7 +562,7 @@
                       <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                     <div class="mdui-panel-item-body">
-
+                      <p>更新预留</p>
                       <div class="mdui-panel-item-actions">
                         <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
                         <button class="mdui-btn mdui-ripple">保存</button>
@@ -638,6 +654,38 @@
                             <option value="2">2 - 非60帧的最高画质</option>
                             <option value="3">3 - 默认最低</option>
                           </select>
+                        </div>            
+                      </div>
+                    </div>
+
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-col-xs-9">
+                        <h2>弹幕搜索&自动跳转</h2>
+                      </div>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">启用</div>
+                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                            <input id="PlayerDamakuSearchSw" type="checkbox" />
+                            <i class="mdui-switch-icon"></i>
+                          </label>
+                        </div>
+                        </div>            
+                      </div>
+                    </div>
+
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-col-xs-9">
+                        <h2>自动格式化评论区的时间以便点击跳转</h2>
+                      </div>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">启用</div>
+                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                            <input id="PlayerTimeCommentEasyJump" type="checkbox" />
+                            <i class="mdui-switch-icon"></i>
+                          </label>
+                        </div>
                         </div>            
                       </div>
                     </div>
@@ -793,7 +841,8 @@
                 </p>
 
                 <p>26.增加画质策略<br>
-                  27.增加强制跳转到上次观看的时间（功能受到限制）
+                  27.增加强制跳转到上次观看的时间（功能受到限制）<br>
+                  28.弹幕内容搜索和快速跳转
                 </p>
                 <hr>                
 
