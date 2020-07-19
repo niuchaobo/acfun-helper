@@ -78,7 +78,7 @@ class MsgNotifs{
                     let a3=b.unReadCount.new_content_notify;//系统通知
                     let a4=b.unReadCount.new_system_notify;//站内公告
                     var pushNum=a0+a1+a2+a3+a4;
-                    chrome.browserAction.setTitle({title:`AcFun助手，Ac在爱一直在；\n网页通知：\n评论未读：${a0}\n点赞：${a1}\n系统通知：${a3}\n站内公告：${a4}`})
+                    chrome.browserAction.setTitle({title:`AcFun助手，Ac在爱一直在；\n通知\n评论未读：${a0}\n点赞：${a1}\n系统通知：${a3}\n站内公告：${a4}`})
                     // console.log(pushNum);
                     if(pushNum>0){
                         chrome.browserAction.setBadgeText({ text: pushNum.toString() });
