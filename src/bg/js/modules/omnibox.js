@@ -7,7 +7,7 @@ class Ohminibox{
     }
     
     registerOmnibox(){
-        console.log("registered Omnibox Mod.")
+        console.log("Registered Omnibox Mod.")
         chrome.omnibox.onInputStarted.addListener(() => {
         });
         chrome.omnibox.onInputChanged.addListener((text, suggest) => {
