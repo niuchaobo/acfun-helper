@@ -6,7 +6,7 @@ class PageBeautify {
   constructor() {
     this.personInfo = "https://www.acfun.cn/rest/pc-direct/user/personalInfo";
   }
-  //--------------------------------------------------导航--------------------------------------------------------------------
+  //-----------------导航---------------------
   navBeautify() {
     this.addRightNav();
     this.macNavPosition(); //导航常显（导航更像导航），mbp（13寸）导航条位置调整（别的mac版本不知道会不会爆炸）
@@ -119,7 +119,7 @@ class PageBeautify {
     style.innerHTML = str;
     window.document.head.appendChild(style);
   }
-  //-------------------------------------------------个人中心-----------------------------------------------------------------------
+  //----------------个人中心------------------------------
 
   async personBeautify() {
     fetch(this.personInfo)

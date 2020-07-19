@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.6.718",
+    "version": "1.2.6.719",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -52,6 +52,7 @@
         "run_at": "document_start"
     }],
     "minimum_chrome_version": "50.0.0.0",
+    "homepage_url": "https://www.acfun.cn/u/7054138",
     "options_page": "bg/options.html",
     "permissions": ["contextMenus", "notifications", "tabs", "webRequest", "webRequestBlocking", "https://*/*", "http://*/*", "storage", "unlimitedStorage", "cookies"],
     "sandbox": {
