@@ -186,6 +186,8 @@ class PageBeautify {
   hideAds(){
     try {
         document.querySelector(".app-guide").remove();
+        document.querySelector(".shareCount").remove();
+        document.querySelector(".usemobile").remove();
     } catch (error) {}
     try {
         document.querySelector(".download-app").remove();

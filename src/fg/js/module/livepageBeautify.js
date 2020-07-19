@@ -125,7 +125,8 @@ class LivePageButfy {
         $('.toggle-tip').html('进入宽屏模式')
         document.getElementsByClassName('player-outer-wrapper')[0].classList.remove('main_wide');
         document.getElementById('app').classList.remove('wide_app');
-        document.getElementsByClassName('live-feed')[0].style.borderRadius = "3px";
+        //性能问题，就不再次恢复了
+        // document.getElementsByClassName('live-feed')[0].style.borderRadius = "3px";
         $('#footer').show();
         $('.list-container').show();
         $('.container-live').removeClass('main_wide');
@@ -159,12 +160,11 @@ class LivePageButfy {
         $('.hide_popup').find('input').click(function (e) {
             let _type = $(this).attr('data-type')
             let isChecked = $(this).prop('checked')
-            console.log(isChecked)
             if (isChecked) {
-                console.log('ready to block '+_type);
+                // console.log('ready to block '+_type);
                 $('.live-feed-messages').addClass('ban_' + _type)
             } else {
-                console.log('cancal to block '+_type);
+                // console.log('cancal to block '+_type);
                 $('.live-feed-messages').removeClass('ban_' + _type)
             }
         })
