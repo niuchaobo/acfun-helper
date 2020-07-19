@@ -102,6 +102,7 @@ class LivePageButfy {
         $('.container-live').addClass('main_wide');
         $('.player-outer-wrapper').addClass('main_wide');
         document.getElementsByClassName('face-text-panel')[1].style.right = "-3px";
+        document.getElementsByClassName('live-feed')[0].style.borderRadius = "0px";
         $('.main_wide>.right').append('<div id="wide-player-right">▶︎</div>');
        
         $("#wide-player-right").on('click',(e)=>{
@@ -124,6 +125,7 @@ class LivePageButfy {
         $('.toggle-tip').html('进入宽屏模式')
         document.getElementsByClassName('player-outer-wrapper')[0].classList.remove('main_wide');
         document.getElementById('app').classList.remove('wide_app');
+        document.getElementsByClassName('live-feed')[0].style.borderRadius = "3px";
         $('#footer').show();
         $('.list-container').show();
         $('.container-live').removeClass('main_wide');
