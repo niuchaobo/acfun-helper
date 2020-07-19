@@ -14,6 +14,7 @@ class ODHBack {
         this.MsgNotfs.fetchPushList();
         this.MsgNotfs.liveOnlineNotif();
         // this.MsgNotfs.fetchMcircle();
+        // test1();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));

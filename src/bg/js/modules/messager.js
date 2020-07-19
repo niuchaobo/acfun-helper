@@ -1,5 +1,5 @@
 /**
- * 通知、提醒和推送
+ * 通知、提醒和推送的后台守护模块
  */
 class MsgNotifs{
     constructor(){
@@ -7,7 +7,7 @@ class MsgNotifs{
     }
 
     liveOnlineNotif(){
-        console.log('Start LiveUp Notificate.')
+        console.log('Start LiveUpNotificationFetching Mod.')
         window.setInterval(function(){
             chrome.storage.local.get(['liveFloowNotif'],function(Ifswitch){
             if(Ifswitch.liveFloowNotif){
@@ -96,6 +96,7 @@ class MsgNotifs{
                 .then((res)=>{return res.text();})
                 .then((res)=>{
                     let rawdata=JSON.parse(res);
+                    // db_putPushLst(rawdata);
                     let out_data='';
                     // console.log(rawdata.feedList[0].username);
                     for(let i=0;i<=29;i++){
