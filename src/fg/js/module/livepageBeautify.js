@@ -35,7 +35,6 @@ class LivePageButfy {
           .main_wide .live-info{display:none;} 
           .main_wide .container-gift-bar{display:none;} 
           .wide_app #header{display: none!important;} 
-          .hide_do{display:none!important;}
           .main_wide>.container-live-feed{margin:0 !important;position:relative;transition-duration: .15s;}
           .main_wide>.width_hidden{width:0!important;}
           #wide-player-right{
@@ -98,10 +97,11 @@ class LivePageButfy {
         $('.toggle-tip').html('退出宽屏模式')
         document.getElementsByClassName('player-outer-wrapper')[0].classList.add('main_wide');
         document.getElementById('app').classList.add('wide_app');
-        $('#footer').hide()
+        $('#footer').hide();
+        $('.list-container').hide();
         $('.container-live').addClass('main_wide');
         $('.player-outer-wrapper').addClass('main_wide');
-        $(".container-list").addClass('hide_do');
+        document.getElementsByClassName('face-text-panel')[1].style.right = "-3px";
         $('.main_wide>.right').append('<div id="wide-player-right">▶︎</div>');
        
         $("#wide-player-right").on('click',(e)=>{
@@ -125,9 +125,9 @@ class LivePageButfy {
         document.getElementsByClassName('player-outer-wrapper')[0].classList.remove('main_wide');
         document.getElementById('app').classList.remove('wide_app');
         $('#footer').show();
+        $('.list-container').show();
         $('.container-live').removeClass('main_wide');
         $('.player-outer-wrapper').removeClass('main_wide');
-        $('.container-list').removeClass('hide_do');
         $('#wide-player-right').remove()
         $(".live-feed").show()    
         $(".container-live-feed").removeClass('width_hidden')
