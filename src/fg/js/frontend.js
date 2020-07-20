@@ -60,7 +60,7 @@ class ODHFront {
       "span.up {background-color: #4a8eff !important;cursor: pointer;}" +
       "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
       "p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
-      ".clearfix{border-bottom:1px #f7f7f7 solid}" +
+    //   ".clearfix{border-bottom:1px #f7f7f7 solid}" +
       "";
     nod.type = "text/css";
     nod.textContent = str;
