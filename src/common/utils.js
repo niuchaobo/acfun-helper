@@ -18,6 +18,7 @@ const defaults = {
     beautify_personal:true,//顶栏个人中心入口优化
     show_like:false,//显示点赞数、投桃数
     custom_rate:true,//开启自定义倍速
+    custom_rate_keyCode:[38,40],
     player_mode:'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
     liveFloowNotif:false,
     videoQualityStrategy:'0',
