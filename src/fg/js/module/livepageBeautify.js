@@ -151,6 +151,8 @@ class LivePageButfy {
             $('.hide_popup').css({ left: e.pageX -50+ 'px', top: e.pageY-180 + 'px' }).show():
             $('.hide_popup').hide()
         })
+        
+        this.addBanStyle()
         this.loopToBan()
     }
 
@@ -168,13 +170,15 @@ class LivePageButfy {
                 $('.live-feed-messages').removeClass('ban_' + _type)
             }
         })
+    }
+
+    addBanStyle(){
         let nod = document.createElement("style");
         let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;}"
         nod.type="text/css";
         nod.textContent = cssStr;
-        document.getElementsByClassName('live-feed-messages')[0].appendChild(nod);
+        document.head.appendChild(nod)
     }
-
     LivehideAds(){
         try {
             document.querySelector(".banner").hidden = true;
