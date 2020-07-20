@@ -30,6 +30,7 @@ const defaults = {
     PlayerDamakuSearchSw:false,
     PlayerTimeCommentEasyJump:true,
     PlaybackRateKeysw:true,
+    endedAutoExitFullscreensw:false,
 
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];

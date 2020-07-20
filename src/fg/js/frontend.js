@@ -85,6 +85,9 @@ class ODHFront {
         // console.log("options",this.options);
 
         let href = window.location.href;
+        if(!this.options.enabled){
+          return;
+        }
         //直播站功能
         if(REG.live.test(href) & this.options.livePlayerEnhc){
             let timer = setInterval(()=>{
@@ -95,9 +98,6 @@ class ODHFront {
                 clearInterval(timer)
             }
         },3000)
-        }
-        if(!this.options.enabled){
-            return;
         }
         //添加自定义样式
         this.addStyle();
@@ -192,12 +192,10 @@ class ODHFront {
             let isUp = adjustArticleUp();
             this.div.show(pageInfo,this.options,'article',isUp);
         }
-
         //从消息中心(评论)跳转
         if(REG.msg_comment.test(href) && this.options.commentEasyJump){
             this.ce.jumpToComment(href);
         }
-
         //直播
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
@@ -206,6 +204,8 @@ class ODHFront {
         //自定义倍速
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
+        }
+        if(this.options.PlaybackRateKeysw){
             this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
         }
         //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示

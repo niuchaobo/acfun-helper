@@ -1141,6 +1141,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================配置播放器结束时自动退出全屏模式===============
+    chrome.storage.local.get(['endedAutoExitFullscreensw'],function(items){
+        var endedAutoExitFullscreensw= items.endedAutoExitFullscreensw;
+        if(endedAutoExitFullscreensw){
+            document.getElementById('endedAutoExitFullscreensw').checked='true';
+        }else{
+            document.getElementById('endedAutoExitFullscreensw').checked=false;
+        }
+        $('#endedAutoExitFullscreensw').on('click', function () {
+            if(!document.getElementById('endedAutoExitFullscreensw').checked){
+                document.getElementById('endedAutoExitFullscreensw').checked=false;
+                chrome.storage.local.set({'endedAutoExitFullscreensw':false});
+            }else{
+                document.getElementById('endedAutoExitFullscreensw').checked=true;
+                chrome.storage.local.set({'endedAutoExitFullscreensw':true});
+            }
+        });
+    });
+
     //====================配置播放器画质策略===============
     chrome.storage.local.get(['videoQualityStrategy'],function(items){
         $('#videoQualityStrategy_state').append(items.videoQualityStrategy)

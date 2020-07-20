@@ -1,4 +1,4 @@
-//----------------------------------------播放器模式（观影、网页全屏、桌面全屏）-----------------------------------------------------------------------------
+//----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
 var hiddenDiv = document.getElementById('myCustomEventDiv');
 if(!hiddenDiv) {
@@ -45,10 +45,19 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
             break;*/
     }
 
+    if(options.endedAutoExitFullscreensw){
+        document.getElementsByTagName("video")[0].addEventListener('ended', function () {
+            console.log("播放结束");
+            if(!window.player._loop){
+                window.player.emit('filmModeChanged', false);
+                window.player.emit('fullScreenChange', false);
+            }
+        });
+    }
+
 });
 
-//--------------------------------------------自定义倍速-------------------------------------------------------------------------
-
+//----------------------自定义倍速------------------------
 function setCustomPlaybackRate(event) {
     event.stopPropagation();
     event.preventDefault();
@@ -64,7 +73,7 @@ function setCustomPlaybackRate(event) {
             window.parent.postMessage({
                 action: 'notice',
                 params: {
-                    title: 'Acfun助手',
+                    title: 'AcFun助手',
                     msg:'请输入正确的播放速度',
                 }
             }, '*');
@@ -93,14 +102,12 @@ try {
     
 }
 
-
 //调用画中画模式
 function setPictureInPictureMode() {
     let v = document.getElementsByTagName("video")[0];
     v.requestPictureInPicture();
     console.log('Calling PictureInPicture Mode.');
 }
-
 
 quickJump = (time, part)=> {
     let v_obj = document.getElementsByTagName("video")[0];
