@@ -133,7 +133,6 @@ class VideoSetting{
                 node.after(html);
                 clearInterval(_timer);
             }
-
         },1000);
     }
 

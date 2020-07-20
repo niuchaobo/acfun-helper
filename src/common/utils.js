@@ -29,6 +29,7 @@ const defaults = {
     liveBansw:false,
     PlayerDamakuSearchSw:false,
     PlayerTimeCommentEasyJump:true,
+    PlaybackRateKeysw:true,
 
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];

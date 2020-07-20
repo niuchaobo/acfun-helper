@@ -643,7 +643,7 @@
                     
                     <div class="mdui-container-fluid">
                       <div class="mdui-col-xs-9">
-                        <h2>播放器播放画质策略</h2><br><p id="videoQualityStrategy_state">现在的直播策略： </p>
+                        <h2>播放器播放画质策略</h2><br><p id="videoQualityStrategy_state">现在的策略： </p>
                       </div>
                       <div class="mdui-row">
                         <div class="mdui-col-xs-8 mdui-col-sm-6">选择播放器画质策略</div>
@@ -663,7 +663,7 @@
                         <h2>弹幕搜索&自动跳转</h2>
                       </div>
                       <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">启用</div>
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">可以在弹幕列表中搜索相应弹幕内容并跳转到弹幕所在时间</div>
                         <div class="mdui-col-xs-4 mdui-col-sm-6">
                           <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                             <input id="PlayerDamakuSearchSw" type="checkbox" />
@@ -676,10 +676,26 @@
 
                     <div class="mdui-container-fluid">
                       <div class="mdui-col-xs-9">
+                        <h2>倍速切换快捷键</h2>
+                      </div>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器具有焦点的时候可以按shift+↑↓键调整播放速率</div>
+                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                            <input id="PlaybackRateKeysw" type="checkbox" />
+                            <i class="mdui-switch-icon"></i>
+                          </label>
+                        </div>
+                        </div>            
+                      </div>
+                    </div>
+                    
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-col-xs-9">
                         <h2>自动格式化评论区的时间以便点击跳转</h2>
                       </div>
                       <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">启用</div>
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">将评论区中的时间（MM:ss或者 X分X秒、npX分X秒）转化为链接，点击时向播放器发送跳转指令，跳转至目的时间。<br>测试地址：<a href="https://www.acfun.cn/v/ac4919284#ncid=232956340" target="blank">[司鼓君-【2019猴山春晚/原创国风电音】燃灯挂霓虹 ft.小勒个朵]</a></div>
                         <div class="mdui-col-xs-4 mdui-col-sm-6">
                           <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                             <input id="PlayerTimeCommentEasyJump" type="checkbox" />

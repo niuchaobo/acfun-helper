@@ -1083,6 +1083,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================倍速切换快捷键================
+    chrome.storage.local.get(['PlaybackRateKeysw'],function(items){
+        var PlaybackRateKeysw= items.PlaybackRateKeysw;
+        if(PlaybackRateKeysw){
+            document.getElementById('PlaybackRateKeysw').checked='true';
+        }else{
+            document.getElementById('PlaybackRateKeysw').checked=false;
+        }
+        $('#PlaybackRateKeysw').on('click', function () {
+            if(!document.getElementById('PlaybackRateKeysw').checked){
+                document.getElementById('PlaybackRateKeysw').checked=false;
+                chrome.storage.local.set({'PlaybackRateKeysw':false});
+            }else{
+                document.getElementById('PlaybackRateKeysw').checked=true;
+                chrome.storage.local.set({'PlaybackRateKeysw':true});
+            }
+        });
+    });
+
     //=====================评论区时间播放器快速跳转================
     chrome.storage.local.get(['PlayerTimeCommentEasyJump'],function(items){
         var PlayerTimeCommentEasyJumpsw= items.PlayerTimeCommentEasyJump;
