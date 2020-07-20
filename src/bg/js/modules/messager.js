@@ -96,6 +96,7 @@ class MsgNotifs{
                 .then((res)=>{return res.text();})
                 .then((res)=>{
                     let rawdata=JSON.parse(res);
+                    //调用indexeddb驱动，写入indexeddb。以后将会慢慢迁移。
                     // db_putPushLst(rawdata);
                     let out_data='';
                     // console.log(rawdata.feedList[0].username);
