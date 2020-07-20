@@ -15,7 +15,7 @@ class LivePageButfy {
         //样式
         this.widePlayerStyle()
         //点击事件
-        this.widePlayerButtonEvent()
+        this.widePlayerEvent()
     }
     
     addWidePlayerButton(){
@@ -62,30 +62,30 @@ class LivePageButfy {
         document.getElementsByClassName('main')[0].appendChild(nod);
     }
 
-    judgeIsFullScreen(){
+    judgeIsFullScreen(target){
+        let flag = null
         let textFlag = document.getElementsByClassName("tip-fullscreen");
-        let flag = false
-        Array.prototype.forEach.call(textFlag,(item,index)=>{
-           let text = item.innerText;
-           if(text === "退出网页全屏" || text === "退出桌面全屏"){
-               flag=item
-           }
-        })
+        flag = textFlag[0].innerText === '退出网页全屏'?textFlag[0] : false;
+        flag = flag ? flag :textFlag[1].innerText === '退出桌面全屏'?textFlag[1] : false;
+        flag = target?.parentElement === document.getElementsByClassName('btn-fullscreen')[1] ? false : flag
         return flag
     }
 
-    widePlayerButtonEvent(){
+    widePlayerEvent(){
         $('div.box-right').on('click','#toggleWide',() => {
             let flag = this.judgeIsFullScreen()
             flag ? $(flag.parentElement).trigger('click') : '';
             this.isWidePlayer ? this.exitWidePlayerModel() : this.enterWidePlayerModel()
             this.helperDivHide("")
         });
+
         $(".fullscreen.fullscreen-web,.fullscreen.fullscreen-screen").on('click',(e)=>{
             this.isWidePlayer ? this.exitWidePlayerModel() : ''
-            let status = this.judgeIsFullScreen()
+            let status = this.judgeIsFullScreen(e.target)
             status ? this.helperDivHide('none'):this.helperDivHide("")
         })
+
+        //TODO:esc退出宽屏 各模式esc后div显示 container-player live  data-bind-attr="false" 为小窗口
     }
 
     helperDivHide(i){

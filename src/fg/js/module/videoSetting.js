@@ -312,7 +312,7 @@ class VideoSetting{
         }
     }
     changeRateKeyCode(e,settingKeyCode){
-        let code = e.settingKeyCode
+        let code = e.keyCode
         e.shiftKey && (code === settingKeyCode[0] || code === settingKeyCode[1]) && this.getRate(code, settingKeyCode)
     }
     getRate(code ,settingKeyCode){
