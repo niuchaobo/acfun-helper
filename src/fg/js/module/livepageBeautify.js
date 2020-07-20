@@ -172,7 +172,8 @@ class LivePageButfy {
         let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;}"
         nod.type="text/css";
         nod.textContent = cssStr;
-        document.getElementsByClassName('live-feed-messages')[0].appendChild(nod);
+        document.head.appendChild(nod);
+        // document.getElementsByClassName('live-feed-messages')[0].appendChild(nod);
     }
 
     LivehideAds(){

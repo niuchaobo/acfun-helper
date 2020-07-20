@@ -46,13 +46,17 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
     }
 
     if(options.endedAutoExitFullscreensw){
-        document.getElementsByTagName("video")[0].addEventListener('ended', function () {
-            console.log("播放结束");
-            if(!window.player._loop){
-                window.player.emit('filmModeChanged', false);
-                window.player.emit('fullScreenChange', false);
-            }
-        });
+        try {
+            document.getElementsByTagName("video")[0].addEventListener('ended', function () {
+                console.log("播放结束");
+                if(!window.player._loop){
+                    window.player.emit('filmModeChanged', false);
+                    window.player.emit('fullScreenChange', false);
+                }
+            });
+        } catch (error) {
+            console.log("[LOG]Frontend-videoSteeingInject: May not in douga Page.")
+        }
     }
 
 });
