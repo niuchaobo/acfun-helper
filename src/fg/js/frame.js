@@ -139,10 +139,12 @@ function liveSubscribe(){
         let x = JSON.parse(res);
         console.log(x);
         let Uid = getParentUid();
-        for(let i=0;i<x.length;i++){
-            if(Uid==Number(Uid) & Uid == x[i].UID){
-                alert("已经订阅关注了");
-                return;
+        if(x!=null){
+            for(let i=0;i<x.length;i++){
+                if(Uid==Number(Uid) & Uid == x[i].UID){
+                    alert("已经订阅关注了");
+                    return;
+                }
             }
         }
         fetch('http://localhost:51880/addnotify/'+Uid).then((res)=>{return res.text()})
@@ -218,15 +220,17 @@ function subrecordLive(){
 function liveRemoveSub(){
     fetch("http://localhost:51880/liststreamer").then((res)=>{return res.text()})
     .then((res)=>{
-        let x = JSON.parse(res);
-        let Uid = getParentUid();
-        for(let i=0;i<x.length;i++){
-            if(Uid == x[i].UID){
-                fetch('http://localhost:51880/delnotify/'+Uid).then((res)=>{return res.text()})
-                .then((res)=>{
-                    alert("取消订阅成功");
-                    return;
-                })
+        if(res=="null"){alert("并没有订阅。")}else{
+            let x = JSON.parse(res);
+            let Uid = getParentUid();
+            for(let i=0;i<x.length;i++){
+                if(Uid == x[i].UID){
+                    fetch('http://localhost:51880/delnotify/'+Uid).then((res)=>{return res.text()})
+                    .then((res)=>{
+                        alert("取消订阅成功");
+                        return;
+                    })
+                }
             }
         }
     })
