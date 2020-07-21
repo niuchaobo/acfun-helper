@@ -16,10 +16,14 @@ class Ohminibox{
             if(y0==null){
                 fetch(`https://www.acfun.cn/rest/pc-direct/search/suggest?count=6&keyword=${text}&callback=jQuery35104624576750465499_1592378440178&_=1592378440180`).then((res)=>{return res.text();})
                 .then((res)=>{
-                    let regX=RegExp("jQuery35104624576750465499_1592378440178(.*)");
-                    let result = regX.exec(res)[1].replace('(','').replace(')','');
-                    let x = JSON.parse(result);
-                    let y=[];
+                    try {
+                        let regX=RegExp("jQuery35104624576750465499_1592378440178(.*)");
+                        let result = regX.exec(res)[1].replace('(','').replace(')','');
+                        var x = JSON.parse(result);
+                        var y=[];
+                    } catch (error) {
+                        console.log("[LOG]Backend-Omnibox>registerOmnibox: 没有找到关键字");
+                    }
                     try {
                         var keywordNum = x.suggestKeywords.length;
                     } catch (error) {
@@ -32,7 +36,9 @@ class Ohminibox{
                         } catch (error) {
                             var zo={};
                         }
-                        y.push(zo);
+                        try {
+                            y.push(zo);
+                        } catch (error) {}
                     }
                     try {
                         suggest(y);
