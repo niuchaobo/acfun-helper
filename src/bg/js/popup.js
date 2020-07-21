@@ -415,9 +415,25 @@ function settingHidden() {
   });
 }
 
+function updateVersionIcon(){
+    chrome.storage.local.get(["UpgradeAgent"],  (data)=> {
+        data = 0; //TODO:记得删
+        if(data === 1){
+            $('#update-box').css('display','inline-block')
+            return
+        }
+        if(data === 2){
+            $('#update-box').css('display','inline-block')
+            $('.update-icon').css('background','red')
+            return 
+        }
+      }); 
+}
+
 async function onReady() {
   localizeHtmlPage();
   settingHidden();
+  updateVersionIcon()
   let options = await optionsLoad();
   //fetchPushContent();
   renderPushInnerHtml();
