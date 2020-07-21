@@ -4,7 +4,7 @@ async function getUid(){
 }
 
 async function getResult(url) {
-    console.log(url)
+    // console.log(url)
     return new Promise((resolve, reject) => {
         fetch(url)
         .then((res)=>{return res.text();})
@@ -38,19 +38,17 @@ async function getFollowings() {
     let Uid = await getUid();
     let Page = await computePageNum();
     let result = []
-    for(let i=0;i<Page;i++){
-        let x = JSON.parse(await getResult(`https://api-new.acfunchina.com/rest/app/relation/getFollows?toUserId=${Uid}&pcursor=&count=100&page=${i}&groupId=0&action=8`));
+    for(let i=1;i<Page+1;i++){
+        let x = JSON.parse(await getResult(`https://api-new.acfunchina.com/rest/app/relation/getFollows?toUserId=${Uid}&pcursor=&count=100&page=${i}&groupId=0&action=7`));
         result.push(x.friendList);
     }
     return new Promise((resolve, reject) => {
-        // console.log(result)
         resolve(result);
     })
 }
 
 async function Processing(){
     let liveFloowings = await getStorage('liveFloowings');
-    console.log(liveFloowings.liveFloowings)
     let result = await getFollowings();
     for(let i =0;i<result.length;i++){
         let childPageNum = result[i].length
@@ -92,6 +90,18 @@ async function Processing(){
     });
 }
 
+window.addEventListener('load', e => onLoad(e));
 
+function notif(){
+    mdui.snackbar({
+        message: '本页面包含你所有的关注，如果条目多，请使用Ctrl+F查找。',
+        position: 'right-top',
+        timeout:0,
+        closeOnOutsideClick:true,
+    });
+}
 
-Processing()
+function onLoad(){
+    notif();
+    Processing();
+}
