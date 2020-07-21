@@ -3,7 +3,9 @@
  */
 class CommentEnhance{
     constructor() {
-
+        this.reg_for_time=new RegExp('[0-9]{1,3}[:分][0-9]{1,2}秒?'); 
+        this.reg_for_part = new RegExp('^p[0-9]{1,2}|^[0-9]{1,2}p','i')
+        this.easy_time = new RegExp('[0-9]{1,3}分|[0-9]{1,2}秒?')
     }
 
     //从个人中心评论跳转到对应的楼层,不完善(折叠中和非第一页的无法跳转)
@@ -236,11 +238,11 @@ class CommentEnhance{
 
     // 在评论区添加快速跳转至视频对应时间的链接
     searchScanForPlayerTime(){
-        var timer = setInterval(function () {
+        var timer = setInterval( () => {
             let nodes = $('.area-comment-des-content');
             let loading = $('.ac-comment-loading').html();
-            let reg_for_time=new RegExp('[0-9]{1,3}[:分][0-9]{1,2}秒?'); //新的正则 支持X分X秒
-            let reg_for_part = new RegExp('^p[0-9]{1,2}|^[0-9]{1,2}p','i')
+            let reg_for_time=this.reg_for_time;
+            let reg_for_part = this.reg_for_part;
             let reg_for_mtline=new RegExp('<br>')
             if(nodes.length>0 && loading==''){
                 nodes.each(async function () {
@@ -276,7 +278,22 @@ class CommentEnhance{
         },1000);
 
     }
-
+    //选中时间 按shift+A 跳转 开关依赖评论区空降功能  TODO:与倍速快捷键一样都绑定到了document上 正则未做严格匹配(你甚至能让iphone8跳转到8s)
+    easySearchScanForPlayerTime(settingKeyCode){ 
+        document.onkeypress = (e)=>{
+            if(e.shiftKey && e.keyCode === settingKeyCode[0] ){
+                let txt = window.getSelection().toString().trim();
+                let time = this.easy_time.exec(txt)[0];
+                time ? document.getElementsByTagName("video")[0].currentTime = this.setVideoTime(time) : ''
+            }
+        }
+    }
+    setVideoTime(time){
+        let str = time;
+        let seconds = str.search("分") === -1 ?  str.split('秒')[0] : str.split('分')[0]*60
+        console.log(`跳转到[${seconds}]秒！！ gogogo！`)
+        return seconds;
+    }
 }
 
 

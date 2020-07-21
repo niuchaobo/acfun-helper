@@ -213,7 +213,10 @@ class ODHFront {
         if((REG.video.test(href) || REG.bangumi.test(href))){
             this.videoSetting.monitorFullScreen();
             //todo 加开关
-            this.ce.searchScanForPlayerTime();
+            getAsyncDom('ac-pc-comment',()=>{
+                this.ce.searchScanForPlayerTime();
+                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+            })
         }
         this.authInfo.cookInfo();
     }
