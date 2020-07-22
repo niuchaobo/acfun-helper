@@ -133,7 +133,6 @@ class VideoSetting{
                 node.after(html);
                 clearInterval(_timer);
             }
-
         },1000);
     }
 
@@ -169,7 +168,6 @@ class VideoSetting{
             })
         }
 
-
         //网页全屏
         var elementWeb = $(".control-btn.btn-fullscreen").find('.btn-span:first')[0];
         var observerWeb = new MutationObserver((mutations)=> {
@@ -186,7 +184,6 @@ class VideoSetting{
             });
         });
 
-        
         if(elementWeb){
             this.serveStart(elementWeb,observerWeb)
         }else{
@@ -207,6 +204,7 @@ class VideoSetting{
             attributeFilter :['data-bind-attr']
         });
     }
+
     fullScreenStyle(on){
         if(on){
             $('#main>#main-content').css({
@@ -300,7 +298,7 @@ class VideoSetting{
     }
 
 
-//倍速快捷键 TODO:开关(现在依赖于自定义倍速功能开启状态) 自定义快捷键(现在默认shift + ↑/↓) 绑定位置
+    //倍速快捷键 TODO:自定义快捷键(现在默认shift + ↑/↓) 绑定位置
     PlaybackRateKeyCode(settingKeyCode){
         // const videoDom = document.getElementById('player');
         // videoDom.setAttribute("tabindex","-1")
