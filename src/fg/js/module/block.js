@@ -182,7 +182,7 @@ class Block {
                 // console.log(this_obj.getAttribute('data-uid') in items.liveBans);
                 if(this_obj.getAttribute('data-uid') in items.liveBans){
                     var timer = setInterval(function () {
-                        console.log('remove '+this_obj.getAttribute('data-uid'))
+                        console.log('[LOG]Frontend-Block>liveUserBlock: Remove '+this_obj.getAttribute('data-uid'))
                         e.remove();
                         clearInterval(timer);
                     },1000);
@@ -205,7 +205,7 @@ class Block {
                     if(this_obj.children[1].children[1].children[1].getAttribute('data-uid') in items.liveBans){
                         // console.log('true');
                         this_obj.remove();
-                        console.log('remove '+this_obj.children[1].children[1].children[1].getAttribute('data-uid'))
+                        console.log('[LOG]Frontend-Block>liveUserBlock: Remove '+this_obj.children[1].children[1].children[1].getAttribute('data-uid'))
                     }
                 }
                 })
@@ -223,7 +223,7 @@ class Block {
                         let this_obj = LiveUsers[i];
                         if(this_obj.children[1].children[1].children[1].getAttribute('data-uid') in items.liveBans){
                             this_obj.remove();
-                            console.log('remove '+this_obj.children[1].children[1].children[1].getAttribute('data-uid'))
+                            console.log('[LOG]Frontend-Block>liveUserBlock: Remove '+this_obj.children[1].children[1].children[1].getAttribute('data-uid'))
                         }
                     }
                 })            

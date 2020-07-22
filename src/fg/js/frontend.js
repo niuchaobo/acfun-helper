@@ -212,11 +212,15 @@ class ODHFront {
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live','');
         }
-        //自定义倍速
-        if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
+        if((REG.video.test(href) || REG.bangumi.test(href))){
+          //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
+          this.videoSetting.monitorFullScreen();
+          //自定义倍速
+          if(this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
-        }
-        if(this.options.PlaybackRateKeysw){
+          }
+          //倍速切换的快捷结案
+          if(this.options.PlaybackRateKeysw){
             this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
         }
         //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
@@ -227,7 +231,6 @@ class ODHFront {
                 this.ce.searchScanForPlayerTime();
                 this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
             })
-
         }
         this.authInfo.cookInfo();
     }

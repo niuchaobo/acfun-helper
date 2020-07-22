@@ -137,7 +137,7 @@ function liveSubscribe(){
     })
     .then((res)=>{
         let x = JSON.parse(res);
-        console.log(x);
+        // console.log(x);
         let Uid = getParentUid();
         if(x!=null){
             for(let i=0;i<x.length;i++){
@@ -209,7 +209,6 @@ function subrecordLivecancel(){
 }
 
 function subrecordLive(){
-    console.log('2333')
     let Uid = getParentUid();
     fetch("http://localhost:51880/addrecord/"+Uid).then((res)=>{return res.text();})
     .then((res)=>{
