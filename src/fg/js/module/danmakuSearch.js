@@ -25,7 +25,10 @@ class Search {
             </div>
         </div>
     </div>`
-    
+
+    this.searchContent = () => {
+      $(this.content).appendTo($(".list-title"));
+    };
     this.danmakuSearchProgress = (e) => {
       let action = e.target.id;
       let range = this.searchList.length;
@@ -221,9 +224,6 @@ class Search {
     });
     return danmakuList;
   }
-  searchContent = () => {
-    $(this.content).appendTo($(".list-title"));
-  };
   firstSearchInit() {
     this.searchList.forEach((item, index) => {
       $(item.item).css({ background: "", color: "" });
