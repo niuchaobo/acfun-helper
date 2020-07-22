@@ -141,58 +141,45 @@ class VideoSetting{
         //观影模式
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         //var element = document.querySelector(".tip-film-model").childNodes[0];
-        var element = $(".control-btn.btn-film-model").find('.btn-span:first')[0];
-        var observer = new MutationObserver((mutations)=> {
-            mutations.forEach((mutation)=> {
-                let flag = document.getElementsByClassName("tip-film-model")[0].innerText;
-                if(flag == '退出观影模式'){ 
-                    document.getElementById("acfun-popup-helper").style.display="none";
-                    document.getElementById("acfun-helper-div").style.display="none";
-                    setTimeout(()=>{ //全屏模式切换时会重新渲染样式（页面宽度改变）？扔进异步队列等主程跑完再渲染
-                        this.fullScreenStyle(true)
-                    })
-                }else{
-                    document.getElementById("acfun-popup-helper").style.display="";
-                    document.getElementById("acfun-helper-div").style.display="";
-                    this.fullScreenStyle(false)
-                }
+        getAsyncDom(".control-btn.btn-film-model>.btn-span:first",()=>{
+            var element = $(".control-btn.btn-film-model").find('.btn-span:first')[0];
+            var observer = new MutationObserver((mutations)=> {
+                mutations.forEach((mutation)=> {
+                    let flag = document.getElementsByClassName("tip-film-model")[0].innerText;
+                    if(flag == '退出观影模式'){ 
+                        document.getElementById("acfun-popup-helper").style.display="none";
+                        document.getElementById("acfun-helper-div").style.display="none";
+                        setTimeout(()=>{ //全屏模式切换时会重新渲染样式（页面宽度改变）？扔进异步队列等主程跑完再渲染
+                            this.fullScreenStyle(true)
+                        })
+                    }else{
+                        document.getElementById("acfun-popup-helper").style.display="";
+                        document.getElementById("acfun-helper-div").style.display="";
+                        this.fullScreenStyle(false)
+                    }
+                });
             });
-        });
-        if(element){
             this.serveStart(element,observer)
-        }else{
-            getAsyncDom(".control-btn.btn-film-mode>.btn-span:first",()=>{
-                return $(".control-btn.btn-film-model").find('.btn-span:first')[0]
-            },500).then(res=>{
-                this.serveStart(res,observer)
-            })
-        }
+        },500)
 
         //网页全屏
-        var elementWeb = $(".control-btn.btn-fullscreen").find('.btn-span:first')[0];
-        var observerWeb = new MutationObserver((mutations)=> {
-            mutations.forEach((mutation)=> {
-                let flag = document.getElementsByClassName("tip-fullscreen")[0].innerText;
-                if(flag == '退出网页全屏'){
-                    document.getElementById("acfun-popup-helper").style.display="none";
-                    document.getElementById("acfun-helper-div").style.display="none";
-                }else{
-                    if(document.getElementsByClassName("tip-film-model")[0].innerText == '退出观影模式')return
-                    document.getElementById("acfun-popup-helper").style.display="";
-                    document.getElementById("acfun-helper-div").style.display="";
-                }
+        getAsyncDom(".control-btn.btn-fullscreen>.btn-span:first",()=>{
+            var elementWeb = $(".control-btn.btn-fullscreen").find('.btn-span:first')[0];
+            var observerWeb = new MutationObserver((mutations)=> {
+                mutations.forEach((mutation)=> {
+                    let flag = document.getElementsByClassName("tip-fullscreen")[0].innerText;
+                    if(flag == '退出网页全屏'){
+                        document.getElementById("acfun-popup-helper").style.display="none";
+                        document.getElementById("acfun-helper-div").style.display="none";
+                    }else{
+                        if(document.getElementsByClassName("tip-film-model")[0].innerText == '退出观影模式')return
+                        document.getElementById("acfun-popup-helper").style.display="";
+                        document.getElementById("acfun-helper-div").style.display="";
+                    }
+                });
             });
-        });
-
-        if(elementWeb){
             this.serveStart(elementWeb,observerWeb)
-        }else{
-                getAsyncDom(".control-btn.btn-fullscreen>.btn-span:first",()=>{
-                    return $(".control-btn.btn-fullscreen").find('.btn-span:first')[0]
-                },500).then(res=>{
-                    this.serveStart(res,observerWeb)
-                })
-        }
+        },500)
     }
 
     serveStart(elementWeb,observerWeb){

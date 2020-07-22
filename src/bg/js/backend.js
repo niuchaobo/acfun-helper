@@ -9,12 +9,13 @@ class ODHBack {
         this.authInfo = new AuthInfo();
         this.Ominibox = new Ohminibox();
         this.Upgrade = new UpgradeAgent();
+        this.ReqOpDrv = new ReqOperationDrv();
 
         this.Ominibox.registerOmnibox();
         this.MsgNotfs.timer4Unread();
         this.MsgNotfs.fetchPushList();
         this.MsgNotfs.liveOnlineNotif();
-        this.Upgrade.upgradeMain();
+        // this.Upgrade.upgradeMain();
         // this.MsgNotfs.fetchMcircle();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
