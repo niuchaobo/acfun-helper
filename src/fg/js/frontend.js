@@ -12,6 +12,7 @@ class ODHFront {
     this.banana = new Banana(); //自动投蕉
     this.videoSetting = new VideoSetting(); //视频播放设置：自定义倍速、观影模式等
     this.danmaku = new Danmaku(); //弹幕服务
+    this.search = new Search();//弹幕列表搜索
 
     this.playerconfig = new PlayerConfig(); //播放器和部分页面配置处理
     this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
@@ -126,6 +127,10 @@ class ODHFront {
             this.videoSetting.callPicktureInPictureMode();
             if(this.options.autoJumpLastWatchSw){
                 this.videoSetting.jumpLastWatchTime();
+            }
+            if(this.options.PlayerDamakuSearchSw){
+                 //弹幕列表搜索
+                this.search.inject()
             }
         }
         //配置同步

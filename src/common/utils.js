@@ -516,7 +516,7 @@ async function getAsyncDom(target, fn, time = 3000) {
         targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
         if(targetDom){
             i = 0; 
-            console.log("DOM加载");
+            console.log(`${target}已加载`);
             resolve(fn())
         }else{
             if (i >= 9000 / time) {
