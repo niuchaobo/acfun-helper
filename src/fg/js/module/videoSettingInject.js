@@ -48,8 +48,10 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         try {
             document.getElementsByTagName("video")[0].addEventListener('ended', function () {
                 console.log("播放结束");
-                let x = (!document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "false" || !document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "false");
-                if(!window.player._loop && !x){
+                console.log(document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
+                let x = (document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
+                if(!window.player._loop && x){
+                    console.log("退出特殊播放模式")
                     window.player.emit('filmModeChanged', false);
                     window.player.emit('fullScreenChange', false);
                 }
