@@ -6,6 +6,25 @@ class Search {
     this.i = 0;
     this.lock = true;
     this.pageNum = 1;
+    this.otherColor = { background: "#ff00001f", color: "#999999" }
+    this.selectColor = { background: "red", color: "white" }
+    this.content = `
+    <div id='acfun-helper-search'>
+        <div id="acfun-helper-search-title">弹幕搜索</div>
+        <div class="acfun-helper-search-content" style="display:flex">
+            <input id='acfun-helper-search-input' style="flex:1">
+            <div id='acfun-helper-search-button' class="acfun-helper-search-button" style="flex:.4">⏎</div>
+            <div id='acfun-helper-search-last' class="acfun-helper-search-button" style="flex:.2;display:none">
+                △
+            </div>
+            <div id='acfun-helper-search-next' class="acfun-helper-search-button" style="flex:.2;display:none">
+                ▽
+            </div>
+            <div id='acfun-helper-search-close' class="acfun-helper-search-button" style="flex:.2;font-weight:bold">
+                ✕
+            </div>
+        </div>
+    </div>`    
   }
   inject = () => {
     this.searchContent();
@@ -21,8 +40,13 @@ class Search {
       throttle(this.danmakuSearchProgress, 200)
     );
     $("#acfun-helper-search").bind("keypress", this.danmakuSearchProgress);
-    $(".danmaku-page").bind("click", () => {
-      this.pageNum = $(".cur-page span:first").text().trim().slice(1, -1);
+    $(".danmaku-page").bind("click", (e) => {
+        if($(e.target).hasClass('last-page') || $(e.target).hasClass('next-page')){
+            this.pageNum = $(".cur-page span:first").text().trim().slice(1, -1);
+        }
+        if($(e.target).attr('data-page')){
+            this.pageNum = e.target.innerText.slice(1, -1)
+        }
     });
   }
 
@@ -95,12 +119,10 @@ class Search {
 
   startSearch() {
     let input = $("#acfun-helper-search-input");
-    input.blur();
-    this.searchList = [];
-    this.i = 0;
-    $("#danmaku .list-body").scrollTop(0);
     let text = input.val();
     if (!text) return;
+    input.blur();
+    this.firstSearchInit();
     getAsyncDom("danmaku-item", this.danmakuSearch.bind(this, text), 200).then(
       (res) => {
         this.lock = false;
@@ -120,15 +142,11 @@ class Search {
       i = searchList.length - 1;
       this.i = i;
     }
-
     searchList.forEach((item, index) => {
       if (index !== i) {
-        $(searchList[index].item).css({
-          background: "#ff00001f",
-          color: "#999999",
-        });
+        $(searchList[index].item).css(this.otherColor);
       } else {
-        $(searchList[i].item).css({ background: "red", color: "white" });
+        $(searchList[i].item).css(this.selectColor);
         const v_obj = document.getElementsByTagName("video")[0];
         v_obj.currentTime = searchList[i].time;
         $("#danmaku .list-body").scrollTop(searchList[i].offsetTop);
@@ -193,7 +211,7 @@ class Search {
     const a = $("#danmaku .danmaku-item").get();
     a.forEach((item, index) => {
       if (text === item.getAttribute("data-message")) {
-        danmakuList.push({
+          danmakuList.push({
           time: item.getAttribute("data-time"),
           offsetTop: $(item).offset().top - $(".list-body").offset().top,
           pageNum: 1,
@@ -204,23 +222,14 @@ class Search {
     return danmakuList;
   }
   searchContent = () => {
-    $(`
-        <div id='acfun-helper-search'>
-            <div id="acfun-helper-search-title">弹幕搜索</div>
-            <div class="acfun-helper-search-content" style="display:flex">
-                <input id='acfun-helper-search-input' style="flex:1">
-                <div id='acfun-helper-search-button' class="acfun-helper-search-button" style="flex:.4">⏎</div>
-                <div id='acfun-helper-search-last' class="acfun-helper-search-button" style="flex:.2;display:none">
-                    △
-                </div>
-                <div id='acfun-helper-search-next' class="acfun-helper-search-button" style="flex:.2;display:none">
-                    ▽
-                </div>
-                <div id='acfun-helper-search-close' class="acfun-helper-search-button" style="flex:.2;font-weight:bold">
-                    ✕
-                </div>
-            </div>
-        </div>
-    `).appendTo($(".list-title"));
+    $(this.content).appendTo($(".list-title"));
   };
+  firstSearchInit() {
+    this.searchList.forEach((item, index) => {
+      $(item.item).css({ background: "", color: "" });
+    });
+    this.searchList = [];
+    this.i = 0;
+    $("#danmaku .list-body").scrollTop(0);
+  }
 }

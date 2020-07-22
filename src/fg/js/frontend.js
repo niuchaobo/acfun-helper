@@ -211,9 +211,13 @@ class ODHFront {
         //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
         if((REG.video.test(href) || REG.bangumi.test(href))){
             this.videoSetting.monitorFullScreen();
-            if(this.options.PlayerTimeCommentEasyJump){
-              this.ce.searchScanForPlayerTime();
-            }
+
+            //todo 加开关
+            getAsyncDom('ac-pc-comment',()=>{
+                this.ce.searchScanForPlayerTime();
+                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+            })
+
         }
         this.authInfo.cookInfo();
     }

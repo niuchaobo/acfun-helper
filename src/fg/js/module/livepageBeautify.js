@@ -15,7 +15,7 @@ class LivePageButfy {
         //样式
         this.widePlayerStyle()
         //点击事件
-        this.widePlayerButtonEvent()
+        this.widePlayerEvent()
     }
     
     addWidePlayerButton(){
@@ -61,30 +61,30 @@ class LivePageButfy {
         document.getElementsByClassName('main')[0].appendChild(nod);
     }
 
-    judgeIsFullScreen(){
+    judgeIsFullScreen(target){
+        let flag = null
         let textFlag = document.getElementsByClassName("tip-fullscreen");
-        let flag = false
-        Array.prototype.forEach.call(textFlag,(item,index)=>{
-           let text = item.innerText;
-           if(text === "退出网页全屏" || text === "退出桌面全屏"){
-               flag=item
-           }
-        })
+        flag = textFlag[0].innerText === '退出网页全屏'?textFlag[0] : false;
+        flag = flag ? flag :textFlag[1].innerText === '退出桌面全屏'?textFlag[1] : false;
+        flag = target?.parentElement === document.getElementsByClassName('btn-fullscreen')[1] ? false : flag
         return flag
     }
 
-    widePlayerButtonEvent(){
+    widePlayerEvent(){
         $('div.box-right').on('click','#toggleWide',() => {
             let flag = this.judgeIsFullScreen()
             flag ? $(flag.parentElement).trigger('click') : '';
             this.isWidePlayer ? this.exitWidePlayerModel() : this.enterWidePlayerModel()
             this.helperDivHide("")
         });
+
         $(".fullscreen.fullscreen-web,.fullscreen.fullscreen-screen").on('click',(e)=>{
             this.isWidePlayer ? this.exitWidePlayerModel() : ''
-            let status = this.judgeIsFullScreen()
+            let status = this.judgeIsFullScreen(e.target)
             status ? this.helperDivHide('none'):this.helperDivHide("")
         })
+
+        //TODO:esc退出宽屏 各模式esc后div显示 container-player live  data-bind-attr="false" 为小窗口
     }
 
     helperDivHide(i){
@@ -141,17 +141,21 @@ class LivePageButfy {
         let noticeIcon = this.noticeIcon;
         $('.live-feed .face-text').append(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`)
         $('#app').append('<div class="hide_popup"><ul style="width:120px"><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></ul></div>')
-        document.getElementsByClassName('hide_popup')[0].style.cssText='position: absolute; z-index: 100;display: none;position: absolute; z-index: 100;display: none;background-color: #dedede;margin: 10px;padding: 5px;box-shadow: rgb(197, 197, 197) 5px 5px 5px 1px;';
+        document.getElementsByClassName('hide_popup')[0].style.cssText='position: absolute; z-index: 100;display: none;position: absolute; z-index: 100;display: none;background-color: rgba(255, 255, 255, 0.92);margin: 10px;padding: 5px;box-shadow: rgb(197, 197, 197) 5px 5px 5px 1px;';
         document.getElementsByClassName('notice_icon')[0].style.cssText='position: absolute; width: 18px; heigth: auto; left: 35px; top: 0px; cursor: pointer;';
         document.getElementsByClassName('notice_icon')[0].children[0].style.cssText='width: 100%; height: auto';
+        $(".left").on('mouseenter',()=>{
+            $('.hide_popup').hide()
+        })
         $('#noticeBtn').click((e) => {
             e.preventDefault();
             e.stopPropagation();
             $('.hide_popup').css('display') === "none" ?
             $('.hide_popup').css({ left: e.pageX -50+ 'px', top: e.pageY-180 + 'px' }).show():
             $('.hide_popup').hide()
-            
         })
+        
+        this.addBanStyle()
         this.loopToBan()
     }
 
@@ -168,14 +172,17 @@ class LivePageButfy {
                 $('.live-feed-messages').removeClass('ban_' + _type)
             }
         })
+    }
+
+    addBanStyle(){
         let nod = document.createElement("style");
         let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;}"
         nod.type="text/css";
         nod.textContent = cssStr;
-        document.head.appendChild(nod);
-        // document.getElementsByClassName('live-feed-messages')[0].appendChild(nod);
-    }
 
+        document.head.appendChild(nod)
+
+    }
     LivehideAds(){
         try {
             document.querySelector(".banner").hidden = true;
