@@ -132,10 +132,6 @@ class ODHFront {
             if(this.options.autoJumpLastWatchSw){
                 this.videoSetting.jumpLastWatchTime();
             }
-            if(this.options.PlayerDamakuSearchSw){
-                 //弹幕列表搜索
-                this.search.inject()
-            }
         }
         //配置同步
         this.playerconfig.PConfProc();
@@ -219,20 +215,22 @@ class ODHFront {
           if(this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
           }
-          //倍速切换的快捷结案
+          //倍速切换的快捷键
           if(this.options.PlaybackRateKeysw){
             this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
+          }
+          //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
+          this.videoSetting.monitorFullScreen();
+          getAsyncDom('.ac-pc-comment',()=>{
+            if(this.options.PlayerTimeCommentEasyJump){
+              this.ce.searchScanForPlayerTime();
+            }
+            if(this.options.easySearchScanForPlayerTimesw){
+              this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+            }
+          });
+          this.authInfo.cookInfo();
         }
-        //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
-        if((REG.video.test(href) || REG.bangumi.test(href))){
-            this.videoSetting.monitorFullScreen();
-            //todo 加开关
-            getAsyncDom('.ac-pc-comment',()=>{
-                this.ce.searchScanForPlayerTime();
-                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-            })
-        }
-        this.authInfo.cookInfo();
     }
     
   
