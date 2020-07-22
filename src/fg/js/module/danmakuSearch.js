@@ -27,8 +27,10 @@ class Search {
     </div>`    
   }
   inject = () => {
-    this.searchContent();
-    this.searchBind();
+      getAsyncDom('.list-title',()=>{
+        this.searchContent();
+        this.searchBind();
+      })
   };
   searchBind() {
     $("#acfun-helper-search-input").bind("focus", () => {
