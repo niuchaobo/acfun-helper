@@ -7,7 +7,7 @@ if(!hiddenDiv) {
     document.body.appendChild(hiddenDiv);
 }
 hiddenDiv.addEventListener('myCustomEvent', function() {
-    console.log(window.player);
+    // console.log(window.player);
     var eventData = document.getElementById('myCustomEventDiv').innerText;
     let options = JSON.parse(eventData);
     switch(options.player_mode) {
@@ -27,7 +27,6 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
                     let w2 = document.getElementsByTagName("video")[0].offsetWidth;
                     clearInterval(_timer);
                 }
-
             },1000);
             break;
         case 'web':
@@ -49,13 +48,14 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         try {
             document.getElementsByTagName("video")[0].addEventListener('ended', function () {
                 console.log("播放结束");
-                if(!window.player._loop){
+                let x = (!document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "false" || !document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "false");
+                if(!window.player._loop && !x){
                     window.player.emit('filmModeChanged', false);
                     window.player.emit('fullScreenChange', false);
                 }
             });
         } catch (error) {
-            console.log("[LOG]Frontend-videoSteeingInject: May not in douga Page.")
+            console.log("[LOG]Frontend-videoSettingInject: May not in douga Page.")
         }
     }
 
@@ -103,14 +103,14 @@ try {
         msg:`${JSON.stringify(window.player.videoInfo.videoList)}`
     },'*');
 } catch (error) {
-    
+    console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Fail,May Influent videoSetting.")
 }
 
 //调用画中画模式
 function setPictureInPictureMode() {
     let v = document.getElementsByTagName("video")[0];
     v.requestPictureInPicture();
-    console.log('Calling PictureInPicture Mode.');
+    console.log('[LOG]Frontend-videoSettingInject: Calling PictureInPicture Mode.');
 }
 
 quickJump = (time, part)=> {
@@ -124,7 +124,7 @@ quickJump = (time, part)=> {
     }
     setTimeout(() => {
         v_obj.currentTime = Duration2Seconds(time);
-        console.log('Jump_ok');
+        console.log('[LOG]Frontend-videoSettingInject: Jump_ok');
     }, 500);
     
 }

@@ -291,7 +291,7 @@ class CommentEnhance{
     setVideoTime(time){
         let str = time;
         let seconds = str.search("分") === -1 ?  str.split('秒')[0] : str.split('分')[0]*60
-        console.log(`跳转到[${seconds}]秒！！ gogogo！`)
+        console.log(`[LOG]Frontend-CommentEnhance>easySearchScanForPlayerTime: 跳转到[${seconds}]秒！！ gogogo！`)
         return seconds;
     }
 }
