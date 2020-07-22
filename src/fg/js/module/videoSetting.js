@@ -39,7 +39,11 @@ class VideoSetting{
             if(e.data.to=='vs_videoInfo'){
                 let videoInfo_data = JSON.parse(e.data.msg);
                 let lastTime = videoInfo_data[0].userPlayedSeconds;
-                document.getElementsByTagName("video")[0].currentTime = lastTime;
+                try {
+                    document.getElementsByTagName("video")[0].currentTime = lastTime;
+                } catch (error) {
+                    console.log("[LOG]Frontend-videoSetting>jumpLastWatchTime: 没有上次观看的进度。")
+                }
             }
         })
     }
