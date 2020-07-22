@@ -15,12 +15,23 @@ const defaults = {
     receive:false,//接收用户情报
     filter:false,//屏蔽up
     beautify_nav:true,//首页右侧导航
-    beautify_personal:true,//个人中心入口
-    show_like:false,//显示点赞数
+    beautify_personal:true,//顶栏个人中心入口优化
+    show_like:false,//显示点赞数、投桃数
     custom_rate:true,//开启自定义倍速
+    custom_rate_keyCode:[38,40],
+    custom_easy_jump_keyCode:[65],
     player_mode:'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
     liveFloowNotif:false,
     videoQualityStrategy:'0',
+    livePlayerEnhc:false,
+    autoJumpLastWatchSw:false,
+    hideAd:true,
+    liveHideAd:true,
+    liveBansw:false,
+    PlayerDamakuSearchSw:false,
+    PlayerTimeCommentEasyJump:true,
+    PlaybackRateKeysw:true,
+    endedAutoExitFullscreensw:false,
 
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
@@ -497,79 +508,32 @@ function domToString(node) {
   return str;
 }
 
-function getAsyncDom(target, fn, time = 3000) {
-  let timer = null;
-  let i = 0;
-  re = (fn) => {
-    targetDom = document.getElementsByClassName(target)[0];
-    if (target) {
-      i = 0;
-      return new Promise((res)=>{
-          res(fn())
-      })
-    } else {
-      if (i >= 9000 / time) {
-        i = 0;
-        return new Promise((res) => {
-          res('DOM没找到!')
-      })
-    };
-      i++;
-      return new Promise((res) => {
-        setTimeout(() => {
-          res(re(fn));
-        }, time);
-      });
-    }
-  };
-  return re(fn);
-}
-
-function watchCommentLoading(fn) {
-  let i = 0;
-  let re = () => {
-    //TODO:切换分p后评论区刷新但是方法不会重新加载,需要找到评论区刷新完毕的钩子，递归怕爆炸!
-    if ($(".btn-load").length) {
-      i = 0;
-      console.log("加载动画出现");
-      let btn = () => {
-        if ($(".btn-load").length) {
-          console.log("还在转...");
-          setTimeout(() => {
-            i++;
-            if (i >= 50) {
-              console.warn("5s还没转完?用的神州行?再转爆炸！溜！");
-              i = 0;
-              return;
-            }
-            btn();
-          }, 100);
-        } else {
-          console.log("加载动画消失,100ms后开始加载方法");
-          setTimeout(() => {
-            fn();
-            console.log("重新加载方法完成");
-            i = 0;
-          }, 100);
+async function getAsyncDom(target, fn, time = 3000) {
+    let i = 0;
+    console.log(`开始监听${target}`);
+  re = (fn)=>{
+      return new Promise(resolve=>{
+        targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
+        if(targetDom){
+            i = 0; 
+            console.log("DOM加载");
+            resolve(fn())
+        }else{
+            if (i >= 9000 / time) {
+                i = 0;
+                resolve(`${target}没找到`)
+                return 
+            };
+              i++; 
+              setTimeout(() => {
+                console.log(`正在监听${target}`);
+                resolve(re(fn));
+              }, time); 
         }
-      };
-      btn();
-    } else {
-      setTimeout(() => {
-        i++;
-        console.log(i);
-        if (i >= 30) {
-          console.warn("还不出现？A站可算把这个加载动画改了？溜！");
-          i = 0;
-          return;
-        }
-        re();
-      }, 100);
-    }
-  };
-  re();
+      })
+  }
+  return await re(fn)
 }
-
 
 //从Up名称解析为UID
 async function toUpInfo(upName){
@@ -582,3 +546,33 @@ async function toUpInfo(upName){
 
 // let uil =await toUpInfo('qyqx')
 //   console.log(uil)
+
+debounce = (fn, delay) => {
+    let timer = null;
+    return function (args) {
+      let _this = this;
+      let _args = args;
+      if (timer) {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          fn.call(_this, _args);
+        }, delay);
+      } else {
+        timer = setTimeout(function () {
+          fn.call(_this, _args);
+        }, delay);
+      }
+    };
+  };
+  throttle = (func, delay)=> {            
+    　　var prev = Date.now();            
+    　　return function() {                
+    　　　　var context = this;                
+    　　　　var args = arguments;                
+    　　　　var now = Date.now();                
+    　　　　if (now - prev >= delay) {                    
+    　　　　　　func.apply(context, args);                    
+    　　　　　　prev = Date.now();                
+    　　　　}            
+    　　}        
+  }   

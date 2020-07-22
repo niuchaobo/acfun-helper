@@ -60,7 +60,6 @@ class ODHFront {
       "span.up {background-color: #4a8eff !important;cursor: pointer;}" +
       "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
       "p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
-      ".clearfix{border-bottom:1px #f7f7f7 solid}" +
       "";
     nod.type = "text/css";
     nod.textContent = str;
@@ -83,17 +82,22 @@ class ODHFront {
 
     async onDomContentLoaded(e){
         this.options = await optionsLoad();
-        console.log("options",this.options);
+        // console.log("options",this.options);
 
         let href = window.location.href;
+        if(!this.options.enabled){
+          return;
+        }
         //直播站功能
         if(REG.live.test(href) & this.options.livePlayerEnhc){
-            this.livepageBeautify.appendWidePlayer();
-            this.livepageBeautify.simplifyDanmu();
-            this.livepageBeautify.loopToBan();
-        }
-        if(!this.options.enabled){
-            return;
+            let timer = setInterval(()=>{
+            let checknode=$('div.box-right');
+            if(checknode.length>0){
+                this.livepageBeautify.appendWidePlayer();
+                this.livepageBeautify.simplifyDanmu();
+                clearInterval(timer)
+            }
+        },3000)
         }
         //添加自定义样式
         this.addStyle();
@@ -142,8 +146,8 @@ class ODHFront {
         //let is_up = this.adjuatUp();
         let href = window.location.href;
         //页面优化
-        if(!REG.live.test(href) ){
-          if(this.options.beautify_personal&!REG.liveIndex.test(href) & !REG.liveIndex.test(href)){
+        if(!REG.live.test(href) && !REG.liveIndex.test(href)){
+          if(this.options.beautify_personal){
               this.pageBeautify.addMouseAnimation();
               this.pageBeautify.personBeautify();
           }
@@ -151,10 +155,10 @@ class ODHFront {
               this.pageBeautify.hideAds();
           }
         }
-        if(this.options.liveHideAd & REG.liveIndex.test(href)){
+        if(this.options.liveHideAd && REG.liveIndex.test(href)){
             this.livepageBeautify.LivehideAds();
         }
-      //直播站首页屏蔽
+        //直播站首页用户屏蔽
         if(this.options.liveBansw & REG.liveIndex.test(href)){
           this.block.liveUserBlock();
         }
@@ -188,12 +192,10 @@ class ODHFront {
             let isUp = adjustArticleUp();
             this.div.show(pageInfo,this.options,'article',isUp);
         }
-
         //从消息中心(评论)跳转
-        if(REG.msg_comment.test(href)){
-            this.ce.jumpToComment();
+        if(REG.msg_comment.test(href) && this.options.commentEasyJump){
+            this.ce.jumpToComment(href);
         }
-
         //直播
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
@@ -203,11 +205,19 @@ class ODHFront {
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
         }
+        if(this.options.PlaybackRateKeysw){
+            this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
+        }
         //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
         if((REG.video.test(href) || REG.bangumi.test(href))){
             this.videoSetting.monitorFullScreen();
+
             //todo 加开关
-            this.ce.searchScanForPlayerTime();
+            getAsyncDom('ac-pc-comment',()=>{
+                this.ce.searchScanForPlayerTime();
+                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+            })
+
         }
         this.authInfo.cookInfo();
     }

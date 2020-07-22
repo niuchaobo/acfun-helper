@@ -4,9 +4,9 @@
 class VideoSetting{
     constructor(){
         window.addEventListener('load', e => this.onLoad(e));
-        this.cPIP_div=`<div class="control-btn pip" style="position: relative;width: 38px;height: 20px;"><div class=" control-btn btn-pip" style="opacity: 0.9;font-size: 14px;color: #ffffff;cursor: pointer;flex: none;box-sizing: border-box;-webkit-box-flex: 0;align-items: center;justify-content: center;-webkit-box-align: center;display: flex;-webkit-box-pack: center;position: relative;width: 100%;height: 100%;">`;
-        this.cPIP_Livediv=`<div class="control-btn pip" style="position: relative;width: 38px;height: 20px;"><div class=" control-btn btn-pip" style="opacity: 0.9;font-size: 14px;color: #ffffff;cursor: pointer;flex: none;box-sizing: border-box;-webkit-box-flex: 0;align-items: center;justify-content: center;-webkit-box-align: center;display: flex;-webkit-box-pack: center;position: relative;width: 100%;height: 100%;" onmouseover="$('.tip-pip').style.display='block'" onmouseout="$('.tip-pip').style.display='none'">`;
-        this.cPIP_span=`<span class="btn-span" style="display: block;width: 22px;height: 100%;background-size: contain;background-position: center;background-repeat: no-repeat;background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iODhweCIgaGVpZ2h0PSI4MHB4IiB2aWV3Qm94PSIwIDAgODggODAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjUgKDY3NDY5KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5iZnFfd3lxcDwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJiZnFfd3lxcCIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoOC4wMDAwMDAsIDQuMDAwMDAwKSIgZmlsbC1ydWxlPSJub256ZXJvIj4KICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS01IiB4PSIwIiB5PSIwIiB3aWR0aD0iNzIiIGhlaWdodD0iNzIiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9IuefqeW9oiIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjgiIHg9IjQiIHk9IjgiIHdpZHRoPSI2NCIgaGVpZ2h0PSI1NiIgcng9IjgiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02IiBmaWxsPSIjRkZGRkZGIiB4PSIxNiIgeT0iMjAiIHdpZHRoPSI4IiBoZWlnaHQ9IjEyIiByeD0iNCI+PC9yZWN0PgogICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTYtQ29weSIgZmlsbD0iI0ZGRkZGRiIgeD0iMTYiIHk9IjQwIiB3aWR0aD0iOCIgaGVpZ2h0PSIxMiIgcng9IjQiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHktNCIgZmlsbD0iI0ZGRkZGRiIgeD0iMTYiIHk9IjQ0IiB3aWR0aD0iMTYiIGhlaWdodD0iOCIgcng9IjQiPjwvcmVjdD4KICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZS02LUNvcHktNSIgZmlsbD0iI0ZGRkZGRiIgeD0iMTYiIHk9IjIwIiB3aWR0aD0iMTYiIGhlaWdodD0iOCIgcng9IjQiPjwvcmVjdD4KICAgICAgICAgICAgPHBhdGggZD0iTTQ0LDIwIEw1MiwyMCBDNTQuMjA5MTM5LDIwIDU2LDIxLjc5MDg2MSA1NiwyNCBMNTYsMjQgQzU2LDI2LjIwOTEzOSA1NC4yMDkxMzksMjggNTIsMjggTDQ0LDI4IEM0MS43OTA4NjEsMjggNDAsMjYuMjA5MTM5IDQwLDI0IEw0MCwyNCBDNDAsMjEuNzkwODYxIDQxLjc5MDg2MSwyMCA0NCwyMCBaIiBpZD0iUmVjdGFuZ2xlLTYtQ29weS02IiBmaWxsPSIjRkZGRkZGIj48L3BhdGg+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik00NCw0NCBMNTIsNDQgQzU0LjIwOTEzOSw0NCA1Niw0NS43OTA4NjEgNTYsNDggTDU2LDQ4IEM1Niw1MC4yMDkxMzkgNTQuMjA5MTM5LDUyIDUyLDUyIEw0NCw1MiBDNDEuNzkwODYxLDUyIDQwLDUwLjIwOTEzOSA0MCw0OCBMNDAsNDggQzQwLDQ1Ljc5MDg2MSA0MS43OTA4NjEsNDQgNDQsNDQgWiIgaWQ9IlJlY3RhbmdsZS02LUNvcHktNyIgZmlsbD0iI0ZGRkZGRiI+PC9wYXRoPgogICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTYtQ29weS0yIiBmaWxsPSIjRkZGRkZGIiB4PSI0OCIgeT0iMjAiIHdpZHRoPSI4IiBoZWlnaHQ9IjEyIiByeD0iNCI+PC9yZWN0PgogICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTYtQ29weS0zIiBmaWxsPSIjRkZGRkZGIiB4PSI0OCIgeT0iNDAiIHdpZHRoPSI4IiBoZWlnaHQ9IjEyIiByeD0iNCI+PC9yZWN0PgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+);" onclick="setPictureInPictureMode()"></span>
+        this.cPIP_div=`<div class="control-btn pip" style="position: relative;width: 38px;height: 20px;"><div class=" control-btn btn-pip" style="opacity: 0.9;font-size: 14px;color: #ffffff;cursor: pointer;flex: none;box-sizing: border-box;-webkit-box-flex: 0;align-items: center;justify-content: center;-webkit-box-align: center;display: flex;-webkit-box-pack: center;position: relative;width: 100%;height: 100%;" >`;
+        this.cPIP_Livediv=`<div class="control-btn pip" style="position: relative;width: 38px;height: 20px;"><div class=" control-btn btn-pip" style="opacity: 0.9;font-size: 14px;color: #ffffff;cursor: pointer;flex: none;box-sizing: border-box;-webkit-box-flex: 0;align-items: center;justify-content: center;-webkit-box-align: center;display: flex;-webkit-box-pack: center;position: relative;width: 100%;height: 100%;" >`;
+        this.cPIP_span=`<span class="btn-span" style="display: block;width: 22px;height: 100%;background-size: contain;background-position: center;background-repeat: no-repeat;background-image: url(data:image/png;base64,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);" onclick="setPictureInPictureMode()"></span>
             </div>
         <span class="tip-pip" style="position: absolute;display: none;bottom: 40px;text-align: center;background: rgba(21,21,21,0.8);border-radius: 4px;line-height: 32px;height: 32px;opacity: 0.9;font-size: 14px;color: #FFFFFF;letter-spacing: 0;width: 116px;left: 50%;-webkit-transform: translate(-50%); transform: translate(-50%);" >进入画中画</span></div>`
     }
@@ -53,6 +53,8 @@ class VideoSetting{
             let node = $("div.control-btn.setting");
             if(node.length>0){
                 node.after(html);
+                $(".control-btn.pip").on('mouseover',()=>{$('.tip-pip').css('display','block')})
+                $(".control-btn.pip").on('mouseout',()=>{$('.tip-pip').css('display','none')}) 
                 clearInterval(_timer);
             }
         },1000);
@@ -112,6 +114,9 @@ class VideoSetting{
             let node = $("div.control-btn.setting");
             if(node.length>0){
                 node.after(html);
+                // onmouseover="$('.tip-pip').style.display='block'" onmouseout="$('.tip-pip').style.display='none'"
+                $(".control-btn.pip").on('mouseover',()=>{$('.tip-pip').css('display','block')})
+                $(".control-btn.pip").on('mouseout',()=>{$('.tip-pip').css('display','none')}) 
                 clearInterval(_timer);
             }
         },1000);
@@ -128,7 +133,6 @@ class VideoSetting{
                 node.after(html);
                 clearInterval(_timer);
             }
-
         },1000);
     }
 
@@ -138,43 +142,60 @@ class VideoSetting{
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         //var element = document.querySelector(".tip-film-model").childNodes[0];
         var element = $(".control-btn.btn-film-model").find('.btn-span:first')[0];
-        var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
+        var observer = new MutationObserver((mutations)=> {
+            mutations.forEach((mutation)=> {
                 let flag = document.getElementsByClassName("tip-film-model")[0].innerText;
-                if(flag == '退出观影模式'){
+                if(flag == '退出观影模式'){ 
                     document.getElementById("acfun-popup-helper").style.display="none";
                     document.getElementById("acfun-helper-div").style.display="none";
+                    setTimeout(()=>{ //全屏模式切换时会重新渲染样式（页面宽度改变）？扔进异步队列等主程跑完再渲染
+                        this.fullScreenStyle(true)
+                    })
                 }else{
                     document.getElementById("acfun-popup-helper").style.display="";
                     document.getElementById("acfun-helper-div").style.display="";
+                    this.fullScreenStyle(false)
                 }
             });
         });
-
-        observer.observe(element, {
-            //characterData: true,
-            //characterDataOldValue: true
-            attributes: true, //configure it to listen to attribute changes
-            attributeOldValue: true,
-            attributeFilter :['data-bind-attr']
-        });
-
+        if(element){
+            this.serveStart(element,observer)
+        }else{
+            getAsyncDom(".control-btn.btn-film-mode>.btn-span:first",()=>{
+                return $(".control-btn.btn-film-model").find('.btn-span:first')[0]
+            },500).then(res=>{
+                this.serveStart(res,observer)
+            })
+        }
 
         //网页全屏
         var elementWeb = $(".control-btn.btn-fullscreen").find('.btn-span:first')[0];
-        var observerWeb = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
+        var observerWeb = new MutationObserver((mutations)=> {
+            mutations.forEach((mutation)=> {
                 let flag = document.getElementsByClassName("tip-fullscreen")[0].innerText;
                 if(flag == '退出网页全屏'){
                     document.getElementById("acfun-popup-helper").style.display="none";
                     document.getElementById("acfun-helper-div").style.display="none";
                 }else{
+                    if(document.getElementsByClassName("tip-film-model")[0].innerText == '退出观影模式')return
                     document.getElementById("acfun-popup-helper").style.display="";
                     document.getElementById("acfun-helper-div").style.display="";
                 }
             });
         });
 
+        if(elementWeb){
+            this.serveStart(elementWeb,observerWeb)
+        }else{
+                getAsyncDom(".control-btn.btn-fullscreen>.btn-span:first",()=>{
+                    return $(".control-btn.btn-fullscreen").find('.btn-span:first')[0]
+                },500).then(res=>{
+                    this.serveStart(res,observerWeb)
+                })
+        }
+    }
+
+    serveStart(elementWeb,observerWeb){
         observerWeb.observe(elementWeb, {
             //characterData: true,
             //characterDataOldValue: true
@@ -184,8 +205,134 @@ class VideoSetting{
         });
     }
 
+    fullScreenStyle(on){
+        if(on){
+            $('#main>#main-content').css({
+                "mix-blend-mode": "difference",
+                "background": "white",
+                "margin": "0px",
+                "max-width":"100%",
+                "width": "calc(100% - 20px)",
+                "overflow":"hidden",
+                "padding":"0px 10px",
+            })
+            $('#main>#main-content').find('img').css({
+                'mix-blend-mode': 'exclusion'
+            })
+            $('.left-column').css({
+                "width": "100%",
+                "max-width":"100%",
+            })
+            $('.right-column').css({
+                "position": "absolute",
+                "right": "-342px",
+                "top": "160px",
+                "padding-left": "1px",
+                "transition-duration":".2s",
+                "border-left": "6px  solid rgba(62, 62, 62, 0.4)",
+            }).bind('mouseenter',()=>{
+                $('.right-column').css({'right':'0px', "background": "white","border-left-width":"0px"})
+            }).bind('mouseleave',()=>{
+                $('.right-column').css({'right':'-342px', "background": "","border-left-width":"6px"}) 
+            })
+            $('.ac-pc-comment').css({
+                'padding-right':'15px'
+            })
+            $('#toolbar').css({
+                'transform': 'scale(0.8)',
+                'transform-origin': 'bottom right',
+            })
+            $('.player-box').css({
+                "border-bottom-color": "black"
+            })
+            $('.nav-parent').css({
+                "border-bottom-color": "black" 
+            })
+            $('.video-description').css({
+                "border-bottom-color": "black"  
+            })
+        }else{
+            $('.left-column').css({
+                "width": "calc(100% - 370px)",
+                "max-width": "calc(100% - 370px)",
+                "padding-left":'',
+            })
+            $('#main>#main-content').find('img').css({
+                'mix-blend-mode': 'normal'
+            })
+            $('#main-content').css({
+                "background":"",
+                'mix-blend-mode': 'normal',
+                "width": "calc(100% - 100px)",
+                "margin": "auto 50px"
+            })
+            $('.right-column').css({
+                "position": "static",
+                "border":"",
+                "background": "",
+                "padding-left": "",
+                "transition-duration":"",
+            }).unbind('mouseenter').unbind('mouseleave')
+            $('#toolbar').css({
+                'transform': '',
+                'transform-origin': '',
+            })
+            $('.columen-left').css({
+                'mix-blend-mode': '',
+                'background': ''
+            })
+            $('.ac-pc-comment').css({
+                'padding-right':''
+            })
+            $('.player-box').css({
+                "border-bottom-color": "#f5f5f5"
+            })
+            $('.nav-parent').css({
+                "border-bottom-color": "#f5f5f5" 
+            })
+            $('.video-description').css({
+                "border-bottom-color": "#f5f5f5"  
+            })
+        }
+
+    }
 
 
-
-
+    //倍速快捷键 TODO:自定义快捷键(现在默认shift + ↑/↓) 绑定位置
+    PlaybackRateKeyCode(settingKeyCode){
+        // const videoDom = document.getElementById('player');
+        // videoDom.setAttribute("tabindex","-1")
+        // v.addEventListener('keydown',(e)=>{
+        //     this.changeRateKeyCode(settingKeyCode,e)
+        // })
+        document.onkeydown = (e)=> {
+            this.changeRateKeyCode(e,settingKeyCode)
+        }
+    }
+    changeRateKeyCode(e,settingKeyCode){
+        let code = e.keyCode
+        e.shiftKey && (code === settingKeyCode[0] || code === settingKeyCode[1]) && this.getRate(code, settingKeyCode)
+    }
+    getRate(code ,settingKeyCode){
+        const v = document.getElementsByTagName("video")[0];
+        let rate = this.getRateFlag(code,settingKeyCode,v)
+        v.playbackRate = rate;
+        event.stopPropagation();
+    }
+    getRateFlag(code,settingKeyCode,v){
+        let videoRate = v.playbackRate;
+        const [addRate,reduceRate] = settingKeyCode
+        code === addRate
+          ? (videoRate += 0.25)
+          : code === reduceRate
+          ? (videoRate -= 0.25)
+          : "";
+        videoRate <= 0
+          ? (videoRate = 0.25)
+          : videoRate >= 2
+          ? (videoRate = 2)
+          : "";
+        return videoRate
+    }
+    
 }

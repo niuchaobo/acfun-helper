@@ -55,7 +55,7 @@ function ScrollSmoothly(scrollPos, repeatTimes,step) {
     cTimeout = setTimeout("ScrollSmoothly('" + scrollPos + "','" + repeatTimes +  "','" + step +"')", 10);
     //cTimeout = setTimeout(ScrollSmoothly,10);
 }
-
+//一个可能不会运行的方法 ⬇️
 function onDomContentLoaded(){
 
 

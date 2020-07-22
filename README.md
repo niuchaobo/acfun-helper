@@ -43,8 +43,10 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 24.现在弹出栏也能看部分广场动态和广场直播推荐了！  
 25.联合 AcFun直播桌面通知和下载助手 桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将Up加入/移出 开播通知列表中。
 
-26.增加了浏览器地址栏直接搜索主站相关关键字（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入ACid跳转到相应投稿哦。^3^）   
-27.添加播放器“上次观看到”时间跳转（暂时只支持1P的视频投稿，并且不支持番剧）
+26.增加了浏览器地址栏直接搜索主站相关关键字（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入ACid跳转到相应投稿哦。）   
+27.添加播放器“上次观看到”时间跳转（暂时只支持1P的视频投稿，并且不支持番剧）    
+28.播放器画质策略（主要是某些计算机性能问题，可能观看60帧视频会卡顿，此功能适用此场景）    
+29.弹幕搜索及快速跳转
 
 ---
 #### 插件本体获取
@@ -93,17 +95,17 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 #### TodoList
     - 完善插件和播放器配置网络同步
     - 评论投票图表
-    - 添加 稿件下抽奖、画中画模式、插件直播通知、地址栏（omnibox）支持【浏览器跳转】、弹幕下载 功能的使用说明
-    - 直播站首页的用户屏蔽
+    - 添加 稿件下抽奖、画中画模式、插件直播通知、地址栏（omnibox）支持【浏览器跳转】、弹幕下载、画质策略、弹幕搜索 功能的使用说明
     - 在直播关注推送模块中，插件获取个人关注，并通过一个列表供用户直接选择是否添加到插件的直播关注列表
 
 #### 开源许可证
 
-    Released under the MIT License.
+    Released under the MPL-2.0 License.
 
 #### 提要
     * jquery 3.5.0
     * mdui 0.4.3
+    * dexie 3.0.1
 
 #### 相关项目
 插件配置同步服务:  
@@ -111,6 +113,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 独立项目：
 ##### @orzogc - [acfunlive AcFun直播桌面通知和下载助手（命令行版本）](https://github.com/orzogc/acfunlive "项目地址")
 ##### @orzogc - [acfundanmu AcFun直播弹幕下载](https://github.com/orzogc/acfundanmu "项目地址")
+##### @wpscott - [AcfunDanmu AcFun直播弹幕工具](https://github.com/wpscott/AcFunDanmaku "项目地址")
 ---
 
 ### 致谢

@@ -1,5 +1,5 @@
 /**
- * 通知、提醒和推送
+ * 通知、提醒和推送的后台守护模块
  */
 class MsgNotifs{
     constructor(){
@@ -7,13 +7,13 @@ class MsgNotifs{
     }
 
     liveOnlineNotif(){
-        console.log('Start LiveUp Notificate.')
+        console.log('Start LiveUpNotificationFetching Mod.')
         window.setInterval(function(){
             chrome.storage.local.get(['liveFloowNotif'],function(Ifswitch){
             if(Ifswitch.liveFloowNotif){
                 chrome.storage.local.get(['liveFloowings'],function(items){
                 chrome.storage.local.get(['broadcastingUIDlist'],function(broadcastingUIDlist){
-                    console.log(broadcastingUIDlist);
+                    // console.log(broadcastingUIDlist);
                     let y={}
                     if(JSON.stringify(broadcastingUIDlist)=='{}'){
                         chrome.storage.local.get(['liveFloowings'],function(a){for(let j in items.liveFloowings){y[j]=false}});
@@ -78,7 +78,8 @@ class MsgNotifs{
                     let a3=b.unReadCount.new_content_notify;//系统通知
                     let a4=b.unReadCount.new_system_notify;//站内公告
                     var pushNum=a0+a1+a2+a3+a4;
-                    console.log(pushNum);
+                    chrome.browserAction.setTitle({title:`AcFun助手，Ac在爱一直在；\n通知\n评论未读：${a0}\n点赞：${a1}\n系统通知：${a3}\n站内公告：${a4}`})
+                    // console.log(pushNum);
                     if(pushNum>0){
                         chrome.browserAction.setBadgeText({ text: pushNum.toString() });
                     }else{
@@ -95,6 +96,8 @@ class MsgNotifs{
                 .then((res)=>{return res.text();})
                 .then((res)=>{
                     let rawdata=JSON.parse(res);
+                    //调用indexeddb驱动，写入indexeddb。以后将会慢慢迁移。
+                    // db_putPushLst(rawdata);
                     let out_data='';
                     // console.log(rawdata.feedList[0].username);
                     for(let i=0;i<=29;i++){
