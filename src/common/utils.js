@@ -512,7 +512,7 @@ function domToString(node) {
 async function getAsyncDom(target, fn, time = 2500) {
     let i = 0;
 
-    console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听${target}`);
+    console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
   re = (fn)=>{
       return new Promise(resolve=>{
         targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
@@ -523,12 +523,12 @@ async function getAsyncDom(target, fn, time = 2500) {
         }else{
             if (i >= 9000 / time) {
                 i = 0;
-                resolve(`[LOG]Common-Utils>getAsyncDom: ${target}没找到`)
+                resolve(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`)
                 return 
             };
               i++; 
               setTimeout(() => {
-                console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target}`);
+                console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听 ${target}`);
                 resolve(re(fn));
               }, time); 
         }
