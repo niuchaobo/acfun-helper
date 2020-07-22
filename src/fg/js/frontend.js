@@ -20,7 +20,11 @@ class ODHFront {
     chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
     window.addEventListener("message", (e) => this.onFrameMessage(e)); //接收来自iframe的消息
     //页面的全部资源加载完后才会执行 包括 图片 视频等
-    window.addEventListener("load", (e) => this.onLoad(e));
+    window.addEventListener("load", (e) => {
+        setTimeout(()=>{
+            this.onLoad(e)
+        },500)
+    });
     //Dom 渲染完即可执行 此时图片视频还可能没加载完
     document.addEventListener("DOMContentLoaded", (e) =>
       this.onDomContentLoaded(e)
@@ -153,8 +157,10 @@ class ODHFront {
         //页面优化
         if(!REG.live.test(href) && !REG.liveIndex.test(href)){
           if(this.options.beautify_personal){
-              this.pageBeautify.addMouseAnimation();
-              this.pageBeautify.personBeautify();
+              getAsyncDom('#header .header-guide .guide-item',()=>{
+                    this.pageBeautify.addMouseAnimation()
+                    this.pageBeautify.personBeautify();
+              })
           }
           if(this.options.hideAd){
               this.pageBeautify.hideAds();
@@ -216,9 +222,8 @@ class ODHFront {
         //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
         if((REG.video.test(href) || REG.bangumi.test(href))){
             this.videoSetting.monitorFullScreen();
-
             //todo 加开关
-            getAsyncDom('ac-pc-comment',()=>{
+            getAsyncDom('.ac-pc-comment',()=>{
                 this.ce.searchScanForPlayerTime();
                 this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
             })
