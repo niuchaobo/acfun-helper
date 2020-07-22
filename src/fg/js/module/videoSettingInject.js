@@ -48,7 +48,8 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         try {
             document.getElementsByTagName("video")[0].addEventListener('ended', function () {
                 console.log("播放结束");
-                if(!window.player._loop){
+                let x = (!document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "false" || !document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "false");
+                if(!window.player._loop && !x){
                     window.player.emit('filmModeChanged', false);
                     window.player.emit('fullScreenChange', false);
                 }
