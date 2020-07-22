@@ -9,7 +9,7 @@ class CommentEnhance{
     }
 
     //从个人中心评论跳转到对应的楼层,不完善(折叠中和非第一页的无法跳转)
-    async jumpToComment(){
+    async jumpToComment(href){
         let msg_comment = REG.msg_comment;
         let res = msg_comment.exec(href);
         if(res!=null && res!=undefined && res.length==4){
@@ -19,7 +19,7 @@ class CommentEnhance{
                 let node = $('div[data-commentid='+cid+']').eq(0);
                 let node_offset = node.offset();
                 if(node_offset!=undefined && node_offset!=null){
-                    let top = Number(node_offset.top)-Number(node.height());
+                    let top = Number(node_offset.top)-Number(node.height())-150;
                     $("html, body").animate({
                         scrollTop: top
                     }, {
@@ -35,7 +35,7 @@ class CommentEnhance{
         }
     }
 
-    //-------------------------------------------评论区标记功能-----------------------------------------------------------------------
+    //-------------------------评论区标记功能---------------------------------
 
     //渲染扫描到的用户tag信息
     renderScan(){

@@ -12,7 +12,6 @@ class AuthInfo{
     fetchPasstoken(){
         chrome.cookies.get({url:'https://www.acfun.cn/',name:'acPasstoken'},function(a){
             chrome.storage.local.set({AcPassToken : `${a.value}`});
-            console.log('233');
         })
     }
 
