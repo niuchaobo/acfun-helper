@@ -32,6 +32,7 @@ const defaults = {
     PlayerTimeCommentEasyJump:true,
     PlaybackRateKeysw:true,
     endedAutoExitFullscreensw:false,
+    easySearchScanForPlayerTimesw:false,
 
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
@@ -546,6 +547,13 @@ async function toUpInfo(upName){
 
 // let uil =await toUpInfo('qyqx')
 //   console.log(uil)
+
+async function fetchResult(url) {
+    let result = fetch(url).then((response)=>{
+        return response.text();
+    })
+    return result
+}
 
 debounce = (fn, delay) => {
     let timer = null;

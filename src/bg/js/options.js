@@ -1121,6 +1121,24 @@ $(document).ready(function () {
         });
     });
 
+    //=====================评论区时间选中播放器快速跳转================
+    chrome.storage.local.get(['easySearchScanForPlayerTimesw'],function(items){
+        var easySearchScanForPlayerTimesw= items.easySearchScanForPlayerTimesw;
+        if(easySearchScanForPlayerTimesw){
+            document.getElementById('easySearchScanForPlayerTimesw').checked='true';
+        }else{
+            document.getElementById('easySearchScanForPlayerTimesw').checked=false;
+        }
+        $('#easySearchScanForPlayerTimesw').on('click', function () {
+            if(!document.getElementById('easySearchScanForPlayerTimesw').checked){
+                document.getElementById('easySearchScanForPlayerTimesw').checked=false;
+                chrome.storage.local.set({'easySearchScanForPlayerTimesw':false});
+            }else{
+                document.getElementById('easySearchScanForPlayerTimesw').checked=true;
+                chrome.storage.local.set({'easySearchScanForPlayerTimesw':true});
+            }
+        });
+    });
 
     //====================配置播放器自动跳转到上次观看时间===============
     chrome.storage.local.get(['autoJumpLastWatchSw'],function(items){
