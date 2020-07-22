@@ -190,7 +190,7 @@ class PageBeautify {
         document.querySelector(".usemobile").remove();
     } catch (error) {}
     try {
-        document.querySelector(".download-app").remove();
+        // document.querySelector(".download-app").remove();
     } catch (error) {}
     try {
         document.querySelector(".pause-display-container").remove();

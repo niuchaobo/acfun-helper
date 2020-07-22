@@ -512,29 +512,29 @@ async function getAsyncDom(target, fn, time = 2500) {
     let i = 0;
     console.log(`开始监听${target}`);
     let timer = {}; //qtmdpromise
-  re = (fn)=>{
-      clearInterval(timer[target])
-      return new Promise(resolve=>{
-        targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
-        if(targetDom){
-            i = 0; 
-            console.log(`${target}已加载`);
-            resolve(fn())
-        }else{
-            if (i >= 10000 / time) {
-                i = 0;
-                console.log(`${target}没找到`) 
-                resolve(`${target}没找到`)
-                return 
-            };
-              i++; 
-              timer[target] = setTimeout(() => {
-                console.log(`正在监听${target}`);
-                resolve(re(fn));
-              }, time); 
-        }
-      })
-  }
+    let re = (fn)=>{
+        clearInterval(timer[target])
+        return new Promise(resolve=>{
+            targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`)[0]|| undefined
+            if(targetDom){
+                i = 0; 
+                console.log(`${target}已加载`);
+                resolve(fn())
+            }else{
+                if (i >= 15000 / time) {
+                    i = 0;
+                    console.log(`${target}没找到`) 
+                    resolve(`${target}没找到`)
+                    return 
+                };
+                i++; 
+                timer[target] = setTimeout(() => {
+                    console.log(`正在监听${target}`);
+                    resolve(re(fn));
+                }, time); 
+            }
+        })
+    }
   return await re(fn)
 }
 
