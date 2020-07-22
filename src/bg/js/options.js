@@ -1178,6 +1178,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================观影模式关灯适配暗色===============
+    chrome.storage.local.get(['FileModeExclusionsw'],function(items){
+        var FileModeExclusionsw= items.FileModeExclusionsw;
+        if(FileModeExclusionsw){
+            document.getElementById('FileModeExclusionsw').checked='true';
+        }else{
+            document.getElementById('FileModeExclusionsw').checked=false;
+        }
+        $('#FileModeExclusionsw').on('click', function () {
+            if(!document.getElementById('FileModeExclusionsw').checked){
+                document.getElementById('FileModeExclusionsw').checked=false;
+                chrome.storage.local.set({'FileModeExclusionsw':false});
+            }else{
+                document.getElementById('FileModeExclusionsw').checked=true;
+                chrome.storage.local.set({'FileModeExclusionsw':true});
+            }
+        });
+    });
+
     //====================配置播放器画质策略===============
     chrome.storage.local.get(['videoQualityStrategy'],function(items){
         $('#videoQualityStrategy_state').append(items.videoQualityStrategy)

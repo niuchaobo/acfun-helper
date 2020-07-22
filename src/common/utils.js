@@ -31,6 +31,7 @@ const defaults = {
     PlayerDamakuSearchSw:false,
     PlayerTimeCommentEasyJump:true,
     PlaybackRateKeysw:true,
+    FileModeExclusionsw:true,
     endedAutoExitFullscreensw:false,
     easySearchScanForPlayerTimesw:false,
 

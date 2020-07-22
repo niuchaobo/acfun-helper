@@ -148,18 +148,22 @@ class VideoSetting{
         getAsyncDom(".control-btn.btn-film-model>.btn-span:first",()=>{
             var element = $(".control-btn.btn-film-model").find('.btn-span:first')[0];
             var observer = new MutationObserver((mutations)=> {
-                mutations.forEach((mutation)=> {
+                mutations.forEach(async (mutation)=> {
                     let flag = document.getElementsByClassName("tip-film-model")[0].innerText;
                     if(flag == '退出观影模式'){ 
                         document.getElementById("acfun-popup-helper").style.display="none";
                         document.getElementById("acfun-helper-div").style.display="none";
-                        setTimeout(()=>{ //全屏模式切换时会重新渲染样式（页面宽度改变）？扔进异步队列等主程跑完再渲染
-                            this.fullScreenStyle(true)
-                        })
+                        let FileModeExclusionsw = await getStorage('FileModeExclusionsw');
+                        if(FileModeExclusionsw.FileModeExclusionsw){
+                            setTimeout(()=>{ //全屏模式切换时会重新渲染样式（页面宽度改变）？扔进异步队列等主程跑完再渲染
+                                this.fullScreenStyle(true)
+                            })
+                        }
                     }else{
                         document.getElementById("acfun-popup-helper").style.display="";
                         document.getElementById("acfun-helper-div").style.display="";
-                        this.fullScreenStyle(false)
+                        let FileModeExclusionsw = await getStorage('FileModeExclusionsw');
+                        if(FileModeExclusionsw.FileModeExclusionsw){this.fullScreenStyle(false);}
                     }
                 });
             });
