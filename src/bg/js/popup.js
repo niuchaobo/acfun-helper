@@ -416,7 +416,7 @@ function settingHidden() {
 }
 
 function updateVersionIcon(){
-    chrome.storage.local.get(["UpgradeAgent"],  (data)=> {
+    chrome.storage.local.get(["Upgradeable"],  (data)=> {
         data = 0; //TODO:记得删
         if(data === 1){
             $('#update-box').css('display','inline-block')

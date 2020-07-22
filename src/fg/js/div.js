@@ -3,7 +3,6 @@ class Div {
     this.div = null;
     this.offset = 1;
     this.popup = new Popup();
-    this.search = new Search();
     this.t_point = null;
     this.options = null;
   }
@@ -17,8 +16,6 @@ class Div {
     this.popup.inject(options);
     //生成展示页面内容
     let content = this.popup.renderPopup(pageInfo, type, isUp);
-    let enableDamakuSearchModsw = await getStorage('PlayerDamakuSearchSw');
-    if(enableDamakuSearchModsw.PlayerDamakuSearchSw){this.search.inject();}
     this.div.style.visibility = "visible";
     this.div.innerText = "助手";
     document.body.appendChild(this.div);

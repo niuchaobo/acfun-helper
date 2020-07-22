@@ -509,8 +509,9 @@ function domToString(node) {
   return str;
 }
 
-async function getAsyncDom(target, fn, time = 3000) {
+async function getAsyncDom(target, fn, time = 2500) {
     let i = 0;
+
     console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听${target}`);
   re = (fn)=>{
       return new Promise(resolve=>{
