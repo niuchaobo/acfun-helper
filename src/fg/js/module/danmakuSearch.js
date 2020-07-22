@@ -81,7 +81,7 @@ class Search {
       }
     };
     }
-  inject = () => {
+  inject(){
     this.searchContent();
     this.searchBind();
   };
@@ -116,7 +116,7 @@ class Search {
       $("#acfun-helper-search-next").css("display", "inline-block");
     }
   }
-  
+
   startSearch() {
     let input = $("#acfun-helper-search-input");
     let text = input.val();
