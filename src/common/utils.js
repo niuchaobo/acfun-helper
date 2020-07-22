@@ -489,7 +489,7 @@ function adjustArticleUp() {
     let userName = decodeURI(currentUserNameEncode);
     let name = document.getElementsByClassName("up-name")[0].firstChild
       .innerText;
-    console.log(name);
+    // console.log(name);
     if (userName == name) {
       return 1; //是up主
     } else {
@@ -510,23 +510,23 @@ function domToString(node) {
 
 async function getAsyncDom(target, fn, time = 3000) {
     let i = 0;
-    console.log(`开始监听${target}`);
+    console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听${target}`);
   re = (fn)=>{
       return new Promise(resolve=>{
         targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
         if(targetDom){
             i = 0; 
-            console.log("DOM加载");
+            console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
             resolve(fn())
         }else{
             if (i >= 9000 / time) {
                 i = 0;
-                resolve(`${target}没找到`)
+                resolve(`[LOG]Common-Utils>getAsyncDom: ${target}没找到`)
                 return 
             };
               i++; 
               setTimeout(() => {
-                console.log(`正在监听${target}`);
+                console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target}`);
                 resolve(re(fn));
               }, time); 
         }
