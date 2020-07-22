@@ -201,23 +201,26 @@ class ODHFront {
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live','');
         }
-        //自定义倍速
-        if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.custom_rate){
-            this.videoSetting.customPlaybackRate();
-        }
-        if(this.options.PlaybackRateKeysw){
-            this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
-        }
-        //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
         if((REG.video.test(href) || REG.bangumi.test(href))){
-            this.videoSetting.monitorFullScreen();
-
-            //todo 加开关
-            getAsyncDom('ac-pc-comment',()=>{
-                this.ce.searchScanForPlayerTime();
-                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-            })
-
+          //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
+          this.videoSetting.monitorFullScreen();
+          //自定义倍速
+          if(this.options.custom_rate){
+            this.videoSetting.customPlaybackRate();
+          }
+          //倍速切换的快捷结案
+          if(this.options.PlaybackRateKeysw){
+            this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
+          }
+          //评论区快速跳转至播放器目的时间
+          getAsyncDom('ac-pc-comment',()=>{
+            if(this.options.PlayerTimeCommentEasyJump){
+              this.ce.searchScanForPlayerTime();
+            }
+            if(this.options.easySearchScanForPlayerTimesw){
+              this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+            }
+          })
         }
         this.authInfo.cookInfo();
     }

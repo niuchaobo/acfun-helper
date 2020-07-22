@@ -32,7 +32,7 @@ class Download{
         let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/');
         let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/');
         var prefix = "";
-        console.log(m3u8);
+        // console.log("[LOG]Frontend-Download>downloadVideo: "+m3u8);
         if (reg.test(m3u8)) {
             prefix = m3u8.match(reg)[0];
         }else if(reg_new.test(m3u8)){
@@ -166,14 +166,12 @@ class Download{
 
     downloadDanmaku(){
         chrome.storage.local.get(['danmakuCache'],function(datao){
-            console.log('clicked');
-            console.log(datao);
+            // console.log('clicked');
+            // console.log(datao);
             let e = JSON.parse(datao.danmakuCache);
-            // var data = sanitizeOptions(e.data.msg);
-            console.log(e);
-            console.log(e.msg);
+            // console.log(e);
+            // console.log(e.msg);
             var blob = new Blob([e.msg], { type: 'application/octet-stream' });
-            // var blob = new Blob([JSON.stringify(e.msg)], { type: 'application/octet-stream' });
             var url = window.URL.createObjectURL(blob);
             var saveas = document.createElement('a');
             saveas.href = url;

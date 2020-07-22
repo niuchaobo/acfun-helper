@@ -14,7 +14,7 @@ class ODHBack {
         this.MsgNotfs.timer4Unread();
         this.MsgNotfs.fetchPushList();
         this.MsgNotfs.liveOnlineNotif();
-        this.Upgrade.upgradeMain();
+        // this.Upgrade.upgradeMain();
         // this.MsgNotfs.fetchMcircle();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));

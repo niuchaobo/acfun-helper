@@ -9,7 +9,7 @@ class PlayerConfig {
     PConfProc(){
         chrome.storage.local.get(['SyncPlayerConfigNeed'], function(data){
             let SycnPlayerConfFlag = data.SyncPlayerConfigNeed;
-            console.log(SycnPlayerConfFlag);
+            console.log("[LOG]Frontend-PlayerConfig>PConfProc: "+SycnPlayerConfFlag);
         if(!SycnPlayerConfFlag){
             let AcGConf={};
             let AcPlayerConfig = localStorage['AcfunH5player::'];
