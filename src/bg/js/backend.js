@@ -9,6 +9,7 @@ class ODHBack {
         this.authInfo = new AuthInfo();
         this.Ominibox = new Ohminibox();
         this.Upgrade = new UpgradeAgent();
+        this.ReqOpDrv = new ReqOperationDrv();
 
         this.Ominibox.registerOmnibox();
         this.MsgNotfs.timer4Unread();

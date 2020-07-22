@@ -179,13 +179,17 @@ class LivePageButfy {
         let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;}"
         nod.type="text/css";
         nod.textContent = cssStr;
-
         document.head.appendChild(nod)
-
     }
+    
     LivehideAds(){
         try {
             document.querySelector(".banner").hidden = true;
+            //大约可以节约接近20%的CPU资源。
+            var timer = setInterval(function () {
+                document.querySelectorAll(".live-status").forEach((e)=>{e.remove()});
+                clearInterval(timer);
+            },2000)
         } catch (error) {}
     }
     
