@@ -34,6 +34,7 @@ const defaults = {
     FileModeExclusionsw:true,
     endedAutoExitFullscreensw:false,
     easySearchScanForPlayerTimesw:false,
+    Dev_indexBlurSW:false,
 
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
