@@ -146,9 +146,14 @@ function localizeHtmlPage() {
         );
       }
     }
-    el.innerHTML = DOMPurify.sanitize(
-      chrome.i18n.getMessage(el.getAttribute("data-i18n"))
-    );
+    el.innerHTML = DOMPurify.sanitize( chrome.i18n.getMessage(el.getAttribute("data-i18n")));
+    //火狐警告使用innerHTML添加标签 ⬇
+    // HTMLElement.prototype.htmlContent = function(html){
+    //     var dom = new DOMParser().parseFromString('<template>'+html+'</template>', 'text/html').head;
+    //     this.appendChild(dom.firstElementChild.content);
+    // }
+    // el.htmlContent( DOMPurify.sanitize(chrome.i18n.getMessage(el.getAttribute("data-i18n"))));
+    
   }
 }
 

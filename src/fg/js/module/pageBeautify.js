@@ -116,7 +116,8 @@ class PageBeautify {
     str += /macintosh|mac os x/i.test(navigator.userAgent)
       ? "margin-Left: 624px;}}"
       : "}}";
-    style.innerHTML = str;
+    style.type="text/css";
+    style.textContent = str;
     window.document.head.appendChild(style);
   }
 
@@ -213,13 +214,9 @@ class PageBeautify {
   async addMouseAnimation(){
     let obj = document.querySelector('[data-c-w-header] .header-guide .guide-item');
     let imgObj = document.querySelector('[data-c-w-header] .header-guide .guide-user .user-avatar img');
-    const wave_style = document.createElement('style');
     const before_style = document.createElement('style');
-    wave_style.style = 'text/css';
     before_style.style = 'text/css';
-    wave_style.innerHTML = this.wave_frames;
     before_style.innerHTML = '[data-c-w-header] .header-guide .guide-user .user-avatar img:before{animaition: avatar-wave cubic-bezier(0.22, 0.58, 0.12, 0.98) 0.6s forwards}';
-    document.getElementsByTagName('head')[0].appendChild(wave_style);
     document.getElementsByTagName('head')[0].appendChild(before_style);
     try {
       obj.addEventListener('mouseenter',function(){
