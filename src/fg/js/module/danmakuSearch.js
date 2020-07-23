@@ -225,7 +225,6 @@ class Search {
     });
     return danmakuList;
   }
-
   firstSearchInit() {
     this.searchList.forEach((item, index) => {
       $(item.item).css({ background: "", color: "" });
