@@ -990,6 +990,21 @@ $(document).ready(function () {
         }
     });
 
+    var devSwitchClick = 0
+    document.querySelector("#devSwitch").addEventListener('click', function devMode(){
+        console.log(devSwitchClick)
+        if(devSwitchClick==5){
+            console.log("show");
+            document.querySelectorAll(".devFeature").forEach(function(e){e.style.display="block"});
+            mdui.snackbar({
+                message: `已进入特殊模式。`,
+                position: 'right-bottom',
+              });
+        }
+        devSwitchClick++;
+    })
+
+
     //=====================评论区评论ID快速跳转================
     chrome.storage.local.get(['commentEasyJump'],function(items){
         var commentEasyJumpsw= items.commentEasyJump;
@@ -1005,6 +1020,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('commentEasyJump').checked=true;
                 chrome.storage.local.set({'commentEasyJump':true});
+            }
+        });
+    });
+
+    //=====================主页顶栏页面美化============================
+    chrome.storage.local.get(['Dev_indexBlurSW'],function(items){
+        var Dev_indexBlurSW= items.Dev_indexBlurSW;
+        if(Dev_indexBlurSW){
+            document.getElementById('Dev_indexBlurSW').checked='true';
+        }else{
+            document.getElementById('Dev_indexBlurSW').checked=false;
+        }
+        $('#Dev_indexBlurSW').on('click', function () {
+            if(!document.getElementById('Dev_indexBlurSW').checked){
+                document.getElementById('Dev_indexBlurSW').checked=false;
+                chrome.storage.local.set({'Dev_indexBlurSW':false});
+            }else{
+                document.getElementById('Dev_indexBlurSW').checked=true;
+                chrome.storage.local.set({'Dev_indexBlurSW':true});
             }
         });
     });
