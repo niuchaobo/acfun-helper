@@ -22,23 +22,36 @@ class UpgradeAgent{
     }
 
     checkUpdate(){
-        if(this.ifRightDay()){
+        // if(this.ifRightDay()){
             //POST版本号至服务器，服务器对比最新的版本之后返回一个int值，0：不需要更新，1：小版本更新-弱提醒，2：重要功能更新-强提醒(session and cache please)
-            // fetch
-            chrome.storage.local.remove("Upgradeable");
-            let key = this.testData;
-            switch (key) {
-                case 0:
-                    chrome.storage.local.set({Upgradeable : 0});
-                    break;
-                case 1:
-                    chrome.storage.local.set({Upgradeable : 1});
-                    break;
-                case 2:
-                    chrome.storage.local.set({Upgradeable : 2});
-                    break;
-            }
-        }
+            var version = null
+            $.get(chrome.extension.getURL("manifest.json"),function(content){
+                chrome.storage.local.set({Version : content.version});
+                version = content.version;
+            console.log(version)
+            fetch('http://127.0.0.1:8000/api/acfun-helper/newversion/',{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Accept':"accept: application/json, text/plain, */*"},body:version})
+            // fetch('https://mini.pocketword.cn/api/acfun-helper/newversion/',{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Accept':"accept: application/json, text/plain, */*"},body:version})
+            .then((res)=>{return res.text();})
+            .then((res)=>{
+                chrome.storage.local.remove("Upgradeable");
+                // let key = this.testData;
+                let x = JSON.parse(res);
+                let key = x.result;
+                console.log(key);
+                switch (key) {
+                    case 0:
+                        chrome.storage.local.set({Upgradeable : 0});
+                        break;
+                    case 1:
+                        chrome.storage.local.set({Upgradeable : 1});
+                        break;
+                    case 2:
+                        chrome.storage.local.set({Upgradeable : 2});
+                        break;
+                }
+            });
+            },'json');
+        // }
     }
 
     upgradeMain(){

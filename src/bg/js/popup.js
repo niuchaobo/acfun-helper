@@ -417,14 +417,15 @@ function settingHidden() {
 
 function updateVersionIcon(){
     chrome.storage.local.get(["Upgradeable"],  (data)=> {
-        data = 0; //TODO:记得删
-        if(data === 1){
-            $('#update-box').css('display','inline-block')
+      data.Upgradeable = 0; //TODO:测试用，记得删
+        if(data.Upgradeable === 1){
+            $('#update-box').css('display','inline-block');
             return
         }
-        if(data === 2){
-            $('#update-box').css('display','inline-block')
-            $('.update-icon').css('background','red')
+        if(data.Upgradeable === 2){
+            $('#update-box').css('display','inline-block');
+            $('.update-icon').css('background','red');
+            $('.head > div.item')[0].style.backgroundColor = "yellow";
             return 
         }
       }); 
