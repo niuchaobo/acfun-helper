@@ -17,13 +17,12 @@
         width: 8px;
         background-color: #fff;
     }
-
     ::-webkit-scrollbar-thumb {
         background-color: #ddd;
         border-radius: 5px;
     }
-
     body { line-height: 150%; }
+    .devFeature {display: none;}
     </style>
 </head>
 <body>
@@ -509,6 +508,23 @@
                       </div>
                     </div>
 
+                    <div class="mdui-container-fluid devFeature">
+                      <div class="mdui-row">
+                          <div class="mdui-row">
+                              <div class="mdui-col-xs-9">
+                                  <h3>主页顶栏高斯模糊</h3>
+                                <div class="mdui-row">
+                                  <div class="mdui-col-xs-8 mdui-col-sm-6"><p>在主页顶栏增加高斯模糊特效</p></div>
+                                  <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                      <input id="Dev_indexBlurSW" type="checkbox"/>开关 
+                                      <i class="mdui-switch-icon"></i>
+                                      </label></div>
+                                </div>
+                              </div>
+                            </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -702,6 +718,22 @@
                         <div class="mdui-col-xs-4 mdui-col-sm-6">
                           <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                             <input id="endedAutoExitFullscreensw" type="checkbox" />
+                            <i class="mdui-switch-icon"></i>
+                          </label>
+                        </div>
+                        </div>            
+                      </div>
+                    </div>
+                    
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-col-xs-9">
+                        <h2>观影模式关灯适配暗色</h2>
+                      </div>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">在进入观影模式时，匹配页面暗色模式（部分元素使用反色，若不适应请关闭此选项）</div>
+                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                            <input id="FileModeExclusionsw" type="checkbox" />
                             <i class="mdui-switch-icon"></i>
                           </label>
                         </div>
@@ -917,7 +949,7 @@
                   <div class="mdui-card-header-title"><a href="https://www.acfun.cn/u/7054138" target="_blank">啦啦追不上</a></div>
                   <div class="mdui-card-header-subtitle">主导开发者</div>
                 </div>
-                <div class="mdui-card-media">
+                <div class="mdui-card-media" id="devSwitch">
                   <img src="../img/icon128.png"  style="width: 50%;margin-left: 90px;"/>
                 <div class="mdui-card-primary">
                   <div class="mdui-card-primary-title">AcFun助手</div>

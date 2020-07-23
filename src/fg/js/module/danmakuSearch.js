@@ -24,9 +24,67 @@ class Search {
                 ✕
             </div>
         </div>
-    </div>`    
-  }
-  inject = () => {
+    </div>`
+
+    this.searchContent = () => {
+      $(this.content).appendTo($(".list-title"));
+    };
+    this.danmakuSearchProgress = (e) => {
+      let action = e.target.id;
+      let range = this.searchList.length;
+      if (action === "acfun-helper-search-title") {
+        $("#acfun-helper-search>div").addClass("search-hidden");
+      }
+      if (action === "acfun-helper-search-button" || e.keyCode === 13) {
+        if (!this.lock) return;
+        this.startSearch();
+      }
+      if (action === "acfun-helper-search-next") {
+        let changePage = !$(".next-page").hasClass("disabled");
+        this.i = this.i + 1;
+        if (this.i == range || range === 0) {
+          if (changePage) {
+            $(".next-page").click();
+            this.pageNum++;
+            this.i = 0;
+            return;
+          } else {
+            this.i = 0;
+          }
+        }
+        let target = this.i;
+        this.danmakuSearchJump(this.searchList, target);
+      }
+      if (action === "acfun-helper-search-last") {
+        let changePage = !$(".last-page").hasClass("disabled");
+        this.i = this.i - 1;
+        if (this.i === -1 || range === 0) {
+          if (changePage) {
+            $(".last-page").click();
+            this.pageNum--;
+            this.i = "end";
+            return;
+          } else {
+            this.i = range - 1;
+          }
+        }
+        let target = this.i;
+        this.danmakuSearchJump(this.searchList, target);
+      }
+      if (action === "acfun-helper-search-close") {
+        this.buttonStatusChange(true);
+        $("#acfun-helper-search-input").val("");
+        $("#acfun-helper-search>div").removeClass("search-hidden");
+        $(".danmaku-items").unbind("DOMNodeInserted");
+        this.searchList.forEach((item, index) => {
+          $(item.item).css({ background: "", color: "" });
+        });
+        this.searchList = [];
+        this.i = 0;
+      }
+    };
+    }
+  inject(){
     this.searchContent();
     this.searchBind();
   };
@@ -61,61 +119,6 @@ class Search {
       $("#acfun-helper-search-next").css("display", "inline-block");
     }
   }
-
-  danmakuSearchProgress = (e) => {
-    let action = e.target.id;
-    let range = this.searchList.length;
-    if (action === "acfun-helper-search-title") {
-      $("#acfun-helper-search>div").addClass("search-hidden");
-    }
-    if (action === "acfun-helper-search-button" || e.keyCode === 13) {
-      if (!this.lock) return;
-      this.startSearch();
-    }
-    if (action === "acfun-helper-search-next") {
-      let changePage = !$(".next-page").hasClass("disabled");
-      this.i = this.i + 1;
-      if (this.i == range || range === 0) {
-        if (changePage) {
-          $(".next-page").click();
-          this.pageNum++;
-          this.i = 0;
-          return;
-        } else {
-          this.i = 0;
-        }
-      }
-      let target = this.i;
-      this.danmakuSearchJump(this.searchList, target);
-    }
-    if (action === "acfun-helper-search-last") {
-      let changePage = !$(".last-page").hasClass("disabled");
-      this.i = this.i - 1;
-      if (this.i === -1 || range === 0) {
-        if (changePage) {
-          $(".last-page").click();
-          this.pageNum--;
-          this.i = "end";
-          return;
-        } else {
-          this.i = range - 1;
-        }
-      }
-      let target = this.i;
-      this.danmakuSearchJump(this.searchList, target);
-    }
-    if (action === "acfun-helper-search-close") {
-      this.buttonStatusChange(true);
-      $("#acfun-helper-search-input").val("");
-      $("#acfun-helper-search>div").removeClass("search-hidden");
-      $(".danmaku-items").unbind("DOMNodeInserted");
-      this.searchList.forEach((item, index) => {
-        $(item.item).css({ background: "", color: "" });
-      });
-      this.searchList = [];
-      this.i = 0;
-    }
-  };
 
   startSearch() {
     let input = $("#acfun-helper-search-input");
@@ -221,9 +224,6 @@ class Search {
     });
     return danmakuList;
   }
-  searchContent = () => {
-    $(this.content).appendTo($(".list-title"));
-  };
   firstSearchInit() {
     this.searchList.forEach((item, index) => {
       $(item.item).css({ background: "", color: "" });
