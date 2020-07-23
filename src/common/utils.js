@@ -18,8 +18,8 @@ const defaults = {
     beautify_personal:true,//顶栏个人中心入口优化
     show_like:false,//显示点赞数、投桃数
     custom_rate:true,//开启自定义倍速
-    custom_rate_keyCode:[38,40],
-    custom_easy_jump_keyCode:[65],
+    custom_rate_keyCode:[38,40],//shift ↑ ↓ 倍速播放快捷键
+    custom_easy_jump_keyCode:[65], //shift A 评论时间跳转快捷键
     player_mode:'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
     liveFloowNotif:false,
     videoQualityStrategy:'0',
@@ -509,26 +509,25 @@ function domToString(node) {
   return str;
 }
 
-async function getAsyncDom(target, fn, time = 2500) {
+async function getAsyncDom(target, fn, time = 2500,isDev=false) {
     let i = 0;
-
-    console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
+    isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
   re = (fn)=>{
       return new Promise(resolve=>{
         targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
         if(targetDom){
             i = 0; 
-            console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
+            isDev && console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
             resolve(fn())
         }else{
             if (i >= 9000 / time) {
                 i = 0;
-                resolve(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`)
+                isDev && resolve(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`)
                 return 
             };
               i++; 
               setTimeout(() => {
-                console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听 ${target}`);
+                isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target}第${i}次`);
                 resolve(re(fn));
               }, time); 
         }
