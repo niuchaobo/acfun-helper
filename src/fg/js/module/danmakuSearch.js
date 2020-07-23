@@ -26,74 +26,21 @@ class Search {
         </div>
     </div>`;
 
-    this.danmakuSearchProgress = (e) => {
-      let action = e.target.id;
-      let range = this.searchList.length;
-      if (action === "acfun-helper-search-title") {
-        $("#acfun-helper-search>div").addClass("search-hidden");
-      }
-      if (action === "acfun-helper-search-button" || e.keyCode === 13) {
-        if (!this.lock) return;
-        this.startSearch();
-      }
-      if (action === "acfun-helper-search-next") {
-        let changePage = !$(".next-page").hasClass("disabled");
-        this.i = this.i + 1;
-        if (this.i == range || range === 0) {
-          if (changePage) {
-            $(".next-page").click();
-            this.pageNum++;
-            this.i = 0;
-            return;
-          } else {
-            this.i = 0;
-          }
-        }
-        let target = this.i;
-        this.danmakuSearchJump(this.searchList, target);
-      }
-      if (action === "acfun-helper-search-last") {
-        let changePage = !$(".last-page").hasClass("disabled");
-        this.i = this.i - 1;
-        if (this.i === -1 || range === 0) {
-          if (changePage) {
-            $(".last-page").click();
-            this.pageNum--;
-            this.i = "end";
-            return;
-          } else {
-            this.i = range - 1;
-          }
-        }
-        let target = this.i;
-        this.danmakuSearchJump(this.searchList, target);
-      }
-      if (action === "acfun-helper-search-close") {
-        this.buttonStatusChange(true);
-        $("#acfun-helper-search-input").val("");
-        $("#acfun-helper-search>div").removeClass("search-hidden");
-        $(".danmaku-items").unbind("DOMNodeInserted");
-        $("#danmaku").unbind('mouseleave')
-        this.searchList.forEach((item, index) => {
-          $(item.item).css({ background: "", color: "" });
-        });
-        this.searchList = [];
-        this.i = 0;
-      }
-    };
   }
+
   inject() {
-    this.searchContent();
+    $(this.content).appendTo($(".list-title"));
     this.searchBind();
   }
+
   searchBind() {
     $("#acfun-helper-search-input").bind("focus", () => {
       this.lock = true;
       this.buttonStatusChange(true);
     });
-    $("#acfun-helper-search").bind("click", throttle(this.danmakuSearchProgress, 200)
+    $("#acfun-helper-search").bind("click", throttle(this.danmakuSearchProgress, 200).bind(this)
     );
-    $("#acfun-helper-search").bind("keypress", this.danmakuSearchProgress);
+    $("#acfun-helper-search").bind("keypress", this.danmakuSearchProgress.bind(this));
     $(".danmaku-page").bind("click", (e) => {
       if (
         $(e.target).hasClass("last-page") || $(e.target).hasClass("next-page")
@@ -136,6 +83,72 @@ class Search {
         this.searchCounterReload();
       }
     );
+  }
+
+    danmakuSearchProgress(e){
+      let action = e.target.id;
+      if (action === "acfun-helper-search-title") {
+        $("#acfun-helper-search>div").addClass("search-hidden");
+      }
+      if (action === "acfun-helper-search-button" || e.keyCode === 13) {
+        if (!this.lock) return;
+        this.startSearch();
+      }
+      if (action === "acfun-helper-search-next") {
+        this.searchNext()
+      }
+      if (action === "acfun-helper-search-last") {
+        this.searchLast()
+      }
+      if (action === "acfun-helper-search-close") {
+        this.searchClose()
+      }
+    };
+
+  searchNext(){
+    let changePage = !$(".next-page").hasClass("disabled");
+    this.i = this.i + 1;
+    if (this.i == this.searchList.length || this.searchList.length === 0) {
+      if (changePage) {
+        $(".next-page").click();
+        this.pageNum++;
+        this.i = 0;
+        return;
+      } else {
+        this.i = 0;
+      }
+    }
+    let target = this.i;
+    this.danmakuSearchJump(this.searchList, target);
+  }
+
+  searchLast(){
+    let changePage = !$(".last-page").hasClass("disabled");
+    this.i = this.i - 1;
+    if (this.i === -1 || this.searchList.length === 0) {
+      if (changePage) {
+        $(".last-page").click();
+        this.pageNum--;
+        this.i = "end";
+        return;
+      } else {
+        this.i = this.searchList.length - 1;
+      }
+    }
+    let target = this.i;
+    this.danmakuSearchJump(this.searchList, target);
+  }
+  searchClose(){
+    this.buttonStatusChange(true);
+    $("#acfun-helper-search-input").val("");
+    $("#acfun-helper-search>div").removeClass("search-hidden");
+    $(".danmaku-items").unbind("DOMNodeInserted");
+    $("#danmaku").unbind('mouseleave')
+    this.searchList.forEach((item, index) => {
+      $(item.item).css({ background: "", color: "" });
+    });
+    this.searchList = [];
+    this.i = 0;
   }
 
   danmakuSearchJump(searchList = [], i) {
@@ -212,9 +225,7 @@ class Search {
     });
     return danmakuList;
   }
-  searchContent() {
-    $(this.content).appendTo($(".list-title"));
-  }
+
   firstSearchInit() {
     this.searchList.forEach((item, index) => {
       $(item.item).css({ background: "", color: "" });
