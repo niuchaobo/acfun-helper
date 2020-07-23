@@ -156,7 +156,7 @@ class ODHFront {
               getAsyncDom('#header .header-guide .guide-item',()=>{
                     this.pageBeautify.addMouseAnimation()
                     this.pageBeautify.personBeautify();
-                    if(!REG.index.test(href) && this.options.Dev_indexBlurSW){
+                    if(REG.index.test(href) && this.options.Dev_indexBlurSW){
                       this.pageBeautify.indexBeautify();
                     }
               })

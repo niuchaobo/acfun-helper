@@ -40,7 +40,7 @@ const defaults = {
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
 const REG = {
-    index:new RegExp('http(s)?:\\/\\/www.acfun.cn$'),//视频
+    index:new RegExp('http(s)?://www.acfun.cn/$'),
     video:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+'),//视频
     bangumi:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*'),//番剧
     article:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+'),//文章
