@@ -507,8 +507,8 @@ span.go-live {
     opacity: 0;
     font-size: 12px;
     transition-duration: .3s;
-    animation: ff 1s 1s cubic-bezier(1, 0, 1, 1);;
-    -webkit-animation: ff 1s 1s cubic-bezier(1, 0, 1, 1);;
+    animation: ff 1s 1s cubic-bezier(1, 0, 1, 1);
+    -webkit-animation: ff 1s 1s cubic-bezier(1, 0, 1, 1);
 }
 
 @-webkit-keyframes ff {
