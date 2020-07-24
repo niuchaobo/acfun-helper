@@ -16,6 +16,7 @@ class ODHBack {
         this.MsgNotfs.fetchPushList();
         this.MsgNotfs.liveOnlineNotif();
         // this.Upgrade.upgradeMain();
+        // this.Upgrade.checkUpdate();
         // this.MsgNotfs.fetchMcircle();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
@@ -155,7 +156,6 @@ class ODHBack {
             return;
         }
         if (details.reason === 'update') {
-            //todo 发送桌面通知
             chrome.notifications.create(null, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',

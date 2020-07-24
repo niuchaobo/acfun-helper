@@ -35,6 +35,7 @@ const defaults = {
     endedAutoExitFullscreensw:false,
     easySearchScanForPlayerTimesw:false,
     Dev_indexBlurSW:false,
+    Upgradeable: 0,
 
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
