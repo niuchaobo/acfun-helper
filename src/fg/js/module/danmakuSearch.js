@@ -6,8 +6,8 @@ class Search {
     this.i = 0;
     this.lock = true;
     this.pageNum = 1;
-    this.otherColor = { background: "#ff00001f", color: "#999999" }
-    this.selectColor = { background: "red", color: "white" }
+    this.otherColor = { background: "#ff00001f", color: "#999999" };
+    this.selectColor = { background: "red", color: "white" };
     this.content = `
     <div id='acfun-helper-search'>
         <div id="acfun-helper-search-title">弹幕搜索</div>
@@ -24,87 +24,32 @@ class Search {
                 ✕
             </div>
         </div>
-    </div>`
+    </div>`;
 
-    this.searchContent = () => {
-      $(this.content).appendTo($(".list-title"));
-    };
-    this.danmakuSearchProgress = (e) => {
-      let action = e.target.id;
-      let range = this.searchList.length;
-      if (action === "acfun-helper-search-title") {
-        $("#acfun-helper-search>div").addClass("search-hidden");
-      }
-      if (action === "acfun-helper-search-button" || e.keyCode === 13) {
-        if (!this.lock) return;
-        this.startSearch();
-      }
-      if (action === "acfun-helper-search-next") {
-        let changePage = !$(".next-page").hasClass("disabled");
-        this.i = this.i + 1;
-        if (this.i == range || range === 0) {
-          if (changePage) {
-            $(".next-page").click();
-            this.pageNum++;
-            this.i = 0;
-            return;
-          } else {
-            this.i = 0;
-          }
-        }
-        let target = this.i;
-        this.danmakuSearchJump(this.searchList, target);
-      }
-      if (action === "acfun-helper-search-last") {
-        let changePage = !$(".last-page").hasClass("disabled");
-        this.i = this.i - 1;
-        if (this.i === -1 || range === 0) {
-          if (changePage) {
-            $(".last-page").click();
-            this.pageNum--;
-            this.i = "end";
-            return;
-          } else {
-            this.i = range - 1;
-          }
-        }
-        let target = this.i;
-        this.danmakuSearchJump(this.searchList, target);
-      }
-      if (action === "acfun-helper-search-close") {
-        this.buttonStatusChange(true);
-        $("#acfun-helper-search-input").val("");
-        $("#acfun-helper-search>div").removeClass("search-hidden");
-        $(".danmaku-items").unbind("DOMNodeInserted");
-        this.searchList.forEach((item, index) => {
-          $(item.item).css({ background: "", color: "" });
-        });
-        this.searchList = [];
-        this.i = 0;
-      }
-    };
-    }
-  inject(){
-    this.searchContent();
+  }
+
+  inject() {
+    $(this.content).appendTo($(".list-title"));
     this.searchBind();
-  };
+  }
+
   searchBind() {
     $("#acfun-helper-search-input").bind("focus", () => {
       this.lock = true;
       this.buttonStatusChange(true);
     });
-    $("#acfun-helper-search").bind(
-      "click",
-      throttle(this.danmakuSearchProgress, 200)
+    $("#acfun-helper-search").bind("click", throttle(this.danmakuSearchProgress, 200).bind(this)
     );
-    $("#acfun-helper-search").bind("keypress", this.danmakuSearchProgress);
+    $("#acfun-helper-search").bind("keypress", this.danmakuSearchProgress.bind(this));
     $(".danmaku-page").bind("click", (e) => {
-        if($(e.target).hasClass('last-page') || $(e.target).hasClass('next-page')){
-            this.pageNum = $(".cur-page span:first").text().trim().slice(1, -1);
-        }
-        if($(e.target).attr('data-page')){
-            this.pageNum = e.target.innerText.slice(1, -1)
-        }
+      if (
+        $(e.target).hasClass("last-page") || $(e.target).hasClass("next-page")
+      ) {
+        this.pageNum = $(".cur-page span:first").text().trim().slice(1, -1);
+      }
+      if ($(e.target).attr("data-page")) {
+        this.pageNum = e.target.innerText.slice(1, -1);
+      }
     });
   }
 
@@ -124,6 +69,9 @@ class Search {
     let input = $("#acfun-helper-search-input");
     let text = input.val();
     if (!text) return;
+    $('#danmaku').bind('mouseleave',()=>{
+            $('#acfun-helper-search-close').trigger('click')
+    })
     input.blur();
     this.firstSearchInit();
     getAsyncDom("danmaku-item", this.danmakuSearch.bind(this, text), 200).then(
@@ -135,6 +83,72 @@ class Search {
         this.searchCounterReload();
       }
     );
+  }
+
+    danmakuSearchProgress(e){
+      let action = e.target.id;
+      if (action === "acfun-helper-search-title") {
+        $("#acfun-helper-search>div").addClass("search-hidden");
+      }
+      if (action === "acfun-helper-search-button" || e.keyCode === 13) {
+        if (!this.lock) return;
+        this.startSearch();
+      }
+      if (action === "acfun-helper-search-next") {
+        this.searchNext()
+      }
+      if (action === "acfun-helper-search-last") {
+        this.searchLast()
+      }
+      if (action === "acfun-helper-search-close") {
+        this.searchClose()
+      }
+    };
+
+  searchNext(){
+    let changePage = !$(".next-page").hasClass("disabled");
+    this.i = this.i + 1;
+    if (this.i == this.searchList.length || this.searchList.length === 0) {
+      if (changePage) {
+        $(".next-page").click();
+        this.pageNum++;
+        this.i = 0;
+        return;
+      } else {
+        this.i = 0;
+      }
+    }
+    let target = this.i;
+    this.danmakuSearchJump(this.searchList, target);
+  }
+
+  searchLast(){
+    let changePage = !$(".last-page").hasClass("disabled");
+    this.i = this.i - 1;
+    if (this.i === -1 || this.searchList.length === 0) {
+      if (changePage) {
+        $(".last-page").click();
+        this.pageNum--;
+        this.i = "end";
+        return;
+      } else {
+        this.i = this.searchList.length - 1;
+      }
+    }
+    let target = this.i;
+    this.danmakuSearchJump(this.searchList, target);
+  }
+  searchClose(){
+    this.buttonStatusChange(true);
+    $("#acfun-helper-search-input").val("");
+    $("#acfun-helper-search>div").removeClass("search-hidden");
+    $(".danmaku-items").unbind("DOMNodeInserted");
+    $("#danmaku").unbind('mouseleave')
+    this.searchList.forEach((item, index) => {
+      $(item.item).css({ background: "", color: "" });
+    });
+    this.searchList = [];
+    this.i = 0;
   }
 
   danmakuSearchJump(searchList = [], i) {
@@ -163,10 +177,7 @@ class Search {
     $(".danmaku-items").bind(
       "DOMNodeInserted",
       debounce(() => {
-        this.pageChange(this.pageNum).then((res) => {
-          if (res) {
-            return;
-          }
+          this.pageChange(this.pageNum)
           this.buttonStatusChange(true);
           $("#danmaku .list-body").scrollTop(0);
           let text = $("#acfun-helper-search-input").val();
@@ -179,7 +190,6 @@ class Search {
             this.danmakuSearchJump(this.searchList, this.i);
             this.buttonStatusChange(false);
           });
-        });
       }, 500)
     );
   }
@@ -192,21 +202,12 @@ class Search {
       for (let i = 0; i < range; i++) {
         $(".next-page").click();
       }
-      return new Promise((res) => {
-        res(true);
-      });
     }
     if (distance < 0) {
       for (let i = 0; i < range; i++) {
         $(".last-page").click();
       }
-      return new Promise((res) => {
-        res(true);
-      });
     }
-    return new Promise((res) => {
-      res(false);
-    });
   }
 
   danmakuSearch(text) {
@@ -214,7 +215,7 @@ class Search {
     const a = $("#danmaku .danmaku-item").get();
     a.forEach((item, index) => {
       if (text === item.getAttribute("data-message")) {
-          danmakuList.push({
+        danmakuList.push({
           time: item.getAttribute("data-time"),
           offsetTop: $(item).offset().top - $(".list-body").offset().top,
           pageNum: 1,

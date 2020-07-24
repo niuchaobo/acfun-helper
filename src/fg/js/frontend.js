@@ -12,18 +12,17 @@ class ODHFront {
     this.banana = new Banana(); //自动投蕉
     this.videoSetting = new VideoSetting(); //视频播放设置：自定义倍速、观影模式等
     this.danmaku = new Danmaku(); //弹幕服务
-    this.search = new Search();//弹幕列表搜索
+    this.danmusearch = new Search();//弹幕列表搜索
 
     this.playerconfig = new PlayerConfig(); //播放器和部分页面配置处理
     this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
-
+    
     chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
     window.addEventListener("message", (e) => this.onFrameMessage(e)); //接收来自iframe的消息
+    
     //页面的全部资源加载完后才会执行 包括 图片 视频等
     window.addEventListener("load", (e) => {
-        setTimeout(()=>{
-            this.onLoad(e)
-        },500)
+            this.onLoad(e) //屏蔽广告等功能需要及时运行 不能添加延时，最好能做功能拆分细分各功能运行时间
     });
     //Dom 渲染完即可执行 此时图片视频还可能没加载完
     document.addEventListener("DOMContentLoaded", (e) =>
@@ -88,7 +87,7 @@ class ODHFront {
     async onDomContentLoaded(e){
         this.options = await optionsLoad();
         // console.log("options",this.options);
-
+        const isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
         let href = window.location.href;
         if(!this.options.enabled){
           return;
@@ -128,15 +127,16 @@ class ODHFront {
         //播放器和弹幕功能
         if(REG.video.test(href)){
             this.danmaku.cacheStore();
-            this.videoSetting.callPicktureInPictureMode();
+            isChrome && this.videoSetting.callPicktureInPictureMode()
             if(this.options.autoJumpLastWatchSw){
                 this.videoSetting.jumpLastWatchTime();
             }
         }
         //配置同步
         this.playerconfig.PConfProc();
+        //直播画中画模式
         if(REG.live.test(href)){
-            this.videoSetting.callPicktureInPictureModeForLive();
+            isChrome && this.videoSetting.callPicktureInPictureModeForLive()
         }
     }
 
@@ -222,6 +222,12 @@ class ODHFront {
           if(this.options.PlaybackRateKeysw){
             this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
           }
+          //弹幕列表搜索
+          if(this.options.PlayerDamakuSearchSw){
+                getAsyncDom('.list-title',()=>{
+                    this.danmusearch.inject();
+                })
+            }
           //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
           this.videoSetting.monitorFullScreen();
           getAsyncDom('.ac-pc-comment',()=>{

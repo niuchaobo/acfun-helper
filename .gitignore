@@ -24,3 +24,4 @@
 *.iml
 *.crx
 *.pem
+src/.DS_Store
