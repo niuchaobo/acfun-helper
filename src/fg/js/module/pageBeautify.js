@@ -119,8 +119,8 @@ class PageBeautify {
     style.innerHTML = str;
     window.document.head.appendChild(style);
   }
-  //----------------个人中心------------------------------
 
+  //----------------个人中心------------------------------
   async personBeautify() {
     fetch(this.personInfo)
       .then((res) => {
@@ -183,11 +183,24 @@ class PageBeautify {
       });
   }
 
+  indexBeautify(){
+    console.log("test");
+    let nod = document.createElement("style");
+    let cssStr = ".twinkle{backdrop-filter: blur(2.25926vw)} .nav-fixed{background-color: #f8f8f896;; border-bottom: 0px;backdrop-filter: blur(2.25926vw)} #header{background-color: #f8f8f896;;backdrop-filter: blur(2.25926vw)}"
+    nod.type="text/css";
+    nod.textContent = cssStr;
+    document.head.appendChild(nod);
+  }
+
   hideAds(){
     try {
-        document.querySelector(".app-guide").remove();
-        document.querySelector(".shareCount").remove();
-        document.querySelector(".usemobile").remove();
+      let nod = document.createElement("style");
+      let cssStr = ".usemobile,.shareCount,.app-guide{display:none !important}"
+      nod.type="text/css";
+      nod.textContent = cssStr;
+      document.head.appendChild(nod);
+      // document.querySelector(".shareCount").remove();
+      // document.querySelector(".usemobile").remove();
     } catch (error) {}
     try {
         // document.querySelector(".download-app").remove();
@@ -208,16 +221,20 @@ class PageBeautify {
     before_style.innerHTML = '[data-c-w-header] .header-guide .guide-user .user-avatar img:before{animaition: avatar-wave cubic-bezier(0.22, 0.58, 0.12, 0.98) 0.6s forwards}';
     document.getElementsByTagName('head')[0].appendChild(wave_style);
     document.getElementsByTagName('head')[0].appendChild(before_style);
-    obj.addEventListener('mouseenter',function(){
-        imgObj.style.transform = "scale(1.6)";
-        imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
-        imgObj.style.boxShadow = "0 0 2px 0px #ff0505;";
-    })
-    obj.addEventListener('mouseleave',function(){
-        imgObj.style.transform = "scale(1)";
-        imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
-    })
-}
+    try {
+      obj.addEventListener('mouseenter',function(){
+          imgObj.style.transform = "scale(1.6)";
+          imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
+          imgObj.style.boxShadow = "0 0 2px 0px #ff0505;";
+      })
+      obj.addEventListener('mouseleave',function(){
+          imgObj.style.transform = "scale(1)";
+          imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
+      })
+    } catch (error) {
+      // console.log("[LOG]Frontend-pageBeautify: ")
+    }
+  }
 
   //------------------------------Pc端视频点赞、投桃数------------------------------
   showLikeCount() {
