@@ -417,8 +417,7 @@ function settingHidden() {
 
 function updateVersionIcon(){
     chrome.storage.local.get(["Upgradeable"],  (data)=> {
-        console.log(data)
-        data = 2; //TODO:记得删
+        data = 0; //TODO:记得删
         if(data === 1){
             $('#update-box').css('display','inline-block')
             $('.update-letter').html('助手有轻量更新，点击查看')
