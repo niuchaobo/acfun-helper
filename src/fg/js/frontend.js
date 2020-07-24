@@ -196,6 +196,11 @@ class ODHFront {
             }
             let isUp = adjustVideoUp();
             this.div.show(pageInfo,this.options,'video',isUp);
+            let ConfKey = 'wsyeKfnoCtnemmoCeQ'
+            var curKeyName = ConfKey.split("").reverse().join("");
+            if(this.options[curKeyName]){
+              this.ce.immedComt();
+            }
         }
         //文章
         if(REG.article.test(href)){

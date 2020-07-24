@@ -992,9 +992,7 @@ $(document).ready(function () {
 
     var devSwitchClick = 0
     document.querySelector("#devSwitch").addEventListener('click', function devMode(){
-        console.log(devSwitchClick)
         if(devSwitchClick==5){
-            console.log("show");
             document.querySelectorAll(".devFeature").forEach(function(e){e.style.display="block"});
             mdui.snackbar({
                 message: `已进入特殊模式。`,
@@ -1004,6 +1002,23 @@ $(document).ready(function () {
         devSwitchClick++;
     })
 
+    chrome.storage.local.get(['QeCommentConfKeysw'],function(items){
+        var QeCommentConfKeysw= items.QeCommentConfKeysw;
+        if(QeCommentConfKeysw){
+            document.getElementById('QeCommentConfKeysw').checked='true';
+        }else{
+            document.getElementById('QeCommentConfKeysw').checked=false;
+        }
+        $('#QeCommentConfKeysw').on('click', function () {
+            if(!document.getElementById('QeCommentConfKeysw').checked){
+                document.getElementById('QeCommentConfKeysw').checked=false;
+                chrome.storage.local.set({'QeCommentConfKeysw':false});
+            }else{
+                document.getElementById('QeCommentConfKeysw').checked=true;
+                chrome.storage.local.set({'QeCommentConfKeysw':true});
+            }
+        });
+    });
 
     //=====================评论区评论ID快速跳转================
     chrome.storage.local.get(['commentEasyJump'],function(items){

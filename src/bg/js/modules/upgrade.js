@@ -1,5 +1,5 @@
 /**
- * 定时更新
+ * 定时更新数据
  */
 class UpgradeAgent{
     constructor(){
@@ -22,7 +22,7 @@ class UpgradeAgent{
     }
 
     checkUpdate(){
-        // if(this.ifRightDay()){
+        if(this.ifRightDay()){
             //POST版本号至服务器，服务器对比最新的版本之后返回一个int值，0：不需要更新，1：小版本更新-弱提醒，2：重要功能更新-强提醒(session and cache please)
             var version = null
             $.get(chrome.extension.getURL("manifest.json"),function(content){
@@ -51,7 +51,7 @@ class UpgradeAgent{
                 }
             });
             },'json');
-        // }
+        }
     }
 
     upgradeMain(){
