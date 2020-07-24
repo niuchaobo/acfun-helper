@@ -84,6 +84,12 @@ class LivePageButfy {
             status ? this.helperDivHide('none'):this.helperDivHide("")
         })
 
+        document.onkeydown=(e)=>{
+            if(e.keyCode === 27){
+               let status = this.judgeIsFullScreen(e.target) 
+               status &&  this.helperDivHide("")
+            }
+        }
         //TODO:esc退出宽屏 各模式esc后div显示 container-player live  data-bind-attr="false" 为小窗口
     }
 
@@ -104,7 +110,9 @@ class LivePageButfy {
         document.getElementsByClassName('face-text-panel')[1].style.right = "-3px";
         document.getElementsByClassName('live-feed')[0].style.borderRadius = "0px";
         $('.main_wide>.right').append('<div id="wide-player-right">▶︎</div>');
-       
+        $(document).one('keydown',(e)=>{
+            e.keyCode === 27 && $('#toggleWide').click()
+        })
         $("#wide-player-right").on('click',(e)=>{
             if($(".live-feed").css("display") === "none"){
                 $(".live-feed").show()    
