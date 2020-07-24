@@ -478,6 +478,7 @@ span.go-live {
     cursor: pointer;
     transform: translate(-18px, -5px) scale(.8);
     display: none;
+    position: absolute;
 }
 
 #update-box>.update-icon {
