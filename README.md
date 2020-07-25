@@ -51,6 +51,7 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 
 31.使用快捷键快速切换倍速   
 32.在视频评论区选中时间使播放器快速跳转   
+33.视频的AB回放功能（两点循环播放）
 
 ---
 #### 插件本体获取

@@ -36,7 +36,7 @@ const defaults = {
     easySearchScanForPlayerTimesw:false,
     Dev_indexBlurSW:false,
     Upgradeable: 0,
-
+    ABPlaysw:false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

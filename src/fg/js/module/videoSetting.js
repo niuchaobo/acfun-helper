@@ -140,6 +140,28 @@ class VideoSetting{
         },1000);
     }
 
+    //AB回放UI
+    AddABPlayUI(){
+        let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB回放</span>
+        <div class="speed-panel">
+            <ul>
+                <li data-val="A" onClick="updateAbPlayStart()">开始与</li>
+                <li data-val="B" onClick="updateAbPlayEnd();">结束于</li>
+                <li onclick="AbPlayHandler();">启用</li>
+                <li onclick="StopAbPlay();">禁用</li>
+            </ul>
+            <div class="transparent-placeholder"></div>
+        </div>
+    </div>`;
+        let _timer = setInterval(function () {
+            let node = $(".box-right");
+            if(node.length>0){
+                node.prepend(html);
+                clearInterval(_timer);
+            }
+        },1000);
+    }
+
     //监听是否为全屏
     monitorFullScreen(){
         //观影模式
