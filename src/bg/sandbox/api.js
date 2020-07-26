@@ -14,7 +14,6 @@ class SandboxAPI {
         });
     }
 
-
     async fetch(url) {
         return await this.postMessage('Fetch', { url });
     }
