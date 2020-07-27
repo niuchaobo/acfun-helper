@@ -1,29 +1,37 @@
-/* global odhback, localizeHtmlPage, utilAsync, optionsLoad, optionsSave */
-import renderLives from "./renderLives.js";
-import toTopButton from "./toTopButton.js";
-import renderMomentCircleHtml from "./renderMomentCircleHtml.js";
-import renderPushInnerHtml from "./renderPushInnerHtml.js";
-import updateVersionIcon from "./updateVersionIcon.js";
+/* global odhback, localizeHtmlPage, utilAsync, optionsLoad, optionsSave updateVersionIcon*/
+import {
+  renderMomentCircleHtml,
+  renderPushInnerHtml,
+  renderLives
+} from "./renderList.js";
 import {
   openUpdateLog,
   openIntroduce,
   openSetting,
   watchLive,
+  onOptionChanged,
+  titleToHome,
+  clickToTop,
+  hideToTopButton
 } from "./popupEvent.js";
-import onOptionChanged from './onOptionChanged.js'
-import unKnownCode from './unKnownCode.js'
-import fetchPushContent from "./fetchPushContent.js";
 
-unKnownCode() //不明代码
+import unKnownCode from "./unKnownCode.js";
+unKnownCode(); //不明代码
+
+function fetchPushContent() {
+  chrome.storage.local.get(["AcpushList"], function (data) {
+    console.log(data);
+    $("#pop-push").append(data.AcpushList);
+  });
+}
 
 async function onReady() {
   localizeHtmlPage(); //global function
   updateVersionIcon(); //更新提醒
   let options = await optionsLoad(); //global function
   //fetchPushContent();
-  renderPushInnerHtml();//稿件动态列表加载
+  renderPushInnerHtml(); //稿件动态列表加载
   renderMomentCircleHtml(); //更多数据
-  toTopButton(); //回到顶部按钮
   renderLives(); //生放送列表加载
   $("#extends-enbaled").prop("checked", options.enabled);
   $("#extends-enbaled").change(onOptionChanged);
@@ -31,10 +39,9 @@ async function onReady() {
   $("#pop-introduce").click(openIntroduce);
   $("#pop-setting").click(openSetting);
   $("#go-live").click(watchLive);
-  $('#pop-title .letter').click(()=>{
-    window.open("https://www.acfun.cn/")
-  })
-  
+  $("#pop-title .letter").click(titleToHome);
+  $(document).scroll(hideToTopButton);
+  $(".toTop").click(clickToTop);
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {

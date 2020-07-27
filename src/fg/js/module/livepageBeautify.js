@@ -200,4 +200,21 @@ class LivePageButfy {
         } catch (error) {}
     }
     
+
+    //直播站增加画中画模式
+    callPicktureInPictureModeForLive(){
+        let cPIP_Livediv = this.cPIP_div;
+        let cPIP_span = this.cPIP_span;
+        let html = cPIP_Livediv + cPIP_span;
+        let _timer = setInterval(function () {
+            let node = $("div.control-btn.setting");
+            if(node.length>0){
+                node.after(html);
+                // onmouseover="$('.tip-pip').style.display='block'" onmouseout="$('.tip-pip').style.display='none'"
+                $(".control-btn.pip").on('mouseover',()=>{$('.tip-pip').css('display','block')})
+                $(".control-btn.pip").on('mouseout',()=>{$('.tip-pip').css('display','none')}) 
+                clearInterval(_timer);
+            }
+        },1000);
+    }
 }

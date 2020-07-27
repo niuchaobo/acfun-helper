@@ -136,7 +136,7 @@ class ODHFront {
         this.playerconfig.PConfProc();
         //直播画中画模式
         if(REG.live.test(href)){
-            isChrome && this.videoSetting.callPicktureInPictureModeForLive()
+            isChrome && this.livepageBeautify.callPicktureInPictureModeForLive()
         }
     }
 

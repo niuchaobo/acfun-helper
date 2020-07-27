@@ -1,3 +1,5 @@
+/* global odhback, optionsLoad, optionsSave*/
+
 export function openUpdateLog() {
   //window.open("update-log.html","_blank");
   var a = $("<a href='update-log.html' target='_blank'></a>").get(0);
@@ -35,3 +37,28 @@ export function watchLive() {
   e.initEvent("click", true, true);
   a.dispatchEvent(e);
 }
+
+export function titleToHome() {
+  window.open("https://www.acfun.cn/");
+}
+
+export function hideToTopButton() {
+  let top = $(".mdui-fab").offset().top;
+  if (top < 2000) {
+    $(".mdui-fab").css({ opacity: "0" });
+  } else {
+    $(".mdui-fab").css({ opacity: "1" });
+  }
+}
+
+export function clickToTop() {
+  $("html,body").animate({ scrollTop: "0px" }, 600);
+}
+
+export async function onOptionChanged(e) {
+    if (!e.originalEvent) return;
+    let options = await optionsLoad();
+    options.enabled = $("#extends-enbaled").prop("checked");
+    let newOptions = await odhback().opt_optionsChanged(options);
+    optionsSave(newOptions);
+  }
