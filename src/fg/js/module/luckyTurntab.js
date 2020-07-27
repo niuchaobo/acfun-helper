@@ -199,10 +199,8 @@ class LuckyTtab {
                     for(let i=0;i<=x.friendList.length;i++){
                         if(x.friendList.userId[i] == FollowUserId){
                             resolve(true)
-                            break
                         }else{
                             resolve(false)
-                            break
                         }
                     }
                 });
@@ -218,13 +216,10 @@ class LuckyTtab {
                 let x = JSON.parse(res);
                 if(x.userjson.isFriend==1){
                     resolve(true)
-                    break;
                 }else if(x.userjson.isFriend==0){
                     resolve(false)
-                    break;
                 }else{
                     resolve(false);
-                    break;
                 }
             })
         })
