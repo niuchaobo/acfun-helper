@@ -90,7 +90,6 @@ class LivePageButfy {
                status &&  this.helperDivHide("")
             }
         }
-        //TODO:esc退出宽屏 各模式esc后div显示 container-player live  data-bind-attr="false" 为小窗口
     }
 
     helperDivHide(i){
