@@ -93,7 +93,7 @@ class ODHFront {
           return;
         }
         //直播站功能
-        if(REG.live.test(href) & this.options.livePlayerEnhc){
+        if(REG.live.test(href) && this.options.livePlayerEnhc){
             let timer = setInterval(()=>{
             let checknode=$('div.box-right');
             if(checknode.length>0){
