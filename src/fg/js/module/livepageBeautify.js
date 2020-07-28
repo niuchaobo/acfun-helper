@@ -203,6 +203,10 @@ class LivePageButfy {
 
     //直播站增加画中画模式
     callPicktureInPictureModeForLive(){
+        const isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
+        if(isChrome){
+            return
+        }
         let cPIP_Livediv = this.cPIP_div;
         let cPIP_span = this.cPIP_span;
         let html = cPIP_Livediv + cPIP_span;

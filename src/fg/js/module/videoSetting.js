@@ -50,6 +50,10 @@ class VideoSetting{
 
     //增加画中画模式
     callPicktureInPictureMode(){
+        const isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
+        if(isChrome){
+            return
+        }
         let cPIP_div = this.cPIP_div;
         let cPIP_span = this.cPIP_span;
         let html = cPIP_div + cPIP_span;
