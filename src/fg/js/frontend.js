@@ -223,6 +223,8 @@ class ODHFront {
           if(this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
           }
+          //全局进度条
+          if(this.options.ProgressBarsw){}else{this.videoSetting.FlexProgressBarws = false;}
           //AB回放
           if(this.options.ABPlaysw){
             this.videoSetting.AddABPlayUI();

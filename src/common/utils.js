@@ -37,6 +37,7 @@ const defaults = {
     Dev_indexBlurSW:false,
     Upgradeable: 0,
     ABPlaysw:false,
+    FlexProgressBarws:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

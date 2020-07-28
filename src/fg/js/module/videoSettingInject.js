@@ -64,6 +64,17 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         }
     }
 
+    if(options.ProgressBarsw){
+        // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
+        document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
+            document.getElementById("achlp-proBar").style.width = document.getElementsByClassName("pro-current")[0].style.width;
+            try {
+                document.getElementById("achlp-proBar-player").style.width = document.getElementsByClassName("pro-current")[0].style.width;
+            } catch (error) {
+            }
+        })
+    }
+
 });
 
 function updateAbPlayStart(){AbPlayStart = Math.floor(document.getElementsByTagName("video")[0].currentTime);console.log("Start At: "+AbPlayStart)}
@@ -89,7 +100,6 @@ function AbPlayHandler(){
         }
     },false);
 }
-
 
 //----------------------自定义倍速------------------------
 function setCustomPlaybackRate(event) {

@@ -1265,6 +1265,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================全局播放进度条===============
+    chrome.storage.local.get(['ProgressBarsw'],function(items){
+        var ProgressBarsw= items.ProgressBarsw;
+        if(ProgressBarsw){
+            document.getElementById('ProgressBarsw').checked='true';
+        }else{
+            document.getElementById('ProgressBarsw').checked=false;
+        }
+        $('#ProgressBarsw').on('click', function () {
+            if(!document.getElementById('ProgressBarsw').checked){
+                document.getElementById('ProgressBarsw').checked=false;
+                chrome.storage.local.set({'ProgressBarsw':false});
+            }else{
+                document.getElementById('ProgressBarsw').checked=true;
+                chrome.storage.local.set({'ProgressBarsw':true});
+            }
+        });
+    });
+
     //====================配置播放器画质策略===============
     chrome.storage.local.get(['videoQualityStrategy'],function(items){
         $('#videoQualityStrategy_state').append(items.videoQualityStrategy)
