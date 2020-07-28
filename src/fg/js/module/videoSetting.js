@@ -149,7 +149,7 @@ class VideoSetting{
                     let x = document.createElement("div");
                     x.id = "achlp-proBar";
                     x.style.cssText="z-index: 999;background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;"
-                    document.getElementsByClassName("mdui-loaded")[0].append(x);
+                    document.body.append(x);
                     break;
                 case 'player':
                     let y = document.createElement("div");
@@ -166,7 +166,6 @@ class VideoSetting{
         
     //AB回放UI
     AddABPlayUI(){
-        this.FlexProgressBar('out');
         let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB回放</span>
         <div class="speed-panel">
             <ul>
