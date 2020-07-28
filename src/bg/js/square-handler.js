@@ -17,20 +17,18 @@ async function contentHandler(){
         let mid = x.feedList[index].moment.momentId
         let card = `<br>
         <div class="mdui-card">
-        <!-- 卡片头部，包含头像、标题、副标题 -->
         <div class="mdui-card-header">
           <img class="mdui-card-header-avatar" src="${avatar}"/>
           <div class="mdui-card-header-title">${Uname}</div>
           <div class="mdui-card-header-subtitle">${sign}</div>
         </div>`
         if(Boolean(pic)){card +=
-        `<!-- 卡片的媒体内容，可以包含图片、视频等媒体内容，以及标题、副标题 -->
+        `
         <div class="mdui-card-media">
           <img class="mediaPic" src="${pic}"/>
         </div>`}
         card+=
         `
-        <!-- 卡片的内容 -->
         <div class="mdui-card-content">${content}</div>
         <div class="mdui-card-actions">
         <button class="mdui-btn mdui-ripple checkIt" data-key=${mid}><a class="btn-a" href="https://m.acfun.cn/communityCircle/moment/${mid}" target="_blank">查看</a></button>
