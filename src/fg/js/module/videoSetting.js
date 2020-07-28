@@ -50,7 +50,7 @@ class VideoSetting{
 
     //增加画中画模式
     callPicktureInPictureMode(){
-        const isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
+        const isChrome = navigator.userAgent.indexOf("Chrome") === -1;
         if(isChrome){
             return
         }

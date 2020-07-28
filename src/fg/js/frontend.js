@@ -238,8 +238,6 @@ class ODHFront {
                     this.danmusearch.inject();
                 })
             }
-          //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
-          this.videoSetting.monitorFullScreen();
           //评论空降
           if(this.options.PlayerTimeCommentEasyJump){
             getAsyncDom('.ac-pc-comment',()=>{
