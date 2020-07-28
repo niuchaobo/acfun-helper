@@ -9,7 +9,6 @@ async function catList(){
         nod.textContent = a.categories[index].categoryName;
         document.getElementById("topicList").append(nod);
         // console.log(nod);
-
         let nod2 = document.createElement("div");
         nod2.id = `topicClass`+a.categories[index].categoryId;
         nod2.classList = "mdui-p-a-2";
@@ -33,8 +32,8 @@ async function catFeeds(catId){
         let mediaSubtitle = a.tag[index].tagCountStr +" - "+ a.tag[index].summary
         let dataKey = a.tag[index].id
         let mediaCard = `<div class="mdui-card contentcard">
-        <div class="mdui-card-media">
-          <img src="${mediaPic}" style="max-height: 330px"/>
+        <div class="mdui-card-media" style="max-height: 330px">
+          <img src="${mediaPic}"/>
           <div class="mdui-card-media-covered">
             <div class="mdui-card-primary">
               <div class="mdui-card-primary-title">${mediaTitle}</div>
