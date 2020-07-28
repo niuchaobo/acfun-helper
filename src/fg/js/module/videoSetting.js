@@ -145,7 +145,7 @@ class VideoSetting{
         let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB回放</span>
         <div class="speed-panel">
             <ul>
-                <li data-val="A" onClick="updateAbPlayStart()">开始与</li>
+                <li data-val="A" onClick="updateAbPlayStart()">开始于</li>
                 <li data-val="B" onClick="updateAbPlayEnd();">结束于</li>
                 <li onclick="AbPlayHandler();">启用</li>
                 <li onclick="StopAbPlay();">禁用</li>

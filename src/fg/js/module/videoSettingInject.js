@@ -68,7 +68,14 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
 
 function updateAbPlayStart(){AbPlayStart = Math.floor(document.getElementsByTagName("video")[0].currentTime);console.log("Start At: "+AbPlayStart)}
 function updateAbPlayEnd(){AbPlayEnd = Math.floor(document.getElementsByTagName("video")[0].currentTime);console.log("End At: "+AbPlayEnd)}
-function StopAbPlay(){AbPlayFlag = 1;console.log("End")}
+function StopAbPlay(){
+    AbPlayFlag = 1;console.log("End");
+    document.getElementsByClassName("left-bottom-tip")[0].innerHTML=`<div class="tip-item muted"><div class="left-bottom-tip-text"><span>已关闭AB回放</span></div></div>`;
+    var _timer = setTimeout(() => {
+        document.getElementsByClassName("left-bottom-tip")[0].innerHTML="";
+        clearInterval(_timer);
+    }, 2000);
+}
 function AbPlayHandler(){
     AbPlayFlag = 0;
     document.getElementsByTagName("video")[0].currentTime = AbPlayStart;

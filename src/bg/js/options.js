@@ -1132,7 +1132,6 @@ $(document).ready(function () {
         });
     });
 
-
     //=====================AB回放================
     chrome.storage.local.get(['ABPlaysw'],function(items){
         var ABPlaysw= items.ABPlaysw;

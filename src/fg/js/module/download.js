@@ -165,17 +165,21 @@ class Download{
     }
 
     downloadDanmaku(){
-        let e = JSON.parse(sessionStorage.getItem("danmakuCache"));
-        var blob = new Blob([e.msg], { type: 'application/octet-stream' });
-        var url = window.URL.createObjectURL(blob);
-        var saveas = document.createElement('a');
-        saveas.href = url;
-        saveas.style.display = 'none';
-        document.body.appendChild(saveas);
-        saveas.download = `${e.acId}.json`;
-        saveas.click();
-        setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
-        document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
+        try {
+            let e = JSON.parse(sessionStorage.getItem("danmakuCache"));
+            var blob = new Blob([e.msg], { type: 'application/octet-stream' });
+            var url = window.URL.createObjectURL(blob);
+            var saveas = document.createElement('a');
+            saveas.href = url;
+            saveas.style.display = 'none';
+            document.body.appendChild(saveas);
+            saveas.download = `${e.acId}.json`;
+            saveas.click();
+            setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
+            document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
+        } catch (error) {
+            alert("可能遇到了某些错误，请刷新一下页面。")
+        }
     }
 
 }
