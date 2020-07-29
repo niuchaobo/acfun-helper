@@ -228,6 +228,12 @@ class ODHFront {
           if(this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
           }
+          //全局进度条
+          if(this.options.ProgressBarsw){this.videoSetting.FlexProgressBar('out');}else{this.videoSetting.FlexProgressBarws = false;}
+          //AB回放
+          if(this.options.ABPlaysw){
+            this.videoSetting.AddABPlayUI();
+          }
           //倍速切换的快捷键
           if(this.options.PlaybackRateKeysw){
             this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
