@@ -140,15 +140,18 @@ class VideoSetting{
                     document.body.append(x);
                     break;
                 case 'player':
+                    if(this.ifAddProBar){break};
                     let y = document.createElement("div");
                     y.id = "achlp-proBar-player";
                     y.style.cssText="background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;"
                     document.getElementsByClassName("container-video")[0].append(y);
-                    if(this.ifAddProBar){return}
+                    this.ifAddProBar?this.ifAddProBar=false:this.ifAddProBar=true;
+                    break;
                 case 'remove-player':
                     document.getElementById("achlp-proBar-player").remove();
+                    this.ifAddProBar?this.ifAddProBar=false:this.ifAddProBar=true;
+                    break;
             }
-            this.ifAddProBar?this.ifAddProBar=false:this.ifAddProBar=true;
         }
     }
         
