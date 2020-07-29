@@ -187,7 +187,7 @@ class LuckyTtab {
         })    
     }
 
-    async isFollowed(QueryUserId,FollowUserId){
+    async isFollowed_old(QueryUserId,FollowUserId){
         //判断查询用户关注列表是否存在Follow的用户UID
         //直接使用会出现CORB跨域问题
         let qHdr=Number(await this.getFollowingNum(QueryUserId).then((res)=>{return res}))/100;
@@ -202,17 +202,34 @@ class LuckyTtab {
                     for(let i=0;i<=x.friendList.length;i++){
                         if(x.friendList.userId[i] == FollowUserId){
                             resolve(true)
-                            break
                         }else{
                             resolve(false)
-                            break
                         }
                     }
                 });
         })    
     }
 
-    //code by Sokwva
+
+    async isFollowed(QueryUserId){
+        //使用用github@BDPO这位acer的新 判断是否关注PO主 的解决办法
+        let checkApi = "https://www.acfun.cn/usercard.aspx?uid="+String(QueryUserId);
+        return new Promise((resolve,reject)=>{
+            fetch(checkApi).then((res)=>{return res.text();})
+            .then((res)=>{
+                let x = JSON.parse(res);
+                if(x.userjson.isFriend==1){
+                    resolve(true)
+                }else if(x.userjson.isFriend==0){
+                    resolve(false)
+                }else{
+                    resolve(false);
+                }
+            })
+        })
+    }
+
+
     async RollOut(acid,num){
         //主函数
         let y = await this.getVCdetailCommentData(acid).then((res)=>{return res});

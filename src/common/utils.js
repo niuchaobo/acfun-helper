@@ -36,7 +36,8 @@ const defaults = {
     easySearchScanForPlayerTimesw:false,
     Dev_indexBlurSW:false,
     Upgradeable: 0,
-
+    ABPlaysw:false,
+    FlexProgressBarws:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -147,12 +148,40 @@ function localizeHtmlPage() {
         );
       }
     }
-    el.innerHTML = DOMPurify.sanitize(
-      chrome.i18n.getMessage(el.getAttribute("data-i18n"))
-    );
+    el.innerHTML = DOMPurify.sanitize( chrome.i18n.getMessage(el.getAttribute("data-i18n")));
+    //火狐警告使用innerHTML添加标签 ⬇
+    // HTMLElement.prototype.htmlContent = function(html){
+    //     var dom = new DOMParser().parseFromString('<template>'+html+'</template>', 'text/html').head;
+    //     this.appendChild(dom.firstElementChild.content);
+    // }
+    // el.htmlContent( DOMPurify.sanitize(chrome.i18n.getMessage(el.getAttribute("data-i18n"))));
+    
   }
 }
 
+function updateVersionIcon(){
+    chrome.storage.local.get(["Upgradeable"],  (data)=> {
+        if(data.Upgradeable === 1){
+            $('#update-box').css('display','inline-block')
+            $('.update-letter').html('助手有轻量更新，点击查看')
+            $('.head').addClass('lightUpdate')
+            $('#update-box').click(()=>{
+                window.open('https://www.acfun.cn/u/7054138')
+            })
+            return
+        }
+        if(data.Upgradeable === 2){
+            $('#update-box').css('display','inline-block')
+            $('.update-letter').html('助手有重大更新，点击查看')
+            $('.update-icon').css('background','red')
+            $('#update-box').click(()=>{
+                window.open('https://www.acfun.cn/u/7054138')
+            })
+            $('.head').addClass('heavyUpdate')
+            return 
+        }
+      }); 
+}
 async function getKeyFromDb(ticket) {
   return new Promise((resolve, reject) => {
     $.ajax({

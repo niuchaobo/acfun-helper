@@ -283,10 +283,19 @@
                         </div>            
                       </div>
                     </div>
+                    
+                  </div>
+                </div>
 
-                    <div class="mdui-panel-item-actions">
-                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                      <button class="mdui-btn mdui-ripple">保存</button>
+                <div class="mdui-panel-item mdui-panel-item-open">
+                  <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">广场</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                  </div>
+                  <div class="mdui-panel-item-body">
+
+                    <div class="mdui-container-fluid">
+                      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/square.html" target="_blank">进入小广场</a></button>
                     </div>
                   </div>
                 </div>
@@ -727,6 +736,22 @@
 
                     <div class="mdui-container-fluid">
                       <div class="mdui-col-xs-9">
+                        <h2>视频AB回放</h2>
+                      </div>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">可以在播放器中指定AB两个时间点，令播放器在这两点中循环播放</div>
+                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                            <input id="ABPlaysw" type="checkbox" />
+                            <i class="mdui-switch-icon"></i>
+                          </label>
+                        </div>
+                        </div>            
+                      </div>
+                    </div>
+
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-col-xs-9">
                         <h2>倍速切换快捷键</h2>
                       </div>
                       <div class="mdui-row">
@@ -734,6 +759,22 @@
                         <div class="mdui-col-xs-4 mdui-col-sm-6">
                           <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                             <input id="PlaybackRateKeysw" type="checkbox" />
+                            <i class="mdui-switch-icon"></i>
+                          </label>
+                        </div>
+                        </div>            
+                      </div>
+                    </div>
+
+                    <div class="mdui-container-fluid">
+                      <div class="mdui-col-xs-9">
+                        <h2>全局播放器进度条</h2>
+                      </div>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-8 mdui-col-sm-6">在页面和网页全屏时增加一个进度条，以提示当前播放进度</div>
+                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                            <input id="ProgressBarsw" type="checkbox" />
                             <i class="mdui-switch-icon"></i>
                           </label>
                         </div>
@@ -960,6 +1001,10 @@
                   28.增加强制跳转到上次观看的时间（功能受到限制）<br>
                   29.弹幕内容搜索和快速跳转<br>
                   30.播放完毕自动退出网页全屏或宽屏模式<br>
+		</p>
+		<p>
+		  31.使用快捷键快速切换倍速<br> 
+		  32.在视频评论区选中时间使播放器快速跳转
                 </p>
                 <hr>                
 

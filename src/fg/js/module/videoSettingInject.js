@@ -1,3 +1,6 @@
+var AbPlayStart = 0;
+var AbPlayEnd = 0;
+var AbPlayFlag = 0;
 //----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
 var hiddenDiv = document.getElementById('myCustomEventDiv');
@@ -61,7 +64,45 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         }
     }
 
+    if(options.ProgressBarsw){
+        // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
+        try {
+            document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
+                document.getElementById("achlp-proBar").style.width = document.getElementsByClassName("pro-current")[0].style.width;
+                try {
+                    document.getElementById("achlp-proBar-player").style.width = document.getElementsByClassName("pro-current")[0].style.width;
+                } catch (error) {
+                }
+            })
+        } catch (error) {
+        }
+    }
+
 });
+
+function updateAbPlayStart(){AbPlayStart = Math.floor(document.getElementsByTagName("video")[0].currentTime);console.log("Start At: "+AbPlayStart)}
+function updateAbPlayEnd(){AbPlayEnd = Math.floor(document.getElementsByTagName("video")[0].currentTime);console.log("End At: "+AbPlayEnd)}
+function StopAbPlay(){
+    AbPlayFlag = 1;console.log("End");
+    document.getElementsByClassName("left-bottom-tip")[0].innerHTML=`<div class="tip-item muted"><div class="left-bottom-tip-text"><span>已关闭AB回放</span></div></div>`;
+    var _timer = setTimeout(() => {
+        document.getElementsByClassName("left-bottom-tip")[0].innerHTML="";
+        clearInterval(_timer);
+    }, 2000);
+}
+function AbPlayHandler(){
+    AbPlayFlag = 0;
+    document.getElementsByTagName("video")[0].currentTime = AbPlayStart;
+    document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
+        if(AbPlayFlag==0){
+            if(Math.floor(window.player.currentTime) == AbPlayEnd){
+                document.getElementsByTagName("video")[0].currentTime = AbPlayStart;
+            }
+        }else{
+            return;
+        }
+    },false);
+}
 
 //----------------------自定义倍速------------------------
 function setCustomPlaybackRate(event) {

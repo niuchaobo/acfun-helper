@@ -1,6 +1,7 @@
 class ODHFront {
   constructor() {
     this.options = null;
+    this.href = null;
     this.div = new Div(); //右侧助手
     this.block = new Block(); //up主过滤
     this.pageBeautify = new PageBeautify(); //界面美化
@@ -20,14 +21,8 @@ class ODHFront {
     chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
     window.addEventListener("message", (e) => this.onFrameMessage(e)); //接收来自iframe的消息
     
-    //页面的全部资源加载完后才会执行 包括 图片 视频等
-    window.addEventListener("load", (e) => {
-            this.onLoad(e) //屏蔽广告等功能需要及时运行 不能添加延时，最好能做功能拆分细分各功能运行时间
-    });
-    //Dom 渲染完即可执行 此时图片视频还可能没加载完
-    document.addEventListener("DOMContentLoaded", (e) =>
-      this.onDomContentLoaded(e)
-    );
+    this.loading()
+    
     //监听storage变化,可用于数据云同步
     chrome.storage.onChanged.addListener(function (changes, areaName) {
       // console.log('11111111111111111')
@@ -81,19 +76,29 @@ class ODHFront {
   }
 
   
-
-
-
-    async onDomContentLoaded(e){
-        this.options = await optionsLoad();
-        // console.log("options",this.options);
-        const isChrome = navigator.userAgent.indexOf("Chrome") !== -1;
-        let href = window.location.href;
-        if(!this.options.enabled){
-          return;
+    async loading(){
+        this.options = await optionsLoad()
+        if (!this.options.enabled) {
+            return
         }
+        this.href = window.location.href;
+        //页面未加载完成式执行的方法 (提前注入的css/dom..)
+        //this.unLoad()
+        //页面的全部资源加载完后才会执行 包括 图片 视频等
+        window.addEventListener("load", (e) => {
+            this.onLoad(e)
+        });
+        //Dom 渲染完即可执行 此时图片视频还可能没加载完
+        document.addEventListener("DOMContentLoaded", (e) =>{
+            this.onDomContentLoaded(e)
+        });
+    }
+
+    onDomContentLoaded(e){
+        // console.log("options",this.options);
+        let href = this.href;
         //直播站功能
-        if(REG.live.test(href) & this.options.livePlayerEnhc){
+        if(REG.live.test(href) && this.options.livePlayerEnhc){
             let timer = setInterval(()=>{
             let checknode=$('div.box-right');
             if(checknode.length>0){
@@ -103,6 +108,24 @@ class ODHFront {
             }
         },3000)
         }
+        //直播首页及页面优化
+        if(!REG.live.test(href) && !REG.liveIndex.test(href)){
+            //首页个人资料弹框 (未完成)
+            if(this.options.beautify_personal){
+                getAsyncDom('#header .header-guide .guide-item',()=>{
+                      this.pageBeautify.addMouseAnimation()
+                      this.pageBeautify.personBeautify();
+                })
+            }
+            //隐藏ad
+            if(this.options.hideAd){
+                this.pageBeautify.hideAds();
+            }
+            //仅首页nav高斯模糊(隐藏功能)
+            if(REG.index.test(href) && this.options.Dev_indexBlurSW){
+              this.pageBeautify.indexBeautify();
+            }
+          }
         //添加自定义样式
         this.addStyle();
         if(this.options.filter){
@@ -117,7 +140,7 @@ class ODHFront {
             this.videoSetting.videoQuality();
         }
         //开启右侧导航
-        if(this.options.beautify_nav){
+        if(REG.index.test(href) && this.options.beautify_nav){
             this.pageBeautify.navBeautify();
         }
         //显示点赞数
@@ -127,7 +150,7 @@ class ODHFront {
         //播放器和弹幕功能
         if(REG.video.test(href)){
             this.danmaku.cacheStore();
-            isChrome && this.videoSetting.callPicktureInPictureMode()
+            this.videoSetting.callPicktureInPictureMode()
             if(this.options.autoJumpLastWatchSw){
                 this.videoSetting.jumpLastWatchTime();
             }
@@ -136,41 +159,22 @@ class ODHFront {
         this.playerconfig.PConfProc();
         //直播画中画模式
         if(REG.live.test(href)){
-            isChrome && this.videoSetting.callPicktureInPictureModeForLive()
+            this.livepageBeautify.callPicktureInPictureModeForLive()
         }
     }
 
-
-    async onLoad(e){
+    onLoad(e){
         //tab页创建时会从bg发消息过来写入options数据,但可能存在延迟
-        this.options = await optionsLoad();
-        if(!this.options.enabled){
-            return;
-        }
         //根据cookie判断当前登录用户是不是up
         //let is_up = this.adjuatUp();
-        let href = window.location.href;
-        //页面优化
-        if(!REG.live.test(href) && !REG.liveIndex.test(href)){
-          if(this.options.beautify_personal){
-              getAsyncDom('#header .header-guide .guide-item',()=>{
-                    this.pageBeautify.addMouseAnimation()
-                    this.pageBeautify.personBeautify();
-                    if(REG.index.test(href) && this.options.Dev_indexBlurSW){
-                      this.pageBeautify.indexBeautify();
-                    }
-              })
-          }
-          if(this.options.hideAd){
-              this.pageBeautify.hideAds();
-          }
-        }
+        let href = this.href;
+        //直播ad屏蔽
         if(this.options.liveHideAd && REG.liveIndex.test(href)){
             this.livepageBeautify.LivehideAds();
         }
         //直播站首页用户屏蔽
         if(this.options.liveBansw & REG.liveIndex.test(href)){
-          this.block.liveUserBlock();
+            this.block.liveUserBlock();
         }
         //开启屏蔽功能
         if(this.options.filter){
@@ -216,12 +220,19 @@ class ODHFront {
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live','');
         }
+        //视频与番剧页面功能
         if((REG.video.test(href) || REG.bangumi.test(href))){
           //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
           this.videoSetting.monitorFullScreen();
           //自定义倍速
           if(this.options.custom_rate){
             this.videoSetting.customPlaybackRate();
+          }
+          //全局进度条
+          if(this.options.ProgressBarsw){this.videoSetting.FlexProgressBar('out');}else{this.videoSetting.FlexProgressBarws = false;}
+          //AB回放
+          if(this.options.ABPlaysw){
+            this.videoSetting.AddABPlayUI();
           }
           //倍速切换的快捷键
           if(this.options.PlaybackRateKeysw){
@@ -233,16 +244,18 @@ class ODHFront {
                     this.danmusearch.inject();
                 })
             }
-          //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
-          this.videoSetting.monitorFullScreen();
-          getAsyncDom('.ac-pc-comment',()=>{
-            if(this.options.PlayerTimeCommentEasyJump){
-              this.ce.searchScanForPlayerTime();
-            }
-            if(this.options.easySearchScanForPlayerTimesw){
-              this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-            }
-          });
+          //评论空降
+          if(this.options.PlayerTimeCommentEasyJump){
+            getAsyncDom('.ac-pc-comment',()=>{
+                this.ce.searchScanForPlayerTime();
+            });
+          }
+          //快捷键空降
+          if(this.options.easySearchScanForPlayerTimesw){
+            getAsyncDom('.ac-pc-comment',()=>{
+                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+            });
+          }
           this.authInfo.cookInfo();
         }
     }

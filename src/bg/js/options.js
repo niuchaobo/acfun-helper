@@ -1132,6 +1132,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================AB回放================
+    chrome.storage.local.get(['ABPlaysw'],function(items){
+        var ABPlaysw= items.ABPlaysw;
+        if(ABPlaysw){
+            document.getElementById('ABPlaysw').checked='true';
+        }else{
+            document.getElementById('ABPlaysw').checked=false;
+        }
+        $('#ABPlaysw').on('click', function () {
+            if(!document.getElementById('ABPlaysw').checked){
+                document.getElementById('ABPlaysw').checked=false;
+                chrome.storage.local.set({'ABPlaysw':false});
+            }else{
+                document.getElementById('ABPlaysw').checked=true;
+                chrome.storage.local.set({'ABPlaysw':true});
+            }
+        });
+    });
+
     //=====================倍速切换快捷键================
     chrome.storage.local.get(['PlaybackRateKeysw'],function(items){
         var PlaybackRateKeysw= items.PlaybackRateKeysw;
@@ -1242,6 +1261,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('FileModeExclusionsw').checked=true;
                 chrome.storage.local.set({'FileModeExclusionsw':true});
+            }
+        });
+    });
+
+    //====================全局播放进度条===============
+    chrome.storage.local.get(['ProgressBarsw'],function(items){
+        var ProgressBarsw= items.ProgressBarsw;
+        if(ProgressBarsw){
+            document.getElementById('ProgressBarsw').checked='true';
+        }else{
+            document.getElementById('ProgressBarsw').checked=false;
+        }
+        $('#ProgressBarsw').on('click', function () {
+            if(!document.getElementById('ProgressBarsw').checked){
+                document.getElementById('ProgressBarsw').checked=false;
+                chrome.storage.local.set({'ProgressBarsw':false});
+            }else{
+                document.getElementById('ProgressBarsw').checked=true;
+                chrome.storage.local.set({'ProgressBarsw':true});
             }
         });
     });
