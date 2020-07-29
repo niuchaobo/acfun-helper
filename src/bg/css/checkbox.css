@@ -60,6 +60,20 @@
     animation: masked-animation 2.8s infinite linear;
 }
 
+.head.lightUpdate {
+    background-size: 200% 100%;
+    background-image: -webkit-linear-gradient(left, #fffefead 50%, #fd77cd 70%, #ffe1efad 100%);
+    animation: masked-animation 1s 1 linear;
+    -webkit-animation: masked-animation 1s 1 linear;
+}
+
+.head.heavyUpdate {
+    background-size: 200% 100%;
+    background-image: -webkit-linear-gradient(left, #fffefead 50%, #ff0000c7 70%, #ffe1e3ad 100%);
+    animation: masked-animation 1s 1 linear;
+    -webkit-animation: masked-animation 1s 1 linear;
+}
+
 @-webkit-keyframes masked-animation {
     0% {
         background-position: 0 0;
