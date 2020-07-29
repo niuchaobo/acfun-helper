@@ -8,111 +8,6 @@
     <link rel="stylesheet" type="text/css" href="css/popup.css" />
     <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css" />
     <title data-i18n="optTitle">AcFun助手</title>
-    <style>
-        .r {
-            /* float: right;*/
-            position: relative;
-            /* border: solid 1px red; */
-            /*position: absolute;
-            margin-left: 45%;*/
-            /*height: 100px;*/
-            /* width: 30%; */
-            overflow: hidden;
-            font-size: 12px;
-        }
-        
-        .r>a {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            color: #7b68ee;
-            padding-left: 1px;
-        }
-        
-        .l {
-            /*width: 45%;
-            float: left;*/
-            position: relative;
-            /*height: 100px;*/
-            /*position: absolute;*/
-            /* border: solid 1px red; */
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-        
-        .l img {
-            border-radius: 4px;
-        }
-        
-        .inner {
-            /* border: solid 1px blue; */
-            /*top: 100px;
-            bottom: 100px;
-            height: 95px;*/
-            /* height: 312px; */
-            background-color: #fefefe;
-            border: 1px solid;
-            border-color: #e5e6e9 #dfe0e4 #d0d1d5;
-            border-radius: 3px;
-            box-sizing: border-box;
-            margin: 2.5px 0 2.5px 0;
-        }
-        
-        .pop-push-list {
-            background-color: azure;
-            /* border-color: red; */
-            padding: 4px 4px 4px 4px;
-            border: 1px;
-            border-style: solid;
-            border-spacing: 2px;
-            border-width: 1px 1px 1px 1px;
-        }
-        
-        .preview {
-            height: auto;
-            /* width: auto; */
-            width: 100%;
-        }
-        
-        .r .avatar {
-            border-radius: 50%;
-            height: auto;
-            width: 100%;
-            /* width: 10%; */
-        }
-        
-        .r .time {
-            margin-left: 8px;
-            color: #aaa;
-        }
-        
-        .r .info {
-            padding-left: 8px;
-            margin-top: 5px;
-        }
-        
-        .r .info a {
-            color: whitesmoke;
-        }
-        
-        .push_end {
-            color: #999;
-            text-align: center;
-            line-height: 200%;
-        }
-        
-         ::-webkit-scrollbar {
-            width: 8px;
-            background-color: #fff;
-        }
-        
-         ::-webkit-scrollbar-thumb {
-            background-color: #ddd;
-            border-radius: 3px;
-        }
-    </style>
 </head>
 
 <body style="width: 300px; overflow-x: hidden;">
@@ -126,7 +21,7 @@
                 <span class="letter">Fun</span>
                 <span class="letter">助手</span></label
               >
-              <div id="update-box"><div class="update-icon">!</div><span class="update-letter">助手新版本更新啦!</span></div>
+              <div id="update-box"><div class="update-icon">!</div><span class="update-letter"></span></div>
               <div style="float: right;" class="enabled">
                 <input type="checkbox" checked id="extends-enbaled" />
                 <label for="extends-enbaled"></label>
@@ -186,7 +81,7 @@
 
         <div class="mdui-tab pop-common mdui-tab-centered" mdui-tab mdui-headroom style="height: 28px; min-height: 28px;">
             <a href="#PushList" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;">稿件动态</a>
-          <!-- <a href="#MomentCircle" class="mdui-ripple">动态广场</a> -->
+            <!-- <a href="#MomentCircle" class="mdui-ripple">动态广场</a> -->
             <a href="#SubLive" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;">生放送</a>
             <!-- <a href="#Special" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;">Special</a> -->
         </div>
@@ -259,7 +154,7 @@
     <script src="../lib/jquery-3.5.0.min.js"></script>
     <script src="js/lib/purify.min.js"></script>
     <script src="../common/utils.js"></script>
-    <script src="js/popup.js"></script>
+    <script type='module' src="js/popup/index.js"></script>
     <script src="js/lib/md5.js"></script>
     <script type="text/javascript" src="js/jquery.mloading.js"></script>
     <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>

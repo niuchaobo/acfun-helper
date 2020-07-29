@@ -52,7 +52,9 @@ function ScrollSmoothly(scrollPos, repeatTimes,step) {
         return;
     }
     repeatCount++;
-    cTimeout = setTimeout("ScrollSmoothly('" + scrollPos + "','" + repeatTimes +  "','" + step +"')", 10);
+    cTimeout = setTimeout(ScrollSmoothly(scrollPos,repeatTimes,step), 10); 
+    //cTimeout = setTimeout("ScrollSmoothly('" + scrollPos + "','" + repeatTimes +  "','" + step +"')", 10);
+    //规范不建议在定时器中的方法加 (括号) 与 "引号"  火狐警告⬆️
     //cTimeout = setTimeout(ScrollSmoothly,10);
 }
 //一个可能不会运行的方法 ⬇️
