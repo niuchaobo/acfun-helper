@@ -99,6 +99,10 @@ async function continuous(){
   }
 }
 
+$('#refreshHere').on('click', function () {
+  location.reload();
+})
+
 contentHandler()
 squareListData.firstLoad = false;
 continuous()
