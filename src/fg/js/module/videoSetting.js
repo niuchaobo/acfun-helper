@@ -158,16 +158,15 @@ class VideoSetting{
         
     //AB回放UI
     AddABPlayUI(){
-        let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB回放</span>
+        let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB</span>
         <div class="speed-panel">
             <ul>
-                <li data-val="A" onClick="updateAbPlayStart()">开始于</li>
-                <li data-val="B" onClick="updateAbPlayEnd();">结束于</li>
-                <li onclick="AbPlayHandler();">启用</li>
-                <li onclick="StopAbPlay();">禁用</li>
+                <li class = 'point-a' data-val="A" onClick="updateAbPlayFirst()">标记点A</li>
+                <li class = 'point-b' data-val="B" onClick="updateAbPlaySecond()">标记点B</li>
+                <li class = 'switch-button' onclick="abPlayHandler();">开始</li>
+                <li onclick="stopAbPlay();">清除</li>
             </ul>
             <div class="transparent-placeholder"></div>
-        </div>
     </div>`;
         let _timer = setInterval(function () {
             let node = $(".box-right");
