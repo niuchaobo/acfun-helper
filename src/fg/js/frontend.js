@@ -244,12 +244,12 @@ class ODHFront {
                     this.danmusearch.inject();
                 })
             }
-            //弹幕列表前往Acer个人主页
-            if(this.options.test){
-                getAsyncDom('.list-title',()=>{
-                    this.videoSetting.searchListToUser()
-                })
-            }
+           //弹幕列表前往Acer个人主页
+           if(this.options.test){
+               getAsyncDom('.list-title',()=>{
+                   this.videoSetting.searchListToUser()
+               })
+           }
           //评论空降
           if(this.options.PlayerTimeCommentEasyJump){
             getAsyncDom('.ac-pc-comment',()=>{

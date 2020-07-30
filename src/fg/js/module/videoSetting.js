@@ -376,17 +376,19 @@ class VideoSetting{
                 if(e.target.className === "searchListUser"){
                     return
                 }
-                $('.danmaku-items>li>.danmaku-content').after(`<div class = 'searchListUser' style = "display:none">H</div>`)
+                $('.danmaku-items>li>.danmaku-content').after(`<div class = 'searchListUser' style = "display:none;margin-right:6px;font-size:20px;">⌂</div>`)
                 $('.danmaku-items>li').bind('mouseenter',e=>{
                     let userId = $(e.target).attr('data-user')
-                    $(e.target).children('.searchListUser').eq(0).css('display','inline-block')
-                    $(e.target).children('.searchListUser').eq(0).click(()=>{
+                    $(e.target).children('.searchListUser').eq(0).css('display','inline-block').siblings().children('.searchListUser').eq(0).css('display','none')
+                    $(e.target).children('.searchListUser').eq(0).unbind('click')
+                    $(e.target).children('.searchListUser').eq(0).bind('click',()=>{
                         e.stopPropagation()
                         window.open(`https://www.acfun.cn/u/${userId}`)
                         $(e.target).children('.searchListUser').eq(0).css('display','none') 
                     })
                 })
                 $('.danmaku-items>li').bind('mouseleave',e=>{
+                    $(e.target).children('.searchListUser').eq(0).unbind('click')
                     $(e.target).children('.searchListUser').eq(0).css('display','none')
                 })
             }, 500)
