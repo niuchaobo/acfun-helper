@@ -1,7 +1,8 @@
 var squareListData = {
-  index: 1, // 推送当前页码
+  index: 0, // 当前条目，数据库
   firstLoad: true, // 第一次加载推送列表
 };
+var globalSqlist = []
 
 function renderFunc(x,type = 0){
   var num
@@ -79,18 +80,24 @@ async function contentHandler(){
 }
 
 async function getFromIndexed(){
-  let a = await db_getSquareList(10);
-  renderFunc(a,1)
+  let dbMaxNum = await db_SquareListCount();
+  let globalSqlist = await db_getSquareList(dbMaxNum);
+  return globalSqlist
 }
 
-function continuous(){
+async function continuous(){
+  globalSqlist = await getFromIndexed();
+  squareListData.index = 20;
+  var sqList = []
   window.onscroll = function () {
     if ((getScrollHeight() == Math.floor(getDocumentTop()+getWindowHeight()) || getScrollHeight() == Math.ceil(getDocumentTop()+getWindowHeight()) ) && !squareListData.firstLoad) {
         // console.log("scroll to bottom");
+        sqList = globalSqlist.slice(squareListData.index+1,squareListData.index+11)
         mdui.snackbar({
           message: '加载中'
         });
-        getFromIndexed();
+        renderFunc(sqList,1)
+        squareListData.index+=11;
     }
   }
 }
