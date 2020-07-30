@@ -1,6 +1,6 @@
 var squareListData = {
-  index: 0, // 当前条目，数据库
-  firstLoad: true, // 第一次加载推送列表
+  index: 0,
+  firstLoad: true,
 };
 var globalSqlist = []
 
@@ -42,14 +42,13 @@ function renderFunc(x,type = 0){
     }
     let card = `<br>
     <div class="mdui-card">
-    <!-- 卡片头部，包含头像、标题、副标题 -->
     <div class="mdui-card-header">
       <img class="mdui-card-header-avatar" src="${avatar}"/>
       <div class="mdui-card-header-title">${Uname}</div>
       <div class="mdui-card-header-subtitle">${sign}</div>
     </div>`
     if(Boolean(pic)){card +=
-    `<!-- 卡片的媒体内容，可以包含图片、视频等媒体内容，以及标题、副标题 -->
+    `
     <div class="mdui-card-media">
       <img class="mediaPic" src="${pic}"/>
     </div>`}
@@ -58,13 +57,11 @@ function renderFunc(x,type = 0){
     <div class="mdui-card-primary">
     <div class="mdui-card-primary-subtitle">${getTimeSinceNow(releTime)} - 香蕉： ${banana} - 评论： ${comNum}</div>
     </div>
-    <!-- 卡片的内容 -->
     <div class="mdui-card-content">${content}</div>
     <div class="mdui-card-actions">
     <button class="mdui-btn mdui-ripple checkIt" data-key=${mid}><a class="btn-a" href="https://m.acfun.cn/communityCircle/moment/${mid}" target="_blank">查看</a></button>
     </div>
     </div><br>`
-    // console.log(card)
     nod.innerHTML = card;
     document.getElementById("content-container").append(nod);
   }
@@ -88,15 +85,15 @@ async function getFromIndexed(){
 async function continuous(){
   globalSqlist = await getFromIndexed();
   squareListData.index = 20;
-  var sqList = []
+  var sqList = [];
   window.onscroll = function () {
     if ((getScrollHeight() == Math.floor(getDocumentTop()+getWindowHeight()) || getScrollHeight() == Math.ceil(getDocumentTop()+getWindowHeight()) ) && !squareListData.firstLoad) {
         // console.log("scroll to bottom");
-        sqList = globalSqlist.slice(squareListData.index+1,squareListData.index+11)
+        sqList = globalSqlist.slice(squareListData.index+1,squareListData.index+11);
         mdui.snackbar({
-          message: '加载中'
+          message: '加载中...'
         });
-        renderFunc(sqList,1)
+        renderFunc(sqList,1);
         squareListData.index+=11;
     }
   }
