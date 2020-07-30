@@ -581,6 +581,38 @@ async function toUpInfo(upName){
 // let uil =await toUpInfo('qyqx')
 //   console.log(uil)
 
+//页面位置计算;一般用来判断是否到底部 getScrollHeight() == getWindowHeight() + getDocumentTop()
+//文档高度 = 可视窗口高度 + 滚动条高度
+function getDocumentTop() {
+  var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+  if (document.body) {
+      bodyScrollTop = document.body.scrollTop;
+  }
+  if (document.documentElement) {
+      documentScrollTop = document.documentElement.scrollTop;
+  }
+  scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop; return scrollTop;
+}
+function getWindowHeight() {
+  var windowHeight = 0; if (document.compatMode == "CSS1Compat") {
+      windowHeight = document.documentElement.clientHeight;
+  } else {
+      windowHeight = document.body.clientHeight;
+  }
+  return windowHeight;
+}
+function getScrollHeight() {
+  var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+  if (document.body) {
+      bodyScrollHeight = document.body.scrollHeight;
+  }
+  if (document.documentElement) {
+      documentScrollHeight = document.documentElement.scrollHeight;
+  }
+  scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight; return scrollHeight;
+}
+
+
 async function fetchResult(url) {
     let result = fetch(url).then((response)=>{
         return response.text();

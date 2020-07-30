@@ -43,6 +43,33 @@ function test1(){
     console.log(db.a.get(4));
 }
 
+function SquareListCount(){
+    //广场对象数
+    try {
+        db.SquareList.count(function(e){
+            return e
+        })
+    } catch (error) {
+        return 0
+    }
+
+}
+
+function initSquareList(){
+    //广场表初始化
+    try {
+        db.SquareList.count(function(e){
+            console.log(e)
+        })
+    } catch (error) {
+        console.log("[WARN]Background-IndexedDbDrv > initSquareList:Table May Not Exist.")
+        db.version(1).stores({
+            SquareList: 'acmid,uid,time,userInfo,commentNum,bananaCount,content',
+        });
+        console.log("[WARN]Background-IndexedDbDrv > initSquareList: Table initialize.")
+    }
+}
+
 function initPushList(){
     try {
         db.PushList.count(function(e){
@@ -56,6 +83,18 @@ function initPushList(){
     }
 }
 
+function db_putSquareList(Data){
+    //广场数据写入
+    initSquareList();
+    if(Data.feedList.length != 0){
+        for(let i=0;i<=Data.feedList.length-1;i++){
+            let x = Data.feedList[i];
+            db.SquareList.put({acmid:x.resourceId,uid:x.authorId,time:x.createTime,userInfo:x.userInfo,commentNum:x.commentCount,bananaCount:x.bananaCount,content:x.moment});
+        }
+    }
+    // db.close();
+}
+
 function db_putPushLst(Data){
     // console.log(Data)
     initPushList();
@@ -66,6 +105,13 @@ function db_putPushLst(Data){
         }
     }
     // db.close();
+}
+
+async function db_getSquareList(limitNum){
+    //获取广场前多少个条目
+    initSquareList();
+    let x = await db.SquareList.orderBy("acmid").reverse().limit(limitNum).toArray();
+    return x;
 }
 
 async function db_getPushLstMany(limitNum){
