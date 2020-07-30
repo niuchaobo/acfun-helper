@@ -130,6 +130,7 @@ class VideoSetting{
         },1000);
     }
 
+    //底部进度条
     FlexProgressBar(sw){
         if(this.FlexProgressBarws){
             switch (sw) {

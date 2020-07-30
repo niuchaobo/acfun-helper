@@ -80,18 +80,16 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
 
 });
 
-function updateAbPlayStart(){AbPlayStart = Math.floor(document.getElementsByTagName("video")[0].currentTime);console.log("Start At: "+AbPlayStart)}
-function updateAbPlayEnd(){AbPlayEnd = Math.floor(document.getElementsByTagName("video")[0].currentTime);console.log("End At: "+AbPlayEnd)}
+//AB回放
+function updateAbPlayStart(){AbPlayStart = Math.floor(document.getElementsByTagName("video")[0].currentTime);leftBottomTip(`AB回放开始于&nbsp;:&nbsp;`,`${AbPlayStart}`);console.log("Start At: "+AbPlayStart)}
+function updateAbPlayEnd(){AbPlayEnd = Math.floor(document.getElementsByTagName("video")[0].currentTime);leftBottomTip(`AB回放结束于&nbsp;:&nbsp;`,` ${AbPlayStart}`);console.log("End At: "+AbPlayEnd)}
 function StopAbPlay(){
     AbPlayFlag = 1;console.log("End");
-    document.getElementsByClassName("left-bottom-tip")[0].innerHTML=`<div class="tip-item muted"><div class="left-bottom-tip-text"><span>已关闭AB回放</span></div></div>`;
-    var _timer = setTimeout(() => {
-        document.getElementsByClassName("left-bottom-tip")[0].innerHTML="";
-        clearInterval(_timer);
-    }, 2000);
+    leftBottomTip('AB回放&nbsp;','关闭')
 }
 function AbPlayHandler(){
     AbPlayFlag = 0;
+    leftBottomTip('AB回放&nbsp;','开启')
     document.getElementsByTagName("video")[0].currentTime = AbPlayStart;
     document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
         if(AbPlayFlag==0){
@@ -103,7 +101,13 @@ function AbPlayHandler(){
         }
     },false);
 }
-
+function leftBottomTip(text,importantText=''){
+    $('.left-bottom-tip').eq(0).append(`<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span><span style='color:red;'>${importantText}</span></div></div>`)
+    let _timer = setTimeout(() => {
+        $('.left-bottom-tip').eq(0).children().eq(0).remove()
+        clearInterval(_timer);
+    }, 2000);
+}
 //----------------------自定义倍速------------------------
 function setCustomPlaybackRate(event) {
     event.stopPropagation();
