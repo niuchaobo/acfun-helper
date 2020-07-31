@@ -1,6 +1,6 @@
-var AbPlayStart = 0;
-var AbPlayEnd = 0;
-var AbPlayFlag = 0;
+var abPlayFirst = undefined;
+var abPlaySecond = undefined;
+var abPlayFlag = 0;
 //----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
 var hiddenDiv = document.getElementById('myCustomEventDiv');
@@ -79,31 +79,97 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
     }
 
 });
-
-function updateAbPlayStart(){AbPlayStart = Math.floor(document.getElementsByTagName("video")[0].currentTime);console.log("Start At: "+AbPlayStart)}
-function updateAbPlayEnd(){AbPlayEnd = Math.floor(document.getElementsByTagName("video")[0].currentTime);console.log("End At: "+AbPlayEnd)}
-function StopAbPlay(){
-    AbPlayFlag = 1;console.log("End");
-    document.getElementsByClassName("left-bottom-tip")[0].innerHTML=`<div class="tip-item muted"><div class="left-bottom-tip-text"><span>已关闭AB回放</span></div></div>`;
-    var _timer = setTimeout(() => {
-        document.getElementsByClassName("left-bottom-tip")[0].innerHTML="";
-        clearInterval(_timer);
-    }, 2000);
+//AB回放
+function updateAbPlayFirst(){
+    if(abPlayFlag === 1){
+        leftBottomTip('请先','停止')
+        return
+    }
+    let fistTime = Math.floor(document.getElementsByTagName("video")[0].currentTime);
+    if(abPlaySecond && fistTime > abPlaySecond){
+        leftBottomTip('A要在B之前','---鲁迅')
+        return
+    }
+    abPlayFirst = fistTime;
+    leftBottomTip(`标记点A :`,`${timeToMinute(abPlayFirst)}`);
+    $('.speed-panel>ul>.point-a').text(`A : ${timeToMinute(abPlayFirst)}`)
+    abPlaySecond && leftBottomTip(`区间为`,`${timeToMinute(abPlayFirst)}至${timeToMinute(abPlaySecond)}`);
 }
-function AbPlayHandler(){
-    AbPlayFlag = 0;
-    document.getElementsByTagName("video")[0].currentTime = AbPlayStart;
-    document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
-        if(AbPlayFlag==0){
-            if(Math.floor(window.player.currentTime) == AbPlayEnd){
-                document.getElementsByTagName("video")[0].currentTime = AbPlayStart;
+function updateAbPlaySecond(){
+    if(abPlayFlag === 1){
+        leftBottomTip('请先','停止')
+        return
+    }
+    let secondTime = Math.floor(document.getElementsByTagName("video")[0].currentTime);
+    if(abPlayFirst && secondTime < abPlayFirst){
+        leftBottomTip('B要在A之后','---鲁迅')
+        return
+    } 
+    abPlaySecond = secondTime;
+    leftBottomTip(`标记点B :`,`${timeToMinute(abPlaySecond)}`);
+    $('.speed-panel>ul>.point-b').text(`B : ${timeToMinute(abPlaySecond)}`)
+    if(abPlayFirst > abPlaySecond){
+        [abPlayFirst,abPlaySecond] = [abPlaySecond,abPlayFirst]
+    }
+    abPlayFirst && leftBottomTip(`区间为`,`${timeToMinute(abPlayFirst)}至${timeToMinute(abPlaySecond)}`);
+}
+function stopAbPlay(){
+    if(abPlayFlag === 1){
+        leftBottomTip('请先','停止')
+        return
+    }
+    if(abPlayFirst === undefined && abPlaySecond === undefined){
+        leftBottomTip('请先设置','标记点')
+        return
+    }
+    $('.speed-panel>ul>.point-a').text('标记点A')
+    $('.speed-panel>ul>.point-b').text('标记点B')
+    abPlayFirst=abPlaySecond=undefined;
+    leftBottomTip('标记已清除') 
+}       
+function abPlayHandler(){
+    if(abPlayFirst === undefined || abPlaySecond === undefined){
+        leftBottomTip('请先设置','标记点')
+        return
+    }
+    if(abPlayFlag === 0){
+        leftBottomTip('AB回放','开启')
+        $('.speed-panel>ul>.switch-button').text('停止')
+        document.getElementsByTagName("video")[0].currentTime = abPlayFirst;
+        document.getElementsByTagName("video")[0].removeEventListener("timeupdate")
+        document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
+            if(Math.floor(window.player.currentTime) >= abPlaySecond){
+                document.getElementsByTagName("video")[0].currentTime = abPlayFirst;
             }
-        }else{
-            return;
-        }
-    },false);
+        },false);
+        abPlayFlag = 1;
+        return
+    }
+    if(abPlayFlag === 1){
+        $('.speed-panel>ul>.switch-button').text('开始')
+        document.getElementsByTagName("video")[0].removeEventListener("timeupdate")
+        leftBottomTip('AB回放','关闭')
+        abPlayFlag = 0;
+        return
+    }
 }
-
+function leftBottomTip(text,importantText=''){
+    $('.left-bottom-tip').eq(0).append(`<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`)
+    let _timer = setTimeout(() => {
+        $('.left-bottom-tip').eq(0).children().eq(0).remove()//这样写 并不能自定义持续时间
+        clearInterval(_timer);
+    }, 2500);
+}
+function timeToMinute(second){
+    var minute;
+    minute = Math.floor(second/60)
+    second = second%60;
+    minute += '';
+    second += '';
+    minute = (minute.length==1)?'0'+minute:minute;
+    second = (second.length==1)?'0'+second:second;
+    return minute+':'+second;
+}
 //----------------------自定义倍速------------------------
 function setCustomPlaybackRate(event) {
     event.stopPropagation();

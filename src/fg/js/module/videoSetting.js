@@ -130,6 +130,7 @@ class VideoSetting{
         },1000);
     }
 
+    //底部进度条
     FlexProgressBar(sw){
         if(this.FlexProgressBarws){
             switch (sw) {
@@ -155,18 +156,17 @@ class VideoSetting{
         }
     }
         
-    //AB回放UI
+    //AB回放UI 函数在videoInject.js
     AddABPlayUI(){
-        let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB回放</span>
+        let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB</span>
         <div class="speed-panel">
             <ul>
-                <li data-val="A" onClick="updateAbPlayStart()">开始于</li>
-                <li data-val="B" onClick="updateAbPlayEnd();">结束于</li>
-                <li onclick="AbPlayHandler();">启用</li>
-                <li onclick="StopAbPlay();">禁用</li>
+                <li class = 'point-a' data-val="A" onClick="updateAbPlayFirst()">标记点A</li>
+                <li class = 'point-b' data-val="B" onClick="updateAbPlaySecond()">标记点B</li>
+                <li class = 'switch-button' onclick="abPlayHandler();">开始</li>
+                <li onclick="stopAbPlay();">清除</li>
             </ul>
             <div class="transparent-placeholder"></div>
-        </div>
     </div>`;
         let _timer = setInterval(function () {
             let node = $(".box-right");
@@ -369,4 +369,29 @@ class VideoSetting{
         return videoRate
     }
     
+    searchListToUser(){
+        $(".danmaku-items").bind(
+            "DOMNodeInserted",
+            debounce((e) => {
+                if(e.target.className === "searchListUser"){
+                    return
+                }
+                $('.danmaku-items>li>.danmaku-content').after(`<div class = 'searchListUser' style = "display:none;margin-right:6px;font-size:20px;">⌂</div>`)
+                $('.danmaku-items>li').bind('mouseenter',e=>{
+                    let userId = $(e.target).attr('data-user')
+                    $(e.target).children('.searchListUser').eq(0).css('display','inline-block').siblings().children('.searchListUser').eq(0).css('display','none')
+                    $(e.target).children('.searchListUser').eq(0).unbind('click')
+                    $(e.target).children('.searchListUser').eq(0).bind('click',()=>{
+                        e.stopPropagation()
+                        window.open(`https://www.acfun.cn/u/${userId}`)
+                        $(e.target).children('.searchListUser').eq(0).css('display','none') 
+                    })
+                })
+                $('.danmaku-items>li').bind('mouseleave',e=>{
+                    $(e.target).children('.searchListUser').eq(0).unbind('click')
+                    $(e.target).children('.searchListUser').eq(0).css('display','none')
+                })
+            }, 500)
+          );
+    }
 }
