@@ -1636,9 +1636,9 @@ $(document).ready(function () {
                     chrome.storage.local.get(null, function (items) {
                         if(typeof(Uid)=='number'){
                             // chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
-                                delete items["AcpushList1"];
-                                delete items["danmakuCache"];
-                                delete items["AcMomentCircle1"];
+                                // delete items["AcpushList1"];
+                                // delete items["danmakuCache"];
+                                // delete items["AcMomentCircle1"];
                                 delete items["AcLives1"];
                                 var options_data = JSON.stringify(sanitizeOptions(items));
                                 // if(JSON.stringify(rawtoken) == '{}'){token=0}else{token=JSON.stringify(rawtoken)};

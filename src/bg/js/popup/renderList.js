@@ -8,16 +8,14 @@ var pushListData = {
 export async function renderPushInnerHtml() {
   pushListData.busy = true;
   if (pushListData.index == 1) {
-    chrome.storage.local.get(["AcpushList1"], function (data) {
-      $("#pop-push").append(data.AcpushList1);
-    });
+    // chrome.storage.local.get(["AcpushList1"], function (data) {
+    //   $("#pop-push").append(data.AcpushList1);
+    // });
     var p1data = await db_getPushListHtml();
-    // console.log(p1data);
-    // $("#pop-push").append(p1data[0].content);
-  }
-  if(p1data.length!=0){
-    pushListData.index++;
-    console.log("override")
+    if(p1data.length!=0){
+      pushListData.index++;
+      $("#pop-push").append(p1data[0].content);
+    }
   }
   fetch(
     "https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=0&gid=-1&count=30&pcursor=" +
