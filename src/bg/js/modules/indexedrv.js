@@ -43,6 +43,33 @@ function test1(){
     console.log(db.a.get(4));
 }
 
+//----------------------Utils-Func-----------------
+
+async function db_SquareListCount(){
+    initSquareList();
+    let x = await db.SquareList.count((e)=>{
+        return e
+    })
+    return x
+}
+
+//----------------------Init-Table-------------------
+
+function initSquareList(){
+    try {
+        db.SquareList.count(function(e){
+            // console.log(e)
+        })
+    } catch (error) {
+        console.log("[WARN]Background-IndexedDbDrv > initSquareList:Table May Not Exist.")
+        db.version(1).stores({
+            SquareList: 'acmid,uid,time,userInfo,commentNum,bananaCount,content',
+        });
+        db.open();
+        console.log("[WARN]Background-IndexedDbDrv > initSquareList: Table initialize.")
+    }
+}
+
 function initPushList(){
     try {
         db.PushList.count(function(e){
@@ -56,6 +83,43 @@ function initPushList(){
     }
 }
 
+function initPushListHtml(){
+    try {
+        db.PushListHtml.count(function(e){
+            // console.log(e)
+        })
+    } catch (error) {
+        console.log("[WARN]Background-IndexedDbDrv > initPushListHtml:Table May Not Exist.")
+        db.version(1).stores({
+            PushListHtml: 'id,content',
+        });
+        db.open();
+        console.log("[WARN]Background-IndexedDbDrv > initPushListHtml:Table initializing.")
+    }
+}
+
+//----------------------Put-Obj-----------------
+
+function db_putPushListHtml(Data){
+    // console.log(Data)
+    initPushListHtml();
+    if(Data!= null && Data !=undefined){
+        db.PushListHtml.put({id:1,content:Data});
+    }
+}
+
+function db_putSquareList(Data){
+    // console.log(Data)
+    initSquareList();
+    if(Data.feedList.length != 0){
+        for(let i=0;i<=Data.feedList.length-1;i++){
+            let x = Data.feedList[i];
+            db.SquareList.put({acmid:x.resourceId,uid:x.authorId,time:x.createTime,userInfo:x.userInfo,commentNum:x.commentCount,bananaCount:x.bananaCount,content:x.moment});
+        }
+    }
+    // db.close();
+}
+
 function db_putPushLst(Data){
     // console.log(Data)
     initPushList();
@@ -66,6 +130,22 @@ function db_putPushLst(Data){
         }
     }
     // db.close();
+}
+
+//----------------------Get-Obj-----------------
+
+async function db_getSquareList(limitNum){
+    //获取推送列表前多少个条目
+    initSquareList();
+    let x = await db.SquareList.orderBy("acmid").reverse().limit(limitNum).toArray();
+    return x;
+}
+
+async function db_getPushListHtml(){
+    //获取推送列表HTML
+    initPushListHtml();
+    let x = await db.PushListHtml.orderBy("id").reverse().toArray();
+    return x;
 }
 
 async function db_getPushLstMany(limitNum){

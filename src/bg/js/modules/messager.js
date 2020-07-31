@@ -114,6 +114,7 @@ class MsgNotifs{
                         out_data+=xmlData;
                     }
                     chrome.storage.local.set({'AcpushList1': out_data});
+                    db_putPushListHtml(out_data);
                     // chrome.storage.local.get(['AcpushList'],function(datao){console.log(datao);})
                 });
         },60000)
