@@ -46,7 +46,7 @@ function test1(){
 //----------------------Utils-Func-----------------
 
 async function db_SquareListCount(){
-    initSquareList()
+    initSquareList();
     let x = await db.SquareList.count((e)=>{
         return e
     })
@@ -65,6 +65,7 @@ function initSquareList(){
         db.version(1).stores({
             SquareList: 'acmid,uid,time,userInfo,commentNum,bananaCount,content',
         });
+        db.open();
         console.log("[WARN]Background-IndexedDbDrv > initSquareList: Table initialize.")
     }
 }
@@ -92,6 +93,8 @@ function initPushListHtml(){
         db.version(1).stores({
             PushListHtml: 'id,content',
         });
+        db.open();
+        console.log("[WARN]Background-IndexedDbDrv > initPushListHtml:Table initializing.")
     }
 }
 

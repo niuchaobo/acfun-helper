@@ -5,14 +5,20 @@ var pushListData = {
   firstLoad: true, // 第一次加载推送列表
   arriveEnd: false, // 到达终点
 };
-export function renderPushInnerHtml() {
+export async function renderPushInnerHtml() {
   pushListData.busy = true;
   if (pushListData.index == 1) {
     chrome.storage.local.get(["AcpushList1"], function (data) {
       $("#pop-push").append(data.AcpushList1);
     });
+    var p1data = await db_getPushListHtml();
+    // console.log(p1data);
+    // $("#pop-push").append(p1data[0].content);
   }
-  pushListData.index++;
+  if(p1data.length!=0){
+    pushListData.index++;
+    console.log("override")
+  }
   fetch(
     "https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=0&gid=-1&count=30&pcursor=" +
       pushListData.index
@@ -119,11 +125,11 @@ export function renderMomentCircleHtml() {
 
 export  function renderLives() {
     chrome.storage.local.get(["broadcastingUIDlist"], function (data) {
-      console.log(data);
+      // console.log(data);
       let No_data = "";
       let is_blank = true;
       let list_num = 0;
-      console.log(data.broadcastingUIDlist)
+      // console.log(data.broadcastingUIDlist)
       for (let item in data.broadcastingUIDlist) {
         list_num++;
         data.broadcastingUIDlist[item] ? (is_blank = false) : "";
