@@ -43,6 +43,8 @@ function test1(){
     console.log(db.a.get(4));
 }
 
+//----------------------Utils-Func-----------------
+
 async function db_SquareListCount(){
     initSquareList()
     let x = await db.SquareList.count((e)=>{
@@ -50,6 +52,8 @@ async function db_SquareListCount(){
     })
     return x
 }
+
+//----------------------Init-Table-------------------
 
 function initSquareList(){
     try {
@@ -78,6 +82,29 @@ function initPushList(){
     }
 }
 
+function initPushListHtml(){
+    try {
+        db.PushListHtml.count(function(e){
+            // console.log(e)
+        })
+    } catch (error) {
+        console.log("[WARN]Background-IndexedDbDrv > initPushListHtml:Table May Not Exist.")
+        db.version(1).stores({
+            PushListHtml: 'id,content',
+        });
+    }
+}
+
+//----------------------Put-Obj-----------------
+
+function db_putPushListHtml(Data){
+    // console.log(Data)
+    initPushListHtml();
+    if(Data!= null && Data !=undefined){
+        db.PushListHtml.put({id:1,content:Data});
+    }
+}
+
 function db_putSquareList(Data){
     // console.log(Data)
     initSquareList();
@@ -102,10 +129,19 @@ function db_putPushLst(Data){
     // db.close();
 }
 
+//----------------------Get-Obj-----------------
+
 async function db_getSquareList(limitNum){
     //获取推送列表前多少个条目
     initSquareList();
     let x = await db.SquareList.orderBy("acmid").reverse().limit(limitNum).toArray();
+    return x;
+}
+
+async function db_getPushListHtml(){
+    //获取推送列表HTML
+    initPushListHtml();
+    let x = await db.PushListHtml.orderBy("id").reverse().toArray();
     return x;
 }
 
