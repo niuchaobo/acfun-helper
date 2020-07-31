@@ -79,7 +79,7 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
     }
 
 });
-
+//AB回放
 function updateAbPlayFirst(){
     if(abPlayFlag === 1){
         leftBottomTip('请先','停止')
@@ -116,6 +116,10 @@ function updateAbPlaySecond(){
 function stopAbPlay(){
     if(abPlayFlag === 1){
         leftBottomTip('请先','停止')
+        return
+    }
+    if(abPlayFirst === undefined && abPlaySecond === undefined){
+        leftBottomTip('请先设置','标记点')
         return
     }
     $('.speed-panel>ul>.point-a').text('标记点A')

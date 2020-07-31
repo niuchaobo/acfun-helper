@@ -156,7 +156,7 @@ class VideoSetting{
         }
     }
         
-    //AB回放UI
+    //AB回放UI 函数在videoInject.js
     AddABPlayUI(){
         let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB</span>
         <div class="speed-panel">
