@@ -1,7 +1,6 @@
 /**
  * 页面美化
  */
-
 class PageBeautify {
   constructor() {
     this.personInfo = "https://www.acfun.cn/rest/pc-direct/user/personalInfo";
@@ -121,7 +120,7 @@ class PageBeautify {
     window.document.head.appendChild(style);
   }
 
-  //----------------个人中心------------------------------
+  //------------------------个人中心------------------------------
   async personBeautify() {
     fetch(this.personInfo)
       .then((res) => {
@@ -185,7 +184,6 @@ class PageBeautify {
   }
 
   indexBeautify(){
-    console.log("test");
     let nod = document.createElement("style");
     let cssStr = ".twinkle{backdrop-filter: blur(2.25926vw)} .nav-fixed{background-color: #f8f8f896;; border-bottom: 0px;backdrop-filter: blur(2.25926vw)} #header{background-color: #f8f8f896;;backdrop-filter: blur(2.25926vw)}"
     nod.type="text/css";
@@ -196,7 +194,7 @@ class PageBeautify {
   hideAds(){
     try {
       let nod = document.createElement("style");
-      let cssStr = ".usemobile,.shareCount,.app-guide{display:none !important}"
+      let cssStr = ".usemobile,.shareCount,.app-guide.pause-display-container,{display:none !important}"
       nod.type="text/css";
       nod.textContent = cssStr;
       document.head.appendChild(nod);
@@ -204,7 +202,7 @@ class PageBeautify {
       // document.querySelector(".usemobile").remove();
     } catch (error) {}
     try {
-        // document.querySelector(".download-app").remove();
+        document.querySelector(".download-app").remove();
     } catch (error) {}
     try {
         document.querySelector(".pause-display-container").remove();
