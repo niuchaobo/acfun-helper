@@ -156,7 +156,7 @@ class VideoSetting{
         }
     }
         
-    //AB回放UI 函数在videoInject.js
+    //AB回放UI 函数在videoSettingInject.js
     AddABPlayUI(){
         let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB</span>
         <div class="speed-panel">
@@ -369,7 +369,7 @@ class VideoSetting{
         return videoRate
     }
     
-    searchListToUser(){
+    danmuSearchListToUser(){
         $(".danmaku-items").bind(
             "DOMNodeInserted",
             debounce((e) => {

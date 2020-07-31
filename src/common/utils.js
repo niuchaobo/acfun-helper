@@ -38,6 +38,7 @@ const defaults = {
     Upgradeable: 0,
     ABPlaysw:false,
     FlexProgressBarws:true,
+    danmuSearchListToUsersw:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
