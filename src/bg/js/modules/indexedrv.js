@@ -2,6 +2,7 @@
  * IndexedDB 驱动
  */
 const db = new Dexie("acfunhelper");
+const db2 = new Dexie("acfunhelper-square");
 const Pushlist_struct = "goldBanana,userId,title,channelId,author,isSignedUpCollege,isArticle,views,vid,allowDanmaku,stows,titleImg,shareUrl,releaseDate,danmakuSize,avatar,errorlog,score,contentClass,cid,userImg,verifiedType,verifiedText,aid,time,url,comments,sign,tags,description,success,username"
 const Pushlist_Commonstruct="aid,userId"
 
@@ -47,7 +48,7 @@ function test1(){
 
 async function db_SquareListCount(){
     initSquareList();
-    let x = await db.SquareList.count((e)=>{
+    let x = await db2.SquareList.count((e)=>{
         return e
     })
     return x
@@ -57,15 +58,15 @@ async function db_SquareListCount(){
 
 function initSquareList(){
     try {
-        db.SquareList.count(function(e){
+        db2.SquareList.count(function(e){
             // console.log(e)
         })
     } catch (error) {
         console.log("[WARN]Background-IndexedDbDrv > initSquareList:Table May Not Exist.")
-        db.version(1).stores({
+        db2.version(2).stores({
             SquareList: 'acmid,uid,time,userInfo,commentNum,bananaCount,content',
         });
-        db.open();
+        db2.open();
         console.log("[WARN]Background-IndexedDbDrv > initSquareList: Table initialize.")
     }
 }
@@ -80,6 +81,7 @@ function initPushList(){
         db.version(1).stores({
             PushList: 'acid,uid,content',
         });
+        db.open()
     }
 }
 
@@ -114,10 +116,10 @@ function db_putSquareList(Data){
     if(Data.feedList.length != 0){
         for(let i=0;i<=Data.feedList.length-1;i++){
             let x = Data.feedList[i];
-            db.SquareList.put({acmid:x.resourceId,uid:x.authorId,time:x.createTime,userInfo:x.userInfo,commentNum:x.commentCount,bananaCount:x.bananaCount,content:x.moment});
+            db2.SquareList.put({acmid:x.resourceId,uid:x.authorId,time:x.createTime,userInfo:x.userInfo,commentNum:x.commentCount,bananaCount:x.bananaCount,content:x.moment});
         }
     }
-    // db.close();
+    db2.close();
 }
 
 function db_putPushLst(Data){
@@ -137,7 +139,8 @@ function db_putPushLst(Data){
 async function db_getSquareList(limitNum){
     //获取推送列表前多少个条目
     initSquareList();
-    let x = await db.SquareList.orderBy("acmid").reverse().limit(limitNum).toArray();
+    let x = await db2.SquareList.orderBy("acmid").reverse().limit(limitNum).toArray();
+    db2.close()
     return x;
 }
 
@@ -145,6 +148,7 @@ async function db_getPushListHtml(){
     //获取推送列表HTML
     initPushListHtml();
     let x = await db.PushListHtml.orderBy("id").reverse().toArray();
+    db.close()
     return x;
 }
 
