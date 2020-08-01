@@ -117,7 +117,7 @@ class ODHBack {
                     this.WatchPlan.PushInList(link_url);
                     let x = this.WatchPlan.getOpRes();
                     // console.log(x);
-                    if(x){alert("加入成功。")}else{alert("加入失败，可能已经在列表中了。")}
+                    if(x){alert("加入成功。")}
                 }
             });
         }
