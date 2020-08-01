@@ -12,6 +12,8 @@ export async function renderPushInnerHtml() {
     //   $("#pop-push").append(data.AcpushList1);
     // });
     var p1data = await db_getPushListHtml();
+    // console.log(p1data)
+    // console.log(p1data.length)
     if(p1data.length!=0){
       pushListData.index++;
       $("#pop-push").append(p1data[0].content);

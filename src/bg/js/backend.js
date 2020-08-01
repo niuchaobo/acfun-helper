@@ -106,6 +106,21 @@ class ODHBack {
             }
         });
 
+        let a = false;
+        if(a){
+            chrome.contextMenus.create({
+                title: '加入到稍后再看', 
+                contexts: ['link'], 
+                id:'2',
+                onclick:  (params) =>{
+                    let link_url = params.linkUrl;
+                    this.WatchPlan.PushInList(link_url);
+                    let x = this.WatchPlan.getOpRes();
+                    // console.log(x);
+                    if(x){alert("加入成功。")}else{alert("加入失败，可能已经在列表中了。")}
+                }
+            });
+        }
 
         //当激活某个tab页时
         chrome.tabs.onActivated.addListener(function (tab) {
