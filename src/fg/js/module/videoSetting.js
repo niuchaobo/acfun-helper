@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 视频播放设置
  */
 class VideoSetting{
@@ -137,7 +137,7 @@ class VideoSetting{
                 case 'out':
                     let x = document.createElement("div");
                     x.id = "achlp-proBar";
-                    x.style.cssText="transition: width 0.4s ease-out;z-index: 999;background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;"
+                    x.style.cssText="transition: width 0.4s ease-out;z-index: 999;background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;box-shadow:rgb(125, 125, 125) -3px -1px 5px 0px"
                     document.body.append(x);
                     break;
                 case 'player':
