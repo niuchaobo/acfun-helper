@@ -4,6 +4,7 @@ const defaults = {
     to_attention:true,
     to_attention_num:5,
     to_special_items:[],
+    WatchPlanList:[],
     activeTabKey:'activeTabId',
     extendsName:'AcFun助手',
     upUrlTemplate:'https://www.acfun.cn/u/{uid}',
@@ -38,6 +39,7 @@ const defaults = {
     Upgradeable: 0,
     ABPlaysw:false,
     FlexProgressBarws:true,
+    danmuSearchListToUsersw:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -49,7 +51,9 @@ const REG = {
     msg_comment:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)'),//从我的消息-评论跳转
     mlive:new RegExp("https://m.acfun.cn/live/detail/*"),//移动版直播
     live:new RegExp("https://live.acfun.cn/live/*"),//直播
-    liveIndex:new RegExp("https://live.acfun.cn")//直播主页
+    liveIndex:new RegExp("https://live.acfun.cn"),//直播主页
+    userHome:new RegExp("http(s)?://www.acfun.cn/u/\\d+")//直播主页
+
 }
 
 
@@ -76,6 +80,8 @@ function transOptions(options) {
   }
   return defaults;
 }
+
+//================配置存储转换处理==============
 function userMap(options) {
   let map = new Map();
   for (const key in options) {
@@ -109,7 +115,9 @@ function upMapReverse(options) {
   return map;
 }
 
+//===============配置处理=================
 async function optionsLoad() {
+  //加载所有配置项
   return new Promise((resolve, reject) => {
     chrome.storage.local.get(null, (options) => {
       resolve(sanitizeOptions(options));
@@ -118,8 +126,33 @@ async function optionsLoad() {
 }
 
 async function optionsSave(options) {
+  //存储读取后修改的配置
   return new Promise((resolve, reject) => {
     chrome.storage.local.set(transOptions(options), resolve());
+  });
+}
+
+async function getResult() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get({ expression: "" }, (item) => {
+      resolve(item.expression);
+    });
+  });
+}
+
+async function getStorage(key) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(key, (res) => {
+      resolve(res);
+    });
+  });
+}
+
+function delStorage(key) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.remove(key, (res) => {
+      resolve(res);
+    });
   });
 }
 
@@ -159,6 +192,7 @@ function localizeHtmlPage() {
   }
 }
 
+//=================助手更新状态处理===========
 function updateVersionIcon(){
     chrome.storage.local.get(["Upgradeable"],  (data)=> {
         if(data.Upgradeable === 1){
@@ -182,6 +216,8 @@ function updateVersionIcon(){
         }
       }); 
 }
+
+
 async function getKeyFromDb(ticket) {
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -208,22 +244,6 @@ async function getTicketFromBackend() {
       dataType: "json",
       success: (data) => resolve(data),
       error: (xhr, status, err) => resolve(null),
-    });
-  });
-}
-
-async function getResult() {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get({ expression: "" }, (item) => {
-      resolve(item.expression);
-    });
-  });
-}
-
-async function getStorage(key) {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get(key, (res) => {
-      resolve(res);
     });
   });
 }
@@ -311,6 +331,7 @@ async function updateStorage(progress, id, tabId) {
 }
 
 function myBrowser() {
+  //判断浏览器类型
   var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
   var isOpera = userAgent.indexOf("Opera") > -1;
   if (isOpera) {
@@ -334,8 +355,8 @@ function myBrowser() {
   } //判断是否IE浏览器
 }
 
-//content script发送同源请求，需要区分chrome和FF
 function ajax(method, url, data, header) {
+  //content script发送同源请求，需要区分chrome和FF
   let browser = myBrowser();
   let request = null;
   if (browser == "FF") {
@@ -382,8 +403,8 @@ function getPageData(href) {
 }
 
 async function parseM3u8(url) {
+  //解析m3u8文件
   let m3u8Data = await getPageData(url);
-  //解析文件
   let parser = new m3u8Parser.Parser();
   parser.push(m3u8Data);
   parser.end();
@@ -419,15 +440,8 @@ function getVideo(url) {
 }
 
 function mysleep(ms) {
+  //睡一下
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function delStorage(key) {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.remove(key, (res) => {
-      resolve(res);
-    });
-  });
 }
 
 function notice(title, message) {
@@ -437,15 +451,6 @@ function notice(title, message) {
     title: title,
     message: message,
   });
-}
-
-//时间戳到日期
-function formatDate(now) {
-  var year = now.getFullYear();
-  var month = now.getMonth() + 1;
-  var date = now.getDate();
-  var hour = now.getHours();
-  return year + "-" + month + "-" + date;
 }
 
 function S4() {
@@ -468,8 +473,17 @@ function uuidBuild() {
   );
 }
 
-// 将时间转为最近
+function formatDate(now) {
+  //时间戳到日期
+  var year = now.getFullYear();
+  var month = now.getMonth() + 1;
+  var date = now.getDate();
+  var hour = now.getHours();
+  return year + "-" + month + "-" + date;
+}
+
 function getTimeSinceNow(date) {
+  // 将时间转为最近发布时间
   let currentDate = new Date();
   let publishTime = new Date(date);
   let oneDay = 3600 * 24 * 1000;
@@ -493,6 +507,7 @@ function getTimeSinceNow(date) {
 }
 
 function getcookie(keys) {
+  //获取cookies信息
   var arr = document.cookie.split(";");
   for (var i = 0; i < arr.length; i++) {
     var ass = arr[i].split("=");
@@ -504,6 +519,7 @@ function getcookie(keys) {
 }
 
 function adjustVideoUp() {
+  //在视频投稿中判断自己是否为Up主（DOM判断方式；还有一个使用Api的判断方式）
   let currentUserNameEncode = getcookie("ac_username");
   if (currentUserNameEncode != "" && currentUserNameEncode != undefined) {
     let userName = decodeURI(currentUserNameEncode);
@@ -517,7 +533,9 @@ function adjustVideoUp() {
     return 0; //未登录
   }
 }
+
 function adjustArticleUp() {
+  //在文章投稿中判断自己是否为Up主（DOM判断方式；还有一个使用Api的判断方式）
   let currentUserNameEncode = getcookie("ac_username");
   if (currentUserNameEncode != "" && currentUserNameEncode != undefined) {
     let userName = decodeURI(currentUserNameEncode);
@@ -569,8 +587,8 @@ async function getAsyncDom(target, fn, time = 2500,isDev=false) {
   return await re(fn)
 }
 
-//从Up名称解析为UID
 async function toUpInfo(upName){
+    //从Up名称解析为UID
     let upUrl = fetch('https://www.acfun.cn/u/' + upName.toString()).then((response)=>{
         let upUrl = response.url
         return upUrl
@@ -584,6 +602,7 @@ async function toUpInfo(upName){
 //页面位置计算;一般用来判断是否到底部 getScrollHeight() == getWindowHeight() + getDocumentTop()
 //文档高度 = 可视窗口高度 + 滚动条高度
 function getDocumentTop() {
+  //计算文档高度
   var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
   if (document.body) {
       bodyScrollTop = document.body.scrollTop;
@@ -594,6 +613,7 @@ function getDocumentTop() {
   scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop; return scrollTop;
 }
 function getWindowHeight() {
+  //计算窗口高度
   var windowHeight = 0; if (document.compatMode == "CSS1Compat") {
       windowHeight = document.documentElement.clientHeight;
   } else {
@@ -602,6 +622,7 @@ function getWindowHeight() {
   return windowHeight;
 }
 function getScrollHeight() {
+  //计算滚动条高度
   var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
   if (document.body) {
       bodyScrollHeight = document.body.scrollHeight;
@@ -614,6 +635,7 @@ function getScrollHeight() {
 
 
 async function fetchResult(url) {
+    //fetch信息，同步返回
     let result = fetch(url).then((response)=>{
         return response.text();
     })

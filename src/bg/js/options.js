@@ -1284,6 +1284,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================弹幕列表增加发送用户跳转===================
+    chrome.storage.local.get(['danmuSearchListToUsersw'],function(items){
+        var danmuSearchListToUsersw= items.danmuSearchListToUsersw;
+        if(danmuSearchListToUsersw){
+            document.getElementById('danmuSearchListToUsersw').checked='true';
+        }else{
+            document.getElementById('danmuSearchListToUsersw').checked=false;
+        }
+        $('#danmuSearchListToUsersw').on('click', function () {
+            if(!document.getElementById('danmuSearchListToUsersw').checked){
+                document.getElementById('danmuSearchListToUsersw').checked=false;
+                chrome.storage.local.set({'danmuSearchListToUsersw':false});
+            }else{
+                document.getElementById('danmuSearchListToUsersw').checked=true;
+                chrome.storage.local.set({'danmuSearchListToUsersw':true});
+            }
+        });
+    });
+
     //====================配置播放器画质策略===============
     chrome.storage.local.get(['videoQualityStrategy'],function(items){
         $('#videoQualityStrategy_state').append(items.videoQualityStrategy)
@@ -1617,9 +1636,9 @@ $(document).ready(function () {
                     chrome.storage.local.get(null, function (items) {
                         if(typeof(Uid)=='number'){
                             // chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
-                                delete items["AcpushList1"];
-                                delete items["danmakuCache"];
-                                delete items["AcMomentCircle1"];
+                                // delete items["AcpushList1"];
+                                // delete items["danmakuCache"];
+                                // delete items["AcMomentCircle1"];
                                 delete items["AcLives1"];
                                 var options_data = JSON.stringify(sanitizeOptions(items));
                                 // if(JSON.stringify(rawtoken) == '{}'){token=0}else{token=JSON.stringify(rawtoken)};

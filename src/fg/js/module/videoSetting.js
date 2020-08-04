@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 视频播放设置
  */
 class VideoSetting{
@@ -137,7 +137,7 @@ class VideoSetting{
                 case 'out':
                     let x = document.createElement("div");
                     x.id = "achlp-proBar";
-                    x.style.cssText="z-index: 999;background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;"
+                    x.style.cssText="transition: width 0.4s ease-out;z-index: 999;background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;box-shadow:rgb(125, 125, 125) -3px -1px 5px 0px"
                     document.body.append(x);
                     break;
                 case 'player':
@@ -156,7 +156,7 @@ class VideoSetting{
         }
     }
         
-    //AB回放UI 函数在videoInject.js
+    //AB回放UI 函数在videoSettingInject.js
     AddABPlayUI(){
         let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB</span>
         <div class="speed-panel">
@@ -369,7 +369,7 @@ class VideoSetting{
         return videoRate
     }
     
-    searchListToUser(){
+    danmuSearchListToUser(){
         $(".danmaku-items").bind(
             "DOMNodeInserted",
             debounce((e) => {

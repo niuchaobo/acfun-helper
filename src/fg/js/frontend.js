@@ -245,9 +245,9 @@ class ODHFront {
                 })
             }
            //弹幕列表前往Acer个人主页
-           if(this.options.test){
+           if(this.options.danmuSearchListToUsersw){
                getAsyncDom('.list-title',()=>{
-                   this.videoSetting.searchListToUser()
+                   this.videoSetting.danmuSearchListToUser()
                })
            }
           //评论空降

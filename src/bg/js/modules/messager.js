@@ -113,8 +113,9 @@ class MsgNotifs{
                         xmlData += data.username + " </a><span class=\"time\">" + getTimeSinceNow(data.releaseDate) + "</span> </div> </div> </div> ";
                         out_data+=xmlData;
                     }
-                    chrome.storage.local.set({'AcpushList1': out_data});
+                    // chrome.storage.local.set({'AcpushList1': out_data});
                     db_putPushListHtml(out_data);
+                    // console.log("write in")
                     // chrome.storage.local.get(['AcpushList'],function(datao){console.log(datao);})
                 });
         },60000)
