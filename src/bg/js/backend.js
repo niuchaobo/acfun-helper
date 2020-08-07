@@ -39,25 +39,6 @@ class ODHBack {
             []
         );
 
-
-        chrome.webRequest.onBeforeSendHeaders.addListener(
-            function (req) {
-                for (var i = 0; i < req.requestHeaders.length; ++i) {
-                    if (req.requestHeaders[i].name === 'User-Agent') {
-                        req.requestHeaders[i].value='Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36';
-                        break;
-                    }
-                }
-                return {requestHeaders: req.requestHeaders};
-            },
-            {
-                urls: ["https://m.acfun.cn/live/detail/*"]
-            },
-            ["blocking", "requestHeaders"]
-        );
-
-
-
         //当关闭标签页时删除此标签页存储的视频信息
         chrome.tabs.onRemoved.addListener(async function (tabId, removeInfo) {
             let result = await getStorage(tabId+"").then(result => {return result[tabId]});
