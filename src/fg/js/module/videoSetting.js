@@ -190,8 +190,8 @@ class VideoSetting{
                     if(flag == '退出观影模式'){ 
                         document.getElementById("acfun-popup-helper").style.display="none";
                         document.getElementById("acfun-helper-div").style.display="none";
-                        let FileModeExclusionsw = await getStorage('FileModeExclusionsw');
-                        if(FileModeExclusionsw.FileModeExclusionsw){
+                        let FilmModeExclusionsw = await getStorage('FilmModeExclusionsw');
+                        if(FilmModeExclusionsw.FilmModeExclusionsw){
                             setTimeout(()=>{ //全屏模式切换时会重新渲染样式（页面宽度改变）？扔进异步队列等主程跑完再渲染
                                 this.fullScreenStyle(true)
                             })
@@ -199,8 +199,8 @@ class VideoSetting{
                     }else{
                         document.getElementById("acfun-popup-helper").style.display="";
                         document.getElementById("acfun-helper-div").style.display="";
-                        let FileModeExclusionsw = await getStorage('FileModeExclusionsw');
-                        if(FileModeExclusionsw.FileModeExclusionsw){this.fullScreenStyle(false);}
+                        let FilmModeExclusionsw = await getStorage('FilmModeExclusionsw');
+                        if(FilmModeExclusionsw.FilmModeExclusionsw){this.fullScreenStyle(false);}
                     }
                 });
             });

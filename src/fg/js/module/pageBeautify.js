@@ -192,21 +192,28 @@ class PageBeautify {
   }
 
   hideAds(){
-    try {
-      let nod = document.createElement("style");
-      let cssStr = ".usemobile,.shareCount,.app-guide.pause-display-container,{display:none !important}"
-      nod.type="text/css";
-      nod.textContent = cssStr;
-      document.head.appendChild(nod);
-      // document.querySelector(".shareCount").remove();
-      // document.querySelector(".usemobile").remove();
-    } catch (error) {}
-    try {
-        document.querySelector(".download-app").remove();
-    } catch (error) {}
-    try {
-        document.querySelector(".pause-display-container").remove();
-    } catch (error) {}
+    var timer = setInterval(function () {
+      let checknode=$('.pause-display-container');
+      if(checknode.length>0){
+        try {
+          let nod = document.createElement("style");
+          let cssStr = ".usemobile,.shareCount,.app-guide.pause-display-container,{display:none !important}"
+          nod.type="text/css";
+          nod.textContent = cssStr;
+          document.head.appendChild(nod);
+          document.querySelector(".shareCount").remove();
+          document.querySelector(".usemobile").remove();
+        } catch (error) {}
+        try {
+            document.querySelector(".download-app").remove();
+        } catch (error) {}
+        try {
+            document.querySelector(".pause-display-container").remove();
+        } catch (error) {}
+        clearInterval(timer);
+      }
+    },100)
+
   }
 
   async addMouseAnimation(){

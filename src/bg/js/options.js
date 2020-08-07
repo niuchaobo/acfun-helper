@@ -1247,20 +1247,20 @@ $(document).ready(function () {
     });
 
     //====================观影模式关灯适配暗色===============
-    chrome.storage.local.get(['FileModeExclusionsw'],function(items){
-        var FileModeExclusionsw= items.FileModeExclusionsw;
-        if(FileModeExclusionsw){
-            document.getElementById('FileModeExclusionsw').checked='true';
+    chrome.storage.local.get(['FilmModeExclusionsw'],function(items){
+        var FilmModeExclusionsw= items.FilmModeExclusionsw;
+        if(FilmModeExclusionsw){
+            document.getElementById('FilmModeExclusionsw').checked='true';
         }else{
-            document.getElementById('FileModeExclusionsw').checked=false;
+            document.getElementById('FilmModeExclusionsw').checked=false;
         }
-        $('#FileModeExclusionsw').on('click', function () {
-            if(!document.getElementById('FileModeExclusionsw').checked){
-                document.getElementById('FileModeExclusionsw').checked=false;
-                chrome.storage.local.set({'FileModeExclusionsw':false});
+        $('#FilmModeExclusionsw').on('click', function () {
+            if(!document.getElementById('FilmModeExclusionsw').checked){
+                document.getElementById('FilmModeExclusionsw').checked=false;
+                chrome.storage.local.set({'FilmModeExclusionsw':false});
             }else{
-                document.getElementById('FileModeExclusionsw').checked=true;
-                chrome.storage.local.set({'FileModeExclusionsw':true});
+                document.getElementById('FilmModeExclusionsw').checked=true;
+                chrome.storage.local.set({'FilmModeExclusionsw':true});
             }
         });
     });
