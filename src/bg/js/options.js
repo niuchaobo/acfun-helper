@@ -1303,6 +1303,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================自动展开视频简介==================
+    chrome.storage.local.get(['autoOpenVideoDescsw'],function(items){
+        var autoOpenVideoDescsw= items.autoOpenVideoDescsw;
+        if(autoOpenVideoDescsw){
+            document.getElementById('autoOpenVideoDescsw').checked=true;
+        }else{
+            document.getElementById('autoOpenVideoDescsw').checked=false;
+        }
+        $('#autoOpenVideoDescsw').on('click', function () {
+            if(!document.getElementById('autoOpenVideoDescsw').checked){
+                document.getElementById('autoOpenVideoDescsw').checked=false;
+                chrome.storage.local.set({'autoOpenVideoDescsw':false});
+            }else{
+                document.getElementById('autoOpenVideoDescsw').checked=true;
+                chrome.storage.local.set({'autoOpenVideoDescsw':true});
+            }
+        });
+    });
+
     //====================弹幕列表增加发送用户跳转===================
     chrome.storage.local.get(['danmuSearchListToUsersw'],function(items){
         var danmuSearchListToUsersw= items.danmuSearchListToUsersw;

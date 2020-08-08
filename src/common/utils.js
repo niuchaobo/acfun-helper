@@ -40,6 +40,8 @@ const defaults = {
     ABPlaysw:true,
     ProgressBarsw:true,
     danmuSearchListToUsersw:true,
+    endedAutoJumpRecommandFirstDougasw:false,
+    autOpenVideoDescsw:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

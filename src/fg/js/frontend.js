@@ -149,8 +149,11 @@ class ODHFront {
         }
         //播放器和弹幕功能
         if(REG.video.test(href)){
+            if(this.options.autoOpenVideoDescsw){
+                this.pageBeautify.openVideoDesc();
+            }
             this.danmaku.cacheStore();
-            this.videoSetting.callPicktureInPictureMode()
+            this.videoSetting.callPicktureInPictureMode();
             if(this.options.autoJumpLastWatchSw){
                 this.videoSetting.jumpLastWatchTime();
             }

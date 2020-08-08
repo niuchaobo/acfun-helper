@@ -53,6 +53,9 @@ AcFun-Helper is an open source, and extensible Web Browser Extension for www.acf
 32.在视频评论区选中时间使播放器快速跳转   
 33.视频的AB回放功能（两点循环播放，左右反复横跳！）   
 34.在视频稿件和番剧下，增加全局进度条（什么？进度条君撑不住啦？）  
+35.自动播放下一个推荐视频（“大家都在看”列表项目）   
+
+36.自动展开简介
 
 ---
 #### 插件本体获取

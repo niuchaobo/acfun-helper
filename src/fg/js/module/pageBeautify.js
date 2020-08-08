@@ -213,7 +213,12 @@ class PageBeautify {
         clearInterval(timer);
       }
     },100)
+  }
 
+  openVideoDesc(){
+    getAsyncDom(".desc-operate",()=>{
+      document.getElementsByClassName("desc-operate")[0].click();
+    })
   }
 
   async addMouseAnimation(){
