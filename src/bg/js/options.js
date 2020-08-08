@@ -1284,6 +1284,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================自动续播==================
+    chrome.storage.local.get(['endedAutoJumpRecommandFirstDougasw'],function(items){
+        var endedAutoJumpRecommandFirstDougasw= items.endedAutoJumpRecommandFirstDougasw;
+        if(endedAutoJumpRecommandFirstDougasw){
+            document.getElementById('endedAutoJumpRecommandFirstDougasw').checked='true';
+        }else{
+            document.getElementById('endedAutoJumpRecommandFirstDougasw').checked=false;
+        }
+        $('#endedAutoJumpRecommandFirstDougasw').on('click', function () {
+            if(!document.getElementById('endedAutoJumpRecommandFirstDougasw').checked){
+                document.getElementById('endedAutoJumpRecommandFirstDougasw').checked=false;
+                chrome.storage.local.set({'endedAutoJumpRecommandFirstDougasw':false});
+            }else{
+                document.getElementById('endedAutoJumpRecommandFirstDougasw').checked=true;
+                chrome.storage.local.set({'endedAutoJumpRecommandFirstDougasw':true});
+            }
+        });
+    });
+
     //====================弹幕列表增加发送用户跳转===================
     chrome.storage.local.get(['danmuSearchListToUsersw'],function(items){
         var danmuSearchListToUsersw= items.danmuSearchListToUsersw;

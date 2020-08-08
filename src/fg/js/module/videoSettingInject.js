@@ -51,6 +51,9 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         try {
             document.getElementsByTagName("video")[0].addEventListener('ended', function () {
                 console.log("播放结束");
+                //自动观看“大家都在看”栏目第一个稿件
+                if(options.endedAutoJumpRecommandFirstDougasw){document.getElementsByClassName("recommendation")[0].children[0].children[0].click();}
+                //自动退出宽屏、网页全屏
                 console.log(document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
                 let x = (document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
                 if(!window.player._loop && x){
@@ -77,7 +80,6 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         } catch (error) {
         }
     }
-
 });
 //AB回放
 function updateAbPlayFirst(){
