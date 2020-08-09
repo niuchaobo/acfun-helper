@@ -1247,20 +1247,20 @@ $(document).ready(function () {
     });
 
     //====================观影模式关灯适配暗色===============
-    chrome.storage.local.get(['FileModeExclusionsw'],function(items){
-        var FileModeExclusionsw= items.FileModeExclusionsw;
-        if(FileModeExclusionsw){
-            document.getElementById('FileModeExclusionsw').checked='true';
+    chrome.storage.local.get(['FilmModeExclusionsw'],function(items){
+        var FilmModeExclusionsw= items.FilmModeExclusionsw;
+        if(FilmModeExclusionsw){
+            document.getElementById('FilmModeExclusionsw').checked='true';
         }else{
-            document.getElementById('FileModeExclusionsw').checked=false;
+            document.getElementById('FilmModeExclusionsw').checked=false;
         }
-        $('#FileModeExclusionsw').on('click', function () {
-            if(!document.getElementById('FileModeExclusionsw').checked){
-                document.getElementById('FileModeExclusionsw').checked=false;
-                chrome.storage.local.set({'FileModeExclusionsw':false});
+        $('#FilmModeExclusionsw').on('click', function () {
+            if(!document.getElementById('FilmModeExclusionsw').checked){
+                document.getElementById('FilmModeExclusionsw').checked=false;
+                chrome.storage.local.set({'FilmModeExclusionsw':false});
             }else{
-                document.getElementById('FileModeExclusionsw').checked=true;
-                chrome.storage.local.set({'FileModeExclusionsw':true});
+                document.getElementById('FilmModeExclusionsw').checked=true;
+                chrome.storage.local.set({'FilmModeExclusionsw':true});
             }
         });
     });
@@ -1280,6 +1280,44 @@ $(document).ready(function () {
             }else{
                 document.getElementById('ProgressBarsw').checked=true;
                 chrome.storage.local.set({'ProgressBarsw':true});
+            }
+        });
+    });
+
+    //====================自动续播==================
+    chrome.storage.local.get(['endedAutoJumpRecommandFirstDougasw'],function(items){
+        var endedAutoJumpRecommandFirstDougasw= items.endedAutoJumpRecommandFirstDougasw;
+        if(endedAutoJumpRecommandFirstDougasw){
+            document.getElementById('endedAutoJumpRecommandFirstDougasw').checked='true';
+        }else{
+            document.getElementById('endedAutoJumpRecommandFirstDougasw').checked=false;
+        }
+        $('#endedAutoJumpRecommandFirstDougasw').on('click', function () {
+            if(!document.getElementById('endedAutoJumpRecommandFirstDougasw').checked){
+                document.getElementById('endedAutoJumpRecommandFirstDougasw').checked=false;
+                chrome.storage.local.set({'endedAutoJumpRecommandFirstDougasw':false});
+            }else{
+                document.getElementById('endedAutoJumpRecommandFirstDougasw').checked=true;
+                chrome.storage.local.set({'endedAutoJumpRecommandFirstDougasw':true});
+            }
+        });
+    });
+
+    //====================自动展开视频简介==================
+    chrome.storage.local.get(['autoOpenVideoDescsw'],function(items){
+        var autoOpenVideoDescsw= items.autoOpenVideoDescsw;
+        if(autoOpenVideoDescsw){
+            document.getElementById('autoOpenVideoDescsw').checked=true;
+        }else{
+            document.getElementById('autoOpenVideoDescsw').checked=false;
+        }
+        $('#autoOpenVideoDescsw').on('click', function () {
+            if(!document.getElementById('autoOpenVideoDescsw').checked){
+                document.getElementById('autoOpenVideoDescsw').checked=false;
+                chrome.storage.local.set({'autoOpenVideoDescsw':false});
+            }else{
+                document.getElementById('autoOpenVideoDescsw').checked=true;
+                chrome.storage.local.set({'autoOpenVideoDescsw':true});
             }
         });
     });

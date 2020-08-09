@@ -6,6 +6,7 @@ class WatchPlan{
         this.OpFlag = true;
         this.execWatchReqTabNum = 3;
         this.tabStateDic = {};
+        this.ori_list = {};
     }
 
     setWatchOptTabNum(num){
@@ -52,28 +53,71 @@ class WatchPlan{
     /*我们利用保存好了的数组，当用户点击稍后再看的观看按钮时，我们取出数组中的前几个（自定义数量）元素，打开标签页；打开完了之后，我们维护一个字典：{tabId:{url,{tabInfo}}} =>这里是所有打开了并没有被关闭或者转换了url的标签页信息，如果标签关闭了，或者被导航至其他url时，我们会将其从字典中删除，并将其对应的url从数组中删除。=>观看完毕。其中，我们还要保证其在点击了按钮之后，页面一直保持着打开（自定义）着一定数量的标签（除非数组中满足不了数量的要求）；直到清空数组所有元素。
     */ 
 
-    execTabCreate(url){
+    async execTabCreate(url){
         //打开标签，并返回一个tab Info字典
-        var x = [];
-        chrome.tabs.create({url:url},(e)=>{x.push(e)})
-        return x[0]
+        return new Promise((resolve, reject) => {
+            chrome.tabs.create({url:url},(e)=> {
+                resolve(e);
+            });
+        });
+    }
+
+    execQueryTab(id){
+        try{
+            chrome.tabs.get(id,(e)=>{
+                if(e){
+                    console.log("not null")
+                    return true
+                }else{
+                    console.log("null")
+                    return false
+                }
+            })
+        }catch(e){}
     }
 
     async execWatch(){
         //打开列表中的前面几项（默认3项），并监听他们的状态（onRemoved or onUpdated），状态改变之后就将其从列表中删除，并补上页面，保持页面数量在指定数量。
-        var ori_list = await getStorage("WatchPlanList");
+        this.ori_list = await getStorage("WatchPlanList");
         // this.tabStateDic
-        console.log(ori_list.slice(0,this.execWatchReqTabNum))
-        for (let index = 0; index < this.execWatchReqTabNum; index++) {
-            let info = this.execTabCreate(ori_list[index]);
-            this.tabStateDic[info.id] = {url:info.pendingUrl,tabInfo:info};
-        }
-        chrome.tabs.onRemoved.addListener(function(id){console.log(id)})
-        chrome.tabs.onRemoved.removeListener()
+        // console.log(this.ori_list)
+        // for (let index = 0; index < this.execWatchReqTabNum; index++) {
+        //     console.log(this.ori_list.WatchPlanList[index])
+            // let info = await this.execTabCreate(this.ori_list.WatchPlanList[index]);
+            // this.tabStateDic[info.id] = {url:info.pendingUrl,tabInfo:info};
+            // console.log(info.pendingUrl)
+            // this.ori_list.WatchPlanList.pop(info.pendingUrl);
+        // }
+        // console.log(this.ori_list)
+
+        // console.log(this.tabStateDic)
+        chrome.tabs.onRemoved.addListener((id)=>{
+            // console.log(id)
+            // console.log(this.tabStateDic);
+            if(this.tabStateDic.hasOwnProperty(id)){
+                delete this.tabStateDic[id];
+            }
+            // console.log(this.tabStateDic);
+        })
+
+        var _daemon = setInterval(async () => {
+            if(Object.keys(this.tabStateDic).length < this.execWatchReqTabNum && this.ori_list.WatchPlanList.length!=0){
+                // console.log(this.ori_list.WatchPlanList.slice(-1))
+                let info = await this.execTabCreate(this.ori_list.WatchPlanList.slice(-1)[0]);
+                this.tabStateDic[info.id] = {url:info.pendingUrl,tabInfo:info};
+                this.ori_list.WatchPlanList.pop(this.ori_list.WatchPlanList.slice(-1)[0]);
+            }
+            // console.log(this.ori_list)
+            if(Object.keys(this.tabStateDic).length==0 && this.ori_list.WatchPlanList.length==0){
+                chrome.storage.local.set({WatchPlanList : []});
+                // console.log("end over")
+                clearInterval(_daemon);
+            }
+        }, 2000);
         return;
     }
 
-    execStateJudge(){
+    execAddStateJudge(){
         //需要补充标签的判断
         if(Object.keys(this.tabStateDic).length < this.execWatchReqTabNum){
             return true

@@ -14,10 +14,10 @@ const defaults = {
     scan:false,//评论用户扫描
     upHighlight:true,//up主评论高亮
     receive:false,//接收用户情报
-    filter:false,//屏蔽up
+    filter:false,//up文章区屏蔽
     beautify_nav:true,//首页右侧导航
-    beautify_personal:true,//顶栏个人中心入口优化
-    show_like:false,//显示点赞数、投桃数
+    beautify_personal:true,//顶栏个人中心优化
+    show_like:false,//视频投稿显示点赞数、投桃数
     custom_rate:true,//开启自定义倍速
     custom_rate_keyCode:[38,40],//shift ↑ ↓ 倍速播放快捷键
     custom_easy_jump_keyCode:[65], //shift A 评论时间跳转快捷键
@@ -31,15 +31,17 @@ const defaults = {
     liveBansw:false,
     PlayerDamakuSearchSw:false,
     PlayerTimeCommentEasyJump:true,
-    PlaybackRateKeysw:true,
-    FileModeExclusionsw:true,
-    endedAutoExitFullscreensw:false,
+    PlaybackRateKeysw:false,
+    FilmModeExclusionsw:true,
+    endedAutoExitFullscreensw:true,
     easySearchScanForPlayerTimesw:false,
     Dev_indexBlurSW:false,
     Upgradeable: 0,
-    ABPlaysw:false,
-    FlexProgressBarws:true,
+    ABPlaysw:true,
+    ProgressBarsw:true,
     danmuSearchListToUsersw:true,
+    endedAutoJumpRecommandFirstDougasw:false,
+    autOpenVideoDescsw:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

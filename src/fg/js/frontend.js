@@ -149,8 +149,11 @@ class ODHFront {
         }
         //播放器和弹幕功能
         if(REG.video.test(href)){
+            if(this.options.autoOpenVideoDescsw){
+                this.pageBeautify.openVideoDesc();
+            }
             this.danmaku.cacheStore();
-            this.videoSetting.callPicktureInPictureMode()
+            this.videoSetting.callPicktureInPictureMode();
             if(this.options.autoJumpLastWatchSw){
                 this.videoSetting.jumpLastWatchTime();
             }
@@ -276,7 +279,13 @@ class ODHFront {
     let acId = reg.exec(href)[1];
     console.log(this.luckyTurntab.RollOut(acId, number));
   }
-
+  api_lottery2nd(params) {
+    let { number, follow } = params;
+    let href = window.location.href;
+    let reg = /ac(\d+)/;
+    let acId = reg.exec(href)[1];
+    console.log(this.luckyTurntab.RollOutExp(acId, number));
+  }
   //下载封面
   api_downloadCover(params) {
     this.download.downloadCover(params);

@@ -3,7 +3,8 @@
  */
 class LuckyTtab {
     constructor(){
-        this.messageFormat = "https://message.acfun.cn/im?targetId={userId}"
+        this.messageFormat = "https://message.acfun.cn/im?targetId={userId}";
+        this.hasBeenChosen = [];
     }
 
     genNum(mode,num=0,min=0,max){
@@ -229,7 +230,6 @@ class LuckyTtab {
         })
     }
 
-
     async RollOut(acid,num){
         //主函数
         let y = await this.getVCdetailCommentData(acid).then((res)=>{return res});
@@ -237,12 +237,9 @@ class LuckyTtab {
         if(num>max){
             num = max;
         }
-        //let x = this.genNum(2,num,0,max);
-        //console.log(x);
         var arr = new Array();
         let min = 0;
         while(arr.length<num){
-            //获取随机下标
             let i = Math.floor(Math.random() * (max - min)) + min;
 
             let userId = y['Comm_data_UIDList'][i];
@@ -259,7 +256,60 @@ class LuckyTtab {
             max--;
         }
 
+        var obj = document.getElementById("acfun-popup-helper");
+        var frameWindow = obj.contentWindow;
+        frameWindow.postMessage({
+            action: 'showLucyResult',
+            params: {
+                arr:JSON.stringify(arr),
+            }
+        }, '*');
+    }
 
+    async RollOutExp(acid,num){
+        //排除上次执行的结果的主函数
+        let y = await this.getVCdetailCommentData(acid).then((res)=>{return res});
+        let max = y['Comm_data_UIDList'].length;
+        if(num>max){
+            num = max;
+        }
+        var arr = new Array();
+        let min = 0;
+        var tryNum = 0;
+        while(arr.length<num){
+            //获取随机下标
+            //TODO 这里的随机数生成方法应该切换到@wpscott 推荐的 new Date() % Array.length或window.crypto.getRandomValues 这个函数需要在一段时间内的随机数是与上次不同，使用的方法应该更具有令人信服的随机性、特殊性。refer:https://developer.mozilla.org/zh-CN/docs/Web/API/RandomSource/getRandomValues
+            let i = Math.floor(Math.random() * (max - min)) + min;
+            let userId = y['Comm_data_UIDList'][i];
+            if(this.hasBeenChosen.indexOf(userId)!=-1){
+                tryNum++;
+                if(tryNum<=10){
+                    continue;
+                }else{
+                    let lucyUser = {
+                        name : "已经没有可以在评论中抽选的Acer了",
+                        url : "/",
+                        comment : "评论池已经被榨干了",
+                        floor: "∞",
+                    };
+                    arr.push(lucyUser);
+                    break;
+                }
+            }
+            //TODO：这里可以考虑使用sessionStorage甚至将结果存储至更持久的IndexedDB或者SQLite3数据库（以便导出）中。
+            this.hasBeenChosen.push(userId);
+            let commentInfo = y['Comm_data_byUID'][userId];
+            let url = this.messageFormat.replace("{userId}",userId);
+            let lucyUser = {
+                name : commentInfo.userName,
+                url : url,
+                comment : commentInfo.content,
+                floor: commentInfo.floor,
+            };
+            arr.push(lucyUser);
+            y['Comm_data_UIDList'].splice(i,1);
+            max--;
+        }
 
         /*for(let i in x){
             console.log(y['Comm_data_UIDList'][i]);
