@@ -111,6 +111,23 @@ function lottery() {
 
 }
 
+function lotteryAgain() {
+    $('#lucy-chou').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
+    let number = $("#lucy-number").val();
+    if(number=='' || Number(number)<=0){
+        return false;
+    }
+    let isFollow = $("#lucy-follow").val();
+    window.parent.postMessage({
+        action: 'lottery2nd',
+        params: {
+            number: number,
+            isFollow: isFollow
+        }
+    }, '*');
+
+}
+
 function checkNumber() {
     var value = $("#lucy-number").val();
     var re = /^[1-9]+[0-9]*]*$/;
@@ -259,6 +276,7 @@ function api_showLucyResult(params) {
     let t = height+_h
     node.style.height=t+"px";
     $('#lucy-chou').loading('stop');
+    $('#lucy-chouAgain').loading('stop');
     $("#lucy-result-label").show();
 
 }
@@ -273,6 +291,7 @@ function onDomContentLoaded() {
     $("#copy-link-high").bind('click',{"id":'#live-url-high'},copyLink);
     //抽奖
     $("#lucy-chou").bind('click',lottery);
+    $("#lucy-chouAgain").bind('click',lotteryAgain);
     $("#lucy-number").bind('keyup',checkNumber);
     //AcFun-live桌面程序
     $("#subscribe").bind('click',liveSubscribe);

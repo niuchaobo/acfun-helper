@@ -211,12 +211,12 @@ class Popup {
                         <label id=lucy-result-label style="display:none">
                         <span >抽奖结果 :</span> 
                         
-                        
                         </label> 
                         <div id=lucy-result></div>
                         
                         <span>&nbsp;</span> 
-                        <input type="button"  id="lucy-chou" class="button" value="抽~" /></label>
+                        <input type="button"  id="lucy-chou" class="button" value="从零开始的抽奖" /></label>
+                        <input type="button"  id="lucy-chouAgain" class="button" value="继续抽奖" /></label>
                 </div>
                 `;
     }
