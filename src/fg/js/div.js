@@ -87,8 +87,8 @@ class Div {
     let height = document.documentElement.clientHeight; //取得浏览器页面可视区域的宽度
     this.div = document.createElement("div");
     this.div.style.right = "0px";
-    //this.div.style.top=(height/2-20)/2+'px';
-    this.div.style.top = 225 + 60 + 2 + "px"; //小窗口高度+顶部导航栏高度+间隙 (不会挡道小窗口播放默认播放位置)
+    this.div.style.top=(height/2-20)/2+'px';
+    //this.div.style.top = 225 + 60 + 2 + "px"; //小窗口高度+顶部导航栏高度+间隙 (不会挡道小窗口播放默认播放位置),
     // this.div.style.background = "#fd4c5b";  //我一定会回来的
     // this.div.style.color = "#fff";
     // this.div.style["user-select"] = "none";

@@ -273,7 +273,7 @@ function api_showLucyResult(params) {
     let height = $("#lucy-result").height();
     let node = window.parent.document.getElementById("acfun-popup-helper");
     let _h = node.clientHeight;
-    let t = height+_h
+    let t = height+_h;
     node.style.height=t+"px";
     $('#lucy-chou').loading('stop');
     $('#lucy-chouAgain').loading('stop');

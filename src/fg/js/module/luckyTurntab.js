@@ -279,6 +279,7 @@ class LuckyTtab {
         while(arr.length<num){
             //获取随机下标
             //TODO 这里的随机数生成方法应该切换到@wpscott 推荐的 new Date() % Array.length或window.crypto.getRandomValues 这个函数需要在一段时间内的随机数是与上次不同，使用的方法应该更具有令人信服的随机性、特殊性。refer:https://developer.mozilla.org/zh-CN/docs/Web/API/RandomSource/getRandomValues
+            //let i = Math.floor(Math.random() * (max - min)) + min;
             let i = Math.floor(Math.random() * (max - min)) + min;
             let userId = y['Comm_data_UIDList'][i];
             if(this.hasBeenChosen.indexOf(userId)!=-1){
