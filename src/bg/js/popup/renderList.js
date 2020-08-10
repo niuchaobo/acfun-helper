@@ -73,7 +73,7 @@ export async function renderPushInnerHtml() {
         pushListData.innerText += xmlData;
       }
       $("#pop-push").append(pushListData.innerText);
-      // pushListData.index++
+      pushListData.index++
       setTimeout(() => {
         pushListData.busy = false;
       }, 0);
