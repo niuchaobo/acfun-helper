@@ -117,11 +117,11 @@ function updateAbPlaySecond(){
 }
 function stopAbPlay(){
     if(abPlayFlag === 1){
-        document.getElementsByTagName("video")[0].pause();
         abPlayFirst=abPlaySecond=undefined;
-        document.getElementsByTagName("video")[0].removeEventListener("timeupdate",abPlayMain,false);
         abPlayFlag = 0;
-        leftBottomTip('标记已清除,已退出AB回放。');
+        document.getElementsByTagName("video")[0].removeEventListener("timeupdate",abPlayMain,false);
+        $('.speed-panel>ul>.switch-button').text('开始');
+        leftBottomTip('标记已清除,退出AB回放。');
         $('.speed-panel>ul>.point-a').text('标记点A');
         $('.speed-panel>ul>.point-b').text('标记点B');
         return;
@@ -144,6 +144,7 @@ function abPlayHandler(){
     }
     if(abPlayFlag === 0){
         leftBottomTip('AB回放','开启');
+        $('.speed-panel>ul>.switch-button').text('停止');
         document.getElementsByTagName("video")[0].removeEventListener("timeupdate",abPlayMain,false);
         document.getElementsByTagName("video")[0].currentTime = abPlayFirst;
         document.getElementsByTagName("video")[0].addEventListener("timeupdate",abPlayMain,false);
@@ -151,7 +152,11 @@ function abPlayHandler(){
         return;
     }
     if(abPlayFlag === 1){
-        leftBottomTip('AB回放','已经启用，如需停止请按“清除&结束”按钮。');
+        document.getElementsByTagName("video")[0].removeEventListener("timeupdate",abPlayMain,false);
+        document.getElementsByTagName("video")[0].pause();
+        $('.speed-panel>ul>.switch-button').text('开始');
+        abPlayFlag = 0;
+        leftBottomTip('AB回放','已经关闭，如需清除标记请按“清除”按钮。');
         return;
     }
 }
