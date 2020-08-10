@@ -11,9 +11,11 @@ export async function renderPushInnerHtml() {
     // chrome.storage.local.get(["AcpushList1"], function (data) {
     //   $("#pop-push").append(data.AcpushList1);
     // });
-    var p1data = await db_getPushListHtml();
-    // console.log(p1data)
-    // console.log(p1data.length)
+    try {
+      var p1data = await db_getPushListHtml();
+    } catch (error) {
+      var p1data = [];
+    }
     if(p1data.length!=0){
       pushListData.index++;
       $("#pop-push").append(p1data[0].content);
