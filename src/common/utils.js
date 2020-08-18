@@ -4,6 +4,7 @@ const defaults = {
     to_attention:true,
     to_attention_num:5,
     to_special_items:[],
+    broadcastingUIDlistFollowing:{},
     WatchPlanList:[],
     activeTabKey:'activeTabId',
     extendsName:'AcFun助手',
@@ -42,6 +43,7 @@ const defaults = {
     danmuSearchListToUsersw:true,
     endedAutoJumpRecommandFirstDougasw:false,
     autOpenVideoDescsw:true,
+    followLiveNotif:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

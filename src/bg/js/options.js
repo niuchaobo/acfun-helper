@@ -1350,6 +1350,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================关注在主站关注的直播开播推送===================
+    chrome.storage.local.get(['followLiveNotif'],function(items){
+        var followLiveNotif= items.followLiveNotif;
+        if(followLiveNotif){
+            document.getElementById('followLiveNotif').checked='true';
+        }else{
+            document.getElementById('followLiveNotif').checked=false;
+        }
+        $('#followLiveNotif').on('click', function () {
+            if(!document.getElementById('followLiveNotif').checked){
+                document.getElementById('followLiveNotif').checked=false;
+                chrome.storage.local.set({'followLiveNotif':false});
+            }else{
+                document.getElementById('followLiveNotif').checked=true;
+                chrome.storage.local.set({'followLiveNotif':true});
+            }
+        });
+    });
+
     //=============================关注直播推送==========================
     chrome.storage.local.get(['liveFloowNotif'],function(items){
         var liveFloowingsw_status= items.liveFloowNotif;

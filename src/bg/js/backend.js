@@ -15,6 +15,7 @@ class ODHBack {
         this.MsgNotfs.timer4Unread();
         this.MsgNotfs.fetchPushList();
         this.MsgNotfs.liveOnlineNotif();
+        this.MsgNotfs.followLiveNotif();
         this.Upgrade.upgradeMain();
         // this.Upgrade.checkUpdate();
         // this.MsgNotfs.fetchMcircle();
