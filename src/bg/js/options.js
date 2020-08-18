@@ -1058,6 +1058,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================直播评论时间Tag============================
+    chrome.storage.local.get(['liveCommentTimeTag'],function(items){
+        var liveCommentTimeTag= items.liveCommentTimeTag;
+        if(liveCommentTimeTag){
+            document.getElementById('liveCommentTimeTag').checked='true';
+        }else{
+            document.getElementById('liveCommentTimeTag').checked=false;
+        }
+        $('#liveCommentTimeTag').on('click', function () {
+            if(!document.getElementById('liveCommentTimeTag').checked){
+                document.getElementById('liveCommentTimeTag').checked=false;
+                chrome.storage.local.set({'liveCommentTimeTag':false});
+            }else{
+                document.getElementById('liveCommentTimeTag').checked=true;
+                chrome.storage.local.set({'liveCommentTimeTag':true});
+            }
+        });
+    })
+
     //=====================页面优化============================
     chrome.storage.local.get(['hideAd'],function(items){
         var ifHideAd= items.hideAd;

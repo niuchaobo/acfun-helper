@@ -44,6 +44,7 @@ const defaults = {
     endedAutoJumpRecommandFirstDougasw:false,
     autOpenVideoDescsw:true,
     followLiveNotif:true,
+    liveCommentTimeTag:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

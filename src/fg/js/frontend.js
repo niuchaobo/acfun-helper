@@ -162,7 +162,10 @@ class ODHFront {
         this.playerconfig.PConfProc();
         //直播画中画模式
         if(REG.live.test(href)){
-            this.livepageBeautify.callPicktureInPictureModeForLive()
+          if(this.options.liveCommentTimeTag){
+            this.livepageBeautify.commentTimeTag();
+          }
+          this.livepageBeautify.callPicktureInPictureModeForLive()
         }
     }
 

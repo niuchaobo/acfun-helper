@@ -70,6 +70,7 @@
         "bg/js/jqueryExtend.js",
         "bg/images/copy_link.png",
         "fg/js/nav.js",
-        "fg/js/module/videoSettingInject.js"
+        "fg/js/module/videoSettingInject.js",
+        "fg/js/module/liveSettingInject.js"
     ]
 }

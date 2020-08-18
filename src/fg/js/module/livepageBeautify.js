@@ -14,6 +14,12 @@ class LivePageButfy {
     
     }
 
+    commentTimeTag(){
+        let root = chrome.runtime.getURL('/');
+        let sc = document.createElement("script");
+        sc.src=`${root}fg/js/module/liveSettingInject.js`;
+        document.head.appendChild(sc);
+    }
     
     appendWidePlayer() {
         //加入按钮
