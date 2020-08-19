@@ -64,6 +64,74 @@ class MsgNotifs{
         },60000);
     }
 
+    async followLiveNotifEx(){
+        let broadcastingUIDlistFollowing = await getResult('broadcastingUIDlistFollowing');
+        let y={}
+        if(JSON.stringify(broadcastingUIDlistFollowing)=='{}'){
+            chrome.storage.local.set({'broadcastingUIDlistFollowing':y});
+            console.log('BroadcastingUIDlistFollowing Is Blank. Filling...')
+            return;
+        }
+        let rawResult = await fetchResult("https://live.acfun.cn/api/channel/list?count=56&pcursor=&filters=[%7B%22filterType%22:3,+%22filterId%22:0%7D]");
+        let result = JSON.parse(rawResult);
+        for(let i=0;i<result.liveList.length;i++){
+            y[result.liveList[i].authorId] = true;
+        }
+        let a = await getStorage('broadcastingUIDlistFollowing');
+        // console.log(a)
+        let b = Object.keys(a.broadcastingUIDlistFollowing);
+        let c = Object.keys(y);
+        let j,k
+        for(j in b){
+            if(c.indexOf(b[j])!=-1){
+            }else{
+                y[b[j]]=false;
+            }
+        }
+        if(b.length<c.length){
+            for(let l=0;l<c.length;l++){
+                if(b.indexOf(c[l])==-1){
+                    // console.log(l)
+                    // console.log(c[l])
+                    let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${c[l]}`)
+                    // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
+                    chrome.notifications.create(null, {
+                        type: 'basic',
+                        iconUrl: 'images/notice.png',
+                        title: 'AcFun助手',
+                        message: `${JSON.parse(uInfo).profile.name}  正在直播了！`
+                    });
+                }
+            }
+        }
+        for(k in b){
+            // console.log(b.indexOf(b[k])==-1)
+            if(a.broadcastingUIDlistFollowing[b[k]] != y[b[k]] && y[b[k]]== true){
+                let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${b[k]}`)
+                // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
+                chrome.notifications.create(null, {
+                    type: 'basic',
+                    iconUrl: 'images/notice.png',
+                    title: 'AcFun助手',
+                    message: `${JSON.parse(uInfo).profile.name}  正在直播了！`
+                });
+            }
+        }
+        // console.log(y)
+        chrome.storage.local.set({'broadcastingUIDlistFollowing':y});
+    }
+
+    async followLiveNotif(){
+        chrome.storage.local.get(['followLiveNotif'],(Ifswitch)=>{
+            console.log('Start FollowingLiveNotificationFetching Mod.')
+            if(Ifswitch.followLiveNotif){
+                this.followLiveNotifEx();
+                window.setInterval(()=>{
+                    this.followLiveNotifEx();
+                },120000);
+            }
+        })
+    }
     async timer4Unread(){
         console.log("Start timer4Unread Mod");
         window.setInterval(function(){

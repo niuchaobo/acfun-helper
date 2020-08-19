@@ -1058,6 +1058,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================直播评论时间Tag============================
+    chrome.storage.local.get(['liveCommentTimeTag'],function(items){
+        var liveCommentTimeTag= items.liveCommentTimeTag;
+        if(liveCommentTimeTag){
+            document.getElementById('liveCommentTimeTag').checked='true';
+        }else{
+            document.getElementById('liveCommentTimeTag').checked=false;
+        }
+        $('#liveCommentTimeTag').on('click', function () {
+            if(!document.getElementById('liveCommentTimeTag').checked){
+                document.getElementById('liveCommentTimeTag').checked=false;
+                chrome.storage.local.set({'liveCommentTimeTag':false});
+            }else{
+                document.getElementById('liveCommentTimeTag').checked=true;
+                chrome.storage.local.set({'liveCommentTimeTag':true});
+            }
+        });
+    })
+
     //=====================页面优化============================
     chrome.storage.local.get(['hideAd'],function(items){
         var ifHideAd= items.hideAd;
@@ -1347,6 +1366,25 @@ $(document).ready(function () {
         var inst = new mdui.Select('#videoQualityStrategy');
         $('#videoQualityStrategy').on('close.mdui.select', function () {
             chrome.storage.local.set({'videoQualityStrategy':inst.value});
+        });
+    });
+
+    //====================关注在主站关注的直播开播推送===================
+    chrome.storage.local.get(['followLiveNotif'],function(items){
+        var followLiveNotif= items.followLiveNotif;
+        if(followLiveNotif){
+            document.getElementById('followLiveNotif').checked='true';
+        }else{
+            document.getElementById('followLiveNotif').checked=false;
+        }
+        $('#followLiveNotif').on('click', function () {
+            if(!document.getElementById('followLiveNotif').checked){
+                document.getElementById('followLiveNotif').checked=false;
+                chrome.storage.local.set({'followLiveNotif':false});
+            }else{
+                document.getElementById('followLiveNotif').checked=true;
+                chrome.storage.local.set({'followLiveNotif':true});
+            }
         });
     });
 

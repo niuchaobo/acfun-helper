@@ -235,16 +235,21 @@
                         <div class="mdui-row">
 
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-9">
-                                    <h3>关注列表</h3>
-                                  <div class="mdui-row">
-                                    <div class="mdui-col-xs-4 mdui-col-sm-4"><button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="liveFollowAdd"><i class="mdui-icon material-icons">add</i></button>添加关注用户</div>
-                                    <div class="mdui-col-xs-4 mdui-col-sm-4">                                    <label class="mdui-switch">
-                                        <input id="liveFollowNotifsw" type="checkbox"/>
-                                        <i class="mdui-switch-icon"></i>--是否启用此提醒--
-                                        </label></div>
-                                    <div class="mdui-col-xs-4 mdui-col-sm-4">
-                                      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/liveFollow-bridge.html" target="_blank">进入关注选择列表</a></button>
+                              <div class="mdui-col-xs-12">
+                                <h3>关注列表</h3>
+                              <div class="mdui-row">
+                                <div class="mdui-col-xs-3 mdui-col-sm-3"><button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="liveFollowAdd"><i class="mdui-icon material-icons">add</i></button>添加关注用户</div>
+                                <div class="mdui-col-xs-3 mdui-col-sm-3">                                    <label class="mdui-switch">
+                                    <input id="liveFollowNotifsw" type="checkbox"/>
+                                    <i class="mdui-switch-icon"></i>--启用自定义关注Up开播提醒--
+                                    </label></div>
+                                    <div class="mdui-col-xs-3 mdui-col-sm-3">
+                                      <label class="mdui-switch">
+                                      <input id="followLiveNotif" type="checkbox"/>
+                                      <i class="mdui-switch-icon"></i>--启用关注在主站关注的Up开播提醒--
+                                      </label></div>  
+                                <div class="mdui-col-xs-3 mdui-col-sm-3">
+                                  <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/liveFollow-bridge.html" target="_blank">进入关注选择列表</a></button>
                                     </div>
                                   </div>
                                 </div>
@@ -603,6 +608,23 @@
                                     <div class="mdui-col-xs-8 mdui-col-sm-6"><p>为直播页播放器和弹幕列表增加宽屏模式，并允许按类型屏蔽弹幕信息</p></div>
                                     <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
                                         <input id="livePlayerEnhc" type="checkbox"/>开关 
+                                        <i class="mdui-switch-icon"></i>
+                                        </label></div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                      </div>
+ 
+                      <div class="mdui-container-fluid">
+                        <div class="mdui-row">
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-9">
+                                    <h3>直播弹幕时间信息</h3>
+                                  <div class="mdui-row">
+                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>为直播页弹幕列表内容增加显示时间</p></div>
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                        <input id="liveCommentTimeTag" type="checkbox"/>开关 
                                         <i class="mdui-switch-icon"></i>
                                         </label></div>
                                   </div>
@@ -1059,6 +1081,7 @@
                 </p>
                 <p>
                   36.自动展开简介<br>
+                  37.给直播弹幕列表信息增加时间Tag<br>
                 </p>
                 <hr>                
 
