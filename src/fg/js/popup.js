@@ -82,7 +82,7 @@ class Popup {
             let title = pageInfo.title;
             let tmp = videoInfo.ksPlayJson;
             let tmpJson = JSON.parse(tmp);
-            let infos = tmpJson.adaptationSet.representation;
+            let infos = tmpJson.adaptationSet[0].representation;
             if(infos==undefined){
                 return;
             }
