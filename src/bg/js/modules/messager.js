@@ -119,7 +119,6 @@ class MsgNotifs{
                     });
                 }
             }
-            console.log(y)
             chrome.storage.local.set({'broadcastingUIDlistFollowing':y});
         })
     }
@@ -177,7 +176,6 @@ class MsgNotifs{
                         let out_data='';
                         // console.log(rawdata.feedList[0].username);
                         for(let i=0;i<=29;i++){
-                            // console.log(i);
                             let data=rawdata.feedList[i];
                             let xmlData="<div class=\"inner\" id=\"";
                             xmlData+=data.aid+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
@@ -191,8 +189,6 @@ class MsgNotifs{
                         }
                         // chrome.storage.local.set({'AcpushList1': out_data});
                         db_putPushListHtml(out_data);
-                        // console.log("write in")
-                        // chrome.storage.local.get(['AcpushList'],function(datao){console.log(datao);})
                     });
             })
         },60000)
