@@ -89,8 +89,8 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 - [Chrome 扩展商店](https://chrome.google.com/webstore/detail/acfun%E5%8A%A9%E6%89%8B/jmpmiaajjammeafdklfobkfaobinefef)
 - [FireFox 插件商店](https://addons.mozilla.org/zh-CN/firefox/addon/acfun%E5%8A%A9%E6%89%8B/)
-- 群文件
-- 公众号
+- 群文件 & 公众号 <sup><a href="#connect">点击查看</a>
+
 
 ---
 
@@ -124,7 +124,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 ---
 
-#### 联系我们
+#### 联系我们 {#connect}
 
 [用户 QQ 群 296107184](https://shang.qq.com/wpa/qunwpa?idkey=fe451dc2e5c33980a1f92725370f80a21048ca5fe2e325b3e0c15f494a8001e3)
 
