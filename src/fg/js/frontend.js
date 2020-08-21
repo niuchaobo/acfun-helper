@@ -5,7 +5,8 @@ class ODHFront {
     this.div = new Div(); //右侧助手
     this.block = new Block(); //up主过滤
     this.pageBeautify = new PageBeautify(); //界面美化
-    this.livepageBeautify = new LivePageButfy(); //生放送界面美化
+    this.videoPageBeautify = new videoPageBeautify();//视频页界面美化
+    this.livePageBeautify = new LivePageButfy(); //生放送界面美化
     this.ce = new CommentEnhance(); //评论区增强
     this.download = new Download(); //下载(视频、封面)
     this.live = new Live(); //直播
@@ -102,8 +103,8 @@ class ODHFront {
             let timer = setInterval(()=>{
             let checknode=$('div.box-right');
             if(checknode.length>0){
-                this.livepageBeautify.appendWidePlayer();
-                this.livepageBeautify.simplifyDanmu();
+                this.livePageBeautify.appendWidePlayer();
+                this.livePageBeautify.simplifyDanmu();
                 clearInterval(timer)
             }
         },3000)
@@ -145,12 +146,12 @@ class ODHFront {
         }
         //显示点赞数
         if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.show_like){
-            this.pageBeautify.showLikeCount();
+            this.videoPageBeautify.showLikeCount();
         }
         //播放器和弹幕功能
         if(REG.video.test(href)){
             if(this.options.autoOpenVideoDescsw){
-                this.pageBeautify.openVideoDesc();
+                this.videoPageBeautify.openVideoDesc();
             }
             this.danmaku.cacheStore();
             this.videoSetting.callPicktureInPictureMode();
@@ -163,9 +164,9 @@ class ODHFront {
         //直播画中画模式
         if(REG.live.test(href)){
           if(this.options.liveCommentTimeTag){
-            this.livepageBeautify.commentTimeTag();
+            this.livePageBeautify.commentTimeTag();
           }
-          this.livepageBeautify.callPicktureInPictureModeForLive()
+          this.livePageBeautify.callPicktureInPictureModeForLive()
         }
     }
 
@@ -176,7 +177,7 @@ class ODHFront {
         let href = this.href;
         //直播ad屏蔽
         if(this.options.liveHideAd && REG.liveIndex.test(href)){
-            this.livepageBeautify.LivehideAds();
+            this.livePageBeautify.LivehideAds();
         }
         //直播站首页用户屏蔽
         if(this.options.liveBansw & REG.liveIndex.test(href)){
