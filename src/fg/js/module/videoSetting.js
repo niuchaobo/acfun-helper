@@ -7,12 +7,7 @@ class VideoSetting{
         this.progressBarOptions = {
             id: "achlp-proBar",
             css:
-              "transition: width 0.4s ease-out;z-index: 999;background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;box-shadow:rgb(125, 125, 125) -3px -1px 5px 0px"
-          };
-        this.progressBarFullScreenOptions = {
-            id: "achlp-proBar-player",
-            css:
-            "background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;"
+              "transition: width 0.4s ease-out;z-index: 999;background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;box-shadow:rgb(125, 125, 125) -3px -1px 5px 0px;"
           };
         this.cPIP_div=`<div class="control-btn pip" style="position: relative;width: 38px;height: 20px;"><div class=" control-btn btn-pip" style="opacity: 0.9;font-size: 14px;color: #ffffff;cursor: pointer;flex: none;box-sizing: border-box;-webkit-box-flex: 0;align-items: center;justify-content: center;-webkit-box-align: center;display: flex;-webkit-box-pack: center;position: relative;width: 100%;height: 100%;" >`;
         this.cPIP_Livediv=`<div class="control-btn pip" style="position: relative;width: 38px;height: 20px;"><div class=" control-btn btn-pip" style="opacity: 0.9;font-size: 14px;color: #ffffff;cursor: pointer;flex: none;box-sizing: border-box;-webkit-box-flex: 0;align-items: center;justify-content: center;-webkit-box-align: center;display: flex;-webkit-box-pack: center;position: relative;width: 100%;height: 100%;" >`;
@@ -140,14 +135,12 @@ class VideoSetting{
 
     //底部进度条
     flexProgressBar(){
+          this.progressBarOptions.css+='z-index:2147483647;'
           const progressBar = addElement(this.progressBarOptions)
-          this.progressBarFullScreenOptions.target =  document.getElementsByClassName("container-video")[0];
-          const progressBarFullScreen = addElement(this.progressBarFullScreenOptions)
-          //监听    性能？
           let observerWeb = new MutationObserver((mutations)=> {
               mutations.forEach((mutations)=>{
                 let flag = $('.container-video .control-bar-top').attr('data-bind-attr') === 'true'
-                flag ? $(progressBarFullScreen).hide() : $(progressBarFullScreen).show()  
+                flag ? $(progressBar).hide(250) : $(progressBar).show(250)  
               })
           })
           const a = $('.container-video .control-bar-top')[0];
@@ -155,7 +148,7 @@ class VideoSetting{
             attributes: true,
             attributeOldValue: false,
             attributeFilter :['data-bind-attr']
-        });
+          });
     }
     
         
