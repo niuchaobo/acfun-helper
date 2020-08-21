@@ -218,7 +218,7 @@ class ODHFront {
           //自定义倍速
           this.options.custom_rate && this.videoSetting.customPlaybackRate();
           //全局进度条
-          this.options.ProgressBarsw ? this.videoSetting.FlexProgressBar('out') : this.videoSetting.FlexProgressBarws = false;
+          this.options.ProgressBarsw && this.videoSetting.flexProgressBar();
           //AB回放
           if(this.options.ABPlaysw){
             this.videoSetting.AddABPlayUI();

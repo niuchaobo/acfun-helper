@@ -677,3 +677,12 @@ debounce = (fn, delay) => {
     　　　　}            
     　　}        
   }   
+
+  addElement = (options)=>{
+    let {tag = 'div',id='',css='',target = document.body} = options
+    let x = document.createElement(tag);
+    x.id = id;
+    x.style.cssText=css
+    target.append(x);
+    return x
+}
