@@ -72,10 +72,7 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         try {
             document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
                 document.getElementById("achlp-proBar").style.width = document.getElementsByClassName("pro-current")[0].style.width;
-                try {
-                    document.getElementById("achlp-proBar-player").style.width = document.getElementsByClassName("pro-current")[0].style.width;
-                } catch (error) {
-                }
+                document.getElementById("achlp-proBar-bg").style.width = document.getElementsByClassName("pro-current")[0].style.width;
             })
         } catch (error) {
         }
