@@ -147,7 +147,6 @@ class VideoSetting{
               mutations.forEach((mutations)=>{
                 let flag = $('.container-video .control-bar-top').attr('data-bind-attr') === 'true'
                 flag ? $('#achlp-proBar,#achlp-proBar-bg').hide(250) : $('#achlp-proBar,#achlp-proBar-bg').show(100)  
-                
               })
           })
           const a = $('.container-video .control-bar-top')[0];
@@ -167,7 +166,7 @@ class VideoSetting{
                 <li class = 'point-a' data-val="A" onClick="updateAbPlayFirst()">标记点A</li>
                 <li class = 'point-b' data-val="B" onClick="updateAbPlaySecond()">标记点B</li>
                 <li class = 'switch-button' onclick="abPlayHandler();">开始</li>
-                <li onclick="stopAbPlay();">清除&结束</li>
+                <li class = 'clear-button' onclick="stopAbPlay();">清除</li>
             </ul>
             <div class="transparent-placeholder"></div>
     </div>`;
