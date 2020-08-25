@@ -220,37 +220,21 @@ class ODHFront {
           //全局进度条
           this.options.ProgressBarsw && this.videoSetting.flexProgressBar();
           //AB回放
-          if(this.options.ABPlaysw){
-            this.videoSetting.AddABPlayUI();
-          }
+          this.options.ABPlaysw && this.videoSetting.AddABPlayUI();
           //倍速切换的快捷键
-          if(this.options.PlaybackRateKeysw){
-            this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
-          }
+          this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
+          getAsyncDom('.list-title',()=>{
           //弹幕列表搜索
-          if(this.options.PlayerDamakuSearchSw){
-                getAsyncDom('.list-title',()=>{
-                    this.danmusearch.inject();
-                })
-            }
-           //弹幕列表前往Acer个人主页
-           if(this.options.danmuSearchListToUsersw){
-               getAsyncDom('.list-title',()=>{
-                   this.videoSetting.danmuSearchListToUser()
-               })
-           }
+          this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
+          //弹幕列表前往Acer个人主页
+          this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
+          })
+          getAsyncDom('.ac-pc-comment',()=>{
           //评论空降
-          if(this.options.PlayerTimeCommentEasyJump){
-            getAsyncDom('.ac-pc-comment',()=>{
-                this.ce.searchScanForPlayerTime();
-            });
-          }
+          this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
           //快捷键空降
-          if(this.options.easySearchScanForPlayerTimesw){
-            getAsyncDom('.ac-pc-comment',()=>{
-                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-            });
-          }
+          this.options.easySearchScanForPlayerTimesw && this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+          })
         }
         //用户信息获取
         this.authInfo.cookInfo();
