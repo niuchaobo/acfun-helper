@@ -250,7 +250,8 @@ class VideoSetting{
                 "overflow":"hidden",
                 "padding":"0px 10px",
             })
-            $('#main>#main-content').find('img').css({
+            $('#main>#main-content').find(".thumb,.acfunAdmin.verified-ico-5,a.name,a.pager__btn__selected,a.pager__btn__selected,div.follow-up,div.btn-reward,.right-area,.reco-tag,.left-area").css({'mix-blend-mode': 'exclusion'})
+            $('#main').find('img,.up-college-verified-icon,.area-editor-avatar').css({
                 'mix-blend-mode': 'exclusion'
             })
             $('.left-column').css({
@@ -286,6 +287,10 @@ class VideoSetting{
                 "border-bottom-color": "black"  
             })
         }else{
+            $('#main>#main-content').find(".thumb,.acfunAdmin.verified-ico-5,a.name,a.pager__btn__selected,a.pager__btn__selected,div.follow-up,div.btn-reward,.right-area,.reco-tag,.left-area").css({'mix-blend-mode': 'normal'})
+            $('#main').find('img,.up-college-verified-icon,.area-editor-avatar').css({
+                'mix-blend-mode': 'normal'
+            })
             $('.left-column').css({
                 "width": "calc(100% - 370px)",
                 "max-width": "calc(100% - 370px)",
