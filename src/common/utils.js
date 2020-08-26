@@ -686,3 +686,12 @@ debounce = (fn, delay) => {
     target.append(x);
     return x
 }
+
+createElementStyle = (cssText,targetDom = document.head)=>{
+    let nod = document.createElement("style");
+    let str = cssText;
+    nod.type = "text/css";
+    nod.textContent = str;
+    targetDom.appendChild(nod);
+}
+

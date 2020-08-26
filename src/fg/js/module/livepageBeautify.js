@@ -38,7 +38,6 @@ class LivePageButfy {
     }
 
     widePlayerStyle(){
-        let nod = document.createElement("style");
         let cssStr =`
           .main{transiton: all 0.5s;padding:0 !important;} 
           .main_wide{width: 100%!important; margin:0!important;padding:0!important ; max-width:100% !important;height:100vh;} 
@@ -68,9 +67,8 @@ class LivePageButfy {
            }
 
           `;
-        nod.type="text/css";
-        nod.textContent = cssStr;
-        document.getElementsByClassName('main')[0].appendChild(nod);
+        let mainDom = document.getElementsByClassName('main')[0]
+        createElementStyle(cssStr,mainDom)
     }
 
     judgeIsFullScreen(target){
@@ -194,11 +192,8 @@ class LivePageButfy {
     }
 
     addBanStyle(){
-        let nod = document.createElement("style");
         let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;}"
-        nod.type="text/css";
-        nod.textContent = cssStr;
-        document.head.appendChild(nod)
+        createElementStyle(cssStr)
     }
     
     LivehideAds(){

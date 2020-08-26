@@ -49,7 +49,6 @@ class ODHFront {
   }
 
   addStyle() {
-    let nod = document.createElement("style");
     let str =
       ".comment-mark-parent{bottom: -80px!important;}" +
       "#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
@@ -60,9 +59,8 @@ class ODHFront {
       "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
       "p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
       "";
-    nod.type = "text/css";
-    nod.textContent = str;
-    document.getElementsByTagName("head")[0].appendChild(nod);
+    let headDom = document.getElementsByTagName("head")[0]
+    createElementStyle(str, headDom)
   }
 
   addNightStyle() {
@@ -223,12 +221,14 @@ class ODHFront {
           this.options.ABPlaysw && this.videoSetting.AddABPlayUI();
           //倍速切换的快捷键
           this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
+          //弹幕列表
           getAsyncDom('.list-title',()=>{
           //弹幕列表搜索
           this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
           //弹幕列表前往Acer个人主页
           this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
           })
+          //评论区 -未添加监听
           getAsyncDom('.ac-pc-comment',()=>{
           //评论空降
           this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
