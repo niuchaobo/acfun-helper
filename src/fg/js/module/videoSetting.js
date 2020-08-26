@@ -4,6 +4,7 @@
 class VideoSetting{
     constructor(){
         window.addEventListener('load', e => this.onLoad(e));
+        this.underWorld = null;
         this.progressBarOptions = {
             id: "achlp-proBar",
             css:
@@ -241,97 +242,26 @@ class VideoSetting{
 
     fullScreenStyle(on){
         if(on){
-            $('#main>#main-content').css({
-                "mix-blend-mode": "difference",
-                "background": "white",
-                "margin": "0px",
-                "max-width":"100%",
-                "width": "calc(100% - 20px)",
-                "overflow":"hidden",
-                "padding":"0px 10px",
-            })
-            $('#main>#main-content').find(".thumb,.acfunAdmin.verified-ico-5,a.name,a.pager__btn__selected,a.pager__btn__selected,div.follow-up,div.btn-reward,.right-area,.reco-tag,.left-area").css({'mix-blend-mode': 'exclusion'})
-            $('#main').find('img,.up-college-verified-icon,.area-editor-avatar').css({
-                'mix-blend-mode': 'exclusion'
-            })
-            $('.left-column').css({
-                "width": "100%",
-                "max-width":"100%",
-            })
-            $('.right-column').css({
-                "position": "absolute",
-                "right": "-342px",
-                "top": "160px",
-                "padding-left": "1px",
-                "transition-duration":".2s",
-                "border-left": "6px  solid rgba(62, 62, 62, 0.4)",
-            }).bind('mouseenter',()=>{
+            let cssText = "#main>#main-content{ mix-blend-mode: difference;background: white; margin: 0px; max-width:100%; width: calc(100% - 20px) !important; overflow:hidden; padding:0px 10px}"
+            + "#main .video-description .reco-tag,.action-area{mix-blend-mode:exclusion}"
+            + "#pagelet_bottomrecommend,.area-editor-avatar,#main .introduction .up-area{mix-blend-mode:exclusion}"
+            + ".right-column img{mix-blend-mode:exclusion}"
+            + "#pagelet_newcomment .thumb,.acfunAdmin.verified-ico-5,a.name,a.pager__btn__selected,a.pager__btn__selected,.area-comment-des img{mix-blend-mode:exclusion}"
+            + "body #main #main-content .left-column{width:100% !important;max-width:100%}"
+            + ".ac-comment-usercard .area-comm-usercard-bottom{mix-blend-mode:exclusion}"
+            + "body #main #main-content .right-column{position:absolute;right:-342px;top:160px;padding-left:1px;transition-duration:.2s;border-left:'6px  solid rgba(62, 62, 62, 0.4)'}"
+            + ".ac-pc-comment{padding-right:15px}"
+            + "#toolbar{transform:scale(0.8);transform-origin:bottom right}"
+            + ".player-box,.nav-parent,.video-description{border-bottom-color:white}"
+            this.underWorld = createElementStyle(cssText,undefined,'underWorld')
+            $('.right-column').bind('mouseenter',()=>{
                 $('.right-column').css({'right':'0px', "background": "white","border-left-width":"0px"})
             }).bind('mouseleave',()=>{
                 $('.right-column').css({'right':'-342px', "background": "","border-left-width":"6px"}) 
             })
-            $('.ac-pc-comment').css({
-                'padding-right':'15px'
-            })
-            $('#toolbar').css({
-                'transform': 'scale(0.8)',
-                'transform-origin': 'bottom right',
-            })
-            $('.player-box').css({
-                "border-bottom-color": "black"
-            })
-            $('.nav-parent').css({
-                "border-bottom-color": "black" 
-            })
-            $('.video-description').css({
-                "border-bottom-color": "black"  
-            })
         }else{
-            $('#main>#main-content').find(".thumb,.acfunAdmin.verified-ico-5,a.name,a.pager__btn__selected,a.pager__btn__selected,div.follow-up,div.btn-reward,.right-area,.reco-tag,.left-area").css({'mix-blend-mode': 'normal'})
-            $('#main').find('img,.up-college-verified-icon,.area-editor-avatar').css({
-                'mix-blend-mode': 'normal'
-            })
-            $('.left-column').css({
-                "width": "calc(100% - 370px)",
-                "max-width": "calc(100% - 370px)",
-                "padding-left":'',
-            })
-            $('#main>#main-content').find('img').css({
-                'mix-blend-mode': 'normal'
-            })
-            $('#main-content').css({
-                "background":"",
-                'mix-blend-mode': 'normal',
-                "width": "calc(100% - 100px)",
-                "margin": "auto 50px"
-            })
-            $('.right-column').css({
-                "position": "static",
-                "border":"",
-                "background": "",
-                "padding-left": "",
-                "transition-duration":"",
-            }).unbind('mouseenter').unbind('mouseleave')
-            $('#toolbar').css({
-                'transform': '',
-                'transform-origin': '',
-            })
-            $('.columen-left').css({
-                'mix-blend-mode': '',
-                'background': ''
-            })
-            $('.ac-pc-comment').css({
-                'padding-right':''
-            })
-            $('.player-box').css({
-                "border-bottom-color": "#f5f5f5"
-            })
-            $('.nav-parent').css({
-                "border-bottom-color": "#f5f5f5" 
-            })
-            $('.video-description').css({
-                "border-bottom-color": "#f5f5f5"  
-            })
+            this.underWorld()
+            $('.right-column').unbind('mouseenter').unbind('mouseleave')
         }
 
     }

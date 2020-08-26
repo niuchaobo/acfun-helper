@@ -687,11 +687,14 @@ debounce = (fn, delay) => {
     return x
 }
 
-createElementStyle = (cssText,targetDom = document.head)=>{
+createElementStyle = (cssText,targetDom = document.head,id=null)=>{
+    let target = targetDom
     let nod = document.createElement("style");
     let str = cssText;
     nod.type = "text/css";
+    id ? nod.id = id : null;
     nod.textContent = str;
     targetDom.appendChild(nod);
+    return ()=>{ targetDom.removeChild(document.getElementById(id)); }
 }
 
