@@ -136,7 +136,10 @@ class MsgNotifs{
     }
     async timer4Unread(){
         console.log("Start timer4Unread Mod");
-        window.setInterval(function(){
+        window.setInterval(async function(){
+            let sw = await getStorage("timer4Unread_daemonsw")
+            console.log(sw)
+            if(sw.timer4Unread_daemonsw==false){chrome.browserAction.setTitle({title:`AcFun助手，Ac在爱一直在`});chrome.browserAction.setBadgeText({ text: "" });return}
             chrome.storage.local.get(['LocalUserId'],function(Uid){
                 if(Uid.LocalUserId=="0"){return}
                 fetch('https://member.acfun.cn/common/api/getUnreadMess',{method:"POST",headers: {
@@ -164,7 +167,9 @@ class MsgNotifs{
 
     fetchPushList(){
         console.log("Start PushListFetching Mod");
-        window.setInterval(function(){
+        window.setInterval(async function(){
+            let sw = await getStorage("fetchPushList_daemonsw")
+            if(sw.fetchPushList_daemonsw==false){return}
             chrome.storage.local.get(['LocalUserId'],function(Uid){
                 if(Uid.LocalUserId=="0"){return}
                 fetch('https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=0&gid=-1&count=30&pcursor=1')
@@ -193,62 +198,5 @@ class MsgNotifs{
             })
         },60000)
     }
-    
-    fetchMcircle(){
-        console.log("Start MomentCircleFetching Mod");
-        window.setInterval(function(){
-            chrome.storage.local.get(['LocalUserId'],function(Uid){
-                if(Uid.LocalUserId=="0"){return}
-                fetch('https://api-new.app.acfun.cn/rest/app/feed/feedSquareV2?pcursor=&count=20')
-                    .then((res)=>{return res.text();})
-                    .then((res)=>{
-                        let rawdata=JSON.parse(res);
-                        let out_data='';
-                        try {
-                            for(let i=0;i<=19;i++){
-                                if(rawdata.feedList.length==0){
-                                    break
-                                }else{
-                                    let data=rawdata.feedList[i];
-                                    let xmlData="<div class=\"inner\" id=\"";
-                                    xmlData+=data.resourceId+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\""+data.shareUrl;
-                                    xmlData+=" class=\"thumb thumb-preview\"><div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+data.resourceId+" \"target=\"_blank\" href=\"" +data.shareUrl+"\" class=\"title\">";
-                                    xmlData+=data.moment.text+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
-                                    xmlData+=data.resourceId+"\" href=\"https://www.acfun.cn/u/"+data.user.userId+"\" class=\"name\">";
-                                    xmlData += data.user.userName + " </a><span class=\"time\">" + getTimeSinceNow(data.createTime) + "</span> </div> </div> </div> ";
-                                    // console.log(xmlData);
-                                    out_data+=xmlData;
-                                }
-                                if(out_data!=''){
-                                    chrome.storage.local.set({'AcMomentCircle1': out_data});
-                                }
-                            }
-                        } catch (error) {
-                            
-                        }
-                        let live_Data='';
-                        for(let i=0;i<=3;i++){
-                            if(rawdata.liveUsers==[]){
-                                break
-                            }else{
-                                let livedata=rawdata.liveUsers[i];
-                                let livexmlData="<div class=\"inner\" id=\"";
-                                livexmlData+=livedata.authorId+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
-                                livexmlData+="https://live.acfun.cn/live/"+livedata.authorId+"\"";
-                                livexmlData+=" class=\"thumb thumb-preview\"><img data-aid=\"";
-                                livexmlData+=livedata.authorId + "\" src=\""+livedata.coverUrls[0]+"\" class=\"preview\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+livedata.authorId+" \"target=\"_blank\" href=\"" +"https://live.acfun.cn/live/"+livedata.authorId+"\" class=\"title\">";
-                                livexmlData+=livedata.title+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
-                                livexmlData+=livedata.authorId+"\" href=\"https://www.acfun.cn/u/"+livedata.authorId+"\" class=\"name\">";
-                                livexmlData += livedata.user.name + " </a></div> </div> </div> ";
-                                live_Data+=livexmlData;
-                            }
-                        }
-                        if(live_Data==''){
-                            chrome.storage.local.set({'AcLives1': live_Data});
-                        }
-                    });
-            })
-        },65000)
-    }
-    
+        
 }

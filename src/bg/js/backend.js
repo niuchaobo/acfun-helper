@@ -10,6 +10,7 @@ class ODHBack {
         this.Ominibox = new Ohminibox();
         this.Upgrade = new UpgradeAgent();
         this.ReqOpDrv = new ReqOperationDrv();
+        this.WatchPlan = new WatchPlan();
 
         this.Ominibox.registerOmnibox();
         this.MsgNotfs.timer4Unread();
@@ -17,8 +18,7 @@ class ODHBack {
         this.MsgNotfs.liveOnlineNotif();
         this.MsgNotfs.followLiveNotif();
         this.Upgrade.upgradeMain();
-        // this.Upgrade.checkUpdate();
-        // this.MsgNotfs.fetchMcircle();
+        this.WatchPlan.onLoad();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));
@@ -30,7 +30,6 @@ class ODHBack {
         chrome.storage.onChanged.addListener(function (changes,areaName) {
 
         });
-
 
         chrome.webRequest.onBeforeRequest.addListener(
              this.onCommentRequest.bind(this),
@@ -88,21 +87,26 @@ class ODHBack {
             }
         });
 
-        let a = false;
-        if(a){
-            chrome.contextMenus.create({
-                title: '加入到稍后再看', 
-                contexts: ['link'], 
-                id:'2',
-                onclick:  (params) =>{
-                    let link_url = params.linkUrl;
-                    this.WatchPlan.PushInList(link_url);
-                    let x = this.WatchPlan.getOpRes();
-                    // console.log(x);
-                    if(x){alert("加入成功。")}
-                }
-            });
-        }
+        chrome.contextMenus.create({
+            title: '加入到稍后再看', 
+            contexts: ['link'], 
+            id:'2',
+            onclick:  (params) =>{
+                let link_url = params.linkUrl;
+                this.WatchPlan.PushInList(link_url);
+                let x = this.WatchPlan.getOpRes();
+                if(x){alert("加入成功。")}
+            }
+        });
+
+        chrome.contextMenus.create({
+            title: '开始进行“稍后再看”', 
+            contexts: ['link'], 
+            id:'3',
+            onclick:  (params) =>{
+                this.WatchPlan.execWatch();
+            }
+        });
 
         //当激活某个tab页时
         chrome.tabs.onActivated.addListener(function (tab) {
@@ -113,6 +117,8 @@ class ODHBack {
                 }
             });
         });
+
+
     }
 
     test(params,tab){
@@ -247,6 +253,10 @@ class ODHBack {
     api_notice(params){
         let {title,msg} = params;
         notice(title,msg);
+    }
+
+    async api_watchLater(){
+        this.WatchPlan.main();
     }
 
     async api_initBackend(params) {

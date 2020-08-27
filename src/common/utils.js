@@ -11,6 +11,9 @@ const defaults = {
     upUrlTemplate:'https://www.acfun.cn/u/{uid}',
     userInfo:'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId={uid}',
     banana_notice:true,
+    watchLater:true,
+    fetchPushList_daemonsw:true,
+    timer4Unread_daemonsw:true,
     mark:false,//评论用户标记
     scan:false,//评论用户扫描
     upHighlight:true,//up主评论高亮
