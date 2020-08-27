@@ -138,7 +138,6 @@ class MsgNotifs{
         console.log("Start timer4Unread Mod");
         window.setInterval(async function(){
             let sw = await getStorage("timer4Unread_daemonsw")
-            console.log(sw)
             if(sw.timer4Unread_daemonsw==false){chrome.browserAction.setTitle({title:`AcFun助手，Ac在爱一直在`});chrome.browserAction.setBadgeText({ text: "" });return}
             chrome.storage.local.get(['LocalUserId'],function(Uid){
                 if(Uid.LocalUserId=="0"){return}
