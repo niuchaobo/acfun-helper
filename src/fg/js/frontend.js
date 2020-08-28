@@ -55,7 +55,7 @@ class ODHFront {
       "span.simple {background-color: #d69acc !important;cursor: pointer;}" +
       "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}" +
       ".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
-      "span.up {background-color: #4a8eff !important;cursor: pointer;}" +
+      "span.pos.up {background-color: #4a8eff !important;cursor: pointer;}" +
       "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
       "p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
       "";
@@ -228,17 +228,18 @@ class ODHFront {
           //弹幕列表前往Acer个人主页
           this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
           })
-          //评论区 -未添加监听
+          // 评论区 -未添加监听
           getAsyncDom('.ac-pc-comment',()=>{
-          //评论空降
-          this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
-          //快捷键空降
+            //评论空降
+            this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
+            //快捷键空降
 
-          if(this.options.easySearchScanForPlayerTimesw){
-            getAsyncDom('.ac-pc-comment',()=>{
-                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-            });
-          }
+            if(this.options.easySearchScanForPlayerTimesw){
+              getAsyncDom('.ac-pc-comment',()=>{
+                  this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+              });
+            }
+          })
         }
         this.authInfo.cookInfo();
     }
