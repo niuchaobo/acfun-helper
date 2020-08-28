@@ -233,10 +233,13 @@ class ODHFront {
           //评论空降
           this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
           //快捷键空降
-          this.options.easySearchScanForPlayerTimesw && this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-          })
+
+          if(this.options.easySearchScanForPlayerTimesw){
+            getAsyncDom('.ac-pc-comment',()=>{
+                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+            });
+          }
         }
-        //用户信息获取
         this.authInfo.cookInfo();
     }
     

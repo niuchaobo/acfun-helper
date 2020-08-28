@@ -86,7 +86,7 @@ class VideoSetting{
             let nodes = $('.quality-panel');
             var vqregexp = RegExp('p60');
             if(nodes.length>0){
-                //模式标准：0=自动；1=默认最高；2=平衡（非60帧的最高画质）；3=强制标清
+                //模式标准：0=自动；1=默认最高；2=平衡（非60帧的最高画质）；3=强制标清 ；4=偏向非4k的最高画质
                 chrome.storage.local.get(['videoQualityStrategy'],function(items){
                 let mode = Number(items.videoQualityStrategy);
                 // console.log(mode);
@@ -116,7 +116,17 @@ class VideoSetting{
                         // console.log(qualitys[Lowest].dataset.qualityType);
                         // console.log('ok');
                         break;
-                    default:
+                        case 4:
+                            let vqre2exp = RegExp("2160p");
+                            for(let x = 0;x<=qualitys.length-1;){
+                                if(vqre2exp.test(qualitys[x].dataset.index)){
+                                    x++;
+                                }else{
+                                    qualitys[x+1].click()
+                                    break;
+                                }
+                            }
+                        default:
                         break;
                 }
                 clearInterval(timer);

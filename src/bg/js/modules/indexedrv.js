@@ -66,7 +66,6 @@ function initSquareList(){
         db2.version(2).stores({
             SquareList: 'acmid,uid,time,userInfo,commentNum,bananaCount,content',
         });
-        db2.open();
         console.log("[WARN]Background-IndexedDbDrv > initSquareList: Table initialize.")
     }
 }
@@ -111,8 +110,8 @@ function db_putPushListHtml(Data){
 }
 
 function db_putSquareList(Data){
-    // console.log(Data)
     initSquareList();
+    db2.open();
     if(Data.feedList.length != 0){
         for(let i=0;i<=Data.feedList.length-1;i++){
             let x = Data.feedList[i];
