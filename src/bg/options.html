@@ -11,7 +11,6 @@
     <script type="text/javascript" src="js/jquery.mloading.js"></script>
     <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
     <script type="text/javascript" src="js/options.js"></script>
-    <script charset="UTF-8" src="js/modules/watchplan.js"></script>
     <script type="text/javascript" src="../common/utils.js"></script>
     <style>
     ::-webkit-scrollbar {
@@ -26,1181 +25,1193 @@
     .devFeature {display: none;}
     </style>
 </head>
-<body>
-    <h1 style="text-align:center;">AcFun助手 | 设置</h1>
+<body class="mdui-appbar-with-toolbar mdui-appbar-with-tab">
+    <div class="mdui-appbar mdui-color-theme mdui-appbar-fixed mdui-appbar-scroll-toolbar-hide mdui-color-white">
+      <div class="mdui-toolbar mdui-color-theme">
+        <h1 style="text-align:center;">AcFun助手 | 设置</h1>
+        <div class="mdui-toolbar-spacer"></div>
+        <a class="mdui-btn mdui-btn-icon" style="cursor:default" title="主站个人中心"><i class="mdui-icon material-icons">account_circle</i></a>
+        <a class="mdui-btn mdui-btn-icon" style="cursor:default" title="导出配置文件"><i class="mdui-icon material-icons">archive</i></a>
+        <a class="mdui-btn mdui-btn-icon" style="cursor:default" title="导入配置文件"><i class="mdui-icon material-icons">exit_to_app</i></a>
+        <a class="mdui-btn mdui-btn-icon" style="cursor:default" title="与服务器同步配置"><i class="mdui-icon material-icons">sync</i></a>
+        <a class="mdui-btn mdui-btn-icon" style="cursor:default" title="关于"><i class="mdui-icon material-icons">info_outline</i></a>
+        <a class="mdui-btn mdui-btn-icon" style="cursor:default" title="其他" href="#tab6"><i class="mdui-icon material-icons">more_vert</i></a>
+      </div>
+      <div class="mdui-tab mdui-tab-centered" mdui-tab>
+        <a href="#tab1" class="mdui-ripple">主站配置</a>
+        <a href="#tab2" class="mdui-ripple">内容设置</a>
+        <a href="#tab3" class="mdui-ripple">界面设置</a>
+        <a href="#tab4" class="mdui-ripple">播放器设置</a>
+        <a href="#tab5" class="mdui-ripple">插件设置</a>
+        <a href="#tab6" class="mdui-ripple">关于 & 注意</a>
+      </div>
+    </div>
 
     <div class="mdui-container doc-container">
-        <div class="mdui-tab mdui-tab-centered" mdui-tab>
-            <a href="#tab1" class="mdui-ripple">主站配置</a>
-            <a href="#tab2" class="mdui-ripple">内容设置</a>
-            <a href="#tab3" class="mdui-ripple">界面设置</a>
-            <a href="#tab4" class="mdui-ripple">播放器设置</a>
-            <a href="#tab5" class="mdui-ripple">插件设置</a>
-            <a href="#tab6" class="mdui-ripple">关于 & 注意</a>
-          </div>
-          
-          <div id="tab1" class="mdui-p-a-2">
+    
+    <div id="tab1" class="mdui-p-a-2">
 
-            <div class="mdui-panel" mdui-panel>
-  
-                <!-- <div class="mdui-panel-item"> -->
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">自动投蕉</div>
-                    <div class="mdui-panel-item-summary">在选定的Up投稿中自动给Up投蕉</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-                    <div class="autoTranslate-switch">
-                        <h3>自动投蕉<img src="images/on.png" class="switch-close" id="switch"></h3>
-                        <div id="auto_options" style="color: rgb(204, 204, 204);">
-                            <div class="huaci_selections">
-                                <img id="attention_switch" src="images/unselected.png">
-                                <span> 给已关注Up主投蕉</span>
-                            </div>
-                            <hr style="border-bottom: 1px solid rgb(211,211,211)">
-                            <div class="huaci_selections">
-                                <img id="specific_switch" src="images/selected.png">
-                                <span> 给指定Up主投蕉</span>
-                            </div>
-                        </div>
-                    </div>
-            
-            
-                    <div id="attention" style="display: none"  class="table-container">
-                        <table class="table custom-head">
-                            <tbody>
-                            <tr>
-                                <td style="margin-left: 20px" id="thead-tip" class="">
-                                    当您浏览已关注的Up主的视频时，自动投蕉
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-            
-            
-                        <div id="huaci_options" >
-                            <div class="huaci_selections">
-                                <img data-num="1" class="attention_num" id="num1" src="images/unselected.png">
-                                <span>1蕉</span>
-                                <img data-num="2" class="attention_num" style="margin-left: 40px" id="num2" src="images/unselected.png">
-                                <span>2蕉</span>
-                                <img data-num="3" class="attention_num" style="margin-left: 40px" id="num3" src="images/unselected.png">
-                                <span>3蕉</span>
-                                <img data-num="4" class="attention_num" style="margin-left: 40px" id="num4" src="images/unselected.png">
-                                <span>4蕉</span>
-                                <img data-num="5" class="attention_num" style="margin-left: 40px" id="num5" src="images/selected.png">
-                                <span>5蕉</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="specific" style="display: none" class="table-container">
-                        <table class="table custom-head">
-                            <tbody>
-                            <tr>
-                                <td id="thead-tip-special" class="">
-                                    当您浏览以下Up主视频时，将自动投蕉
-                                </td>
-                                <td>
-                                    <span  id="add" class="">+ 添加Up主</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-            
-                        <table id="custom" class="table-custom table-custom-padding wordcontent">
-            
-                        </table>
-                    </div>
-            
-            
-                    <div class="div-lang-detect" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>自动投蕉后提醒</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="detect-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
-                                        当插件帮您自动投蕉后，在右下角弹出提醒消息
-                                    </p>
-                                </td>
-                                <td id="detect-switch-r">
-                                    <img src="images/off.png" class="switch-open switch-close" id="detect-switch">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mdui-panel-item-actions">
-                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                      <button class="mdui-btn mdui-ripple">保存</button>
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- <div class="mdui-panel-item"> -->
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">评论是本体</div>
-                    <div class="mdui-panel-item-summary">给予用户一个Tag，就算改名了小助手也能帮您标记出来</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-                    <div class="div-common-up" style="background: rgb(237, 237, 237);">
-                        <h3>开启Up主标记</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="up-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
-                                        开启之后，Up主的评论将会这样显示<img style="vertical-align: top" height="20px" src="images/upname.png">
-                                    </p>
-                                </td>
-                                <td id="up-switch-r">
-                                    <img src="images/off.png" class="switch-open switch-close" id="up-switch">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-            
-                    <div class="div-common-scan" style="background: rgb(237, 237, 237);">
-                        <h3>开启人物扫描</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="scan-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
-                                        开启之后，会在其名字后面显示你做的标记
-                                    </p>
-                                </td>
-                                <td id="scan-switch-r">
-                                    <img src="images/off.png" class="switch-open switch-close" id="scan-switch">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="div-common-mark" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>开启人物标记</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="mark-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
-                                        开启之后，会在举报按钮下增加标记按钮
-                                    </p>
-                                </td>
-                                <td id="mark-switch-r">
-                                    <img src="images/off.png" class="switch-open switch-close" id="mark-switch">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-            
-                    <div class="div-user-list" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <table class="table custom-head">
-                            <tbody>
-                            <tr>
-                                <td id="mark-add-text" class="">
-                                    已标记用户
-                                </td>
-                                <td>
-                                    <span id="mark-add" class="">+ 添加用户</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table  id="scan-users" class="table-custom table-custom-padding wordcontent">
-            
-                        </table>
-                    </div>
-                            
-                    <div class="mdui-panel-item-actions">
-                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                      <button class="mdui-btn mdui-ripple">保存</button>
-                    </div>
-                  </div>
-                </div>
+      <div class="mdui-panel" mdui-panel>
 
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">关注直播推送</div>
-                      <div class="mdui-panel-item-summary">将你所关注的主播直播信息通过浏览器推送</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-
-                      <div class="mdui-container-fluid">
-                        <div class="mdui-row">
-
-                            <div class="mdui-row">
-                              <div class="mdui-col-xs-12">
-                                <h3>关注列表</h3>
-                              <div class="mdui-row">
-                                <div class="mdui-col-xs-3 mdui-col-sm-3"><button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="liveFollowAdd"><i class="mdui-icon material-icons">add</i></button>添加关注用户</div>
-                                <div class="mdui-col-xs-3 mdui-col-sm-3">                                    <label class="mdui-switch">
-                                    <input id="liveFollowNotifsw" type="checkbox"/>
-                                    <i class="mdui-switch-icon"></i>--启用自定义关注Up开播提醒--
-                                    </label></div>
-                                    <div class="mdui-col-xs-3 mdui-col-sm-3">
-                                      <label class="mdui-switch">
-                                      <input id="followLiveNotif" type="checkbox"/>
-                                      <i class="mdui-switch-icon"></i>--启用关注在主站关注的Up开播提醒--
-                                      </label></div>  
-                                <div class="mdui-col-xs-3 mdui-col-sm-3">
-                                  <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/liveFollow-bridge.html" target="_blank">进入关注选择列表</a></button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                          <ul id="liveFollowNotifList" class="mdui-list">
-                          </ul>
-                      </div>
-
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open devFeature">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">评论区其他小功能</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-
-                    <div class="mdui-container-fluid devFeature">
-                      <div class="mdui-col-xs-9">
-                        <h3>评论ID自动跳转(2020-8-22官方已适配)</h3>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">在链接存在ncid的页面上自动跳转到没有折叠的评论区块</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="commentEasyJump" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-                    
-                  </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">广场</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-
-                    <div class="mdui-container-fluid">
-                      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/square.html" target="_blank">进入小广场</a></button>
-                    </div>
-                  </div>
-                </div>
-
-
-                <div class="mdui-panel-item">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">更新预留</div>
-                      <div class="mdui-panel-item-summary">A</div>
-                      <div class="mdui-panel-item-summary">B</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-                      <p>更新预留</p>
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>              
-          </div>
-
-          <div id="tab2" class="mdui-p-a-2">
-
-            <div class="mdui-panel" mdui-panel>
-  
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">屏蔽指定Up的内容</div>
-                    <div class="mdui-panel-item-summary">我不喜欢你说的</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-                    <div class="div-filter-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>开启Up主屏蔽</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="filter-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
-                                        开启之后，将看不到以下Up主的文章
-                                    </p>
-                                </td>
-                                <td id="filter-switch-r">
-                                    <img src="images/off.png" class="switch-open switch-close" id="filter-switch">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-            
-            
-                    <div class="div-filter-list" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <table class="table custom-head">
-                            <tbody>
-                            <tr>
-                                <td id="filter-add-text" class="">
-                                    已屏蔽Up主
-                                </td>
-                                <td>
-                                    <span id="filter-add" class="">+ 添加Up主</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table   id="filter-ups" class="table-custom table-custom-padding wordcontent">
-            
-                        </table>
-                    </div>
-                    <div class="mdui-panel-item-actions">
-                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                      <button class="mdui-btn mdui-ripple">保存</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">AcFunlive 程序交互设置</div>
-                    <div class="mdui-panel-item-summary">在此页面设置acfunlive程序</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/acfunlive-bridge.html" target="_blank">进入设置页面</a></button>
-                  </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">屏蔽直播站首页的主播</div>
-                    <div class="mdui-panel-item-summary">将你所不喜欢的主播在直播站首页屏蔽掉</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-row">
-
-                          <div class="mdui-row">
-                              <div class="mdui-col-xs-9">
-                                  <h3>屏蔽列表</h3>
-                                <div class="mdui-row">
-                                  <div class="mdui-col-xs-8 mdui-col-sm-6"><button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="liveBanAdd"><i class="mdui-icon material-icons">add</i></button>添加屏蔽用户</div>
-                                  <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
-                                      <input id="liveBansw" type="checkbox"/>开关 
-                                      <i class="mdui-switch-icon"></i>
-                                      </label></div>
-                                </div>
-                              </div>
-                            </div>
-                        <ul id = "liveBanList" class="mdui-list">
-                        </ul>
-                    </div>
-
-                    </div>
-              </div>
-              </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open devFeature">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">辅助功能</div>
-                      <div class="mdui-panel-item-summary">A</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-
-                      <div class="mdui-container-fluid devFeature">
-                        <div class="mdui-col-xs-9">
-                          <h2>自动加评</h2>
-                        </div>
-                        <div class="mdui-row">
-                          <div class="mdui-col-xs-8 mdui-col-sm-6">2333</div>
-                          <div class="mdui-col-xs-4 mdui-col-sm-6">
-                            <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                              <input id="QeCommentConfKeysw" type="checkbox" />
-                              <i class="mdui-switch-icon"></i>
-                            </label>
-                          </div>
-                          </div>            
-                        </div>
-                      </div>
-                      
-  
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">稍后再看</div>
-                      <div class="mdui-panel-item-summary">稍后再看管理</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-                      <h3>稍后再看列表</h3>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-3 mdui-col-sm-3">
-                          <button id="watchLaterStart" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>开始稍后再看</a></button>
-                          </div>
-                        <div class="mdui-col-xs-3 mdui-col-sm-3">
-                          <label class="mdui-switch">
-                            <input id="watchLater" type="checkbox"/>
-                            <i class="mdui-switch-icon"></i>--启用稍后再看--
-                            </label></div>
-                          </div>
-                        <ul id="watchLaterList" class="mdui-list">
-                          <li id="firstwatchLaterList" class="mdui-list-item mdui-ripple" data-key="0" style="cursor:default">
-                          <i class="mdui-list-item-icon mdui-icon material-icons" data-key="0" style="cursor:pointer">delete</i>
-                          <a href="https://www.acfun.cn/z/ac14671385" target="_blank">
-                            <i class="mdui-list-item-icon mdui-icon material-icons" data-key="0" style="cursor:pointer">desktop_windows</i></a>
-                            <div class="mdui-list-item-content">点击加载列表</div>
-                          </li>
-                        </ul>
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-                  
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">更新预留</div>
-                      <div class="mdui-panel-item-summary">A</div>
-                      <div class="mdui-panel-item-summary">B</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-                      <p>更新预留</p>
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-                  
-              </div>
-          </div>
-
-          <div id="tab3" class="mdui-p-a-2">
-
-            <div class="mdui-panel" mdui-panel>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">主站界面优化</div>
-                    <div class="mdui-panel-item-summary">为主站界面增加更多实用信息或功能</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-                    <div class="div-nav-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>首页右侧导航</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="nav-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
-                                        开启之后，在A站首页的右侧会出现导航条
-                                    </p>
-                                </td>
-                                <td id="nav-switch-r">
-                                    <img src="images/off.png" class="switch-open switch-close" id="nav-switch">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-            
-                    <div class="div-personal-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>个人中心优化</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="personal-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
-                                        开启之后，在个人中心的入口处显示你的听众、香蕉、金香蕉、UID等
-                                    </p>
-                                </td>
-                                <td id="personal-switch-r">
-                                    <img src="images/off.png" class="switch-open switch-close" id="personal-switch">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-            
-                    <div class="div-like-switch">
-                        <h3>显示点赞、投桃数</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="like-switch-l">
-                                    <p>
-                                      开启之后，在视频播放页面显示点赞、投桃数
-                                    </p>
-                                </td>
-                                <td id="like-switch-r">
-                                    <img src="images/off.png" class="switch-open switch-close" id="like-switch">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-row">
-                          <div class="mdui-row">
-                              <div class="mdui-col-xs-9">
-                                  <h3>取消显示推广弹出窗</h3>
-                                <div class="mdui-row">
-                                  <div class="mdui-col-xs-8 mdui-col-sm-6"><p>取消播放器弹出的站内活动推广窗口</p></div>
-                                  <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
-                                      <input id="hideAd" type="checkbox"/>开关 
-                                      <i class="mdui-switch-icon"></i>
-                                      </label></div>
-                                </div>
-                              </div>
-                            </div>
-                      </div>
-                    </div>
-
-                    <div class="mdui-container-fluid devFeature">
-                      <div class="mdui-row">
-                          <div class="mdui-row">
-                              <div class="mdui-col-xs-9">
-                                  <h3>主页顶栏高斯模糊</h3>
-                                <div class="mdui-row">
-                                  <div class="mdui-col-xs-8 mdui-col-sm-6"><p>在主页顶栏增加高斯模糊特效</p></div>
-                                  <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
-                                      <input id="Dev_indexBlurSW" type="checkbox"/>开关 
-                                      <i class="mdui-switch-icon"></i>
-                                      </label></div>
-                                </div>
-                              </div>
-                            </div>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">直播站优化</div>
-                      <div class="mdui-panel-item-summary">直播站页面优化</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-
-                      <div class="mdui-container-fluid">
-                        <div class="mdui-row">
-                            <div class="mdui-row">
-                                <div class="mdui-col-xs-9">
-                                    <h3>删除直播页推广</h3>
-                                  <div class="mdui-row">
-                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>删除直播页banner</p></div>
-                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
-                                        <input id="liveHideAd" type="checkbox"/>开关 
-                                        <i class="mdui-switch-icon"></i>
-                                        </label></div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
-                      </div>
-              
-                      <div class="mdui-container-fluid">
-                        <div class="mdui-row">
-                            <div class="mdui-row">
-                                <div class="mdui-col-xs-9">
-                                    <h3>直播页宽屏和弹幕屏蔽</h3>
-                                  <div class="mdui-row">
-                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>为直播页播放器和弹幕列表增加宽屏模式，并允许按类型屏蔽弹幕信息</p></div>
-                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
-                                        <input id="livePlayerEnhc" type="checkbox"/>开关 
-                                        <i class="mdui-switch-icon"></i>
-                                        </label></div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
-                      </div>
- 
-                      <div class="mdui-container-fluid">
-                        <div class="mdui-row">
-                            <div class="mdui-row">
-                                <div class="mdui-col-xs-9">
-                                    <h3>直播弹幕时间信息</h3>
-                                  <div class="mdui-row">
-                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>为直播页弹幕列表内容增加显示时间</p></div>
-                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
-                                        <input id="liveCommentTimeTag" type="checkbox"/>开关 
-                                        <i class="mdui-switch-icon"></i>
-                                        </label></div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
-                      </div>
-                    
-                    </div>
-                  </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">更新预留</div>
-                      <div class="mdui-panel-item-summary">A</div>
-                      <div class="mdui-panel-item-summary">B</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-                      <p>更新预留</p>
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-                  
+          <!-- <div class="mdui-panel-item"> -->
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">自动投蕉</div>
+              <div class="mdui-panel-item-summary">在选定的Up投稿中自动给Up投蕉</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
             </div>
-          </div>       
-          
-          <div id="tab4" class="mdui-p-a-2">
-
-            <div class="mdui-panel" mdui-panel>
-  
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">播放器配置</div>
-                    <div class="mdui-panel-item-summary">定义播放器的种种~</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            <div class="mdui-panel-item-body">
+              <div class="autoTranslate-switch">
+                  <h3>自动投蕉<img src="images/on.png" class="switch-close" id="switch"></h3>
+                  <div id="auto_options" style="color: rgb(204, 204, 204);">
+                      <div class="huaci_selections">
+                          <img id="attention_switch" src="images/unselected.png">
+                          <span> 给已关注Up主投蕉</span>
+                      </div>
+                      <hr style="border-bottom: 1px solid rgb(211,211,211)">
+                      <div class="huaci_selections">
+                          <img id="specific_switch" src="images/selected.png">
+                          <span> 给指定Up主投蕉</span>
+                      </div>
                   </div>
-                  <div class="mdui-panel-item-body">
-                    <div class="div-rate-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>自定义倍速</h3>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td id="rate-switch-l">
-                                    <p style="color: rgb(204, 204, 204);">
-                                        开启之后，在视频倍速栏增加自定义倍速功能
-                                    </p>
-                                </td>
-                                <td id="rate-switch-r">
-                                    <img src="images/off.png" class="switch-open switch-close" id="rate-switch">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-            
-                    <div id="player_mode"  style="background: rgb(250, 250, 250);margin-top: 0px;padding: 20px">
-                        <table class="">
-                            <tbody>
-                            <tr>
-                                <td style="margin-left: 20px" id="thead-tip" class="">
-                                    当进入视频播放页面时，播放器状态
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-            
-            
-                        <div id="mode_options" >
-                            <div class="mode_selections" style="color: rgb(51, 51, 51);">
-                                <img data-mode="default" class="player_mode" id="mode_default"  src="images/selected.png">
-                                <span>默认</span>
-                                <img data-mode="film" class="player_mode" id="mode_film" style="margin-left: 40px"  src="images/unselected.png">
-                                <span>观影模式</span>
-                                <img data-mode="web" class="player_mode" id="mode_web" style="margin-left: 40px"  src="images/unselected.png">
-                                <span>网页全屏</span>
-                                <img data-mode="desktop" class="player_mode" id="mode_desktop" style="margin-left: 40px"  src="images/unselected.png">
-                                <span>桌面全屏</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>播放器播放前配置</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">自动跳转到上次观看的时间（只支持1P的视频）</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <label class="mdui-switch">
-                            <input id="autoJumpLastWatchSw" type="checkbox"/>启用
-                            <i class="mdui-switch-icon"></i>
-                            </label>
-                          </div>            
-                      </div>
-                    </div>
-                    
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>播放器播放画质策略</h2><br>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">选择播放器画质策略</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <select id="videoQualityStrategy" class="mdui-select" mdui-select="{position: 'top'}">
-                            <option value="0">0 - 自动</option>
-                            <option value="1">1 - 默认最高</option>
-                            <option value="2">2 - 偏向非60帧的最高画质</option>
-                            <option value="3">3 - 默认最低</option>
-                            <option value="4">4 - 偏向非4k的最高画质</option>
-                          </select>
-                        </div>            
-                      </div>
-                    </div>
-
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>弹幕搜索&自动跳转</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">可以在弹幕列表中搜索相应弹幕内容并跳转到弹幕所在时间</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="PlayerDamakuSearchSw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>弹幕列表发送用户跳转</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">可以在弹幕列表中的弹幕条目的操作菜单按钮旁加入一个(⌂ 像房子一样)按钮快速跳转至发送用户页面</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="danmuSearchListToUsersw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>视频AB回放</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">可以在播放器中指定AB两个时间点，令播放器在这两点中循环播放</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="ABPlaysw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>倍速切换快捷键</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器具有焦点的时候可以按shift+↑↓键调整播放速率</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="PlaybackRateKeysw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>全局播放器进度条</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">在页面和网页全屏时增加一个进度条，以提示当前播放进度</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="ProgressBarsw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-                    
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>播放结束自动续播“大家都在看”播放器开关</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">观看完当前视频投稿之后，立即跳转到“大家都在看”第一个稿件</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="endedAutoJumpRecommandFirstDougasw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-                    
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>自动展开视频简介</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">自动在视频投稿中展开视频简介栏目</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="autoOpenVideoDescsw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-                    
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>播放结束自动退出全屏</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">在全屏（观影模式和网页全屏）下，视频结束时退出全屏模式（并且没有开启洗脑循环）</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="endedAutoExitFullscreensw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-                    
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>观影模式关灯适配暗色</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">在进入观影模式时，匹配页面暗色模式（部分元素使用反色，若不适应请关闭此选项）</div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="FilmModeExclusionsw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-                    
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>自动格式化评论区的时间以便点击跳转</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">将评论区中的时间（MM:ss或者 X分X秒、npX分X秒）转化为链接，点击时向播放器发送跳转指令，跳转至目的时间。<br>测试地址：<a href="https://www.acfun.cn/v/ac4919284#ncid=232956340" target="blank">[司鼓君-【2019猴山春晚/原创国风电音】燃灯挂霓虹 ft.小勒个朵]</a></div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="PlayerTimeCommentEasyJump" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-col-xs-9">
-                        <h2>选中时间使用快捷键使播放器快速跳转</h2>
-                      </div>
-                      <div class="mdui-row">
-                        <div class="mdui-col-xs-8 mdui-col-sm-6">选中评论中的数字（此功能针对类似于：“102秒”的评论），然后按下快捷键(Shift+A)快速跳转至目的秒数。<br>测试地址：<a href="https://www.acfun.cn/v/ac4919284#ncid=232956340" target="blank">[司鼓君-【2019猴山春晚/原创国风电音】燃灯挂霓虹 ft.小勒个朵]</a></div>
-                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                          <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                            <input id="easySearchScanForPlayerTimesw" type="checkbox" />
-                            <i class="mdui-switch-icon"></i>
-                          </label>
-                        </div>
-                        </div>            
-                      </div>
-                    </div>
-
-                    <div class="mdui-panel-item-actions">
-                      <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                      <button class="mdui-btn mdui-ripple">保存</button>
-                  </div>
-                </div>
-              </div>     
-              
-              <div class="mdui-panel-item mdui-panel-item-open">
-                <div class="mdui-panel-item-header">
-                  <div class="mdui-panel-item-title">更新预留</div>
-                  <div class="mdui-panel-item-summary">A</div>
-                  <div class="mdui-panel-item-summary">B</div>
-                  <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                </div>
-                <div class="mdui-panel-item-body">
-                  <p>更新预留</p>
-                  <div class="mdui-panel-item-actions">
-                    <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                    <button class="mdui-btn mdui-ripple">保存</button>
-                  </div>
-                </div>
               </div>
-            
+      
+      
+              <div id="attention" style="display: none"  class="table-container">
+                  <table class="table custom-head">
+                      <tbody>
+                      <tr>
+                          <td style="margin-left: 20px" id="thead-tip" class="">
+                              当您浏览已关注的Up主的视频时，自动投蕉
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+      
+      
+                  <div id="huaci_options" >
+                      <div class="huaci_selections">
+                          <img data-num="1" class="attention_num" id="num1" src="images/unselected.png">
+                          <span>1蕉</span>
+                          <img data-num="2" class="attention_num" style="margin-left: 40px" id="num2" src="images/unselected.png">
+                          <span>2蕉</span>
+                          <img data-num="3" class="attention_num" style="margin-left: 40px" id="num3" src="images/unselected.png">
+                          <span>3蕉</span>
+                          <img data-num="4" class="attention_num" style="margin-left: 40px" id="num4" src="images/unselected.png">
+                          <span>4蕉</span>
+                          <img data-num="5" class="attention_num" style="margin-left: 40px" id="num5" src="images/selected.png">
+                          <span>5蕉</span>
+                      </div>
+                  </div>
+              </div>
+              <div id="specific" style="display: none" class="table-container">
+                  <table class="table custom-head">
+                      <tbody>
+                      <tr>
+                          <td id="thead-tip-special" class="">
+                              当您浏览以下Up主视频时，将自动投蕉
+                          </td>
+                          <td>
+                              <span  id="add" class="">+ 添加Up主</span>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+      
+                  <table id="custom" class="table-custom table-custom-padding wordcontent">
+      
+                  </table>
+              </div>
+      
+      
+              <div class="div-lang-detect" style="background: rgb(237, 237, 237);margin-top: 0px">
+                  <h3>自动投蕉后提醒</h3>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td id="detect-switch-l">
+                              <p style="color: rgb(204, 204, 204);">
+                                  当插件帮您自动投蕉后，在右下角弹出提醒消息
+                              </p>
+                          </td>
+                          <td id="detect-switch-r">
+                              <img src="images/off.png" class="switch-open switch-close" id="detect-switch">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="mdui-panel-item-actions">
+                <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                <button class="mdui-btn mdui-ripple">保存</button>
+              </div>
+            </div>
           </div>
           
-          
-        </div>
+          <!-- <div class="mdui-panel-item"> -->
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">评论是本体</div>
+              <div class="mdui-panel-item-summary">给予用户一个Tag，就算改名了小助手也能帮您标记出来</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+              <div class="div-common-up" style="background: rgb(237, 237, 237);">
+                  <h3>开启Up主标记</h3>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td id="up-switch-l">
+                              <p style="color: rgb(204, 204, 204);">
+                                  开启之后，Up主的评论将会这样显示<img style="vertical-align: top" height="20px" src="images/upname.png">
+                              </p>
+                          </td>
+                          <td id="up-switch-r">
+                              <img src="images/off.png" class="switch-open switch-close" id="up-switch">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+      
+              <div class="div-common-scan" style="background: rgb(237, 237, 237);">
+                  <h3>开启人物扫描</h3>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td id="scan-switch-l">
+                              <p style="color: rgb(204, 204, 204);">
+                                  开启之后，会在其名字后面显示你做的标记
+                              </p>
+                          </td>
+                          <td id="scan-switch-r">
+                              <img src="images/off.png" class="switch-open switch-close" id="scan-switch">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="div-common-mark" style="background: rgb(237, 237, 237);margin-top: 0px">
+                  <h3>开启人物标记</h3>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td id="mark-switch-l">
+                              <p style="color: rgb(204, 204, 204);">
+                                  开启之后，会在举报按钮下增加标记按钮
+                              </p>
+                          </td>
+                          <td id="mark-switch-r">
+                              <img src="images/off.png" class="switch-open switch-close" id="mark-switch">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+      
+              <div class="div-user-list" style="background: rgb(237, 237, 237);margin-top: 0px">
+                  <table class="table custom-head">
+                      <tbody>
+                      <tr>
+                          <td id="mark-add-text" class="">
+                              已标记用户
+                          </td>
+                          <td>
+                              <span id="mark-add" class="">+ 添加用户</span>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+                  <table  id="scan-users" class="table-custom table-custom-padding wordcontent">
+      
+                  </table>
+              </div>
+                      
+              <div class="mdui-panel-item-actions">
+                <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                <button class="mdui-btn mdui-ripple">保存</button>
+              </div>
+            </div>
+          </div>
 
-        <div id="tab5" class="mdui-p-a-2">
+          <div class="mdui-panel-item mdui-panel-item-open">
+              <div class="mdui-panel-item-header">
+                <div class="mdui-panel-item-title">关注直播推送</div>
+                <div class="mdui-panel-item-summary">将你所关注的主播直播信息通过浏览器推送</div>
+                <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+              </div>
+              <div class="mdui-panel-item-body">
 
-            <div class="mdui-panel" mdui-panel>
-  
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">插件&主站 配置 文件导入导出</div>
-                    <div class="mdui-panel-item-summary">将插件或者主站的配置作为配置文件导入导出</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-                    <div class="div-export-settings" style="background: rgb(237, 237, 237);margin-top: 0px">
-                        <h3>导入导出插件配置</h3><br>
-                    <a style="cursor: pointer" class='configExport' id='configExport'>点击此处下载插件的配置文件</a><br><br>
-                    <a style="cursor: pointer" class='configPlayerExport' id='configPlayerExport'>点击此处导出播放器配置文件</a>
-                    <br><br>
-                    <div id="div_emlwX3V0aWxz_input"><span id="span_emlwX3V0aWxz_s1">导入插件配置文件:</span><input id="input_emlwX3V0aWxz_file" type="file"></div><br><br>
-                    <div id="div_emlwX3V0aWxp_input"><span id="span_emlwX3V0aWxp_s1">导入播放器配置文件:</span><input id="emlwX3V0aWxp_file" type="file"></div><br><br>
-                    <a style="cursor: pointer" class='configClean' id='configClean'>点击此处清除插件的所有配置</a>
-                    </div>
-                  </div>
+                <div class="mdui-container-fluid">
+                  <div class="mdui-row">
+
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-12">
+                          <h3>关注列表</h3>
+                        <div class="mdui-row">
+                          <div class="mdui-col-xs-3 mdui-col-sm-3"><button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="liveFollowAdd"><i class="mdui-icon material-icons">add</i></button>添加关注用户</div>
+                          <div class="mdui-col-xs-3 mdui-col-sm-3">                                    <label class="mdui-switch">
+                              <input id="liveFollowNotifsw" type="checkbox"/>
+                              <i class="mdui-switch-icon"></i>--启用自定义关注Up开播提醒--
+                              </label></div>
+                              <div class="mdui-col-xs-3 mdui-col-sm-3">
+                                <label class="mdui-switch">
+                                <input id="followLiveNotif" type="checkbox"/>
+                                <i class="mdui-switch-icon"></i>--启用关注在主站关注的Up开播提醒--
+                                </label></div>  
+                          <div class="mdui-col-xs-3 mdui-col-sm-3">
+                            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/liveFollow-bridge.html" target="_blank">进入关注选择列表</a></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    <ul id="liveFollowNotifList" class="mdui-list">
+                    </ul>
                 </div>
-                
 
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">插件&主站 配置 网络同步</div>
-                    <div class="mdui-panel-item-summary">将配置同步到服务器端</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                <div class="mdui-panel-item-actions">
+                  <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                  <button class="mdui-btn mdui-ripple">保存</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mdui-panel-item mdui-panel-item-open devFeature">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">评论区其他小功能</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+
+              <div class="mdui-container-fluid devFeature">
+                <div class="mdui-col-xs-9">
+                  <h3>评论ID自动跳转(2020-8-22官方已适配)</h3>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">在链接存在ncid的页面上自动跳转到没有折叠的评论区块</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="commentEasyJump" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
                   </div>
-                  <div class="mdui-panel-item-body">
+                  </div>            
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">广场</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+
+              <div class="mdui-container-fluid">
+                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/square.html" target="_blank">进入小广场</a></button>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="mdui-panel-item">
+              <div class="mdui-panel-item-header">
+                <div class="mdui-panel-item-title">更新预留</div>
+                <div class="mdui-panel-item-summary">A</div>
+                <div class="mdui-panel-item-summary">B</div>
+                <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+              </div>
+              <div class="mdui-panel-item-body">
+                <p>更新预留</p>
+                <div class="mdui-panel-item-actions">
+                  <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                  <button class="mdui-btn mdui-ripple">保存</button>
+                </div>
+              </div>
+            </div>
+
+          </div>              
+    </div>
+
+    <div id="tab2" class="mdui-p-a-2">
+
+      <div class="mdui-panel" mdui-panel>
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">屏蔽指定Up的内容</div>
+              <div class="mdui-panel-item-summary">我不喜欢你说的</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+              <div class="div-filter-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                  <h3>开启Up主屏蔽</h3>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td id="filter-switch-l">
+                              <p style="color: rgb(204, 204, 204);">
+                                  开启之后，将看不到以下Up主的文章
+                              </p>
+                          </td>
+                          <td id="filter-switch-r">
+                              <img src="images/off.png" class="switch-open switch-close" id="filter-switch">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+      
+      
+              <div class="div-filter-list" style="background: rgb(237, 237, 237);margin-top: 0px">
+                  <table class="table custom-head">
+                      <tbody>
+                      <tr>
+                          <td id="filter-add-text" class="">
+                              已屏蔽Up主
+                          </td>
+                          <td>
+                              <span id="filter-add" class="">+ 添加Up主</span>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+                  <table   id="filter-ups" class="table-custom table-custom-padding wordcontent">
+      
+                  </table>
+              </div>
+              <div class="mdui-panel-item-actions">
+                <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                <button class="mdui-btn mdui-ripple">保存</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">AcFunlive 程序交互设置</div>
+              <div class="mdui-panel-item-summary">在此页面设置acfunlive程序</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+              <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a href="/bg/acfunlive-bridge.html" target="_blank">进入设置页面</a></button>
+            </div>
+          </div>
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">屏蔽直播站首页的主播</div>
+              <div class="mdui-panel-item-summary">将你所不喜欢的主播在直播站首页屏蔽掉</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-row">
 
                     <div class="mdui-row">
-                      <div class="mdui-col-xs-12 SyncWait1" style="display: none;">
-                        <div class="mdui-progress">
-                          <div class="mdui-progress-indeterminate"></div>
-                        </div>
-                      </div>
-                      <div class="mdui-col-xs-9">
-                        <h3>触发同步</h3>
+                        <div class="mdui-col-xs-9">
+                            <h3>屏蔽列表</h3>
                           <div class="mdui-row">
-                            <div class="mdui-col-xs-8 mdui-col-sm-4"><button class="mdui-btn mdui-btn-raised mdui-ripple Pushresult_act">检查配置 & 向上同步配置信息</button>
-                            </div>
-                            <div class="mdui-col-xs-8 mdui-col-sm-4"><p>个人信息确认：</p></div>
-                            <div class="mdui-col-xs-4 mdui-col-sm-4"><p class="read_result">[ -正在等待连接AcFun小助手- ]</p></div>
-                            <div class="mdui-col-xs-8 mdui-col-sm-4"><button class="mdui-btn mdui-btn-raised mdui-ripple Pullresult_act ">检查配置 & 向下同步配置信息</button>
-                              <div class="mdui-dialog" id="dialog">
-                                <div class="mdui-dialog-title">提问一</div>
-                                <div class="mdui-dialog-content">你确定要将服务器上的配置同步到本地？它将会覆盖你本地的配置！</div>
-                                <div class="mdui-dialog-actions ">
-                                  <button class="mdui-btn mdui-ripple" mdui-dialog-cancel>算了</button>
-                                  <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>确定</button>
-                                </div>
-                              </div>
-                            
-                            </div>
-                            
+                            <div class="mdui-col-xs-8 mdui-col-sm-6"><button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="liveBanAdd"><i class="mdui-icon material-icons">add</i></button>添加屏蔽用户</div>
+                            <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                <input id="liveBansw" type="checkbox"/>开关 
+                                <i class="mdui-switch-icon"></i>
+                                </label></div>
                           </div>
                         </div>
                       </div>
+                  <ul id = "liveBanList" class="mdui-list">
+                  </ul>
+              </div>
+
+              </div>
+        </div>
+        </div>
+
+          <div class="mdui-panel-item mdui-panel-item-open devFeature">
+              <div class="mdui-panel-item-header">
+                <div class="mdui-panel-item-title">辅助功能</div>
+                <div class="mdui-panel-item-summary">A</div>
+                <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+              </div>
+              <div class="mdui-panel-item-body">
+
+                <div class="mdui-container-fluid devFeature">
+                  <div class="mdui-col-xs-9">
+                    <h2>自动加评</h2>
+                  </div>
+                  <div class="mdui-row">
+                    <div class="mdui-col-xs-8 mdui-col-sm-6">2333</div>
+                    <div class="mdui-col-xs-4 mdui-col-sm-6">
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                        <input id="QeCommentConfKeysw" type="checkbox" />
+                        <i class="mdui-switch-icon"></i>
+                      </label>
+                    </div>
+                    </div>            
+                  </div>
+                </div>
+                
+
+                <div class="mdui-panel-item-actions">
+                  <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                  <button class="mdui-btn mdui-ripple">保存</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-panel-item mdui-panel-item-open">
+              <div class="mdui-panel-item-header">
+                <div class="mdui-panel-item-title">稍后再看</div>
+                <div class="mdui-panel-item-summary">稍后再看管理</div>
+                <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+              </div>
+              <div class="mdui-panel-item-body">
+                <h3>稍后再看列表</h3>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-3 mdui-col-sm-3">
+                    <button id="watchLaterStart" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>开始稍后再看</a></button>
+                    </div>
+                  <div class="mdui-col-xs-3 mdui-col-sm-3">
+                    <label class="mdui-switch">
+                      <input id="watchLater" type="checkbox"/>
+                      <i class="mdui-switch-icon"></i>--启用稍后再看--
+                      </label></div>
+                    </div>
+                  <ul id="watchLaterList" class="mdui-list">
+                    <li id="firstwatchLaterList" class="mdui-list-item mdui-ripple" data-key="0" style="cursor:default">
+                    <i class="mdui-list-item-icon mdui-icon material-icons" data-key="0" style="cursor:pointer">delete</i>
+                    <a href="https://www.acfun.cn/z/ac14671385" target="_blank">
+                      <i class="mdui-list-item-icon mdui-icon material-icons" data-key="0" style="cursor:pointer">desktop_windows</i></a>
+                      <div class="mdui-list-item-content">点击加载列表</div>
+                    </li>
+                  </ul>
+              <div class="mdui-panel-item-actions">
+                  <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                  <button class="mdui-btn mdui-ripple">保存</button>
+                </div>
+              </div>
+            </div>
+            
+          <div class="mdui-panel-item mdui-panel-item-open">
+              <div class="mdui-panel-item-header">
+                <div class="mdui-panel-item-title">更新预留</div>
+                <div class="mdui-panel-item-summary">A</div>
+                <div class="mdui-panel-item-summary">B</div>
+                <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+              </div>
+              <div class="mdui-panel-item-body">
+                <p>更新预留</p>
+                <div class="mdui-panel-item-actions">
+                  <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                  <button class="mdui-btn mdui-ripple">保存</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+    </div>
+
+    <div id="tab3" class="mdui-p-a-2">
+
+      <div class="mdui-panel" mdui-panel>
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">主站界面优化</div>
+              <div class="mdui-panel-item-summary">为主站界面增加更多实用信息或功能</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+              <div class="div-nav-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                  <h3>首页右侧导航</h3>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td id="nav-switch-l">
+                              <p style="color: rgb(204, 204, 204);">
+                                  开启之后，在A站首页的右侧会出现导航条
+                              </p>
+                          </td>
+                          <td id="nav-switch-r">
+                              <img src="images/off.png" class="switch-open switch-close" id="nav-switch">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+      
+              <div class="div-personal-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                  <h3>个人中心优化</h3>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td id="personal-switch-l">
+                              <p style="color: rgb(204, 204, 204);">
+                                  开启之后，在个人中心的入口处显示你的听众、香蕉、金香蕉、UID等
+                              </p>
+                          </td>
+                          <td id="personal-switch-r">
+                              <img src="images/off.png" class="switch-open switch-close" id="personal-switch">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+      
+              <div class="div-like-switch">
+                  <h3>显示点赞、投桃数</h3>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td id="like-switch-l">
+                              <p>
+                                开启之后，在视频播放页面显示点赞、投桃数
+                              </p>
+                          </td>
+                          <td id="like-switch-r">
+                              <img src="images/off.png" class="switch-open switch-close" id="like-switch">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-row">
+                    <div class="mdui-row">
+                        <div class="mdui-col-xs-9">
+                            <h3>取消显示推广弹出窗</h3>
+                          <div class="mdui-row">
+                            <div class="mdui-col-xs-8 mdui-col-sm-6"><p>取消播放器弹出的站内活动推广窗口</p></div>
+                            <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                <input id="hideAd" type="checkbox"/>开关 
+                                <i class="mdui-switch-icon"></i>
+                                </label></div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+              </div>
+
+              <div class="mdui-container-fluid devFeature">
+                <div class="mdui-row">
+                    <div class="mdui-row">
+                        <div class="mdui-col-xs-9">
+                            <h3>主页顶栏高斯模糊</h3>
+                          <div class="mdui-row">
+                            <div class="mdui-col-xs-8 mdui-col-sm-6"><p>在主页顶栏增加高斯模糊特效</p></div>
+                            <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                <input id="Dev_indexBlurSW" type="checkbox"/>开关 
+                                <i class="mdui-switch-icon"></i>
+                                </label></div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+              <div class="mdui-panel-item-header">
+                <div class="mdui-panel-item-title">直播站优化</div>
+                <div class="mdui-panel-item-summary">直播站页面优化</div>
+                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+              </div>
+              <div class="mdui-panel-item-body">
+
+                <div class="mdui-container-fluid">
+                  <div class="mdui-row">
+                      <div class="mdui-row">
+                          <div class="mdui-col-xs-9">
+                              <h3>删除直播页推广</h3>
+                            <div class="mdui-row">
+                              <div class="mdui-col-xs-8 mdui-col-sm-6"><p>删除直播页banner</p></div>
+                              <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                  <input id="liveHideAd" type="checkbox"/>开关 
+                                  <i class="mdui-switch-icon"></i>
+                                  </label></div>
+                            </div>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+        
+                <div class="mdui-container-fluid">
+                  <div class="mdui-row">
+                      <div class="mdui-row">
+                          <div class="mdui-col-xs-9">
+                              <h3>直播页宽屏和弹幕屏蔽</h3>
+                            <div class="mdui-row">
+                              <div class="mdui-col-xs-8 mdui-col-sm-6"><p>为直播页播放器和弹幕列表增加宽屏模式，并允许按类型屏蔽弹幕信息</p></div>
+                              <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                  <input id="livePlayerEnhc" type="checkbox"/>开关 
+                                  <i class="mdui-switch-icon"></i>
+                                  </label></div>
+                            </div>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+
+                <div class="mdui-container-fluid">
+                  <div class="mdui-row">
+                      <div class="mdui-row">
+                          <div class="mdui-col-xs-9">
+                              <h3>直播弹幕时间信息</h3>
+                            <div class="mdui-row">
+                              <div class="mdui-col-xs-8 mdui-col-sm-6"><p>为直播页弹幕列表内容增加显示时间</p></div>
+                              <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                  <input id="liveCommentTimeTag" type="checkbox"/>开关 
+                                  <i class="mdui-switch-icon"></i>
+                                  </label></div>
+                            </div>
+                          </div>
+                        </div>
                   </div>
                 </div>
               
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">插件后台进程配置</div>
-                      <div class="mdui-panel-item-summary">配置插件在后台的某些模块执行时刻</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-
-                      <div class="mdui-container-fluid">
-                        <div class="mdui-row">
-                            <div class="mdui-row">
-                                <div class="mdui-col-xs-9">
-                                    <h3>插件后台-推送消息轮询</h3>
-                                  <div class="mdui-row">
-                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>推送消息轮询</p></div>
-                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
-                                        <input id="fetchPushList_daemonsw" type="checkbox"/>开关 
-                                        <i class="mdui-switch-icon"></i>
-                                        </label></div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
-                      </div>
-                        
-                      <div class="mdui-container-fluid">
-                        <div class="mdui-row">
-                            <div class="mdui-row">
-                                <div class="mdui-col-xs-9">
-                                    <h3>插件后台-未读计数消息轮询</h3>
-                                  <div class="mdui-row">
-                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>未读计数消息轮询</p></div>
-                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
-                                        <input id="timer4Unread_daemonsw" type="checkbox"/>开关 
-                                        <i class="mdui-switch-icon"></i>
-                                        </label></div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
-                      </div>
-
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-  
-                <div class="mdui-panel-item mdui-p-o">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">更新预留</div>
-                      <div class="mdui-panel-item-summary">A</div>
-                      <div class="mdui-panel-item-summary">B</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-                      <p>更新预留</p>
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-  
-              </div>            
-        </div>
-        
-        <div id="tab6" class="mdui-p-a-2">
-
-            <div class="mdui-col-sm-6 mdui-col-md-4">
-                AcFun-Helper是一个适用于AcFun（www.acfun.cn）的浏览器插件。<br><br>
-                AcFun-Helper 开源地址： 
-                <a href="https://github.com/niuchaobo/acfun-helper" target="_blank">Github</a><br>
-                依赖项目开源地址：<br> 
-                1.acfun-helper-synconfig 插件配置同步-服务端 @heixiaobai 
-                <a href="https://github.com/heixiaobai/acfun-helper-synconfig" target="_blank">Github</a>
-                <br><br>
-                <p>主要功能：</p>
-                <p>1.视频下载、弹幕下载<br>
-                2.用户紫色标记（再也不怕别人改名了，是你？女装Up？）<br>
-                3.自动投蕉、并显示投蕉通知（香蕉烂掉？不可能的！）<br>
-                4.Up主屏蔽功能（你说的对，但是说得太不好听了吧）<br>
-                5.增加首页右侧导航栏，方便快速跳转至目标分区</p>
-                <p>6.右键下载视频封面（再也不用害羞地问封面了）<br>
-                7.右键AC搜索<br>
-                8.在PC端获取直播间m3u8直链看A站直播（现在有超清了，少主换成超清的来了！）<br>
-                9.在个人中心的入口处显示你的听众、香蕉、金香蕉、UID等信息<br>
-                10.视频投稿页面显示点赞数</p>
-                <p>11.在评论区给Up添加一个蓝色标记（终于不用翻到顶看看Up主是谁了，然来Up和我互动了？）<br>
-                12.播放器自定义倍速（0.1倍看老婆！？）<br>
-                13.设置进入视频播放页面时播放器自动进入观影模式或网页全屏<br>
-                14.已关注up主动态【弹出栏查看动态投稿动态列表】<br>
-                15.通过点击评论区时间跳转到视频指定位置（空降大成功！）</p>
-                <p>16.配置文件导入导出【插件配置（包含了屏蔽列表，Up主标记列表和自动投蕉、播放器自动化配置）、播放器配置（弹幕关键词屏蔽列表、播放器配置等）】<br>
-                17.一键清除插件配置<br>
-                18.播放器的画中画功能【原生的HTML5画中画 ！直播的播放器也支持画中画了 】（我也可以悄悄摸鱼了吗？(=ﾟωﾟ)=）<br>
-                19.在稿件下针对评论抽奖【在自己的投稿下的网页界面的右侧“助手”界面中，自定义抽奖人数+随机+去重，且助手会直接给出私信中奖Acer的链接，并且会详细告知楼层信息】（可以给我来个专用抽奖工具吗，咱们三七分成？( ﾟ∀。)） <br>
-                20.直播站播放界面的宽屏模式（#感谢@Sinyupl）</p>
-
-                <p>21.屏蔽直播右侧信息中的礼物、关注、点赞、进场信息 （#感谢@Sinyupl）（就单纯听大伙儿吹逼吧）<br>
-                22.增加直播Up开播提醒（哎符逼哎，楼梯负一开审）<br>
-                23.网络同步插件配置（可以与服务器来同步配置！）<br>
-                24.现在弹出栏也能看直播列表了！<br>
-                25.联合 AcFun直播桌面通知和下载助手 桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将Up加入/取消开播通知列表中。<br>
-                </p>
-
-                <p>26.增加了浏览器地址栏直接搜索主站相关关键字（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入ACid跳转到相应投稿哦。）<br>
-                  27.增加画质策略<br>
-                  28.增加强制跳转到上次观看的时间（功能受到限制）<br>
-                  29.弹幕内容搜索和快速跳转、弹幕发送者主页跳转<br>
-                  30.播放完毕自动退出网页全屏或宽屏模式<br>
-                </p>
-                <p>
-		              31.使用快捷键快速切换倍速<br> 
-                  32.在视频评论区选中时间使播放器快速跳转<br>
-                  33.视频的AB回放功能（两点循环播放，左右反复横跳！）<br>
-                  34.在视频稿件和番剧下，增加全局进度条（什么？进度条君撑不住啦？）<br>
-                  35.自动播放下一个推荐视频（“大家都在看”列表项目）
-                </p>
-                <p>
-                  36.自动展开简介（弹幕键盘佬，请问这个视频的BGM是什么？爱的供养，再问自傻。Y哥我只不过是想问这首歌的BGM是什么。）<br>
-                  37.给直播弹幕列表信息增加时间Tag（哇，上午九点三十二分，某著名单推人突然出现了另外一位v的直播间！）<br>
-                  38.稍后再看功能（只要我无限地增加稍后再看列表，那不就是另外一个收藏夹吗( ;´д`)）<br>
-                </p>
-                <hr>                
-
+              </div>
             </div>
-            <div class="mdui-col-sm-6 mdui-col-md-4">
-                免责声明<br><br>下载的视频版权归视频所有者所有，除非视频所有者同意，否则下载的视频仅限作离线播放用途。任何未经授权的剪辑和再发布等行为均为侵犯版权的行为，请尊重创作者的劳动成果。
-                <br><br>本项目作者对下载者本人因使用此工具下载视频后剪辑、再发布等任何侵权行而产生的法律纠纷概不负责。
-                <br><br>请支持正版，本插件不支持下载任何非用户自行发布的内容（番剧、电影等），望谅解
-                <br><br>
-                <br><br>
-                隐私协议
-                <br><br><a href="/bg/privacy.html">Privacy</a>
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+              <div class="mdui-panel-item-header">
+                <div class="mdui-panel-item-title">更新预留</div>
+                <div class="mdui-panel-item-summary">A</div>
+                <div class="mdui-panel-item-summary">B</div>
+                <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+              </div>
+              <div class="mdui-panel-item-body">
+                <p>更新预留</p>
+                <div class="mdui-panel-item-actions">
+                  <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                  <button class="mdui-btn mdui-ripple">保存</button>
+                </div>
+              </div>
             </div>
-            <div class="mdui-col-sm-6 mdui-col-md-4">
             
-            <div class="mdui-card">
-                <div class="mdui-card-header">
-                  <img class="mdui-card-header-avatar" src="images/lalazhuibushang-github.jpg"/>
-                  <div class="mdui-card-header-title"><a href="https://www.acfun.cn/u/7054138" target="_blank">啦啦追不上</a></div>
-                  <div class="mdui-card-header-subtitle">主导开发者</div>
-                </div>
-                <div class="mdui-card-media" id="devSwitch">
-                  <img src="../img/icon128.png"  style="width: 50%;margin-left: 90px;"/>
-                <div class="mdui-card-primary">
-                  <div class="mdui-card-primary-title">AcFun助手</div>
-                  <div class="mdui-card-primary-subtitle">浏览器插件</div>
-                </div>
-                <div class="mdui-card-content">是一个适用于AcFun（www.acfun.cn）的浏览器插件。</div>
-                
-              </div>       
-              </div>       
-        </div>
+      </div>
+    </div>       
+    
+    <div id="tab4" class="mdui-p-a-2">
 
+      <div class="mdui-panel" mdui-panel>
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">播放器配置</div>
+              <div class="mdui-panel-item-summary">定义播放器的种种~</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+              <div class="div-rate-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                  <h3>自定义倍速</h3>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td id="rate-switch-l">
+                              <p style="color: rgb(204, 204, 204);">
+                                  开启之后，在视频倍速栏增加自定义倍速功能
+                              </p>
+                          </td>
+                          <td id="rate-switch-r">
+                              <img src="images/off.png" class="switch-open switch-close" id="rate-switch">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+      
+              <div id="player_mode"  style="background: rgb(250, 250, 250);margin-top: 0px;padding: 20px">
+                  <table class="">
+                      <tbody>
+                      <tr>
+                          <td style="margin-left: 20px" id="thead-tip" class="">
+                              当进入视频播放页面时，播放器状态
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+      
+      
+                  <div id="mode_options" >
+                    <div class="mode_selections" style="color: rgb(51, 51, 51);">
+                        <img data-mode="default" class="player_mode" id="mode_default"  src="images/selected.png">
+                        <span>默认</span>
+                        <img data-mode="film" class="player_mode" id="mode_film" style="margin-left: 40px"  src="images/unselected.png">
+                        <span>观影模式</span>
+                        <img data-mode="web" class="player_mode" id="mode_web" style="margin-left: 40px"  src="images/unselected.png">
+                        <span>网页全屏</span>
+                        <img data-mode="desktop" class="player_mode" id="mode_desktop" style="margin-left: 40px"  src="images/unselected.png">
+                        <span>桌面全屏</span>
+                    </div>
+                </div>
+            </div>
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>播放器播放前配置</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">自动跳转到上次观看的时间（只支持1P的视频）</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <label class="mdui-switch">
+                      <input id="autoJumpLastWatchSw" type="checkbox"/>启用
+                      <i class="mdui-switch-icon"></i>
+                      </label>
+                    </div>            
+                </div>
+              </div>
+              
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>播放器播放画质策略</h2><br>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">选择播放器画质策略</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <select id="videoQualityStrategy" class="mdui-select" mdui-select="{position: 'top'}">
+                      <option value="0">0 - 自动</option>
+                      <option value="1">1 - 默认最高</option>
+                      <option value="2">2 - 偏向非60帧的最高画质</option>
+                      <option value="3">3 - 默认最低</option>
+                      <option value="4">4 - 偏向非4k的最高画质</option>
+                    </select>
+                  </div>            
+                </div>
+              </div>
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>弹幕搜索&自动跳转</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">可以在弹幕列表中搜索相应弹幕内容并跳转到弹幕所在时间</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="PlayerDamakuSearchSw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>弹幕列表发送用户跳转</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">可以在弹幕列表中的弹幕条目的操作菜单按钮旁加入一个(⌂ 像房子一样)按钮快速跳转至发送用户页面</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="danmuSearchListToUsersw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>视频AB回放</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">可以在播放器中指定AB两个时间点，令播放器在这两点中循环播放</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="ABPlaysw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>倍速切换快捷键</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器具有焦点的时候可以按shift+↑↓键调整播放速率</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="PlaybackRateKeysw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>全局播放器进度条</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">在页面和网页全屏时增加一个进度条，以提示当前播放进度</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="ProgressBarsw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+              
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>播放结束自动续播“大家都在看”播放器开关</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">观看完当前视频投稿之后，立即跳转到“大家都在看”第一个稿件</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="endedAutoJumpRecommandFirstDougasw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+              
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>自动展开视频简介</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">自动在视频投稿中展开视频简介栏目</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="autoOpenVideoDescsw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+              
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>播放结束自动退出全屏</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">在全屏（观影模式和网页全屏）下，视频结束时退出全屏模式（并且没有开启洗脑循环）</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="endedAutoExitFullscreensw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+              
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>观影模式关灯适配暗色</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">在进入观影模式时，匹配页面暗色模式（部分元素使用反色，若不适应请关闭此选项）</div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="FilmModeExclusionsw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+              
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>自动格式化评论区的时间以便点击跳转</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">将评论区中的时间（MM:ss或者 X分X秒、npX分X秒）转化为链接，点击时向播放器发送跳转指令，跳转至目的时间。<br>测试地址：<a href="https://www.acfun.cn/v/ac4919284#ncid=232956340" target="blank">[司鼓君-【2019猴山春晚/原创国风电音】燃灯挂霓虹 ft.小勒个朵]</a></div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="PlayerTimeCommentEasyJump" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-col-xs-9">
+                  <h2>选中时间使用快捷键使播放器快速跳转</h2>
+                </div>
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-8 mdui-col-sm-6">选中评论中的数字（此功能针对类似于：“102秒”的评论），然后按下快捷键(Shift+A)快速跳转至目的秒数。<br>测试地址：<a href="https://www.acfun.cn/v/ac4919284#ncid=232956340" target="blank">[司鼓君-【2019猴山春晚/原创国风电音】燃灯挂霓虹 ft.小勒个朵]</a></div>
+                  <div class="mdui-col-xs-4 mdui-col-sm-6">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="easySearchScanForPlayerTimesw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                  </div>            
+                </div>
+              </div>
+
+              <div class="mdui-panel-item-actions">
+                <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                <button class="mdui-btn mdui-ripple">保存</button>
+            </div>
+          </div>
+        </div>     
+        
+        <div class="mdui-panel-item mdui-panel-item-open">
+          <div class="mdui-panel-item-header">
+            <div class="mdui-panel-item-title">更新预留</div>
+            <div class="mdui-panel-item-summary">A</div>
+            <div class="mdui-panel-item-summary">B</div>
+            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+          </div>
+          <div class="mdui-panel-item-body">
+            <p>更新预留</p>
+            <div class="mdui-panel-item-actions">
+              <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+              <button class="mdui-btn mdui-ripple">保存</button>
+            </div>
+          </div>
+        </div>
+      
     </div>
+    
+    
+  </div>
+
+  <div id="tab5" class="mdui-p-a-2">
+
+      <div class="mdui-panel" mdui-panel>
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">插件&主站播放器 配置 文件导入导出</div>
+              <div class="mdui-panel-item-summary">将插件或者主站播放器的配置作为配置文件导入导出</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+              <div class="div-export-settings" style="background: rgb(237, 237, 237);margin-top: 0px">
+                  <h3>导入导出插件配置</h3><br>
+              <a style="cursor: pointer" class='configExport' id='configExport'>点击此处下载插件的配置文件</a><br><br>
+              <a style="cursor: pointer" class='configPlayerExport' id='configPlayerExport'>点击此处导出播放器配置文件</a>
+              <br><br>
+              <div id="div_emlwX3V0aWxz_input"><span id="span_emlwX3V0aWxz_s1">导入插件配置文件: </span><input id="input_emlwX3V0aWxz_file" type="file"></div><br><br>
+              <div id="div_emlwX3V0aWxp_input"><span id="span_emlwX3V0aWxp_s1">导入播放器配置文件: </span><input id="emlwX3V0aWxp_file" type="file"></div><br><br>
+              <a style="cursor: pointer" class='configClean' id='configClean'>点击此处清除插件的所有配置</a>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">插件&主站 配置 网络同步</div>
+              <div class="mdui-panel-item-summary">将配置同步到服务器端</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+
+              <div class="mdui-row">
+                <div class="mdui-col-xs-12 SyncWait1" style="display: none;">
+                  <div class="mdui-progress">
+                    <div class="mdui-progress-indeterminate"></div>
+                  </div>
+                </div>
+                <div class="mdui-col-xs-9">
+                  <h3>触发同步</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-4"><button class="mdui-btn mdui-btn-raised mdui-ripple Pushresult_act">检查配置 & 向上同步配置信息</button>
+                      </div>
+                      <div class="mdui-col-xs-8 mdui-col-sm-4"><p>个人信息确认：</p></div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-4"><p class="read_result">[ -正在等待连接AcFun小助手- ]</p></div>
+                      <div class="mdui-col-xs-8 mdui-col-sm-4"><button class="mdui-btn mdui-btn-raised mdui-ripple Pullresult_act ">检查配置 & 向下同步配置信息</button>
+                        <div class="mdui-dialog" id="dialog">
+                          <div class="mdui-dialog-title">提问一</div>
+                          <div class="mdui-dialog-content">你确定要将服务器上的配置同步到本地？它将会覆盖你本地的配置！</div>
+                          <div class="mdui-dialog-actions ">
+                            <button class="mdui-btn mdui-ripple" mdui-dialog-cancel>算了</button>
+                            <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>确定</button>
+                          </div>
+                        </div>
+                      
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        
+          <div class="mdui-panel-item mdui-panel-item-open">
+            <div class="mdui-panel-item-header">
+              <div class="mdui-panel-item-title">插件后台进程配置</div>
+              <div class="mdui-panel-item-summary">配置插件在后台的某些模块执行时刻</div>
+              <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-panel-item-body">
+
+              <div class="mdui-container-fluid">
+                <div class="mdui-row">
+                    <div class="mdui-row">
+                        <div class="mdui-col-xs-9">
+                            <h3>插件后台-推送消息轮询</h3>
+                          <div class="mdui-row">
+                            <div class="mdui-col-xs-8 mdui-col-sm-6"><p>推送消息轮询</p></div>
+                            <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                <input id="fetchPushList_daemonsw" type="checkbox"/>开关 
+                                <i class="mdui-switch-icon"></i>
+                                </label></div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+              </div>
+                
+              <div class="mdui-container-fluid">
+                <div class="mdui-row">
+                    <div class="mdui-row">
+                        <div class="mdui-col-xs-9">
+                            <h3>插件后台-未读计数消息轮询</h3>
+                          <div class="mdui-row">
+                            <div class="mdui-col-xs-8 mdui-col-sm-6"><p>未读计数消息轮询</p></div>
+                            <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                <input id="timer4Unread_daemonsw" type="checkbox"/>开关 
+                                <i class="mdui-switch-icon"></i>
+                                </label></div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+              </div>
+
+              <div class="mdui-panel-item-actions">
+                <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                <button class="mdui-btn mdui-ripple">保存</button>
+              </div>
+            </div>
+          </div>
+
+      <div class="mdui-panel-item mdui-p-o">    
+          <div class="mdui-panel-item-header">
+                <div class="mdui-panel-item-title">更新预留</div>
+                <div class="mdui-panel-item-summary">A</div>
+                <div class="mdui-panel-item-summary">B</div>
+                <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+              </div>
+              <div class="mdui-panel-item-body">
+                <p>更新预留</p>
+                <div class="mdui-panel-item-actions">
+                  <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                  <button class="mdui-btn mdui-ripple">保存</button>
+                </div>
+              </div>
+            </div>
+
+        </div>            
+  </div>
+  
+  <div id="tab6" class="mdui-p-a-2">
+
+      <div class="mdui-col-sm-6 mdui-col-md-4">
+          AcFun-Helper是一个适用于AcFun（www.acfun.cn）的浏览器插件。<br><br>
+          AcFun-Helper 开源地址： 
+          <a href="https://github.com/niuchaobo/acfun-helper" target="_blank">Github</a><br>
+          依赖项目开源地址：<br> 
+          1.acfun-helper-synconfig 插件配置同步-服务端 @heixiaobai 
+          <a href="https://github.com/heixiaobai/acfun-helper-synconfig" target="_blank">Github</a>
+          <br><br>
+          <p>主要功能：</p>
+          <p>1.视频下载、弹幕下载<br>
+          2.用户紫色标记（再也不怕别人改名了，是你？女装Up？）<br>
+          3.自动投蕉、并显示投蕉通知（香蕉烂掉？不可能的！）<br>
+          4.Up主屏蔽功能（你说的对，但是说得太不好听了吧）<br>
+          5.增加首页右侧导航栏，方便快速跳转至目标分区</p>
+          <p>6.右键下载视频封面（再也不用害羞地问封面了）<br>
+          7.右键AC搜索<br>
+          8.在PC端获取直播间m3u8直链看A站直播（现在有超清了，少主换成超清的来了！）<br>
+          9.在个人中心的入口处显示你的听众、香蕉、金香蕉、UID等信息<br>
+          10.视频投稿页面显示点赞数</p>
+          <p>11.在评论区给Up添加一个蓝色标记（终于不用翻到顶看看Up主是谁了，然来Up和我互动了？）<br>
+          12.播放器自定义倍速（0.1倍看老婆！？）<br>
+          13.设置进入视频播放页面时播放器自动进入观影模式或网页全屏<br>
+          14.已关注up主动态【弹出栏查看动态投稿动态列表】<br>
+          15.通过点击评论区时间跳转到视频指定位置（空降大成功！）</p>
+          <p>16.配置文件导入导出【插件配置（包含了屏蔽列表，Up主标记列表和自动投蕉、播放器自动化配置）、播放器配置（弹幕关键词屏蔽列表、播放器配置等）】<br>
+          17.一键清除插件配置<br>
+          18.播放器的画中画功能【原生的HTML5画中画 ！直播的播放器也支持画中画了 】（我也可以悄悄摸鱼了吗？(=ﾟωﾟ)=）<br>
+          19.在稿件下针对评论抽奖【在自己的投稿下的网页界面的右侧“助手”界面中，自定义抽奖人数+随机+去重，且助手会直接给出私信中奖Acer的链接，并且会详细告知楼层信息】（可以给我来个专用抽奖工具吗，咱们三七分成？( ﾟ∀。)） <br>
+          20.直播站播放界面的宽屏模式（#感谢@Sinyupl）</p>
+
+          <p>21.屏蔽直播右侧信息中的礼物、关注、点赞、进场信息 （#感谢@Sinyupl）（就单纯听大伙儿吹逼吧）<br>
+          22.增加直播Up开播提醒（哎符逼哎，楼梯负一开审）<br>
+          23.网络同步插件配置（可以与服务器来同步配置！）<br>
+          24.现在弹出栏也能看直播列表了！<br>
+          25.联合 AcFun直播桌面通知和下载助手 桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将Up加入/取消开播通知列表中。<br>
+          </p>
+
+          <p>26.增加了浏览器地址栏直接搜索主站相关关键字（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入ACid跳转到相应投稿哦。）<br>
+            27.增加画质策略<br>
+            28.增加强制跳转到上次观看的时间（功能受到限制）<br>
+            29.弹幕内容搜索和快速跳转、弹幕发送者主页跳转<br>
+            30.播放完毕自动退出网页全屏或宽屏模式<br>
+          </p>
+          <p>
+            31.使用快捷键快速切换倍速<br> 
+            32.在视频评论区选中时间使播放器快速跳转<br>
+            33.视频的AB回放功能（两点循环播放，左右反复横跳！）<br>
+            34.在视频稿件和番剧下，增加全局进度条（什么？进度条君撑不住啦？）<br>
+            35.自动播放下一个推荐视频（“大家都在看”列表项目）
+          </p>
+          <p>
+            36.自动展开简介（弹幕键盘佬，请问这个视频的BGM是什么？爱的供养，再问自傻。Y哥我只不过是想问这首歌的BGM是什么。）<br>
+            37.给直播弹幕列表信息增加时间Tag（哇，上午九点三十二分，某著名单推人突然出现了另外一位v的直播间！）<br>
+            38.稍后再看功能（只要我无限地增加稍后再看列表，那不就是另外一个收藏夹吗( ;´д`)）<br>
+    </p>
+          <hr>                
+
+      </div>
+      <div class="mdui-col-sm-6 mdui-col-md-4">
+          免责声明<br><br>下载的视频版权归视频所有者所有，除非视频所有者同意，否则下载的视频仅限作离线播放用途。任何未经授权的剪辑和再发布等行为均为侵犯版权的行为，请尊重创作者的劳动成果。
+          <br><br>本项目作者对下载者本人因使用此工具下载视频后剪辑、再发布等任何侵权行而产生的法律纠纷概不负责。
+          <br><br>请支持正版，本插件不支持下载任何非用户自行发布的内容（番剧、电影等），望谅解
+          <br><br>
+          <br><br>
+          隐私协议
+          <br><br><a href="/bg/privacy.html">Privacy</a>
+      </div>
+      <div class="mdui-col-sm-6 mdui-col-md-4">
+      
+      <div class="mdui-card">
+          <div class="mdui-card-header">
+            <img class="mdui-card-header-avatar" src="images/lalazhuibushang-github.jpg"/>
+            <div class="mdui-card-header-title"><a href="https://www.acfun.cn/u/7054138" target="_blank">啦啦追不上</a></div>
+            <div class="mdui-card-header-subtitle">主导开发者</div>
+          </div>
+          <div class="mdui-card-media" id="devSwitch">
+            <img src="../img/icon128.png"  style="width: 50%;margin-left: 90px;"/>
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">AcFun助手</div>
+            <div class="mdui-card-primary-subtitle">浏览器插件</div>
+          </div>
+          <div class="mdui-card-content">是一个适用于AcFun（www.acfun.cn）的浏览器插件。</div>
+          
+        </div>       
+        </div>       
+    </div>
+    
+  </div>
+
 </body>
 </html>
