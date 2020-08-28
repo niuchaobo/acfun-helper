@@ -86,10 +86,9 @@ class VideoSetting{
             let nodes = $('.quality-panel');
             var vqregexp = RegExp('p60');
             if(nodes.length>0){
-                //模式标准：0=自动；1=默认最高；2=平衡（非60帧的最高画质）；3=强制标清 ；4=偏向非4k的最高画质
+                //模式标准：0=自动；1=默认最高；2=非60帧的最高画质；3=强制标清 ；4=偏向非4k的最高画质
                 chrome.storage.local.get(['videoQualityStrategy'],function(items){
                 let mode = Number(items.videoQualityStrategy);
-                // console.log(mode);
                 let qualitys = document.querySelector(".quality-panel > ul").children;
                 switch (mode) {
                     case 0:
@@ -102,10 +101,9 @@ class VideoSetting{
                     case 2:
                         for(let i=0;i<=qualitys.length;i++){
                             let result = vqregexp.exec(qualitys[i].dataset.qualityType);
-                            if(result==null){
+                            let result2 = vqreg2exp.exec(qualitys[i].dataset.qualityType);
+                            if(result==null&&result2==null){
                                 qualitys[i].click();
-                                // console.log(qualitys[i].dataset.qualityType);
-                                // console.log('ok');
                                 break;
                             }
                         }
@@ -113,8 +111,6 @@ class VideoSetting{
                     case 3:
                         let Lowest = qualitys.length - 2; //减去1的话就是播放器的自动模式
                         qualitys[Lowest].click();
-                        // console.log(qualitys[Lowest].dataset.qualityType);
-                        // console.log('ok');
                         break;
                         case 4:
                             let vqre2exp = RegExp("2160p");
@@ -126,7 +122,7 @@ class VideoSetting{
                                     break;
                                 }
                             }
-                        default:
+                    default:
                         break;
                 }
                 clearInterval(timer);
