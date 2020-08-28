@@ -5,7 +5,8 @@ class ODHFront {
     this.div = new Div(); //右侧助手
     this.block = new Block(); //up主过滤
     this.pageBeautify = new PageBeautify(); //界面美化
-    this.livepageBeautify = new LivePageButfy(); //生放送界面美化
+    this.videoPageBeautify = new videoPageBeautify();//视频页界面美化
+    this.livePageBeautify = new LivePageButfy(); //生放送界面美化
     this.ce = new CommentEnhance(); //评论区增强
     this.download = new Download(); //下载(视频、封面)
     this.live = new Live(); //直播
@@ -14,7 +15,6 @@ class ODHFront {
     this.videoSetting = new VideoSetting(); //视频播放设置：自定义倍速、观影模式等
     this.danmaku = new Danmaku(); //弹幕服务
     this.danmusearch = new Search();//弹幕列表搜索
-
     this.playerconfig = new PlayerConfig(); //播放器和部分页面配置处理
     this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
     
@@ -49,7 +49,6 @@ class ODHFront {
   }
 
   addStyle() {
-    let nod = document.createElement("style");
     let str =
       ".comment-mark-parent{bottom: -80px!important;}" +
       "#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
@@ -60,9 +59,8 @@ class ODHFront {
       "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
       "p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
       "";
-    nod.type = "text/css";
-    nod.textContent = str;
-    document.getElementsByTagName("head")[0].appendChild(nod);
+    let headDom = document.getElementsByTagName("head")[0]
+    createElementStyle(str, headDom)
   }
 
   addNightStyle() {
@@ -97,13 +95,47 @@ class ODHFront {
     onDomContentLoaded(e){
         // console.log("options",this.options);
         let href = this.href;
+        //添加自定义样式
+        this.addStyle();
+        //屏蔽功能
+        this.options.filter && this.block.injectScript();
+        //夜间模式
+        this.options.night && this.addNightStyle();
+        //首页
+        if(REG.index.test(href)){
+            //仅首页nav高斯模糊(隐藏功能)
+            this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify();
+            //开启右侧导航
+            this.options.beautify_nav && this.pageBeautify.navBeautify(); 
+          }
+        //视频与番剧
+        if(REG.videoAndBangumi.test(href)){
+        //播放器画质策略
+            this.videoSetting.videoQuality();
+        //显示点赞数
+            this.options.show_like && this.videoPageBeautify.showLikeCount();
+        }
+        //视频
+        if(REG.video.test(href)){
+            //播放器和弹幕功能
+            this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
+            this.danmaku.cacheStore();
+            this.videoSetting.callPicktureInPictureMode();
+            this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
+        }
+        //直播
+        if(REG.live.test(href)){
+          this.options.liveCommentTimeTag && this.livePageBeautify.commentTimeTag();
+          //直播画中画模式
+          this.livePageBeautify.callPicktureInPictureModeForLive()
+        }
         //直播站功能
         if(REG.live.test(href) && this.options.livePlayerEnhc){
             let timer = setInterval(()=>{
             let checknode=$('div.box-right');
             if(checknode.length>0){
-                this.livepageBeautify.appendWidePlayer();
-                this.livepageBeautify.simplifyDanmu();
+                this.livePageBeautify.appendWidePlayer();
+                this.livePageBeautify.simplifyDanmu();
                 clearInterval(timer)
             }
         },3000)
@@ -111,62 +143,15 @@ class ODHFront {
         //直播首页及页面优化
         if(!REG.live.test(href) && !REG.liveIndex.test(href)){
             //首页个人资料弹框 (未完成)
-            if(this.options.beautify_personal){
-                getAsyncDom('#header .header-guide .guide-item',()=>{
+            this.options.beautify_personal && getAsyncDom('#header .header-guide .guide-item',()=>{
                       this.pageBeautify.addMouseAnimation()
                       this.pageBeautify.personBeautify();
                 })
-            }
             //隐藏ad
-            if(this.options.hideAd){
-                this.pageBeautify.hideAds();
-            }
-            //仅首页nav高斯模糊(隐藏功能)
-            if(REG.index.test(href) && this.options.Dev_indexBlurSW){
-              this.pageBeautify.indexBeautify();
-            }
+            this.options.hideAd && this.pageBeautify.hideAds();
           }
-        //添加自定义样式
-        this.addStyle();
-        if(this.options.filter){
-            this.block.injectScript();
-        }
-        //夜间模式
-        if(this.options.night){
-            this.addNightStyle();
-        }
-        //播放器画质策略
-        if((REG.video.test(href) || REG.bangumi.test(href))){
-            this.videoSetting.videoQuality();
-        }
-        //开启右侧导航
-        if(REG.index.test(href) && this.options.beautify_nav){
-            this.pageBeautify.navBeautify();
-        }
-        //显示点赞数
-        if((REG.video.test(href) || REG.bangumi.test(href)) && this.options.show_like){
-            this.pageBeautify.showLikeCount();
-        }
-        //播放器和弹幕功能
-        if(REG.video.test(href)){
-            if(this.options.autoOpenVideoDescsw){
-                this.pageBeautify.openVideoDesc();
-            }
-            this.danmaku.cacheStore();
-            this.videoSetting.callPicktureInPictureMode();
-            if(this.options.autoJumpLastWatchSw){
-                this.videoSetting.jumpLastWatchTime();
-            }
-        }
         //配置同步
         this.playerconfig.PConfProc();
-        //直播画中画模式
-        if(REG.live.test(href)){
-          if(this.options.liveCommentTimeTag){
-            this.livepageBeautify.commentTimeTag();
-          }
-          this.livepageBeautify.callPicktureInPictureModeForLive()
-        }
     }
 
     onLoad(e){
@@ -174,18 +159,8 @@ class ODHFront {
         //根据cookie判断当前登录用户是不是up
         //let is_up = this.adjuatUp();
         let href = this.href;
-        //直播ad屏蔽
-        if(this.options.liveHideAd && REG.liveIndex.test(href)){
-            this.livepageBeautify.LivehideAds();
-        }
-        //直播站首页用户屏蔽
-        if(this.options.liveBansw & REG.liveIndex.test(href)){
-            this.block.liveUserBlock();
-        }
         //开启屏蔽功能
-        if(this.options.filter){
-            this.block.block();
-        }
+        this.options.filter && this.block.block();
         var pageInfo = null;
         //视频
         if(REG.video.test(href)){
@@ -217,52 +192,48 @@ class ODHFront {
             let isUp = adjustArticleUp();
             this.div.show(pageInfo,this.options,'article',isUp);
         }
+        //消息中心
+        if(REG.msg_comment.test(href)){
         //从消息中心(评论)跳转
-        if(REG.msg_comment.test(href) && this.options.commentEasyJump){
-            this.ce.jumpToComment(href);
+            this.options.commentEasyJump && this.ce.jumpToComment(href);
         }
         //直播
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live','');
         }
+        //直播首页
+        if(REG.liveIndex.test(href)){
+            //直播ad屏蔽
+            this.options.liveHideAd && this.livePageBeautify.LivehideAds();
+            //直播站首页用户屏蔽
+            this.options.liveBansw && this.block.liveUserBlock();
+        }
         //视频与番剧页面功能
-        if((REG.video.test(href) || REG.bangumi.test(href))){
+        if(REG.videoAndBangumi.test(href)){
           //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
           this.videoSetting.monitorFullScreen();
           //自定义倍速
-          if(this.options.custom_rate){
-            this.videoSetting.customPlaybackRate();
-          }
+          this.options.custom_rate && this.videoSetting.customPlaybackRate();
           //全局进度条
-          if(this.options.ProgressBarsw){this.videoSetting.FlexProgressBar('out');}else{this.videoSetting.FlexProgressBarws = false;}
+          this.options.ProgressBarsw && this.videoSetting.flexProgressBar();
           //AB回放
-          if(this.options.ABPlaysw){
-            this.videoSetting.AddABPlayUI();
-          }
+          this.options.ABPlaysw && this.videoSetting.AddABPlayUI();
           //倍速切换的快捷键
-          if(this.options.PlaybackRateKeysw){
-            this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode);
-          }
+          this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
+          //弹幕列表
+          getAsyncDom('.list-title',()=>{
           //弹幕列表搜索
-          if(this.options.PlayerDamakuSearchSw){
-                getAsyncDom('.list-title',()=>{
-                    this.danmusearch.inject();
-                })
-            }
-           //弹幕列表前往Acer个人主页
-           if(this.options.danmuSearchListToUsersw){
-               getAsyncDom('.list-title',()=>{
-                   this.videoSetting.danmuSearchListToUser()
-               })
-           }
+          this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
+          //弹幕列表前往Acer个人主页
+          this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
+          })
+          //评论区 -未添加监听
+          getAsyncDom('.ac-pc-comment',()=>{
           //评论空降
-          if(this.options.PlayerTimeCommentEasyJump){
-            getAsyncDom('.ac-pc-comment',()=>{
-                this.ce.searchScanForPlayerTime();
-            });
-          }
+          this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
           //快捷键空降
+
           if(this.options.easySearchScanForPlayerTimesw){
             getAsyncDom('.ac-pc-comment',()=>{
                 this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)

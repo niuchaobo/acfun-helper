@@ -72,10 +72,7 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         try {
             document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
                 document.getElementById("achlp-proBar").style.width = document.getElementsByClassName("pro-current")[0].style.width;
-                try {
-                    document.getElementById("achlp-proBar-player").style.width = document.getElementsByClassName("pro-current")[0].style.width;
-                } catch (error) {
-                }
+                document.getElementById("achlp-proBar-bg").style.width = document.getElementsByClassName("pro-current")[0].style.width;
             })
         } catch (error) {
         }
@@ -116,18 +113,19 @@ function updateAbPlaySecond(){
     abPlayFirst && leftBottomTip(`区间为`,`${timeToMinute(abPlayFirst)}至${timeToMinute(abPlaySecond)}`);
 }
 function stopAbPlay(){
+    abPlayFirst=abPlaySecond=undefined;
+        $('.speed-panel>ul>.point-a').text('标记点A');
+        $('.speed-panel>ul>.point-b').text('标记点B');
+        $('.speed-panel>ul>.clear-button').text('清除');
+    if(abPlayFlag === 0){
+        leftBottomTip('标记,已清除');
+        return
+    }
     if(abPlayFlag === 1){
-        abPlayFirst=abPlaySecond=undefined;
         abPlayFlag = 0;
         document.getElementsByTagName("video")[0].removeEventListener("timeupdate",abPlayMain,false);
         $('.speed-panel>ul>.switch-button').text('开始');
         leftBottomTip('标记已清除,退出AB回放。');
-        $('.speed-panel>ul>.point-a').text('标记点A');
-        $('.speed-panel>ul>.point-b').text('标记点B');
-        return;
-    }
-    if(abPlayFirst === undefined && abPlaySecond === undefined){
-        leftBottomTip('AB回放未启用，请先设置','标记点');
         return;
     }
 }
@@ -138,6 +136,7 @@ function abPlayMain(){
     }
 }
 function abPlayHandler(){
+    let targetVideo = document.getElementsByTagName("video")[0];
     if(abPlayFirst === undefined || abPlaySecond === undefined){
         leftBottomTip('请先设置','标记点');
         return;
@@ -145,18 +144,20 @@ function abPlayHandler(){
     if(abPlayFlag === 0){
         leftBottomTip('AB回放','开启');
         $('.speed-panel>ul>.switch-button').text('停止');
-        document.getElementsByTagName("video")[0].removeEventListener("timeupdate",abPlayMain,false);
-        document.getElementsByTagName("video")[0].currentTime = abPlayFirst;
-        document.getElementsByTagName("video")[0].addEventListener("timeupdate",abPlayMain,false);
+        $('.speed-panel>ul>.clear-button').text('清除&停止');
+        targetVideo.paused && targetVideo.play();
+        targetVideo.removeEventListener("timeupdate",abPlayMain,false);
+        targetVideo.currentTime = abPlayFirst;
+        targetVideo.addEventListener("timeupdate",abPlayMain,false);
         abPlayFlag = 1;
         return;
     }
     if(abPlayFlag === 1){
-        document.getElementsByTagName("video")[0].removeEventListener("timeupdate",abPlayMain,false);
-        document.getElementsByTagName("video")[0].pause();
+        targetVideo.removeEventListener("timeupdate",abPlayMain,false);
+        targetVideo.pause();
         $('.speed-panel>ul>.switch-button').text('开始');
         abPlayFlag = 0;
-        leftBottomTip('AB回放','已经关闭，如需清除标记请按“清除”按钮。');
+        leftBottomTip('AB回放','停止，如需清除标记请按“清除”按钮。');
         return;
     }
 }

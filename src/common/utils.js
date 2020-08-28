@@ -56,6 +56,7 @@ const REG = {
     index:new RegExp('http(s)?://www.acfun.cn/$'),
     video:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+'),//视频
     bangumi:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*'),//番剧
+    videoAndBangumi:new RegExp('((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))'),//视频与番剧
     article:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+'),//文章
     msg_comment:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)'),//从我的消息-评论跳转
     mlive:new RegExp("https://m.acfun.cn/live/detail/*"),//移动版直播
@@ -680,3 +681,24 @@ debounce = (fn, delay) => {
     　　　　}            
     　　}        
   }   
+
+  addElement = (options)=>{
+    let {tag = 'div',id='',css='',target = document.body} = options
+    let x = document.createElement(tag);
+    x.id = id;
+    x.style.cssText=css
+    target.append(x);
+    return x
+}
+
+createElementStyle = (cssText,targetDom = document.head,id=null)=>{
+    let target = targetDom
+    let nod = document.createElement("style");
+    let str = cssText;
+    nod.type = "text/css";
+    id ? nod.id = id : null;
+    nod.textContent = str;
+    targetDom.appendChild(nod);
+    return ()=>{ targetDom.removeChild(document.getElementById(id)); }
+}
+

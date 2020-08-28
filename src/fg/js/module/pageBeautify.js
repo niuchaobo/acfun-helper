@@ -39,7 +39,6 @@ class PageBeautify {
     });
   }
 
-
   addRightNav() {
     //右侧导航样式
     let style_link = document.createElement("link");
@@ -109,15 +108,12 @@ class PageBeautify {
   }
 
   macNavPosition() {
-    let style = document.createElement("style");
     let str =
       "@media screen and (max-width: 1440px){#back-top {display:block !important;opacity:1 !important;";
     str += /macintosh|mac os x/i.test(navigator.userAgent)
       ? "margin-Left: 624px;}}"
       : "}}";
-    style.type="text/css";
-    style.textContent = str;
-    window.document.head.appendChild(style);
+    createElementStyle(str,window.document.head)
   }
 
   //------------------------个人中心------------------------------
@@ -184,11 +180,8 @@ class PageBeautify {
   }
 
   indexBeautify(){
-    let nod = document.createElement("style");
     let cssStr = ".twinkle{backdrop-filter: blur(2.25926vw)} .nav-fixed{background-color: #f8f8f896;; border-bottom: 0px;backdrop-filter: blur(2.25926vw)} #header{background-color: #f8f8f896;;backdrop-filter: blur(2.25926vw)}"
-    nod.type="text/css";
-    nod.textContent = cssStr;
-    document.head.appendChild(nod);
+    createElementStyle(cssStr)
   }
 
   hideAds(){
@@ -196,11 +189,8 @@ class PageBeautify {
       let checknode=$('.pause-display-container');
       if(checknode.length>0){
         try {
-          let nod = document.createElement("style");
           let cssStr = ".usemobile,.shareCount,.app-guide.pause-display-container,{display:none !important}"
-          nod.type="text/css";
-          nod.textContent = cssStr;
-          document.head.appendChild(nod);
+          createElementStyle(cssStr)
           document.querySelector(".shareCount").remove();
           document.querySelector(".usemobile").remove();
         } catch (error) {}
@@ -213,12 +203,6 @@ class PageBeautify {
         clearInterval(timer);
       }
     },100)
-  }
-
-  openVideoDesc(){
-    getAsyncDom(".desc-operate",()=>{
-      document.getElementsByClassName("desc-operate")[0].click();
-    })
   }
 
   async addMouseAnimation(){
@@ -241,48 +225,5 @@ class PageBeautify {
     } catch (error) {
       // console.log("[LOG]Frontend-pageBeautify: ")
     }
-  }
-
-  //------------------------------Pc端视频点赞、投桃数------------------------------
-  showLikeCount() {
-    window.addEventListener("message", async (e)=> {
-      if (e.data.to == "pageBtfy") {
-        let node = $("div.video-description.clearfix.dark-style>div")
-          .find("div.left-area")
-          .eq(0);
-        let node2 = $("div.video-description.clearfix>div.action-area")
-          .find("div.left-area")
-          .eq(0);
-        // console.log(e.data.msg)
-        if(e.data.msg!="undefined"){
-            var a = JSON.parse(e.data.msg);
-        }else{
-          console.log("[LOG]Frontend-pageBeautify: Douga Info Receive From InjectScript Fail,May Influent sth.");
-          let url = window.location.toString();
-          let videoPage = new RegExp("http(s)?://www.acfun.cn/v/ac(.*)");
-          let acVid = videoPage.exec(url)[2];
-          let res2 = await fetchResult("https://mini.pocketword.cn/api/acfun/info?dougaId=" + acVid);
-          var a = JSON.parse(res2);
-        }
-        if (node.length) {
-          node.append(
-            '<div class="like" style="padding-right: 15px;"><span class="likeCount">' +
-              a.likeCount +
-              '</span>点赞</div><div class="peach" style="padding-right: 15px;"><span class="likeCount">' +
-              a.giftPeachCount +
-              "</span>桃子</div>"
-          );
-        } else if (node2.length) {
-          node2.append(
-            '<div class="like" style="padding-right: 15px;"><span class="likeCount">' +
-              a.likeCount +
-              '</span>点赞</div><div class="peach" style="padding-right: 15px;"><span class="likeCount">' +
-              a.giftPeachCount +
-              "</span>桃子</div>"
-          );
-        }
-      } else {
-      }
-    });
   }
 }
