@@ -191,7 +191,6 @@ export  function renderLives() {
           fetch("https://live.acfun.cn/api/live/info?authorId="+y[i])
           .then((res)=>{return res.text()})
           .then((res)=>{
-            console.log(res)
             let live_Data = "";
             let livedata = JSON.parse(res).liveInfo;
             let livexmlData = '<div class="inner" id="';

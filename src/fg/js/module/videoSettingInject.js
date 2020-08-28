@@ -35,29 +35,28 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         case 'web':
             window.player.emit('fullScreenChange', "web");
             break;
-        case 'screen':
+        case 'desktop':
             //Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
             //此功能只能由用户触发
-
-            /*console.log("screen--------------------------------")
             //window.player.emit('fullScreenChange','screen');
-            document.getElementsByClassName('container-player')[0].requestFullscreen();
-
+            //document.getElementsByClassName('container-player')[0].requestFullscreen();
             //window.player.requestFullscreen();
-            break;*/
+            //break;
+
+            //换另外一种方法
+            document.querySelector(".fullscreen-screen>.btn-fullscreen").click();
+            break;
     }
 
     if(options.endedAutoExitFullscreensw){
         try {
             document.getElementsByTagName("video")[0].addEventListener('ended', function () {
-                console.log("播放结束");
                 //自动观看“大家都在看”栏目第一个稿件
                 if(options.endedAutoJumpRecommandFirstDougasw){document.getElementsByClassName("recommendation")[0].children[0].children[0].click();}
                 //自动退出宽屏、网页全屏
-                console.log(document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
                 let x = (document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
                 if(!window.player._loop && x){
-                    console.log("退出特殊播放模式")
+                    // console.log("退出特殊播放模式")
                     window.player.emit('filmModeChanged', false);
                     window.player.emit('fullScreenChange', false);
                 }

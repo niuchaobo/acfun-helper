@@ -228,17 +228,18 @@ class ODHFront {
           //弹幕列表前往Acer个人主页
           this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
           })
-          //评论区 -未添加监听
+          // 评论区 -未添加监听
           getAsyncDom('.ac-pc-comment',()=>{
-          //评论空降
-          this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
-          //快捷键空降
+            //评论空降
+            this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
+            //快捷键空降
 
-          if(this.options.easySearchScanForPlayerTimesw){
-            getAsyncDom('.ac-pc-comment',()=>{
-                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-            });
-          }
+            if(this.options.easySearchScanForPlayerTimesw){
+              getAsyncDom('.ac-pc-comment',()=>{
+                  this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+              });
+            }
+          })
         }
         this.authInfo.cookInfo();
     }
