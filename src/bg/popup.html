@@ -19,103 +19,122 @@
                 <div class="item">
                     <div id="pop-title" class="pop-title">
                         <label class="comment-label"><span class="letter">A</span>
-                <span class="letter">c</span>
-                <span class="letter">Fun</span>
-                <span class="letter">助手</span></label
-              >
-              <div id="update-box"><div class="update-icon">!</div><span class="update-letter"></span></div>
-              <div style="float: right;" class="enabled">
-                <input type="checkbox" checked id="extends-enbaled" />
-                <label for="extends-enbaled"></label>
+                            <span class="letter">c</span>
+                            <span class="letter">Fun</span>
+                            <span class="letter">助手</span></label>
+                        <div id="update-box">
+                            <div class="update-icon">!</div><span class="update-letter"></span>
+                        </div>
+                        <div style="float: right;" class="enabled">
+                            <input type="checkbox" checked id="extends-enbaled" />
+                            <label for="extends-enbaled"></label>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="mdui-row-xs-2 mdui-row-gapless">
+                <div class="mdui-col-xs-4" id="pop-introduce">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
+                        <i class="mdui-icon material-icons">book</i>使用说明
+                    </button>
+                </div>
+                <div class="mdui-col-xs-4" id="pop-setting">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
+                        <i class="mdui-icon material-icons">settings</i>设置
+                    </button>
+                </div>
+                <div class="mdui-col-xs-4" id="pop-update-log">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
+                        <i class="mdui-icon material-icons">chrome_reader_mode</i>更新书
+                    </button>
+                </div>
+            </div>
+
+            <div class="mdui-row">
+                <div class="mdui-col-xs-6">
+                    <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
+                        <input id="live-id" class="mdui-textfield-input" style="cursor: default;" type="text"
+                            placeholder="直播Up的UID" />
+                    </div>
+                </div>
+                <div class="mdui-col-xs-6">
+                    <button id="go-live" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">
+                        加入直播间
+                    </button>
+                </div>
+            </div>
+            <div class="mdui-divider"></div>
         </div>
-        <div class="mdui-row-xs-2 mdui-row-gapless">
-            <!-- <div class="mdui-col" id="pop-introduce" >
-              <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default">
-                  <i class="mdui-icon material-icons">book</i>使用说明</button>
+
+        <div>
+                <!--<div class="push-msg">
+                <span style="background-color: #5bd2f8">评论</span>(1)
+                <span style="background-color: #3dae4a">赞</span>(2)
+                <span style="background-color: #93a085">私信</span>(3)
+                </div>-->
+
+            <div class="mdui-tab pop-common mdui-tab-centered" mdui-tab mdui-headroom
+                style="height: 28px; min-height: 28px;">
+                <a href="#PushList" class="mdui-ripple"
+                    style="height: 100%; padding: 0; color: black; min-height: 28px;">稿件动态</a>
+                <a href="#SubLive" class="mdui-ripple"
+                    style="height: 100%; padding: 0; color: black; min-height: 28px;">生放送</a>
+                <!-- <a href="#Special" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;">Special</a> -->
             </div>
-            <div class="mdui-col" id="pop-setting">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">settings</i>设置</button>
+            <div id="PushList">
+                <div id="pop-push" class="pop-push"></div>
             </div>
-            <div class="mdui-col" id="pop-setting">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor:default"><i class="mdui-icon material-icons">settings</i>设置</button>
+
+            <div id="SubLive">
+                <div class="mdui-panel" mdui-panel>
+
+                    <div class="mdui-panel-item mdui-panel-item-open">
+                        <div class="mdui-panel-item-header">
+                            <div class="mdui-panel-item-title">自定关注</div>
+                            <div class="mdui-panel-item-summary">自定义关注的直播</div>
+                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                        </div>
+                        <div class="mdui-panel-item-body">
+                            <div id="pop-push-lives" class="pop-push"></div>
+                        </div>
+                    </div>
+
+                    <div class="mdui-panel-item mdui-panel-item-open">
+                        <div class="mdui-panel-item-header">
+                            <div class="mdui-panel-item-title">关注关注</div>
+                            <div class="mdui-panel-item-summary">主站关注Up直播</div>
+                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                        </div>
+                        <div class="mdui-panel-item-body">
+                            <div id="pop-push-lives2" class="pop-push"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- <div id="Special">
+                <div class="mdui-panel" mdui-panel>
+                    <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">插件公告</div>
+                        <div class="mdui-panel-item-summary">请多多留意</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <h1>
+                            你们这什么群啊，害人不浅啊害人不浅
+                        </h1>
+                    </div>
+                    </div>
+                </div>
             </div> -->
-            <div class="mdui-col-xs-4" id="pop-introduce">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
-              <i class="mdui-icon material-icons">book</i>使用说明
-            </button>
-            </div>
-            <div class="mdui-col-xs-4" id="pop-setting">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
-              <i class="mdui-icon material-icons">settings</i>设置
-            </button>
-            </div>
-            <div class="mdui-col-xs-4" id="pop-update-log">
-                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
-              <i class="mdui-icon material-icons">chrome_reader_mode</i>更新书
-            </button>
-            </div>
         </div>
 
-        <div class="mdui-row">
-            <div class="mdui-col-xs-6">
-                <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
-                    <input id="live-id" class="mdui-textfield-input" style="cursor: default;" type="text" placeholder="直播Up的UID" />
-                </div>
-            </div>
-            <div class="mdui-col-xs-6">
-                <button id="go-live" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">
-              加入直播间
-            </button>
-            </div>
-        </div>
-        <div class="mdui-divider"></div>
-    </div>
-
-    <div>
-        <!--<div class="push-msg">
-            <span style="background-color: #5bd2f8">评论</span>(1)
-            <span style="background-color: #3dae4a">赞</span>(2)
-            <span style="background-color: #93a085">私信</span>(3)
-        </div>-->
-
-        <div class="mdui-tab pop-common mdui-tab-centered" mdui-tab mdui-headroom style="height: 28px; min-height: 28px;">
-            <a href="#PushList" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;">稿件动态</a>
-            <!-- <a href="#MomentCircle" class="mdui-ripple">动态广场</a> -->
-            <a href="#SubLive" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;">生放送</a>
-            <!-- <a href="#Special" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;">Special</a> -->
-        </div>
-        <div id="PushList">
-            <div id="pop-push" class="pop-push"></div>
-        </div>
-        <!-- <div id="MomentCircle">
-            <div id="pop-push-momentcircle" class="pop-push">
-
-            </div>
-        </div> -->
-        <div id="SubLive">
-            <div id="pop-push-lives" class="pop-push"></div>
-        </div>
-        <!-- <div id="Special">
-            <div class="mdui-panel" mdui-panel>
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">插件公告</div>
-                    <div class="mdui-panel-item-summary">请多多留意</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-                      <h1>
-                          你们这什么群啊，害人不浅啊害人不浅
-                      </h1>
-                  </div>
-                </div>
-            </div>
-        </div> -->
-    </div>
-    <!--<div id="pop-setting" class="odh-definition">
+        <!--<div id="pop-setting" class="odh-definition">
         <ul class="ec">
             <li class="ec">
                 <img style="margin-right: 30px" width="14px" height="14px" src="images/setting.png">
@@ -140,17 +159,13 @@
         background-color: rgba(239, 19, 19, 0.9) !important;
         z-index: 1000;
       ">
-      <i
-        class="mdui-icon material-icons"
-        style="
+        <i class="mdui-icon material-icons" style="
           height: 40px;
           line-height: 40px;
           margin-top: 0;
           margin-left: 0;
           width: 40px;
-        "
-        >arrow_upward</i
-      >
+        ">arrow_upward</i>
     </button>
     <!--script src="js/polyfill.js"></script-->
     <script src="../lib/jquery-3.5.0.min.js"></script>

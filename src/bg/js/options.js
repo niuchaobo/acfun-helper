@@ -1,6 +1,5 @@
 var clickFlag = true;
 
-
 function save_options() {
     var items = [];
 
@@ -1503,6 +1502,96 @@ $(document).ready(function () {
     })}});
 
 
+    //========================稍后再看==========================//
+    chrome.storage.local.get(['watchLater'],function(items){
+        var watchLater= items.watchLater;
+        if(watchLater){
+            document.getElementById('watchLater').checked='true';
+        }else{
+            document.getElementById('watchLater').checked=false;
+        }
+        $('#watchLater').on('click', function () {
+            if(!document.getElementById('watchLater').checked){
+                document.getElementById('watchLater').checked=false;
+                chrome.storage.local.set({'watchLater':false});
+            }else{
+                document.getElementById('watchLater').checked=true;
+                chrome.storage.local.set({'watchLater':true});
+            }
+        });
+        $('#watchLaterStart').click(()=> {
+            if(document.getElementById('watchLater').checked){
+                mdui.snackbar({
+                    message: `已经启动 稍后再看 排程。`,
+                });
+                chrome.runtime.sendMessage({action: "watchLater",params:{}}, function (response) {});
+            }else{
+                mdui.snackbar({
+                    message: `稍后再看列表没有项目或者没有打开开关，助手不知道从何而起，巧妇难为无米之炊；请先添加或打开开关。`,
+                });
+            }
+        });
+        let eventObj = document.getElementById('watchLaterList');
+        eventObj.onclick = async (ev)=>{
+            var ev = ev || window.event;
+            var target = ev.target || ev.srcElement;
+            if(target.nodeName.toLowerCase() == 'i'){
+                // console.log(target.dataset);
+                let x = await getStorage("WatchPlanList");
+                let Url = "https://www.acfun.cn/"+target.dataset.type+"/ac"+target.dataset.key;
+                alert(Url);
+                mdui.snackbar({
+                    message: `已移除 ${target.parentNode.children[3].innerText}`,
+                });
+                x.WatchPlanList.splice(x.WatchPlanList.indexOf(Url),1)
+                target.parentNode.remove();
+                chrome.storage.local.set({'WatchPlanList':x.WatchPlanList});
+            }
+        }
+        $('#firstwatchLaterList').click(async ()=>{
+            let x = await getStorage("WatchPlanList");
+            for(let i in x.WatchPlanList){
+                let y = new RegExp("/v/ac([0-9].*)");
+                let z = new RegExp("/a/ac([0-9].*)");
+                try {
+                    var acId = y.exec(x.WatchPlanList[i])[1]
+                } catch (error) {
+                   var acId  = null;
+                }
+                if(acId!=null){
+                    fetch("https://mini.pocketword.cn/api/acfun/info?dougaId="+acId).then((res=>{return res.text()}))
+                    .then((res)=>{
+                        let x = JSON.parse(res);
+                        $("#watchLaterList").append(`
+                        <li class="mdui-list-item mdui-ripple" style="cursor:default">
+                        <i class="mdui-list-item-icon mdui-icon material-icons watchLaterListdelItem" data-key=${x.dougaId} data-type="v" style="cursor:pointer">delete</i>
+                        <a href=${x.shareUrl} target="_blank">
+                          <i class="mdui-list-item-icon mdui-icon material-icons" data-key=${x.dougaId} style="cursor:pointer">desktop_windows</i></a>
+                          <div class="mdui-list-item-content">[视频] ${x.user.name}： ${x.title}{</div>
+                        </li>
+                        `)
+                    })
+                }else if(z.exec(x.WatchPlanList[i])[1]){
+                    let acAid = z.exec(x.WatchPlanList[i])[1];
+                    fetch("https://api-new.app.acfun.cn/rest/app/article/info?articleId="+acAid).then((res=>{return res.text()}))
+                    .then((res)=>{
+                        let x = JSON.parse(res);
+                        $("#watchLaterList").append(`
+                        <li class="mdui-list-item mdui-ripple" style="cursor:default">
+                        <i class="mdui-list-item-icon mdui-icon material-icons watchLaterListdelItem" data-key=${x.articleId} data-type="a" style="cursor:pointer">delete</i>
+                        <a href=${x.shareUrl} target="_blank">
+                          <i class="mdui-list-item-icon mdui-icon material-icons" data-key=${x.articleId} style="cursor:pointer">desktop_windows</i></a>
+                          <div class="mdui-list-item-content">[文章] ${x.user.name}： ${x.title}</div>
+                        </li>
+                        `)
+                    })
+                }
+            }
+        })
+    });
+
+
+    
     //===================直播屏蔽配置相关==========================//
     chrome.storage.local.get(['liveBansw'],function(items){
         var liveBans_status= items.liveBansw;
@@ -1771,6 +1860,44 @@ $(document).ready(function () {
                 });
         //     }
         // });
+        });
+    });
+
+    //====================未读计数消息轮询===================
+    chrome.storage.local.get(['fetchPushList_daemonsw'],function(items){
+        var fetchPushList_daemonsw= items.fetchPushList_daemonsw;
+        if(fetchPushList_daemonsw){
+            document.getElementById('fetchPushList_daemonsw').checked='true';
+        }else{
+            document.getElementById('fetchPushList_daemonsw').checked=false;
+        }
+        $('#fetchPushList_daemonsw').on('click', function () {
+            if(!document.getElementById('fetchPushList_daemonsw').checked){
+                document.getElementById('fetchPushList_daemonsw').checked=false;
+                chrome.storage.local.set({'fetchPushList_daemonsw':false});
+            }else{
+                document.getElementById('fetchPushList_daemonsw').checked=true;
+                chrome.storage.local.set({'fetchPushList_daemonsw':true});
+            }
+        });
+    });
+    
+    //====================推送消息轮询===================
+    chrome.storage.local.get(['timer4Unread_daemonsw'],function(items){
+        var timer4Unread_daemonsw= items.timer4Unread_daemonsw;
+        if(timer4Unread_daemonsw){
+            document.getElementById('timer4Unread_daemonsw').checked='true';
+        }else{
+            document.getElementById('timer4Unread_daemonsw').checked=false;
+        }
+        $('#timer4Unread_daemonsw').on('click', function () {
+            if(!document.getElementById('timer4Unread_daemonsw').checked){
+                document.getElementById('timer4Unread_daemonsw').checked=false;
+                chrome.storage.local.set({'timer4Unread_daemonsw':false});
+            }else{
+                document.getElementById('timer4Unread_daemonsw').checked=true;
+                chrome.storage.local.set({'timer4Unread_daemonsw':true});
+            }
         });
     });
 

@@ -11,6 +11,7 @@
     <script type="text/javascript" src="js/jquery.mloading.js"></script>
     <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
     <script type="text/javascript" src="js/options.js"></script>
+    <script charset="UTF-8" src="js/modules/watchplan.js"></script>
     <script type="text/javascript" src="../common/utils.js"></script>
     <style>
     ::-webkit-scrollbar {
@@ -266,16 +267,16 @@
                   </div>
                 </div>
 
-                <div class="mdui-panel-item mdui-panel-item-open">
+                <div class="mdui-panel-item mdui-panel-item-open devFeature">
                   <div class="mdui-panel-item-header">
                     <div class="mdui-panel-item-title">评论区其他小功能</div>
                     <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                   </div>
                   <div class="mdui-panel-item-body">
 
-                    <div class="mdui-container-fluid">
+                    <div class="mdui-container-fluid devFeature">
                       <div class="mdui-col-xs-9">
-                        <h3>评论ID自动跳转</h3>
+                        <h3>评论ID自动跳转(2020-8-22官方已适配)</h3>
                       </div>
                       <div class="mdui-row">
                         <div class="mdui-col-xs-8 mdui-col-sm-6">在链接存在ncid的页面上自动跳转到没有折叠的评论区块</div>
@@ -446,6 +447,39 @@
                       </div>
                       
   
+                      <div class="mdui-panel-item-actions">
+                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                        <button class="mdui-btn mdui-ripple">保存</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                      <div class="mdui-panel-item-title">稍后再看</div>
+                      <div class="mdui-panel-item-summary">稍后再看管理</div>
+                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                      <h3>稍后再看列表</h3>
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-3 mdui-col-sm-3">
+                          <button id="watchLaterStart" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>开始稍后再看</a></button>
+                          </div>
+                        <div class="mdui-col-xs-3 mdui-col-sm-3">
+                          <label class="mdui-switch">
+                            <input id="watchLater" type="checkbox"/>
+                            <i class="mdui-switch-icon"></i>--启用稍后再看--
+                            </label></div>
+                          </div>
+                        <ul id="watchLaterList" class="mdui-list">
+                          <li id="firstwatchLaterList" class="mdui-list-item mdui-ripple" data-key="0" style="cursor:default">
+                          <i class="mdui-list-item-icon mdui-icon material-icons" data-key="0" style="cursor:pointer">delete</i>
+                          <a href="https://www.acfun.cn/z/ac14671385" target="_blank">
+                            <i class="mdui-list-item-icon mdui-icon material-icons" data-key="0" style="cursor:pointer">desktop_windows</i></a>
+                            <div class="mdui-list-item-content">点击加载列表</div>
+                          </li>
+                        </ul>
                       <div class="mdui-panel-item-actions">
                         <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
                         <button class="mdui-btn mdui-ripple">保存</button>
@@ -732,9 +766,10 @@
                         <div class="mdui-col-xs-4 mdui-col-sm-6">
                           <select id="videoQualityStrategy" class="mdui-select" mdui-select="{position: 'top'}">
                             <option value="0">0 - 自动</option>
-                            <option value="1" disabled>1 - 默认最高</option>
-                            <option value="2">2 - 非60帧的最高画质</option>
+                            <option value="1">1 - 默认最高</option>
+                            <option value="2">2 - 偏向非60帧的最高画质</option>
                             <option value="3">3 - 默认最低</option>
+                            <option value="4">4 - 偏向非4k的最高画质</option>
                           </select>
                         </div>            
                       </div>
@@ -1007,6 +1042,55 @@
                   </div>
                 </div>
               
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                      <div class="mdui-panel-item-title">插件后台进程配置</div>
+                      <div class="mdui-panel-item-summary">配置插件在后台的某些模块执行时刻</div>
+                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+
+                      <div class="mdui-container-fluid">
+                        <div class="mdui-row">
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-9">
+                                    <h3>插件后台-推送消息轮询</h3>
+                                  <div class="mdui-row">
+                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>推送消息轮询</p></div>
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                        <input id="fetchPushList_daemonsw" type="checkbox"/>开关 
+                                        <i class="mdui-switch-icon"></i>
+                                        </label></div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                      </div>
+                        
+                      <div class="mdui-container-fluid">
+                        <div class="mdui-row">
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-9">
+                                    <h3>插件后台-未读计数消息轮询</h3>
+                                  <div class="mdui-row">
+                                    <div class="mdui-col-xs-8 mdui-col-sm-6"><p>未读计数消息轮询</p></div>
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                                        <input id="timer4Unread_daemonsw" type="checkbox"/>开关 
+                                        <i class="mdui-switch-icon"></i>
+                                        </label></div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                      </div>
+
+                      <div class="mdui-panel-item-actions">
+                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                        <button class="mdui-btn mdui-ripple">保存</button>
+                      </div>
+                    </div>
+                  </div>
+  
                 <div class="mdui-panel-item mdui-p-o">
                     <div class="mdui-panel-item-header">
                       <div class="mdui-panel-item-title">更新预留</div>
@@ -1023,7 +1107,6 @@
                     </div>
                   </div>
   
-                
               </div>            
         </div>
         
@@ -1080,8 +1163,9 @@
                   35.自动播放下一个推荐视频（“大家都在看”列表项目）
                 </p>
                 <p>
-                  36.自动展开简介<br>
-                  37.给直播弹幕列表信息增加时间Tag<br>
+                  36.自动展开简介（弹幕键盘佬，请问这个视频的BGM是什么？爱的供养，再问自傻。Y哥我只不过是想问这首歌的BGM是什么。）<br>
+                  37.给直播弹幕列表信息增加时间Tag（哇，上午九点三十二分，某著名单推人突然出现了另外一位v的直播间！）<br>
+                  38.稍后再看功能（只要我无限地增加稍后再看列表，那不就是另外一个收藏夹吗( ;´д`)）<br>
                 </p>
                 <hr>                
 
