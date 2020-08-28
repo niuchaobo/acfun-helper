@@ -270,7 +270,7 @@ class VideoSetting{
                 $('.right-column').css({'right':'-342px', "background": "","border-left-width":"6px"}) 
             })
         }else{
-            this.underWorld()
+            if(this.underWorld()!=null){this.underWorld}
             $('.right-column').unbind('mouseenter').unbind('mouseleave')
         }
 
