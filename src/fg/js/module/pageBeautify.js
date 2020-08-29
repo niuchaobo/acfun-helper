@@ -188,10 +188,11 @@ class PageBeautify {
   hideAds(){
     var timer = setInterval(function () {
       let checknode=$('.pause-display-container');
-      if(checknode.length>0){
+      let checknode2=$('.app-guide');
+      if(checknode.length>0||checknode2.length>0){
         try {
-          let cssStr = ".usemobile,.shareCount,.app-guide.pause-display-container,{display:none !important}"
-          createElementStyle(cssStr)
+          let cssStr = ".usemobile,.shareCount,.app-guide,.pause-display-container {display:none !important}"
+          createElementStyle(cssStr);
           document.querySelector(".shareCount").remove();
           document.querySelector(".usemobile").remove();
         } catch (error) {}
@@ -203,7 +204,7 @@ class PageBeautify {
         } catch (error) {}
         clearInterval(timer);
       }
-    },100)
+    },500)
   }
 
   async addMouseAnimation(){

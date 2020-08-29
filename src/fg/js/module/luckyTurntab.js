@@ -39,6 +39,8 @@ class LuckyTtab {
         }
     }
 
+    
+
     async getResult(url) {
         return new Promise((resolve, reject) => {
             fetch(url)

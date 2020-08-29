@@ -107,6 +107,8 @@ class ODHFront {
             this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify();
             //开启右侧导航
             this.options.beautify_nav && this.pageBeautify.navBeautify(); 
+            //隐藏ad
+            this.options.hideAd && this.pageBeautify.hideAds();
           }
         //视频与番剧
         if(REG.videoAndBangumi.test(href)){
@@ -122,6 +124,8 @@ class ODHFront {
             this.danmaku.cacheStore();
             this.videoSetting.callPicktureInPictureMode();
             this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
+            //隐藏ad
+            this.options.hideAd && this.pageBeautify.hideAds();
         }
         //直播
         if(REG.live.test(href)){
@@ -144,11 +148,9 @@ class ODHFront {
         if(!REG.live.test(href) && !REG.liveIndex.test(href)){
             //首页个人资料弹框 (未完成)
             this.options.beautify_personal && getAsyncDom('#header .header-guide .guide-item',()=>{
-                      this.pageBeautify.addMouseAnimation()
-                      this.pageBeautify.personBeautify();
-                })
-            //隐藏ad
-            this.options.hideAd && this.pageBeautify.hideAds();
+                this.pageBeautify.addMouseAnimation()
+                this.pageBeautify.personBeautify();
+            })
           }
         //配置同步
         this.playerconfig.PConfProc();
@@ -233,7 +235,6 @@ class ODHFront {
             //评论空降
             this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
             //快捷键空降
-
             if(this.options.easySearchScanForPlayerTimesw){
               getAsyncDom('.ac-pc-comment',()=>{
                   this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
@@ -282,13 +283,11 @@ class ODHFront {
       response
     ) {});
   }
-
   api_setFrontendOptions(params) {
     let { options, callback } = params;
     this.options = options;
     callback();
   }
-
   //视频下载
   async api_download(params) {
     if (this.options == null) {
@@ -296,7 +295,6 @@ class ODHFront {
     }
     this.download.downloadVideo(params);
   }
-
   api_mark(params) {
     let { value } = params;
     this.options.mark = value;
@@ -318,12 +316,10 @@ class ODHFront {
       this.ce.clearScan();
     }
   }
-
   //直播m3u8 url赋值到前台页面
   async api_renderLive(params) {
     this.live.renderLive(params);
   }
-
   //评论区折叠部分的标记渲染入口
   api_renderSub(params) {
     let { url, rootCommentId } = params;
@@ -337,7 +333,6 @@ class ODHFront {
       this.ce.renderSubScanForUp(rootCommentId);
     }
   }
-
   //评论区整体部分的标记渲染入口
   api_renderList(params) {
     let { url } = params.url;
