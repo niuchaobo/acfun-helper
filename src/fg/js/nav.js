@@ -4,7 +4,6 @@ function scrollToTop(event) {
     ScrollToControl(id);
 }
 
-
 function elementPosition(obj) {
     var curleft = 0,
         curtop = 0;
@@ -21,7 +20,6 @@ function elementPosition(obj) {
         y: curtop
     };
 }
-
 
 function ScrollToControl(id) {
     var elem = document.getElementById(id);
@@ -40,6 +38,7 @@ function ScrollToControl(id) {
     ScrollSmoothly(scrollPos, repeatTimes,step);
     window.scrollBy(0, remainder);
 }
+
 var repeatCount = 0;
 var cTimeout;
 
@@ -57,10 +56,9 @@ function ScrollSmoothly(scrollPos, repeatTimes,step) {
     //规范不建议在定时器中的方法加 (括号) 与 "引号"  火狐警告⬆️
     //cTimeout = setTimeout(ScrollSmoothly,10);
 }
+
 //一个可能不会运行的方法 ⬇️
 function onDomContentLoaded(){
-
-
     var length = $('.home-main-content>div').length;
     $(document).scroll(function(){
         for(let i =0;i<length;i++){

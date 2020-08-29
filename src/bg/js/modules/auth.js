@@ -5,9 +5,6 @@ class AuthInfo{
     constructor(){
 
     }
-    test(){
-        console.log('hello from Backend.Auth.test()');
-    }
 
     fetchPasstoken(){
         chrome.storage.local.get(['LocalUserId'],async(Uid)=>{

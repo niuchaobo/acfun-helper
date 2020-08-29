@@ -50,7 +50,6 @@ class Popup {
         this.showAt({ x: posX, y: posY }, content);
     }
 
-
     hide() {
         this.popup.style.visibility = 'hidden';
         this.popup.style.opacity = '0';
@@ -272,7 +271,6 @@ class Popup {
         }
         //this.wapper = document.createElement("div");
         //this.wapper.id="ncb-wapper";
-
 
         this.popup = document.createElement('iframe');
         this.popup.id = 'acfun-popup-helper';

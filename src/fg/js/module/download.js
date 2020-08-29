@@ -6,14 +6,12 @@ class Download{
 
     }
 
-
     async downloadVideo(params){
         let activeKey = window.odhfront.options.activeTabKey;
         let { url, title, id, qualityLabel} = params;
         let m3u8 = url;
         let tabId =await getStorage(activeKey).then(result=>{return result[activeKey]});
         let fileName = title+"-"+qualityLabel+".mp4";
-
 
         var MyBlobBuilder = function() {
             this.parts = [];
@@ -109,11 +107,7 @@ class Download{
             navigator.msSaveBlob(myBlobBuilder.getBlob(), fileName);
         }
 
-
     }
-
-
-
 
     downloadCover(params) {
         let {link_url,type} = params;
@@ -160,7 +154,6 @@ class Download{
                 }
             }
         })
-
 
     }
 
