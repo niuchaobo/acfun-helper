@@ -182,7 +182,7 @@ class PageBeautify {
 
   indexBeautify(opt){
     let cssStr;
-    opt?cssStr=".header-top{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896 !important;} .header .nav{border-bottom: 1px solid #ffffff00 !important} .header.fixed .nav{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896;}":".nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(2.25926vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(2.25926vw)}";
+    opt ? cssStr=".header-top{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896 !important;} .header .nav{border-bottom: 1px solid #ffffff00 !important} .header.fixed .nav{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896;}" : cssStr=".nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(2.25926vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(2.25926vw)}";
     createElementStyle(cssStr);
   }
 
