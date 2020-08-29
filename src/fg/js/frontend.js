@@ -102,13 +102,17 @@ class ODHFront {
         //夜间模式
         this.options.night && this.addNightStyle();
         //首页
-        if(REG.index.test(href)){
-            //仅首页nav高斯模糊(隐藏功能)
-            this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify();
+        let ifIndex = REG.index.test(href);
+        let ifPartIndex = REG.partIndex.test(href);
+        if(ifIndex||ifPartIndex){
             //开启右侧导航
-            this.options.beautify_nav && this.pageBeautify.navBeautify(); 
+            if(ifIndex && this.options.beautify_nav){this.pageBeautify.navBeautify();}
             //隐藏ad
             this.options.hideAd && this.pageBeautify.hideAds();
+            //首页nav高斯模糊
+            if(this.options.Dev_indexBlurSW){
+              this.pageBeautify.indexBeautify(ifPartIndex);
+            }
           }
         //视频与番剧
         if(REG.videoAndBangumi.test(href)){
