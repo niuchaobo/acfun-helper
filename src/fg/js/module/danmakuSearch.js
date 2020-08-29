@@ -138,6 +138,7 @@ class Search {
     let target = this.i;
     this.danmakuSearchJump(this.searchList, target);
   }
+
   searchClose(){
     this.buttonStatusChange(true);
     $("#acfun-helper-search-input").val("");
@@ -225,6 +226,7 @@ class Search {
     });
     return danmakuList;
   }
+  
   firstSearchInit() {
     this.searchList.forEach((item, index) => {
       $(item.item).css({ background: "", color: "" });

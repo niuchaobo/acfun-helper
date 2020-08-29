@@ -90,8 +90,6 @@ async function Processing(){
     });
 }
 
-window.addEventListener('load', e => onLoad(e));
-
 function notif(){
     mdui.snackbar({
         message: '本页面包含你所有的关注，如果条目多，请使用Ctrl+F查找。',
@@ -100,6 +98,8 @@ function notif(){
         closeOnOutsideClick:true,
     });
 }
+
+window.addEventListener('load', e => onLoad(e));
 
 function onLoad(){
     notif();

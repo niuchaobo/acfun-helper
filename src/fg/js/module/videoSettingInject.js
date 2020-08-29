@@ -49,14 +49,11 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
     }
 
     if(options.endedAutoExitFullscreensw){
+        //自动退出观影模式、网页全屏
         try {
             document.getElementsByTagName("video")[0].addEventListener('ended', function () {
-                //自动观看“大家都在看”栏目第一个稿件
-                if(options.endedAutoJumpRecommandFirstDougasw){document.getElementsByClassName("recommendation")[0].children[0].children[0].click();}
-                //自动退出宽屏、网页全屏
-                let x = (document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
-                if(!window.player._loop && x){
-                    // console.log("退出特殊播放模式")
+                let nowMode = (document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
+                if(!window.player._loop && nowMode){
                     window.player.emit('filmModeChanged', false);
                     window.player.emit('fullScreenChange', false);
                 }
@@ -66,7 +63,15 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         }
     }
 
+    if(options.endedAutoJumpRecommandFirstDougasw){
+        //自动观看“大家都在看”栏目第一个稿件
+        document.getElementsByTagName("video")[0].addEventListener('ended', function () {
+            document.getElementsByClassName("recommendation")[0].children[0].children[0].click();
+        });
+    }
+
     if(options.ProgressBarsw){
+        //Flex进度条
         // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
         try {
             document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
@@ -77,7 +82,8 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         }
     }
 });
-//AB回放
+
+//==============AB回放================
 function updateAbPlayFirst(){
     if(abPlayFlag === 1){
         leftBottomTip('请先','停止')
@@ -161,24 +167,16 @@ function abPlayHandler(){
     }
 }
 function leftBottomTip(text,importantText=''){
+    //播放器浮动通知气泡
     $('.left-bottom-tip').eq(0).append(`<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`)
     let _timer = setTimeout(() => {
         $('.left-bottom-tip').eq(0).children().eq(0).remove()//这样写 并不能自定义持续时间
         clearInterval(_timer);
     }, 2500);
 }
-function timeToMinute(second){
-    var minute;
-    minute = Math.floor(second/60)
-    second = second%60;
-    minute += '';
-    second += '';
-    minute = (minute.length==1)?'0'+minute:minute;
-    second = (second.length==1)?'0'+second:second;
-    return minute+':'+second;
-}
-//----------------------自定义倍速------------------------
+
 function setCustomPlaybackRate(event) {
+    //自定义倍速
     event.stopPropagation();
     event.preventDefault();
     let v = document.getElementsByTagName("video")[0];
@@ -201,8 +199,8 @@ function setCustomPlaybackRate(event) {
     }
 }
 
-//从Player获取douga danmaku 信息，传递给父级
 try {
+    //从Player获取douga & danmaku 信息，传递给父级
     window.parent.postMessage({
         to:'pageBtfy' ,
         msg:`${JSON.stringify(window.player.videoInfo)}`
@@ -222,14 +220,15 @@ try {
     console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Fail,May Influent videoSetting.")
 }
 
-//调用画中画模式
 function setPictureInPictureMode() {
+    //调用画中画模式
     let v = document.getElementsByTagName("video")[0];
     v.requestPictureInPicture();
     console.log('[LOG]Frontend-videoSettingInject: Calling PictureInPicture Mode.');
 }
 
 quickJump = (time, part)=> {
+    //评论时间播放器快速跳转 - 处理函数
     let v_obj = document.getElementsByTagName("video")[0];
     let url = window.location.href
     if($('.part .part-wrap .scroll-div .single-p').length && part){
@@ -242,9 +241,9 @@ quickJump = (time, part)=> {
         v_obj.currentTime = Duration2Seconds(time);
         console.log('[LOG]Frontend-videoSettingInject: Jump_ok');
     }, 500);
-    
 }
 
+//=======Common Functions=========
 function Duration2Seconds(time){
     let str = time;
     let arr = str.split(':');
@@ -252,4 +251,15 @@ function Duration2Seconds(time){
     let Ts=Number(arr[1]);
     let seconds=Tm+Ts;
     return seconds;
+}
+
+function timeToMinute(second){
+    var minute;
+    minute = Math.floor(second/60)
+    second = second%60;
+    minute += '';
+    second += '';
+    minute = (minute.length==1)?'0'+minute:minute;
+    second = (second.length==1)?'0'+second:second;
+    return minute+':'+second;
 }

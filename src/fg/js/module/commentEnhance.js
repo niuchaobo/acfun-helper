@@ -63,8 +63,6 @@ class CommentEnhance{
         },1000);
     }
 
-
-
     //渲染标记按钮
     renderMark(){
         var timer = setInterval(function () {
@@ -100,7 +98,6 @@ class CommentEnhance{
         },1000);
     }
 
-
     //评论区显示up主名字
     renderScanForUp(){
         var timer = setInterval(function () {
@@ -131,8 +128,6 @@ class CommentEnhance{
         },1020);
     }
 
-
-
     renderSubScan(rootCommentId){
         var timer = setInterval(function () {
             let nodes = $("div[data-commentid='"+rootCommentId+"']").find('a.name');
@@ -156,7 +151,6 @@ class CommentEnhance{
             }
         },1000);
     }
-
 
     //评论区(折叠或翻页中)显示up主名字
     renderSubScanForUp(rootCommentId){
@@ -187,8 +181,6 @@ class CommentEnhance{
             }
         },1020);
     }
-
-
 
     renderSubMark(rootCommentId){
         var timer = setInterval(function () {
@@ -234,7 +226,6 @@ class CommentEnhance{
     clearScan(){
         $(".area-comment-title .pos.simple").remove();
     }
-
 
     // 在评论区添加快速跳转至视频对应时间的链接
     searchScanForPlayerTime(){
@@ -311,6 +302,7 @@ class CommentEnhance{
             }
         }
     }
+    
     setVideoTime(time){
         let str = time;
         let seconds = str.search("分") === -1 ?  str.split('秒')[0] : str.split('分')[0]*60

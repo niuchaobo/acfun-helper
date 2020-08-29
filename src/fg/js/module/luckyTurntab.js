@@ -39,73 +39,7 @@ class LuckyTtab {
         }
     }
 
-    getCommentData(acid){
-        let acCommentApi='https://www.acfun.cn/rest/pc-direct/comment/list?sourceId='+acid+'&sourceType=3&page=';
-        let totalPageNum = this.getTotalPageNum(acid);
-        let Comm_data=[];
-        if(totalPageNum && totalPageNum >=1){
-            //循环获取分页下的评论
-            for(let i=0;i<=totalPageNum-1;i++){
-                fetch(acCommentApi+i).then((res)=>{return res.text();})
-                .then(()=>{
-                    let jsonfy_comment = JSON.parse(res);
-                    for(let j=0;i<jsonfy_comment.pageSize;i++){
-                        //返回一个列表
-                        Comm_data.push(jsonfy_comment.rootComments[j]);
-                    }
-                }
-                )
-            }
-        }
-        return Comm_data;
-    }
-
-    getdetailCommentData(acid){
-        let acCommentApi='https://www.acfun.cn/rest/pc-direct/comment/list?sourceId='+acid+'&sourceType=3&page=';
-        let totalPageNum = this.getTotalPageNum(acid);
-        let Comm_data={};
-        if(totalPageNum && totalPageNum >=1){
-            //循环获取分页下的评论
-            for(let i=0;i<=totalPageNum-1;i++){
-                fetch(acCommentApi+i).then((res)=>{return res.text();})
-                .then(()=>{
-                    let jsonfy_comment = JSON.parse(res);
-                    for(let j=0;i<jsonfy_comment.pageSize;i++){
-                        //返回一个对象（根据楼层号返回一个对象）
-                        Comm_data[jsonfy_comment.rootComments[j].floor]=jsonfy_comment.rootComments[j];
-                    }
-                }
-                )
-            }
-        }
-        return Comm_data;
-    }
-
-    getNRdetailCommentData(acid,){
-        let acCommentApi='https://www.acfun.cn/rest/pc-direct/comment/list?sourceId='+acid+'&sourceType=3&page=';
-        let totalPageNum = this.getTotalPageNum(acid);
-        let Comm_data={};
-        let Comm_data_UIDList=[];
-        let Comm_data_byUID={};
-        if(totalPageNum && totalPageNum >=1){
-            //循环获取分页下的评论
-            for(let i=0;i<=totalPageNum-1;i++){
-                fetch(acCommentApi+i).then((res)=>{return res.text();})
-                .then((res)=>{
-                    let jsonfy_comment = JSON.parse(res);
-                    for(let j=0;i<jsonfy_comment.pageSize;i++){
-                        //返回一个对象
-                        Comm_data_UIDList.push(jsonfy_comment.rootComments[j].userId);
-                        Comm_data_byUID[jsonfy_comment.rootComments[j].userId]=jsonfy_comment.rootComments[j];
-                    }
-                }
-                )
-            }
-        }
-        Comm_data['Comm_data_UIDList']=Comm_data_UIDList;
-        Comm_data['Comm_data_byUID']=Comm_data_byUID;
-        return Comm_data;
-    }
+    
 
     async getResult(url) {
         return new Promise((resolve, reject) => {
@@ -210,7 +144,6 @@ class LuckyTtab {
                 });
         })    
     }
-
 
     async isFollowed(QueryUserId){
         //使用用github@BDPO这位acer的新 判断是否关注PO主 的解决办法

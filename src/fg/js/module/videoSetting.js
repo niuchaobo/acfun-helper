@@ -9,7 +9,7 @@ class VideoSetting{
             id: "achlp-proBar",
             css:
               "z-index:1000;transition: width 0.4s ease-out;background-color: #fd4c5d;height: 0.5%;position: fixed;bottom: 0px;width: 0%;"
-          };
+        };
         this.progressBackGroundOptions = {
             id: "achlp-proBar-bg",
             css:
@@ -80,13 +80,13 @@ class VideoSetting{
         },1000);
     }
 
-    //初始画质策略
+    //画质策略
     videoQuality(){
         var timer = setInterval(function () {
             let nodes = $('.quality-panel');
             var vqregexp = RegExp('p60');
             if(nodes.length>0){
-                //模式标准：0=自动；1=默认最高；2=非60帧的最高画质；3=强制标清 ；4=偏向非4k的最高画质
+                //模式标准：0=自动；1=默认最高；2=非60帧的最高画质；3=强制标清；4=偏向非4k的最高画质
                 chrome.storage.local.get(['videoQualityStrategy'],function(items){
                 let mode = Number(items.videoQualityStrategy);
                 let qualitys = document.querySelector(".quality-panel > ul").children;
@@ -130,7 +130,6 @@ class VideoSetting{
             }
         },5000);
     }
-
     
     //增加自定义播放速度
     customPlaybackRate(){
@@ -138,7 +137,6 @@ class VideoSetting{
                     <li onclick="setCustomPlaybackRate(event);">自定义</li>`;
         let _timer = setInterval(function () {
             let node = $(".speed-panel").find('li:last');
-            //如果不判断直接调用会报错，toolbar节点可能还没加载
             if(node.length>0){
                 node.after(html);
                 clearInterval(_timer);
@@ -148,22 +146,21 @@ class VideoSetting{
 
     //底部进度条
     flexProgressBar(){
-          addElement(this.progressBarOptions)
-          addElement(this.progressBackGroundOptions)
-          let observerWeb = new MutationObserver((mutations)=> {
-              mutations.forEach((mutations)=>{
-                let flag = $('.container-video .control-bar-top').attr('data-bind-attr') === 'true'
-                flag ? $('#achlp-proBar,#achlp-proBar-bg').hide(250) : $('#achlp-proBar,#achlp-proBar-bg').show(100)  
-              })
-          })
-          const a = $('.container-video .control-bar-top')[0];
-          observerWeb.observe(a, {
-            attributes: true,
-            attributeOldValue: false,
-            attributeFilter :['data-bind-attr']
-          });
+        addElement(this.progressBarOptions);
+        addElement(this.progressBackGroundOptions);
+        let observerWeb = new MutationObserver((mutations)=> {
+            mutations.forEach((mutations)=>{
+            let flag = $('.container-video .control-bar-top').attr('data-bind-attr') === 'true'
+            flag ? $('#achlp-proBar,#achlp-proBar-bg').hide(250) : $('#achlp-proBar,#achlp-proBar-bg').show(100)  
+            })
+        })
+        const a = $('.container-video .control-bar-top')[0];
+        observerWeb.observe(a, {
+        attributes: true,
+        attributeOldValue: false,
+        attributeFilter :['data-bind-attr']
+        });
     }
-    
         
     //AB回放UI 函数在videoSettingInject.js
     AddABPlayUI(){
@@ -199,10 +196,11 @@ class VideoSetting{
                     if(flag == '退出观影模式'){ 
                         document.getElementById("acfun-popup-helper").style.display="none";
                         document.getElementById("acfun-helper-div").style.display="none";
+                        //观影模式下的暗色 FilmModeExclusion
                         let FilmModeExclusionsw = await getStorage('FilmModeExclusionsw');
                         if(FilmModeExclusionsw.FilmModeExclusionsw){
                             setTimeout(()=>{ //全屏模式切换时会重新渲染样式（页面宽度改变）？扔进异步队列等主程跑完再渲染
-                                this.fullScreenStyle(true)
+                                this.fullScreenStyle(true);
                             })
                         }
                     }else{
@@ -240,13 +238,14 @@ class VideoSetting{
         observerWeb.observe(elementWeb, {
             //characterData: true,
             //characterDataOldValue: true
-            attributes: true, //configure it to listen to attribute changes
+            attributes: true, //observe element attributes
             attributeOldValue: true,
             attributeFilter :['data-bind-attr']
         });
     }
 
     fullScreenStyle(on){
+        //underWorld => 阴间
         if(on){
             let cssText = "#main>#main-content{ mix-blend-mode: difference;background: white; margin: 0px; max-width:100%; width: calc(100% - 20px) !important; overflow:hidden; padding:0px 10px}"
             + "#main .video-description .reco-tag,.action-area{mix-blend-mode:exclusion}"
@@ -272,7 +271,6 @@ class VideoSetting{
 
     }
 
-
     //倍速快捷键 TODO:自定义快捷键(现在默认shift + ↑/↓) 绑定位置
     PlaybackRateKeyCode(settingKeyCode){
         // const videoDom = document.getElementById('player');
@@ -284,16 +282,19 @@ class VideoSetting{
             this.changeRateKeyCode(e,settingKeyCode)
         }
     }
+
     changeRateKeyCode(e,settingKeyCode){
         let code = e.keyCode
         e.shiftKey && (code === settingKeyCode[0] || code === settingKeyCode[1]) && this.getRate(code, settingKeyCode)
     }
+
     getRate(code ,settingKeyCode){
         const v = document.getElementsByTagName("video")[0];
         let rate = this.getRateFlag(code,settingKeyCode,v)
         v.playbackRate = rate;
         event.stopPropagation();
     }
+    
     getRateFlag(code,settingKeyCode,v){
         let videoRate = v.playbackRate;
         const [addRate,reduceRate] = settingKeyCode

@@ -6,6 +6,7 @@ class Danmaku {
     constructor() {
 
     }
+
     cacheStore(){
         window.addEventListener('message',function(e){
             if(e.data.to=='frame_danmaku'){
@@ -13,4 +14,5 @@ class Danmaku {
             }
         })
     }
+    
 }

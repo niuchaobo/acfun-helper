@@ -9,7 +9,7 @@ class ODHBack {
         this.authInfo = new AuthInfo();
         this.Ominibox = new Ohminibox();
         this.Upgrade = new UpgradeAgent();
-        this.ReqOpDrv = new ReqOperationDrv();
+        // this.ReqOpDrv = new ReqOperationDrv();
         this.WatchPlan = new WatchPlan();
 
         this.Ominibox.registerOmnibox();
@@ -50,7 +50,6 @@ class ODHBack {
             delStorage(tabId + "");
         });
 
-
         //右键菜单
         chrome.contextMenus.create({
             title: '下载封面', // %s表示选中的文字
@@ -68,6 +67,7 @@ class ODHBack {
 
             }.bind(this)
         });
+
         chrome.contextMenus.create({
             title: '下载高清封面', // %s表示选中的文字
             contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
@@ -75,7 +75,6 @@ class ODHBack {
             onclick: function(params,tab){
                 let link_url = params.linkUrl;
                 this.tabInvoke(tab.id, 'downloadCover', {link_url:link_url,type:'high'});
-
             }.bind(this)
         });
 
@@ -117,7 +116,6 @@ class ODHBack {
                 }
             });
         });
-
 
     }
 
@@ -200,7 +198,6 @@ class ODHBack {
     }
 
     setFrontendOptions(options) {
-
         switch (options.enabled) {
             case false:
                 chrome.browserAction.setBadgeText({text: 'off'});
@@ -226,8 +223,7 @@ class ODHBack {
         chrome.tabs.sendMessage(tabId, {action, params}, () => null);
     }
 
-
-    // Message Hub and Handler start from here ...
+    // Message Hub and Handler
     onMessage(request, sender, callback) {
         const {action, params} = request;
         const method = this['api_' + action];
@@ -247,9 +243,9 @@ class ODHBack {
         const method = this['api_' + action];
         if (typeof(method) === 'function')
             method.call(this, params);
-
     }
 
+    //================Inner Api==================//
     api_notice(params){
         let {title,msg} = params;
         notice(title,msg);
@@ -262,7 +258,6 @@ class ODHBack {
     async api_initBackend(params) {
         let options = await optionsLoad();
         //this.ankiweb.initConnection(options);
-
         //to do: will remove it late after all users migrate to new version.
         if (options.dictLibrary) { // to migrate legacy scripts list to new list.
             options.sysscripts = options.dictLibrary;
@@ -273,7 +268,6 @@ class ODHBack {
 
     async api_Fetch(params) {
         let {url, callbackId} = params;
-
         let request = {
             url,
             type: 'GET',
@@ -284,7 +278,6 @@ class ODHBack {
         };
         $.ajax(request);
     }
-
 
     async api_getBuiltin(params) {
         let {dict, word, callbackId} = params;
@@ -337,7 +330,7 @@ class ODHBack {
 
 
 
-    // Sandbox communication start here
+    // Sandbox communication
     async loadScripts(list) {
         let promises = list.map((name) => this.loadScript(name));
         let results = await Promise.all(promises);

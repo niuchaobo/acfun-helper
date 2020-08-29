@@ -62,9 +62,8 @@ class Block {
                 }
             }
         });
-
-
     }
+
     articlePageFilter(map){
         $(".atc-info.clearfix>a.atc-up").each(function () {
             let up_name = $(this).attr('title');
@@ -78,7 +77,6 @@ class Block {
         })
 
     }
-
 
     renderFilter(){
         $('.action-up').append('<a class="ext-filter-up">屏蔽</a>');
@@ -242,6 +240,5 @@ class Block {
             }
         },1000)
     }
-
 
 }

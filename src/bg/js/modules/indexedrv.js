@@ -6,8 +6,6 @@ const db2 = new Dexie("acfunhelper-square");
 const Pushlist_struct = "goldBanana,userId,title,channelId,author,isSignedUpCollege,isArticle,views,vid,allowDanmaku,stows,titleImg,shareUrl,releaseDate,danmakuSize,avatar,errorlog,score,contentClass,cid,userImg,verifiedType,verifiedText,aid,time,url,comments,sign,tags,description,success,username"
 const Pushlist_Commonstruct="aid,userId"
 
-
-
 function test(){
     //dexie 官网上的示例
     db.version(1).stores({

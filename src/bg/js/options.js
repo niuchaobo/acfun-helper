@@ -728,11 +728,7 @@ $(document).ready(function () {
                 odhback().opt_optionUpdate(options);
             });
     });
-
-
-
-
-
+    
 
 
     $('#save').click(function () {
@@ -775,8 +771,6 @@ $(document).ready(function () {
             });
             $('#' + c_id + ' .add-confirm').on('click',async function () {
                 $('.fail').hide();
-
-
 
                 var input_valid = true;
                 var uid_input = $(this).parent().prev().prev().children('input').val().replace('。', '.').replace('http://', '').replace('https://', '');
@@ -861,12 +855,7 @@ $(document).ready(function () {
     });
 
 
-
-
-
-
-
-
+    //==================用户标记================
     var m_id = 0;
     $('#mark-add').on('click', function () {
         if ($('.mark-add-tr').length <= 0 && mark) {
@@ -899,8 +888,6 @@ $(document).ready(function () {
             });
             $('#mark' + m_id + ' .mark-add-confirm').on('click',async function () {
                 $('.mark-fail').hide();
-
-
 
                 var input_valid = true;
                 var uid_input = $(this).parent().prev().prev().children('input').val();
@@ -1406,8 +1393,6 @@ $(document).ready(function () {
         });
 
     });
-    // chrome.storage.local.set({'liveFloowNotif':true});
-    // let a={16416041:16416041,31541670:31541670,16012499:16012499,2888736:2888736}
     chrome.storage.local.get(['liveFloowings'],function(items){
         if(JSON.stringify(items) !== '{}'){
             for(i in items.liveFloowings){
@@ -1471,11 +1456,6 @@ $(document).ready(function () {
                     console.log(items);
                     mdui.snackbar({message: ` ${liveup_name} 已被加入关注列表`});
                     $('ul#liveFollowNotifList').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${value} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${value}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${value} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
-                    // $('.liveWatch').click(function () {
-                    //     console.log('action clicked.')
-                    //     let this_uid=$(this).data("key");
-                    //     window.open('https://live.acfun.cn/live/'+this_uid);
-                    // });
                     $('.liveFloowingsItems').click(function () {
                         let this_uid=$(this).data("key");
                         $(this).parent().hide();
@@ -1500,7 +1480,6 @@ $(document).ready(function () {
         }
       );
     })}});
-
 
     //========================稍后再看==========================//
     chrome.storage.local.get(['watchLater'],function(items){
@@ -1589,8 +1568,6 @@ $(document).ready(function () {
             }
         })
     });
-
-
     
     //===================直播屏蔽配置相关==========================//
     chrome.storage.local.get(['liveBansw'],function(items){
@@ -1624,9 +1601,9 @@ $(document).ready(function () {
                   });
                 delete items.liveBans[this_uid];
                 chrome.storage.local.set({'liveBans':items.liveBans});
-                });
-            }
-        });
+            });
+        }
+    });
     chrome.storage.local.get(['liveBans'],function(items){
         if(JSON.stringify(items) == '{}'){
             let a={}
@@ -1692,10 +1669,6 @@ $(document).ready(function () {
             );
         })}});
 
-    
-
-
-
     //=======================配置导入导出================================//
     let config_downloadObj=document.getElementById('configExport');
     config_downloadObj.addEventListener('click', function createDownload(){
@@ -1712,74 +1685,73 @@ $(document).ready(function () {
             setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
             document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
         });
-      });
+    });
 
-      let playerConfig_downloadObj=document.getElementById('configPlayerExport');
-      playerConfig_downloadObj.addEventListener('click', function createPconfDownload(){
+    let playerConfig_downloadObj=document.getElementById('configPlayerExport');
+    playerConfig_downloadObj.addEventListener('click', function createPconfDownload(){
         player_conf=chrome.storage.local.get(['AcGConf'], function (items) {
-              var player_conf = sanitizeOptions(items);
-              var blob = new Blob([JSON.stringify(player_conf)], { type: 'application/octet-stream' });
-              var url = window.URL.createObjectURL(blob);
-              var saveas = document.createElement('a');
-              saveas.href = url;
-              saveas.style.display = 'none';
-              document.body.appendChild(saveas);
-              saveas.download = 'AcFun-Player.conf';
-              saveas.click();
-              setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
-              document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
-          });
+            var player_conf = sanitizeOptions(items);
+            var blob = new Blob([JSON.stringify(player_conf)], { type: 'application/octet-stream' });
+            var url = window.URL.createObjectURL(blob);
+            var saveas = document.createElement('a');
+            saveas.href = url;
+            saveas.style.display = 'none';
+            document.body.appendChild(saveas);
+            saveas.download = 'AcFun-Player.conf';
+            saveas.click();
+            setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
+            document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
         });
+    });
 
-        let jsonfy_pconfig;
-        let input2=document.getElementById("emlwX3V0aWxp_file");
-            input2.onchange=function () {
-                var file = this.files[0];
-                if(!!file){
-                    var reader=new FileReader();
-                    reader.readAsText(file,"utf-8");
-                    reader.onload=function () {
-                        try{
-                            jsonfy_pconfig=JSON.parse(this.result);
-                        }catch (e) {
-                            alert("文件格式不正确");
-                            return;
-                        }
-                        chrome.storage.local.set({AcGConf:jsonfy_pconfig.AcGConf});
-                        // console.log(jsonfy_pconfig);
-                        chrome.storage.local.set({SyncPlayerConfigNeed: 1});
-                      notice("AcFun助手","播放器导入配置成功;请在主站非视频页面刷新一次以导入配置。");
-                    };
+    let jsonfy_pconfig;
+    let input2=document.getElementById("emlwX3V0aWxp_file");
+    input2.onchange=function () {
+        var file = this.files[0];
+        if(!!file){
+            var reader=new FileReader();
+            reader.readAsText(file,"utf-8");
+            reader.onload=function () {
+                try{
+                    jsonfy_pconfig=JSON.parse(this.result);
+                }catch (e) {
+                    alert("文件格式不正确");
+                    return;
                 }
-        };
+                chrome.storage.local.set({AcGConf:jsonfy_pconfig.AcGConf});
+                chrome.storage.local.set({SyncPlayerConfigNeed: 1});
+                notice("AcFun助手","播放器导入配置成功;请在主站非视频页面刷新一次以导入配置。");
+            };
+        }
+    };
           
 
-      let jsonfy_config;
-      let input=document.getElementById("input_emlwX3V0aWxz_file");
-          input.onchange=function () {
-              var file = this.files[0];
-              if(!!file){
-                  var reader=new FileReader();
-                  reader.readAsText(file,"utf-8");
-                  reader.onload=function () {
-                      try{
-                          jsonfy_config=JSON.parse(this.result);
-                      }catch (e) {
-                          alert("文件格式不正确");
-                          return;
-                      }
-                    for(i in jsonfy_config){
-                        if(i !='AcpushList'){
-                            chrome.storage.local.set({[i]:jsonfy_config[i]});
-                    }}
-                    notice("AcFun助手","导入配置成功~");
-                  };
-              }
-      };
+    let jsonfy_config;
+    let input=document.getElementById("input_emlwX3V0aWxz_file");
+        input.onchange=function () {
+        var file = this.files[0];
+        if(!!file){
+            var reader=new FileReader();
+            reader.readAsText(file,"utf-8");
+            reader.onload=function () {
+                try{
+                    jsonfy_config=JSON.parse(this.result);
+                }catch (e) {
+                    alert("文件格式不正确");
+                    return;
+                }
+                for(i in jsonfy_config){
+                    if(i !='AcpushList'){
+                        chrome.storage.local.set({[i]:jsonfy_config[i]});
+                    }
+                }
+                notice("AcFun助手","导入配置成功~");
+            };
+        }
+    };
 
       let config_CleanObj=document.getElementById('configClean');
       config_CleanObj.addEventListener('click', function createClean(){
-          console.log("clicked.");
           let notice_this=prompt("确认清除小助手的所有配置吗？请考虑清楚哦。Y/N",'');
           if(notice_this=='Y'){
           chrome.storage.local.clear(function(){
@@ -1901,13 +1873,7 @@ $(document).ready(function () {
         });
     });
 
-
-
-
-
-
-
-  
+    //===================Up主文章屏蔽=======================
     $('#filter-add').on('click', function () {
         if ($('.filter-add-tr').length <= 0 && filter) {
             if (!$('#filter-ups').hasClass('table-custom-padding')) {
@@ -2006,10 +1972,8 @@ $(document).ready(function () {
                     $("body").mLoading("hide");
                 }
             });
-
             m_id += 1;
         }
     });
-
 
 });

@@ -8,8 +8,7 @@ class Ohminibox{
     
     registerOmnibox(){
         console.log("Registered Omnibox Mod.")
-        chrome.omnibox.onInputStarted.addListener(() => {
-        });
+        chrome.omnibox.onInputStarted.addListener(() => {});
         chrome.omnibox.onInputChanged.addListener((text, suggest) => {
             let x0 = RegExp('-ac(.*)');
             let y0 = x0.exec(text);
@@ -31,7 +30,7 @@ class Ohminibox{
                     }
                     for(let i = 0;i<keywordNum;i++){
                         try {
-                            let z = `{"content": "${x.suggestKeywords[i]}","description": "是否要查看 ${x.suggestKeywords[i]} 在主站有关的内容？"}`;
+                            let z = `{"content": "${x.suggestKeywords[i]}","description": "是否要查看 ${x.suggestKeywords[i]} 在主站有关内容？"}`;
                             var zo = JSON.parse(z);
                         } catch (error) {
                             var zo={};
@@ -58,7 +57,7 @@ class Ohminibox{
         });
         
         chrome.omnibox.setDefaultSuggestion({
-                    "description": "Ac在爱一直在 - 由此进入主站"
+            "description": "Ac在爱一直在 - 进入主站"
         });
     }
 }
