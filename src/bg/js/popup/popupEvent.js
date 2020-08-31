@@ -97,6 +97,7 @@ export async function viewHistory(){
     `;
   }
   $("#ViewHistory").append(raw_data);
+  $("#ViewHistoryAction").hide();
 }
 
 export async function fetchDougaInfo(){
