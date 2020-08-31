@@ -125,7 +125,6 @@ class WatchPlan {
 
     viewHistoryBackend(opts) {
         let x = JSON.parse(opts.msg).history.views
-        console.log(x)
         db_putHistoryViews(x)
     }
 
