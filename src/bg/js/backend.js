@@ -90,20 +90,20 @@ class ODHBack {
             title: '加入到稍后再看', 
             contexts: ['link'], 
             id:'2',
-            onclick:  (params) =>{
+            onclick: (params) =>{
                 let link_url = params.linkUrl;
-                this.WatchPlan.PushInList(link_url);
-                let x = this.WatchPlan.getOpRes();
-                if(x){alert("加入成功。")}
-            }
-        });
-
-        chrome.contextMenus.create({
-            title: '开始进行“稍后再看”', 
-            contexts: ['link'], 
-            id:'3',
-            onclick:  (params) =>{
-                this.WatchPlan.execWatch();
+                this.WatchPlan.PushInList(link_url).then(()=>{
+                    let x = this.WatchPlan.getOpRes();
+                    let sw=""
+                    // if(x){alert("加入成功。")}else{alert("稍后再看已被关闭，操作无效。")}
+                    x?sw="加入成功。":sw="稍后再看已被关闭，操作无效。"
+                    chrome.notifications.create(null, {
+                        type: 'basic',
+                        iconUrl: 'images/notice.png',
+                        title: 'AcFun 助手 - 稍后再看',
+                        message: `${sw}`
+                    });    
+                });
             }
         });
 
@@ -152,6 +152,7 @@ class ODHBack {
 
 
     onInstalled(details) {
+        initializeDBTable();
         if (details.reason === 'install') {
             chrome.tabs.create({url: chrome.extension.getURL('bg/guide.html')});
             return;
@@ -253,6 +254,10 @@ class ODHBack {
 
     async api_watchLater(){
         this.WatchPlan.main();
+    }
+
+    api_historyView(params){
+        this.WatchPlan.viewHistoryBackend(params)
     }
 
     async api_initBackend(params) {

@@ -69,7 +69,7 @@ export async function renderPushInnerHtml() {
           data.username +
           ' </a><span class="time">' +
           getTimeSinceNow(data.releaseDate) +
-          "</span> </div> </div> </div> ";
+          "发布</span> </div> </div> </div> ";
         pushListData.innerText += xmlData;
       }
       $("#pop-push").append(pushListData.innerText);

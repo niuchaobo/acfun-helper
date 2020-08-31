@@ -55,7 +55,7 @@ function renderFunc(x,type = 0){
     card+=
     `
     <div class="mdui-card-primary">
-    <div class="mdui-card-primary-subtitle">${getTimeSinceNow(releTime)} - 香蕉： ${banana} - 评论： ${comNum}</div>
+    <div class="mdui-card-primary-subtitle">${getTimeSinceNow(releTime)}发布 - 香蕉： ${banana} - 评论： ${comNum}</div>
     </div>
     <div class="mdui-card-content">${content}</div>
     <div class="mdui-card-actions">

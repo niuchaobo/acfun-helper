@@ -13,18 +13,15 @@ import {
   titleToHome,
   clickToTop,
   hideToTopButton,
-  fetchDougaInfo
+  fetchDougaInfo,
+  viewHistory,
+  WatchLaterFpopup,
+  WatchLaterFOpenList,
+  MomentSquareFpop
 } from "./popupEvent.js";
 
 import unKnownCode from "./unKnownCode.js";
 unKnownCode(); //不明代码
-
-function fetchPushContent() {
-  chrome.storage.local.get(["AcpushList"], function (data) {
-    console.log(data);
-    $("#pop-push").append(data.AcpushList);
-  });
-}
 
 async function onReady() {
   localizeHtmlPage(); //global function
@@ -44,6 +41,10 @@ async function onReady() {
   $(document).scroll(hideToTopButton);
   $(".toTop").click(clickToTop);
   $("#dougaInfoAcidbtn").click(fetchDougaInfo);
+  $("#ViewHistoryAction").click(viewHistory);
+  $("#WatchLaterFpopup").click(WatchLaterFpopup);
+  $("#WatchLaterFOpenList").click(WatchLaterFOpenList);
+  $("#MomentSquareFpop").click(MomentSquareFpop);
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
@@ -56,8 +57,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
 $(document).ready(utilAsync(onReady));
 
-
-//============Common Functions================//
+//==============Common Functions================//
 // 将时间转为最近
 function getTimeSinceNow(date) {
   let currentDate = new Date();
@@ -68,15 +68,15 @@ function getTimeSinceNow(date) {
   let oneHour = oneMinute * 60;
   let during = currentDate.getTime() - publishTime.getTime();
   if (during < oneMinute) {
-    return Math.floor(during / 1000) + "秒前发布";
+    return Math.floor(during / 1000) + "秒前";
   } else if (during >= oneMinute && during < oneHour) {
-    return Math.floor(during / oneMinute) + "分前发布";
+    return Math.floor(during / oneMinute) + "分前";
   } else if (during > oneHour && during < oneDay) {
-    return Math.floor(during / oneHour) + "小时前发布";
+    return Math.floor(during / oneHour) + "小时前";
   } else if (during >= oneDay && during < oneWeek) {
-    return Math.floor(during / oneDay) + "天前发布";
+    return Math.floor(during / oneDay) + "天前";
   } else if (during >= oneWeek) {
-    return `发布于${publishTime.getFullYear()}-${
+    return `于${publishTime.getFullYear()}-${
       publishTime.getMonth + 1
     }-${publishTime.getDate()}`;
   }
