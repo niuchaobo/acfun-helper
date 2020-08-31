@@ -5,6 +5,7 @@ class Banana{
     constructor(){
 
     }
+
     async throwBanana(params) {
         let options = window.odhfront.options;
         var up_name = '';
@@ -65,4 +66,5 @@ class Banana{
             });
         }
     }
+    
 }

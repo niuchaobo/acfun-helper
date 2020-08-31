@@ -5,6 +5,7 @@ class PageBeautify {
   constructor() {
     this.personInfo = "https://www.acfun.cn/rest/pc-direct/user/personalInfo";
   }
+
   //-----------------导航---------------------
   navBeautify() {
     this.addRightNav();
@@ -179,18 +180,20 @@ class PageBeautify {
       });
   }
 
-  indexBeautify(){
-    let cssStr = ".twinkle{backdrop-filter: blur(2.25926vw)} .nav-fixed{background-color: #f8f8f896;; border-bottom: 0px;backdrop-filter: blur(2.25926vw)} #header{background-color: #f8f8f896;;backdrop-filter: blur(2.25926vw)}"
-    createElementStyle(cssStr)
+  indexBeautify(opt){
+    let cssStr;
+    opt ? cssStr=".header-top{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896 !important;} .header .nav{border-bottom: 1px solid #ffffff00 !important} .header.fixed .nav{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896;}" : cssStr=".nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(2.25926vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(2.25926vw)}";
+    createElementStyle(cssStr);
   }
 
   hideAds(){
     var timer = setInterval(function () {
       let checknode=$('.pause-display-container');
-      if(checknode.length>0){
+      let checknode2=$('.app-guide');
+      if(checknode.length>0||checknode2.length>0){
         try {
-          let cssStr = ".usemobile,.shareCount,.app-guide.pause-display-container,{display:none !important}"
-          createElementStyle(cssStr)
+          let cssStr = ".usemobile,.shareCount,.app-guide,.pause-display-container {display:none !important}"
+          createElementStyle(cssStr);
           document.querySelector(".shareCount").remove();
           document.querySelector(".usemobile").remove();
         } catch (error) {}
@@ -202,7 +205,7 @@ class PageBeautify {
         } catch (error) {}
         clearInterval(timer);
       }
-    },100)
+    },500)
   }
 
   async addMouseAnimation(){
@@ -223,7 +226,7 @@ class PageBeautify {
           imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
       })
     } catch (error) {
-      // console.log("[LOG]Frontend-pageBeautify: ")
+      // console.log("[LOG]Frontend-pageBeautify: error")
     }
   }
 }

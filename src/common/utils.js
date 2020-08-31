@@ -62,7 +62,8 @@ const REG = {
     mlive:new RegExp("https://m.acfun.cn/live/detail/*"),//移动版直播
     live:new RegExp("https://live.acfun.cn/live/*"),//直播
     liveIndex:new RegExp("https://live.acfun.cn"),//直播主页
-    userHome:new RegExp("http(s)?://www.acfun.cn/u/\\d+")//直播主页
+    userHome:new RegExp("http(s)?://www.acfun.cn/u/\\d+"),//用户中心
+    partIndex:new RegExp("/v/list")//分区主页
 
 }
 

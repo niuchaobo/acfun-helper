@@ -2,7 +2,9 @@
  * 页面美化
  */
 class videoPageBeautify {
-  constructor() {}
+  constructor() {
+
+  }
 
   openVideoDesc() {
     getAsyncDom(".desc-operate", () => {
@@ -56,4 +58,5 @@ class videoPageBeautify {
       }
     });
   }
+  
 }

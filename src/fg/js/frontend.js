@@ -52,10 +52,10 @@ class ODHFront {
     let str =
       ".comment-mark-parent{bottom: -80px!important;}" +
       "#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
-      "span.simple {background-color: #d69acc !important;cursor: pointer;}" +
-      "span.pos {display:inline;text-transform: lowercase;font-size: 0.9em;margin: 5px;padding: 0px 4px;color: white;border-radius: 3px;}" +
+      "span.simple {background-color: #d69acc !important;}" +
+      "span.pos {display:inline;font-size: 0.9em;margin: 5px;line-height: 18px;padding: 0px 4px;color: white;border-radius: 14px;}" +
       ".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
-      "span.up {background-color: #4a8eff !important;cursor: pointer;}" +
+      "span.pos.up {background-color: #66ccff !important;}" +
       "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
       "p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
       "";
@@ -102,11 +102,17 @@ class ODHFront {
         //夜间模式
         this.options.night && this.addNightStyle();
         //首页
-        if(REG.index.test(href)){
-            //仅首页nav高斯模糊(隐藏功能)
-            this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify();
+        let ifIndex = REG.index.test(href);
+        let ifPartIndex = REG.partIndex.test(href);
+        if(ifIndex||ifPartIndex){
             //开启右侧导航
-            this.options.beautify_nav && this.pageBeautify.navBeautify(); 
+            if(ifIndex && this.options.beautify_nav){this.pageBeautify.navBeautify();}
+            //隐藏ad
+            this.options.hideAd && this.pageBeautify.hideAds();
+            //首页nav高斯模糊
+            if(this.options.Dev_indexBlurSW){
+              this.pageBeautify.indexBeautify(ifPartIndex);
+            }
           }
         //视频与番剧
         if(REG.videoAndBangumi.test(href)){
@@ -122,6 +128,8 @@ class ODHFront {
             this.danmaku.cacheStore();
             this.videoSetting.callPicktureInPictureMode();
             this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
+            //隐藏ad
+            this.options.hideAd && this.pageBeautify.hideAds();
         }
         //直播
         if(REG.live.test(href)){
@@ -144,11 +152,9 @@ class ODHFront {
         if(!REG.live.test(href) && !REG.liveIndex.test(href)){
             //首页个人资料弹框 (未完成)
             this.options.beautify_personal && getAsyncDom('#header .header-guide .guide-item',()=>{
-                      this.pageBeautify.addMouseAnimation()
-                      this.pageBeautify.personBeautify();
-                })
-            //隐藏ad
-            this.options.hideAd && this.pageBeautify.hideAds();
+                this.pageBeautify.addMouseAnimation()
+                this.pageBeautify.personBeautify();
+            })
           }
         //配置同步
         this.playerconfig.PConfProc();
@@ -228,17 +234,17 @@ class ODHFront {
           //弹幕列表前往Acer个人主页
           this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
           })
-          //评论区 -未添加监听
+          // 评论区 -未添加监听
           getAsyncDom('.ac-pc-comment',()=>{
-          //评论空降
-          this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
-          //快捷键空降
-
-          if(this.options.easySearchScanForPlayerTimesw){
-            getAsyncDom('.ac-pc-comment',()=>{
-                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-            });
-          }
+            //评论空降
+            this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
+            //快捷键空降
+            if(this.options.easySearchScanForPlayerTimesw){
+              getAsyncDom('.ac-pc-comment',()=>{
+                  this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+              });
+            }
+          })
         }
         this.authInfo.cookInfo();
     }
@@ -281,13 +287,11 @@ class ODHFront {
       response
     ) {});
   }
-
   api_setFrontendOptions(params) {
     let { options, callback } = params;
     this.options = options;
     callback();
   }
-
   //视频下载
   async api_download(params) {
     if (this.options == null) {
@@ -295,7 +299,6 @@ class ODHFront {
     }
     this.download.downloadVideo(params);
   }
-
   api_mark(params) {
     let { value } = params;
     this.options.mark = value;
@@ -317,12 +320,10 @@ class ODHFront {
       this.ce.clearScan();
     }
   }
-
   //直播m3u8 url赋值到前台页面
   async api_renderLive(params) {
     this.live.renderLive(params);
   }
-
   //评论区折叠部分的标记渲染入口
   api_renderSub(params) {
     let { url, rootCommentId } = params;
@@ -336,7 +337,6 @@ class ODHFront {
       this.ce.renderSubScanForUp(rootCommentId);
     }
   }
-
   //评论区整体部分的标记渲染入口
   api_renderList(params) {
     let { url } = params.url;

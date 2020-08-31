@@ -50,7 +50,6 @@ class Popup {
         this.showAt({ x: posX, y: posY }, content);
     }
 
-
     hide() {
         this.popup.style.visibility = 'hidden';
         this.popup.style.opacity = '0';
@@ -202,10 +201,10 @@ class Popup {
                 </div>
                 <div class="odh-definition basic-grey">
                      <label>
-                        <span>抽多少个acer :</span> 
+                        <span>抽多少个Acer :</span> 
                         <input id="lucy-number" type="text" autocomplete="off" name="number" placeholder="请输入数字"/></label>
                         <!--<label>
-                        <span>是否关注up主 :</span> 
+                        <span>是否需要关注Up主 :</span> 
                         <input id="lucy-follow" type="checkbox" name="uniq" />
                         </label> -->
                         <label id=lucy-result-label style="display:none">
@@ -215,12 +214,11 @@ class Popup {
                         <div id=lucy-result></div>
                         
                         <span>&nbsp;</span> 
-                        <input type="button"  id="lucy-chou" class="button" value="从零开始的抽奖" /></label>
-                        <input type="button"  id="lucy-chouAgain" class="button" value="继续抽奖" /></label>
+                        <input type="button"  id="lucy-chou" class="button" value="独立抽奖" /></label>
+                        <input type="button"  id="lucy-chouAgain" class="button" value="排除上次结果抽奖" /></label>
                 </div>
                 `;
     }
-
 
     popupHeader(type) {
         let root = chrome.runtime.getURL('/');
@@ -272,7 +270,6 @@ class Popup {
         }
         //this.wapper = document.createElement("div");
         //this.wapper.id="ncb-wapper";
-
 
         this.popup = document.createElement('iframe');
         this.popup.id = 'acfun-popup-helper';

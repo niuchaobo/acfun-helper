@@ -206,7 +206,6 @@ class LivePageButfy {
             },2000)
         } catch (error) {}
     }
-    
 
     //直播站增加画中画模式
     callPicktureInPictureModeForLive(){
@@ -228,4 +227,5 @@ class LivePageButfy {
             }
         },1000);
     }
+    
 }

@@ -29,11 +29,11 @@ function liststreamer(){
             $(this).parent().hide();
             fetch('http://localhost:51880/delnotify/'+this_uid).then((res)=>{return res.text()})
             .then((res)=>{
-                    mdui.snackbar({
-                        message: `已移除 ${this_uid}`,
-                    });
+                mdui.snackbar({
+                    message: `已移除 ${this_uid}`,
                 });
             });
+        });
     });
 }
 
@@ -62,11 +62,11 @@ function listrecord(){
             $(this).parent().hide();
             fetch('http://localhost:51880/stoprecord/'+this_uid).then((res)=>{return res.text()})
             .then((res)=>{
-                    mdui.snackbar({
-                        message: `已移除 ${this_uid} 的录制任务`,
-                    });
+                mdui.snackbar({
+                    message: `已移除 ${this_uid} 的录制任务`,
                 });
             });
+        });
     })
 }
 
@@ -95,11 +95,11 @@ function listdanmu(){
             $(this).parent().hide();
             fetch('http://localhost:51880/stopdanmu/'+this_uid).then((res)=>{return res.text()})
             .then((res)=>{
-                    mdui.snackbar({
-                        message: `已移除 ${this_uid} 的录制任务`,
-                    });
-                    document.getElementById('livedanmurecSwitch').checked=false;
+                mdui.snackbar({
+                    message: `已移除 ${this_uid} 的录制任务`,
                 });
+                document.getElementById('livedanmurecSwitch').checked=false;
             });
+        });
     })
 }

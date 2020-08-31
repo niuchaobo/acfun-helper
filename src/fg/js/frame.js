@@ -28,7 +28,7 @@ function registVideoClick() {
                     action: 'notice',
                     params: {
                         title: '',
-                        msg:'请耐心等待，视频正在下载中',
+                        msg:'请耐心等待，视频正在下载中...',
                     }
                 }, '*');
 
@@ -67,6 +67,7 @@ function scanChange(e) {
         }
     }, '*');
 }
+
 function receiveChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
@@ -95,11 +96,12 @@ function copyLink(event) {
 }
 
 function lottery() {
-    $('#lucy-chou').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
     let number = $("#lucy-number").val();
     if(number=='' || Number(number)<=0){
+        alert("抽奖数值为空，请指定一下抽奖数量。")
         return false;
     }
+    $('#lucy-chou').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
     let isFollow = $("#lucy-follow").val();
     window.parent.postMessage({
         action: 'lottery',
@@ -112,11 +114,12 @@ function lottery() {
 }
 
 function lotteryAgain() {
-    $('#lucy-chou').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
     let number = $("#lucy-number").val();
     if(number=='' || Number(number)<=0){
+        alert("抽奖数值为空，请指定一下抽奖数量。")
         return false;
     }
+    $('#lucy-chou').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
     let isFollow = $("#lucy-follow").val();
     window.parent.postMessage({
         action: 'lottery2nd',
@@ -125,7 +128,6 @@ function lotteryAgain() {
             isFollow: isFollow
         }
     }, '*');
-
 }
 
 function checkNumber() {
@@ -134,7 +136,6 @@ function checkNumber() {
     if(!re.test(value)) {
         $("#lucy-number").val("");
         //return false;
-
     }
 }
 
@@ -186,6 +187,7 @@ function liveDanmuFtch(){
         if(res=='true'){alert('已成功启动弹幕下载关注')}else{alert('未知错误')};
     })
 }
+
 function cancelStartliveDanmuFtch(){
     let Uid = getParentUid();
     fetch("http://localhost:51880/stopdanmu/"+Uid).then((res)=>{return res.text();})
@@ -217,6 +219,7 @@ function recordLive(){
         if(res=='true'){alert('已成功启动直播录制')}else{alert('未知错误')};
     })
 }
+
 function subrecordLivecancel(){
     let Uid = getParentUid();
     fetch("http://localhost:51880/delrecord/"+Uid).then((res)=>{return res.text();})
@@ -252,7 +255,6 @@ function liveRemoveSub(){
     })
 }
 
-
 function api_showLucyResult(params) {
     let {arr} = params;
     let lucyUser = JSON.parse(arr);
@@ -278,7 +280,6 @@ function api_showLucyResult(params) {
     $('#lucy-chou').loading('stop');
     $('#lucy-chouAgain').loading('stop');
     $("#lucy-result-label").show();
-
 }
 
 function onDomContentLoaded() {
@@ -352,7 +353,6 @@ function api_showMessage(result){
     document.getElementById("ncb-span").innerText=decodeURI(res.message);
     fadeIn('message',10);
     //fadeOut('message',0.5);
-
 }
 
 function fadeIn(id,speed){
