@@ -1518,7 +1518,6 @@ $(document).ready(function () {
                 // console.log(target.dataset);
                 let x = await getStorage("WatchPlanList");
                 let Url = "https://www.acfun.cn/"+target.dataset.type+"/ac"+target.dataset.key;
-                alert(Url);
                 mdui.snackbar({
                     message: `已移除 ${target.parentNode.children[3].innerText}`,
                 });
