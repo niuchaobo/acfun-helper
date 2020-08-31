@@ -94,6 +94,12 @@ class WatchPlan{
             }
             if(Object.keys(this.tabStateDic).length==0 && this.ori_list.WatchPlanList.length==0){
                 chrome.storage.local.set({WatchPlanList : []});
+                chrome.notifications.create(null, {
+                    type: 'basic',
+                    iconUrl: 'images/notice.png',
+                    title: 'AcFun 助手 - 稍后再看',
+                    message: '已完成所有稍后再看列表项排程'
+                });
                 clearInterval(_daemon);
             }
         }, 2000);
@@ -115,6 +121,9 @@ class WatchPlan{
         return x[0];
     }
 
-
+    viewHistoryBackend(opts){
+        let x = JSON.parse(opts.msg).history.views
+        db_putHistoryViews(x)
+    }
 
 }

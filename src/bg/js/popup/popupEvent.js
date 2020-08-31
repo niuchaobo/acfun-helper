@@ -63,6 +63,38 @@ export async function onOptionChanged(e) {
     optionsSave(newOptions);
   }
 
+export async function WatchLaterFOpenList(){
+  mdui.snackbar({
+    message: `请移步助手 设置页面 - 内容设置。`,
+  });
+}
+
+export async function WatchLaterFpopup(){
+  chrome.storage.local.get(['watchLater'],function(items){
+    if(items.watchLater){
+      mdui.snackbar({
+        message: `已经启动 稍后再看 排程。`,
+      });
+      chrome.runtime.sendMessage({action: "watchLater",params:{}}, function (response) {});
+    }
+  })
+}
+
+export async function viewHistory(){
+  db.open()
+  let x = await db_getHistoryViews();
+  var raw_data = "";
+  for(let i=x.content.length-1;i>=0;i--){
+    var raw_data =raw_data+ `
+      <tr>
+          <td>${x.content[i].name} - 观看于${getTimeSinceNow(x.content[i].time)}</td>
+          <td><a href="https://www.acfun.cn${Boolean(x.content[i].aid)?"/v/ac"+x.content[i].aid:"/"}" target="_blank">《${x.content[i].title}》</a> </td>
+      </tr>
+    `;
+  }
+  $("#ViewHistory").append(raw_data);
+}
+
 export async function fetchDougaInfo(){
   let acid = $("#dougaInfoAcid").val();
   if(acid==''){return}

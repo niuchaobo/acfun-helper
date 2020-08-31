@@ -152,6 +152,7 @@ class ODHBack {
 
 
     onInstalled(details) {
+        initializeDBTable();
         if (details.reason === 'install') {
             chrome.tabs.create({url: chrome.extension.getURL('bg/guide.html')});
             return;
@@ -253,6 +254,10 @@ class ODHBack {
 
     async api_watchLater(){
         this.WatchPlan.main();
+    }
+
+    api_historyView(params){
+        this.WatchPlan.viewHistoryBackend(params)
     }
 
     async api_initBackend(params) {

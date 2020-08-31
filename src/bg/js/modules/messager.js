@@ -188,7 +188,7 @@ class MsgNotifs{
                             xmlData+=data.aid + "\" src=\""+data.titleImg+"\" class=\"preview\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+data.aid+" \"target=\"_blank\" href=\"" +"https://www.acfun.cn"+data.url+"\" class=\"title\">";
                             xmlData+=data.title+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
                             xmlData+=data.aid+"\" href=\"https://www.acfun.cn/u/"+data.userId+"\" class=\"name\">";
-                            xmlData += data.username + " </a><span class=\"time\">" + getTimeSinceNow(data.releaseDate) + "</span> </div> </div> </div> ";
+                            xmlData += data.username + " </a><span class=\"time\">" + getTimeSinceNow(data.releaseDate) + "发布</span> </div> </div> </div> ";
                             out_data+=xmlData;
                         }
                         // chrome.storage.local.set({'AcpushList1': out_data});

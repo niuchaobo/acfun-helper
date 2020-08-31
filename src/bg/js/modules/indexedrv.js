@@ -20,6 +20,10 @@ function test(){
     });
 }
 
+function initializeDBTable(){
+    console.log("initializeDBTable For System.")
+}
+
 async function judgeDbExist(dbName) {
     return new Promise((resolve, reject) => {
         Dexie.exists(dbName).then(function(exists) {
@@ -107,6 +111,13 @@ function db_putPushListHtml(Data){
     }
 }
 
+function db_putHistoryViews(Data){
+    initPushListHtml()
+    if(Data!= null && Data !=undefined){
+        db.PushListHtml.put({id:2,content:Data});
+    }
+}
+
 function db_putSquareList(Data){
     initSquareList();
     db2.open();
@@ -147,6 +158,13 @@ async function db_getPushListHtml(){
     let x = await db.PushListHtml.orderBy("id").reverse().toArray();
     db.close()
     return x;
+}
+
+async function db_getHistoryViews(){
+    initPushListHtml();
+    let x = await db.PushListHtml.orderBy("id").reverse().toArray();
+    db.close()
+    return x[0];
 }
 
 async function db_getPushLstMany(limitNum){
