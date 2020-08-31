@@ -16,18 +16,12 @@ import {
   fetchDougaInfo,
   viewHistory,
   WatchLaterFpopup,
-  WatchLaterFOpenList
+  WatchLaterFOpenList,
+  MomentSquareFpop
 } from "./popupEvent.js";
 
 import unKnownCode from "./unKnownCode.js";
 unKnownCode(); //不明代码
-
-function fetchPushContent() {
-  chrome.storage.local.get(["AcpushList"], function (data) {
-    console.log(data);
-    $("#pop-push").append(data.AcpushList);
-  });
-}
 
 async function onReady() {
   localizeHtmlPage(); //global function
@@ -50,6 +44,7 @@ async function onReady() {
   $("#ViewHistoryAction").click(viewHistory);
   $("#WatchLaterFpopup").click(WatchLaterFpopup);
   $("#WatchLaterFOpenList").click(WatchLaterFOpenList);
+  $("#MomentSquareFpop").click(MomentSquareFpop);
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
@@ -61,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 });
 
 $(document).ready(utilAsync(onReady));
-
 
 //==============Common Functions================//
 // 将时间转为最近
