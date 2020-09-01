@@ -699,7 +699,10 @@ createElementStyle = (cssText,targetDom = document.head,id=null)=>{
     nod.type = "text/css";
     id ? nod.id = id : null;
     nod.textContent = str;
-    targetDom.appendChild(nod);
-    return ()=>{ targetDom.removeChild(document.getElementById(id)); }
+    target.appendChild(nod);
+    return ()=>{ 
+        console.log(target)
+        console.log(id)
+        target.removeChild(document.getElementById(id)); }
 }
 
