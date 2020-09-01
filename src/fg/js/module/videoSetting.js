@@ -85,6 +85,7 @@ class VideoSetting{
         var timer = setInterval(function () {
             let nodes = $('.quality-panel');
             var vqregexp = RegExp('p60');
+            var vqreg2exp = RegExp("2160p");
             if(nodes.length>0){
                 //模式标准：0=自动；1=默认最高；2=非60帧的最高画质；3=强制标清；4=偏向非4k的最高画质
                 chrome.storage.local.get(['videoQualityStrategy'],function(items){
@@ -113,9 +114,8 @@ class VideoSetting{
                         qualitys[Lowest].click();
                         break;
                         case 4:
-                            let vqre2exp = RegExp("2160p");
                             for(let x = 0;x<=qualitys.length-1;){
-                                if(vqre2exp.test(qualitys[x].dataset.index)){
+                                if(vqreg2exp.test(qualitys[x].dataset.index)){
                                     x++;
                                 }else{
                                     qualitys[x+1].click()
