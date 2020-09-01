@@ -97,17 +97,17 @@ function copyLink(event) {
 
 function lottery() {
     let number = $("#lucy-number").val();
+    let isFollow = $("#lucky-follow").prop('checked');
     if(number=='' || Number(number)<=0){
         alert("抽奖数值为空，请指定一下抽奖数量。")
         return false;
     }
     $('#lucy-chou').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
-    let isFollow = $("#lucy-follow").val();
     window.parent.postMessage({
         action: 'lottery',
         params: {
             number: number,
-            isFollow: isFollow
+            follow: isFollow
         }
     }, '*');
 
@@ -115,17 +115,17 @@ function lottery() {
 
 function lotteryAgain() {
     let number = $("#lucy-number").val();
+    let isFollow = $("#lucky-follow").prop('checked');
     if(number=='' || Number(number)<=0){
         alert("抽奖数值为空，请指定一下抽奖数量。")
         return false;
     }
-    $('#lucy-chou').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
-    let isFollow = $("#lucy-follow").val();
+    $('#lucy-chouAgain').loading({text:'请稍候',num:3,rate: 1000,style:'.'});
     window.parent.postMessage({
         action: 'lottery2nd',
         params: {
             number: number,
-            isFollow: isFollow
+            follow: isFollow
         }
     }, '*');
 }

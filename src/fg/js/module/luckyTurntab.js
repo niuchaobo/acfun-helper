@@ -81,7 +81,7 @@ class LuckyTtab {
         })
     }
 
-    async getVCdetailCommentData(acid,){
+    async getVCdetailCommentData(acid,follow){
         let acCommentApi='https://www.acfun.cn/rest/pc-direct/comment/list?sourceId='+acid+'&sourceType=3&page=';
         let totalPageNum = await this.getTotalPageNum(acid).then((res)=>{return res});
         let Comm_data={};
@@ -96,6 +96,14 @@ class LuckyTtab {
                     //跳过up主自己
                     if(obj.isUp){
                         continue;
+                    }
+                    //是否需要关注up主
+                    if(follow){
+                        let isFollow = await this.isFollowed(obj.userId);
+                        console.log("isFollow="+isFollow);
+                        if(!isFollow){
+                            continue;
+                        }
                     }
                     if(Comm_data_UIDList.indexOf(obj.userId) > -1){
                         continue;
@@ -163,9 +171,9 @@ class LuckyTtab {
         })
     }
 
-    async RollOut(acid,num){
+    async RollOut(acid,num,follow){
         //主函数
-        let y = await this.getVCdetailCommentData(acid).then((res)=>{return res});
+        let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
         let max = y['Comm_data_UIDList'].length;
         if(num>max){
             num = max;
@@ -174,8 +182,8 @@ class LuckyTtab {
         let min = 0;
         while(arr.length<num){
             let i = Math.floor(Math.random() * (max - min)) + min;
-
             let userId = y['Comm_data_UIDList'][i];
+            this.hasBeenChosen.push(userId);
             let commentInfo = y['Comm_data_byUID'][userId];
             let url = this.messageFormat.replace("{userId}",userId);
             let lucyUser = {
@@ -199,9 +207,9 @@ class LuckyTtab {
         }, '*');
     }
 
-    async RollOutExp(acid,num){
+    async RollOutExp(acid,num,follow){
         //排除上次执行的结果的主函数
-        let y = await this.getVCdetailCommentData(acid).then((res)=>{return res});
+        let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
         let max = y['Comm_data_UIDList'].length;
         if(num>max){
             num = max;
@@ -215,6 +223,7 @@ class LuckyTtab {
             //let i = Math.floor(Math.random() * (max - min)) + min;
             let i = Math.floor(Math.random() * (max - min)) + min;
             let userId = y['Comm_data_UIDList'][i];
+
             if(this.hasBeenChosen.indexOf(userId)!=-1){
                 tryNum++;
                 if(tryNum<=10){

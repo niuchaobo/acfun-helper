@@ -201,8 +201,9 @@ class Popup {
                 </div>
                 <div class="odh-definition basic-grey">
                      <label>
-                        <span>抽多少个Acer :</span> 
+                        <span>抽多少个Acer :</span>
                         <input id="lucy-number" type="text" autocomplete="off" name="number" placeholder="请输入数字"/></label>
+                        <label>仅抽选已关注我的Acer：<input id="lucky-follow" style="vertical-align:top" name="follower" type="checkbox" value="" /></label>
                         <!--<label>
                         <span>是否需要关注Up主 :</span> 
                         <input id="lucy-follow" type="checkbox" name="uniq" />
