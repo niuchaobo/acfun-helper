@@ -276,22 +276,6 @@ class ODHBack {
         $.ajax(request);
     }
 
-    async api_getBuiltin(params) {
-        let {dict, word, callbackId} = params;
-        this.callback(this.builtin.findTerm(dict, word), callbackId);
-    }
-
-    async api_getLocale(params) {
-        let {callbackId} = params;
-        this.callback(chrome.i18n.getUILanguage(), callbackId);
-    }
-
-    // front end message handler
-    async api_isConnected(params) {
-        let callback = params.callback;
-        callback(await this.opt_getVersion());
-    }
-
 
 
 
