@@ -157,7 +157,7 @@ class LivePageButfy {
     simplifyDanmu(){
         let noticeIcon = this.noticeIcon;
         $('.live-feed .face-text').append(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`)
-        $('#app').append('<div class="hide_popup"><ul style="width:120px"><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></ul></div>')
+        $('#app').append('<div class="hide_popup"><ul style="width:120px"><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="container-live-anim">屏蔽礼物气泡</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></ul></div>')
         document.getElementsByClassName('hide_popup')[0].style.cssText='position: absolute; z-index: 100;display: none;position: absolute; z-index: 100;display: none;background-color: rgba(255, 255, 255, 0.92);margin: 10px;padding: 5px;box-shadow: rgb(197, 197, 197) 5px 5px 5px 1px;';
         document.getElementsByClassName('notice_icon')[0].style.cssText='position: absolute; width: 18px; heigth: auto; left: 35px; top: 0px; cursor: pointer;';
         document.getElementsByClassName('notice_icon')[0].children[0].style.cssText='width: 100%; height: auto';
@@ -168,7 +168,7 @@ class LivePageButfy {
             e.preventDefault();
             e.stopPropagation();
             $('.hide_popup').css('display') === "none" ?
-            $('.hide_popup').css({ left: e.pageX -50+ 'px', top: e.pageY-180 + 'px' }).show():
+            $('.hide_popup').css({ left: e.pageX -50+ 'px', top: e.pageY-220 + 'px' }).show():
             $('.hide_popup').hide()
         })
         
@@ -181,6 +181,11 @@ class LivePageButfy {
         $('.hide_popup').find('input').click(function (e) {
             let _type = $(this).attr('data-type')
             let isChecked = $(this).prop('checked')
+            if(_type=="container-live-anim" && isChecked){
+                document.querySelector(".container-live-slot").hidden = true;
+            }else{
+                document.querySelector(".container-live-slot").hidden = false;
+            }
             if (isChecked) {
                 // console.log('ready to block '+_type);
                 $('.live-feed-messages').addClass('ban_' + _type)
