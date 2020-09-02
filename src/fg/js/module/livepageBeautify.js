@@ -38,7 +38,9 @@ class LivePageButfy {
     }
 
     widePlayerStyle(){
+        //这里是宽屏模式的样式，第一行包含了因为弹幕时间Tag功能加入导致用户名颜色变为黑色的纠正样式
         let cssStr =`
+          .container-live-feed-messages .live-feed-messages>div.comment>div span:nth-child(2){color: #409bef;}
           .main{transiton: all 0.5s;padding:0 !important;} 
           .main_wide{width: 100%!important; margin:0!important;padding:0!important ; max-width:100% !important;height:100vh;} 
           .control-btn svg{width: 20px; height: auto;} 
@@ -65,7 +67,6 @@ class LivePageButfy {
            #wide-player-right:hover{
                opacity:1
            }
-
           `;
         let mainDom = document.getElementsByClassName('main')[0]
         createElementStyle(cssStr,mainDom)
@@ -142,7 +143,6 @@ class LivePageButfy {
         $('.toggle-tip').html('进入宽屏模式')
         document.getElementsByClassName('player-outer-wrapper')[0].classList.remove('main_wide');
         document.getElementById('app').classList.remove('wide_app');
-        //性能问题，就不再次恢复了
         // document.getElementsByClassName('live-feed')[0].style.borderRadius = "3px";
         $('#footer').show();
         $('.list-container').show();
@@ -153,7 +153,7 @@ class LivePageButfy {
         $(".container-live-feed").removeClass('width_hidden')
     }
 
-    //屏蔽按钮
+    //屏蔽按钮以及样式
     simplifyDanmu(){
         let noticeIcon = this.noticeIcon;
         $('.live-feed .face-text').append(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`)
@@ -182,22 +182,20 @@ class LivePageButfy {
             let _type = $(this).attr('data-type')
             let isChecked = $(this).prop('checked')
             if(_type=="container-live-anim" && isChecked){
-                document.querySelector(".container-live-slot").hidden = true;
+                $(".live-feed-gift-slot").addClass('ban_' + _type)
             }else{
-                document.querySelector(".container-live-slot").hidden = false;
+                $(".live-feed-gift-slot").removeClass('ban_' + _type)
             }
             if (isChecked) {
-                // console.log('ready to block '+_type);
                 $('.live-feed-messages').addClass('ban_' + _type)
             } else {
-                // console.log('cancal to block '+_type);
                 $('.live-feed-messages').removeClass('ban_' + _type)
             }
         })
     }
 
     addBanStyle(){
-        let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;}"
+        let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;} .container-live-slot .ban_container-live-anim{display:none !important;}"
         createElementStyle(cssStr)
     }
     

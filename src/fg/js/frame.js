@@ -323,7 +323,7 @@ function api_updateProgress(params) {
 }
 
 function api_updateLiveUrl(params) {
-    console.log("update:"+params);
+    // console.log("update:"+params);
     let {live_url} = params;
     let super_url = live_url.replace('_sd1000','');
     $("#live-url-high").text(live_url);
