@@ -17,12 +17,12 @@ class WatchPlan {
         console.log("Registered WatchPlan Mod.");
     }
 
-    main() {
-        this.execWatch();
-    }
-
     setWatchOptTabNum(num) {
         this.execWatchReqTabNum = num;
+    }
+
+    getOpRes() {
+        return this.OpFlag;
     }
 
     ifExist(list, obj) {
@@ -54,10 +54,6 @@ class WatchPlan {
         }
     }
 
-    getOpRes() {
-        return this.OpFlag;
-    }
-
     async execTabCreate(url) {
         //打开标签，并返回一个tab Info字典
         return new Promise((resolve, reject) => {
@@ -67,28 +63,18 @@ class WatchPlan {
         });
     }
 
-    execQueryTab(id) {
-        try {
-            chrome.tabs.get(id, (e) => {
-                if (e) {
-                    return true
-                } else {
-                    return false
-                }
-            })
-        } catch (e) { }
-    }
-
     async execWatch() {
         //打开列表中的前面几项（默认3项），并监听他们的状态（onRemoved or onUpdated），状态改变之后就将其从列表中删除，并补上页面，保持页面数量在指定数量。
         this.ori_list = await getStorage("WatchPlanList");
         chrome.tabs.onRemoved.addListener((id) => {
+            //在关闭某个标签，检查是否是我们维护的标签状态对象里面的对象
             if (this.tabStateDic.hasOwnProperty(id)) {
                 delete this.tabStateDic[id];
             }
         })
 
         var _daemon = setInterval(async () => {
+            //判断 标签状态对象 里面的维护对象数（此次稍后再看排程列表长）是否比需要保持的稍后再看的标签保持数小，并且稍后再看列表不为空
             if (Object.keys(this.tabStateDic).length < this.execWatchReqTabNum && this.ori_list.WatchPlanList.length != 0) {
                 let info = await this.execTabCreate(this.ori_list.WatchPlanList.slice(-1)[0]);
                 this.tabStateDic[info.id] = { url: info.pendingUrl, tabInfo: info };
@@ -108,23 +94,13 @@ class WatchPlan {
         return;
     }
 
-    execAddStateJudge() {
-        //需要补充标签的判断
-        if (Object.keys(this.tabStateDic).length < this.execWatchReqTabNum) {
-            return true
-        }
-        return false
-    }
-
-    queryTabState() {
-        //查询标签状态
-        var x = [];
-        chrome.tabs.get(id, (e) => { x.push(e) })
-        return x[0];
-    }
-
     viewHistoryBackend(opts) {
-        let x = JSON.parse(opts.msg).history.views
+        try {
+            let x = JSON.parse(opts.msg).history.views;
+        } catch (error) {
+            console.log("[LOG]Backend > WatchPlan-viewHistoryBackend: viewHistory fetch Fail.");
+            return
+        }
         db_putHistoryViews(x)
     }
 

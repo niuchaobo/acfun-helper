@@ -246,7 +246,7 @@ class ODHBack {
     }
 
     async api_watchLater(){
-        this.WatchPlan.main();
+        this.WatchPlan.execWatch();
     }
 
     api_historyView(params){
@@ -256,8 +256,7 @@ class ODHBack {
     async api_initBackend(params) {
         let options = await optionsLoad();
         //this.ankiweb.initConnection(options);
-        //to do: will remove it late after all users migrate to new version.
-        if (options.dictLibrary) { // to migrate legacy scripts list to new list.
+        if (options.dictLibrary) {
             options.sysscripts = options.dictLibrary;
             options.dictLibrary = '';
         }
@@ -324,10 +323,7 @@ class ODHBack {
     }
 
 
-
-
-
-
+    
     // Sandbox communication
     async loadScripts(list) {
         let promises = list.map((name) => this.loadScript(name));

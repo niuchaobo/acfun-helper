@@ -57,7 +57,7 @@ class Ohminibox{
         });
         
         chrome.omnibox.setDefaultSuggestion({
-            "description": "Ac在爱一直在 - 进入主站"
+            "description": "进入主站"
         });
     }
 }
