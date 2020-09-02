@@ -247,10 +247,12 @@ class VideoSetting{
     fullScreenStyle(on){
         //underWorld => 阴间
         if(on){
+            this.underWorld && this.underWorld();
             let cssText = "#main>#main-content{ mix-blend-mode: difference;background: white; margin: 0px; max-width:100%; width: calc(100% - 20px) !important; overflow:hidden; padding:0px 10px}"
             + "#main .video-description .reco-tag,.action-area{mix-blend-mode:exclusion}"
             + "#pagelet_bottomrecommend,.area-editor-avatar,#main .introduction .up-area{mix-blend-mode:exclusion}"
             + ".right-column img{mix-blend-mode:exclusion}"
+            + ".player-box{mix-blend-mode:exclusion}"
             + "#pagelet_newcomment .thumb,.acfunAdmin.verified-ico-5,a.name,a.pager__btn__selected,a.pager__btn__selected,.area-comment-des img{mix-blend-mode:exclusion}"
             + "body #main #main-content .left-column{width:100% !important;max-width:100%}"
             + ".ac-comment-usercard .area-comm-usercard-bottom{mix-blend-mode:exclusion}"
@@ -265,7 +267,8 @@ class VideoSetting{
                 $('.right-column').css({'right':'-342px', "background": "","border-left-width":"6px"}) 
             })
         }else{
-            if(this.underWorld()!=null){this.underWorld}
+            this.underWorld && this.underWorld();
+            this.underWorld = null;
             $('.right-column').unbind('mouseenter').unbind('mouseleave')
         }
 
