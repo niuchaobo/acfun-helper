@@ -52,14 +52,14 @@ class ODHBack {
 
         //右键菜单
         chrome.contextMenus.create({
-            title: '下载封面', // %s表示选中的文字
-            contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
+            title: '下载封面',
+            contexts: ['link'],
             id:'1'
         });
 
         chrome.contextMenus.create({
-            title: '下载原始封面', // %s表示选中的文字
-            contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
+            title: '下载原始封面',
+            contexts: ['link'],
             parentId:'1',
             onclick: function(params,tab){
                 let link_url = params.linkUrl;
@@ -69,8 +69,8 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
-            title: '下载高清封面', // %s表示选中的文字
-            contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
+            title: '下载高清封面',
+            contexts: ['link'],
             parentId:'1',
             onclick: function(params,tab){
                 let link_url = params.linkUrl;
@@ -117,13 +117,6 @@ class ODHBack {
             });
         });
 
-    }
-
-    test(params,tab){
-        console.log(params);
-        //this.odhback.test.apply();
-        console.log("this",this)
-        this.tabInvoke(tab.id, 'downloadCover', {link_url:'123'});
     }
 
     onCommentRequest(req){

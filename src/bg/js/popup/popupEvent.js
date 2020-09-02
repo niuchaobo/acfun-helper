@@ -1,11 +1,7 @@
 /* global odhback, optionsLoad, optionsSave*/
 
 export function openUpdateLog() {
-  //window.open("update-log.html","_blank");
-  var a = $("<a href='update-log.html' target='_blank'></a>").get(0);
-  var e = document.createEvent("MouseEvents");
-  e.initEvent("click", true, true);
-  a.dispatchEvent(e);
+  window.open("https://github.com/niuchaobo/acfun-helper/commits/master");
 }
 
 export function openIntroduce() {
@@ -102,7 +98,10 @@ export async function viewHistory(){
 
 export async function fetchDougaInfo(){
   let acid = $("#dougaInfoAcid").val();
+  let regAcid = new RegExp("ac(.*)");
   if(acid==''){return}
+  let x = regAcid.exec(acid);
+  x==null?acid=acid:acid=x[1]
   fetch("https://mini.pocketword.cn/api/acfun/info?dougaId=" + acid).then((res)=>{
     if(res.status==503){
       alert("请不要频繁请求。")

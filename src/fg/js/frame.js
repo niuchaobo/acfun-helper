@@ -12,7 +12,6 @@ function downloadDanmaku(){
             }, '*');
         })
     } catch (error) {
-        
     }
 }
 
@@ -110,7 +109,6 @@ function lottery() {
             follow: isFollow
         }
     }, '*');
-
 }
 
 function lotteryAgain() {
@@ -150,8 +148,8 @@ function liveSubscribe(){
     fetch("http://localhost:51880/liststreamer").then((res)=>{
         if(res.ok) {
             return res.text();
-          }
-          throw new Error('Network response was not ok.');
+        }
+        throw new Error('Network response was not ok.');
     })
     .then((res)=>{
         let x = JSON.parse(res);
@@ -335,8 +333,8 @@ function api_updateLiveUrl(params) {
 function api_setActionState(result) {
     const { response, params } = result;
     const { nindex, dindex } = params;
-
     const match = document.querySelector(`.odh-addnote[data-nindex="${nindex}"].odh-addnote[data-dindex="${dindex}"]`);
+
     if (response)
         match.src = getImageSource('good');
     else

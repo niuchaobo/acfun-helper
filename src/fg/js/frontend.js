@@ -338,6 +338,9 @@ class ODHFront {
     if (this.options.upHighlight) {
       this.ce.renderSubScanForUp(rootCommentId);
     }
+    if(this.options.PlayerTimeCommentEasyJump){
+      this.ce.searchScanForPlayerTime();
+    }
   }
   //评论区整体部分的标记渲染入口
   api_renderList(params) {
@@ -350,6 +353,9 @@ class ODHFront {
     }
     if (this.options.upHighlight) {
       this.ce.renderScanForUp();
+    }
+    if(this.options.PlayerTimeCommentEasyJump){
+      this.ce.searchScanForPlayerTime();
     }
   }
 }

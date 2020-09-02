@@ -249,8 +249,14 @@ function Duration2Seconds(time){
     let arr = str.split(':');
     let Tm=Number(arr[0]*60);
     let Ts=Number(arr[1]);
-    let seconds=Tm+Ts;
-    return seconds;
+    if(arr.length==2){
+        let seconds=Tm+Ts;
+        return seconds;
+    }else if(arr.length==3){
+        let Th=Number(arr[0]*60*60);
+        let seconds=Th+Tm+Ts;
+        return seconds;
+    }
 }
 
 function timeToMinute(second){

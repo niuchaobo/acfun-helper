@@ -4,6 +4,7 @@
 class CommentEnhance{
     constructor() {
         this.reg_for_time=new RegExp('[0-9]{1,3}[:分][0-9]{1,2}秒?'); 
+        this.reg_for_time3part=new RegExp('[0-9]{1,3}[:小时][0-9]{1,3}[:分][0-9]{1,2}秒?'); 
         this.reg_for_part = new RegExp('^p[0-9]{1,2}|^[0-9]{1,2}p','i')
         this.easy_time = new RegExp('[0-9]{1,3}分|[0-9]{1,2}秒?')
     }
@@ -233,6 +234,7 @@ class CommentEnhance{
             let nodes = $('.area-comment-des-content');
             let loading = $('.ac-comment-loading').html();
             let reg_for_time=this.reg_for_time;
+            let reg_for_3partime=this.reg_for_time3part;
             let reg_for_part = this.reg_for_part;
             let reg_for_mtline=new RegExp('<br>')
             if(nodes.length>0 && loading==''){
@@ -248,9 +250,16 @@ class CommentEnhance{
                             let partTarrgetNum = 0;
                             for(let i=0;i<=(a.length-1);i++){
                                 let timeTarget = reg_for_time.exec(a[i]);
+                                let timeTarget3p = reg_for_3partime.exec(a[i]);
                                 let partTarrget = reg_for_part.exec(a[i]);
                                 partTarrgetNum = 0
-                                if (timeTarget){
+                                if(timeTarget3p){
+                                    if (partTarrget){
+                                        partTarrgetNum = partTarrget[0].replace(/[^1-9]/ig,"")
+                                    }
+                                    timeTarget3p ? timeTarget3p = timeTarget3p[0].replace(/分/,':').replace(/秒/,'') : ''
+                                    after_html=after_html+`<a id='quickJump' onclick="quickJump('${timeTarget3p}',${partTarrgetNum && partTarrgetNum })">${partTarrget ? partTarrget[0] + ' ' : ' '} ${timeTarget3p}</a>`; 
+                                }else if (timeTarget){
                                     if (partTarrget){
                                         partTarrgetNum = partTarrget[0].replace(/[^1-9]/ig,"")
                                     }
