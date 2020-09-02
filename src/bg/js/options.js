@@ -1975,4 +1975,8 @@ $(document).ready(function () {
         }
     });
 
+    $("#MyIndex").click(()=>{
+        window.open("https://www.acfun.cn/member/#area=splash")
+    })
+
 });

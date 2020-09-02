@@ -1,7 +1,6 @@
 async function catList(){
     let x = await fetchResult("https://api-new.app.acfun.cn/rest/app/tag/getCategoryList?");
     let a = JSON.parse(x)
-    console.log(a)
     for (let index = 0; index < a.categories.length; index++) {
         let nod = document.createElement("a");
         nod.href = `#topicClass`+a.categories[index].categoryId;
@@ -21,7 +20,6 @@ async function catList(){
 
 
 async function catFeeds(catId){
-    console.log(catId)
     let x = await fetchResult(`https://api-new.app.acfun.cn/rest/app/tag/feed?categoryId=${catId}&count=20&pcursor=0`);
     let a = JSON.parse(x);
     console.log(a);
@@ -57,7 +55,6 @@ async function main(){
     let x = await catList()
     for (let index = 0; index < x.length; index++) {
         catFeeds(x[index].categoryId);
-        console.log(x[index].categoryId)
     }
     
 }

@@ -7,7 +7,6 @@ function liststreamer(){
     fetch('http://localhost:51880/liststreamer').then((res)=>{return res.text()})
     .then((res)=>{
         let x = JSON.parse(res);
-        console.log(x);
         try {
             var livenotifNum = x.length;
         } catch (error) {
@@ -15,7 +14,6 @@ function liststreamer(){
         }
         if(livenotifNum > 0){
             document.getElementById('livenotifSwitch').checked=true;
-            console.log('added');
             for(let i=0;i<x.length;i++){
                 console.log(x[i]);
                 x[i].Notify?a='checked':a='';x[i].Record?b='checked':b='';x[i].Danmu?c='checked':c='';
@@ -41,7 +39,6 @@ function listrecord(){
     fetch('http://localhost:51880/listrecord').then((res)=>{return res.text()})
     .then((res)=>{
         let x = JSON.parse(res);
-        console.log(x);
         try {
             var livenotifNum = x.length;
         } catch (error) {
@@ -49,7 +46,6 @@ function listrecord(){
         }
         if(livenotifNum > 0){
             document.getElementById('liverecSwitch').checked=true;
-            console.log('added');
             for(let i=0;i<x.length;i++){
                 console.log(x[i]);
                 $('ul.liverecSwitch').append(`<li class="mdui-list-item mdui-ripple" data-key=${x[i].UID} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liverecItems" data-key=${x[i].UID} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${x[i].UID}" target="_blank"></a><div class="mdui-list-item-content">Uid:${x[i].UID}   UserName:${x[i].Name}</div></li>`);
@@ -74,7 +70,6 @@ function listdanmu(){
     fetch('http://localhost:51880/listdanmu').then((res)=>{return res.text()})
     .then((res)=>{
         let x = JSON.parse(res);
-        console.log(x);
         try {
             var livenotifNum = x.length;
         } catch (error) {
@@ -82,7 +77,6 @@ function listdanmu(){
         }
         if(livenotifNum > 0){
             document.getElementById('livedanmurecSwitch').checked=true;
-            console.log('added');
             for(let i=0;i<x.length;i++){
                 console.log(x[i]);
                 $('ul.livedanmurecSwitch').append(`<li class="mdui-list-item mdui-ripple" data-key=${x[i].UID} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liverecItems" data-key=${x[i].UID} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${x[i].UID}" target="_blank"></a><div class="mdui-list-item-content">Uid:${x[i].UID}   UserName:${x[i].Name}</div></li>`);

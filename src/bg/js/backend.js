@@ -52,14 +52,14 @@ class ODHBack {
 
         //右键菜单
         chrome.contextMenus.create({
-            title: '下载封面', // %s表示选中的文字
-            contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
+            title: '下载封面',
+            contexts: ['link'],
             id:'1'
         });
 
         chrome.contextMenus.create({
-            title: '下载原始封面', // %s表示选中的文字
-            contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
+            title: '下载原始封面',
+            contexts: ['link'],
             parentId:'1',
             onclick: function(params,tab){
                 let link_url = params.linkUrl;
@@ -69,8 +69,8 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
-            title: '下载高清封面', // %s表示选中的文字
-            contexts: ['link'], // 只有当选中文字时才会出现此右键菜单
+            title: '下载高清封面',
+            contexts: ['link'],
             parentId:'1',
             onclick: function(params,tab){
                 let link_url = params.linkUrl;
@@ -117,13 +117,6 @@ class ODHBack {
             });
         });
 
-    }
-
-    test(params,tab){
-        console.log(params);
-        //this.odhback.test.apply();
-        console.log("this",this)
-        this.tabInvoke(tab.id, 'downloadCover', {link_url:'123'});
     }
 
     onCommentRequest(req){
@@ -253,7 +246,7 @@ class ODHBack {
     }
 
     async api_watchLater(){
-        this.WatchPlan.main();
+        this.WatchPlan.execWatch();
     }
 
     api_historyView(params){
@@ -263,8 +256,7 @@ class ODHBack {
     async api_initBackend(params) {
         let options = await optionsLoad();
         //this.ankiweb.initConnection(options);
-        //to do: will remove it late after all users migrate to new version.
-        if (options.dictLibrary) { // to migrate legacy scripts list to new list.
+        if (options.dictLibrary) {
             options.sysscripts = options.dictLibrary;
             options.dictLibrary = '';
         }
@@ -282,22 +274,6 @@ class ODHBack {
             success: (data, status) => this.callback(data, callbackId)
         };
         $.ajax(request);
-    }
-
-    async api_getBuiltin(params) {
-        let {dict, word, callbackId} = params;
-        this.callback(this.builtin.findTerm(dict, word), callbackId);
-    }
-
-    async api_getLocale(params) {
-        let {callbackId} = params;
-        this.callback(chrome.i18n.getUILanguage(), callbackId);
-    }
-
-    // front end message handler
-    async api_isConnected(params) {
-        let callback = params.callback;
-        callback(await this.opt_getVersion());
     }
 
 
@@ -331,10 +307,7 @@ class ODHBack {
     }
 
 
-
-
-
-
+    
     // Sandbox communication
     async loadScripts(list) {
         let promises = list.map((name) => this.loadScript(name));

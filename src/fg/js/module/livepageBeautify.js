@@ -38,7 +38,9 @@ class LivePageButfy {
     }
 
     widePlayerStyle(){
+        //这里是宽屏模式的样式，第一行包含了因为弹幕时间Tag功能加入导致用户名颜色变为黑色的纠正样式
         let cssStr =`
+          .container-live-feed-messages .live-feed-messages>div.comment>div span:nth-child(2){color: #409bef;}
           .main{transiton: all 0.5s;padding:0 !important;} 
           .main_wide{width: 100%!important; margin:0!important;padding:0!important ; max-width:100% !important;height:100vh;} 
           .control-btn svg{width: 20px; height: auto;} 
@@ -65,7 +67,6 @@ class LivePageButfy {
            #wide-player-right:hover{
                opacity:1
            }
-
           `;
         let mainDom = document.getElementsByClassName('main')[0]
         createElementStyle(cssStr,mainDom)
@@ -142,7 +143,6 @@ class LivePageButfy {
         $('.toggle-tip').html('进入宽屏模式')
         document.getElementsByClassName('player-outer-wrapper')[0].classList.remove('main_wide');
         document.getElementById('app').classList.remove('wide_app');
-        //性能问题，就不再次恢复了
         // document.getElementsByClassName('live-feed')[0].style.borderRadius = "3px";
         $('#footer').show();
         $('.list-container').show();
@@ -153,11 +153,11 @@ class LivePageButfy {
         $(".container-live-feed").removeClass('width_hidden')
     }
 
-    //屏蔽按钮
+    //屏蔽按钮以及样式
     simplifyDanmu(){
         let noticeIcon = this.noticeIcon;
         $('.live-feed .face-text').append(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`)
-        $('#app').append('<div class="hide_popup"><ul style="width:120px"><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></ul></div>')
+        $('#app').append('<div class="hide_popup"><ul style="width:120px"><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="container-live-anim">屏蔽礼物气泡</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></ul></div>')
         document.getElementsByClassName('hide_popup')[0].style.cssText='position: absolute; z-index: 100;display: none;position: absolute; z-index: 100;display: none;background-color: rgba(255, 255, 255, 0.92);margin: 10px;padding: 5px;box-shadow: rgb(197, 197, 197) 5px 5px 5px 1px;';
         document.getElementsByClassName('notice_icon')[0].style.cssText='position: absolute; width: 18px; heigth: auto; left: 35px; top: 0px; cursor: pointer;';
         document.getElementsByClassName('notice_icon')[0].children[0].style.cssText='width: 100%; height: auto';
@@ -168,7 +168,7 @@ class LivePageButfy {
             e.preventDefault();
             e.stopPropagation();
             $('.hide_popup').css('display') === "none" ?
-            $('.hide_popup').css({ left: e.pageX -50+ 'px', top: e.pageY-180 + 'px' }).show():
+            $('.hide_popup').css({ left: e.pageX -50+ 'px', top: e.pageY-220 + 'px' }).show():
             $('.hide_popup').hide()
         })
         
@@ -181,18 +181,21 @@ class LivePageButfy {
         $('.hide_popup').find('input').click(function (e) {
             let _type = $(this).attr('data-type')
             let isChecked = $(this).prop('checked')
+            if(_type=="container-live-anim" && isChecked){
+                $(".live-feed-gift-slot").addClass('ban_' + _type)
+            }else{
+                $(".live-feed-gift-slot").removeClass('ban_' + _type)
+            }
             if (isChecked) {
-                // console.log('ready to block '+_type);
                 $('.live-feed-messages').addClass('ban_' + _type)
             } else {
-                // console.log('cancal to block '+_type);
                 $('.live-feed-messages').removeClass('ban_' + _type)
             }
         })
     }
 
     addBanStyle(){
-        let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;}"
+        let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;} .container-live-slot .ban_container-live-anim{display:none !important;}"
         createElementStyle(cssStr)
     }
     

@@ -20,9 +20,6 @@ import {
   MomentSquareFpop
 } from "./popupEvent.js";
 
-import unKnownCode from "./unKnownCode.js";
-unKnownCode(); //不明代码
-
 async function onReady() {
   localizeHtmlPage(); //global function
   updateVersionIcon(); //更新提醒
