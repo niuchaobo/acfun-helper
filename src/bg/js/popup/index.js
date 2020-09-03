@@ -1,6 +1,5 @@
 /* global odhback, localizeHtmlPage, utilAsync, optionsLoad, optionsSave updateVersionIcon*/
 import {
-  renderMomentCircleHtml,
   renderPushInnerHtml,
   renderLives
 } from "./renderList.js";
@@ -26,7 +25,6 @@ async function onReady() {
   let options = await optionsLoad(); //global function
   //fetchPushContent();
   renderPushInnerHtml(); //稿件动态列表加载
-  renderMomentCircleHtml(); //更多数据
   renderLives(); //生放送列表加载
   $("#extends-enbaled").prop("checked", options.enabled);
   $("#extends-enbaled").change(onOptionChanged);

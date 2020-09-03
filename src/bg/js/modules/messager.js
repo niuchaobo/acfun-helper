@@ -178,7 +178,6 @@ class MsgNotifs{
                         //调用indexeddb驱动，写入indexeddb。以后将会慢慢迁移。
                         // db_putPushLst(rawdata);
                         let out_data='';
-                        // console.log(rawdata.feedList[0].username);
                         for(let i=0;i<=29;i++){
                             let data=rawdata.feedList[i];
                             let xmlData="<div class=\"inner\" id=\"";

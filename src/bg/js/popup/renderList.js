@@ -95,12 +95,6 @@ export async function renderPushInnerHtml() {
     });
 }
 
-export function renderMomentCircleHtml() {
-  chrome.storage.local.get(["AcMomentCircle1"], function (data) {
-    $("#pop-push-momentcircle").append(data.AcMomentCircle1);
-  });
-}
-
 export  function renderLives() {
     chrome.storage.local.get(["broadcastingUIDlist"], function (data) {
       // console.log(data);

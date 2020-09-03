@@ -96,7 +96,7 @@ class WatchPlan {
 
     viewHistoryBackend(opts) {
         try {
-            let x = JSON.parse(opts.msg).history.views;
+            var x = JSON.parse(opts.msg).history.views;
         } catch (error) {
             console.log("[LOG]Backend > WatchPlan-viewHistoryBackend: viewHistory fetch Fail.");
             return
