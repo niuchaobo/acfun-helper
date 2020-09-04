@@ -110,7 +110,7 @@ class ODHFront {
             //隐藏ad
            this.options.hideAd && this.pageBeautify.hideAds();
             //首页nav高斯模糊
-            this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(fasle);
+            this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false);
           }
         //分区首页
         if(REG.partIndex.test(href)){

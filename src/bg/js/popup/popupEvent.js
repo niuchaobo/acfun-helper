@@ -81,7 +81,6 @@ export async function WatchLaterFpopup(){
 }
 
 export async function viewHistory(){
-  db.open()
   let x = await db_getHistoryViews();
   var raw_data = "";
   for(let i=x.content.length-1;i>=0;i--){
