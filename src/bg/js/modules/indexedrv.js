@@ -59,13 +59,13 @@ function initSquareList(){
 
 function initPushList(){
     try {
-        db.PushList.count(function(e){
+        db.LuckyHistory.count(function(e){
             // console.log(e)
         })
     } catch (error) {
-        console.log("[WARN]Background-IndexedDbDrv > initPushList:Table May Not Exist.")
+        console.log("[WARN]Background-IndexedDbDrv > initLuckyHistory:Table May Not Exist.")
         db.version(1).stores({
-            PushList: 'acid,uid,content',
+            LuckyHistory: 'uid,acid,userName,date',
         });
     }
 }
@@ -103,12 +103,27 @@ function initHistoryViews(){
 //----------------------Utils-Func-----------------
 
 async function db_SquareListCount(){
+    initSquareList();
     db2.open();
     let x = await db2.SquareList.count((e)=>{
         return e
     })
     db2.close();
     return x
+}
+
+function db_exportAllData(dbName){
+
+}
+
+function db_importData(dbName,purgeSw=false,Data){
+    //Data -> Array
+    if(purgeSw){db.delete();console.log("[LOG]Background-IndexedDbDrv > db_importData:Db has been purged.")}
+    db.open();
+    if(Data!= null && Data !=undefined){
+        db[`${dbName}`].bulkPut(Data);
+    }
+    db2.close();
 }
 
 //----------------------Put-Obj-----------------
@@ -121,6 +136,7 @@ function db_putPushListHtml(Data){
 }
 
 function db_putHistoryViews(Data){
+    initHistoryViews();
     db.open();
     if(Data!= null && Data !=undefined){
         db.HistoryViews.put({id:1,content:Data});
@@ -146,6 +162,14 @@ function db_putPushLst(Data){
             let x = Data.feedList[i];
             db.PushList.put({acid:x.aid,uid:x.userId,content:x});
         }
+    }
+    db.close();
+}
+
+function db_putLuckyHistory(Data){
+    db.open();
+    if(Data.length != 0){
+        db.LuckyHistory.put({uid:Data.uid,acid:Data.acid,userName:Data.userName,date:Date.parse(new Date)});
     }
     db.close();
 }
@@ -186,6 +210,7 @@ async function db_getPushLstMany(limitNum){
 
 async function db_getPushLstByAcid(Acid,limitNum=30){
     //获取某个推送中的稿件
+    initPushList();
     db.open();
     let x = await db.PushList.where({"acid":Acid}).toArray();
     db.close();
