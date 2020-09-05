@@ -57,6 +57,21 @@ function initSquareList(){
     }
 }
 
+function initLuckyHistory(){
+    try {
+        db.LuckyHistory.count(function(e){
+            // console.log(e)
+        })
+    } catch (error) {
+        console.log("[WARN]Background-IndexedDbDrv > initLuckyHistory:Table May Not Exist.")
+        db.close();
+        db.version(1).stores({
+            LuckyHistory: 'uid,acid,userName,date'
+        });
+        console.log("[WARN]Background-IndexedDbDrv > initLuckyHistory: Table initialize.")
+    }
+}
+
 function initPushList(){
     try {
         db.LuckyHistory.count(function(e){
@@ -128,6 +143,7 @@ function db_importData(dbName,purgeSw=false,Data){
 
 //----------------------Put-Obj-----------------
 function db_putPushListHtml(Data){
+    initPushListHtml();
     db.open();
     if(Data!= null && Data !=undefined){
         db.PushListHtml.put({id:1,content:Data});
@@ -145,6 +161,7 @@ function db_putHistoryViews(Data){
 }
 
 function db_putSquareList(Data){
+    initSquareList();
     db2.open();
     if(Data.feedList.length != 0){
         for(let i=0;i<=Data.feedList.length-1;i++){
@@ -156,6 +173,7 @@ function db_putSquareList(Data){
 }
 
 function db_putPushLst(Data){
+    initPushList();
     db.open();
     if(Data.length != 0){
         for(let i=0;i<=29;i++){
@@ -167,6 +185,7 @@ function db_putPushLst(Data){
 }
 
 function db_putLuckyHistory(Data){
+    initLuckyHistory();
     db.open();
     if(Data.length != 0){
         db.LuckyHistory.put({uid:Data.uid,acid:Data.acid,userName:Data.userName,date:Date.parse(new Date)});
@@ -190,6 +209,21 @@ async function db_getPushListHtml(){
     let x = await db.PushListHtml.orderBy("id").reverse().toArray();
     db.close();
     return x;
+}
+
+async function db_getLuckyHistory(requireExportType){
+    initLuckyHistory();
+    db.open();
+    let x = await db.LuckyHistory.orderBy("uid").reverse().toArray();
+    db.close();
+    switch (requireExportType) {
+        case "userList":
+            let resultList = [];
+            x.forEach((e)=>{resultList.push(e["uid"])})
+            return resultList
+        default:
+            return x;
+    }
 }
 
 async function db_getHistoryViews(){

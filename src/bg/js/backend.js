@@ -253,6 +253,11 @@ class ODHBack {
         this.WatchPlan.viewHistoryBackend(params)
     }
 
+    async api_getLuckyHistory(){
+        let x = await db_getLuckyHistory("userList");
+        chrome.storage.local.set({getLuckyHistory_tempKey:x});
+    }
+
     async api_initBackend(params) {
         let options = await optionsLoad();
         //this.ankiweb.initConnection(options);
