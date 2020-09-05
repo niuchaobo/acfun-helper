@@ -74,13 +74,13 @@ function initLuckyHistory(){
 
 function initPushList(){
     try {
-        db.LuckyHistory.count(function(e){
+        db.PushList.count(function(e){
             // console.log(e)
         })
     } catch (error) {
         console.log("[WARN]Background-IndexedDbDrv > initLuckyHistory:Table May Not Exist.")
         db.version(1).stores({
-            LuckyHistory: 'uid,acid,userName,date',
+            PushList: 'uid,acid,userName,date',
         });
     }
 }
@@ -189,6 +189,17 @@ function db_putLuckyHistory(Data){
     db.open();
     if(Data.length != 0){
         db.LuckyHistory.put({uid:Data.uid,acid:Data.acid,userName:Data.userName,date:Date.parse(new Date)});
+    }
+    db.close();
+}
+
+function db_delLuckyHistory(uid){
+    //uid->int
+    initLuckyHistory();
+    db.open();
+    if(typeof(uid)=="number"){
+        console.log(uid)
+        db.LuckyHistory.where("uid").equals(uid).delete();
     }
     db.close();
 }
