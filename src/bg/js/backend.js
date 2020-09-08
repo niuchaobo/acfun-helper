@@ -207,7 +207,6 @@ class ODHBack {
         const {action, params} = request;
         const method = this['api_' + action];
 
-        console.log(params)
         if (typeof(method) === 'function') {
             if(params["receipt"]){
                 //信源程序是否需要通过tabid来获取回执
@@ -215,10 +214,9 @@ class ODHBack {
             }else if(params["responseRequire"]){
                 //这里判断是否需要有返回信息。
                 params.callback = callback;
-                let resp = method.call(this, params);
-                console.log(resp)
-                callback({data:resp});
-                // callback({data:"hello"})
+                method.call(this, params).then(resp=>{
+                    callback({data:resp});
+                })
             }else{
                 params.callback = callback;
                 method.call(this, params);
@@ -267,11 +265,7 @@ class ODHBack {
     }
 
     api_getLuckyHistory(){
-        // console.log(params)
-        // let x = await db_getLuckyHistory("userList");
-        // chrome.storage.local.set({getLuckyHistory_tempKey:x});
-        // return x
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             let x = await db_getLuckyHistory("userList");
             resolve(x);
         });
