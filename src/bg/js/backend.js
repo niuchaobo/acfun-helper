@@ -143,7 +143,6 @@ class ODHBack {
         this.authInfo.fetchPasstoken();
     }
 
-
     onInstalled(details) {
         initializeDBTable();
         if (details.reason === 'install') {
@@ -191,20 +190,7 @@ class ODHBack {
         this.tabInvoke(tabId, 'setFrontendOptions', {options: this.options});
     }
 
-    setFrontendOptions(options) {
-        switch (options.enabled) {
-            case false:
-                chrome.browserAction.setBadgeText({text: 'off'});
-                break;
-            case true:
-                chrome.browserAction.setBadgeText({text: ''});
-                break;
-        }
-        this.tabInvokeAll('setFrontendOptions', {
-            options
-        });
-    }
-
+    //================Message Hub and Handler================//
     tabInvokeAll(action, params) {
         chrome.tabs.query({}, (tabs) => {
             for (let tab of tabs) {
@@ -217,14 +203,26 @@ class ODHBack {
         chrome.tabs.sendMessage(tabId, {action, params}, () => null);
     }
 
-    // Message Hub and Handler
     onMessage(request, sender, callback) {
         const {action, params} = request;
         const method = this['api_' + action];
 
+        console.log(params)
         if (typeof(method) === 'function') {
-            params.callback = callback;
-            method.call(this, params);
+            if(params["receipt"]){
+                //信源程序是否需要通过tabid来获取回执
+                params.tabid=sender.tab;
+            }else if(params["responseRequire"]){
+                //这里判断是否需要有返回信息。
+                params.callback = callback;
+                let resp = method.call(this, params);
+                console.log(resp)
+                callback({data:resp});
+                // callback({data:"hello"})
+            }else{
+                params.callback = callback;
+                method.call(this, params);
+            }
         }
         return true;
     }
@@ -237,6 +235,21 @@ class ODHBack {
         const method = this['api_' + action];
         if (typeof(method) === 'function')
             method.call(this, params);
+    }
+
+    //================Utils==================//
+    setFrontendOptions(options) {
+        switch (options.enabled) {
+            case false:
+                chrome.browserAction.setBadgeText({text: 'off'});
+                break;
+            case true:
+                chrome.browserAction.setBadgeText({text: ''});
+                break;
+        }
+        this.tabInvokeAll('setFrontendOptions', {
+            options
+        });
     }
 
     //================Inner Api==================//
@@ -253,9 +266,15 @@ class ODHBack {
         this.WatchPlan.viewHistoryBackend(params)
     }
 
-    async api_getLuckyHistory(){
-        let x = await db_getLuckyHistory("userList");
-        chrome.storage.local.set({getLuckyHistory_tempKey:x});
+    api_getLuckyHistory(){
+        // console.log(params)
+        // let x = await db_getLuckyHistory("userList");
+        // chrome.storage.local.set({getLuckyHistory_tempKey:x});
+        // return x
+        return new Promise(async (resolve, reject) => {
+            let x = await db_getLuckyHistory("userList");
+            resolve(x);
+        });
     }
 
     async api_initBackend(params) {
@@ -280,9 +299,6 @@ class ODHBack {
         };
         $.ajax(request);
     }
-
-
-
 
     // Option page and Brower Action page requests handlers.
     async opt_optionsChanged(options) {
@@ -310,10 +326,7 @@ class ODHBack {
     async opt_optionUpdate(options){
         this.options = options;
     }
-
-
     
-    // Sandbox communication
     async loadScripts(list) {
         let promises = list.map((name) => this.loadScript(name));
         let results = await Promise.all(promises);

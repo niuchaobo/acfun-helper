@@ -171,119 +171,124 @@ class LuckyTtab {
         })
     }
 
-    // async RollOut(acid,num,follow){
-    //     //三号主函数测试
-    //     let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
-    //     await chrome.runtime.sendMessage({action: "getLuckyHistory",params:{}}, async (response)=> {
-    //         console.log(response)
-    //         let e = await getStorage("getLuckyHistory_tempKey");
-    //         let max = y['Comm_data_UIDList'].length;
-    //         if(num>max){
-    //             num = max;
-    //         }
-    //         var arr = new Array();
-    //         let min = 0;
-    //         var tryNum = 0;
-    //         let el = e.getLuckyHistory_tempKey
-    //         console.log(el)
-    //         this.hasBeenChosen.concat(el);
-    //         console.log(this.hasBeenChosen)
-    //         while(arr.length<num){
-    //             let i = Math.floor(Math.random() * (max - min)) + min;
-    //             let userId = y['Comm_data_UIDList'][i];
-    //             console.log(userId)
-    //             console.log(e.getLuckyHistory_tempKey.indexOf(userId)==-1)
-    //             console.log(this.hasBeenChosen)
-    //             if(this.hasBeenChosen.indexOf(userId)!=-1){
-    //                 tryNum++;
-    //                 if(tryNum<=10){
-    //                     continue;
-    //                 }else{
-    //                     let lucyUser = {
-    //                         name : "已经没有可以在评论中抽选的Acer了",
-    //                         url : "/",
-    //                         comment : "评论池已经被榨干了",
-    //                         floor: "∞",
-    //                     };
-    //                     arr.push(lucyUser);
-    //                     break;
-    //                 }
-    //             }
-    //             this.hasBeenChosen.push(userId);
-    //             let commentInfo = y['Comm_data_byUID'][userId];
-    //             let url = this.messageFormat.replace("{userId}",userId);
-    //             let lucyUser = {
-    //                 name : commentInfo.userName,
-    //                 url : url,
-    //                 comment : commentInfo.content,
-    //                 floor: commentInfo.floor,
-    //             };
-    //             arr.push(lucyUser);
-    //             y['Comm_data_UIDList'].splice(i,1);
-    //             max--;
-    //         }
-
-    //         /*for(let i in x){
-    //             console.log(y['Comm_data_UIDList'][i]);
-    //             console.log(y['Comm_data_byUID'][y['Comm_data_UIDList'][i]]);
-    //             let userId = y['Comm_data_UIDList'][i];
-    //             let commentInfo = y['Comm_data_byUID'][userId];
-    //             let url = this.messageFormat.replace("{userId}",userId);
-    //             let lucyUser = {
-    //                 name : commentInfo.userName,
-    //                 url : url,
-    //                 comment : commentInfo.content,
-    //                 floor: commentInfo.floor,
-    //             }
-    //             arr.push(lucyUser);
-    //         }*/
-    //         //显示抽奖结果
-    //         var obj = document.getElementById("acfun-popup-helper");
-    //         var frameWindow = obj.contentWindow;
-    //         frameWindow.postMessage({
-    //             action: 'showLucyResult',
-    //             params: {
-    //                 arr:JSON.stringify(arr),
-    //             }
-    //         }, '*');
-    //     })
-    // }
-
     async RollOut(acid,num,follow){
-        //主函数
-        let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
-        let max = y['Comm_data_UIDList'].length;
-        if(num>max){
-            num = max;
-        }
-        var arr = new Array();
-        let min = 0;
-        while(arr.length<num){
-            let i = Math.floor(Math.random() * (max - min)) + min;
-            let userId = y['Comm_data_UIDList'][i];
-            this.hasBeenChosen.push(userId);
-            let commentInfo = y['Comm_data_byUID'][userId];
-            let url = this.messageFormat.replace("{userId}",userId);
-            let lucyUser = {
-                name : commentInfo.userName,
-                url : url,
-                comment : commentInfo.content,
-                floor: commentInfo.floor,
-            };
-            arr.push(lucyUser);
-            y['Comm_data_UIDList'].splice(i,1);
-            max--;
-        }
+        //三号主函数测试
+        chrome.runtime.sendMessage({action: "getLuckyHistory",params:{responseRequire:true}}, (response)=> {
+            console.log("exec here")
+            console.log(response)
+        })
+        // let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
+        // await chrome.runtime.sendMessage({action: "getLuckyHistory",params:{receipt:true}}, async (response)=> {
+        //     console.log(response)
+        //     let e = await getStorage("getLuckyHistory_tempKey");
+        //     let max = y['Comm_data_UIDList'].length;
+        //     if(num>max){
+        //         num = max;
+        //     }
+        //     var arr = new Array();
+        //     let min = 0;
+        //     var tryNum = 0;
+        //     let el = e.getLuckyHistory_tempKey
+        //     console.log(el)
+        //     this.hasBeenChosen.concat(el);
+        //     console.log(this.hasBeenChosen)
+        //     while(arr.length<num){
+        //         let i = Math.floor(Math.random() * (max - min)) + min;
+        //         let userId = y['Comm_data_UIDList'][i];
+        //         console.log(userId)
+        //         console.log(e.getLuckyHistory_tempKey.indexOf(userId)==-1)
+        //         console.log(this.hasBeenChosen)
+        //         if(this.hasBeenChosen.indexOf(userId)!=-1){
+        //             tryNum++;
+        //             if(tryNum<=10){
+        //                 continue;
+        //             }else{
+        //                 let lucyUser = {
+        //                     name : "已经没有可以在评论中抽选的Acer了",
+        //                     url : "/",
+        //                     comment : "评论池已经被榨干了",
+        //                     floor: "∞",
+        //                 };
+        //                 arr.push(lucyUser);
+        //                 break;
+        //             }
+        //         }
+        //         this.hasBeenChosen.push(userId);
+        //         let commentInfo = y['Comm_data_byUID'][userId];
+        //         let url = this.messageFormat.replace("{userId}",userId);
+        //         let lucyUser = {
+        //             name : commentInfo.userName,
+        //             url : url,
+        //             comment : commentInfo.content,
+        //             floor: commentInfo.floor,
+        //         };
+        //         arr.push(lucyUser);
+        //         y['Comm_data_UIDList'].splice(i,1);
+        //         max--;
+        //     }
 
-        var obj = document.getElementById("acfun-popup-helper");
-        var frameWindow = obj.contentWindow;
-        frameWindow.postMessage({
-            action: 'showLucyResult',
-            params: {
-                arr:JSON.stringify(arr),
-            }
-        }, '*');
+        //     /*for(let i in x){
+        //         console.log(y['Comm_data_UIDList'][i]);
+        //         console.log(y['Comm_data_byUID'][y['Comm_data_UIDList'][i]]);
+        //         let userId = y['Comm_data_UIDList'][i];
+        //         let commentInfo = y['Comm_data_byUID'][userId];
+        //         let url = this.messageFormat.replace("{userId}",userId);
+        //         let lucyUser = {
+        //             name : commentInfo.userName,
+        //             url : url,
+        //             comment : commentInfo.content,
+        //             floor: commentInfo.floor,
+        //         }
+        //         arr.push(lucyUser);
+        //     }*/
+        //     //显示抽奖结果
+        var arr = [{name : "233",url : "url",comment : "comment",floor: "233",}]
+            var obj = document.getElementById("acfun-popup-helper");
+            var frameWindow = obj.contentWindow;
+            frameWindow.postMessage({
+                action: 'showLucyResult',
+                params: {
+                    arr:JSON.stringify(arr),
+                }
+            }, '*');
+        // })
     }
+
+    // async RollOut(acid,num,follow){
+    //     //主函数
+    //     let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
+    //     let max = y['Comm_data_UIDList'].length;
+    //     if(num>max){
+    //         num = max;
+    //     }
+    //     var arr = new Array();
+    //     let min = 0;
+    //     while(arr.length<num){
+    //         let i = Math.floor(Math.random() * (max - min)) + min;
+    //         let userId = y['Comm_data_UIDList'][i];
+    //         this.hasBeenChosen.push(userId);
+    //         let commentInfo = y['Comm_data_byUID'][userId];
+    //         let url = this.messageFormat.replace("{userId}",userId);
+    //         let lucyUser = {
+    //             name : commentInfo.userName,
+    //             url : url,
+    //             comment : commentInfo.content,
+    //             floor: commentInfo.floor,
+    //         };
+    //         arr.push(lucyUser);
+    //         y['Comm_data_UIDList'].splice(i,1);
+    //         max--;
+    //     }
+
+    //     var obj = document.getElementById("acfun-popup-helper");
+    //     var frameWindow = obj.contentWindow;
+    //     frameWindow.postMessage({
+    //         action: 'showLucyResult',
+    //         params: {
+    //             arr:JSON.stringify(arr),
+    //         }
+    //     }, '*');
+    // }
 
     async RollOutExp(acid,num,follow){
         //排除上次执行的结果的主函数
