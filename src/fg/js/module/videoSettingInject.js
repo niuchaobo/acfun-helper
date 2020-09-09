@@ -1,6 +1,9 @@
 var abPlayFirst = undefined;
 var abPlaySecond = undefined;
 var abPlayFlag = 0;
+var dropFrameIncrement = 0;
+var lastdropedFrame = 0;
+var nowDropFrame = 0;
 //----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
 var hiddenDiv = document.getElementById('myCustomEventDiv');
@@ -71,6 +74,7 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
     }
 
     if(options.ProgressBarsw){
+        // dropFrameIncrementAlz();
         //Flex进度条
         // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
         try {
@@ -241,6 +245,16 @@ quickJump = (time, part)=> {
         v_obj.currentTime = Duration2Seconds(time);
         console.log('[LOG]Frontend-videoSettingInject: Jump_ok');
     }, 500);
+}
+
+function dropFrameIncrementAlz(){
+    //丢帧增量
+    document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
+        lastdropedFrame = nowDropFrame;
+        nowDropFrame = player.$video.getVideoPlaybackQuality().droppedVideoFrames
+        dropFrameIncrement = nowDropFrame - lastdropedFrame;
+        // console.log(dropFrameIncrement)
+    })
 }
 
 //=======Common Functions=========
