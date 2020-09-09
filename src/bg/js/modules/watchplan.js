@@ -11,6 +11,7 @@ class WatchPlan {
         this.execWatchReqTabNum = 3;
         this.tabStateDic = {};
         this.ori_list = {};
+        this.livePageWatchTimeRecList = {};
     }
 
     onLoad() {
@@ -98,10 +99,40 @@ class WatchPlan {
         try {
             var x = JSON.parse(opts.msg).history.views;
         } catch (error) {
-            console.log("[LOG]Backend > WatchPlan-viewHistoryBackend: viewHistory fetch Fail.");
+            console.log("[LOG]Backend-WatchPlan > viewHistoryBackend: viewHistory fetch Fail.");
             return
         }
         db_putHistoryViews(x)
+    }
+
+    livePageWatchTimeRec(params) {
+        this.livePageWatchTimeRecList[`${params.tabid.id}`] = { windowId: params.tabid.windowId, index: params.tabid.index, startTime: params.startTime, url: params.tabid.url, title: params.tabid.title };
+    }
+
+    getLiveWatchTimeList() {
+        return this.livePageWatchTimeRecList;
+    }
+
+    cleanLiveWatchTimeList() {
+        this.livePageWatchTimeRecList = {};
+    }
+
+    delLiveWatchTimeListItem(item) {
+        delete this.livePageWatchTimeRecList[item];
+    }
+
+    async updateLiveWatchTimeList() {
+        let lwList = Object.keys(this.livePageWatchTimeRecList)
+        for (let i in lwList) {
+            // console.log(lwList[i])
+            await chrome.tabs.query({ url: this.livePageWatchTimeRecList[lwList[i]].url }, (e) => {
+                if (e.length < 1) {
+                    // console.log(lwList[i])
+                    delete this.livePageWatchTimeRecList[lwList[i]]
+                }
+            })
+        }
+        return true
     }
 
 }

@@ -1,7 +1,8 @@
 /* global odhback, localizeHtmlPage, utilAsync, optionsLoad, optionsSave updateVersionIcon*/
 import {
   renderPushInnerHtml,
-  renderLives
+  renderLives,
+  renderLiveWatchTimeLst
 } from "./renderList.js";
 import {
   openUpdateLog,
@@ -26,6 +27,7 @@ async function onReady() {
   //fetchPushContent();
   renderPushInnerHtml(); //稿件动态列表加载
   renderLives(); //生放送列表加载
+  renderLiveWatchTimeLst();
   $("#extends-enbaled").prop("checked", options.enabled);
   $("#extends-enbaled").change(onOptionChanged);
   $("#pop-update-log").click(openUpdateLog);

@@ -1872,6 +1872,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================推送消息轮询===================
+    chrome.storage.local.get(['LiveWatchTimeRec_popup'],function(items){
+        var LiveWatchTimeRec_popup= items.LiveWatchTimeRec_popup;
+        if(LiveWatchTimeRec_popup){
+            document.getElementById('LiveWatchTimeRec_popup').checked='true';
+        }else{
+            document.getElementById('LiveWatchTimeRec_popup').checked=false;
+        }
+        $('#LiveWatchTimeRec_popup').on('click', function () {
+            if(!document.getElementById('LiveWatchTimeRec_popup').checked){
+                document.getElementById('LiveWatchTimeRec_popup').checked=false;
+                chrome.storage.local.set({'LiveWatchTimeRec_popup':false});
+            }else{
+                document.getElementById('LiveWatchTimeRec_popup').checked=true;
+                chrome.storage.local.set({'LiveWatchTimeRec_popup':true});
+            }
+        });
+    });
+
     //===================Up主文章屏蔽=======================
     $('#filter-add').on('click', function () {
         if ($('.filter-add-tr').length <= 0 && filter) {

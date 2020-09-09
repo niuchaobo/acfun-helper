@@ -49,6 +49,7 @@ const defaults = {
     autOpenVideoDescsw:true,
     followLiveNotif:true,
     liveCommentTimeTag:true,
+    LiveWatchTimeRec_popup:false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

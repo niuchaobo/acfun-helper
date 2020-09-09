@@ -211,7 +211,13 @@ class ODHBack {
             if(params["receipt"]){
                 //信源程序是否需要通过tabid来获取回执
                 params.tabid=sender.tab;
-            }else if(params["responseRequire"]){
+                params.callback = callback;
+                method.call(this, params);
+            }else if(params["responseRequire"]&&params["asyncWarp"]==false){
+                params.callback = callback;
+                let x = method.call(this,params);
+                callback({data:x});
+            }else if(params["responseRequire"]&&params["asyncWarp"]){
                 //这里判断是否需要有返回信息。
                 params.callback = callback;
                 method.call(this, params).then(resp=>{
@@ -269,6 +275,22 @@ class ODHBack {
             let x = await db_getLuckyHistory("userList");
             resolve(x);
         });
+    }
+
+    api_getLiveWatchTimeList(){
+        return this.WatchPlan.getLiveWatchTimeList();
+    }
+
+    api_livePageWatchTimeRec(params){
+        this.WatchPlan.livePageWatchTimeRec(params);
+    }
+
+    api_delLiveWatchTimeListItem(params){
+        this.WatchPlan.livePageWatchTimeRec(params.tabid);
+    }
+
+    api_updateLiveWatchTimeListItem(){
+        return this.WatchPlan.updateLiveWatchTimeList();
     }
 
     async api_initBackend(params) {

@@ -280,7 +280,7 @@ class LuckyTtab {
     async RollOutExcDb(acid,num,follow){
         //读取上次抽中、并且被Up主标记到数据库中的已中用户Uid列表，以便从本次抽奖结果中排除
         let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
-        chrome.runtime.sendMessage({action: "getLuckyHistory",params:{responseRequire:true}}, (response)=> {
+        chrome.runtime.sendMessage({action: "getLuckyHistory",params:{responseRequire:true,asyncWarp:true}}, (response)=> {
             console.log(response)
         });
     }

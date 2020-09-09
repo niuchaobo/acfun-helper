@@ -230,5 +230,10 @@ class LivePageButfy {
             }
         },1000);
     }
+
+    watchTimeRecord(){
+        let timeNow = Date.parse(new Date());
+        chrome.runtime.sendMessage({action:"livePageWatchTimeRec",params:{receipt:true,startTime:timeNow}}, function(){});
+    }
     
 }
