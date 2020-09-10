@@ -2,7 +2,7 @@
 import {
   renderPushInnerHtml,
   renderLives,
-  renderLiveWatchTimeLst
+  renderLiveWatchTimeLst,
 } from "./renderList.js";
 import {
   openUpdateLog,
@@ -17,7 +17,8 @@ import {
   viewHistory,
   WatchLaterFpopup,
   WatchLaterFOpenList,
-  MomentSquareFpop
+  MomentSquareFpop,
+  LiveWatchTimeLstReact
 } from "./popupEvent.js";
 
 async function onReady() {
@@ -42,6 +43,7 @@ async function onReady() {
   $("#WatchLaterFpopup").click(WatchLaterFpopup);
   $("#WatchLaterFOpenList").click(WatchLaterFOpenList);
   $("#MomentSquareFpop").click(MomentSquareFpop);
+  $("#livePageWatchTimeRecList").click(e=>{e.target.className==='liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key,e.target.href)});
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {

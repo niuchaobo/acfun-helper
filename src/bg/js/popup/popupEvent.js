@@ -164,11 +164,8 @@ export async function fetchDougaInfo(){
   })
 }
 
-export function liveWatchListItemReact(){
-  document.querySelector(".liveWatchListItem").addEventListener('click', function(e){
-    // console.log(e);
-    chrome.tabs.update(e.target.href,{
-      'selected': true,
-    })
-  })
+export function LiveWatchTimeLstReact(id,url){
+  chrome.tabs.update(Number(id), {
+    'selected': true
+  });
 }
