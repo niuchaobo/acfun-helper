@@ -175,13 +175,13 @@ class MsgNotifs{
                     .then((res)=>{return res.text();})
                     .then((res)=>{
                         let rawdata=JSON.parse(res);
-                        //调用indexeddb驱动，写入indexeddb。以后将会慢慢迁移。
                         // db_putPushLst(rawdata);
                         let out_data='';
                         for(let i=0;i<=29;i++){
                             let data=rawdata.feedList[i];
-                            let xmlData="<div class=\"inner\" id=\"";
-                            xmlData+=data.aid+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
+                            let dougaType = data.isArticle?"article":"video";
+                            let xmlData="<div class=\"inner "+dougaType+"\" id=\"";
+                            xmlData+=data.aid+" \"data-type=\""+data.isArticle+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
                             xmlData+="https://www.acfun.cn"+data.url+"\"";
                             xmlData+=" class=\"thumb thumb-preview\"><img data-aid=\"";
                             xmlData+=data.aid + "\" src=\""+data.titleImg+"\" class=\"preview\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+data.aid+" \"target=\"_blank\" href=\"" +"https://www.acfun.cn"+data.url+"\" class=\"title\">";

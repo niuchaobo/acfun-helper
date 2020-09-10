@@ -25,7 +25,7 @@
                         <div id="update-box">
                             <div class="update-icon">!</div><span class="update-letter"></span>
                         </div>
-                        <div style="float: right;" class="enabled">
+                        <div style="float: right;cursor: default;" class="enabled">
                             <input type="checkbox" checked id="extends-enbaled" />
                             <label for="extends-enbaled"></label>
                         </div>
@@ -78,7 +78,7 @@
 
             <div class="mdui-tab pop-common mdui-tab-centered" mdui-tab
                 style="height: 28px; min-height: 28px;">
-                <a href="#PushList" class="mdui-ripple"
+                <a href="#PushList" id="tabPushList" class="mdui-ripple"
                     style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">稿件动态</a>
                 <a href="#SubLive" class="mdui-ripple"
                     style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">生放送</a>
@@ -248,19 +248,6 @@
                 
             </div>
         </div>
-
-        <!--<div id="pop-setting" class="odh-definition">
-        <ul class="ec">
-            <li class="ec">
-                <img style="margin-right: 30px" width="14px" height="14px" src="images/setting.png">
-                <label class="comment-label">夜间模式</label>
-                <div style="float: right;" class="enabled">
-                    <input type="checkbox" checked id="extends-enbaled">
-                    <label for="extends-enbaled"></label>
-                </div>
-            </li>
-        </ul>
-    </div>-->
     <div id="pop-body" class="body"></div>
     </div>
     <button class="mdui-fab mdui-fab-fixed mdui-color-pink-700 toTop toTop-bg-color" mdui-headroom style="
@@ -281,6 +268,9 @@
           margin-left: 0;
           width: 40px;
         ">arrow_upward</i>
+    </button>
+    <button class="mdui-fab mdui-fab-fixed PushListMode" mdui-headroom style="width: 40px;min-width: 40px;height: 40px;position: fixed !important;right: 60px;background-color: rgba(62, 123, 255, 0.9) !important;z-index: 1000;" data-type="all" title="全部投稿">
+        <i class="mdui-icon material-icons" style="height: 40px;line-height: 40px;margin-top: 0;margin-left: 0;width:40px;">art_track</i>
     </button>
     <!--script src="js/polyfill.js"></script-->
     <script src="../lib/jquery-3.5.0.min.js"></script>

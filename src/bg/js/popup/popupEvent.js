@@ -39,11 +39,11 @@ export function titleToHome() {
 }
 
 export function hideToTopButton() {
-  let top = $(".mdui-fab").offset().top;
+  let top = $(".toTop").offset().top;
   if (top < 2000) {
-    $(".mdui-fab").css({ opacity: "0" });
+    $(".toTop").css({ opacity: "0" });
   } else {
-    $(".mdui-fab").css({ opacity: "1" });
+    $(".toTop").css({ opacity: "1" });
   }
 }
 
@@ -162,6 +162,35 @@ export async function fetchDougaInfo(){
   $("#dougaInfoPrint").append(raw_data);
 
   })
+}
+
+export function PushListDougaMode(){
+  let e = document.createElement("style");
+  e.type='text/css';
+  e.id="PushListDougaModeStyle";
+  e.textContent=""
+  document.head.appendChild(e)
+  switch ($(this)[0].dataset.type) {
+    case "all":
+      $(".PushListMode")[0].dataset.type="video";
+      document.getElementById("PushListDougaModeStyle").remove();
+      e.textContent=".article{display:none}";
+      $(".PushListMode")[0].title="仅查看视频"
+      document.head.appendChild(e);
+      break;
+    case "video":
+      $(".PushListMode")[0].dataset.type="article";
+      document.getElementById("PushListDougaModeStyle").remove()
+      e.textContent=".video{display:none}"
+      $(".PushListMode")[0].title="仅查看文章"
+      document.head.appendChild(e)
+      break;
+    case "article":
+      $(".PushListMode")[0].dataset.type="all";
+      $(".PushListMode")[0].title="全部投稿"
+      document.getElementById("PushListDougaModeStyle").remove()
+    break;  
+  }
 }
 
 export function LiveWatchTimeLstReact(id,url){

@@ -18,7 +18,8 @@ import {
   WatchLaterFpopup,
   WatchLaterFOpenList,
   MomentSquareFpop,
-  LiveWatchTimeLstReact
+  LiveWatchTimeLstReact,
+  PushListDougaMode
 } from "./popupEvent.js";
 
 async function onReady() {
@@ -44,6 +45,7 @@ async function onReady() {
   $("#WatchLaterFOpenList").click(WatchLaterFOpenList);
   $("#MomentSquareFpop").click(MomentSquareFpop);
   $("#livePageWatchTimeRecList").click(e=>{e.target.className==='liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key,e.target.href)});
+  $(".PushListMode").click(PushListDougaMode);
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {

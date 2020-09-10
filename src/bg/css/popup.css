@@ -346,20 +346,6 @@ span.go-live {
 
 
 /*按钮大小位置*/
-
-.mdui-fab {
-    width: 40px;
-    min-width: 40px;
-    height: 40px;
-}
-
-.mdui-fab-fixed,
-.mdui-fab-wrapper {
-    position: fixed!important;
-    right: 16px;
-    bottom: 41px
-}
-
 .toTop-bg-color {
     background-color: #0000008c!important;
 }
