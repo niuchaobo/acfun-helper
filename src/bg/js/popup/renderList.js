@@ -199,9 +199,7 @@ export  function renderLives() {
   }
 
 export async function renderLiveWatchTimeLst(){
-  //<td><a class="liveWatchListItem" data-key="${resp.data[lwList[i]].url}" title="切换到标签页"  href="${resp.data[lwList[i]].url}">[切换到]</a> ${resp.data[lwList[i]].title}</td>
   let x = await getStorage("LiveWatchTimeRec_popup");
-  console.log(x.LiveWatchTimeRec_popup)
   if(!x.LiveWatchTimeRec_popup){return}
   chrome.runtime.sendMessage({action:"updateLiveWatchTimeListItem",params:{responseRequire:true,asyncWarp:true}},function(resp0){
     if(resp0.data==true){
@@ -212,7 +210,7 @@ export async function renderLiveWatchTimeLst(){
         for(let i in lwList){
           var raw_data =raw_data+ `
             <tr>
-                <td>${resp.data[lwList[i]].title}</td>
+                <td><a class="liveWatchListItem" data-key="${[lwList[i]]}" title="切换到标签页"  href="${resp.data[lwList[i]].url}">[切换到]</a> ${resp.data[lwList[i]].title}</td>
                 <td>打开于${getTimeSinceNow(resp.data[lwList[i]].startTime)}</td>
             </tr>
           `;
