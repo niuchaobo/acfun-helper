@@ -976,6 +976,7 @@ $(document).ready(function () {
         }
     });
 
+    if(myBrowser()=="Chrome"){document.querySelectorAll(".chromeOnly").forEach(function(e){e.style.display="block"})}
     var devSwitchClick = 0
     document.querySelector("#devSwitch").addEventListener('click', function devMode(){
         if(devSwitchClick==5){
@@ -1724,7 +1725,6 @@ $(document).ready(function () {
         }
     };
           
-
     let jsonfy_config;
     let input=document.getElementById("input_emlwX3V0aWxz_file");
         input.onchange=function () {
@@ -1749,14 +1749,14 @@ $(document).ready(function () {
         }
     };
 
-      let config_CleanObj=document.getElementById('configClean');
-      config_CleanObj.addEventListener('click', function createClean(){
-          let notice_this=prompt("确认清除小助手的所有配置吗？请考虑清楚哦。Y/N",'');
-          if(notice_this=='Y'){
-          chrome.storage.local.clear(function(){
-            console.log('Zero');
-          });}
-      });
+    let config_CleanObj=document.getElementById('configClean');
+    config_CleanObj.addEventListener('click', function createClean(){
+        let notice_this=prompt("确认清除小助手的所有配置吗？请考虑清楚哦。Y/N",'');
+        if(notice_this=='Y'){
+        chrome.storage.local.clear(function(){
+        console.log('Zero');
+        });}
+    });
 
     $('.Pushresult_act').on('click', function(){
         chrome.storage.local.get(['AcCookies'],function(datao){
@@ -1868,6 +1868,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('timer4Unread_daemonsw').checked=true;
                 chrome.storage.local.set({'timer4Unread_daemonsw':true});
+            }
+        });
+    });
+
+    //====================推送消息轮询===================
+    chrome.storage.local.get(['LiveWatchTimeRec_popup'],function(items){
+        var LiveWatchTimeRec_popup= items.LiveWatchTimeRec_popup;
+        if(LiveWatchTimeRec_popup){
+            document.getElementById('LiveWatchTimeRec_popup').checked='true';
+        }else{
+            document.getElementById('LiveWatchTimeRec_popup').checked=false;
+        }
+        $('#LiveWatchTimeRec_popup').on('click', function () {
+            if(!document.getElementById('LiveWatchTimeRec_popup').checked){
+                document.getElementById('LiveWatchTimeRec_popup').checked=false;
+                chrome.storage.local.set({'LiveWatchTimeRec_popup':false});
+            }else{
+                document.getElementById('LiveWatchTimeRec_popup').checked=true;
+                chrome.storage.local.set({'LiveWatchTimeRec_popup':true});
             }
         });
     });

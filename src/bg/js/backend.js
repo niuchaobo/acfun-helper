@@ -143,7 +143,6 @@ class ODHBack {
         this.authInfo.fetchPasstoken();
     }
 
-
     onInstalled(details) {
         initializeDBTable();
         if (details.reason === 'install') {
@@ -191,20 +190,7 @@ class ODHBack {
         this.tabInvoke(tabId, 'setFrontendOptions', {options: this.options});
     }
 
-    setFrontendOptions(options) {
-        switch (options.enabled) {
-            case false:
-                chrome.browserAction.setBadgeText({text: 'off'});
-                break;
-            case true:
-                chrome.browserAction.setBadgeText({text: ''});
-                break;
-        }
-        this.tabInvokeAll('setFrontendOptions', {
-            options
-        });
-    }
-
+    //================Message Hub and Handler================//
     tabInvokeAll(action, params) {
         chrome.tabs.query({}, (tabs) => {
             for (let tab of tabs) {
@@ -217,14 +203,30 @@ class ODHBack {
         chrome.tabs.sendMessage(tabId, {action, params}, () => null);
     }
 
-    // Message Hub and Handler
     onMessage(request, sender, callback) {
         const {action, params} = request;
         const method = this['api_' + action];
 
         if (typeof(method) === 'function') {
-            params.callback = callback;
-            method.call(this, params);
+            if(params["receipt"]){
+                //信源程序是否需要通过tabid来获取回执
+                params.tabid=sender.tab;
+                params.callback = callback;
+                method.call(this, params);
+            }else if(params["responseRequire"]&&params["asyncWarp"]==false){
+                params.callback = callback;
+                let x = method.call(this,params);
+                callback({data:x});
+            }else if(params["responseRequire"]&&params["asyncWarp"]){
+                //这里判断是否需要有返回信息。
+                params.callback = callback;
+                method.call(this, params).then(resp=>{
+                    callback({data:resp});
+                })
+            }else{
+                params.callback = callback;
+                method.call(this, params);
+            }
         }
         return true;
     }
@@ -239,6 +241,21 @@ class ODHBack {
             method.call(this, params);
     }
 
+    //================Utils==================//
+    setFrontendOptions(options) {
+        switch (options.enabled) {
+            case false:
+                chrome.browserAction.setBadgeText({text: 'off'});
+                break;
+            case true:
+                chrome.browserAction.setBadgeText({text: ''});
+                break;
+        }
+        this.tabInvokeAll('setFrontendOptions', {
+            options
+        });
+    }
+
     //================Inner Api==================//
     api_notice(params){
         let {title,msg} = params;
@@ -251,6 +268,29 @@ class ODHBack {
 
     api_historyView(params){
         this.WatchPlan.viewHistoryBackend(params)
+    }
+
+    api_getLuckyHistory(){
+        return new Promise(async (resolve) => {
+            let x = await db_getLuckyHistory("userList");
+            resolve(x);
+        });
+    }
+
+    api_getLiveWatchTimeList(){
+        return this.WatchPlan.getLiveWatchTimeList();
+    }
+
+    api_livePageWatchTimeRec(params){
+        this.WatchPlan.livePageWatchTimeRec(params);
+    }
+
+    api_delLiveWatchTimeListItem(params){
+        this.WatchPlan.livePageWatchTimeRec(params.tabid);
+    }
+
+    api_updateLiveWatchTimeListItem(){
+        return this.WatchPlan.updateLiveWatchTimeList();
     }
 
     async api_initBackend(params) {
@@ -275,9 +315,6 @@ class ODHBack {
         };
         $.ajax(request);
     }
-
-
-
 
     // Option page and Brower Action page requests handlers.
     async opt_optionsChanged(options) {
@@ -305,10 +342,7 @@ class ODHBack {
     async opt_optionUpdate(options){
         this.options = options;
     }
-
-
     
-    // Sandbox communication
     async loadScripts(list) {
         let promises = list.map((name) => this.loadScript(name));
         let results = await Promise.all(promises);

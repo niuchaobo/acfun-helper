@@ -14,7 +14,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 #### 公告
 
-> 1. 评论抽奖模块如果在短时间内多次频繁执行会有重复的结果出现，而且请注意，插件现阶段并不能做到在同一页面多次单独的抽奖的所有结果都是不重复的（！！！注意，是单个页面内独立的一次结果内容是不重复的），请等待我们的方案迁移（2020-08-09 12：08 排除上次抽奖结果的功能已加入，但是还需要迁移随机数生成方案）
+> 1. 评论抽奖已经完善。（2020-08-09 12：08 排除上次抽奖结果的功能已加入，到底需不需要迁移随机数生成方案@wpscott 在[#issue70](https://github.com/niuchaobo/acfun-helper/issues/70) 已经给出了说明。）
 > 2. 我们插件开发组迫切需要会进行**开发**和**设计**的同志，如有兴趣，请直接加入我们的群或者提交 pr 哦 (=ﾟ ω ﾟ)=。
 ---
 
@@ -63,7 +63,8 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
   2. 右键**下载视频/文章封面**。（再也不用害羞地问封面了）
   3. **右键 AC 搜索。**
   4. 浏览器**地址栏直接搜索**主站相关关键字。[如何使用？](#searchBar)<a id="searchBarBack"></a>（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入 ACid 跳转到相应投稿哦。）   
-  5. 稍后再看（只要我无限地增加稍后再看列表，那不就是另外一个收藏夹吗( ;´д`)）
+  5. 稍后再看（只要我无限地增加稍后再看列表，那不就是另外一个收藏夹吗( ;´д`)）    
+  6. 直播观看计时（主播超长待机！我也待机！）
 
 ###### 插件相关
 
@@ -155,11 +156,11 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 独立项目：
 
-##### @orzogc - [acfunlive AcFun 直播桌面通知和下载助手（命令行版本）](https://github.com/orzogc/acfunlive "项目地址")
-
-##### @orzogc - [acfundanmu AcFun 直播弹幕下载](https://github.com/orzogc/acfundanmu "项目地址")
+##### @orzogc - [acfunlive AcFun直播通知和下载助手](https://github.com/orzogc/acfunlive "项目地址")
 
 ##### @wpscott - [AcfunDanmu AcFun 直播弹幕工具](https://github.com/wpscott/AcFunDanmaku "项目地址")
+
+##### @ShigemoriHakura - [aclivechat AcFun直播弹幕姬 For OBS](https://github.com/ShigemoriHakura/aclivechat "项目地址")
 
 ---
 

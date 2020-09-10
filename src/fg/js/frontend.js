@@ -149,7 +149,10 @@ class ODHFront {
             if(checknode.length>0){
                 this.livePageBeautify.appendWidePlayer();
                 this.livePageBeautify.simplifyDanmu();
-                clearInterval(timer)
+                if(this.options.LiveWatchTimeRec_popup){
+                  this.livePageBeautify.watchTimeRecord();
+                }
+                clearInterval(timer);
             }
         },3000)
         }
