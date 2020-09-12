@@ -296,7 +296,7 @@ h2 {
 }
 
 #scan-users .site-tag {
-    width: 250px;
+    width: 200px;
 }
 
 #scan-users .site-name {
@@ -307,7 +307,7 @@ h2 {
     color: #0066ff;
 }
 #scan-users .site-remove {
-    width: 136px;
+    width: 100px;
     padding-right: 10px;
     text-align: right;
 }

@@ -332,12 +332,15 @@ function restore_options() {
             scanUserMap.forEach(function(value,key) {
                 let userId = key.replace("AC_","");
                 let user_home = options.upUrlTemplate.replace("{uid}",userId);
+                let user_desc;
+                if(value.desc==undefined){user_desc="无"}else{user_desc=value.desc}
                 $('#scan-users').append('\
           <tr class="site-tr">\
               <td class="site"><a href="' + user_home + '" target="_blank">' + userId + '</a></td>\
               <td class="site-name"><a href="' + user_home + '" target="_blank">' + value.name + '</a></td>\
               <td class="site-tag">' + value.tag + '</td>\
               <td class="site-remove"><span href="#" data-key="'+key+'" class="scan-remove">移除</span></td>\
+              <td class="site-tag">'+user_desc+'</td>\
             </tr>');
 
             })
@@ -866,7 +869,7 @@ $(document).ready(function () {
         <table id="mark' + m_id + '" class="add-table">\
           <tr class="mark-add-tr">\
             <td class="td-add-input">\
-              <input type="text" class="form-control site" placeholder="请输入用户uid" required>\
+              <input type="text" class="form-control site" placeholder="请输入用户Uid" required>\
             </td>\
             <td class="td-add-input">\
                 <input type="text" class="form-control site" placeholder="请输入标记，最多10个字符" required>\
@@ -907,7 +910,7 @@ $(document).ready(function () {
                     $('.mark-fail').show();
                     input_valid = false;
                 } else if (!uid_input.match(uidReg)) {
-                    $('.mark-fail').text('uid必须为数字');
+                    $('.mark-fail').text('Uid必须为数字');
                     $('.mark-fail').show();
                     input_valid = false;
                 }
@@ -931,7 +934,7 @@ $(document).ready(function () {
                         up_html_str = await ajax('GET',up_url);
                     }catch (e) {
                         $("body").mLoading("hide");
-                        $('.mark-fail').text('此uid不存在');
+                        $('.mark-fail').text('此Uid不存在');
                         $('.mark-fail').show();
                         return;
                     }
@@ -939,7 +942,7 @@ $(document).ready(function () {
 
                     if(up_name=='' || up_name==undefined){
                         $("body").mLoading("hide");
-                        $('.mark-fail').text('此uid不存在');
+                        $('.mark-fail').text('此Uid不存在');
                         $('.mark-fail').show();
                         return;
                     }
