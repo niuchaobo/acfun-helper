@@ -340,6 +340,7 @@ function restore_options() {
               <td class="site-name"><a href="' + user_home + '" target="_blank">' + value.name + '</a></td>\
               <td class="site-tag">' + value.tag + '</td>\
               <td class="site-remove"><span href="#" data-key="'+key+'" class="scan-remove">移除</span></td>\
+              <td class="site-evidence"><a href="'+value.refer+'#ncid='+value.commentId+'" target="_blank" class="scan-evidence">证据页</a></td>\
               <td class="site-tag">'+user_desc+'</td>\
             </tr>');
 
@@ -874,6 +875,9 @@ $(document).ready(function () {
             <td class="td-add-input">\
                 <input type="text" class="form-control site" placeholder="请输入标记，最多10个字符" required>\
             </td>\
+            <td class="tdesc-add-input">\
+                <input type="text" class="form-control site" placeholder="[可选]请输入描述" required>\
+            </td>\
             <td class="td-add-button">\
               <button type="button" class="switch-open mark-add-confirm" style="width:79px;float: none;margin-left:16px;">添加</button>\
             </td>\
@@ -893,8 +897,9 @@ $(document).ready(function () {
                 $('.mark-fail').hide();
 
                 var input_valid = true;
-                var uid_input = $(this).parent().prev().prev().children('input').val();
-                var _tag = $(this).parent().prev().children('input').val();
+                var uid_input = $(this).parent().prev().prev().prev().children('input').val();
+                var _tag = $(this).parent().prev().prev().children('input').val();
+                var user_desc = $(this).parent().prev().children('input').val();
                 let user_key = "AC_"+uid_input;
                 var tag = _tag.trim();
                 if (uid_input === '') {
@@ -959,6 +964,7 @@ $(document).ready(function () {
                           <td class="site-name"><a href="' + up_url + '" target="_blank">' + up_name + '</a></td>\
                           <td class="site-tag">' + tag + '</td>\
                           <td class="site-remove"><span href="#" class="scan-remove">移除</span></td>\
+                          <td class="site-tag">'+user_desc+'</td>\
                         </tr>');
                     });
 
