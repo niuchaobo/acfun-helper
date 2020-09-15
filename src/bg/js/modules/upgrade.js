@@ -36,7 +36,6 @@ class UpgradeAgent{
                 // let key = this.testData;
                 let x = JSON.parse(res);
                 let key = x.result;
-                console.log(key);
                 switch (key) {
                     case 0:
                         chrome.storage.local.set({Upgradeable : 0});

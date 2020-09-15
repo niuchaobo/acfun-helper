@@ -177,18 +177,27 @@ export function PushListDougaMode(){
       e.textContent=".article{display:none}";
       $(".PushListMode")[0].title="仅查看视频"
       document.head.appendChild(e);
+      mdui.snackbar({
+        message: `查看仅查看视频投稿。`,
+      });    
       break;
     case "video":
       $(".PushListMode")[0].dataset.type="article";
       document.getElementById("PushListDougaModeStyle").remove()
       e.textContent=".video{display:none}"
       $(".PushListMode")[0].title="仅查看文章"
-      document.head.appendChild(e)
+      document.head.appendChild(e);
+      mdui.snackbar({
+        message: `查看仅查看文章投稿。`,
+      });    
       break;
     case "article":
       $(".PushListMode")[0].dataset.type="all";
       $(".PushListMode")[0].title="全部投稿"
-      document.getElementById("PushListDougaModeStyle").remove()
+      document.getElementById("PushListDougaModeStyle").remove();
+      mdui.snackbar({
+        message: `查看全部类型投稿。`,
+      });    
     break;  
   }
 }
