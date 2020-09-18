@@ -64,7 +64,8 @@ const REG = {
     live:new RegExp("https://live.acfun.cn/live/*"),//直播
     liveIndex:new RegExp("https://live.acfun.cn"),//直播主页
     userHome:new RegExp("http(s)?://www.acfun.cn/u/\\d+"),//用户中心
-    partIndex:new RegExp("/v/list")//分区主页
+    partIndex:new RegExp("/v/list"),//分区主页
+    articleDetail:new RegExp("/v/as")//文章分区详细页
 
 }
 
