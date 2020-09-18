@@ -18,22 +18,6 @@ class SandboxAPI {
         return await this.postMessage('Fetch', { url });
     }
 
-    async getBuiltin(dict, word) {
-        return await this.postMessage('getBuiltin', { dict, word });
-    }
-
-    async getCollins(word) {
-        return await this.postMessage('getCollins', { word });
-    }
-
-    async getOxford(word) {
-        return await this.postMessage('getOxford', { word });
-    }
-
-    async locale() {
-        return await this.postMessage('getLocale', {});
-    }
-
     callback(data, callbackId) {
         this.postMessage('callback', { data, callbackId });
     }

@@ -1,8 +1,8 @@
 /* global odhback, localizeHtmlPage, utilAsync, optionsLoad, optionsSave updateVersionIcon*/
 import {
-  renderMomentCircleHtml,
   renderPushInnerHtml,
-  renderLives
+  renderLives,
+  renderLiveWatchTimeLst,
 } from "./renderList.js";
 import {
   openUpdateLog,
@@ -17,11 +17,10 @@ import {
   viewHistory,
   WatchLaterFpopup,
   WatchLaterFOpenList,
-  MomentSquareFpop
+  MomentSquareFpop,
+  LiveWatchTimeLstReact,
+  PushListDougaMode
 } from "./popupEvent.js";
-
-import unKnownCode from "./unKnownCode.js";
-unKnownCode(); //不明代码
 
 async function onReady() {
   localizeHtmlPage(); //global function
@@ -29,8 +28,8 @@ async function onReady() {
   let options = await optionsLoad(); //global function
   //fetchPushContent();
   renderPushInnerHtml(); //稿件动态列表加载
-  renderMomentCircleHtml(); //更多数据
   renderLives(); //生放送列表加载
+  renderLiveWatchTimeLst();
   $("#extends-enbaled").prop("checked", options.enabled);
   $("#extends-enbaled").change(onOptionChanged);
   $("#pop-update-log").click(openUpdateLog);
@@ -45,6 +44,8 @@ async function onReady() {
   $("#WatchLaterFpopup").click(WatchLaterFpopup);
   $("#WatchLaterFOpenList").click(WatchLaterFOpenList);
   $("#MomentSquareFpop").click(MomentSquareFpop);
+  $("#livePageWatchTimeRecList").click(e=>{e.target.className==='liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key,e.target.href)});
+  $(".PushListMode").click(PushListDougaMode);
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {

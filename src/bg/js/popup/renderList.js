@@ -40,10 +40,11 @@ export async function renderPushInnerHtml() {
       pushListData.innerText = "";
       for (let i = 0; i < rawdata.feedList.length; i++) {
         let data = rawdata.feedList[i];
-        let xmlData = '<div class="inner" id="';
+        let dougaType = data.isArticle?"article":"video";
+        let xmlData = '<div class="inner '+dougaType+'" id="';
         xmlData +=
           data.aid +
-          '">' +
+          '" data-type="'+data.isArticle+'">' +
           '<div class="l"><a target="_blank" href="javascript:;'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
         xmlData += "https://www.acfun.cn" + data.url + '"';
         xmlData += ' class="thumb thumb-preview"><img data-aid="';
@@ -93,12 +94,6 @@ export async function renderPushInnerHtml() {
         }, 0);
       }
     });
-}
-
-export function renderMomentCircleHtml() {
-  chrome.storage.local.get(["AcMomentCircle1"], function (data) {
-    $("#pop-push-momentcircle").append(data.AcMomentCircle1);
-  });
 }
 
 export  function renderLives() {
@@ -203,3 +198,26 @@ export  function renderLives() {
       }
     })
   }
+
+export async function renderLiveWatchTimeLst(){
+  let x = await getStorage("LiveWatchTimeRec_popup");
+  if(!x.LiveWatchTimeRec_popup){return}
+  chrome.runtime.sendMessage({action:"updateLiveWatchTimeListItem",params:{responseRequire:true,asyncWarp:true}},function(resp0){
+    if(resp0.data==true){
+      chrome.runtime.sendMessage({action:"getLiveWatchTimeList",params:{responseRequire:true,asyncWarp:false}},function(resp){
+        // console.log(resp)
+        var raw_data = "";
+        let lwList = Object.keys(resp.data)
+        for(let i in lwList){
+          var raw_data =raw_data+ `
+            <tr>
+                <td><a class="liveWatchListItem" data-key="${[lwList[i]]}" title="切换到标签页"  href="${resp.data[lwList[i]].url}">[切换到]</a> ${resp.data[lwList[i]].title}</td>
+                <td>打开于${getTimeSinceNow(resp.data[lwList[i]].startTime)}</td>
+            </tr>
+          `;
+        }
+        $("#livePageWatchTimeRecList").append(raw_data);
+      })    
+    }
+  })
+}

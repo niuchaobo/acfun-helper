@@ -1,6 +1,9 @@
 var abPlayFirst = undefined;
 var abPlaySecond = undefined;
 var abPlayFlag = 0;
+var dropFrameIncrement = 0;
+var lastdropedFrame = 0;
+var nowDropFrame = 0;
 //----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
 var hiddenDiv = document.getElementById('myCustomEventDiv');
@@ -71,6 +74,7 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
     }
 
     if(options.ProgressBarsw){
+        // dropFrameIncrementAlz();
         //Flex进度条
         // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
         try {
@@ -243,14 +247,32 @@ quickJump = (time, part)=> {
     }, 500);
 }
 
+function dropFrameIncrementAlz(){
+    //丢帧增量
+    document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
+        lastdropedFrame = nowDropFrame;
+        nowDropFrame = player.$video.getVideoPlaybackQuality().droppedVideoFrames
+        dropFrameIncrement = nowDropFrame - lastdropedFrame;
+        // console.log(dropFrameIncrement)
+    })
+}
+
 //=======Common Functions=========
 function Duration2Seconds(time){
     let str = time;
     let arr = str.split(':');
-    let Tm=Number(arr[0]*60);
-    let Ts=Number(arr[1]);
-    let seconds=Tm+Ts;
-    return seconds;
+    if(arr.length==2){
+        let Tm=Number(arr[0])*60;
+        let Ts=Number(arr[1]);
+        let seconds=Tm+Ts;
+        return seconds;
+    }else if(arr.length==3){
+        let Ts=Number(arr[2]);
+        let Tm=Number(arr[1])*60;
+        let Th=Number(arr[0])*60*60;
+        let seconds=Th+Tm+Ts;
+        return seconds;
+    }
 }
 
 function timeToMinute(second){

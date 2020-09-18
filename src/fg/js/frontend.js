@@ -104,18 +104,21 @@ class ODHFront {
         //夜间模式
         this.options.night && this.addNightStyle();
         //首页
-        let ifIndex = REG.index.test(href);
-        let ifPartIndex = REG.partIndex.test(href);
-        if(ifIndex||ifPartIndex){
+        if(REG.index.test(href)){
             //开启右侧导航
-            if(ifIndex && this.options.beautify_nav){this.pageBeautify.navBeautify();}
+            this.options.beautify_nav && this.pageBeautify.navBeautify();
             //隐藏ad
-            this.options.hideAd && this.pageBeautify.hideAds();
+           this.options.hideAd && this.pageBeautify.hideAds();
             //首页nav高斯模糊
-            if(this.options.Dev_indexBlurSW){
-              this.pageBeautify.indexBeautify(ifPartIndex);
-            }
+            this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false);
           }
+        //分区首页
+        if(REG.partIndex.test(href)){
+           //隐藏ad
+           this.options.hideAd && this.pageBeautify.hideAds();
+           //分区首页nav高斯模糊
+           this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(true);
+        }
         //视频与番剧
         if(REG.videoAndBangumi.test(href)){
         //播放器画质策略
@@ -146,7 +149,10 @@ class ODHFront {
             if(checknode.length>0){
                 this.livePageBeautify.appendWidePlayer();
                 this.livePageBeautify.simplifyDanmu();
-                clearInterval(timer)
+                if(this.options.LiveWatchTimeRec_popup){
+                  this.livePageBeautify.watchTimeRecord();
+                }
+                clearInterval(timer);
             }
         },3000)
         }
@@ -338,6 +344,9 @@ class ODHFront {
     if (this.options.upHighlight) {
       this.ce.renderSubScanForUp(rootCommentId);
     }
+    if(this.options.PlayerTimeCommentEasyJump){
+      this.ce.searchScanForPlayerTime();
+    }
   }
   //评论区整体部分的标记渲染入口
   api_renderList(params) {
@@ -350,6 +359,9 @@ class ODHFront {
     }
     if (this.options.upHighlight) {
       this.ce.renderScanForUp();
+    }
+    if(this.options.PlayerTimeCommentEasyJump){
+      this.ce.searchScanForPlayerTime();
     }
   }
 }

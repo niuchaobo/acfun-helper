@@ -219,7 +219,6 @@ class LuckyTtab {
         var tryNum = 0;
         while(arr.length<num){
             //获取随机下标
-            //TODO 这里的随机数生成方法应该切换到@wpscott 推荐的 new Date() % Array.length或window.crypto.getRandomValues 这个函数需要在一段时间内的随机数是与上次不同，使用的方法应该更具有令人信服的随机性、特殊性。refer:https://developer.mozilla.org/zh-CN/docs/Web/API/RandomSource/getRandomValues
             //let i = Math.floor(Math.random() * (max - min)) + min;
             let i = Math.floor(Math.random() * (max - min)) + min;
             let userId = y['Comm_data_UIDList'][i];
@@ -239,7 +238,6 @@ class LuckyTtab {
                     break;
                 }
             }
-            //TODO：这里可以考虑使用sessionStorage甚至将结果存储至更持久的IndexedDB或者SQLite3数据库（以便导出）中。
             this.hasBeenChosen.push(userId);
             let commentInfo = y['Comm_data_byUID'][userId];
             let url = this.messageFormat.replace("{userId}",userId);
@@ -278,4 +276,13 @@ class LuckyTtab {
             }
         }, '*');
     }
+
+    async RollOutExcDb(acid,num,follow){
+        //读取上次抽中、并且被Up主标记到数据库中的已中用户Uid列表，以便从本次抽奖结果中排除
+        let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
+        chrome.runtime.sendMessage({action: "getLuckyHistory",params:{responseRequire:true,asyncWarp:true}}, (response)=> {
+            console.log(response)
+        });
+    }
+
 }

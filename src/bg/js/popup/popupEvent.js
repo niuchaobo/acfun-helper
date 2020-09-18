@@ -1,11 +1,7 @@
 /* global odhback, optionsLoad, optionsSave*/
 
 export function openUpdateLog() {
-  //window.open("update-log.html","_blank");
-  var a = $("<a href='update-log.html' target='_blank'></a>").get(0);
-  var e = document.createEvent("MouseEvents");
-  e.initEvent("click", true, true);
-  a.dispatchEvent(e);
+  window.open("https://github.com/niuchaobo/acfun-helper/commits/master");
 }
 
 export function openIntroduce() {
@@ -43,11 +39,11 @@ export function titleToHome() {
 }
 
 export function hideToTopButton() {
-  let top = $(".mdui-fab").offset().top;
+  let top = $(".toTop").offset().top;
   if (top < 2000) {
-    $(".mdui-fab").css({ opacity: "0" });
+    $(".toTop").css({ opacity: "0" });
   } else {
-    $(".mdui-fab").css({ opacity: "1" });
+    $(".toTop").css({ opacity: "1" });
   }
 }
 
@@ -85,7 +81,6 @@ export async function WatchLaterFpopup(){
 }
 
 export async function viewHistory(){
-  db.open()
   let x = await db_getHistoryViews();
   var raw_data = "";
   for(let i=x.content.length-1;i>=0;i--){
@@ -102,7 +97,10 @@ export async function viewHistory(){
 
 export async function fetchDougaInfo(){
   let acid = $("#dougaInfoAcid").val();
+  let regAcid = new RegExp("ac(.*)");
   if(acid==''){return}
+  let x = regAcid.exec(acid);
+  x==null?acid=acid:acid=x[1]
   fetch("https://mini.pocketword.cn/api/acfun/info?dougaId=" + acid).then((res)=>{
     if(res.status==503){
       alert("请不要频繁请求。")
@@ -164,4 +162,48 @@ export async function fetchDougaInfo(){
   $("#dougaInfoPrint").append(raw_data);
 
   })
+}
+
+export function PushListDougaMode(){
+  let e = document.createElement("style");
+  e.type='text/css';
+  e.id="PushListDougaModeStyle";
+  e.textContent=""
+  document.head.appendChild(e)
+  switch ($(this)[0].dataset.type) {
+    case "all":
+      $(".PushListMode")[0].dataset.type="video";
+      document.getElementById("PushListDougaModeStyle").remove();
+      e.textContent=".article{display:none}";
+      $(".PushListMode")[0].title="仅查看视频"
+      document.head.appendChild(e);
+      mdui.snackbar({
+        message: `查看仅查看视频投稿。`,
+      });    
+      break;
+    case "video":
+      $(".PushListMode")[0].dataset.type="article";
+      document.getElementById("PushListDougaModeStyle").remove()
+      e.textContent=".video{display:none}"
+      $(".PushListMode")[0].title="仅查看文章"
+      document.head.appendChild(e);
+      mdui.snackbar({
+        message: `查看仅查看文章投稿。`,
+      });    
+      break;
+    case "article":
+      $(".PushListMode")[0].dataset.type="all";
+      $(".PushListMode")[0].title="全部投稿"
+      document.getElementById("PushListDougaModeStyle").remove();
+      mdui.snackbar({
+        message: `查看全部类型投稿。`,
+      });    
+    break;  
+  }
+}
+
+export function LiveWatchTimeLstReact(id,url){
+  chrome.tabs.update(Number(id), {
+    'selected': true
+  });
 }
