@@ -113,15 +113,15 @@ class VideoSetting{
                         let Lowest = qualitys.length - 2; //减去1的话就是播放器的自动模式
                         qualitys[Lowest].click();
                         break;
-                        case 4:
-                            for(let x = 0;x<=qualitys.length-1;){
-                                if(vqreg2exp.test(qualitys[x].dataset.index)){
-                                    x++;
-                                }else{
-                                    qualitys[x+1].click()
-                                    break;
-                                }
+                    case 4:
+                        for(let x = 0;x<=qualitys.length-1;){
+                            if(vqreg2exp.test(qualitys[x].dataset.qualityType)){
+                                x++;
+                            }else{
+                                qualitys[x].click()
+                                break;
                             }
+                        }
                     default:
                         break;
                 }
