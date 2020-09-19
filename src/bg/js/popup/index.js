@@ -19,7 +19,9 @@ import {
   WatchLaterFOpenList,
   MomentSquareFpop,
   LiveWatchTimeLstReact,
-  PushListDougaMode
+  PushListDougaMode,
+  indexJump,
+  userInfoFetch
 } from "./popupEvent.js";
 
 async function onReady() {
@@ -34,12 +36,16 @@ async function onReady() {
   $("#extends-enbaled").change(onOptionChanged);
   $("#pop-update-log").click(openUpdateLog);
   $("#pop-introduce").click(openIntroduce);
+  $("#pop-toArticlePart").click(indexJump);
+  $("#pop-toUcenter").click(indexJump);
+  $("#pop-toLiveIndex").click(indexJump);
   $("#pop-setting").click(openSetting);
   $("#go-live").click(watchLive);
   $("#pop-title .letter").click(titleToHome);
   $(document).scroll(hideToTopButton);
   $(".toTop").click(clickToTop);
   $("#dougaInfoAcidbtn").click(fetchDougaInfo);
+  $("#UserInfoActionBtn").click(userInfoFetch);
   $("#ViewHistoryAction").click(viewHistory);
   $("#WatchLaterFpopup").click(WatchLaterFpopup);
   $("#WatchLaterFOpenList").click(WatchLaterFOpenList);

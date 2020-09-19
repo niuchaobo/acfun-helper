@@ -18,7 +18,7 @@
             <div class="head">
                 <div class="item">
                     <div id="pop-title" class="pop-title">
-                        <label class="comment-label"><span class="letter">A</span>
+                        <label class="comment-label" title="进入主站"><span class="letter">A</span>
                             <span class="letter">c</span>
                             <span class="letter">Fun</span>
                             <span class="letter">助手</span></label>
@@ -36,37 +36,42 @@
                 <div class="mdui-col-xs-4" id="pop-introduce">
                     <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
                         style="cursor: default;">
-                        <i class="mdui-icon material-icons">book</i>使用说明
+                        <i class="mdui-icon material-icons">book</i> 使用说明
                     </button>
                 </div>
                 <div class="mdui-col-xs-4" id="pop-setting">
                     <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
                         style="cursor: default;">
-                        <i class="mdui-icon material-icons">settings</i>设置
+                        <i class="mdui-icon material-icons">settings</i> 设置
                     </button>
                 </div>
                 <div class="mdui-col-xs-4" id="pop-update-log">
                     <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
                         style="cursor: default;">
-                        <i class="mdui-icon material-icons">chrome_reader_mode</i>更新书
+                        <i class="mdui-icon material-icons">chrome_reader_mode</i> 更新志
+                    </button>
+                </div>
+                <div class="mdui-col-xs-4" id="pop-toLiveIndex">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
+                        <i class="mdui-icon material-icons">live_tv</i> 直播站
+                    </button>
+                </div>
+                <div class="mdui-col-xs-4" id="pop-toUcenter">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
+                        <i class="mdui-icon material-icons">account_circle</i> 个人中心
+                    </button>
+                </div>
+                <div class="mdui-col-xs-4" id="pop-toArticlePart">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
+                        <i class="mdui-icon material-icons">art_track</i> 文章区
                     </button>
                 </div>
             </div>
 
-            <div class="mdui-row">
-                <div class="mdui-col-xs-6">
-                    <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
-                        <input id="live-id" class="mdui-textfield-input" style="cursor: default;" type="text"
-                            placeholder="直播Up的UID" />
-                    </div>
-                </div>
-                <div class="mdui-col-xs-6">
-                    <button id="go-live" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">
-                        加入直播间
-                    </button>
-                </div>
-            </div>
-            <div class="mdui-divider"></div>
+        <div class="mdui-divider"></div>
         </div>
 
         <div>
@@ -134,27 +139,92 @@
 
                 <div class="mdui-panel mdui-panel-gapless" mdui-panel>
                     <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                        <div class="mdui-panel-item-title">稿件信息</div>
-                        <div class="mdui-panel-item-summary">视频数据查询</div>
-                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
-                        <div class="mdui-col-xs-6">
-                            <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
-                                <input id="dougaInfoAcid" class="mdui-textfield-input" style="cursor: default;" type="text"
-                                    placeholder="视频稿件AcID" />
+                        <div class="mdui-panel-item-header">
+                            <div class="mdui-panel-item-title">UID加入</div>
+                            <div class="mdui-panel-item-summary">直播间</div>
+                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                        </div>
+                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                            <div class="mdui-col-xs-6">
+                                <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
+                                    <input id="live-id" class="mdui-textfield-input" style="cursor: default;" type="text"
+                                        placeholder="直播Up的UID" />
+                                </div>
                             </div>
+                            <div class="mdui-col-xs-6">
+                                <button id="go-live" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">加入直播间
+                                </button>
+                            </div>
+                            <div class="mdui-container-fluid" id="dougaInfoPrint"></div>                        
                         </div>
-                        <div class="mdui-col-xs-6">
-                            <button id="dougaInfoAcidbtn" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">
-                                查询
-                            </button>
-                        </div>
-                        <div class="mdui-container-fluid" id="dougaInfoPrint"></div>                        
-                    </div>
                     </div>
                     
+                    <div class="mdui-panel-item mdui-panel-item-open">
+                        <div class="mdui-panel-item-header">
+                            <div class="mdui-panel-item-title">用户信息</div>
+                            <div class="mdui-panel-item-summary">用户数据查询</div>
+                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                        </div>
+                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                            <div class="mdui-col-xs-6">
+                                <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
+                                    <input id="userInfoUid" class="mdui-textfield-input" style="cursor: default;" type="text" placeholder="用户UID" />
+                                </div>
+                            </div>
+                            <div class="mdui-col-xs-6">
+                                <button id="UserInfoActionBtn" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;"> 查询
+                                </button>
+                            </div>
+                            <div class="mdui-container-fluid" id="UserInfoPrint"></div>                        
+                        </div>
+                    </div>
+                    
+                    <div class="mdui-panel-item mdui-panel-item-open">
+                        <div class="mdui-panel-item-header">
+                            <div class="mdui-panel-item-title">稿件信息</div>
+                            <div class="mdui-panel-item-summary">视频数据查询</div>
+                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                        </div>
+                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                            <div class="mdui-col-xs-6">
+                                <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
+                                    <input id="dougaInfoAcid" class="mdui-textfield-input" style="cursor: default;" type="text"
+                                        placeholder="视频稿件AcID" />
+                                </div>
+                            </div>
+                            <div class="mdui-col-xs-6">
+                                <button id="dougaInfoAcidbtn" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">
+                                    查询
+                                </button>
+                            </div>
+                            <div class="mdui-container-fluid" id="dougaInfoPrint"></div>                        
+                        </div>
+                    </div>
+                    
+                    <div class="mdui-panel-item mdui-panel-item-open">
+                        <div class="mdui-panel-item-header">
+                            <div class="mdui-panel-item-title">直播计时</div>
+                            <div class="mdui-panel-item-summary">（计时板）</div>
+                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                        </div>
+                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                            <div class="mdui-container-fluid" style="/* white-space: nowrap; */overflow: hidden;text-overflow: ellipsis;">
+                                <div class="mdui-table-fluid">
+                                    <table class="mdui-table">
+                                        <thead>
+                                        <tr>
+                                            <th>标签</th>
+                                            <th>计时</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="livePageWatchTimeRecList">
+                                        </tbody>
+                                    </table>
+                                </div>                            
+                            </div>                        
+                        </div>
+                    </div>
+
                     <div class="mdui-panel-item mdui-panel-item-open">
                         <div class="mdui-panel-item-header">
                             <div class="mdui-panel-item-title">观看历史</div>
@@ -174,30 +244,6 @@
                                         </tr>
                                         </thead>
                                         <tbody id="ViewHistory">
-                                        </tbody>
-                                    </table>
-                                </div>                            
-                            </div>                        
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">直播计时</div>
-                            <div class="mdui-panel-item-summary">（计时器）</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
-                            <div class="mdui-container-fluid" style="/* white-space: nowrap; */overflow: hidden;text-overflow: ellipsis;">
-                                <div class="mdui-table-fluid">
-                                    <table class="mdui-table">
-                                        <thead>
-                                        <tr>
-                                            <th>标签</th>
-                                            <th>计时</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="livePageWatchTimeRecList">
                                         </tbody>
                                     </table>
                                 </div>                            

@@ -4,6 +4,7 @@ var abPlayFlag = 0;
 var dropFrameIncrement = 0;
 var lastdropedFrame = 0;
 var nowDropFrame = 0;
+// var option_authinfo_mkey = false;
 //----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
 var hiddenDiv = document.getElementById('myCustomEventDiv');
@@ -220,6 +221,14 @@ try {
         to:'vs_videoInfo',
         msg:`${JSON.stringify(window.player.videoInfo.videoList)}`
     },'*');
+
+    // if(option_authinfo_mkey){
+    //     window.parent.postMessage({
+    //         to:'authinfo_mkey',
+    //         msg:`${JSON.stringify(window.player.mkey)}`
+    //     },'*');
+    // }
+    
 } catch (error) {
     console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Fail,May Influent videoSetting.")
 }

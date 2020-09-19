@@ -406,7 +406,7 @@ function getTimeSinceNow(date,newFormat=false) {
   if (during < oneMinute) {
     return Math.floor(during / 1000) + "秒前";
   } else if (during >= oneMinute && during < oneHour) {
-    return Math.floor(during / oneMinute) + "分前";
+    return Math.floor(during / oneMinute) + "分钟前";
   } else if (during > oneHour && during < oneDay) {
     return Math.floor(during / oneHour) + "小时前";
   } else if (during >= oneDay && during < oneWeek) {

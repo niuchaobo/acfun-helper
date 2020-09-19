@@ -119,6 +119,9 @@ class PageBeautify {
 
   //------------------------个人中心------------------------------
   async personBeautify() {
+    chrome.storage.local.get(['LocalUserId'],function(Uid){
+      if(Uid.LocalUserId=="0"){return}
+    });
     fetch(this.personInfo)
       .then((res) => {
         return res.text();
