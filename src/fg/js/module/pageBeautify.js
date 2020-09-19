@@ -229,4 +229,48 @@ class PageBeautify {
       // console.log("[LOG]Frontend-pageBeautify: error")
     }
   }
+
+  userMoment(href){
+    let x = document.createElement('li');
+    x.dataset.index = 'moment';
+    x.textContent = "动态";
+    document.getElementsByClassName("tab")[0].children[0].appendChild(x);
+    let y = RegExp("http(s)?://www.acfun.cn/u/(.*)");
+    let uid = y.exec(href);
+    this.renderMoment(uid[2]);
+  }
+
+  async renderMoment(uid){
+    let Api = `https://mini.pocketword.cn/api/acfun/user/moment?pcursor=0&userId=${uid}&count=30`;
+    let data = await fetchResult(Api);
+    let x = JSON.parse(data);
+    // console.log(x);
+    let y = `<div class="tab-content" tab-index="moment"><div id="ac-space-moment" style="text-align:center"><ul>`;
+    let z = 0;
+    for(let i = 0; i < x.feedList.length; i++){
+      if(x.feedList[i].resourceType ==10){
+        z++;y=y+`
+        <li>
+          <div class="moment-title" style="font-size: 18px;">
+              ${x.feedList[i].moment.text}
+          </div>
+          <div class="moment-sub">
+            <a href="${x.feedList[i].shareUrl}" target="_blank" class="douga">
+              <img src="${x.feedList[i].coverUrl}" style="width:calc(90%)">
+            </a>
+          </div>
+          <div class="moment-info">发布于 ${getTimeSinceNow(x.feedList[i].createTime,true)} - ${x.feedList[i].bananaCount} banana - ${x.feedList[i].commentCount} comment - <a href="${x.feedList[i].shareUrl}" target="_blank">原文</a></div>
+          <hr style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="80%"color=#987cb9 SIZE=3>
+        </li>
+        `;
+      }
+    }
+    // console.log(y)
+    y+=`</ul>
+      </div>
+      </div>`;
+    $("#ac-space>.wp").eq(0).append(y);
+    document.getElementsByClassName("tab")[0].children[0].children[3].innerText=`动态 ${z}`;
+    // document.getElementsByClassName("tab-list")[0].children[3].classList[0] == "active"
+  }
 }

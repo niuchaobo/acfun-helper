@@ -169,7 +169,6 @@ function db_putSquareList(Data){
             db2.SquareList.put({acmid:x.resourceId,uid:x.authorId,time:x.createTime,userInfo:x.userInfo,commentNum:x.commentCount,bananaCount:x.bananaCount,content:x.moment});
         }
     }
-    db2.close();
 }
 
 function db_putPushLst(Data){

@@ -41,6 +41,7 @@ const defaults = {
     endedAutoExitFullscreensw:true,
     easySearchScanForPlayerTimesw:false,
     Dev_indexBlurSW:false,
+    userHomeMoment:false,
     Upgradeable: 0,
     ABPlaysw:true,
     ProgressBarsw:true,
@@ -393,7 +394,7 @@ function formatDate(now) {
   return year + "-" + month + "-" + date;
 }
 
-function getTimeSinceNow(date) {
+function getTimeSinceNow(date,newFormat=false) {
   // 将时间转为最近发布时间
   let currentDate = new Date();
   let publishTime = new Date(date);
@@ -411,9 +412,10 @@ function getTimeSinceNow(date) {
   } else if (during >= oneDay && during < oneWeek) {
     return Math.floor(during / oneDay) + "天前";
   } else if (during >= oneWeek) {
-    return `于${publishTime.getFullYear()}-${
-      publishTime.getMonth + 1
-    }-${publishTime.getDate()}`;
+    if(newFormat){
+      return `${publishTime.toLocaleDateString().replace(/\//g, "-")+" "+publishTime.toTimeString().substr(0, 8)}`;
+    }
+    return `${publishTime.getFullYear()}-${publishTime.getMonth() + 1}-${publishTime.getDate()}`;
   }
 }
 

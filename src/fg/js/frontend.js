@@ -163,7 +163,11 @@ class ODHFront {
                 this.pageBeautify.addMouseAnimation()
                 this.pageBeautify.personBeautify();
             })
-          }
+        }
+        if(REG.userHome.test(href)&&this.options.userHomeMoment){
+          this.pageBeautify.userMoment(href);
+          this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false);
+        }
         //配置同步
         this.playerconfig.PConfProc();
     }
