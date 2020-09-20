@@ -141,6 +141,7 @@ class ODHBack {
             this.tabInvoke(tabId, 'renderLive', {url:url});
         }
         this.authInfo.fetchPasstoken();
+        this.authInfo.getAccessToken();
     }
 
     onInstalled(details) {
