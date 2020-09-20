@@ -39,17 +39,14 @@ class LuckyTtab {
         }
     }
 
-    
-
     async getResult(url) {
         return new Promise((resolve, reject) => {
-            fetch(url)
-            .then((res)=>{return res.text();})
-                .then((res)=>{
-                    let x=res;
-                    resolve(x);
-                })
-            });
+        fetch(url).then((res)=>{return res.text();})
+            .then((res)=>{
+                let x=res;
+                resolve(x);
+            })
+        });
     }
 
     async getTotalPageNum(acid){
@@ -58,12 +55,12 @@ class LuckyTtab {
             let acCommentApi='https://www.acfun.cn/rest/pc-direct/comment/list?sourceId='+acid+'&sourceType=3&page=1';
             fetch(acCommentApi)
             .then((res)=>{return res.text();})
-                .then((res)=>{
-                    let x=JSON.parse(res);
-                    resolve(x.totalPage);
-                })
-            });    
-        }
+            .then((res)=>{
+                let x=JSON.parse(res);
+                resolve(x.totalPage);
+            })
+        });    
+    }
 
     async getMaxFloorNum(acid){
         //返回投稿楼层数（请勿与评论数混淆，楼层只是主楼层）
@@ -72,12 +69,12 @@ class LuckyTtab {
         let floorNum = (totalPageNum-1) * 50
         return new Promise((resolve, reject) => {
             fetch(acCommentApi)
-                .then((res)=>{return res.text();})
-                .then((res)=>{
-                    let x=JSON.parse(res);
-                    let lastPageFloorNum=x.rootComments.length;
-                    resolve(floorNum + lastPageFloorNum);
-                });
+            .then((res)=>{return res.text();})
+            .then((res)=>{
+                let x=JSON.parse(res);
+                let lastPageFloorNum=x.rootComments.length;
+                resolve(floorNum + lastPageFloorNum);
+            });
         })
     }
 
@@ -108,8 +105,8 @@ class LuckyTtab {
                     if(Comm_data_UIDList.indexOf(obj.userId) > -1){
                         continue;
                     }
-                    Comm_data_UIDList.push(obj.userId);
-                    Comm_data_byUID[obj.userId]=obj;
+                Comm_data_UIDList.push(obj.userId);
+                Comm_data_byUID[obj.userId]=obj;
             }}
         }
         Comm_data['Comm_data_UIDList']=Comm_data_UIDList;
@@ -122,11 +119,11 @@ class LuckyTtab {
         let Api_url='https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='+QueryUserId;
         return new Promise((resolve, reject) => {
             fetch(Api_url)
-                .then((res)=>{return res.text();})
-                .then((res)=>{
-                    let x=JSON.parse(res);
-                    resolve(x.profile.following);
-                });
+            .then((res)=>{return res.text();})
+            .then((res)=>{
+                let x=JSON.parse(res);
+                resolve(x.profile.following);
+            });
         })    
     }
 
@@ -139,17 +136,17 @@ class LuckyTtab {
         let followApi='https://api-new.app.acfun.cn/rest/app/relation/getFollows?toUserId='+QueryUserId+'&pcursor=&count='+Count+'&page=0&groupId=0&action=7';
         return new Promise((resolve, reject) => {
             fetch(followApi,{headers: {"Content-Type": "application/json"}})
-                .then((res)=>{return res.text();})
-                .then((res)=>{
-                    let x=JSON.parse(res);
-                    for(let i=0;i<=x.friendList.length;i++){
-                        if(x.friendList.userId[i] == FollowUserId){
-                            resolve(true)
-                        }else{
-                            resolve(false)
-                        }
+            .then((res)=>{return res.text();})
+            .then((res)=>{
+                let x=JSON.parse(res);
+                for(let i=0;i<=x.friendList.length;i++){
+                    if(x.friendList.userId[i] == FollowUserId){
+                        resolve(true)
+                    }else{
+                        resolve(false)
                     }
-                });
+                }
+            });
         })    
     }
 

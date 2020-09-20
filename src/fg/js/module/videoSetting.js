@@ -54,7 +54,7 @@ class VideoSetting{
                 try {
                     document.getElementsByTagName("video")[0].currentTime = lastTime;
                 } catch (error) {
-                    console.log("[LOG]Frontend-videoSetting>jumpLastWatchTime: 没有上次观看的进度。")
+                    console.log("[LOG]Frontend-videoSetting>jumpLastWatchTime: 没有上次观看的进度。");
                 }
             }
         })
@@ -73,8 +73,8 @@ class VideoSetting{
             let node = $("div.control-btn.setting");
             if(node.length>0){
                 node.after(html);
-                $(".control-btn.pip").on('mouseover',()=>{$('.tip-pip').css('display','block')})
-                $(".control-btn.pip").on('mouseout',()=>{$('.tip-pip').css('display','none')}) 
+                $(".control-btn.pip").on('mouseover',()=>{$('.tip-pip').css('display','block')});
+                $(".control-btn.pip").on('mouseout',()=>{$('.tip-pip').css('display','none')});
                 clearInterval(_timer);
             }
         },1000);
@@ -89,44 +89,42 @@ class VideoSetting{
             if(nodes.length>0){
                 //模式标准：0=自动；1=默认最高；2=非60帧的最高画质；3=强制标清；4=偏向非4k的最高画质
                 chrome.storage.local.get(['videoQualityStrategy'],function(items){
-                let mode = Number(items.videoQualityStrategy);
-                let qualitys = document.querySelector(".quality-panel > ul").children;
-                switch (mode) {
-                    case 0:
-                        return;
-                    case 1:
-                        qualitys[0].click();
-                        // console.log(qualitys[0].dataset.qualityType);
-                        // console.log('ok');
-                        break;
-                    case 2:
-                        for(let i=0;i<=qualitys.length;i++){
-                            let result = vqregexp.exec(qualitys[i].dataset.qualityType);
-                            let result2 = vqreg2exp.exec(qualitys[i].dataset.qualityType);
-                            if(result==null&&result2==null){
-                                qualitys[i].click();
-                                break;
+                    let mode = Number(items.videoQualityStrategy);
+                    let qualitys = document.querySelector(".quality-panel > ul").children;
+                    switch (mode) {
+                        case 0:
+                            return;
+                        case 1:
+                            qualitys[0].click();
+                            // console.log(qualitys[0].dataset.qualityType);
+                            // console.log('ok');
+                            break;
+                        case 2:
+                            for(let i=0;i<=qualitys.length;i++){
+                                let result = vqregexp.exec(qualitys[i].dataset.qualityType);
+                                let result2 = vqreg2exp.exec(qualitys[i].dataset.qualityType);
+                                if(result==null&&result2==null){
+                                    qualitys[i].click();
+                                    break;
+                                }
                             }
-                        }
-                        break;
-                    case 3:
-                        let Lowest = qualitys.length - 2; //减去1的话就是播放器的自动模式
-                        qualitys[Lowest].click();
-                        break;
-                    case 4:
-                        for(let x = 0;x<=qualitys.length-1;){
-                            if(vqreg2exp.test(qualitys[x].dataset.qualityType)){
-                                x++;
-                            }else{
-                                qualitys[x].click()
-                                break;
+                            break;
+                        case 3:
+                            let Lowest = qualitys.length - 2; //减去1的话就是播放器的自动模式
+                            qualitys[Lowest].click();
+                            break;
+                        case 4:
+                            for(let x = 0;x<=qualitys.length-1;){
+                                if(vqreg2exp.test(qualitys[x].dataset.qualityType)){
+                                    x++;
+                                }else{
+                                    qualitys[x].click()
+                                    break;
+                                }
                             }
-                        }
-                    default:
-                        break;
-                }
-                clearInterval(timer);
-            });
+                    }
+                    clearInterval(timer);
+                });
             }
         },5000);
     }
@@ -150,15 +148,15 @@ class VideoSetting{
         addElement(this.progressBackGroundOptions);
         let observerWeb = new MutationObserver((mutations)=> {
             mutations.forEach((mutations)=>{
-            let flag = $('.container-video .control-bar-top').attr('data-bind-attr') === 'true'
-            flag ? $('#achlp-proBar,#achlp-proBar-bg').hide(250) : $('#achlp-proBar,#achlp-proBar-bg').show(100)  
+                let flag = $('.container-video .control-bar-top').attr('data-bind-attr') === 'true';
+                flag?$('#achlp-proBar,#achlp-proBar-bg').hide(250):$('#achlp-proBar,#achlp-proBar-bg').show(100);
             })
         })
         const a = $('.container-video .control-bar-top')[0];
         observerWeb.observe(a, {
-        attributes: true,
-        attributeOldValue: false,
-        attributeFilter :['data-bind-attr']
+            attributes: true,
+            attributeOldValue: false,
+            attributeFilter :['data-bind-attr']
         });
     }
         
@@ -211,7 +209,7 @@ class VideoSetting{
                     }
                 });
             });
-            this.serveStart(element,observer)
+            this.serveStart(element,observer);
         },500)
 
         //网页全屏
@@ -230,7 +228,7 @@ class VideoSetting{
                     }
                 });
             });
-            this.serveStart(elementWeb,observerWeb)
+            this.serveStart(elementWeb,observerWeb);
         },500)
     }
 
@@ -269,7 +267,7 @@ class VideoSetting{
         }else{
             this.underWorld && this.underWorld();
             this.underWorld = null;
-            $('.right-column').unbind('mouseenter').unbind('mouseleave')
+            $('.right-column').unbind('mouseenter').unbind('mouseleave');
         }
 
     }
@@ -282,25 +280,25 @@ class VideoSetting{
         //     this.changeRateKeyCode(settingKeyCode,e)
         // })
         document.onkeydown = (e)=> {
-            this.changeRateKeyCode(e,settingKeyCode)
+            this.changeRateKeyCode(e,settingKeyCode);
         }
     }
 
     changeRateKeyCode(e,settingKeyCode){
-        let code = e.keyCode
-        e.shiftKey && (code === settingKeyCode[0] || code === settingKeyCode[1]) && this.getRate(code, settingKeyCode)
+        let code = e.keyCode;
+        e.shiftKey && (code === settingKeyCode[0] || code === settingKeyCode[1]) && this.getRate(code, settingKeyCode);
     }
 
     getRate(code ,settingKeyCode){
         const v = document.getElementsByTagName("video")[0];
-        let rate = this.getRateFlag(code,settingKeyCode,v)
+        let rate = this.getRateFlag(code,settingKeyCode,v);
         v.playbackRate = rate;
         event.stopPropagation();
     }
     
     getRateFlag(code,settingKeyCode,v){
         let videoRate = v.playbackRate;
-        const [addRate,reduceRate] = settingKeyCode
+        const [addRate,reduceRate] = settingKeyCode;
         code === addRate
           ? (videoRate += 0.25)
           : code === reduceRate
@@ -321,20 +319,20 @@ class VideoSetting{
                 if(e.target.className === "searchListUser"){
                     return
                 }
-                $('.danmaku-items>li>.danmaku-content').after(`<div class = 'searchListUser' style = "display:none;margin-right:6px;font-size:20px;">⌂</div>`)
+                $('.danmaku-items>li>.danmaku-content').after(`<div class = 'searchListUser' style = "display:none;margin-right:6px;font-size:20px;">⌂</div>`);
                 $('.danmaku-items>li').bind('mouseenter',e=>{
-                    let userId = $(e.target).attr('data-user')
-                    $(e.target).children('.searchListUser').eq(0).css('display','inline-block').siblings().children('.searchListUser').eq(0).css('display','none')
-                    $(e.target).children('.searchListUser').eq(0).unbind('click')
+                    let userId = $(e.target).attr('data-user');
+                    $(e.target).children('.searchListUser').eq(0).css('display','inline-block').siblings().children('.searchListUser').eq(0).css('display','none');
+                    $(e.target).children('.searchListUser').eq(0).unbind('click');
                     $(e.target).children('.searchListUser').eq(0).bind('click',()=>{
-                        e.stopPropagation()
-                        window.open(`https://www.acfun.cn/u/${userId}`)
-                        $(e.target).children('.searchListUser').eq(0).css('display','none') 
+                        e.stopPropagation();
+                        window.open(`https://www.acfun.cn/u/${userId}`);
+                        $(e.target).children('.searchListUser').eq(0).css('display','none') ;
                     })
                 })
                 $('.danmaku-items>li').bind('mouseleave',e=>{
-                    $(e.target).children('.searchListUser').eq(0).unbind('click')
-                    $(e.target).children('.searchListUser').eq(0).css('display','none')
+                    $(e.target).children('.searchListUser').eq(0).unbind('click');
+                    $(e.target).children('.searchListUser').eq(0).css('display','none');
                 })
             }, 500)
           );

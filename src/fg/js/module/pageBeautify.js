@@ -254,16 +254,16 @@ class PageBeautify {
       if(x.feedList[i].resourceType ==10){
         z++;y=y+`
         <li>
-          <div class="moment-title" style="font-size: 18px;">
+          <div class="moment-title" style="text-align:left;padding-left:280px;padding-right: 230px;padding-top:20px;font-size: 18px;">
               ${x.feedList[i].moment.text}
           </div>
           <div class="moment-sub">
             <a href="${x.feedList[i].shareUrl}" target="_blank" class="douga">
-              <img src="${x.feedList[i].coverUrl}" style="width:calc(90%)">
+              <img src="${x.feedList[i].coverUrl}" style="width:calc(50%)">
             </a>
           </div>
-          <div class="moment-info">发布于 ${getTimeSinceNow(x.feedList[i].createTime,true)} - ${x.feedList[i].bananaCount} banana - ${x.feedList[i].commentCount} comment - <a href="${x.feedList[i].shareUrl}" target="_blank">原文</a></div>
-          <hr style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="80%"color=#987cb9 SIZE=3>
+          <div class="moment-info" style="font-size:15px;">发布于 ${getTimeSinceNow(x.feedList[i].createTime,true)} - ${x.feedList[i].bananaCount}根香蕉 - ${x.feedList[i].commentCount}个评论 - <a href="${x.feedList[i].shareUrl}" target="_blank">原文</a></div>
+          <hr style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="50%"color=#987cb9 SIZE=3>
         </li>
         `;
       }

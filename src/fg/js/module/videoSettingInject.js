@@ -11,7 +11,11 @@ var hiddenDiv = document.getElementById('myCustomEventDiv');
 if(!hiddenDiv) {
     hiddenDiv = document.createElement('div');
     hiddenDiv.style.display = 'none';
-    document.body.appendChild(hiddenDiv);
+    try {
+        document.body.appendChild(hiddenDiv);
+    } catch (error) {
+        console.log("[LOG]Frontend-videoSettingInject: Fail to appendChildElemt hiddenDiv.");
+    }
 }
 hiddenDiv.addEventListener('myCustomEvent', function() {
     // console.log(window.player);
@@ -175,7 +179,7 @@ function leftBottomTip(text,importantText=''){
     //播放器浮动通知气泡
     $('.left-bottom-tip').eq(0).append(`<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`)
     let _timer = setTimeout(() => {
-        $('.left-bottom-tip').eq(0).children().eq(0).remove()//这样写 并不能自定义持续时间
+        $('.left-bottom-tip').eq(0).children().eq(0).remove();//这样写 并不能自定义持续时间
         clearInterval(_timer);
     }, 2500);
 }
@@ -230,7 +234,7 @@ try {
     // }
     
 } catch (error) {
-    console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Fail,May Influent videoSetting.")
+    console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Faild.");
 }
 
 function setPictureInPictureMode() {
@@ -243,11 +247,11 @@ function setPictureInPictureMode() {
 quickJump = (time, part)=> {
     //评论时间播放器快速跳转 - 处理函数
     let v_obj = document.getElementsByTagName("video")[0];
-    let url = window.location.href
+    let url = window.location.href;
     if($('.part .part-wrap .scroll-div .single-p').length && part){
         if (!(url.split('_')[1] == part || (url.search('_') == -1 && part == 1))){ //判断是否为当前part，符合要求直接操作进度条
-            url = url.split('_')[0] + '_' + part
-            $('.part .part-wrap .scroll-div .single-p').eq(part - 1).trigger("click")
+            url = url.split('_')[0] + '_' + part;
+            $('.part .part-wrap .scroll-div .single-p').eq(part - 1).trigger("click");
         }
     }
     setTimeout(() => {
