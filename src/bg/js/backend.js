@@ -137,10 +137,11 @@ class ODHBack {
             let rootCommentId = url.match(commentSubReg)[1];
             this.tabInvoke(tabId, 'renderSub', {rootCommentId: rootCommentId,url:url});
         }else if(liveReg.test(url)){
-            console.log("url1",url);
+            // console.log("url1",url);
             this.tabInvoke(tabId, 'renderLive', {url:url});
         }
         this.authInfo.fetchPasstoken();
+        this.authInfo.getAccessToken();
     }
 
     onInstalled(details) {

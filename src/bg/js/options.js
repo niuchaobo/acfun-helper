@@ -1054,6 +1054,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================Up主个人页面渲染动态============================
+    chrome.storage.local.get(['userHomeMoment'],function(items){
+        var userHomeMoment= items.userHomeMoment;
+        if(userHomeMoment){
+            document.getElementById('userHomeMoment').checked='true';
+        }else{
+            document.getElementById('userHomeMoment').checked=false;
+        }
+        $('#userHomeMoment').on('click', function () {
+            if(!document.getElementById('userHomeMoment').checked){
+                document.getElementById('userHomeMoment').checked=false;
+                chrome.storage.local.set({'userHomeMoment':false});
+            }else{
+                document.getElementById('userHomeMoment').checked=true;
+                chrome.storage.local.set({'userHomeMoment':true});
+            }
+        });
+    });
+
     //=====================直播评论时间Tag============================
     chrome.storage.local.get(['liveCommentTimeTag'],function(items){
         var liveCommentTimeTag= items.liveCommentTimeTag;
@@ -1881,7 +1900,7 @@ $(document).ready(function () {
         });
     });
 
-    //====================推送消息轮询===================
+    //====================直播观看计时表===================
     chrome.storage.local.get(['LiveWatchTimeRec_popup'],function(items){
         var LiveWatchTimeRec_popup= items.LiveWatchTimeRec_popup;
         if(LiveWatchTimeRec_popup){

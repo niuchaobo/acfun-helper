@@ -20,6 +20,31 @@ export function openSetting() {
   a.dispatchEvent(e);
 }
 
+export function indexJump() {
+  switch (this.id) {
+    case 'pop-toUcenter':
+      var a = $("<a href='https://www.acfun.cn/member/#area=splash' target='_blank'></a>").get(0);
+      var e = document.createEvent("MouseEvents");
+      e.initEvent("click", true, true);
+      a.dispatchEvent(e);
+      break;
+    case 'pop-toLiveIndex':
+      var a = $("<a href='https://live.acfun.cn/' target='_blank'></a>").get(0);
+      var e = document.createEvent("MouseEvents");
+      e.initEvent("click", true, true);
+      a.dispatchEvent(e);
+      break;
+    case 'pop-toArticlePart':
+      var a = $("<a href='https://www.acfun.cn/v/list63/index.htm' target='_blank'></a>").get(0);
+      var e = document.createEvent("MouseEvents");
+      e.initEvent("click", true, true);
+      a.dispatchEvent(e);
+      break;
+    default:
+      break;
+  }
+}
+
 export function watchLive() {
   let uid = $("#live-id").val();
   //不输入uid时，跳转到直播首页（以前是404）
@@ -57,7 +82,7 @@ export async function onOptionChanged(e) {
     options.enabled = $("#extends-enbaled").prop("checked");
     let newOptions = await odhback().opt_optionsChanged(options);
     optionsSave(newOptions);
-  }
+}
 
 export async function MomentSquareFpop(){
   chrome.tabs.create({url: chrome.extension.getURL('bg/square.html')});
@@ -160,8 +185,109 @@ export async function fetchDougaInfo(){
         </div>
     `;
   $("#dougaInfoPrint").append(raw_data);
-
   })
+}
+
+export async function userInfoFetch(){
+  let uid = $("#userInfoUid").val();
+  let dougaCountFlag = 0;
+  if(uid==''){return}
+  fetch("https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=" + Number(uid)).then((res)=>{
+    if(res.status==503){
+      alert("请不要频繁请求。")
+    }
+  return res.text()})
+  .then((res)=>{
+    let x = JSON.parse(res);
+    if(x.result!=0){alert("无效的Uid。");return}
+    if(x.profile.contentCount!=0){dougaCountFlag=1}
+    let raw_data = `
+    <div class="mdui-table-fluid">
+        <table class="mdui-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Data</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>UID</td>
+                <td>${x.profile.userId}</td>
+            </tr>
+            <tr>
+                <td>用户名</td>
+                <td>${x.profile.name}</td>
+            </tr>
+            <tr>
+                <td>注册时间</td>
+                <td>${getTimeSinceNow(x.profile.registerTime,true)}</td>
+            </tr>
+            <tr>
+                <td>签名</td>
+                <td>${(x.profile.signature)}</td>
+            </tr>
+            <tr>
+                <td>关注</td>
+                <td>${x.profile.following}</td>
+            </tr>
+            <tr>
+                <td>粉丝</td>
+                <td>${x.profile.followed}</td>
+            </tr>
+            <tr>
+                <td>稿件计数</td>
+                <td>${x.profile.contentCount}</td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    `;
+    $("#UserInfoPrint").append(raw_data);
+    if(dougaCountFlag!=1){return}
+    fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=2&sortType=3`).then((res)=>{
+    return res.text()})
+    .then((res)=>{
+      let x = JSON.parse(res);
+      let raw_data = `
+      <div class="mdui-table-fluid">
+          <table class="mdui-table">
+              <thead>
+              </thead>
+              <tbody>
+              <tr>
+                  <td>上次视频投稿时间</td>
+                  <td>${getTimeSinceNow(x.feed[0].createTimeMillis,true)}</td>
+              </tr>
+              </tbody>
+          </table>
+          </div>
+      `;
+    $("#UserInfoPrint").append(raw_data);
+    })
+    fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=3&sortType=3`).then((res)=>{
+    return res.text()})
+    .then((res)=>{
+      let x = JSON.parse(res);
+      if(x.profile.createTimeMillis==undefined){return}
+      let raw_data = `
+      <div class="mdui-table-fluid">
+          <table class="mdui-table">
+              <thead>
+              </thead>
+              <tbody>
+              <tr>
+                  <td>上次文章投稿时间</td>
+                  <td>${getTimeSinceNow(x.feed[0].createTimeMillis,true)}</td>
+              </tr>
+              </tbody>
+          </table>
+          </div>
+      `;
+    $("#UserInfoPrint").append(raw_data);
+    })
+  })
+
 }
 
 export function PushListDougaMode(){

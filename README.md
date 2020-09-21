@@ -162,6 +162,8 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 ##### @ShigemoriHakura - [aclivechat AcFun直播弹幕姬 For OBS](https://github.com/ShigemoriHakura/aclivechat "项目地址")
 
+##### @baoyuanle - [AcfunQml 基于Qt QML的AcFun桌面客户端](https://github.com/baoyuanle/AcfunQml "项目地址")
+
 ---
 
 ### 致谢（版面原因仅列出十位）

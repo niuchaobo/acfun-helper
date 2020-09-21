@@ -54,8 +54,7 @@ class videoPageBeautify {
               "</span>桃子</div>"
           );
         }
-      } else {
-      }
+      } else {}
     });
   }
   
