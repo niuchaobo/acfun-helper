@@ -303,7 +303,7 @@ function getPageData(href) {
       url: href,
       type: "GET",
       timeout: 10000,
-      contentType: "text/html; charset=utf-8",
+      //contentType: "text/html; charset=utf-8",
       success: (data) => {
         resolve(data);
       },
