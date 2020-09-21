@@ -113,7 +113,7 @@ class ODHFront {
             this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false);
           }
         //分区首页
-        if(REG.partIndex.test(href)){
+        if(REG.partIndex.test(href)||REG.articleDetail.test(href)){
            //隐藏ad
            this.options.hideAd && this.pageBeautify.hideAds();
            //分区首页nav高斯模糊
@@ -163,7 +163,11 @@ class ODHFront {
                 this.pageBeautify.addMouseAnimation()
                 this.pageBeautify.personBeautify();
             })
-          }
+        }
+        if(REG.userHome.test(href)&&this.options.userHomeMoment){
+          this.pageBeautify.userMoment(href);
+          this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false);
+        }
         //配置同步
         this.playerconfig.PConfProc();
     }

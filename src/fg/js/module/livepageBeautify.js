@@ -77,7 +77,11 @@ class LivePageButfy {
         let textFlag = document.getElementsByClassName("tip-fullscreen");
         flag = textFlag[0].innerText === '退出网页全屏'?textFlag[0] : false;
         flag = flag ? flag :textFlag[1].innerText === '退出桌面全屏'?textFlag[1] : false;
-        flag = target.parentElement === document.getElementsByClassName('btn-fullscreen')[1] ? false : flag
+        if(target && target.parentElement === document.getElementsByClassName('btn-fullscreen')[1]){
+            flag = false;
+        }else{
+            flag = true;
+        }
         return flag
     }
 

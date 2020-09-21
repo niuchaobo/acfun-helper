@@ -41,6 +41,7 @@ const defaults = {
     endedAutoExitFullscreensw:true,
     easySearchScanForPlayerTimesw:false,
     Dev_indexBlurSW:false,
+    userHomeMoment:false,
     Upgradeable: 0,
     ABPlaysw:true,
     ProgressBarsw:true,
@@ -64,7 +65,8 @@ const REG = {
     live:new RegExp("https://live.acfun.cn/live/*"),//直播
     liveIndex:new RegExp("https://live.acfun.cn"),//直播主页
     userHome:new RegExp("http(s)?://www.acfun.cn/u/\\d+"),//用户中心
-    partIndex:new RegExp("/v/list")//分区主页
+    partIndex:new RegExp("/v/list"),//分区主页
+    articleDetail:new RegExp("/v/as")//文章分区详细页
 
 }
 
@@ -392,7 +394,7 @@ function formatDate(now) {
   return year + "-" + month + "-" + date;
 }
 
-function getTimeSinceNow(date) {
+function getTimeSinceNow(date,newFormat=false) {
   // 将时间转为最近发布时间
   let currentDate = new Date();
   let publishTime = new Date(date);
@@ -404,15 +406,16 @@ function getTimeSinceNow(date) {
   if (during < oneMinute) {
     return Math.floor(during / 1000) + "秒前";
   } else if (during >= oneMinute && during < oneHour) {
-    return Math.floor(during / oneMinute) + "分前";
+    return Math.floor(during / oneMinute) + "分钟前";
   } else if (during > oneHour && during < oneDay) {
     return Math.floor(during / oneHour) + "小时前";
   } else if (during >= oneDay && during < oneWeek) {
     return Math.floor(during / oneDay) + "天前";
   } else if (during >= oneWeek) {
-    return `于${publishTime.getFullYear()}-${
-      publishTime.getMonth + 1
-    }-${publishTime.getDate()}`;
+    if(newFormat){
+      return `${publishTime.toLocaleDateString().replace(/\//g, "-")+" "+publishTime.toTimeString().substr(0, 8)}`;
+    }
+    return `${publishTime.getFullYear()}-${publishTime.getMonth() + 1}-${publishTime.getDate()}`;
   }
 }
 
