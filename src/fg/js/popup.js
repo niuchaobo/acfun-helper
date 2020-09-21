@@ -153,9 +153,9 @@ class Popup {
             html+=this.popComment();
         }
         //抽奖部分
-        if(isUp==1){
+        // if(isUp==1){
             html+=this.popLottery();
-        }
+        // }
         html+=this.popupFooter(type);
         this.setContent(html);
     }

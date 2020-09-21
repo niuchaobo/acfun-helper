@@ -146,10 +146,10 @@ export async function fetchDougaInfo(){
             <tbody>
             <tr>
                 <td>标题</td>
-                <td>${x.title}</td>
+                <td><a href="${x.shareUrl}" target="blank">${x.title}</a></td>
             </tr>
             <tr>
-                <td>播放量</td>
+                <td>播放</td>
                 <td>${x.viewCount}</td>
             </tr>
             <tr>
@@ -157,12 +157,16 @@ export async function fetchDougaInfo(){
                 <td>${x.bananaCount}</td>
             </tr>
             <tr>
-                <td>发布时间</td>
-                <td>${getTimeSinceNow(x.createTimeMillis)}</td>
+                <td>发布</td>
+                <td>于 ${getTimeSinceNow(x.createTimeMillis,true)} 过审；于 ${getTimeSinceNow(x.currentVideoInfo.uploadTime,true)} 上传</td>
             </tr>
             <tr>
                 <td>弹幕</td>
                 <td>${x.danmakuCount}</td>
+            </tr>
+            <tr>
+                <td>收藏</td>
+                <td>${x.stowCount}</td>
             </tr>
             <tr>
                 <td>简介</td>
@@ -177,8 +181,8 @@ export async function fetchDougaInfo(){
                 <td>${x.shareCount}</td>
             </tr>
             <tr>
-                <td>收藏</td>
-                <td>${x.stowCount}</td>
+                <td>其他属性</td>
+                <td>持续时长：${Math.floor(x.currentVideoInfo.durationMillis/1000)}秒 - 原创：${x.originalDeclare?'Y':'N'} - 可见性：${x.currentVideoInfo.visibleType==1?'Y':'N'} - 学院奖励：${x.isRewardSupportted?'Y':'N'} - 文件名：${x.currentVideoInfo.fileName} - 投稿类型：<a href="https://www.acfun.cn/v/list${x.channel.id}/index.htm" target="blank">${x.channel.name}</a></td>
             </tr>
             </tbody>
         </table>
@@ -269,7 +273,7 @@ export async function userInfoFetch(){
     return res.text()})
     .then((res)=>{
       let x = JSON.parse(res);
-      if(x.profile.createTimeMillis==undefined){return}
+      if(x.feed[0].contributeTime==undefined){return}
       let raw_data = `
       <div class="mdui-table-fluid">
           <table class="mdui-table">
@@ -278,7 +282,7 @@ export async function userInfoFetch(){
               <tbody>
               <tr>
                   <td>上次文章投稿时间</td>
-                  <td>${getTimeSinceNow(x.feed[0].createTimeMillis,true)}</td>
+                  <td>${getTimeSinceNow(x.feed[0].contributeTime,true)}</td>
               </tr>
               </tbody>
           </table>
