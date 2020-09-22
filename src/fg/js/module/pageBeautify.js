@@ -247,7 +247,6 @@ class PageBeautify {
     let Api = `https://mini.pocketword.cn/api/acfun/user/moment?pcursor=0&userId=${uid}&count=30`;
     let data = await fetchResult(Api);
     let x = JSON.parse(data);
-    // console.log(x);
     let y = `<div class="tab-content" tab-index="moment"><div id="ac-space-moment" style="text-align:center"><ul>`;
     let z = 0;
     for(let i = 0; i < x.feedList.length; i++){
@@ -268,12 +267,12 @@ class PageBeautify {
         `;
       }
     }
-    // console.log(y)
     y+=`</ul>
       </div>
       </div>`;
     $("#ac-space>.wp").eq(0).append(y);
     document.getElementsByClassName("tab")[0].children[0].children[3].innerText=`动态 ${z}`;
+    //可以在动态最下面增加一个按钮，点击就增加新的30条动态信息。
     // document.getElementsByClassName("tab-list")[0].children[3].classList[0] == "active"
   }
 }

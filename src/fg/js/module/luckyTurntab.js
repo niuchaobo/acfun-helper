@@ -114,42 +114,6 @@ class LuckyTtab {
         return Comm_data;
     }
 
-    async getFollowingNum(QueryUserId){
-        //判断查询用户关注列表是否存在Follow的用户UID
-        let Api_url='https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='+QueryUserId;
-        return new Promise((resolve, reject) => {
-            fetch(Api_url)
-            .then((res)=>{return res.text();})
-            .then((res)=>{
-                let x=JSON.parse(res);
-                resolve(x.profile.following);
-            });
-        })    
-    }
-
-    async isFollowed_old(QueryUserId,FollowUserId){
-        //判断查询用户关注列表是否存在Follow的用户UID
-        //直接使用会出现CORB跨域问题
-        let qHdr=Number(await this.getFollowingNum(QueryUserId).then((res)=>{return res}))/100;
-        qHdr%1? qHdr = qHdr+1:qHdr = qHdr;
-        let Count = qHdr*100;
-        let followApi='https://api-new.app.acfun.cn/rest/app/relation/getFollows?toUserId='+QueryUserId+'&pcursor=&count='+Count+'&page=0&groupId=0&action=7';
-        return new Promise((resolve, reject) => {
-            fetch(followApi,{headers: {"Content-Type": "application/json"}})
-            .then((res)=>{return res.text();})
-            .then((res)=>{
-                let x=JSON.parse(res);
-                for(let i=0;i<=x.friendList.length;i++){
-                    if(x.friendList.userId[i] == FollowUserId){
-                        resolve(true)
-                    }else{
-                        resolve(false)
-                    }
-                }
-            });
-        })    
-    }
-
     async isFollowed(QueryUserId){
         //使用用github@BDPO这位acer的新 判断是否关注PO主 的解决办法
         let checkApi = "https://www.acfun.cn/usercard.aspx?uid="+String(QueryUserId);
@@ -157,9 +121,9 @@ class LuckyTtab {
             fetch(checkApi).then((res)=>{return res.text();})
             .then((res)=>{
                 let x = JSON.parse(res);
-                if(x.userjson.isFriend==1){
+                if(x.userjson.followed==1){
                     resolve(true)
-                }else if(x.userjson.isFriend==0){
+                }else if(x.userjson.followed==0){
                     resolve(false)
                 }else{
                     resolve(false);
