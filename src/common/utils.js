@@ -51,6 +51,7 @@ const defaults = {
     followLiveNotif:true,
     liveCommentTimeTag:true,
     LiveWatchTimeRec_popup:false,
+    articlePartIndexDarken:false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -69,8 +70,6 @@ const REG = {
     articleDetail:new RegExp("/v/as")//文章分区详细页
 
 }
-
-
 
 //以传过来的options为主体,如果其中没有就取默认值
 function sanitizeOptions(options) {
