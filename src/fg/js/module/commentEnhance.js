@@ -75,6 +75,20 @@ class CommentEnhance{
                     if(text.indexOf('标记')==-1){
                         $(this).addClass('comment-mark-parent');
                         $(this).append('<span class="comment-mark">标记</span>');
+                        $(this).append('<span class="comment-cap">保存</span>');
+                        $(this).on('click','.comment-cap',function () {
+                            let data = $(this).parent().parent().parent().parent().parent().parent().parent()[0].innerHTML;
+                            var blob = new Blob([data], { type: 'application/octet-stream' });
+                            var url = window.URL.createObjectURL(blob);
+                            var saveas = document.createElement('a');
+                            saveas.href = url;
+                            saveas.style.display = 'none';
+                            document.body.appendChild(saveas);
+                            saveas.download = `${window.location.href}.html`;
+                            saveas.click();
+                            setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
+                            document.addEventListener('unload', function(){window.URL.revokeObjectURL(url);});
+                        });
                         $(this).on('click','.comment-mark',function () {
                             let userNode = $(this).parent().parent().parent().find('.name').eq(0);
                             let username = userNode.text();
@@ -321,6 +335,10 @@ class CommentEnhance{
         let seconds = str.search("分") === -1 ?  str.split('秒')[0] : str.split('分')[0]*60
         // console.log(`[LOG]Frontend-CommentEnhance>easySearchScanForPlayerTime: 跳转到[${seconds}]秒！！ gogogo！`)
         return seconds;
+    }
+
+    commentLayoutSave(){
+
     }
 }
 

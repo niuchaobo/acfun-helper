@@ -206,7 +206,7 @@ class LivePageButfy {
     LivehideAds(){
         try {
             document.querySelector(".banner").hidden = true;
-            //大约可以节约接近20%的CPU资源。
+            //大约可以节约接近20%的CPU资源，主要消耗来源是gif的动图。
             var timer = setInterval(function () {
                 document.querySelectorAll(".live-status").forEach((e)=>{e.remove()});
                 clearInterval(timer);

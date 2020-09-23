@@ -233,6 +233,15 @@ class PageBeautify {
     }
   }
 
+  darkenArticlePartIndex(){
+    document.getElementsByClassName("main")[0].style.setProperty("background","#303030","important");
+    document.getElementsByTagName("html")[0].style.cssText = "background:#303030";
+    createElementStyle(".delveField .ArticleDelveFieldContent li .article-delve-text a,.dynamicsUpdateTitle .dynamicsUpdateSub,.dynamicsUpdateTitle .dynamicsUpdateChange span,#container > div.ArticleBlockLeft.ArticleDynamicsContent.extend-pab > div.ArticleLeftTitle > div:nth-child(2) > a,#container > div.ArticleBlockLeft.ArticleDynamicsContent.extend-pab > div.ArticleLeftTitle > div:nth-child(1) > a,#container > div.delveField.ArticleBlockRight > div > b,.atc-title,.gg-title,.HotArticleText,.bar-action,.ArticleRightTitle,.ArticleRightTitle,.ref-bar-btn,.header .nav li a,.ArticleListUser .ArticleListUserContent>a,.atc-info>a{color:white !important;}",document.getElementsByTagName("head")[0]);
+    createElementStyle(".header .nav .nav-parent,.header .nav{background-color:#303030;}",document.getElementsByTagName("head")[0]);
+    createElementStyle(".footer{display:none !important;}",document.getElementsByTagName("head")[0]);
+    createElementStyle(".footer{display:none !important;}",document.getElementsByTagName("head")[0]);
+  }
+  
   userMoment(href){
     let x = document.createElement('li');
     x.dataset.index = 'moment';
@@ -247,7 +256,6 @@ class PageBeautify {
     let Api = `https://mini.pocketword.cn/api/acfun/user/moment?pcursor=0&userId=${uid}&count=30`;
     let data = await fetchResult(Api);
     let x = JSON.parse(data);
-    // console.log(x);
     let y = `<div class="tab-content" tab-index="moment"><div id="ac-space-moment" style="text-align:center"><ul>`;
     let z = 0;
     for(let i = 0; i < x.feedList.length; i++){
@@ -268,12 +276,12 @@ class PageBeautify {
         `;
       }
     }
-    // console.log(y)
     y+=`</ul>
       </div>
       </div>`;
     $("#ac-space>.wp").eq(0).append(y);
     document.getElementsByClassName("tab")[0].children[0].children[3].innerText=`动态 ${z}`;
+    //可以在动态最下面增加一个按钮，点击就增加新的30条动态信息。
     // document.getElementsByClassName("tab-list")[0].children[3].classList[0] == "active"
   }
 }
