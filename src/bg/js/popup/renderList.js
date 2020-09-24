@@ -45,8 +45,8 @@ export async function renderPushInnerHtml() {
         xmlData +=
           data.aid +
           '" data-type="'+data.isArticle+'">' +
-          '<div class="l"><a target="_blank" href="javascript:;'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
-        xmlData += "https://www.acfun.cn" + data.url + '"';
+          '<div class="l"><a target="_blank" href="'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
+        xmlData += 'https://www.acfun.cn' + data.url + '"';
         xmlData += ' class="thumb thumb-preview"><img data-aid="';
         xmlData +=
           data.aid +
