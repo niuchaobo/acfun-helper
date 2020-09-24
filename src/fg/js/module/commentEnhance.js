@@ -75,9 +75,32 @@ class CommentEnhance{
                     if(text.indexOf('标记')==-1){
                         $(this).addClass('comment-mark-parent');
                         $(this).append('<span class="comment-mark">标记</span>');
-                        $(this).append('<span class="comment-cap">保存</span>');
+                        $(this).append('<span class="comment-cap">保存为HTML</span>');
                         $(this).on('click','.comment-cap',function () {
-                            let data = $(this).parent().parent().parent().parent().parent().parent().parent()[0].innerHTML;
+                            let data = `<style>
+                            div.area-comment-left > a > img.avatar-bg-2018062102{
+                                position: absolute;top: 10px;left: 5px;background-color: transparent;border: none;
+                            }
+                            div.area-comment-left > a > img.avatar{
+                                width: 50px;height: 50px;margin: 0;padding: 0;border: 1px solid #ffffff;box-shadow: 0 0 0 rgba(0, 0, 0, 0);border-radius: 50%;
+                            }
+                            .ac-comment-list .area-comment-title .name{
+                                margin-right: 6px;font-size: 12px;
+                            }
+                            .area-comm-more,.area-comment-reply,.time_day,.time_times{display: none !important;}
+                            .area-comment-sec{
+                                margin-left: 100px;margin-right: 100px;
+                                background-color: #f7f7f7;
+                            }
+                            .area-comment-top{
+                                margin-left: 10px;
+                            }
+                            .area-comment-des{
+                                margin-left: 50px;
+                            }
+                            </style><body style="margin: 30px 20px 20px 20px;">
+                            `
+                            data+=$(this).parent().parent().parent().parent().parent()[0].innerHTML;
                             var blob = new Blob([data], { type: 'application/octet-stream' });
                             var url = window.URL.createObjectURL(blob);
                             var saveas = document.createElement('a');
