@@ -21,7 +21,7 @@ export async function renderPushInnerHtml() {
     console.log(p1data)
     if(p1data.length!=0){
       pushListData.index++;
-      $("#pop-push").append(p1data[1].content);
+      $("#pop-push").append(p1data[0].content);
     }
   }
   fetch(
