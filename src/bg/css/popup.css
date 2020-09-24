@@ -315,7 +315,8 @@ span.go-live {
 }
 
 .pop-common {
-    background-color: #f6f2f2;;
+    background-color: #f6f2f2;
+    ;
     height: 28px;
 }
 
@@ -346,12 +347,24 @@ span.go-live {
 
 
 /*按钮大小位置*/
+
 .toTop-bg-color {
     background-color: #0000008c!important;
 }
 
 .toTop-bg-color i {
     color: white;
+}
+
+.PushListMode {
+    right: 16px;
+}
+
+.PushListMode.active {
+    right: calc(50% - 25px);
+    bottom: 50px;
+    animation: pp 4.5s 0s infinite cubic-bezier(1, 1, 1, 1);
+    -webkit-animation: pp 4.5s 0s infinite cubic-bezier(1, 1, 1, 1);
 }
 
 .r {
@@ -551,5 +564,22 @@ span.go-live {
     }
     100% {
         transform: translateY(0px)
+    }
+}
+
+@-webkit-keyframes pp {
+    0% {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
     }
 }

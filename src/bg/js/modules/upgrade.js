@@ -5,6 +5,7 @@ class UpgradeAgent{
     constructor(){
         this.checkConfigDay = [3,7]
         this.testData = 1;
+        this.dataTimer = null;
     }
 
     checkDay(){
@@ -56,7 +57,8 @@ class UpgradeAgent{
     upgradeMain(){
         console.log("Registered Upgrade Check Mod.")
         this.checkUpdate();
-        var _dateTimer = setInterval(() => {
+        this.dateTimer && clearInterval(this.dateTimer)
+        this.dateTimer = setInterval(() => {
             this.checkUpdate();
         }, 43200000);
     }
