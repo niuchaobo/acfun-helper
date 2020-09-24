@@ -9,7 +9,6 @@ export async function renderPushInnerHtml() {
   pushListData.busy = true;
   console.log(pushListData)
   if (pushListData.index == 1) {
-    console.log('bbbbbbbbbbbbbbbbbbb')
     // chrome.storage.local.get(["AcpushList1"], function (data) {
     //   $("#pop-push").append(data.AcpushList1);
     // });
