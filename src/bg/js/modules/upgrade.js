@@ -5,6 +5,7 @@ class UpgradeAgent{
     constructor(){
         this.checkConfigDay = [3,7]
         this.testData = 1;
+        this.dataTimer = null;
     }
 
     checkDay(){
@@ -36,17 +37,18 @@ class UpgradeAgent{
                 // let key = this.testData;
                 let x = JSON.parse(res);
                 let key = x.result;
-                switch (key) {
-                    case 0:
-                        chrome.storage.local.set({Upgradeable : 0});
-                        break;
-                    case 1:
-                        chrome.storage.local.set({Upgradeable : 1});
-                        break;
-                    case 2:
-                        chrome.storage.local.set({Upgradeable : 2});
-                        break;
-                }
+                chrome.storage.local.set({Upgradeable : key}); 
+                // switch (key) {
+                //     case 0:
+                //         chrome.storage.local.set({Upgradeable : 0});
+                //         break;
+                //     case 1:
+                //         chrome.storage.local.set({Upgradeable : 1});
+                //         break;
+                //     case 2:
+                //         chrome.storage.local.set({Upgradeable : 2});
+                //         break;
+                // }
             });
             },'json');
         }
@@ -55,7 +57,8 @@ class UpgradeAgent{
     upgradeMain(){
         console.log("Registered Upgrade Check Mod.")
         this.checkUpdate();
-        var _dateTimer = setInterval(() => {
+        this.dateTimer && clearInterval(this.dateTimer)
+        this.dateTimer = setInterval(() => {
             this.checkUpdate();
         }, 43200000);
     }

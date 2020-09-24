@@ -66,9 +66,11 @@ export function titleToHome() {
 export function hideToTopButton() {
   let top = $(".toTop").offset().top;
   if (top < 2000) {
-    $(".toTop").css({ opacity: "0" });
+    $(".toTop").css({ opacity: "0" , bottom : '16px'});
+    $(".PushListMode").css({right:'16px'})
   } else {
-    $(".toTop").css({ opacity: "1" });
+    $(".toTop").css({ opacity: "1" , bottom : '41px'});
+    $(".PushListMode").css({right:'60px'})
   }
 }
 
@@ -295,20 +297,24 @@ export async function userInfoFetch(){
 }
 
 export function PushListDougaMode(){
+  //$('.PushListMode').addClass('active');
+  //clearPushListDougaButtonClass();
   let e = document.createElement("style");
   e.type='text/css';
   e.id="PushListDougaModeStyle";
   e.textContent=""
   document.head.appendChild(e)
-  switch ($(this)[0].dataset.type) {
+  switch ($('.PushListMode')[0].dataset.type) {
     case "all":
       $(".PushListMode")[0].dataset.type="video";
       document.getElementById("PushListDougaModeStyle").remove();
-      e.textContent=".article{display:none}";
+      e.textContent=`
+      .article{display:none}
+        `;
       $(".PushListMode")[0].title="仅查看视频"
       document.head.appendChild(e);
       mdui.snackbar({
-        message: `查看仅查看视频投稿。`,
+        message: `仅查看视频投稿。`,
       });    
       break;
     case "video":
@@ -318,7 +324,7 @@ export function PushListDougaMode(){
       $(".PushListMode")[0].title="仅查看文章"
       document.head.appendChild(e);
       mdui.snackbar({
-        message: `查看仅查看文章投稿。`,
+        message: `仅查看文章投稿。`,
       });    
       break;
     case "article":
@@ -331,7 +337,13 @@ export function PushListDougaMode(){
     break;  
   }
 }
-
+let timer = null;
+function clearPushListDougaButtonClass(){
+    timer && clearTimeout(timer);
+    timer = setTimeout(()=>{
+        $('.PushListMode').removeClass('active')
+    },4500)
+}
 export function LiveWatchTimeLstReact(id,url){
   chrome.tabs.update(Number(id), {
     'selected': true
