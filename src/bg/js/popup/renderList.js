@@ -7,7 +7,9 @@ var pushListData = {
 };
 export async function renderPushInnerHtml() {
   pushListData.busy = true;
+  console.log(pushListData)
   if (pushListData.index == 1) {
+    console.log('bbbbbbbbbbbbbbbbbbb')
     // chrome.storage.local.get(["AcpushList1"], function (data) {
     //   $("#pop-push").append(data.AcpushList1);
     // });
@@ -16,9 +18,10 @@ export async function renderPushInnerHtml() {
     } catch (error) {
       var p1data = [];
     }
+    console.log(p1data)
     if(p1data.length!=0){
       pushListData.index++;
-      $("#pop-push").append(p1data[0].content);
+      $("#pop-push").append(p1data[1].content);
     }
   }
   fetch(
@@ -80,6 +83,7 @@ export async function renderPushInnerHtml() {
       }, 0);
       if (pushListData.firstLoad) {
         setTimeout(() => {
+          console.log('aaaaaaaaaaaaaaaaaaa')
           $(window).bind("scroll", (e) => {
             if (pushListData.busy || pushListData.arriveEnd) {
               return;

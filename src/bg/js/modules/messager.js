@@ -168,12 +168,15 @@ class MsgNotifs{
         console.log("Start PushListFetching Mod");
         window.setInterval(async function(){
             let sw = await getStorage("fetchPushList_daemonsw")
+            console.log('------------------------'+sw);
+            console.log(sw);
             if(sw.fetchPushList_daemonsw==false){return}
             chrome.storage.local.get(['LocalUserId'],function(Uid){
                 if(Uid.LocalUserId=="0"){return}
                 fetch('https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=0&gid=-1&count=30&pcursor=1')
                     .then((res)=>{return res.text();})
                     .then((res)=>{
+                        console.log(res);
                         let rawdata=JSON.parse(res);
                         // db_putPushLst(rawdata);
                         let out_data='';
