@@ -87,7 +87,7 @@ class CommentEnhance{
                             .ac-comment-list .area-comment-title .name{
                                 margin-right: 6px;font-size: 12px;
                             }
-                            .area-comm-more,.area-comment-reply,.time_day,.time_times{display: none !important;}
+                            .area-comm-more,.area-comment-reply,.time_day,.time_times,.acfunAdmin{display: none !important;}
                             .area-comment-sec{
                                 margin-left: 100px;margin-right: 100px;
                                 background-color: #f7f7f7;
