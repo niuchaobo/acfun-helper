@@ -168,15 +168,12 @@ class MsgNotifs{
         console.log("Start PushListFetching Mod");
         window.setInterval(async function(){
             let sw = await getStorage("fetchPushList_daemonsw")
-            console.log('------------------------'+sw);
-            console.log(sw);
             if(sw.fetchPushList_daemonsw==false){return}
             chrome.storage.local.get(['LocalUserId'],function(Uid){
                 if(Uid.LocalUserId=="0"){return}
                 fetch('https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=0&gid=-1&count=30&pcursor=1')
                     .then((res)=>{return res.text();})
                     .then((res)=>{
-                        console.log(res);
                         let rawdata=JSON.parse(res);
                         // db_putPushLst(rawdata);
                         let out_data='';
@@ -186,8 +183,8 @@ class MsgNotifs{
                             let xmlData="<div class=\"inner "+dougaType+"\" id=\"";
                             xmlData+=data.aid+" \"data-type=\""+data.isArticle+"\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
                             xmlData+="https://www.acfun.cn"+data.url+"\"";
-                            xmlData+=" class=\"thumb thumb-preview\"><img data-aid=\"";
-                            xmlData+=data.aid + "\" src=\""+data.titleImg+"\" class=\"preview\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+data.aid+" \"target=\"_blank\" href=\"" +"https://www.acfun.cn"+data.url+"\" class=\"title\">";
+                            xmlData+=" class=\"thumb thumb-preview\"><img class=\"lazyload preview\" data-aid=\"";
+                            xmlData+=data.aid + "\" src=\"./images/prpr.jpg\" data-src=\""+data.titleImg+"\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <a data-aid=\""+data.aid+" \"target=\"_blank\" href=\"" +"https://www.acfun.cn"+data.url+"\" class=\"title\">";
                             xmlData+=data.title+"</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
                             xmlData+=data.aid+"\" href=\"https://www.acfun.cn/u/"+data.userId+"\" class=\"name\">";
                             xmlData += data.username + " </a><span class=\"time\">" + getTimeSinceNow(data.releaseDate) + "发布</span> </div> </div> </div> ";
@@ -197,7 +194,7 @@ class MsgNotifs{
                         db_putPushListHtml(out_data);
                     });
             })
-        },60000)
+        },6000)
     }
         
 }

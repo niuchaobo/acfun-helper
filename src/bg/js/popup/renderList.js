@@ -7,7 +7,6 @@ var pushListData = {
 };
 export async function renderPushInnerHtml() {
   pushListData.busy = true;
-  console.log(pushListData)
   if (pushListData.index == 1) {
     // chrome.storage.local.get(["AcpushList1"], function (data) {
     //   $("#pop-push").append(data.AcpushList1);
@@ -17,7 +16,6 @@ export async function renderPushInnerHtml() {
     } catch (error) {
       var p1data = [];
     }
-    console.log(p1data)
     if(p1data.length!=0){
       pushListData.index++;
       $("#pop-push").append(p1data[0].content);
@@ -49,15 +47,10 @@ export async function renderPushInnerHtml() {
           '" data-type="'+data.isArticle+'">' +
           '<div class="l"><a target="_blank" href="'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
         xmlData += 'https://www.acfun.cn' + data.url + '"';
-        xmlData += ' class="thumb thumb-preview"><img data-aid="';
+        xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
         xmlData +=
           data.aid +
-          '" src="' +
-          data.titleImg +
-          '" class="preview"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' +
-          data.aid +
-          ' "target="_blank" href="' +
-          "https://www.acfun.cn" +
+          '" src="' +'./images/prpr.jpg'+'" data-src="'+data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' +data.aid +' "target="_blank" href="' +"https://www.acfun.cn" +
           data.url +
           '" class="title">';
         xmlData +=
@@ -82,7 +75,6 @@ export async function renderPushInnerHtml() {
       }, 0);
       if (pushListData.firstLoad) {
         setTimeout(() => {
-          console.log('aaaaaaaaaaaaaaaaaaa')
           $(window).bind("scroll", (e) => {
             if (pushListData.busy || pushListData.arriveEnd) {
               return;
@@ -96,6 +88,7 @@ export async function renderPushInnerHtml() {
           });
         }, 0);
       }
+      $("img.lazyload").lazyload({ threshold : 0.2 });
     });
 }
 

@@ -330,21 +330,6 @@ function api_updateLiveUrl(params) {
     $("#live-url-super").text(super_url);
 }
 
-function api_setActionState(result) {
-    const { response, params } = result;
-    const { nindex, dindex } = params;
-    const match = document.querySelector(`.odh-addnote[data-nindex="${nindex}"].odh-addnote[data-dindex="${dindex}"]`);
-
-    if (response)
-        match.src = getImageSource('good');
-    else
-        match.src = getImageSource('fail');
-
-    setTimeout(() => {
-        match.src = getImageSource('plus');
-    }, 1000);
-}
-
 function api_showMessage(result){
     let {res ,params} = result ;
     document.getElementById("ncb-image").src=res.src;
