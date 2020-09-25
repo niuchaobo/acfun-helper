@@ -383,7 +383,7 @@ class CommentEnhance{
             background-size: 100% 100%;
             z-index: 1001;
             position: absolute;
-            top: -169px;
+            top: -150px;
             display: flex;
             color: rgb(255 255 255);
             border: 1px #0c0c0c69 solid;
