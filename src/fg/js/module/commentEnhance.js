@@ -283,34 +283,42 @@ class CommentEnhance{
                         </div>
                     </div>
                 `)
+            let timer = null;
             ubbBox.mouseenter(function(){
-                let id = removeAPrefix(ubbBox)
+                timer && clearTimeout(timer)
+                let id = removeAPrefix($(this));
                 let _this = this.children[0];
                 let imgCover = _this.children[0];
                 let title =_this.children[1].children[0];
                 let name = _this.children[1].children[1];
-                $(_this).css('opacity','1')
-                if($(title).text() && $(name).text()){
-                    return
-                }
-                $(title).text('正在获取稿件信息')
-                $(name).text('....')
-                fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>{
-                    if(res.status==503){
-                        alert("请不要频繁请求。")
+                $(_this).css({display:'flex',opacity:'1'})
+                timer = setTimeout(()=>{
+                    if($(title).text() && $(name).text()){
+                        return
                     }
-                    return res.text()
-                }).then(res=>{
-                    let x = JSON.parse(res);
-                    if(x.result!=0){alert("无效的视频稿件AcID。");return}
-                    $(imgCover).attr('src',x.coverUrl)
-                    $(title).text(x.title)
-                    $(name).text( 'UP: '+ x.user.name)
-                })
-                
+                    $(title).text('正在获取稿件信息')
+                    $(name).text('....')
+                    fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>{
+                        if(res.status==503){
+                            console.log("请不要频繁请求。")
+                            return '超时'
+                        }
+                        return res.text()
+                    }).then(res=>{
+                        if(res == '超时'){
+                            return
+                        }
+                        let x = JSON.parse(res);
+                        if(x.result!=0){alert("无效的视频稿件AcID。");return}
+                        $(imgCover).attr('src',x.coverUrl)
+                        $(title).text(x.title)
+                        $(name).text( 'UP: '+ x.user.name)
+                    })
+                },1000)
             })
             ubbBox.mouseleave(function(){
-                $(this.children).css('opacity','0')
+                timer && clearTimeout(timer)
+                $(this.children).css({display:'none',opacity:'0'})
             })
         })
     }
@@ -337,7 +345,8 @@ class CommentEnhance{
             border-radius: 26px;
             font-size: 8px;
             transition-duration: 1s;
-            opacity:0
+            opacity:0;
+            display:none;
         }
         .udd-img{
             width: 64px;
@@ -348,6 +357,7 @@ class CommentEnhance{
             flex-direction: column;
             flex: 3;
             width: 246px;
+            text-align: center;
         }
         .udd-user{
             text-align: center;
