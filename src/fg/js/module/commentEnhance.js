@@ -269,6 +269,146 @@ class CommentEnhance{
         $(".area-comment-title .pos.simple").remove();
     }
 
+    //稿件跳转弹窗
+    uddPopUp(type = 0){
+        this.addUddPopUpStyle()
+        getAsyncDom('a.ubb-ac',()=>{
+            let ubbBox = $('a.ubb-ac');
+            let html = ` 
+            <div class=${type ? 'udd-box' : 'udd-box2'}>
+                ${type ?  `<img class = udd-img>` : ''}
+                <div class=${type ? 'udd-text' : 'udd-text2'}>
+                    <div class = udd-title></div>
+                    <div class = udd-user></div>
+                </div>
+            </div>
+            `
+            ubbBox.append(html)
+            let timer = null;
+            ubbBox.mouseenter(function(){
+                timer && clearTimeout(timer)
+                let id = removeAPrefix($(this));
+                let _this = this.children[0];
+                let imgCover = type && _this.children[0];
+                let title =_this.children[type].children[0];
+                let name = _this.children[type].children[1];
+                timer = setTimeout(()=>{
+                    $(_this).css({display:'flex',opacity:'1'})
+                    if($(title).text() || $(name).text()){
+                        return
+                    }
+                    $(title).text('正在获取稿件信息')
+                    fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>{
+                        if(res.status==503){
+                            console.log("请不要频繁请求。")
+                            return '超时'
+                        }
+                        return res.text()
+                    }).then(res=>{
+                        if(res == '超时'){
+                            return
+                        }
+                        let x = JSON.parse(res);
+                        if(x.result!=0){alert("无效的视频稿件AcID。");return}
+                        imgCover ? $(imgCover).attr('src',x.coverUrl) : $(_this).css('background-image',`url(${x.coverUrl})`);
+                        $(title).text(x.title)
+                        $(name).text( 'UP: '+ x.user.name)
+                        timer && clearTimeout(timer)
+                    })
+                },1000)
+            })
+            ubbBox.mouseleave(function(){
+                timer && clearTimeout(timer)
+                $(this.children).css({display:'none',opacity:'0'})
+            })
+        })
+    }
+
+    addUddPopUpStyle(){
+        let cssTest = `
+        a.ubb-ac{
+            position: relative;
+            display: inline-block;
+            vertical-align: text-top;
+        }
+
+        .udd-box{
+            z-index:1001;
+            position: absolute;
+            top: -50px;
+            left: -90px;
+            background: #e23a3a;
+            height: 38px;
+            width: 310px;
+            display: flex;
+            padding: 4px 10px 4px 20px;
+            color: rgb(255 255 255);
+            border: 1px #0c0c0c69 solid;
+            border-radius: 26px;
+            font-size: 8px;
+            transition-duration: 1s;
+            opacity: 0;
+            display: none;
+        }
+        .udd-img{
+            width: 64px;
+            height: 36px;
+            border: 1px #0c0c0c69 solid;
+        }
+        .udd-text{
+            display: flex;
+            flex-direction: column;
+            flex: 3;
+            width: 246px;
+            text-align: center;
+            padding-left: 4px;
+            justify-content: space-around;
+        }
+        .udd-user{
+            text-align: initial;
+            color: #fff;
+            height:16px
+        }
+        .udd-title{
+            height: 16px;
+            width: 99%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .udd-box2{
+            flex-flow: wrap-reverse;
+            width: 256px;
+            height: 144px;
+            background-size: 100% 100%;
+            z-index: 1001;
+            position: absolute;
+            top: -150px;
+            display: flex;
+            color: rgb(255 255 255);
+            border: 1px #0c0c0c69 solid;
+            border-radius: 10px;
+            font-size: 8px;
+            transition-duration: 1s;
+            opacity: 0;
+            display: none;
+            overflow: hidden;
+        }
+        .udd-text2{
+            background: #000000ad;
+            height: 42px;
+            display: flex;
+            flex-direction: column;
+            flex: 3;
+            width: 246px;
+            text-align: center;
+            padding-left: 4px;
+            justify-content: space-around;
+        }
+    `
+        createElementStyle(cssTest)
+    }
+
     // 在评论区添加快速跳转至视频对应时间的链接
     searchScanForPlayerTime(){
         var timer = setInterval( () => {

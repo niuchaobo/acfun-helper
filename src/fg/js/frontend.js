@@ -367,6 +367,10 @@ class ODHFront {
     if(this.options.PlayerTimeCommentEasyJump){
       this.ce.searchScanForPlayerTime();
     }
+    //跳转链接弹框
+    //this.options.uddPopUp && this.ce.uddPopUp(this.options.uddPopUp.type);
+    this.ce.uddPopUp()
+
   }
 }
 
