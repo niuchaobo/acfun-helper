@@ -312,7 +312,7 @@ class CommentEnhance{
                         if(x.result!=0){alert("无效的视频稿件AcID。");return}
                         imgCover ? $(imgCover).attr('src',x.coverUrl) : $(_this).css('background-image',`url(${x.coverUrl})`);
                         $(title).text(x.title)
-                        $(name).text( 'UP: '+ x.user.name)
+                        $(name).text( 'UP: '+ x.user.name + ' 播放：'+x.viewCountShow)
                         timer && clearTimeout(timer)
                     })
                 },1000)
@@ -331,7 +331,6 @@ class CommentEnhance{
             display: inline-block;
             vertical-align: text-top;
         }
-
         .udd-box{
             z-index:1001;
             position: absolute;
@@ -393,6 +392,7 @@ class CommentEnhance{
             opacity: 0;
             display: none;
             overflow: hidden;
+            box-shadow: -2px 5px 5px #bababa;
         }
         .udd-text2{
             background: #000000ad;
