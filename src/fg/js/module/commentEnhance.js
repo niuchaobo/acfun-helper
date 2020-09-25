@@ -269,6 +269,102 @@ class CommentEnhance{
         $(".area-comment-title .pos.simple").remove();
     }
 
+    //稿件跳转弹窗
+    uddPopUp(){
+        this.addUddPopUpStyle()
+        getAsyncDom('a.ubb-ac',()=>{
+            let ubbBox = $('a.ubb-ac');
+            ubbBox.append(`
+                    <div class=udd-box>
+                        <img class = udd-img>
+                        <div class = udd-text>
+                            <div class = udd-title></div>
+                            <div class = udd-user></div>
+                        </div>
+                    </div>
+                `)
+            ubbBox.mouseenter(function(){
+                let id = removeAPrefix(ubbBox)
+                let _this = this.children[0];
+                let imgCover = _this.children[0];
+                let title =_this.children[1].children[0];
+                let name = _this.children[1].children[1];
+                $(_this).css('opacity','1')
+                if($(title).text() && $(name).text()){
+                    return
+                }
+                $(title).text('正在获取稿件信息')
+                $(name).text('....')
+                fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>{
+                    if(res.status==503){
+                        alert("请不要频繁请求。")
+                    }
+                    return res.text()
+                }).then(res=>{
+                    let x = JSON.parse(res);
+                    if(x.result!=0){alert("无效的视频稿件AcID。");return}
+                    $(imgCover).attr('src',x.coverUrl)
+                    $(title).text(x.title)
+                    $(name).text( 'UP: '+ x.user.name)
+                })
+                
+            })
+            ubbBox.mouseleave(function(){
+                $(this.children).css('opacity','0')
+            })
+        })
+    }
+
+    addUddPopUpStyle(){
+        let cssTest = `
+        a.ubb-ac{
+            position: relative;
+            display: inline-block;
+            vertical-align: text-top;
+        }
+
+        .udd-box{
+            position: absolute;
+            top: -50px;
+            left: -135px;
+            background: #eee;
+            height: 36px;
+            width: 310px;
+            display: flex;
+            padding: 4px 10px 4px 20px;
+            color: rgb(214, 154, 204);
+            border: 1px rgb(179, 179, 179);
+            border-radius: 26px;
+            font-size: 8px;
+            transition-duration: 1s;
+            opacity:0
+        }
+        .udd-img{
+            width: 64px;
+            height: 36px;
+        }
+        .udd-text{
+            display: flex;
+            flex-direction: column;
+            flex: 3;
+            width: 246px;
+        }
+        .udd-user{
+            text-align: center;
+            color: rgba(0, 0, 0, 0.58);
+            height:16px
+        }
+        .udd-title{
+            height: 16px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    `
+        createElementStyle(cssTest)
+    }
+
     // 在评论区添加快速跳转至视频对应时间的链接
     searchScanForPlayerTime(){
         var timer = setInterval( () => {

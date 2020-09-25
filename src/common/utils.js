@@ -593,6 +593,15 @@ debounce = (fn, delay) => {
     return x
 }
 
+removeAPrefix = (_$targetDom) =>{
+  let acid = _$targetDom.text().trim();
+  let regAcid = new RegExp("ac(.*)");
+  if(acid==''){return}
+  let x = regAcid.exec(acid);
+  x==null?acid=acid:acid=x[1];
+  return acid
+}
+
 createElementStyle = (cssText,targetDom = document.head,id=null)=>{
     let target = targetDom
     let nod = document.createElement("style");
