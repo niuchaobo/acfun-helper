@@ -113,8 +113,8 @@ export async function viewHistory(){
   for(let i=x.content.length-1;i>=0;i--){
     var raw_data =raw_data+ `
       <tr>
-          <td>${x.content[i].name} - 观看于${getTimeSinceNow(x.content[i].time)}</td>
-          <td><a href="https://www.acfun.cn${Boolean(x.content[i].aid)?"/v/ac"+x.content[i].aid:"/"}" target="_blank">《${x.content[i].title}》</a> </td>
+          <td class="dispLimit">${x.content[i].name}<br>于${getTimeSinceNow(x.content[i].time)}</td>
+          <td><a title="Up: ${x.content[i].name}" href="https://www.acfun.cn${Boolean(x.content[i].aid)?"/v/ac"+x.content[i].aid:"/"}" target="_blank">《${x.content[i].title}》</a> </td>
       </tr>
     `;
   }
