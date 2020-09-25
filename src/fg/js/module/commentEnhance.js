@@ -270,27 +270,28 @@ class CommentEnhance{
     }
 
     //稿件跳转弹窗
-    uddPopUp(){
+    uddPopUp(type = 0){
         this.addUddPopUpStyle()
         getAsyncDom('a.ubb-ac',()=>{
             let ubbBox = $('a.ubb-ac');
-            ubbBox.append(`
-                    <div class=udd-box>
-                        <img class = udd-img>
-                        <div class = udd-text>
-                            <div class = udd-title></div>
-                            <div class = udd-user></div>
-                        </div>
-                    </div>
-                `)
+            let html = ` 
+            <div class=${type ? 'udd-box' : 'udd-box2'}>
+                ${type ?  `<img class = udd-img>` : ''}
+                <div class=${type ? 'udd-text' : 'udd-text2'}>
+                    <div class = udd-title></div>
+                    <div class = udd-user></div>
+                </div>
+            </div>
+            `
+            ubbBox.append(html)
             let timer = null;
             ubbBox.mouseenter(function(){
                 timer && clearTimeout(timer)
                 let id = removeAPrefix($(this));
                 let _this = this.children[0];
-                let imgCover = _this.children[0];
-                let title =_this.children[1].children[0];
-                let name = _this.children[1].children[1];
+                let imgCover = type && _this.children[0];
+                let title =_this.children[type].children[0];
+                let name = _this.children[type].children[1];
                 timer = setTimeout(()=>{
                     $(_this).css({display:'flex',opacity:'1'})
                     if($(title).text() || $(name).text()){
@@ -309,7 +310,7 @@ class CommentEnhance{
                         }
                         let x = JSON.parse(res);
                         if(x.result!=0){alert("无效的视频稿件AcID。");return}
-                        $(imgCover).attr('src',x.coverUrl)
+                        imgCover ? $(imgCover).attr('src',x.coverUrl) : $(_this).css('background-image',`url(${x.coverUrl})`);
                         $(title).text(x.title)
                         $(name).text( 'UP: '+ x.user.name)
                         timer && clearTimeout(timer)
@@ -374,6 +375,35 @@ class CommentEnhance{
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+        .udd-box2{
+            flex-flow: wrap-reverse;
+            width: 256px;
+            height: 144px;
+            background-size: 100% 100%;
+            z-index: 1001;
+            position: absolute;
+            top: -169px;
+            display: flex;
+            color: rgb(255 255 255);
+            border: 1px #0c0c0c69 solid;
+            border-radius: 10px;
+            font-size: 8px;
+            transition-duration: 1s;
+            opacity: 0;
+            display: none;
+            overflow: hidden;
+        }
+        .udd-text2{
+            background: #000000ad;
+            height: 42px;
+            display: flex;
+            flex-direction: column;
+            flex: 3;
+            width: 246px;
+            text-align: center;
+            padding-left: 4px;
+            justify-content: space-around;
         }
     `
         createElementStyle(cssTest)
