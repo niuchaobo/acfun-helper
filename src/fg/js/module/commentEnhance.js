@@ -118,10 +118,12 @@ class CommentEnhance{
                             let userId = userNode.data("userid");
                             let markCommentId = $(this).parent().parent().parent().parent().parent().data("commentid");
                             let userComment = $(this).parent().parent().parent().find('.area-comment-des-content')[0].innerHTML;
-                            let dougaAddr = window.location.href;
+                            let x = new RegExp("(.*)#.*");
+                            let y = x.exec(window.location.href)
+                            let dougaAddr = y?y[1]:window.location.href;
                             let title = '为『'+username+'』添加标记，最多10个字符';
                             let tag=prompt(title,"");
-                            let title2 = '为『'+username+'』添加更多描述';
+                            let title2 = '为『'+username+'』添加更多描述（可选）';
                             let describe=prompt(title2,"");
                             let tag_trim = tag.trim();
                             if(tag_trim!='' && tag_trim!=null && tag_trim.length<=10){
