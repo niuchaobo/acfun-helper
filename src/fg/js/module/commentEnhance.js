@@ -291,13 +291,12 @@ class CommentEnhance{
                 let imgCover = _this.children[0];
                 let title =_this.children[1].children[0];
                 let name = _this.children[1].children[1];
-                $(_this).css({display:'flex',opacity:'1'})
                 timer = setTimeout(()=>{
-                    if($(title).text() && $(name).text()){
+                    $(_this).css({display:'flex',opacity:'1'})
+                    if($(title).text() || $(name).text()){
                         return
                     }
                     $(title).text('正在获取稿件信息')
-                    $(name).text('....')
                     fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>{
                         if(res.status==503){
                             console.log("请不要频繁请求。")
@@ -313,6 +312,7 @@ class CommentEnhance{
                         $(imgCover).attr('src',x.coverUrl)
                         $(title).text(x.title)
                         $(name).text( 'UP: '+ x.user.name)
+                        timer && clearTimeout(timer)
                     })
                 },1000)
             })
@@ -332,25 +332,27 @@ class CommentEnhance{
         }
 
         .udd-box{
+            z-index:1001;
             position: absolute;
             top: -50px;
-            left: -135px;
-            background: #eee;
-            height: 36px;
+            left: -90px;
+            background: #e23a3a;
+            height: 38px;
             width: 310px;
             display: flex;
             padding: 4px 10px 4px 20px;
-            color: rgb(214, 154, 204);
-            border: 1px rgb(179, 179, 179);
+            color: rgb(255 255 255);
+            border: 1px #0c0c0c69 solid;
             border-radius: 26px;
             font-size: 8px;
             transition-duration: 1s;
-            opacity:0;
-            display:none;
+            opacity: 0;
+            display: none;
         }
         .udd-img{
             width: 64px;
             height: 36px;
+            border: 1px #0c0c0c69 solid;
         }
         .udd-text{
             display: flex;
@@ -358,15 +360,17 @@ class CommentEnhance{
             flex: 3;
             width: 246px;
             text-align: center;
+            padding-left: 4px;
+            justify-content: space-around;
         }
         .udd-user{
-            text-align: center;
-            color: rgba(0, 0, 0, 0.58);
+            text-align: initial;
+            color: #fff;
             height:16px
         }
         .udd-title{
             height: 16px;
-            width: 100%;
+            width: 99%;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
