@@ -19,7 +19,6 @@ class LuckyTtab {
                 let a = Math.floor(Math.random() * Math.floor(max))+min;
                 result[a]=a;
             }
-            // console.log('Object.keys(result).length: '+Object.keys(result).length);
             while(Object.keys(result).length<num){
                 let need = num-Object.keys(result).length;
                 for(let i=0;i<=need-1;i++){
@@ -27,7 +26,6 @@ class LuckyTtab {
                     result[a]=a;
                 }
             }
-            // console.log(result);
             return result
         }else if(mode==3){
             //输出可能重复的列表
@@ -97,7 +95,6 @@ class LuckyTtab {
                     //是否需要关注up主
                     if(follow){
                         let isFollow = await this.isFollowed(obj.userId);
-                        console.log("isFollow="+isFollow);
                         if(!isFollow){
                             continue;
                         }
@@ -214,8 +211,6 @@ class LuckyTtab {
         }
 
         /*for(let i in x){
-            console.log(y['Comm_data_UIDList'][i]);
-            console.log(y['Comm_data_byUID'][y['Comm_data_UIDList'][i]]);
             let userId = y['Comm_data_UIDList'][i];
             let commentInfo = y['Comm_data_byUID'][userId];
             let url = this.messageFormat.replace("{userId}",userId);

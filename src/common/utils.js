@@ -454,7 +454,6 @@ function adjustArticleUp() {
     let userName = decodeURI(currentUserNameEncode);
     let name = document.getElementsByClassName("up-name")[0].firstChild
       .innerText;
-    // console.log(name);
     if (userName == name) {
       return 1; //是up主
     } else {

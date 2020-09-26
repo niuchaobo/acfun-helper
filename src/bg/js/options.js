@@ -1463,7 +1463,6 @@ $(document).ready(function () {
             $('.liveFloowingsItems').click(function () {
                 let this_uid=$(this).data("key");
                 $(this).parent().hide();
-                console.log(this_uid);
                 mdui.snackbar({
                     message: `已移除 ${items.liveFloowings[this_uid]}`,
                   });
@@ -1490,7 +1489,6 @@ $(document).ready(function () {
                 var up_url = options.userInfo.replace('{uid}',value);
                 for(i in items.liveFloowings){
                     if(i==value){
-                        console.log('repeat');
                         var errN = 1;
                         break
                     }else{
@@ -1507,7 +1505,6 @@ $(document).ready(function () {
                     }
                     let status = JSON.parse(up_html_str).result;
                     if(status==0){
-                        console.log('233');
                         var liveup_name = JSON.parse(up_html_str).profile.name;
                         var errN = 0;
                     }else {var errN = 2};
@@ -1515,18 +1512,15 @@ $(document).ready(function () {
                 if(errN==0){
                     items.liveFloowings[value]=liveup_name;
                     chrome.storage.local.set({'liveFloowings':items.liveFloowings})
-                    console.log(items);
                     mdui.snackbar({message: ` ${liveup_name} 已被加入关注列表`});
                     $('ul#liveFollowNotifList').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveFloowingsItems" data-key=${value} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${value}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons liveWatch" data-key=${value} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
                     $('.liveFloowingsItems').click(function () {
                         let this_uid=$(this).data("key");
                         $(this).parent().hide();
-                        console.log(this_uid);
                         mdui.snackbar({
                             message: `已移除 ${items.liveFloowings[this_uid]}`,
                           });
                           delete items.liveFloowings[this_uid];
-                          console.log(items);
                           chrome.storage.local.set({'liveFloowings':items.liveFloowings},function(){console.log(items)});
                         });
                 }else if(errN == 1){
@@ -1656,7 +1650,6 @@ $(document).ready(function () {
             $('.liveBansItems').click(function () {
                 let this_uid=$(this).data("key");
                 $(this).parent().hide();
-                console.log(this_uid);
                 mdui.snackbar({
                     message: `已移除 ${items.liveBans[this_uid]}`,
                   });
@@ -1677,7 +1670,6 @@ $(document).ready(function () {
                     var up_url = options.userInfo.replace('{uid}',value);
                     for(i in items.liveFloowings){
                         if(i==value){
-                            console.log('repeat');
                             var errN = 1;
                             break
                         }else{
@@ -1694,7 +1686,6 @@ $(document).ready(function () {
                         }
                         let status = JSON.parse(up_html_str).result;
                         if(status==0){
-                            console.log('233');
                             var liveup_name = JSON.parse(up_html_str).profile.name;
                             var errN = 0;
                         }else {var errN = 2};
@@ -1702,18 +1693,15 @@ $(document).ready(function () {
                     if(errN==0){
                         items.liveBans[value]=liveup_name;
                         chrome.storage.local.set({'liveBans':items.liveBans})
-                        console.log(items);
                         mdui.snackbar({message: ` ${liveup_name} 已被加入关注列表`});
                         $('ul#liveBanList').append(`<li class="mdui-list-item mdui-ripple" data-key=${value} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveBansItems" data-key=${value} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${value}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons BanWatchOrig" data-key=${value} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${value} UserName:${liveup_name}</div></li>`);
                         $('.liveBansItems').click(function () {
                             let this_uid=$(this).data("key");
                             $(this).parent().hide();
-                            console.log(this_uid);
                             mdui.snackbar({
                                 message: `已移除 ${items.liveBans[this_uid]}`,
                                 });
                                 delete items.liveBans[this_uid];
-                                console.log(items);
                                 chrome.storage.local.set({'liveBans':items.liveBans},function(){console.log(items)});
                             });
                     }else if(errN == 1){
@@ -1783,7 +1771,6 @@ $(document).ready(function () {
 
     $('.Pushresult_act').on('click', function(){
         chrome.storage.local.get(['AcCookies'],function(datao){
-            console.log(datao);
             let prob=$('.SyncWait1');
             prob.show();        
             let x=$('p.read_result')[0];
@@ -1803,7 +1790,6 @@ $(document).ready(function () {
                                 // if(JSON.stringify(rawtoken) == '{}'){token=0}else{token=JSON.stringify(rawtoken)};
                                 let uploadData = new FormData();
                                 uploadData.append("options_data",`${options_data}`);
-                                console.log(`${options_data}`);
                                 fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload',{method:"POST", credentials: 'include', body:uploadData})
                                 .then((res=>{return res.text()}))
                                 .then((res)=>{
@@ -1824,16 +1810,13 @@ $(document).ready(function () {
         inst.open();
         var dialog = document.getElementById('dialog');
         dialog.addEventListener('confirm.mdui.dialog', function () {
-          console.log('confirm');
         //   chrome.storage.local.get(['AcHlp-SyncToken'],function(rawtoken){
         //     if(JSON.stringify(rawtoken)!='{}'){
         //     }else{
                 chrome.storage.local.get(null, function (items) {
                     let svrCookies={}
-                    console.log(items);
                     svrCookies['AcCookies']=items['AcCookies'];
                     svrCookies['AcPassToken']=items['AcPassToken'];
-                    console.log(svrCookies)
                     let upCookies = new FormData();
                     upCookies.set("authCookie",`${JSON.stringify(svrCookies)}`);
                     fetch('https://mini.pocketword.cn/api/acfun-helper/options/download',{method:"POST", credentials: 'include', body:upCookies})

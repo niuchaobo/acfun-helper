@@ -81,7 +81,6 @@ class Download{
 
             //计算当前进度
             let progress = parseInt(index/seArr.length*100);
-            //console.log(progress);
             //更新storage数据
             var obj = document.getElementById("acfun-popup-helper");
             var frameWindow = obj.contentWindow;

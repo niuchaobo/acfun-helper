@@ -40,7 +40,6 @@ const fill = {
 var ups = null;
 function modifyResponse(response) {
     var original_response, modified_response;
-
     if (this.readyState === 4) {
         // 使用在 openBypass 中保存的相关参数判断是否需要修改
         if (reg.test(this.requestURL) && ups!=null) {
@@ -58,11 +57,9 @@ function modifyResponse(response) {
                     i--; // 如果不减，将漏掉一个元素
                 }
             }
-            console.log("articleList.length="+articleList.length)
             if(articleList.length==0){
                 articleList[0]=fill;
             }
-            console.log(articleList);
             modified_response.data.articleList = articleList;
             this.responseText = JSON.stringify(modified_response);
         }
@@ -91,7 +88,6 @@ function sendBypass(original_function) {
 
 XMLHttpRequest.prototype.open = openBypass(XMLHttpRequest.prototype.open);
 XMLHttpRequest.prototype.send = sendBypass(XMLHttpRequest.prototype.send);
-
 
 //接收配置信息
 window.addEventListener("message", function(event) {
