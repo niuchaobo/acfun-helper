@@ -1073,6 +1073,39 @@ $(document).ready(function () {
         });
     });
 
+    //=====================视频稿件评论区ac号信息弹框==========================
+    chrome.storage.local.get(['uddPopUp'],function(items){
+        var uddPopUp= items.uddPopUp;
+        if(uddPopUp){
+            document.getElementById('uddPopUp').checked='true';
+            document.getElementsByClassName("uddPopUptypesw")[0].hidden=false;
+        }else{
+            document.getElementById('uddPopUp').checked=false;
+            document.getElementsByClassName("uddPopUptypesw")[0].hidden=true;
+        }
+        $('#uddPopUp').on('click', function () {
+            if(!document.getElementById('uddPopUp').checked){
+                document.getElementById('uddPopUp').checked=false;
+                chrome.storage.local.set({'uddPopUp':false});
+                document.getElementsByClassName("uddPopUptypesw")[0].hidden=true;
+            }else{
+                document.getElementById('uddPopUp').checked=true;
+                chrome.storage.local.set({'uddPopUp':true});
+                document.getElementsByClassName("uddPopUptypesw")[0].hidden=false;
+            }
+        });
+    });
+
+    //====================视频稿件评论区ac号信息弹框模式===============
+    chrome.storage.local.get(['uddPopUptype'],function(items){
+        document.querySelector("#uddPopUptype").parentElement.children[1].children[1].children[items.uddPopUptype].click();
+        var inst = new mdui.Select('#uddPopUptype');
+        $('#uddPopUptype').on('close.mdui.select', function () {
+            chrome.storage.local.set({'uddPopUptype':inst.value});
+        });
+    });
+    
+
     //=====================Up主个人页面渲染动态============================
     chrome.storage.local.get(['userHomeMoment'],function(items){
         var userHomeMoment= items.userHomeMoment;
