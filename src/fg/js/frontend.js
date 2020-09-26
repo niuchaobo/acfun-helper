@@ -211,11 +211,6 @@ class ODHFront {
             let isUp = adjustArticleUp();
             this.div.show(pageInfo,this.options,'article',isUp);
         }
-        //消息中心
-        if(REG.msg_comment.test(href)){
-        //从消息中心(评论)跳转
-            this.options.commentEasyJump && this.ce.jumpToComment(href);
-        }
         //直播
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();

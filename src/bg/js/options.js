@@ -1016,25 +1016,6 @@ $(document).ready(function () {
         });
     });
 
-    //=====================评论区评论ID快速跳转================
-    chrome.storage.local.get(['commentEasyJump'],function(items){
-        var commentEasyJumpsw= items.commentEasyJump;
-        if(commentEasyJumpsw){
-            document.getElementById('commentEasyJump').checked='true';
-        }else{
-            document.getElementById('commentEasyJump').checked=false;
-        }
-        $('#commentEasyJump').on('click', function () {
-            if(!document.getElementById('commentEasyJump').checked){
-                document.getElementById('commentEasyJump').checked=false;
-                chrome.storage.local.set({'commentEasyJump':false});
-            }else{
-                document.getElementById('commentEasyJump').checked=true;
-                chrome.storage.local.set({'commentEasyJump':true});
-            }
-        });
-    });
-
     //=====================主页顶栏页面美化============================
     chrome.storage.local.get(['Dev_indexBlurSW'],function(items){
         var Dev_indexBlurSW= items.Dev_indexBlurSW;

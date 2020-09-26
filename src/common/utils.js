@@ -26,7 +26,6 @@ const defaults = {
     custom_rate_keyCode:[38,40],//shift ↑ ↓ 倍速播放快捷键
     custom_easy_jump_keyCode:[65], //shift A 评论时间跳转快捷键
     player_mode:'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
-    commentEasyJumpsw:false,
     liveFloowNotif:false,
     videoQualityStrategy:'0',
     livePlayerEnhc:false,
