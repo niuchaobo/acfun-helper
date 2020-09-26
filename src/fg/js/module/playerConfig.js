@@ -1,5 +1,5 @@
 /**
- * 配置导入导出
+ * 配置导入导出 ! discarded
  */
 class PlayerConfig {
     constructor(){
@@ -18,8 +18,6 @@ class PlayerConfig {
             let AcSearchHist = localStorage['searchCache'];
             AcGConf['AcPlayerConfig']=AcPlayerConfig;
             AcGConf['AcExPlayerConfig']=AcExPlayerConfig;
-            //AcGConf['AcPlayHist']=AcPlayHist;
-            //AcGConf['AcSearchHist']=AcSearchHist;
             chrome.storage.local.set({AcGConf: AcGConf});
         }else{
             chrome.storage.local.get(['AcGConf'],function(data){

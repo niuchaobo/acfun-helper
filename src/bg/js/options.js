@@ -1747,44 +1747,6 @@ $(document).ready(function () {
             document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
         });
     });
-
-    let playerConfig_downloadObj=document.getElementById('configPlayerExport');
-    playerConfig_downloadObj.addEventListener('click', function createPconfDownload(){
-        player_conf=chrome.storage.local.get(['AcGConf'], function (items) {
-            var player_conf = sanitizeOptions(items);
-            var blob = new Blob([JSON.stringify(player_conf)], { type: 'application/octet-stream' });
-            var url = window.URL.createObjectURL(blob);
-            var saveas = document.createElement('a');
-            saveas.href = url;
-            saveas.style.display = 'none';
-            document.body.appendChild(saveas);
-            saveas.download = 'AcFun-Player.conf';
-            saveas.click();
-            setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
-            document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
-        });
-    });
-
-    let jsonfy_pconfig;
-    let input2=document.getElementById("emlwX3V0aWxp_file");
-    input2.onchange=function () {
-        var file = this.files[0];
-        if(!!file){
-            var reader=new FileReader();
-            reader.readAsText(file,"utf-8");
-            reader.onload=function () {
-                try{
-                    jsonfy_pconfig=JSON.parse(this.result);
-                }catch (e) {
-                    alert("文件格式不正确");
-                    return;
-                }
-                chrome.storage.local.set({AcGConf:jsonfy_pconfig.AcGConf});
-                chrome.storage.local.set({SyncPlayerConfigNeed: 1});
-                notice("AcFun助手","播放器导入配置成功;请在主站非视频页面刷新一次以导入配置。");
-            };
-        }
-    };
           
     let jsonfy_config;
     let input=document.getElementById("input_emlwX3V0aWxz_file");
