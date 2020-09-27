@@ -130,12 +130,13 @@ export async function fetchDougaInfo(){
   x==null?acid=acid:acid=x[1]
   fetch("https://mini.pocketword.cn/api/acfun/info?dougaId=" + acid).then((res)=>{
     if(res.status==503){
-      alert("请不要频繁请求。")
+      chrome.runtime.sendMessage({action:'notice',params:{title:"AcFun助手",msg:"请不要过于频繁地请求。"}}, function(response) {});
     }
   return res.text()})
   .then((res)=>{
     let x = JSON.parse(res);
-    if(x.result!=0){alert("无效的视频稿件AcID。");return}
+    if(x.result!=0){chrome.runtime.sendMessage({action:'notice',params:{title:"AcFun助手",msg:"这可能不是一个视频稿件的AcID。"}}, function(response) {});
+    return}
     let raw_data = `
     <div class="mdui-table-fluid">
         <table class="mdui-table">
@@ -200,12 +201,12 @@ export async function userInfoFetch(){
   if(uid==''){return}
   fetch("https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=" + Number(uid)).then((res)=>{
     if(res.status==503){
-      alert("请不要频繁请求。")
+      chrome.runtime.sendMessage({action:'notice',params:{title:"AcFun助手",msg:"您操作太过频繁。"}}, function(response) {});
     }
   return res.text()})
   .then((res)=>{
     let x = JSON.parse(res);
-    if(x.result!=0){alert("无效的Uid。");return}
+    if(x.result!=0){chrome.runtime.sendMessage({action:'notice',params:{title:"AcFun助手",msg:"UID可能存在着某些问题。"}}, function(response) {});return}
     if(x.profile.contentCount!=0){dougaCountFlag=1}
     let raw_data = `
     <div class="mdui-table-fluid">

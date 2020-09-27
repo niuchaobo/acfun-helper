@@ -229,7 +229,6 @@ class PageBeautify {
           imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
       })
     } catch (error) {
-      // console.log("[LOG]Frontend-pageBeautify: error")
     }
   }
 
