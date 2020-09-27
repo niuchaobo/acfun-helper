@@ -1777,9 +1777,13 @@ $(document).ready(function () {
     config_CleanObj.addEventListener('click', function createClean(){
         let notice_this=prompt("确认清除小助手的所有配置吗？请考虑清楚哦。Y/N",'');
         if(notice_this=='Y'){
-        chrome.storage.local.clear(function(){
-        console.log('Zero');
-        });}
+            chrome.storage.local.clear(function(){
+                console.log('Zero');
+            });
+            //重置设置选项
+            let x = sanitizeOptions({});
+            optionsSave(x);
+        }
     });
 
     $('.Pushresult_act').on('click', function(){
