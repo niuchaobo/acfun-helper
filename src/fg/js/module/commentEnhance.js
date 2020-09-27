@@ -118,10 +118,12 @@ class CommentEnhance{
                             let userId = userNode.data("userid");
                             let markCommentId = $(this).parent().parent().parent().parent().parent().data("commentid");
                             let userComment = $(this).parent().parent().parent().find('.area-comment-des-content')[0].innerHTML;
-                            let dougaAddr = window.location.href;
+                            let x = new RegExp("(.*)#.*");
+                            let y = x.exec(window.location.href)
+                            let dougaAddr = y?y[1]:window.location.href;
                             let title = '为『'+username+'』添加标记，最多10个字符';
                             let tag=prompt(title,"");
-                            let title2 = '为『'+username+'』添加更多描述';
+                            let title2 = '为『'+username+'』添加更多描述（可选）';
                             let describe=prompt(title2,"");
                             let tag_trim = tag.trim();
                             if(tag_trim!='' && tag_trim!=null && tag_trim.length<=10){
@@ -312,7 +314,7 @@ class CommentEnhance{
                         }
                         imgCover ? $(imgCover).attr('src',x.coverUrl) : $(_this).css('background-image',`url(${x.coverUrl})`);
                         $(title).text(x.title)
-                        $(name).text( 'UP: '+ x.user.name)
+                        $(name).text( 'UP: '+ x.user.name + ' 播放：'+x.viewCountShow)
                         timer && clearTimeout(timer)
                     })
                 },1000)
@@ -331,7 +333,6 @@ class CommentEnhance{
             display: inline-block;
             vertical-align: text-top;
         }
-
         .udd-box{
             z-index:1001;
             position: absolute;
@@ -393,6 +394,7 @@ class CommentEnhance{
             opacity: 0;
             display: none;
             overflow: hidden;
+            box-shadow: -2px 5px 5px #bababa;
         }
         .udd-text2{
             background: #000000ad;

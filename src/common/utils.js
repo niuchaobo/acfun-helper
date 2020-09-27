@@ -52,6 +52,8 @@ const defaults = {
     liveCommentTimeTag:true,
     LiveWatchTimeRec_popup:false,
     articlePartIndexDarken:false,
+    uddPopUp:true,
+    uddPopUptype:0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

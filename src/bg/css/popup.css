@@ -345,6 +345,13 @@ span.go-live {
     background: #EDEDED;
 }
 
+.dispLimit{
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 
 /*按钮大小位置*/
 
