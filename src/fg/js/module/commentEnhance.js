@@ -356,7 +356,7 @@ class CommentEnhance{
             position: absolute;
             top: -50px;
             left: -90px;
-            background: #d69accdb;
+            background: #ce3232db;
             overflow: hidden;
             transform: translateX(92px);
             height: 36px;
