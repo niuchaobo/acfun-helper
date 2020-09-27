@@ -234,7 +234,7 @@ class ODHFront {
             this.livePageBeautify.callPicktureInPictureModeForLive()
         }
         //直播首页
-        if(REG.liveIndex.test(href)){
+        if(REG.liveIndex.test(href) && !REG.live.test(href)){
             //直播ad屏蔽
             this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType);
             //直播站首页用户屏蔽

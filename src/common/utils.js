@@ -41,7 +41,7 @@ const defaults = {
     endedAutoExitFullscreensw:true,
     easySearchScanForPlayerTimesw:false,
     Dev_indexBlurSW:false,
-    userHomeMoment:false,
+    userHomeMoment:true,
     Upgradeable: 0,
     ABPlaysw:true,
     ProgressBarsw:true,
