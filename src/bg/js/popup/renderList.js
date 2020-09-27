@@ -94,11 +94,9 @@ export async function renderPushInnerHtml() {
 
 export  function renderLives() {
     chrome.storage.local.get(["broadcastingUIDlist"], function (data) {
-      // console.log(data);
       let No_data = "";
       let is_blank = true;
       let list_num = 0;
-      // console.log(data.broadcastingUIDlist)
       for (let item in data.broadcastingUIDlist) {
         list_num++;
         data.broadcastingUIDlist[item] ? (is_blank = false) : "";
@@ -201,7 +199,6 @@ export async function renderLiveWatchTimeLst(){
   chrome.runtime.sendMessage({action:"updateLiveWatchTimeListItem",params:{responseRequire:true,asyncWarp:true}},function(resp0){
     if(resp0.data==true){
       chrome.runtime.sendMessage({action:"getLiveWatchTimeList",params:{responseRequire:true,asyncWarp:false}},function(resp){
-        // console.log(resp)
         var raw_data = "";
         let lwList = Object.keys(resp.data)
         for(let i in lwList){

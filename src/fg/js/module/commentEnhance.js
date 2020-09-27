@@ -249,7 +249,6 @@ class CommentEnhance{
                                 chrome.storage.local.set({[key]:value}, function () {
                                     userNode.parent().find('.pos.simple').remove();
                                     userNode.after('<span class="pos simple">'+tag+'</span>');
-
                                 });
                             }
                         });
@@ -302,7 +301,6 @@ class CommentEnhance{
                     $(title).text('正在获取稿件信息')
                     fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>{
                         if(res.status==503){
-                            console.log("请不要频繁请求。")
                             return '超时'
                         }
                         return res.text()
@@ -311,7 +309,10 @@ class CommentEnhance{
                             return
                         }
                         let x = JSON.parse(res);
-                        if(x.result!=0){alert("无效的视频稿件AcID。");return}
+                        if(x.result!=0){
+                            chrome.runtime.sendMessage({action:'notice',params:{title:"AcFun助手",msg:"这可能不是一个视频稿件的AcID或者说，您操作太过频繁。"}}, function(response) {});
+                            return
+                        }
                         imgCover ? $(imgCover).attr('src',x.coverUrl) : $(_this).css('background-image',`url(${x.coverUrl})`);
                         $(title).text(x.title)
                         $(name).text( 'UP: '+ x.user.name + ' 播放：'+x.viewCountShow)

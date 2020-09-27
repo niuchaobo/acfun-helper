@@ -6,7 +6,6 @@ let _timer = setInterval(function () {
                 let x =new Date()
                 let w = e.target.children[0].innerHTML
                 e.target.children[0].innerHTML = `<span>[${x.getHours()}:${x.getMinutes()}] </span>`+w
-                // console.log(e);
             }
         })
         clearInterval(_timer);

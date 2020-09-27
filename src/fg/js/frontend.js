@@ -15,7 +15,6 @@ class ODHFront {
     this.videoSetting = new VideoSetting(); //视频播放设置：自定义倍速、观影模式等
     this.danmaku = new Danmaku(); //弹幕服务
     this.danmusearch = new Search();//弹幕列表搜索
-    this.playerconfig = new PlayerConfig(); //播放器和部分页面配置处理
     this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
     
     chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
@@ -169,8 +168,6 @@ class ODHFront {
           this.pageBeautify.userMoment(href);
           this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false);
         }
-        //配置同步
-        this.playerconfig.PConfProc();
     }
 
     onLoad(e){
@@ -211,11 +208,6 @@ class ODHFront {
             let isUp = adjustArticleUp();
             this.div.show(pageInfo,this.options,'article',isUp);
         }
-        //消息中心
-        if(REG.msg_comment.test(href)){
-        //从消息中心(评论)跳转
-            this.options.commentEasyJump && this.ce.jumpToComment(href);
-        }
         //直播
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
@@ -224,7 +216,7 @@ class ODHFront {
         //直播首页
         if(REG.liveIndex.test(href)){
             //直播ad屏蔽
-            this.options.liveHideAd && this.livePageBeautify.LivehideAds();
+            this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType);
             //直播站首页用户屏蔽
             this.options.liveBansw && this.block.liveUserBlock();
         }
@@ -333,7 +325,9 @@ class ODHFront {
   }
   //直播m3u8 url赋值到前台页面
   async api_renderLive(params) {
-    this.live.renderLive(params);
+    if(!REG.liveIndex.tesxt(this.href)){
+      this.live.renderLive(params);
+    }
   }
   //评论区折叠部分的标记渲染入口
   api_renderSub(params) {

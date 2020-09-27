@@ -124,10 +124,8 @@ class WatchPlan {
     async updateLiveWatchTimeList() {
         let lwList = Object.keys(this.livePageWatchTimeRecList)
         for (let i in lwList) {
-            // console.log(lwList[i])
             await chrome.tabs.query({ url: this.livePageWatchTimeRecList[lwList[i]].url }, (e) => {
                 if (e.length < 1) {
-                    // console.log(lwList[i])
                     delete this.livePageWatchTimeRecList[lwList[i]]
                 }
             })
