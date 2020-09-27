@@ -7,6 +7,7 @@ class CommentEnhance{
         this.reg_for_time3part=new RegExp('[0-9]{1,3}[:小时][0-9]{1,3}[:分][0-9]{1,2}秒?'); 
         this.reg_for_part = new RegExp('^p[0-9]{1,2}|^[0-9]{1,2}p','i')
         this.easy_time = new RegExp('[0-9]{1,3}分|[0-9]{1,2}秒?')
+        this.loadCover = 'data:image/png;base64,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'
     }
 
     //从个人中心评论跳转到对应的楼层,不完善(折叠中和非第一页的无法跳转)
@@ -272,18 +273,20 @@ class CommentEnhance{
 
     //稿件跳转弹窗
     uddPopUp(type = 0){
-        this.addUddPopUpStyle()
+        let _fthis = this;
+        _fthis.addUddPopUpStyle()
         getAsyncDom('a.ubb-ac',()=>{
             let ubbBox = $('a.ubb-ac');
             let html = ` 
             <div class=${type ? 'udd-box' : 'udd-box2'}>
-                ${type ?  `<img class = udd-img>` : ''}
+                ${type ?  `<img class = udd-img style='width: 36px; height: 36px; background:white;' src = ${this.loadCover}>` : ''}
                 <div class=${type ? 'udd-text' : 'udd-text2'}>
                     <div class = udd-title></div>
                     <div class = udd-user></div>
                 </div>
             </div>
             `
+            
             ubbBox.append(html)
             let timer = null;
             ubbBox.mouseenter(function(){
@@ -293,40 +296,69 @@ class CommentEnhance{
                 let imgCover = type && _this.children[0];
                 let title =_this.children[type].children[0];
                 let name = _this.children[type].children[1];
+                let target = {_this,imgCover,title,name};
+                let articleCover = 'http://cdn.aixifan.com/dotnet/20120923/style/image/cover.png';
+                let titleText = '';
+                let descriptionText = '';
+                let innerContent = {articleCover,titleText,descriptionText}
+                type && $(_this).css({display:'flex',opacity:'1'});
                 timer = setTimeout(()=>{
-                    $(_this).css({display:'flex',opacity:'1'})
+                    _fthis.changeUddPopUpCssStyle('in',type,this)
                     if($(title).text() || $(name).text()){
-                        return
+                        type && $(this).find('img').css({opacity:'1'}) 
+                        return 
                     }
-                    $(title).text('正在获取稿件信息')
-                    fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>{
-                        if(res.status==503){
-                            return '超时'
-                        }
-                        return res.text()
-                    }).then(res=>{
-                        if(res == '超时'){
-                            return
-                        }
+                    fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>res.text()).then(res=>{
                         let x = JSON.parse(res);
-                        if(x.result!=0){
-                            chrome.runtime.sendMessage({action:'notice',params:{title:"AcFun助手",msg:"这可能不是一个视频稿件的AcID或者说，您操作太过频繁。"}}, function(response) {});
-                            return
+                        type && $(this).find('img').css({opacity:'1'}) 
+                        if(x.result==0){
+                            innerContent.articleCover  = x.coverUrl;
+                            innerContent.titleText = x.title;
+                            innerContent.descriptionText = `UP: ${x.user.name}  播放: ${x.viewCountShow}`
+                        }else{
+                            innerContent.titleText = '文章区适配'; 
+                            innerContent.descriptionText = '           敬请期待！咕'
                         }
-                        imgCover ? $(imgCover).attr('src',x.coverUrl) : $(_this).css('background-image',`url(${x.coverUrl})`);
-                        $(title).text(x.title)
-                        $(name).text( 'UP: '+ x.user.name + ' 播放：'+x.viewCountShow)
+                        _fthis.changeUddPopUpText(target,innerContent)
                         timer && clearTimeout(timer)
+                    }).catch(rej=>{
+                        console.log(rej)
+                        _fthis.changeUddPopUpText(target,innerContent)
                     })
                 },1000)
             })
             ubbBox.mouseleave(function(){
+                _fthis.changeUddPopUpCssStyle('out',type,this)
                 timer && clearTimeout(timer)
-                $(this.children).css({display:'none',opacity:'0'})
             })
         })
     }
 
+    changeUddPopUpText(target,innerContent){
+        let {_this,imgCover,title,name} = target;
+        let {articleCover,titleText,descriptionText} = innerContent
+        imgCover ? $(imgCover).attr('src',articleCover) : $(_this).css('background-image',`url(${articleCover})`); 
+        $(title).text(titleText)
+        $(name).text(descriptionText)
+    }
+
+    changeUddPopUpCssStyle(handle,type,ubbac){
+        if(handle === 'in'){
+            if(type){
+                $(ubbac.children[0]).css({height:'38px',width: '310px', padding: '4px 10px 4px 20px',transform: 'translate(0px,0px)'})
+                $(ubbac).find('img').css({border: '1px #0c0c0c69 solid',width:'64px',opacity:'0'})
+            }else{
+                $(ubbac.children[0]).css({display:'flex',opacity:'1'});
+            }
+        }else if(handle === 'out'){
+            if(type){
+                $(ubbac.children).css({display:'none',opacity:'0',width:'36px',height:'36px',padding:'0px',transform: 'translate(150px,9px)'})
+                $(ubbac).find('img').css({border:'0px'})
+            }else{
+                $(ubbac.children).css({display:'none',opacity:'0'})
+            }
+        }
+    }
     addUddPopUpStyle(){
         let cssTest = `
         a.ubb-ac{
@@ -339,11 +371,12 @@ class CommentEnhance{
             position: absolute;
             top: -50px;
             left: -90px;
-            background: #e23a3a;
-            height: 38px;
-            width: 310px;
-            display: flex;
-            padding: 4px 10px 4px 20px;
+            background: #ce3232db;
+            overflow: hidden;
+            transform: translate(150px,9px);
+            height: 36px;
+            width:36px;
+            padding:0px;
             color: rgb(255 255 255);
             border: 1px #0c0c0c69 solid;
             border-radius: 26px;
@@ -353,9 +386,9 @@ class CommentEnhance{
             display: none;
         }
         .udd-img{
-            width: 64px;
+            width: 64px; 
             height: 36px;
-            border: 1px #0c0c0c69 solid;
+            transition-duration: .5s;
         }
         .udd-text{
             display: flex;
