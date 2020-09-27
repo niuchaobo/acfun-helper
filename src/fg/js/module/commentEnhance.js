@@ -294,22 +294,22 @@ class CommentEnhance{
                 let name = _this.children[type].children[1];
                 timer = setTimeout(()=>{
                     $(_this).css({display:'flex',opacity:'1'})
-                    if($(title).text() || $(name).text()){
-                        return
-                    }
+                    if($(title).text() || $(name).text()){return }
                     $(title).text('正在获取稿件信息')
                     fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>{
-                        if(res.status==503){
-                            console.log("请不要频繁请求。")
-                            return '超时'
-                        }
-                        return res.text()
+                        return res.status==503 ? '超时' : res.text()
                     }).then(res=>{
                         if(res == '超时'){
+                            $(title).text('请求频繁，30s后再试')
+                            $(name).text( '-')
                             return
                         }
                         let x = JSON.parse(res);
-                        if(x.result!=0){alert("无效的视频稿件AcID。");return}
+                        if(x.result!=0){
+                            $(title).text('这怕不是个文章吧？')
+                            $(name).text( '-')
+                            return
+                        }
                         imgCover ? $(imgCover).attr('src',x.coverUrl) : $(_this).css('background-image',`url(${x.coverUrl})`);
                         $(title).text(x.title)
                         $(name).text( 'UP: '+ x.user.name)
