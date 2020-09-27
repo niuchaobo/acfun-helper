@@ -7,6 +7,7 @@ var nowDropFrame = 0;
 // var option_authinfo_mkey = false;
 //----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
+
 var hiddenDiv = document.getElementById('myCustomEventDiv');
 if(!hiddenDiv) {
     hiddenDiv = document.createElement('div');
@@ -17,7 +18,9 @@ if(!hiddenDiv) {
         console.log("[LOG]Frontend-videoSettingInject: Fail to appendChildElemt hiddenDiv.");
     }
 }
-hiddenDiv.addEventListener('myCustomEvent', function() {
+
+let testLive = window.location.href === 'https://live.acfun.cn/';
+testLive && hiddenDiv.addEventListener('myCustomEvent', function() {
     // console.log(window.player);
     var eventData = document.getElementById('myCustomEventDiv').innerText;
     let options = JSON.parse(eventData);
@@ -82,12 +85,14 @@ hiddenDiv.addEventListener('myCustomEvent', function() {
         // dropFrameIncrementAlz();
         //Flex进度条
         // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
+       
         try {
             document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
                 document.getElementById("achlp-proBar").style.width = document.getElementsByClassName("pro-current")[0].style.width;
                 document.getElementById("achlp-proBar-bg").style.width = document.getElementsByClassName("pro-current")[0].style.width;
             })
         } catch (error) {
+
         }
     }
 });

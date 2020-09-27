@@ -274,7 +274,8 @@ class CommentEnhance{
 
     //稿件跳转弹窗
     uddPopUp(type = 0){
-        this.addUddPopUpStyle()
+        let _fthis = this;
+        _fthis.addUddPopUpStyle()
         getAsyncDom('a.ubb-ac',()=>{
             let ubbBox = $('a.ubb-ac');
             let html = ` 
@@ -296,54 +297,69 @@ class CommentEnhance{
                 let imgCover = type && _this.children[0];
                 let title =_this.children[type].children[0];
                 let name = _this.children[type].children[1];
-                $(_this).css({display:'flex',opacity:'1'});
-                let articleCover = 'http://cdn.aixifan.com/dotnet/20120923/style/image/cover.png'
+                let target = {_this,imgCover,title,name};
+                let articleCover = 'http://cdn.aixifan.com/dotnet/20120923/style/image/cover.png';
+                let titleText = '';
+                let descriptionText = '';
+                let innerContent = {articleCover,titleText,descriptionText}
+                type && $(_this).css({display:'flex',opacity:'1'});
                 timer = setTimeout(()=>{
-                    if(type){
-                        $(_this).css({height:'38px',width: '310px', padding: '4px 10px 4px 20px',transform: 'translateX(0px)'})
-                        $(this).find('img').css({border: '1px #0c0c0c69 solid',width:'64px',opacity:'0'})
-                    }
+                    _fthis.changeUddPopUpCssStyle('in',type,this)
                     if($(title).text() || $(name).text()){
                         type && $(this).find('img').css({opacity:'1'}) 
                         return 
                     }
-                    $(title).text('正在获取稿件信息')
-                    fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>{
-                        return res.status==503 ? '超时' : res.text()
-                    }).then(res=>{
-                        if(res == '超时'){
-                            $(title).text('请求频繁，30s后再试')
-                            $(name).text( '')
-                            return
-                        }
+                    fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res=>res.text()).then(res=>{
                         let x = JSON.parse(res);
-                        if(x.result!=0){
-                            imgCover ? $(imgCover).attr('src',articleCover) : $(_this).css('background-image',`url(${articleCover})`);
-                            type && $(this).find('img').css({opacity:'1'}) 
-                            $(title).text('文章区适配')
-                            $(name).text( '           敬请期待！咕')
-                            return
-                        }
-                        imgCover ? $(imgCover).attr('src',x.coverUrl) : $(_this).css('background-image',`url(${x.coverUrl})`);
                         type && $(this).find('img').css({opacity:'1'}) 
-                        $(title).text(x.title)
-                        $(name).text( 'UP: '+ x.user.name + ' 播放：'+x.viewCountShow)
+                        if(x.result==0){
+                            innerContent.articleCover  = x.coverUrl;
+                            innerContent.titleText = x.title;
+                            innerContent.descriptionText = `UP: ${x.user.name}  播放: ${x.viewCountShow}`
+                        }else{
+                            innerContent.titleText = '文章区适配'; 
+                            innerContent.descriptionText = '           敬请期待！咕'
+                        }
+                        _fthis.changeUddPopUpText(target,innerContent)
                         timer && clearTimeout(timer)
+                    }).catch(rej=>{
+                        console.log(rej)
+                        _fthis.changeUddPopUpText(target,innerContent)
                     })
                 },1000)
             })
             ubbBox.mouseleave(function(){
+                _fthis.changeUddPopUpCssStyle('out',type,this)
                 timer && clearTimeout(timer)
-                if(type){
-                    $(this.children).css({display:'none',opacity:'0',width:'36px',height:'36px',padding:'0px',transform: 'translateX(92px)'})
-                    $(this).find('img').css({border:'0px'})
-                }else{
-                    $(this.children).css({display:'none',opacity:'0'})
-                }
             })
         })
     }
 
+    changeUddPopUpText(target,innerContent){
+        let {_this,imgCover,title,name} = target;
+        let {articleCover,titleText,descriptionText} = innerContent
+        imgCover ? $(imgCover).attr('src',articleCover) : $(_this).css('background-image',`url(${articleCover})`); 
+        $(title).text(titleText)
+        $(name).text(descriptionText)
+    }
+
+    changeUddPopUpCssStyle(handle,type,ubbac){
+        if(handle === 'in'){
+            if(type){
+                $(ubbac.children[0]).css({height:'38px',width: '310px', padding: '4px 10px 4px 20px',transform: 'translate(0px,0px)'})
+                $(ubbac).find('img').css({border: '1px #0c0c0c69 solid',width:'64px',opacity:'0'})
+            }else{
+                $(ubbac.children[0]).css({display:'flex',opacity:'1'});
+            }
+        }else if(handle === 'out'){
+            if(type){
+                $(ubbac.children).css({display:'none',opacity:'0',width:'36px',height:'36px',padding:'0px',transform: 'translate(150px,9px)'})
+                $(ubbac).find('img').css({border:'0px'})
+            }else{
+                $(ubbac.children).css({display:'none',opacity:'0'})
+            }
+        }
+    }
     addUddPopUpStyle(){
         let cssTest = `
         a.ubb-ac{
@@ -358,7 +374,7 @@ class CommentEnhance{
             left: -90px;
             background: #ce3232db;
             overflow: hidden;
-            transform: translateX(92px);
+            transform: translate(150px,9px);
             height: 36px;
             width:36px;
             padding:0px;
