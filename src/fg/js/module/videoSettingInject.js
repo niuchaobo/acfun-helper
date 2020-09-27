@@ -20,8 +20,8 @@ if(!hiddenDiv) {
 }
 
 let testLive = window.location.href === 'https://live.acfun.cn/';
-testLive && hiddenDiv.addEventListener('myCustomEvent', function() {
-    // console.log(window.player);
+console.log(testLive)
+!testLive && hiddenDiv.addEventListener('myCustomEvent', function() {
     var eventData = document.getElementById('myCustomEventDiv').innerText;
     let options = JSON.parse(eventData);
     switch(options.player_mode) {
@@ -85,7 +85,6 @@ testLive && hiddenDiv.addEventListener('myCustomEvent', function() {
         // dropFrameIncrementAlz();
         //Flex进度条
         // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
-       
         try {
             document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
                 document.getElementById("achlp-proBar").style.width = document.getElementsByClassName("pro-current")[0].style.width;
