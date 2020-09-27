@@ -20,7 +20,7 @@ if(!hiddenDiv) {
 }
 
 let testLive = window.location.href === 'https://live.acfun.cn/';
-testLive && hiddenDiv.addEventListener('myCustomEvent', function() {
+!testLive && hiddenDiv.addEventListener('myCustomEvent', function() {
     // console.log(window.player);
     var eventData = document.getElementById('myCustomEventDiv').innerText;
     let options = JSON.parse(eventData);
