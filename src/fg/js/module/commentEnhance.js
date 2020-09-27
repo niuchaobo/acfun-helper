@@ -373,6 +373,7 @@ class CommentEnhance{
         .udd-img{
             width: 64px; 
             height: 36px;
+            transition-duration: .5s;
         }
         .udd-text{
             display: flex;
