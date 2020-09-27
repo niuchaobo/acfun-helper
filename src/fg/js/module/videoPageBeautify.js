@@ -22,7 +22,6 @@ class videoPageBeautify {
         let node2 = $("div.video-description.clearfix>div.action-area")
           .find("div.left-area")
           .eq(0);
-        // console.log(e.data.msg)
         if (e.data.msg != "undefined") {
           var a = JSON.parse(e.data.msg);
         } else {

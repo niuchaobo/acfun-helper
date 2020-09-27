@@ -28,7 +28,6 @@ class UpgradeAgent{
             $.get(chrome.extension.getURL("manifest.json"),function(content){
                 chrome.storage.local.set({Version : content.version});
                 version = content.version;
-            console.log(version)
             fetch('https://mini.pocketword.cn/api/acfun-helper/newversion/',{method:"POST",headers: {'Content-Type': 'application/x-www-form-urlencoded','Accept':"accept: application/json, text/plain, */*"},body:version})
             .then((res)=>{return res.text();})
             .then((res)=>{

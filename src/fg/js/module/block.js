@@ -109,75 +109,11 @@ class Block {
 
     }
 
-    // liveUserBlock(){
-    //     chrome.storage.local.get(['liveBansw'],function(sw){
-    //         var config = { attributes: true, childList: true, subtree: true };
-    //         if(sw.liveBansw){
-    //             console.log('loop branch 1');
-    //             var elementWeb = document.querySelectorAll("div.category-item");
-    //             var observerWeb = new MutationObserver(function(mutations) {
-    //                 mutations.forEach(function(mutation) {
-    //                     chrome.storage.local.get(['liveBans'],function(items){
-    //                         let LiveUsers = document.querySelectorAll('div.live-list-item');
-    //                         LiveUsers.forEach(function(e){
-    //                             let this_obj = e.children[1].children[1].children[1];
-    //                             if(this_obj.getAttribute('data-uid') in items.liveBans){
-    //                                 var timer = setInterval(function () {
-    //                                     console.log(this_obj);
-    //                                     e.remove();
-    //                                     if(this_obj.length>0){
-    //                                         clearInterval(timer);
-    //                                         console.log('true');
-    //                                     }
-    //                                 },1200);
-    //                             }
-    //                         });
-    //                     })
-    //                 });
-    //             });
-    //             var timer = setInterval(() => {
-    //                 if($('a.pager__btn__selected').length>0){
-    //                     var elementWeb2 = document.querySelector("a.pager__btn__selected");
-    //                     var observerWeb2 = new MutationObserver(function(mutations) {
-    //                         mutations.forEach(function(mutation) {
-    //                             console.log('loop branch 2');
-    //                             chrome.storage.local.get(['liveBans'],function(items){
-    //                                 let LiveUsers = document.querySelectorAll('div.live-list-item');
-    //                                 LiveUsers.forEach(function(e){
-    //                                     let this_obj = e.children[1].children[1].children[1];
-    //                                     if(this_obj.getAttribute('data-uid') in items.liveBans){
-    //                                         var itimer = setInterval(function () {
-    //                                             e.remove();
-    //                                             if(this_obj.length>0){
-    //                                                 clearInterval(itimer);
-    //                                                 console.log('true');
-    //                                             }
-    //                                         },2000);
-    //                                     }
-    //                                 });
-    //                             })
-    //                         });
-    //                     });
-    //                     observerWeb2.observe(elementWeb2,config);
-    //                     clearInterval(timer);
-    //                 }
-    //             }, 1500);
-    //             observerWeb.observe(elementWeb[0],config);
-    //             observerWeb.observe(elementWeb[1],config);
-    //             observerWeb.observe(elementWeb[2],config);
-    //             observerWeb.observe(elementWeb[3],config);
-    //             observerWeb.observe(elementWeb[4],config);
-    //         }
-    //     })
-    // }
-
     liveUserBlock(){
         chrome.storage.local.get(['liveBans'],function(items){
             let LiveUsers = document.querySelectorAll('div.live-list-item');
             LiveUsers.forEach(function(e){
                 let this_obj = e.children[1].children[1].children[1];
-                // console.log(items.liveBans)
-                // console.log(this_obj.getAttribute('data-uid') in items.liveBans);
                 if(this_obj.getAttribute('data-uid') in items.liveBans){
                     var timer = setInterval(function () {
                         console.log('[LOG]Frontend-Block>liveUserBlock: Remove '+this_obj.getAttribute('data-uid'))
@@ -187,21 +123,18 @@ class Block {
                 }
             })
         })
-        document.querySelectorAll('a.pager__btn').forEach(function(e){
-            e.addEventListener("click",function(){console.log('clicked')})
-        })
+        // document.querySelectorAll('a.pager__btn').forEach(function(e){
+        //     e.addEventListener("click",function(){})
+        // })
         $('.category-item').click(function () {
-            console.log('click');
             let opr = 0;
             var timer = setInterval(function () {
                 chrome.storage.local.get(['liveBans'],function(items){
                 opr=opr+1;
-                // console.log(opr);
                 let LiveUsers = document.querySelectorAll('div.live-list-item');
                 for(let i=0;i<LiveUsers.length;i++){
                     let this_obj = LiveUsers[i];
                     if(this_obj.children[1].children[1].children[1].getAttribute('data-uid') in items.liveBans){
-                        // console.log('true');
                         this_obj.remove();
                         console.log('[LOG]Frontend-Block>liveUserBlock: Remove '+this_obj.children[1].children[1].children[1].getAttribute('data-uid'))
                     }

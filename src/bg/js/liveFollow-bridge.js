@@ -4,7 +4,6 @@ async function getUid(){
 }
 
 async function getResult(url) {
-    // console.log(url)
     return new Promise((resolve, reject) => {
         fetch(url)
         .then((res)=>{return res.text();})
@@ -56,7 +55,6 @@ async function Processing(){
             if(result[i][j].userId in liveFloowings.liveFloowings){
                 //关注的
                 $("div.mdui-list").append(`<label class="mdui-list-item mdui-ripple" data-key=${result[i][j].userId} ><div class="mdui-checkbox"><input class="switch" data-key=${result[i][j].userId} data-name=${result[i][j].userName} type="checkbox" checked/><i class="mdui-checkbox-icon" data-key=${result[i][j].userId} ></i></div><div class="mdui-list-item-content" data-key=${result[i][j].userId}>${result[i][j].userName}</div><i class="mdui-list-item-icon mdui-icon material-icons"><a href="https://www.acfun.cn/u/${result[i][j].userId}" target="_blank">chat</a></i></label>`)
-                console.log(result[i][j].userId);
             }else{
                 //未关注的
                 $("div.mdui-list").append(`<label class="mdui-list-item mdui-ripple" data-key=${result[i][j].userId} ><div class="mdui-checkbox"><input class="switch" data-key=${result[i][j].userId} data-name=${result[i][j].userName} type="checkbox"/><i class="mdui-checkbox-icon" data-key=${result[i][j].userId} ></i></div><div class="mdui-list-item-content" data-key=${result[i][j].userId}>${result[i][j].userName}</div><i class="mdui-list-item-icon mdui-icon material-icons"><a href="https://www.acfun.cn/u/${result[i][j].userId}" target="_blank">chat</a></i></label>`)
@@ -68,8 +66,6 @@ async function Processing(){
         if(!$(this).is(":checked")){
             let this_uid=$(this).data("key");
             let this_uName=$(this).data("name");
-            console.log(this_uid);
-            console.log(this_uName)
             mdui.snackbar({
                 message: `已取消关注 "${this_uName}"`,
             });
@@ -78,8 +74,6 @@ async function Processing(){
         }else{
             let this_uid=$(this).data("key");
             let this_uName=$(this).data("name");
-            console.log(this_uid);
-            console.log(this_uName)
             mdui.snackbar({
                 message: `已关注 "${this_uName}"`,
             });
