@@ -214,7 +214,7 @@ class ODHFront {
             this.div.show(pageInfo,this.options,'live','');
         }
         //直播首页
-        if(REG.liveIndex.test(href)){
+        if(REG.liveIndex.test(href) && !REG.live.test(href)){
             //直播ad屏蔽
             this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType);
             //直播站首页用户屏蔽
@@ -325,7 +325,7 @@ class ODHFront {
   }
   //直播m3u8 url赋值到前台页面
   async api_renderLive(params) {
-    if(!REG.liveIndex.tesxt(this.href)){
+    if(!REG.liveIndex.test(this.href)){
       this.live.renderLive(params);
     }
   }
