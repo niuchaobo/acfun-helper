@@ -674,10 +674,11 @@
                   <div class="mdui-row">
                       <div class="mdui-row">
                           <div class="mdui-col-xs-9">
-                              <h3>删除直播页推广</h3>
+                              <h3>阻止 自动播放或删除 直播页播放器</h3>
                             <div class="mdui-row">
-                              <div class="mdui-col-xs-8 mdui-col-sm-6"><p>删除直播页banner</p></div>
-                              <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">
+                              <div class="mdui-col-xs-8 mdui-col-sm-6"><p>清静</p></div>
+                              <div class="mdui-col-xs-4 mdui-col-sm-6">
+                                <label class="mdui-switch">
                                   <input id="liveHideAd" type="checkbox"/>开关 
                                   <i class="mdui-switch-icon"></i>
                                   </label></div>
@@ -686,7 +687,26 @@
                         </div>
                   </div>
                 </div>
-        
+
+                <div class="mdui-container-fluid liveHideAdsw">
+                  <div class="mdui-row">
+                      <div class="mdui-row">
+                        <div class="mdui-col-xs-9">
+                          <h3>删除或阻止自动播放</h3>
+                        <div class="mdui-row">
+                          <div class="mdui-col-xs-8 mdui-col-sm-6">或者 或者</div>
+                          <div class="mdui-col-xs-4 mdui-col-sm-6">
+                            <select id="liveHideAdType" class="mdui-select" mdui-select="{position: 'top'}">
+                              <option value="0">0 - 删除播放器并隐藏</option>
+                              <option value="1">1 - 只阻止播放器自动播放</option>
+                            </select>
+                          </div>            
+                        </div>
+                      </div>
+                  </div>
+                  </div>
+                </div>
+          
                 <div class="mdui-container-fluid">
                   <div class="mdui-row">
                       <div class="mdui-row">

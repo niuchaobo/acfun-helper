@@ -1148,17 +1148,30 @@ $(document).ready(function () {
         var liveHideAd= items.liveHideAd;
         if(liveHideAd){
             document.getElementById('liveHideAd').checked='true';
+            document.getElementsByClassName("liveHideAdsw")[0].hidden=false;
         }else{
             document.getElementById('liveHideAd').checked=false;
+            document.getElementsByClassName("liveHideAdsw")[0].hidden=true;
         }
         $('#liveHideAd').on('click', function () {
             if(!document.getElementById('liveHideAd').checked){
                 document.getElementById('liveHideAd').checked=false;
                 chrome.storage.local.set({'liveHideAd':false});
+                document.getElementsByClassName("liveHideAdsw")[0].hidden=true;
             }else{
                 document.getElementById('liveHideAd').checked=true;
                 chrome.storage.local.set({'liveHideAd':true});
+                document.getElementsByClassName("liveHideAdsw")[0].hidden=false;
             }
+        });
+    });
+
+    chrome.storage.local.get(['liveHideAdType'],function(items){
+        console.log(document.querySelector("#liveHideAdType").parentElement.children[1].children[1].children[items.liveHideAdType])
+        document.querySelector("#liveHideAdType").parentElement.children[1].children[1].children[items.liveHideAdType].click();
+        var inst = new mdui.Select('#liveHideAdType');
+        $('#liveHideAdType').on('close.mdui.select', function () {
+            chrome.storage.local.set({'liveHideAdType':inst.value});
         });
     });
 

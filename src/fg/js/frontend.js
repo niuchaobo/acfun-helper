@@ -216,7 +216,7 @@ class ODHFront {
         //直播首页
         if(REG.liveIndex.test(href)){
             //直播ad屏蔽
-            this.options.liveHideAd && this.livePageBeautify.LivehideAds();
+            this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType);
             //直播站首页用户屏蔽
             this.options.liveBansw && this.block.liveUserBlock();
         }
@@ -325,7 +325,9 @@ class ODHFront {
   }
   //直播m3u8 url赋值到前台页面
   async api_renderLive(params) {
-    this.live.renderLive(params);
+    if(!REG.liveIndex.tesxt(this.href)){
+      this.live.renderLive(params);
+    }
   }
   //评论区折叠部分的标记渲染入口
   api_renderSub(params) {

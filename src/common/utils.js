@@ -32,6 +32,7 @@ const defaults = {
     autoJumpLastWatchSw:false,
     hideAd:true,
     liveHideAd:true,
+    liveHideAdType:1,
     liveBansw:false,
     PlayerDamakuSearchSw:false,
     PlayerTimeCommentEasyJump:true,
