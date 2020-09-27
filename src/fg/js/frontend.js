@@ -249,8 +249,6 @@ class ODHFront {
           })
           // 评论区 -未添加监听
           getAsyncDom('.ac-pc-comment',()=>{
-            //评论空降
-            this.options.PlayerTimeCommentEasyJump && this.ce.searchScanForPlayerTime();
             //快捷键空降
             if(this.options.easySearchScanForPlayerTimesw){
               getAsyncDom('.ac-pc-comment',()=>{
@@ -350,6 +348,7 @@ class ODHFront {
       this.ce.renderSubScanForUp(rootCommentId);
     }
     if(this.options.PlayerTimeCommentEasyJump){
+      //评论空降
       this.ce.searchScanForPlayerTime();
     }
   }
@@ -368,6 +367,9 @@ class ODHFront {
     if(this.options.PlayerTimeCommentEasyJump){
       this.ce.searchScanForPlayerTime();
     }
+    //跳转链接弹框
+    this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
+
   }
 }
 

@@ -52,6 +52,8 @@ const defaults = {
     liveCommentTimeTag:true,
     LiveWatchTimeRec_popup:false,
     articlePartIndexDarken:false,
+    uddPopUp:true,
+    uddPopUptype:0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -591,6 +593,15 @@ debounce = (fn, delay) => {
     x.style.cssText=css
     target.append(x);
     return x
+}
+
+removeAPrefix = (_$targetDom) =>{
+  let acid = _$targetDom.text().trim();
+  let regAcid = new RegExp("ac(.*)");
+  if(acid==''){return}
+  let x = regAcid.exec(acid);
+  x==null?acid=acid:acid=x[1];
+  return acid
 }
 
 createElementStyle = (cssText,targetDom = document.head,id=null)=>{
