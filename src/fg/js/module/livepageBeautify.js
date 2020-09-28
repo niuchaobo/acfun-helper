@@ -10,7 +10,7 @@ class LivePageButfy {
         this.noticeIcon = `<svg t="1591199578499" class="icon" viewBox="0 0 1077 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5536" width="128" height="128"><path d="${this.noticeIcon_path}" fill="#8a8a8a" p-id="5537"></path></svg>`;
         this.cPIP_Livediv=`<div class="control-btn pip" style="position: relative;width: 38px;height: 20px;"><div class=" control-btn btn-pip" style="opacity: 0.9;font-size: 14px;color: #ffffff;cursor: pointer;flex: none;box-sizing: border-box;-webkit-box-flex: 0;align-items: center;justify-content: center;-webkit-box-align: center;display: flex;-webkit-box-pack: center;position: relative;width: 100%;height: 100%;" >`;
         this.cPIP_span=`
-                <span class="btn-span" style="display: block;width: 22px;height: 100%;background-size: contain;background-position: center;background-repeat: no-repeat;background-image: url(${this.cPIP_span_cover});" onclick="setPictureInPictureMode()"></span> 
+                <span class="btn-span" style="display: block;width: 22px;height: 100%;background-size: contain;background-position: center;background-repeat: no-repeat;background-image: url(${this.cPIP_span_cover});" onclick="l_setPictureInPictureMode()"></span> 
                 </div>
                     <span class="tip-pip" style="position: absolute;display: none;bottom: 40px;text-align: center;background: rgba(21,21,21,0.8);border-radius: 4px;line-height: 32px;height: 32px;opacity: 0.9;font-size: 14px;color: #FFFFFF;letter-spacing: 0;width: 116px;left: 50%;-webkit-transform: translate(-50%); transform: translate(-50%);" >进入画中画</span>
                 </div>`
