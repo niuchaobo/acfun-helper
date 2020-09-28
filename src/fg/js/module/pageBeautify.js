@@ -25,7 +25,7 @@ class PageBeautify {
           targetDiv.removeClass("isSelected").eq(i).addClass("isSelected");
           break;
         }
-        if ((scrop >= a[i]) & (scrop <= a[i + 1])) {
+        if ((scrop >= a[i]) && (scrop <= a[i + 1])) {
           targetDiv.removeClass("isSelected").eq(i).addClass("isSelected");
           break;
         }
@@ -66,6 +66,9 @@ class PageBeautify {
                         <div class="rightnav none">
                             <div onclick="scrollToTop(event);" data-id="pagelet_monkey_recommend" class='isSelected'>
                                 推荐
+                            </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_live" >
+                                直播
                             </div>
                             <div onclick="scrollToTop(event);" data-id="pagelet_list_banana">
                                 香蕉榜
