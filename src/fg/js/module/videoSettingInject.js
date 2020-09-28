@@ -7,97 +7,127 @@ var nowDropFrame = 0;
 // var option_authinfo_mkey = false;
 //----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
-
-var hiddenDiv = document.getElementById('myCustomEventDiv');
-if(!hiddenDiv) {
-    hiddenDiv = document.createElement('div');
-    hiddenDiv.style.display = 'none';
-    try {
-        document.body.appendChild(hiddenDiv);
-    } catch (error) {
-        console.log("[LOG]Frontend-videoSettingInject: Fail to appendChildElemt hiddenDiv.");
+(function(){
+    let testVideo = new RegExp('((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))').test(window.location.href)
+    if(!testVideo){
+        return
     }
-}
-
-let testLive = new RegExp('((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))').test(window.location.href)
-testLive && hiddenDiv.addEventListener('myCustomEvent', function() {
-    console.log('testRegExp')
-    // console.log(window.player);
-    var eventData = document.getElementById('myCustomEventDiv').innerText;
-    let options = JSON.parse(eventData);
-    switch(options.player_mode) {
-        case 'default':
-            break;
-        case 'film':
-            let _timer = setInterval(function () {
-                let _header = document.getElementById("header");
-                let _main = document.getElementById("main");
-                let _vd = document.querySelector(".video-description");
-                let _toolbar = document.getElementById("toolbar");
-                let _rc = document.querySelector(".right-column");
-                let _retry = 10;
-                //如果不判断直接调用会报错，toolbar节点可能还没加载
-                if(_header && _main && _vd && _toolbar && _rc){
-                    window.player.emit('filmModeChanged', true);
-                    let w2 = document.getElementsByTagName("video")[0].offsetWidth;
-                    clearInterval(_timer);
-                }
-            },1000);
-            break;
-        case 'web':
-            window.player.emit('fullScreenChange', "web");
-            break;
-        case 'desktop':
-            //Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
-            //此功能只能由用户触发
-            //window.player.emit('fullScreenChange','screen');
-            //document.getElementsByClassName('container-player')[0].requestFullscreen();
-            //window.player.requestFullscreen();
-            //break;
-
-            //换另外一种方法
-            document.querySelector(".fullscreen-screen>.btn-fullscreen").click();
-            break;
-    }
-
-    if(options.endedAutoExitFullscreensw){
-        //自动退出观影模式、网页全屏
+    var hiddenDiv = document.getElementById('myCustomEventDiv');
+    if(!hiddenDiv) {
+        hiddenDiv = document.createElement('div');
+        hiddenDiv.style.display = 'none';
         try {
+            document.body.appendChild(hiddenDiv);
+        } catch (error) {
+            console.log("[LOG]Frontend-videoSettingInject: Fail to appendChildElemt hiddenDiv.");
+        }
+    }
+    
+    hiddenDiv.addEventListener('myCustomEvent', function() {
+        // console.log(window.player);
+        var eventData = document.getElementById('myCustomEventDiv').innerText;
+        let options = JSON.parse(eventData);
+        switch(options.player_mode) {
+            case 'default':
+                break;
+            case 'film':
+                let _timer = setInterval(function () {
+                    let _header = document.getElementById("header");
+                    let _main = document.getElementById("main");
+                    let _vd = document.querySelector(".video-description");
+                    let _toolbar = document.getElementById("toolbar");
+                    let _rc = document.querySelector(".right-column");
+                    let _retry = 10;
+                    //如果不判断直接调用会报错，toolbar节点可能还没加载
+                    if(_header && _main && _vd && _toolbar && _rc){
+                        window.player.emit('filmModeChanged', true);
+                        let w2 = document.getElementsByTagName("video")[0].offsetWidth;
+                        clearInterval(_timer);
+                    }
+                },1000);
+                break;
+            case 'web':
+                window.player.emit('fullScreenChange', "web");
+                break;
+            case 'desktop':
+                //Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
+                //此功能只能由用户触发
+                //window.player.emit('fullScreenChange','screen');
+                //document.getElementsByClassName('container-player')[0].requestFullscreen();
+                //window.player.requestFullscreen();
+                //break;
+    
+                //换另外一种方法
+                document.querySelector(".fullscreen-screen>.btn-fullscreen").click();
+                break;
+        }
+    
+        if(options.endedAutoExitFullscreensw){
+            //自动退出观影模式、网页全屏
+            try {
+                document.getElementsByTagName("video")[0].addEventListener('ended', function () {
+                    let nowMode = (document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
+                    if(!window.player._loop && nowMode){
+                        window.player.emit('filmModeChanged', false);
+                        window.player.emit('fullScreenChange', false);
+                    }
+                });
+            } catch (error) {
+                console.log("[LOG]Frontend-videoSettingInject: May not in douga Page.")
+            }
+        }
+    
+        if(options.endedAutoJumpRecommandFirstDougasw){
+            //自动观看“大家都在看”栏目第一个稿件
             document.getElementsByTagName("video")[0].addEventListener('ended', function () {
-                let nowMode = (document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" || document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web");
-                if(!window.player._loop && nowMode){
-                    window.player.emit('filmModeChanged', false);
-                    window.player.emit('fullScreenChange', false);
-                }
+                document.getElementsByClassName("recommendation")[0].children[0].children[0].click();
             });
-        } catch (error) {
-            console.log("[LOG]Frontend-videoSettingInject: May not in douga Page.")
         }
-    }
-
-    if(options.endedAutoJumpRecommandFirstDougasw){
-        //自动观看“大家都在看”栏目第一个稿件
-        document.getElementsByTagName("video")[0].addEventListener('ended', function () {
-            document.getElementsByClassName("recommendation")[0].children[0].children[0].click();
-        });
-    }
-
-    if(options.ProgressBarsw){
-        // dropFrameIncrementAlz();
-        //Flex进度条
-        // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
-       
-        try {
-            document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
-                document.getElementById("achlp-proBar").style.width = document.getElementsByClassName("pro-current")[0].style.width;
-                document.getElementById("achlp-proBar-bg").style.width = document.getElementsByClassName("pro-current")[0].style.width;
-            })
-        } catch (error) {
-
+    
+        if(options.ProgressBarsw){
+            // dropFrameIncrementAlz();
+            //Flex进度条
+            // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
+            try {
+                document.getElementsByTagName("video")[0].addEventListener("timeupdate",function(e){
+                    document.getElementById("achlp-proBar").style.width = document.getElementsByClassName("pro-current")[0].style.width;
+                    document.getElementById("achlp-proBar-bg").style.width = document.getElementsByClassName("pro-current")[0].style.width;
+                })
+            } catch (error) {
+    
+            }
         }
+    });
+    
+    try {
+        //从Player获取douga & danmaku 信息，传递给父级
+        window.parent.postMessage({
+            to:'pageBtfy' ,
+            msg:`${JSON.stringify(window.player.videoInfo)}`
+        },'*');
+        
+        window.parent.postMessage({
+            to:'frame_danmaku',
+            acId:`${window.player.acId}`,
+            msg:`${JSON.stringify(window.player._danmaku.list)}`
+        },'*');
+    
+        window.parent.postMessage({
+            to:'vs_videoInfo',
+            msg:`${JSON.stringify(window.player.videoInfo.videoList)}`
+        },'*');
+    
+        // if(option_authinfo_mkey){
+        //     window.parent.postMessage({
+        //         to:'authinfo_mkey',
+        //         msg:`${JSON.stringify(window.player.mkey)}`
+        //     },'*');
+        // }
+        
+    } catch (error) {
+        console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Faild.");
     }
-});
-
+})()
 //==============AB回放================
 function updateAbPlayFirst(){
     if(abPlayFlag === 1){
@@ -214,35 +244,7 @@ function setCustomPlaybackRate(event) {
     }
 }
 
-try {
-    //从Player获取douga & danmaku 信息，传递给父级
-    window.parent.postMessage({
-        to:'pageBtfy' ,
-        msg:`${JSON.stringify(window.player.videoInfo)}`
-    },'*');
-    
-    window.parent.postMessage({
-        to:'frame_danmaku',
-        acId:`${window.player.acId}`,
-        msg:`${JSON.stringify(window.player._danmaku.list)}`
-    },'*');
-
-    window.parent.postMessage({
-        to:'vs_videoInfo',
-        msg:`${JSON.stringify(window.player.videoInfo.videoList)}`
-    },'*');
-
-    // if(option_authinfo_mkey){
-    //     window.parent.postMessage({
-    //         to:'authinfo_mkey',
-    //         msg:`${JSON.stringify(window.player.mkey)}`
-    //     },'*');
-    // }
-    
-} catch (error) {
-    console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Faild.");
-}
-
+//live于video共用函数
 function setPictureInPictureMode() {
     //调用画中画模式
     let v = document.getElementsByTagName("video")[0];
