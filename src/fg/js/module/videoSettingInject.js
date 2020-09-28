@@ -141,7 +141,7 @@ function updateAbPlayFirst(){
     }
     abPlayFirst = fistTime;
     leftBottomTip(`标记点A :`,`${timeToMinute(abPlayFirst)}`);
-    $('.speed-panel>ul>.point-a').text(`A : ${timeToMinute(abPlayFirst)}`);
+    $('.abplay-panel>ul>.point-a').text(`A : ${timeToMinute(abPlayFirst)}`);
     abPlaySecond && leftBottomTip(`区间为`,`${timeToMinute(abPlayFirst)}至${timeToMinute(abPlaySecond)}`);
 }
 function updateAbPlaySecond(){
@@ -156,7 +156,7 @@ function updateAbPlaySecond(){
     } 
     abPlaySecond = secondTime;
     leftBottomTip(`标记点B :`,`${timeToMinute(abPlaySecond)}`);
-    $('.speed-panel>ul>.point-b').text(`B : ${timeToMinute(abPlaySecond)}`)
+    $('.abplay-panel>ul>.point-b').text(`B : ${timeToMinute(abPlaySecond)}`)
     if(abPlayFirst > abPlaySecond){
         [abPlayFirst,abPlaySecond] = [abPlaySecond,abPlayFirst]
     }
@@ -164,9 +164,9 @@ function updateAbPlaySecond(){
 }
 function stopAbPlay(){
     abPlayFirst=abPlaySecond=undefined;
-        $('.speed-panel>ul>.point-a').text('标记点A');
-        $('.speed-panel>ul>.point-b').text('标记点B');
-        $('.speed-panel>ul>.clear-button').text('清除');
+        $('.abplay-panel>ul>.point-a').text('标记点A');
+        $('.abplay-panel>ul>.point-b').text('标记点B');
+        $('.abplay-panel>ul>.clear-button').text('清除');
     if(abPlayFlag === 0){
         leftBottomTip('标记,已清除');
         return
@@ -174,7 +174,7 @@ function stopAbPlay(){
     if(abPlayFlag === 1){
         abPlayFlag = 0;
         document.getElementsByTagName("video")[0].removeEventListener("timeupdate",abPlayMain,false);
-        $('.speed-panel>ul>.switch-button').text('开始');
+        $('.abplay-panel>ul>.switch-button').text('开始');
         leftBottomTip('标记已清除,退出AB回放。');
         return;
     }
@@ -193,8 +193,8 @@ function abPlayHandler(){
     }
     if(abPlayFlag === 0){
         leftBottomTip('AB回放','开启');
-        $('.speed-panel>ul>.switch-button').text('停止');
-        $('.speed-panel>ul>.clear-button').text('清除&停止');
+        $('.abplay-panel>ul>.switch-button').text('停止');
+        $('.abplay-panel>ul>.clear-button').text('清除&停止');
         targetVideo.paused && targetVideo.play();
         targetVideo.removeEventListener("timeupdate",abPlayMain,false);
         targetVideo.currentTime = abPlayFirst;
@@ -205,9 +205,9 @@ function abPlayHandler(){
     if(abPlayFlag === 1){
         targetVideo.removeEventListener("timeupdate",abPlayMain,false);
         targetVideo.pause();
-        $('.speed-panel>ul>.switch-button').text('开始');
+        $('.abplay-panel>ul>.switch-button').text('开始');
         abPlayFlag = 0;
-        leftBottomTip('AB回放','停止，如需清除标记请按“清除”按钮。');
+        leftBottomTip('AB回放','停止。');
         return;
     }
 }

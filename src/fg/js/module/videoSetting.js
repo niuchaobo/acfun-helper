@@ -134,7 +134,7 @@ class VideoSetting{
         let html = `
                     <li onclick="setCustomPlaybackRate(event);">自定义</li>`;
         let _timer = setInterval(function () {
-            let node = $(".speed-panel").find('li:last');
+            let node = $(".speed[type!=abplay]").find('li:last');
             if(node.length>0){
                 node.after(html);
                 clearInterval(_timer);
@@ -162,8 +162,8 @@ class VideoSetting{
         
     //AB回放UI 处理函数在videoSettingInject.js
     AddABPlayUI(){
-        let html = `<div class="control-btn speed"><span data-bind-key="AddABPlayUI">AB</span>
-        <div class="speed-panel">
+        let html = `<div class="control-btn speed" type='abplay'><span data-bind-key="AddABPlayUI">AB</span>
+        <div class="speed-panel abplay-panel">
             <ul>
                 <li class = 'point-a' data-val="A" onClick="updateAbPlayFirst()">标记点A</li>
                 <li class = 'point-b' data-val="B" onClick="updateAbPlaySecond()">标记点B</li>
@@ -173,6 +173,7 @@ class VideoSetting{
             <div class="transparent-placeholder"></div>
     </div>`;
         let _timer = setInterval(function () {
+            console.log('1')
             let node = $(".box-right");
             if(node.length>0){
                 node.prepend(html);

@@ -87,8 +87,24 @@ class ODHFront {
         });
         //Dom 渲染完即可执行 此时图片视频还可能没加载完
         document.addEventListener("DOMContentLoaded", (e) =>{
-            this.onDomContentLoaded(e)
+            this.onDomContentLoaded(e);
+            this.onACPlayerLoaded(e)
         });
+    }
+
+    onACPlayerLoaded(e){
+        let href = this.href;
+        if(REG.videoAndBangumi.test(href)){
+            getAsyncDom('#ACPlayer .control-bar-top .achlp-proBar',()=>{
+                //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
+                this.videoSetting.monitorFullScreen();
+                //自定义倍速
+                this.options.custom_rate && this.videoSetting.customPlaybackRate();
+                //倍速切换的快捷键
+                this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
+                
+            })
+        }
     }
 
     onDomContentLoaded(e){
@@ -175,7 +191,7 @@ class ODHFront {
         //开启屏蔽功能
         this.options.filter && this.block.block();
         var pageInfo = null;
-        //视频
+        //视频 TODO:这玩意儿到底是个啥！？
         if(REG.video.test(href)){
             var div = document.createElement('div');
             div.style.display="none";
@@ -186,7 +202,6 @@ class ODHFront {
             div.click();
             pageInfo = JSON.parse(document.getElementById(uuid).innerText);
             document.body.removeChild(div);
-
             let currentVideoInfo = pageInfo.currentVideoInfo;
             let title = pageInfo.title;
             if(currentVideoInfo==undefined || currentVideoInfo=="" || currentVideoInfo==null){
@@ -221,33 +236,19 @@ class ODHFront {
         }
         //视频与番剧页面功能
         if(REG.videoAndBangumi.test(href)){
-          //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
-          this.videoSetting.monitorFullScreen();
-          //自定义倍速
-          this.options.custom_rate && this.videoSetting.customPlaybackRate();
           //全局进度条
-          this.options.ProgressBarsw && this.videoSetting.flexProgressBar();
+          this.options.ProgressBarsw && this.videoSetting.flexProgressBar(); 
           //AB回放
           this.options.ABPlaysw && this.videoSetting.AddABPlayUI();
-          //倍速切换的快捷键
-          this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
-          //弹幕列表
-          getAsyncDom('.list-title',()=>{
-          //弹幕列表搜索
-          this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
-          //弹幕列表前往Acer个人主页
-          this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
           //画中画
           this.videoSetting.callPicktureInPictureMode();
-          })
-          // 评论区 -未添加监听
-          getAsyncDom('.ac-pc-comment',()=>{
-            //快捷键空降
-            if(this.options.easySearchScanForPlayerTimesw){
-              getAsyncDom('.ac-pc-comment',()=>{
-                  this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-              });
-            }
+          //弹幕列表
+          getAsyncDom('.list-title',()=>{
+                //弹幕列表搜索
+                this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
+                //弹幕列表前往Acer个人主页
+                this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
+          
           })
         }
         this.authInfo.cookInfo();
@@ -347,7 +348,7 @@ class ODHFront {
       this.ce.searchScanForPlayerTime();
     }
   }
-  //评论区整体部分的标记渲染入口
+  //评论区整体部分的标记渲染入口 ()
   api_renderList(params) {
     let { url } = params.url;
     if (this.options.mark) {
@@ -364,8 +365,17 @@ class ODHFront {
     }
     //跳转链接弹框
     this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
-
-  }
+    let href = this.href;
+    if(REG.videoAndBangumi.test(href)){
+        //快捷键空降 TODO:全功能快捷键！
+        if(this.options.easySearchScanForPlayerTimesw){
+            getAsyncDom('.ac-pc-comment',()=>{
+                this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
+            });
+          }
+      }
+    }
+    
 }
 
 window.odhfront = new ODHFront();
