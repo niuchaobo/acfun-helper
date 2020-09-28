@@ -93,8 +93,6 @@ class MsgNotifs{
             if(b.length<c.length){
                 for(let l=0;l<c.length;l++){
                     if(b.indexOf(c[l])==-1){
-                        // console.log(l)
-                        // console.log(c[l])
                         let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${c[l]}`)
                         // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
                         chrome.notifications.create(null, {
@@ -153,7 +151,6 @@ class MsgNotifs{
                     let a4=b.unReadCount.new_system_notify;//站内公告
                     var pushNum=a0+a1+a2+a3+a4;
                     chrome.browserAction.setTitle({title:`AcFun助手，Ac在爱一直在；\n通知\n评论未读：${a0}\n点赞：${a1}\n系统通知：${a3}\n站内公告：${a4}`})
-                    // console.log(pushNum);
                     if(pushNum>0){
                         chrome.browserAction.setBadgeText({ text: pushNum.toString() });
                     }else{

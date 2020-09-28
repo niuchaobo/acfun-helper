@@ -95,7 +95,6 @@ class ODHBack {
                 this.WatchPlan.PushInList(link_url).then(()=>{
                     let x = this.WatchPlan.getOpRes();
                     let sw=""
-                    // if(x){alert("加入成功。")}else{alert("稍后再看已被关闭，操作无效。")}
                     x?sw="加入成功。":sw="稍后再看已被关闭，操作无效。"
                     chrome.notifications.create(null, {
                         type: 'basic',

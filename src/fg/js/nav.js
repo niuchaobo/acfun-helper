@@ -25,7 +25,6 @@ function ScrollToControl(id) {
     var elem = document.getElementById(id);
     //47为首页横向导航条的高度,40为每个分区title的高度
     var scrollPos = elementPosition(elem).y-47-40;
-    console.log("y:"+scrollPos);
     scrollPos = scrollPos - document.documentElement.scrollTop;
 
     var remainder = scrollPos % 100;

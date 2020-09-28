@@ -216,7 +216,7 @@ async function db_getPushListHtml(){
     //获取推送列表HTML
     initPushListHtml();
     db.open();
-    let x = await db.PushListHtml.orderBy("id").reverse().toArray();
+    let x = await db.PushListHtml.orderBy("id").toArray();
     db.close();
     return x;
 }

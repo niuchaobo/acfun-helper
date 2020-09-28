@@ -250,7 +250,6 @@ class CommentEnhance{
                                 chrome.storage.local.set({[key]:value}, function () {
                                     userNode.parent().find('.pos.simple').remove();
                                     userNode.after('<span class="pos simple">'+tag+'</span>');
-
                                 });
                             }
                         });
