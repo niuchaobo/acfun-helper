@@ -131,7 +131,6 @@ class ODHFront {
             //播放器和弹幕功能
             this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
             this.danmaku.cacheStore();
-            this.videoSetting.callPicktureInPictureMode();
             this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
             //隐藏ad
             this.options.hideAd && this.pageBeautify.hideAds();
@@ -139,8 +138,6 @@ class ODHFront {
         //直播
         if(REG.live.test(href)){
           this.options.liveCommentTimeTag && this.livePageBeautify.commentTimeTag();
-          //直播画中画模式
-          this.livePageBeautify.callPicktureInPictureModeForLive()
         }
         //直播站功能
         if(REG.live.test(href) && this.options.livePlayerEnhc){
@@ -212,6 +209,8 @@ class ODHFront {
         if(REG.live.test(href)){
             $(".open-app-confirm").hide();
             this.div.show(pageInfo,this.options,'live','');
+            //直播画中画模式
+            this.livePageBeautify.callPicktureInPictureModeForLive()
         }
         //直播首页
         if(REG.liveIndex.test(href)){
@@ -238,6 +237,8 @@ class ODHFront {
           this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
           //弹幕列表前往Acer个人主页
           this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
+          //画中画
+          this.videoSetting.callPicktureInPictureMode();
           })
           // 评论区 -未添加监听
           getAsyncDom('.ac-pc-comment',()=>{
