@@ -325,7 +325,7 @@ class ODHFront {
   }
   //直播m3u8 url赋值到前台页面
   async api_renderLive(params) {
-    if(!REG.liveIndex.tesxt(this.href)){
+    if(!REG.liveIndex.test(this.href)){
       this.live.renderLive(params);
     }
   }
