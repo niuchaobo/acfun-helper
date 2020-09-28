@@ -19,8 +19,9 @@ if(!hiddenDiv) {
     }
 }
 
-let testLive = window.location.href === 'https://live.acfun.cn/';
+let testLive = new RegExp('((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))').test(window.location.href)
 testLive && hiddenDiv.addEventListener('myCustomEvent', function() {
+    console.log('testRegExp')
     // console.log(window.player);
     var eventData = document.getElementById('myCustomEventDiv').innerText;
     let options = JSON.parse(eventData);
