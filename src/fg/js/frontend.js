@@ -95,7 +95,7 @@ class ODHFront {
     onACPlayerLoaded(e){
         let href = this.href;
         if(REG.videoAndBangumi.test(href)){
-            getAsyncDom('#ACPlayer .control-bar-top .achlp-proBar',()=>{
+            getAsyncDom('#ACPlayer .control-bar-top #achlp-proBar',()=>{
                 //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
                 this.videoSetting.monitorFullScreen();
                 //自定义倍速
