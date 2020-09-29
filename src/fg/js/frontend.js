@@ -219,6 +219,7 @@ class ODHFront {
         if(REG.article.test(href)){
             let isUp = adjustArticleUp();
             this.div.show(pageInfo,this.options,'article',isUp);
+            this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype),true);
         }
         //直播
         if(REG.live.test(href)){
