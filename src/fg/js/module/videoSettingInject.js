@@ -8,16 +8,10 @@ let videoFunction = (function () {
     return;
   }
 
-
-  var abPlayFirst = undefined;
-  var abPlaySecond = undefined;
-  var abPlayFlag = 0;
-  var dropFrameIncrement = 0;
   var lastdropedFrame = 0;
   var nowDropFrame = 0;
   // var option_authinfo_mkey = false;
 
-  
   var hiddenDiv = document.getElementById("myCustomEventDiv");
   if (!hiddenDiv) {
     hiddenDiv = document.createElement("div");
@@ -161,14 +155,6 @@ let videoFunction = (function () {
   } catch (error) {
     console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Faild.");
   }
-  //调用画中画模式
-  function setPictureInPictureMode() {
-    let v = document.getElementsByTagName("video")[0];
-    v.requestPictureInPicture();
-    console.log(
-      "[LOG]Frontend-videoSettingInject: Calling PictureInPicture Mode."
-    );
-  }
 
   //评论时间播放器快速跳转 - 处理函数
   function quickJump(time, part) {
@@ -189,144 +175,6 @@ let videoFunction = (function () {
       v_obj.currentTime = Duration2Seconds(time);
       console.log("[LOG]Frontend-videoSettingInject: Jump_ok");
     }, 500);
-  }
-
-  //==============AB回放================
-  function updateAbPlayFirst() {
-    if (abPlayFlag === 1) {
-      leftBottomTip("请先", "停止");
-      return;
-    }
-    let fistTime = Math.floor(
-      document.getElementsByTagName("video")[0].currentTime
-    );
-    if (abPlaySecond && fistTime > abPlaySecond) {
-      leftBottomTip("A要在B之前", "---鲁迅");
-      return;
-    }
-    abPlayFirst = fistTime;
-    leftBottomTip(`标记点A :`, `${timeToMinute(abPlayFirst)}`);
-    $(".abplay-panel>ul>.point-a").text(`A : ${timeToMinute(abPlayFirst)}`);
-    abPlaySecond &&
-      leftBottomTip(
-        `区间为`,
-        `${timeToMinute(abPlayFirst)}至${timeToMinute(abPlaySecond)}`
-      );
-  }
-  function updateAbPlaySecond() {
-    if (abPlayFlag === 1) {
-      leftBottomTip("请先", "停止");
-      return;
-    }
-    let secondTime = Math.floor(
-      document.getElementsByTagName("video")[0].currentTime
-    );
-    if (abPlayFirst && secondTime < abPlayFirst) {
-      leftBottomTip("B要在A之后", "---鲁迅");
-      return;
-    }
-    abPlaySecond = secondTime;
-    leftBottomTip(`标记点B :`, `${timeToMinute(abPlaySecond)}`);
-    $(".abplay-panel>ul>.point-b").text(`B : ${timeToMinute(abPlaySecond)}`);
-    if (abPlayFirst > abPlaySecond) {
-      [abPlayFirst, abPlaySecond] = [abPlaySecond, abPlayFirst];
-    }
-    abPlayFirst &&
-      leftBottomTip(
-        `区间为`,
-        `${timeToMinute(abPlayFirst)}至${timeToMinute(abPlaySecond)}`
-      );
-  }
-  function stopAbPlay() {
-    abPlayFirst = abPlaySecond = undefined;
-    $(".abplay-panel>ul>.point-a").text("标记点A");
-    $(".abplay-panel>ul>.point-b").text("标记点B");
-    $(".abplay-panel>ul>.clear-button").text("清除");
-    if (abPlayFlag === 0) {
-      leftBottomTip("标记,已清除");
-      return;
-    }
-    if (abPlayFlag === 1) {
-      abPlayFlag = 0;
-      document
-        .getElementsByTagName("video")[0]
-        .removeEventListener("timeupdate", abPlayMain, false);
-      $(".abplay-panel>ul>.switch-button").text("开始");
-      leftBottomTip("标记已清除,退出AB回放。");
-      return;
-    }
-  }
-  function abPlayMain() {
-    if (abPlayFlag == 0) {
-      return;
-    }
-    if (Math.floor(window.player.currentTime) >= abPlaySecond) {
-      document.getElementsByTagName("video")[0].currentTime = abPlayFirst;
-    }
-  }
-  function abPlayHandler() {
-    let targetVideo = document.getElementsByTagName("video")[0];
-    if (abPlayFirst === undefined || abPlaySecond === undefined) {
-      leftBottomTip("请先设置", "标记点");
-      return;
-    }
-    if (abPlayFlag === 0) {
-      leftBottomTip("AB回放", "开启");
-      $(".abplay-panel>ul>.switch-button").text("停止");
-      $(".abplay-panel>ul>.clear-button").text("清除&停止");
-      targetVideo.paused && targetVideo.play();
-      targetVideo.removeEventListener("timeupdate", abPlayMain, false);
-      targetVideo.currentTime = abPlayFirst;
-      targetVideo.addEventListener("timeupdate", abPlayMain, false);
-      abPlayFlag = 1;
-      return;
-    }
-    if (abPlayFlag === 1) {
-      targetVideo.removeEventListener("timeupdate", abPlayMain, false);
-      targetVideo.pause();
-      $(".abplay-panel>ul>.switch-button").text("开始");
-      abPlayFlag = 0;
-      leftBottomTip("AB回放", "停止。");
-      return;
-    }
-  }
-  function leftBottomTip(text, importantText = "") {
-    //播放器浮动通知气泡
-    $(".left-bottom-tip")
-      .eq(0)
-      .append(
-        `<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`
-      );
-    let _timer = setTimeout(() => {
-      $(".left-bottom-tip").eq(0).children().eq(0).remove(); //这样写 并不能自定义持续时间
-      clearInterval(_timer);
-    }, 2500);
-  }
-  //自定义倍速
-  function setCustomPlaybackRate(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    let v = document.getElementsByTagName("video")[0];
-    let title = "请输入播放倍速【0-5之间（不包含5），最多2位小数】，例如：0.1";
-    let reg = /^[0-4](\.[0-9]{1,2})?$/;
-    let rate = prompt(title, "");
-    if (rate != null && rate != "") {
-      console.log(rate);
-      if (reg.test(rate)) {
-        v.playbackRate = rate;
-      } else {
-        window.parent.postMessage(
-          {
-            action: "notice",
-            params: {
-              title: "AcFun助手",
-              msg: "请输入正确的播放速度",
-            },
-          },
-          "*"
-        );
-      }
-    }
   }
 
   function dropFrameIncrementAlz() {
@@ -360,34 +208,12 @@ let videoFunction = (function () {
     }
   }
 
-  function timeToMinute(second) {
-    var minute;
-    minute = Math.floor(second / 60);
-    second = second % 60;
-    minute += "";
-    second += "";
-    minute = minute.length == 1 ? "0" + minute : minute;
-    second = second.length == 1 ? "0" + second : second;
-    return minute + ":" + second;
-  }
   return {
-    // setPictureInPictureMode,
     quickJump,
-    // updateAbPlayFirst,
-    // updateAbPlaySecond,
-    // stopAbPlay,
-    // abPlayHandler,
-    //setCustomPlaybackRate,
     dropFrameIncrementAlz,
   };
 })();
 let {
-  setPictureInPictureMode,
   quickJump,
-  updateAbPlayFirst,
-  updateAbPlaySecond,
-  stopAbPlay,
-  abPlayHandler,
-  setCustomPlaybackRate,
   dropFrameIncrementAlz,
 } = { ...videoFunction };
