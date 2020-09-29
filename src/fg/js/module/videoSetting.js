@@ -130,9 +130,9 @@ class VideoSetting{
     }
     
     //增加自定义播放速度
-    customPlaybackRate(){
-        let html = `
-                    <li onclick="setCustomPlaybackRate(event);">自定义</li>`;
+    customPlaybackRate_origin(){
+        //恢复->inject->return->关掉注释
+        let html = `<li onclick="setCustomPlaybackRate(event);">自定义</li>`;
         let _timer = setInterval(function () {
             let node = $(".speed[type!=abplay]").find('li:last');
             if(node.length>0){
@@ -141,6 +141,43 @@ class VideoSetting{
             }
         },1000);
     }
+    //不使用inject通信(更方便控制执行时间)
+    customPlaybackRate(){
+        getAsyncDom(".speed[type!=abplay]",()=>{
+            let html = `<li class="setCustomPlaybackRate">自定义</li>`;
+            $(".speed[type!=abplay]").find('li:last').after(html);
+            $(".speed[type!=abplay]").click((e)=>{
+                if(e.target.className === 'setCustomPlaybackRate'){
+                    this.setCustomPlaybackRate(e)
+                }
+            })
+        })
+    }
+     //自定义倍速
+    setCustomPlaybackRate(){
+        let v = document.getElementsByTagName("video")[0];
+        let title = "请输入播放倍速【0-5之间（不包含5），最多2位小数】，例如：0.1";
+        let reg = /^[0-4](\.[0-9]{1,2})?$/;
+        let rate = prompt(title, "");
+        if (rate != null && rate != "") {
+        console.log(rate);
+        if (reg.test(rate)) {
+            v.playbackRate = rate;
+        } else {
+            window.parent.postMessage(
+            {
+                action: "notice",
+                params: {
+                title: "AcFun助手",
+                msg: "请输入正确的播放速度",
+                },
+            },
+            "*"
+            );
+        }
+        }
+    }
+
 
     //底部进度条
     flexProgressBar(){

@@ -377,7 +377,7 @@ let videoFunction = (function () {
     updateAbPlaySecond,
     stopAbPlay,
     abPlayHandler,
-    setCustomPlaybackRate,
+    //setCustomPlaybackRate,
     dropFrameIncrementAlz,
   };
 })();
