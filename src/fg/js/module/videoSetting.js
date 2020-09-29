@@ -21,6 +21,9 @@ class VideoSetting{
         this.cPIP_Livediv=`<div class="control-btn pip" style="position: relative;width: 38px;height: 20px;"><div class=" control-btn btn-pip" style="opacity: 0.9;font-size: 14px;color: #ffffff;cursor: pointer;flex: none;box-sizing: border-box;-webkit-box-flex: 0;align-items: center;justify-content: center;-webkit-box-align: center;display: flex;-webkit-box-pack: center;position: relative;width: 100%;height: 100%;" >`;
         this.cPIP_span=`<span class="btn-span" style="display: block;width: 22px;height: 100%;background-size: contain;background-position: center;background-repeat: no-repeat;background-image: url(${this.iconBase64Url});" onclick="setPictureInPictureMode()"></span> 
         </div><span class="tip-pip" style="position: absolute;display: none;bottom: 40px;text-align: center;background: rgba(21,21,21,0.8);border-radius: 4px;line-height: 32px;height: 32px;opacity: 0.9;font-size: 14px;color: #FFFFFF;letter-spacing: 0;width: 116px;left: 50%;-webkit-transform: translate(-50%); transform: translate(-50%);" >进入画中画</span></div>`
+        this.abPlayFirst = undefined;
+        this.abPlaySecond = undefined;
+        this.abPlayFlag = 0;
     }
 
     onLoad(){
@@ -79,6 +82,7 @@ class VideoSetting{
             }
         },1000);
     }
+    
 
     //画质策略
     videoQuality(){
@@ -144,11 +148,13 @@ class VideoSetting{
     //不使用inject通信(更方便控制执行时间)
     customPlaybackRate(){
         getAsyncDom(".speed[type!=abplay]",()=>{
-            let html = `<li class="setCustomPlaybackRate">自定义</li>`;
+            let html = `<li class="setCustomPlaybackRate" data-val='1'>自定义</li>`;
             $(".speed[type!=abplay]").find('li:last').after(html);
             $(".speed[type!=abplay]").click((e)=>{
                 if(e.target.className === 'setCustomPlaybackRate'){
-                    this.setCustomPlaybackRate(e)
+                    this.setCustomPlaybackRate()
+                }else{
+                    return
                 }
             })
         })
@@ -160,7 +166,6 @@ class VideoSetting{
         let reg = /^[0-4](\.[0-9]{1,2})?$/;
         let rate = prompt(title, "");
         if (rate != null && rate != "") {
-        console.log(rate);
         if (reg.test(rate)) {
             v.playbackRate = rate;
         } else {
@@ -168,8 +173,8 @@ class VideoSetting{
             {
                 action: "notice",
                 params: {
-                title: "AcFun助手",
-                msg: "请输入正确的播放速度",
+                    title: "AcFun助手",
+                    msg: "请输入正确的播放速度",
                 },
             },
             "*"
@@ -177,6 +182,143 @@ class VideoSetting{
         }
         }
     }
+
+    //==============AB回放================
+      
+    addABPlayUI(){
+        getAsyncDom(" .box-right ",()=>{
+        let html = `
+        <div class="control-btn speed" type='abplay'><span data-bind-key="AddABPlayUI">AB</span>
+            <div class="speed-panel abplay-panel">
+                <ul>
+                    <li class = 'updateAbPlayFirst' data-val="A" >标记点A</li>
+                    <li class = 'updateAbPlaySecond' data-val="B" >标记点B</li>
+                    <li class = 'abPlayHandler' >开始</li>
+                    <li class = 'stopAbPlay' >清除</li>
+                </ul>
+                <div class="transparent-placeholder"></div>
+        </div>
+        `;
+            $(' .box-right ').prepend(html)
+            $(" .box-right>div[type=abplay] ").click((e)=>{
+                let target = e.target.className;
+                switch (target){
+                    case 'updateAbPlayFirst' :
+                        this.updateAbPlayFirst()
+                    break
+                    case 'updateAbPlaySecond' :
+                        this.updateAbPlaySecond()
+                    break
+                    case 'abPlayHandler' :
+                        this.abPlayHandler()
+                    break
+                    case 'stopAbPlay' :
+                        this.stopAbPlay()
+                    break
+                }
+            })
+        })
+    }
+
+    updateAbPlayFirst() {
+        if (this.abPlayFlag === 1) {
+        leftBottomTip("请先", "停止");
+        return;
+        }
+        let fistTime = Math.floor(
+        document.getElementsByTagName("video")[0].currentTime
+        );
+        if (this.abPlaySecond && fistTime > this.abPlaySecond) {
+        leftBottomTip("A要在B之前", "---鲁迅");
+        return;
+        }
+        this.abPlayFirst = fistTime;
+        leftBottomTip(`标记点A :`, `${timeToMinute(this.abPlayFirst)}`);
+        $(".abplay-panel>ul>.updateAbPlayFirst").text(`A : ${timeToMinute(this.abPlayFirst)}`);
+        this.abPlaySecond &&
+        leftBottomTip(
+            `区间为`,
+            `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
+        );
+    }
+    updateAbPlaySecond() {
+        if (this.abPlayFlag === 1) {
+        leftBottomTip("请先", "停止");
+        return;
+        }
+        let secondTime = Math.floor(
+        document.getElementsByTagName("video")[0].currentTime
+        );
+        if (this.abPlayFirst && secondTime < this.abPlayFirst) {
+        leftBottomTip("B要在A之后", "---鲁迅");
+        return;
+        }
+        this.abPlaySecond = secondTime;
+        leftBottomTip(`标记点B :`, `${timeToMinute(this.abPlaySecond)}`);
+        $(".abplay-panel>ul>.updateAbPlaySecond").text(`B : ${timeToMinute(this.abPlaySecond)}`);
+        if (this.abPlayFirst > this.abPlaySecond) {
+        [this.abPlayFirst, this.abPlaySecond] = [this.abPlaySecond, this.abPlayFirst];
+        }
+        this.abPlayFirst &&
+        leftBottomTip(
+            `区间为`,
+            `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
+        );
+    }
+    stopAbPlay() {
+        this.abPlayFirst = this.abPlaySecond = undefined;
+        $(".abplay-panel>ul>.updateAbPlayFirst").text("标记点A");
+        $(".abplay-panel>ul>.updateAbPlaySecond").text("标记点B");
+        $(".abplay-panel>ul>.stopAbPlay").text("清除");
+        if (this.abPlayFlag === 0) {
+        leftBottomTip("标记","已清除");
+        return;
+        }
+        if (this.abPlayFlag === 1) {
+        this.abPlayFlag = 0;
+        document
+            .getElementsByTagName("video")[0]
+            .removeEventListener("timeupdate", this.abPlayMain, false);
+        $(".abplay-panel>ul>.abPlayHandler").text("开始");
+        leftBottomTip("标记已清除,AB回放已","退出");
+        return;
+        }
+    }
+    abPlayMain() {
+        if (this.abPlayFlag == 0) {
+        return;
+        }
+        if (Math.floor(window.player.currentTime) >= this.abPlaySecond) {
+        document.getElementsByTagName("video")[0].currentTime = this.abPlayFirst;
+        }
+    }
+    abPlayHandler() {
+        let targetVideo = document.getElementsByTagName("video")[0];
+        if (this.abPlayFirst === undefined || this.abPlaySecond === undefined) {
+        leftBottomTip("请先设置", "标记点");
+        return;
+        }
+        if (this.abPlayFlag === 0) {
+        leftBottomTip("AB回放", "开启");
+        $(".abplay-panel>ul>.abPlayHandler").text("停止");
+        $(".abplay-panel>ul>.stopAbPlay").text("清除&停止");
+        targetVideo.paused && targetVideo.play();
+        targetVideo.removeEventListener("timeupdate", this.abPlayMain, false);
+        targetVideo.currentTime = this.abPlayFirst;
+        targetVideo.addEventListener("timeupdate", this.abPlayMain, false);
+        this.abPlayFlag = 1;
+        return;
+        }
+        if (this.abPlayFlag === 1) {
+        targetVideo.removeEventListener("timeupdate", this.abPlayMain, false);
+        targetVideo.pause();
+        $(".abplay-panel>ul>.abPlayHandler").text("开始");
+        this.abPlayFlag = 0;
+        leftBottomTip("AB回放", "停止");
+        return;
+        }
+    }
+    
 
 
     //底部进度条
@@ -198,19 +340,18 @@ class VideoSetting{
     }
         
     //AB回放UI 处理函数在videoSettingInject.js
-    AddABPlayUI(){
+    AddABPlayUI_origin(){
         let html = `<div class="control-btn speed" type='abplay'><span data-bind-key="AddABPlayUI">AB</span>
         <div class="speed-panel abplay-panel">
             <ul>
-                <li class = 'point-a' data-val="A" onClick="updateAbPlayFirst()">标记点A</li>
-                <li class = 'point-b' data-val="B" onClick="updateAbPlaySecond()">标记点B</li>
-                <li class = 'switch-button' onclick="abPlayHandler();">开始</li>
-                <li class = 'clear-button' onclick="stopAbPlay();">清除</li>
+                <li class = 'updateAbPlayFirst' data-val="A" onClick="updateAbPlayFirst()">标记点A</li>
+                <li class = 'updateAbPlaySecond' data-val="B" onClick="updateAbPlaySecond()">标记点B</li>
+                <li class = 'abPlayHandler' onclick="abPlayHandler();">开始</li>
+                <li class = 'stopAbPlay' onclick="stopAbPlay();">清除</li>
             </ul>
             <div class="transparent-placeholder"></div>
     </div>`;
         let _timer = setInterval(function () {
-            console.log('1')
             let node = $(".box-right");
             if(node.length>0){
                 node.prepend(html);

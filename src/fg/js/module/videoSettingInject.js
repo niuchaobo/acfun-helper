@@ -373,10 +373,10 @@ let videoFunction = (function () {
   return {
     setPictureInPictureMode,
     quickJump,
-    updateAbPlayFirst,
-    updateAbPlaySecond,
-    stopAbPlay,
-    abPlayHandler,
+    // updateAbPlayFirst,
+    // updateAbPlaySecond,
+    // stopAbPlay,
+    // abPlayHandler,
     //setCustomPlaybackRate,
     dropFrameIncrementAlz,
   };

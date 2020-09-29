@@ -95,14 +95,17 @@ class ODHFront {
     onACPlayerLoaded(e){
         let href = this.href;
         if(REG.videoAndBangumi.test(href)){
-            getAsyncDom('#ACPlayer .control-bar-top #achlp-proBar',()=>{
+            getAsyncDom('#ACPlayer .control-bar-top .box-right',()=>{
                 //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
                 this.videoSetting.monitorFullScreen();
                 //自定义倍速
                 this.options.custom_rate && this.videoSetting.customPlaybackRate();
                 //倍速切换的快捷键
                 this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
-                
+                //AB回放
+                this.options.ABPlaysw && this.videoSetting.addABPlayUI();
+                //画中画
+                this.videoSetting.callPicktureInPictureMode();
             })
         }
     }
@@ -239,10 +242,7 @@ class ODHFront {
         if(REG.videoAndBangumi.test(href)){
           //全局进度条
           this.options.ProgressBarsw && this.videoSetting.flexProgressBar(); 
-          //AB回放
-          this.options.ABPlaysw && this.videoSetting.AddABPlayUI();
-          //画中画
-          this.videoSetting.callPicktureInPictureMode();
+          
           //弹幕列表
           getAsyncDom('.list-title',()=>{
                 //弹幕列表搜索
