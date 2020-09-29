@@ -81,13 +81,14 @@ class LivePageButfy {
         let textFlag = document.getElementsByClassName("tip-fullscreen");
         flag = textFlag[0].innerText === '退出网页全屏'?textFlag[0] : false;
         flag = flag ? flag :textFlag[1].innerText === '退出桌面全屏'?textFlag[1] : false;
+        console.log(target)
         flag = target.parentElement === document.getElementsByClassName('btn-fullscreen')[1] ? false : flag
         return flag
     }
 
     widePlayerEvent(){
-        $('div.box-right').on('click','#toggleWide',() => {
-            let flag = this.judgeIsFullScreen()
+        $('div.box-right').on('click','#toggleWide',(e) => {
+            let flag = this.judgeIsFullScreen(e.target)
             flag ? $(flag.parentElement).trigger('click') : '';
             this.isWidePlayer ? this.exitWidePlayerModel() : this.enterWidePlayerModel()
             this.helperDivHide("")
