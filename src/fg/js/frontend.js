@@ -104,8 +104,7 @@ class ODHFront {
                 this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
                 //AB回放
                 this.options.ABPlaysw && this.videoSetting.addABPlayUI();
-                //画中画
-                this.videoSetting.callPicktureInPictureMode();
+                
             })
         }
     }
@@ -242,7 +241,8 @@ class ODHFront {
         if(REG.videoAndBangumi.test(href)){
           //全局进度条
           this.options.ProgressBarsw && this.videoSetting.flexProgressBar(); 
-          
+          //画中画
+          this.videoSetting.callPicktureInPictureMode();
           //弹幕列表
           getAsyncDom('.list-title',()=>{
                 //弹幕列表搜索
