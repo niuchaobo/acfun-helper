@@ -1,240 +1,245 @@
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <title>AcFun 助手 - acfunlive 设置页</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="css/options.css">
-    <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
-    <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css" />
-    <script src="../lib/jquery-3.5.0.min.js"></script>
-    <script type="text/javascript" src="js/jquery.mloading.js"></script>
-    <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
-    <script type="text/javascript" src="js/acfunlive-bridge.js"></script>
-    <script type="text/javascript" src="../common/utils.js"></script>
-    <style>
+  <meta charset="utf-8">
+  <title>AcFun 助手 - acfunlive 设置页</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="css/options.css">
+  <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
+  <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css" />
+  <script src="../lib/jquery-3.5.0.min.js"></script>
+  <script type="text/javascript" src="js/jquery.mloading.js"></script>
+  <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
+  <script type="text/javascript" src="js/acfunlive-bridge.js"></script>
+  <script type="text/javascript" src="../common/utils.js"></script>
+  <style>
     ::-webkit-scrollbar {
-        width: 8px;
-        background-color: #fff;
+      width: 8px;
+      background-color: #fff;
     }
 
     ::-webkit-scrollbar-thumb {
-        background-color: #ddd;
-        border-radius: 5px;
+      background-color: #ddd;
+      border-radius: 5px;
     }
 
-    body { line-height: 150%; }
-    </style>
+    body {
+      line-height: 150%;
+    }
+  </style>
 </head>
+
 <body>
-    <h1 style="text-align:center;">AcFun助手 - acfunlive | 设置</h1>
+  <h1 style="text-align:center;">AcFun助手 - acfunlive | 设置</h1>
 
-    <div class="mdui-container doc-container">
-        <div class="mdui-tab mdui-tab-centered" mdui-tab>
-            <a href="#tab1" class="mdui-ripple">订阅</a>
-            <a href="#tab2" class="mdui-ripple">录制</a>
-            <a href="#tab3" class="mdui-ripple">关于</a>
+  <div class="mdui-container doc-container">
+    <div class="mdui-tab mdui-tab-centered" mdui-tab>
+      <a href="#tab1" class="mdui-ripple">订阅</a>
+      <a href="#tab2" class="mdui-ripple">录制</a>
+      <a href="#tab3" class="mdui-ripple">关于</a>
+    </div>
+
+    <div id="tab1" class="mdui-p-a-2">
+
+      <div class="mdui-panel" mdui-panel>
+
+        <div class="mdui-panel-item mdui-panel-item-open">
+          <div class="mdui-panel-item-header">
+            <div class="mdui-panel-item-title">订阅直播推送</div>
+            <div class="mdui-panel-item-summary">将你所关注的主播直播信息通过程序调用系统通知推送</div>
+            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
           </div>
-          
-          <div id="tab1" class="mdui-p-a-2">
+          <div class="mdui-panel-item-body">
 
-            <div class="mdui-panel" mdui-panel>
-  
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">订阅直播推送</div>
-                      <div class="mdui-panel-item-summary">将你所关注的主播直播信息通过程序调用系统通知推送</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
 
-                      <div class="mdui-container-fluid">
-                        <div class="mdui-row">
-
-                            <div class="mdui-row">
-                                <div class="mdui-col-xs-9">
-                                    <h3>订阅列表</h3>
-                                  <div class="mdui-row">
-                                    <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">是否已启用此提醒：Off
-                                        <input id="livenotifSwitch" type="checkbox" disabled />
-                                        <i class="mdui-switch-icon"></i> On
-                                        </label></div>
-                                  </div>
-                                </div>
-                              </div>
-                          <ul class="mdui-list livenotiflist">
-
-                          </ul>
-                      </div>
-
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>订阅列表</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">是否已启用此提醒：Off
+                          <input id="livenotifSwitch" type="checkbox" disabled />
+                          <i class="mdui-switch-icon"></i> On
+                        </label></div>
                     </div>
                   </div>
                 </div>
-                               
+                <ul class="mdui-list livenotiflist">
 
-                <div class="mdui-panel-item">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">更新预留</div>
-                      <div class="mdui-panel-item-summary">A</div>
-                      <div class="mdui-panel-item-summary">B</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-                      <p>更新预留</p>
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>              
-          </div>
-
-          <div id="tab2" class="mdui-p-a-2">
-
-            <div class="mdui-panel" mdui-panel>
-  
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">直播录制</div>
-                    <div class="mdui-panel-item-summary">录制直播</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-row">
-
-                          <div class="mdui-row">
-                              <div class="mdui-col-xs-9">
-                                  <h3>视频录制任务列表</h3>
-                                <div class="mdui-row">
-                                  <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">是否已启用此功能：Off
-                                      <input id="liverecSwitch" type="checkbox" disabled />
-                                      <i class="mdui-switch-icon"></i> On
-                                      </label></div>
-                                </div>
-                              </div>
-                            </div>
-                        <ul class="mdui-list liverecSwitch">
-
-                        </ul>
-                    </div>
-                  </div>
-
-                </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                  <div class="mdui-panel-item-header">
-                    <div class="mdui-panel-item-title">直播弹幕录制</div>
-                    <div class="mdui-panel-item-summary">录制直播弹幕为ass字幕</div>
-                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                  </div>
-                  <div class="mdui-panel-item-body">
-                    <div class="mdui-container-fluid">
-                      <div class="mdui-row">
-
-                          <div class="mdui-row">
-                              <div class="mdui-col-xs-9">
-                                  <h3>弹幕录制任务列表</h3>
-                                <div class="mdui-row">
-                                  <div class="mdui-col-xs-4 mdui-col-sm-6">                                    <label class="mdui-switch">是否已启用此功能：Off
-                                      <input id="livedanmurecSwitch" type="checkbox" disabled />
-                                      <i class="mdui-switch-icon"></i> On
-                                      </label></div>
-                                </div>
-                              </div>
-                            </div>
-                        <ul class="mdui-list livedanmurecSwitch">
-
-                        </ul>
-                    </div>
-                  </div>
-
-                </div>
-                </div>
-
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                      <div class="mdui-panel-item-title">更新预留</div>
-                      <div class="mdui-panel-item-summary">A</div>
-                      <div class="mdui-panel-item-summary">B</div>
-                      <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-                      <p>更新预留</p>
-                      <div class="mdui-panel-item-actions">
-                        <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                        <button class="mdui-btn mdui-ripple">保存</button>
-                      </div>
-                    </div>
-                  </div>
-                  
-              </div>
-          </div>
-
-          
-        <div id="tab3" class="mdui-p-a-2">
-
-            <div class="mdui-col-sm-6 mdui-col-md-4">
-                AcFunlive 是一个提供AcFun直播桌面通知和下载的助手程序（命令行版本）。<br><br>
-                AcFun-Helper 开源地址： 
-                <a href="https://github.com/niuchaobo/acfun-helper" target="_blank">Github</a><br><br>
-                AcFunlive 开源地址： 
-                <a href="https://github.com/orzogc/acfunlive" target="_blank">Github</a><br><br>
-                <p>主要功能：</p>
-                <p>1.直播录制<br>
-                <p>2.直播开播提醒<br>
-                <p>3.弹幕录制为ass字幕<br>
-                <p>4.获取直播直链<br>
-                <hr>                
-
-            </div>
-            <div class="mdui-col-sm-6 mdui-col-md-4">
-                免责声明<br><br>请移步项目查看声明
-                <br><br>
-                <br><br>
-            </div>
-            <div class="mdui-col-sm-6 mdui-col-md-4">
-            
-            <div class="mdui-card">
-                <div class="mdui-card-header">
-                  <img class="mdui-card-header-avatar" src="images/lalazhuibushang-github.jpg"/>
-                  <div class="mdui-card-header-title"><a href="https://www.acfun.cn/u/7054138" target="_blank">啦啦追不上</a></div>
-                  <div class="mdui-card-header-subtitle">主导开发者</div>
-                </div>
-                <div class="mdui-card-media">
-                <div class="mdui-card-primary">
-                  <div class="mdui-card-primary-title">AcFun助手</div>
-                  <div class="mdui-card-primary-subtitle">浏览器插件</div>
-                </div>
-                <div class="mdui-card-content">是一个适用于AcFun（www.acfun.cn）的浏览器插件。</div>
-                
-              </div>       
+                </ul>
               </div>
 
-              <br>
-              
-              <div class="mdui-card">
-                <div class="mdui-card-header">
-                  <img class="mdui-card-header-avatar" src="images/orzogc-github.jpg"/>
-                  <div class="mdui-card-header-title"><a href="https://github.com/orzogc" target="_blank">orzog</a></div>
-                  <div class="mdui-card-header-subtitle">开发者</div>
-                </div>
-                <div class="mdui-card-media">
-                <div class="mdui-card-primary">
-                  <div class="mdui-card-primary-title">AcFunlive</div>
-                  <div class="mdui-card-primary-subtitle">Go语言编写的桌面CLI程序。</div>
-                </div>
-                <div class="mdui-card-content">是一个适用于AcFun的桌面程序。</div>
-                
-              </div>       
-              </div>       
-
             </div>
+          </div>
+        </div>
+
+
+        <div class="mdui-panel-item">
+          <div class="mdui-panel-item-header">
+            <div class="mdui-panel-item-title">更新预留</div>
+            <div class="mdui-panel-item-summary">A</div>
+            <div class="mdui-panel-item-summary">B</div>
+            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+          </div>
+          <div class="mdui-panel-item-body">
+            <p>更新预留</p>
+            <div class="mdui-panel-item-actions">
+              <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+              <button class="mdui-btn mdui-ripple">保存</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="tab2" class="mdui-p-a-2">
+
+      <div class="mdui-panel" mdui-panel>
+
+        <div class="mdui-panel-item mdui-panel-item-open">
+          <div class="mdui-panel-item-header">
+            <div class="mdui-panel-item-title">直播录制</div>
+            <div class="mdui-panel-item-summary">录制直播</div>
+            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+          </div>
+          <div class="mdui-panel-item-body">
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>视频录制任务列表</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">是否已启用此功能：Off
+                          <input id="liverecSwitch" type="checkbox" disabled />
+                          <i class="mdui-switch-icon"></i> On
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+                <ul class="mdui-list liverecSwitch">
+
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="mdui-panel-item mdui-panel-item-open">
+          <div class="mdui-panel-item-header">
+            <div class="mdui-panel-item-title">直播弹幕录制</div>
+            <div class="mdui-panel-item-summary">录制直播弹幕为ass字幕</div>
+            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+          </div>
+          <div class="mdui-panel-item-body">
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>弹幕录制任务列表</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">是否已启用此功能：Off
+                          <input id="livedanmurecSwitch" type="checkbox" disabled />
+                          <i class="mdui-switch-icon"></i> On
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+                <ul class="mdui-list livedanmurecSwitch">
+
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="mdui-panel-item mdui-panel-item-open">
+          <div class="mdui-panel-item-header">
+            <div class="mdui-panel-item-title">更新预留</div>
+            <div class="mdui-panel-item-summary">A</div>
+            <div class="mdui-panel-item-summary">B</div>
+            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+          </div>
+          <div class="mdui-panel-item-body">
+            <p>更新预留</p>
+            <div class="mdui-panel-item-actions">
+              <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+              <button class="mdui-btn mdui-ripple">保存</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div id="tab3" class="mdui-p-a-2">
+
+      <div class="mdui-col-sm-6 mdui-col-md-4">
+        AcFunlive 是一个提供AcFun直播桌面通知和下载的助手程序（命令行版本）。<br><br>
+        AcFun-Helper 开源地址：
+        <a href="https://github.com/niuchaobo/acfun-helper" target="_blank">Github</a><br><br>
+        AcFunlive 开源地址：
+        <a href="https://github.com/orzogc/acfunlive" target="_blank">Github</a><br><br>
+        <p>主要功能：</p>
+        <p>1.直播录制<br>
+        <p>2.直播开播提醒<br>
+        <p>3.弹幕录制为ass字幕<br>
+        <p>4.获取直播直链<br>
+          <hr>
+
+      </div>
+      <div class="mdui-col-sm-6 mdui-col-md-4">
+        免责声明<br><br>请移步项目查看声明
+        <br><br>
+        <br><br>
+      </div>
+      <div class="mdui-col-sm-6 mdui-col-md-4">
+
+        <div class="mdui-card">
+          <div class="mdui-card-header">
+            <img class="mdui-card-header-avatar" src="images/lalazhuibushang-github.jpg" />
+            <div class="mdui-card-header-title"><a href="https://www.acfun.cn/u/7054138" target="_blank">啦啦追不上</a></div>
+            <div class="mdui-card-header-subtitle">主导开发者</div>
+          </div>
+          <div class="mdui-card-media">
+            <div class="mdui-card-primary">
+              <div class="mdui-card-primary-title">AcFun助手</div>
+              <div class="mdui-card-primary-subtitle">浏览器插件</div>
+            </div>
+            <div class="mdui-card-content">是一个适用于AcFun（www.acfun.cn）的浏览器插件。</div>
+
+          </div>
+        </div>
+
+        <br>
+
+        <div class="mdui-card">
+          <div class="mdui-card-header">
+            <img class="mdui-card-header-avatar" src="images/orzogc-github.jpg" />
+            <div class="mdui-card-header-title"><a href="https://github.com/orzogc" target="_blank">orzog</a></div>
+            <div class="mdui-card-header-subtitle">开发者</div>
+          </div>
+          <div class="mdui-card-media">
+            <div class="mdui-card-primary">
+              <div class="mdui-card-primary-title">AcFunlive</div>
+              <div class="mdui-card-primary-subtitle">Go语言编写的桌面CLI程序。</div>
+            </div>
+            <div class="mdui-card-content">是一个适用于AcFun的桌面程序。</div>
+
+          </div>
+        </div>
+
+      </div>
 
     </div>
 </body>
+
 </html>
