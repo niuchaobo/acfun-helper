@@ -371,7 +371,7 @@ let videoFunction = (function () {
     return minute + ":" + second;
   }
   return {
-    setPictureInPictureMode,
+    // setPictureInPictureMode,
     quickJump,
     // updateAbPlayFirst,
     // updateAbPlaySecond,
