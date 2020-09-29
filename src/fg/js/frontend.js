@@ -106,7 +106,9 @@ class ODHFront {
                 this.options.ABPlaysw && this.videoSetting.addABPlayUI();
                 //画中画
                 this.videoSetting.callPicktureInPictureMode();
-            })
+                //全局进度条
+                this.options.ProgressBarsw && this.videoSetting.flexProgressBar(); 
+            },200,true)
         }
     }
 
@@ -140,9 +142,9 @@ class ODHFront {
         }
         //视频与番剧
         if(REG.videoAndBangumi.test(href)){
-        //播放器画质策略
+            //播放器画质策略
             this.videoSetting.videoQuality();
-        //显示点赞数
+            //显示点赞数
             this.options.show_like && this.videoPageBeautify.showLikeCount();
         }
         //视频
@@ -240,9 +242,6 @@ class ODHFront {
         }
         //视频与番剧页面功能
         if(REG.videoAndBangumi.test(href)){
-          //全局进度条
-          this.options.ProgressBarsw && this.videoSetting.flexProgressBar(); 
-          
           //弹幕列表
           getAsyncDom('.list-title',()=>{
                 //弹幕列表搜索
