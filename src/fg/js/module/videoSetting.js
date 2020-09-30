@@ -325,8 +325,8 @@ class VideoSetting{
         addElement(this.progressBackGroundOptions);
         let observerWeb = new MutationObserver((mutations)=> {
             mutations.forEach((mutations)=>{
-               flag = document.getElementsByClassName('control-bar-top')[0].getAttribute('data-bind-attr') === 'false';
-               !flag?$('#achlp-proBar,#achlp-proBar-bg').hide(100):$('#achlp-proBar,#achlp-proBar-bg').show(100);
+               let flag = document.getElementsByClassName('control-bar-top')[0].getAttribute('data-bind-attr') === 'true';
+               flag?$('#achlp-proBar,#achlp-proBar-bg').hide(100):$('#achlp-proBar,#achlp-proBar-bg').show(100);
             })
         })
         const a = document.getElementsByTagName('video')[0]
