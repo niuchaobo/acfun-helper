@@ -325,18 +325,35 @@ class VideoSetting{
         addElement(this.progressBackGroundOptions);
         let observerWeb = new MutationObserver((mutations)=> {
             mutations.forEach((mutations)=>{
-                let flag = $('.container-video .control-bar-top').attr('data-bind-attr') === 'true';
+                let flag = $('.container-video .control-bar-top').get(0).getAttribute('data-bind-attr') === 'true';
                 flag?$('#achlp-proBar,#achlp-proBar-bg').hide(250):$('#achlp-proBar,#achlp-proBar-bg').show(100);
             })
         })
-        const a = $('.container-video .control-bar-top')[0];
+        const a = $('.container-video .control-bar-top').get(0);
         observerWeb.observe(a, {
             attributes: true,
             attributeOldValue: false,
             attributeFilter :['data-bind-attr']
         });
+        this.setProgressBarLength()
     }
         
+    setProgressBarLength(){
+        document
+          .getElementsByTagName("video")[0]
+          .addEventListener("timeupdate", function (e) {
+            document.getElementById(
+              "achlp-proBar"
+            ).style.width = document.getElementsByClassName(
+              "pro-current"
+            )[0].style.width;
+            document.getElementById(
+              "achlp-proBar-bg"
+            ).style.width = document.getElementsByClassName(
+              "pro-current"
+            )[0].style.width;
+          });
+    }
     //监听是否为全屏
     monitorFullScreen(){
         //观影模式

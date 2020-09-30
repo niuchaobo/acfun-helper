@@ -95,28 +95,7 @@ let videoFunction = (function () {
             .children[0].children[0].click();
         });
     }
-
-    if (options.ProgressBarsw) {
-      // dropFrameIncrementAlz();
-      //Flex进度条
-      // console.log("[LOG]Frontend-videoSettingInject: ProgressBarsw Status:"+options.ProgressBarsw)
-      try {
-        document
-          .getElementsByTagName("video")[0]
-          .addEventListener("timeupdate", function (e) {
-            document.getElementById(
-              "achlp-proBar"
-            ).style.width = document.getElementsByClassName(
-              "pro-current"
-            )[0].style.width;
-            document.getElementById(
-              "achlp-proBar-bg"
-            ).style.width = document.getElementsByClassName(
-              "pro-current"
-            )[0].style.width;
-          });
-      } catch (error) {}
-    }
+    
   });
 
   try {
