@@ -338,6 +338,23 @@ export function PushListDougaMode(){
     break;  
   }
 }
+
+export function renderAcDaily(){
+  fetch("https://api-new.app.acfun.cn/rest/app/acDailyMagazine")
+  .then((res)=>{return res.text()})
+  .then((res)=>{
+    let data = JSON.parse(res);
+    console.log(data)
+    let Data = "";
+    for (let i = 0; i < data.acDailyData.contentList.length; i++) {
+      let xmlData = `
+      <div class="inner video" id="${data.acDailyData.contentList[i].contentId}"><div class="l"><a target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="thumb thumb-preview"><img class="lazyload preview" data-aid="${data.acDailyData.contentList[i].contentId}" src="./images/prpr.jpg" data-src="${data.acDailyData.contentList[i].cover}"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="${data.acDailyData.contentList[i].contentId}" target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="title">${data.acDailyData.contentList[i].title}</a> <p></p> <div class="info"><a target="_blank" data-uid="${data.acDailyData.contentList[i].contentId}" href="https://www.acfun.cn/u/${data.acDailyData.contentList[i].userId}" class="name" style="color: black;">${data.acDailyData.contentList[i].userName}</a><span class="time"></span> </div> </div> </div>`;
+      Data += xmlData;
+    }
+    $("#pop-acDaily").append(Data);
+  })
+}
+
 let timer = null;
 function clearPushListDougaButtonClass(){
     timer && clearTimeout(timer);
