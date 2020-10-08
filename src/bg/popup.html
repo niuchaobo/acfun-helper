@@ -202,7 +202,7 @@
                                         <thead>
                                             <tr>
                                                 <th>标签</th>
-                                                <th>计时</th>
+                                                <th>计时-打开于</th>
                                             </tr>
                                         </thead>
                                         <tbody id="livePageWatchTimeRecList">
@@ -236,6 +236,18 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="mdui-panel-item mdui-panel-item-open">
+                        <div class="mdui-panel-item-header">
+                            <div class="mdui-panel-item-title">整理主站</div>
+                            <div class="mdui-panel-item-summary">（标签至新窗口）</div>
+                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                        </div>
+                        <div class="mdui-panel-item-body">
+                            <button id="attentionTabsFg" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">整理
+                            </button>
                         </div>
                     </div>
 
@@ -277,6 +289,19 @@
                         </div>
                     </div>
 
+                    <!-- <div class="mdui-panel-item">
+                        <div class="mdui-panel-item-header">
+                            <div class="mdui-panel-item-title">DevTest</div>
+                            <div class="mdui-panel-item-summary">（测试）</div>
+                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                        </div>
+                        <div class="mdui-panel-item-body">
+                            <div id="app">
+                                {{ message }}
+                            </div>                            
+                        </div>
+                    </div> -->
+
                 </div>
 
             </div>
@@ -298,6 +323,7 @@
     <script type="text/javascript" src="js/jquery.mloading.js"></script>
     <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
     <script type="text/javascript" src="./js/lib/lazyload.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
     <!--<script src="../fg/js/frame.js"></script>-->
 </body>
 

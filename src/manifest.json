@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.8.927",
+    "version": "1.2.8.1008",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -61,6 +61,7 @@
         "pages": ["bg/sandbox/sandbox.html"]
     },
     "omnibox": { "keyword": "ac" },
+    "content_security_policy": "style-src 'self' 'unsafe-inline';script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; object-src 'self' ;",
     "web_accessible_resources": [
         "fg/js/acfunxhr.js",
         "fg/css/frame.css",
