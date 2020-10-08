@@ -289,6 +289,10 @@ class ODHBack {
         this.WatchPlan.livePageWatchTimeRec(params.tabid);
     }
 
+    api_attentionTabs(params){
+        return this.WatchPlan.attentionTabs(params.windowId);
+    }
+
     api_updateLiveWatchTimeListItem(){
         return this.WatchPlan.updateLiveWatchTimeList();
     }
