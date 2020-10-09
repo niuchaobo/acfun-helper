@@ -129,6 +129,31 @@ class LuckyTtab {
         })
     }
 
+    liveRoll(num){
+        //直播间抽奖（抽取最新的num个文本弹幕，假设有重复，会使得res的键列表的长度小于num的需求，此时我们可以知道res键列表长与需求长的差，然后扩大需求值往上取用户弹幕信息，直到键列表长==需求长。）
+        let w  = document.getElementsByClassName("comment")
+        let x = w.length -1 //最大的索引
+        let y =x-num;
+        var res = new Object();
+        while(Object.keys(res).length<num){
+            for (let i = x; i > y; i--) {
+                // console.log(w[i])
+                if(w[i].children[0].children[1].classList=="manage-icon icon-ks"){
+                    res[w[i].children[0].children[2].dataset.userId] = w[i].children[0].children[2].dataset.comment
+                }else{
+                    res[w[i].children[0].children[1].dataset.userId] = w[i].children[0].children[1].dataset.comment
+                }
+            }
+            if(Object.keys(res).length<num){
+                if(y==0||y<0){return {}}
+                x = y
+                y=y-1
+                // console.log(y)
+            }
+        }
+        return res
+    }
+
     async RollOut(acid,num,follow){
         //主函数
         let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});

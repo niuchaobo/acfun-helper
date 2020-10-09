@@ -21,7 +21,9 @@ import {
   LiveWatchTimeLstReact,
   PushListDougaMode,
   indexJump,
-  userInfoFetch
+  userInfoFetch,
+  renderAcDaily,
+  attentionTabs
 } from "./popupEvent.js";
 
 async function onReady() {
@@ -49,7 +51,9 @@ async function onReady() {
   $("#ViewHistoryAction").click(viewHistory);
   $("#WatchLaterFpopup").click(WatchLaterFpopup);
   $("#WatchLaterFOpenList").click(WatchLaterFOpenList);
+  $("#attentionTabsFg").click(attentionTabs);
   $("#MomentSquareFpop").click(MomentSquareFpop);
+  $("#AcDailyFetch").click(renderAcDaily);
   $("#livePageWatchTimeRecList").click(e=>{e.target.className==='liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key,e.target.href)});
   $(".PushListMode").click(PushListDougaMode);
 }
@@ -63,6 +67,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
 });
 
 $(document).ready(utilAsync(onReady));
+
+// new Vue({
+//   el: '#app',
+//   data: {
+//       message: 'Hello Vue!'
+//   }
+// })   
 
 //==============Common Functions================//
 // 将时间转为最近

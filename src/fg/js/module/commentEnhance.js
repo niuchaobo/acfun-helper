@@ -79,27 +79,128 @@ class CommentEnhance{
                         $(this).append('<span class="comment-cap">保存为HTML</span>');
                         $(this).on('click','.comment-cap',function () {
                             let data = `<style>
-                            div.area-comment-left > a > img.avatar-bg-2018062102{
-                                position: absolute;top: 10px;left: 5px;background-color: transparent;border: none;
-                            }
-                            div.area-comment-left > a > img.avatar{
-                                width: 50px;height: 50px;margin: 0;padding: 0;border: 1px solid #ffffff;box-shadow: 0 0 0 rgba(0, 0, 0, 0);border-radius: 50%;
-                            }
-                            .ac-comment-list .area-comment-title .name{
-                                margin-right: 6px;font-size: 12px;
-                            }
-                            .area-comm-more,.area-comment-reply,.time_day,.time_times,.acfunAdmin{display: none !important;}
-                            .area-comment-sec{
-                                margin-left: 100px;margin-right: 100px;
+                            html {
+                                background-color: #222;
+                              }
+                              body {
+                                width: 900px;
+                                margin: 0 auto;
+                                box-sizing: border-box;
+                                padding: 60px;
+                                background-color: #fff;
+                                animation: slideInDown 0.6s;
+                                animation-fill-mode: both;
+                              }
+                              a {
+                                text-decoration: none;
+                              }
+                              p {
+                                margin: 0;
+                                padding: 0;
+                              }
+                              @keyframes slideInDown {
+                                from {
+                                  transform: translateY(-50%);
+                                  opacity: 0;
+                                }
+                                to {
+                                  transform: translateY(0);
+                                  opacity: 1;
+                                }
+                              }
+                              .area-comment-first {
+                                display: flex;
+                              }
+                              div.area-comment-title > a {
+                                display: block;
+                                color: #fd4c5c;
+                              }
+                              div.area-comment-title > a:hover {
+                                color: #fd4c5c;
+                              }
+                              div.area-comment-title > a:visited {
+                                color: #fd4c5c;
+                              }
+                              div.area-comment-left > a > img.avatar-bg-2018062102 {
+                                position: absolute;
+                                top: 10px;
+                                left: 5px;
+                                background-color: transparent;
+                                border: none;
+                              }
+                              div.area-comment-left > a > img.avatar {
+                                width: 50px;
+                                height: 50px;
+                                margin: 0;
+                                padding: 0;
+                                border: 1px solid #ffffff;
+                                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+                                border-radius: 50%;
+                              }
+                              .area-comment-title {
+                                height: 25px;
+                                line-height: 25px;
+                                padding-left: 20px;
+                              }
+                              .area-comment-left .thumb {
+                                display: block;
+                                width: 50px;
+                                height: 50px;
+                                position: relative;
+                              }
+                              .area-comment-left .thumb img:nth-of-type(2) {
+                                top: -16px !important;
+                                left: -14px !important;
+                              }
+                              .ac-comment-list .area-comment-title .name {
+                                margin-right: 6px;
+                                font-size: 12px;
+                              }
+                              .area-comm-more,
+                              .area-comment-reply,
+                              .time_day,
+                              .time_times,
+                              .acfunAdmin {
+                                display: none !important;
+                              }
+                              .area-comment-sec {
+                                margin-left: 100px;
+                                margin-right: 100px;
                                 background-color: #f7f7f7;
-                            }
-                            .area-comment-top{
+                                padding: 12px 10px;
+                              }
+                              .area-comment-top {
                                 margin-left: 10px;
-                            }
-                            .area-comment-des{
-                                margin-left: 50px;
-                            }
-                            </style><body style="margin: 30px 20px 20px 20px;">
+                              }
+                              .area-comment-des {
+                                padding-left: 20px;
+                              }
+                              .area-comment-des-content {
+                                width: 550px;
+                                padding-top: 10px;
+                                line-height: 150%;
+                                text-indent: 1rem;
+                              }
+                              .area-comment-right {
+                                width: 660px;
+                              }
+                              .area-sec-list .area-comment-des-content {
+                                width: 440px;
+                              }
+                              .area-comment-tool {
+                                height: 30px;
+                                color: #aaa;
+                                font-size: 13px;
+                                padding-left: 20px;
+                                padding-top: 4px;
+                              }
+                              .area-comment-tool span{
+                                margin-right: 10px;
+                              }
+                              .deviceModel {
+                                color: #aaa;
+                              }
+                            </style><body>
                             `
                             data+=$(this).parent().parent().parent().parent().parent()[0].innerHTML;
                             var blob = new Blob([data], { type: 'application/octet-stream' });

@@ -204,8 +204,8 @@ export async function renderLiveWatchTimeLst(){
         for(let i in lwList){
           var raw_data =raw_data+ `
             <tr>
-                <td><a class="liveWatchListItem" data-key="${[lwList[i]]}" title="切换到标签页"  href="${resp.data[lwList[i]].url}">[切换到]</a> ${resp.data[lwList[i]].title}</td>
-                <td>打开于${getTimeSinceNow(resp.data[lwList[i]].startTime)}</td>
+                <td><a class="liveWatchListItem" data-key="${[lwList[i]]}" title="切换到标签页"  href="${resp.data[lwList[i]].url}">[切换]</a> ${resp.data[lwList[i]].title}</td>
+                <td>${getTimeSinceNow(resp.data[lwList[i]].startTime)}</td>
             </tr>
           `;
         }

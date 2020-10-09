@@ -208,90 +208,109 @@ export async function userInfoFetch(){
     let x = JSON.parse(res);
     if(x.result!=0){chrome.runtime.sendMessage({action:'notice',params:{title:"AcFun助手",msg:"UID可能存在着某些问题。"}}, function(response) {});return}
     if(x.profile.contentCount!=0){dougaCountFlag=1}
-    let raw_data = `
-    <div class="mdui-table-fluid">
-        <table class="mdui-table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Data</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>UID</td>
-                <td>${x.profile.userId}</td>
-            </tr>
-            <tr>
-                <td>用户名</td>
-                <td>${x.profile.name}</td>
-            </tr>
-            <tr>
-                <td>注册时间</td>
-                <td>${getTimeSinceNow(x.profile.registerTime,true)}</td>
-            </tr>
-            <tr>
-                <td>签名</td>
-                <td>${(x.profile.signature)}</td>
-            </tr>
-            <tr>
-                <td>关注</td>
-                <td>${x.profile.following}</td>
-            </tr>
-            <tr>
-                <td>粉丝</td>
-                <td>${x.profile.followed}</td>
-            </tr>
-            <tr>
-                <td>稿件计数</td>
-                <td>${x.profile.contentCount}</td>
-            </tr>
-            </tbody>
-        </table>
-        </div>
-    `;
-    $("#UserInfoPrint").append(raw_data);
-    if(dougaCountFlag!=1){return}
-    fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=2&sortType=3`).then((res)=>{
-    return res.text()})
-    .then((res)=>{
-      let x = JSON.parse(res);
+    fetch("https://www.acfun.cn/usercard.aspx?uid=" + Number(uid)).then((res2)=>{return res2.text()})
+    .then((res2)=>{
+      let ExtraInfo = JSON.parse(res2);
       let raw_data = `
       <div class="mdui-table-fluid">
           <table class="mdui-table">
               <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Data</th>
+              </tr>
               </thead>
               <tbody>
               <tr>
-                  <td>上次视频投稿时间</td>
-                  <td>${getTimeSinceNow(x.feed[0].createTimeMillis,true)}</td>
+                  <td>UID</td>
+                  <td>${x.profile.userId}</td>
+              </tr>
+              <tr>
+                  <td>用户名</td>
+                  <td>${x.profile.name}</td>
+              </tr>
+              <tr>
+                  <td>注册于</td>
+                  <td>${getTimeSinceNow(x.profile.registerTime,true)}</td>
+              </tr>
+              <tr>
+                  <td>签名</td>
+                  <td>${(x.profile.signature)}</td>
+              </tr>
+              <tr>
+                  <td>认证</td>
+                  <td>${(ExtraInfo.userjson.verifiedText)} - ${x.profile.verifiedTypes.indexOf(1)!=-1?"猴子":""} - ${x.profile.isContractUp?"学院Up":""}</td>
+              </tr>
+              <tr>
+                  <td>关注</td>
+                  <td>${x.profile.following}</td>
+              </tr>
+              <tr>
+                  <td>粉丝</td>
+                  <td>${x.profile.followed} 或者说 ${ExtraInfo.userjson.fans}个</td>
+              </tr>
+              <tr>
+                  <td>稿件数</td>
+                  <td>${x.profile.contentCount}</td>
+              </tr>
+              <tr>
+                  <td>所有评论</td>
+                  <td>${ExtraInfo.userjson.comments}</td>
+              </tr>
+              <tr>
+                  <td>所有收藏</td>
+                  <td>${ExtraInfo.userjson.stows}</td>
+              </tr>
+              <tr>
+                  <td>所有观看</td>
+                  <td>${ExtraInfo.userjson.views}</td>
               </tr>
               </tbody>
           </table>
           </div>
       `;
-    $("#UserInfoPrint").append(raw_data);
-    })
-    fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=3&sortType=3`).then((res)=>{
-    return res.text()})
-    .then((res)=>{
-      let x = JSON.parse(res);
-      if(x.feed[0].contributeTime==undefined){return}
-      let raw_data = `
-      <div class="mdui-table-fluid">
-          <table class="mdui-table">
-              <thead>
-              </thead>
-              <tbody>
-              <tr>
-                  <td>上次文章投稿时间</td>
-                  <td>${getTimeSinceNow(x.feed[0].contributeTime,true)}</td>
-              </tr>
-              </tbody>
-          </table>
-          </div>
-      `;
-    $("#UserInfoPrint").append(raw_data);
+      $("#UserInfoPrint").append(raw_data);
+      if(dougaCountFlag!=1){return}
+      fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=2&sortType=3`).then((res)=>{return res.text()})
+      .then((res)=>{
+        let x = JSON.parse(res);
+        let raw_data = `
+        <div class="mdui-table-fluid">
+            <table class="mdui-table">
+                <thead>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>上次视频投于</td>
+                    <td>${getTimeSinceNow(x.feed[0].createTimeMillis,true)}</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        `;
+      $("#UserInfoPrint").append(raw_data);
+      })
+      fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=3&sortType=3`).then((res)=>{
+      return res.text()})
+      .then((res)=>{
+        let x = JSON.parse(res);
+        if(x.feed[0].contributeTime==undefined){return}
+        let raw_data = `
+        <div class="mdui-table-fluid">
+            <table class="mdui-table">
+                <thead>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>上次文章投于</td>
+                    <td>${getTimeSinceNow(x.feed[0].contributeTime,true)}</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+        `;
+      $("#UserInfoPrint").append(raw_data);
+      })
     })
   })
 
@@ -338,6 +357,29 @@ export function PushListDougaMode(){
     break;  
   }
 }
+
+export function renderAcDaily(){
+  fetch("https://api-new.app.acfun.cn/rest/app/acDailyMagazine")
+  .then((res)=>{return res.text()})
+  .then((res)=>{
+    let data = JSON.parse(res);
+    console.log(data)
+    let Data = "";
+    for (let i = 0; i < data.acDailyData.contentList.length; i++) {
+      let xmlData = `
+      <div class="inner video" id="${data.acDailyData.contentList[i].contentId}"><div class="l"><a target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="thumb thumb-preview"><img class="lazyload preview" data-aid="${data.acDailyData.contentList[i].contentId}" src="./images/prpr.jpg" data-src="${data.acDailyData.contentList[i].cover}"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="${data.acDailyData.contentList[i].contentId}" target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="title">${data.acDailyData.contentList[i].title}</a> <p></p> <div class="info"><a target="_blank" data-uid="${data.acDailyData.contentList[i].contentId}" href="https://www.acfun.cn/u/${data.acDailyData.contentList[i].userId}" class="name" style="color: black;">${data.acDailyData.contentList[i].userName}</a><span class="time"></span> </div> </div> </div>`;
+      Data += xmlData;
+    }
+    $("#pop-acDaily").append(Data);
+  })
+}
+
+export function attentionTabs(){
+  chrome.windows.getCurrent({},function(e){
+    chrome.runtime.sendMessage({action: "attentionTabs",params:{windowId:e.id}}, function (response) {});
+  })
+}
+
 let timer = null;
 function clearPushListDougaButtonClass(){
     timer && clearTimeout(timer);
