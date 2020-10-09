@@ -234,9 +234,7 @@ class VideoSetting {
       leftBottomTip("请先", "停止");
       return;
     }
-    let fistTime = Math.floor(
-      document.getElementsByTagName("video")[0].currentTime
-    );
+    let fistTime = document.getElementsByTagName("video")[0].currentTime;
     if (this.abPlaySecond && fistTime >= this.abPlaySecond) {
       leftBottomTip("A要在B之前", "---鲁迅");
       return;
@@ -257,9 +255,7 @@ class VideoSetting {
       leftBottomTip("请先", "停止");
       return;
     }
-    let secondTime = Math.floor(
-      document.getElementsByTagName("video")[0].currentTime
-    );
+    let secondTime =  document.getElementsByTagName("video")[0].currentTime;
     if (this.abPlayFirst && secondTime <= this.abPlayFirst) {
       leftBottomTip("B要在A之后", "---鲁迅");
       return;
