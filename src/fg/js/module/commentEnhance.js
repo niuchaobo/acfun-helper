@@ -272,14 +272,15 @@ class CommentEnhance{
     }
 
     //稿件跳转弹窗
-    uddPopUp(type = 0){
+    uddPopUp(type = 0,isArticle){
         let _fthis = this;
-        _fthis.addUddPopUpStyle()
-        getAsyncDom('a.ubb-ac',()=>{
-            let ubbBox = $('a.ubb-ac');
+        let target = isArticle ? 'a.ac.btn' : 'a.ubb-ac'
+        _fthis.addUddPopUpStyle(target)
+        getAsyncDom(target,()=>{
+            let ubbBox = $(target);
             let html = ` 
             <div class=${type ? 'udd-box' : 'udd-box2'}>
-                ${type ?  `<img class = udd-img style='width: 36px; height: 36px; background:white;' src = ${this.loadCover}>` : ''}
+                ${type ?  `<img class = udd-img style='width: 36px; height: 36px; background:white;margin:0px;' src = ${this.loadCover}>` : ''}
                 <div class=${type ? 'udd-text' : 'udd-text2'}>
                     <div class = udd-title></div>
                     <div class = udd-user></div>
@@ -345,7 +346,7 @@ class CommentEnhance{
     changeUddPopUpCssStyle(handle,type,ubbac){
         if(handle === 'in'){
             if(type){
-                $(ubbac.children[0]).css({height:'38px',width: '310px', padding: '4px 10px 4px 20px',transform: 'translate(0px,0px)'})
+                $(ubbac.children[0]).css({height:'38px',width: '310px', padding: '4px 10px 4px 20px',transform: 'translate(70px,0px)'})
                 $(ubbac).find('img').css({border: '1px #0c0c0c69 solid',width:'64px',opacity:'0'})
             }else{
                 $(ubbac.children[0]).css({display:'flex',opacity:'1'});
@@ -359,9 +360,9 @@ class CommentEnhance{
             }
         }
     }
-    addUddPopUpStyle(){
+    addUddPopUpStyle(target){
         let cssTest = `
-        a.ubb-ac{
+        ${target}{
             position: relative;
             display: inline-block;
             vertical-align: text-top;
@@ -402,7 +403,8 @@ class CommentEnhance{
         .udd-user{
             text-align: initial;
             color: #fff;
-            height:16px
+            height:16px;
+            line-height:16px;
         }
         .udd-title{
             height: 16px;
@@ -410,6 +412,7 @@ class CommentEnhance{
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            line-height: 16px;
         }
         .udd-box2{
             flex-flow: wrap-reverse;

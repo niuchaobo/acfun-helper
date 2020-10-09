@@ -617,3 +617,27 @@ createElementStyle = (cssText,targetDom = document.head,id=null)=>{
         target.removeChild(document.getElementById(id)); }
 }
 
+function timeToMinute(second) {
+    var minute;
+    minute = Math.floor(second / 60);
+    second = second % 60;
+    minute += "";
+    second += "";
+    minute = minute.length == 1 ? "0" + minute : minute;
+    second = second.length == 1 ? "0" + second : second;
+    return minute + ":" + second;
+  }
+
+//播放器浮动通知气泡
+function leftBottomTip(text, importantText = "") {
+    $(".left-bottom-tip")
+    .eq(0)
+    .append(
+        `<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`
+    );
+    let _timer = setTimeout(() => {
+    $(".left-bottom-tip").eq(0).children().eq(0).remove(); //这样写 并不能自定义持续时间
+    clearInterval(_timer);
+    }, 2500);
+}
+
