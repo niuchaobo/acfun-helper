@@ -45,6 +45,13 @@ const defaults = {
     Upgradeable: 0,
     ABPlaysw:true,
     ProgressBarsw:true,
+    ProgressBarStyle:{
+        barColor: "#fd4c5d",
+        barHeight: "0.4%",
+        loadedOpen: "open",
+        loadedColor: "#ffffffb3",
+        loadedHeight: "0.4%",
+      },
     danmuSearchListToUsersw:true,
     endedAutoJumpRecommandFirstDougasw:false,
     autOpenVideoDescsw:true,
