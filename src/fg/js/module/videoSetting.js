@@ -489,7 +489,6 @@ class VideoSetting {
     } else {
       this.underWorld && this.underWorld();
       this.underWorld = null;
-      $(".right-column").unbind("mouseenter").unbind("mouseleave");
     }
   }
 
