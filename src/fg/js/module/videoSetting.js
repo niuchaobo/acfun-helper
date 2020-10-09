@@ -229,7 +229,7 @@ class VideoSetting {
       });
     });
   }
-  updateAbPlayFirst() {
+  updateAbPlayFirst = ()=> {
     if (this.abPlayFlag === 1) {
       leftBottomTip("请先", "停止");
       return;
@@ -237,7 +237,7 @@ class VideoSetting {
     let fistTime = Math.floor(
       document.getElementsByTagName("video")[0].currentTime
     );
-    if (this.abPlaySecond && fistTime > this.abPlaySecond) {
+    if (this.abPlaySecond && fistTime >= this.abPlaySecond) {
       leftBottomTip("A要在B之前", "---鲁迅");
       return;
     }
@@ -252,7 +252,7 @@ class VideoSetting {
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
   }
-  updateAbPlaySecond() {
+  updateAbPlaySecond = ()=> {
     if (this.abPlayFlag === 1) {
       leftBottomTip("请先", "停止");
       return;
@@ -260,7 +260,7 @@ class VideoSetting {
     let secondTime = Math.floor(
       document.getElementsByTagName("video")[0].currentTime
     );
-    if (this.abPlayFirst && secondTime < this.abPlayFirst) {
+    if (this.abPlayFirst && secondTime <= this.abPlayFirst) {
       leftBottomTip("B要在A之后", "---鲁迅");
       return;
     }
@@ -269,19 +269,13 @@ class VideoSetting {
     $(".abplay-panel>ul>.updateAbPlaySecond").text(
       `B : ${timeToMinute(this.abPlaySecond)}`
     );
-    if (this.abPlayFirst > this.abPlaySecond) {
-      [this.abPlayFirst, this.abPlaySecond] = [
-        this.abPlaySecond,
-        this.abPlayFirst,
-      ];
-    }
     this.abPlayFirst &&
       leftBottomTip(
         `区间为`,
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
   }
-  stopAbPlay() {
+  stopAbPlay = ()=> {
     this.abPlayFirst = this.abPlaySecond = undefined;
     $(".abplay-panel>ul>.updateAbPlayFirst").text("标记点A");
     $(".abplay-panel>ul>.updateAbPlaySecond").text("标记点B");
@@ -300,15 +294,15 @@ class VideoSetting {
       return;
     }
   }
-  abPlayMain() {
+  abPlayMain = ()=> {
     if (this.abPlayFlag == 0) {
       return;
     }
-    if (Math.floor(window.player.currentTime) >= this.abPlaySecond) {
+    if (Math.floor(document.getElementsByTagName("video")[0].currentTime) >= this.abPlaySecond) {
       document.getElementsByTagName("video")[0].currentTime = this.abPlayFirst;
     }
   }
-  abPlayHandler() {
+  abPlayHandler = ()=> {
     let targetVideo = document.getElementsByTagName("video")[0];
     if (this.abPlayFirst === undefined || this.abPlaySecond === undefined) {
       leftBottomTip("请先设置", "标记点");
