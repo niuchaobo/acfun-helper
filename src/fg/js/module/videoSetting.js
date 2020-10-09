@@ -472,7 +472,7 @@ class VideoSetting {
     if (on) {
       this.underWorld && this.underWorld();
       let cssText =
-        "#main>#main-content{ mix-blend-mode: difference;background: white; margin: 0px; max-width:100%; width: calc(100% - 20px) !important; overflow:hidden; padding:0px 10px}" +
+        "#main>#main-content{ mix-blend-mode: difference;background: white; margin: 0px !important; max-width:100% !important; width: calc(100% - 20px) !important; overflow:hidden; padding:0px 10px}" +
         "#main .video-description .reco-tag,.action-area{mix-blend-mode:exclusion}" +
         "#pagelet_bottomrecommend,.area-editor-avatar,#main .introduction .up-area{mix-blend-mode:exclusion}" +
         ".right-column img{mix-blend-mode:exclusion}" +
@@ -481,25 +481,11 @@ class VideoSetting {
         "body #main #main-content .left-column{width:100% !important;max-width:100%}" +
         ".ac-comment-usercard .area-comm-usercard-bottom{mix-blend-mode:exclusion}" +
         "body #main #main-content .right-column{position:absolute;right:-342px;top:160px;padding-left:1px;transition-duration:.2s;border-left:'6px  solid rgba(62, 62, 62, 0.4)'}" +
+        "body #main #main-content .right-column:hover{right: 0px; background:white; border-left-width:0px }"
         ".ac-pc-comment{padding-right:15px}" +
         "#toolbar{transform:scale(0.8);transform-origin:bottom right}" +
         ".player-box,.nav-parent,.video-description{border-bottom-color:white}";
       this.underWorld = createElementStyle(cssText, undefined, "underWorld");
-      $(".right-column")
-        .bind("mouseenter", () => {
-          $(".right-column").css({
-            right: "0px",
-            background: "white",
-            "border-left-width": "0px",
-          });
-        })
-        .bind("mouseleave", () => {
-          $(".right-column").css({
-            right: "-342px",
-            background: "",
-            "border-left-width": "6px",
-          });
-        });
     } else {
       this.underWorld && this.underWorld();
       this.underWorld = null;
