@@ -82,7 +82,6 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
-            documentUrlPatterns:['https://*.acfun.cn/*'],
             title: '使用AcFun搜索【%s】', // %s表示选中的文字
             contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
             onclick: function (params) {
