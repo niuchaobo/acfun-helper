@@ -107,7 +107,7 @@ class ODHFront {
                 //画中画
                 this.videoSetting.callPicktureInPictureMode();
                 //全局进度条
-                this.options.ProgressBarsw && this.videoSetting.flexProgressBar(); 
+                this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle); 
             },200)
         }
     }
