@@ -47,7 +47,6 @@ function renderFunc(x, type = 0) {
       var comNum = x[index].commentNum;
     }
     content = setContent(content)
-    console.log(content)
     let card = `
     <div class="mdui-card card-initial">
     <div class="mdui-card-header">
@@ -101,17 +100,21 @@ function renderFunc(x, type = 0) {
         }
         .mdui-card-content {
             padding:10px 20px;
-            margin:10px 71px;
-            border:1px solid #ccc;
+            margin:0px 71px 10px;
+            border:.5px solid #cccccc52;
             border-radius: 0px 10px 10px 10px;
             display:inline-block;
             z-index:2;
+        }
+        .mdui-card-content>a{
+            text-decoration: none;
+            color: #ff008c;
         }
         .mdui-card-media{
             max-width: 40vw;
             padding-top: 10px;
             min-width: 30vw;
-            margin:auto;
+           
         }
         img.mediaPic{
             transition-duration:.2s;
