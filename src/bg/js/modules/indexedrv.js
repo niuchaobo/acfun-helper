@@ -123,7 +123,7 @@ async function db_SquareListCount(){
     let x = await db2.SquareList.count((e)=>{
         return e
     })
-    db2.close();
+    // db2.close();
     return x
 }
 

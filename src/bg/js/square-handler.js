@@ -159,6 +159,17 @@ async function contentHandler() {
       "https://api-new.app.acfun.cn/rest/app/feed/feedSquareV2?pcursor=&count=20"
     );
     let x = JSON.parse(a);
+    if (x.feedList.length == 0) {
+      globalSqlist = await getFromIndexed();
+      squareListData.index = 20;
+      var sqList = [];
+      sqList = globalSqlist.slice(squareListData.index + 1, squareListData.index + 11);
+      mdui.snackbar({
+        message: '主站获取的数据没有了（不要过多请求哦），加载本地缓存的数据中...'
+      });
+      renderFunc(sqList, 1);
+      squareListData.index += 11;
+    }
     db_putSquareList(x);
     renderFunc(x, 0);
   }
