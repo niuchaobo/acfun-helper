@@ -63,7 +63,7 @@ function renderFunc(x, type = 0) {
     if (Boolean(pic)) {
       card += `
     <div class="mdui-card-media">
-      <img class="mediaPic" src="${pic}"/>
+      <img class="lazyload mediaPic" src="./images/prpr.jpg" data-src="${pic}"/>
     </div>`;
     }
     card += `
@@ -169,6 +169,7 @@ async function contentHandler() {
       });
       renderFunc(sqList, 1);
       squareListData.index += 11;
+      return
     }
     db_putSquareList(x);
     renderFunc(x, 0);
@@ -200,6 +201,7 @@ async function continuous() {
         message: "加载中...",
       });
       renderFunc(sqList, 1);
+      $("img.lazyload").lazyload({ threshold : 0.5 });
       squareListData.index += 11;
     }
   };
@@ -209,6 +211,11 @@ $("#refreshHere").on("click", function () {
   location.reload();
 });
 
-contentHandler();
-squareListData.firstLoad = false;
-continuous();
+function onReady(e){
+  contentHandler().then(()=>{
+    $("img.lazyload").lazyload({ threshold : 0.5 });
+  })
+  squareListData.firstLoad = false;
+  continuous();
+}
+window.addEventListener('load', e => onReady(e));
