@@ -46,12 +46,14 @@ function renderFunc(x, type = 0) {
       var banana = x[index].bananaCount;
       var comNum = x[index].commentNum;
     }
-    content = setContent(content)
+    content = setContent(content);
     let card = `
     <div class="mdui-card card-initial">
     <div class="mdui-card-header">
       <img class="mdui-card-header-avatar" src="${avatar}"/>
-      <div class="mdui-card-header-title">${Uname}${sign ? `<div class="u-sign" title="${sign}">${sign}</div>` : ``}</div>
+      <div class="mdui-card-header-title">${Uname}${
+      sign ? `<div class="u-sign" title="${sign}">${sign}</div>` : ``
+    }</div>
       <div class="mdui-card-header-subtitle">- ${getTimeSinceNow(
         releTime
       )}发布</div>
@@ -140,15 +142,15 @@ function renderFunc(x, type = 0) {
             color:red;
         }
     `;
-    createElementStyle(cssText);
+  createElementStyle(cssText);
 }
 
-function setContent(content){
-    let atReg = new RegExp('\\[at uid=(\\d+)\\](\@\\S+)\\[/at\\]',"g")
-    let x = content.replace(atReg,function(reg,$1,$2){
-        return ` <a href=https://www.acfun.cn/u/${$1} target='_new'>${$2}</a>`
-    })
-    return x
+function setContent(content) {
+  let atReg = new RegExp("\\[at uid=(\\d+)\\](@\\S+)\\[/at\\]", "g");
+  let x = content.replace(atReg, function (reg, $1, $2) {
+    return ` <a href=https://www.acfun.cn/u/${$1} target='_new'>${$2}</a>`;
+  });
+  return x;
 }
 
 async function contentHandler() {
