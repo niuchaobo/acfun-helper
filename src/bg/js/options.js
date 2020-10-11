@@ -1186,7 +1186,6 @@ $(document).ready(function () {
     });
 
     chrome.storage.local.get(['liveHideAdType'],function(items){
-        console.log(document.querySelector("#liveHideAdType").parentElement.children[1].children[1].children[items.liveHideAdType])
         document.querySelector("#liveHideAdType").parentElement.children[1].children[1].children[items.liveHideAdType].click();
         var inst = new mdui.Select('#liveHideAdType');
         $('#liveHideAdType').on('close.mdui.select', function () {
@@ -1553,7 +1552,7 @@ $(document).ready(function () {
                             message: `已移除 ${items.liveFloowings[this_uid]}`,
                           });
                           delete items.liveFloowings[this_uid];
-                          chrome.storage.local.set({'liveFloowings':items.liveFloowings},function(){console.log(items)});
+                          chrome.storage.local.set({'liveFloowings':items.liveFloowings});
                         });
                 }else if(errN == 1){
                     mdui.alert('你添加的用户已关注');
@@ -1734,7 +1733,7 @@ $(document).ready(function () {
                                 message: `已移除 ${items.liveBans[this_uid]}`,
                                 });
                                 delete items.liveBans[this_uid];
-                                chrome.storage.local.set({'liveBans':items.liveBans},function(){console.log(items)});
+                                chrome.storage.local.set({'liveBans':items.liveBans});
                             });
                     }else if(errN == 1){
                         mdui.alert('你添加的用户已关注');
@@ -1829,8 +1828,6 @@ $(document).ready(function () {
                                 fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload',{method:"POST", credentials: 'include', body:uploadData})
                                 .then((res=>{return res.text()}))
                                 .then((res)=>{
-                                    // console.log(res);
-                                    // if(res!=''){chrome.storage.local.set({'AcHlp-SyncToken':`${res}`})};
                                 })
                             // });
                         }           

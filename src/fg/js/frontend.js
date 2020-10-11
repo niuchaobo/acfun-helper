@@ -113,7 +113,7 @@ class ODHFront {
 				this.videoSetting.callPicktureInPictureMode();
 				//全局进度条
 				this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle);
-			}, 200, true)
+			}, 200)
 		}
 	}
 
