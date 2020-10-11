@@ -53,10 +53,8 @@ function renderFunc(x, type = 0) {
       <img class="mdui-card-header-avatar" src="${avatar}"/>
       <div class="mdui-card-header-title">${Uname}${
       sign ? `<div class="u-sign" title="${sign}">${sign}</div>` : ``
-    }</div>
-      <div class="mdui-card-header-subtitle">- ${getTimeSinceNow(
-        releTime
-      )}发布</div>
+      }</div>
+      <div class="mdui-card-header-subtitle">- ${getTimeSinceNow(releTime,true)}发布</div>
     </div>
     <div class="mdui-card-content">${content}
     `;
@@ -201,7 +199,7 @@ async function continuous() {
         message: "加载中...",
       });
       renderFunc(sqList, 1);
-      $("img.lazyload").lazyload({ threshold : 0.5 });
+      $("img.lazyload").lazyload({ threshold: 0.5 });
       squareListData.index += 11;
     }
   };
@@ -211,9 +209,9 @@ $("#refreshHere").on("click", function () {
   location.reload();
 });
 
-function onReady(e){
-  contentHandler().then(()=>{
-    $("img.lazyload").lazyload({ threshold : 0.5 });
+function onReady(e) {
+  contentHandler().then(() => {
+    $("img.lazyload").lazyload({ threshold: 0.5 });
   })
   squareListData.firstLoad = false;
   continuous();

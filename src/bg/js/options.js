@@ -1125,6 +1125,25 @@ $(document).ready(function () {
         });
     })
 
+    //=====================直播评论时间Tag============================
+    chrome.storage.local.get(['LiveUserFocus'],function(items){
+        var LiveUserFocus= items.LiveUserFocus;
+        if(LiveUserFocus){
+            document.getElementById('LiveUserFocus').checked='true';
+        }else{
+            document.getElementById('LiveUserFocus').checked=false;
+        }
+        $('#LiveUserFocus').on('click', function () {
+            if(!document.getElementById('LiveUserFocus').checked){
+                document.getElementById('LiveUserFocus').checked=false;
+                chrome.storage.local.set({'LiveUserFocus':false});
+            }else{
+                document.getElementById('LiveUserFocus').checked=true;
+                chrome.storage.local.set({'LiveUserFocus':true});
+            }
+        });
+    })
+
     //=====================页面优化============================
     chrome.storage.local.get(['hideAd'],function(items){
         var ifHideAd= items.hideAd;
@@ -1895,7 +1914,7 @@ $(document).ready(function () {
         });
     });
 
-    //====================直播观看计时表===================
+    //====================插件前台-提前加载前台视频播放器模块===================
     chrome.storage.local.get(['LiveWatchTimeRec_popup'],function(items){
         var LiveWatchTimeRec_popup= items.LiveWatchTimeRec_popup;
         if(LiveWatchTimeRec_popup){
@@ -1910,6 +1929,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('LiveWatchTimeRec_popup').checked=true;
                 chrome.storage.local.set({'LiveWatchTimeRec_popup':true});
+            }
+        });
+    });
+
+    //====================直播观看计时表===================
+    chrome.storage.local.get(['krnl_videossEarly'],function(items){
+        var krnl_videossEarly= items.krnl_videossEarly;
+        if(krnl_videossEarly){
+            document.getElementById('krnl_videossEarly').checked='true';
+        }else{
+            document.getElementById('krnl_videossEarly').checked=false;
+        }
+        $('#krnl_videossEarly').on('click', function () {
+            if(!document.getElementById('krnl_videossEarly').checked){
+                document.getElementById('krnl_videossEarly').checked=false;
+                chrome.storage.local.set({'krnl_videossEarly':false});
+            }else{
+                document.getElementById('krnl_videossEarly').checked=true;
+                chrome.storage.local.set({'krnl_videossEarly':true});
             }
         });
     });
