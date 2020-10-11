@@ -404,7 +404,7 @@ function formatDate(now) {
   return year + "-" + month + "-" + date;
 }
 
-function getTimeSinceNow(date, newFormat = false) {
+function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy = 's') {
   // 将时间转为最近发布时间
   let currentDate = new Date();
   let publishTime = new Date(date);
@@ -413,6 +413,29 @@ function getTimeSinceNow(date, newFormat = false) {
   let oneMinute = 60 * 1000;
   let oneHour = oneMinute * 60;
   let during = currentDate.getTime() - publishTime.getTime();
+  if (highAccuracy) {
+    switch (accuracy) {
+      case 's':
+        return Math.floor(during / 1000) + "秒前";
+      case 'm':
+        let m = Math.floor(during / oneMinute);
+        let secExclude_m = Math.floor((during - oneMinute * m) / 1000);
+        if (newFormat) {
+          return `${m ? m + " 分" : ""}${secExclude_m} + 秒前`;
+        }
+        return m + "分" + secExclude_m + "秒前";
+      case 'h':
+        let h = Math.floor(during / oneHour);
+        let mExclude_h = Math.floor((during - oneHour * h) / oneMinute);
+        let secExclude_mh = Math.floor((during - h * oneHour - mExclude_h * oneMinute) / 1000)
+        if (newFormat) {
+          return `${h ? h + "小时" : ""}${mExclude_h ? mExclude_h + "分" : ""}${secExclude_mh + "秒前"}`
+        }
+        return h + "小时" + mExclude_h + "分" + secExclude_mh + "秒前"
+      default:
+        break;
+    }
+  }
   if (during < oneMinute) {
     return Math.floor(during / 1000) + "秒前";
   } else if (during >= oneMinute && during < oneHour) {
