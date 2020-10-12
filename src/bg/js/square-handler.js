@@ -82,10 +82,23 @@ function renderFunc(x, type = 0) {
 
 function setContent(content) {
   let atReg = new RegExp("\\[at uid=(\\d+)\\](@\\S+)\\[/at\\]", "g");
-  let x = content.replace(atReg, function (reg, $1, $2) {
-    return ` <a href=https://www.acfun.cn/u/${$1} target='_new'>${$2}</a>`;
-  });
-  return x;
+  let acReg = new RegExp("\\[ac=(\\d+)@(\\w+)\\](ac\\d+)\\[/ac\\]","g");
+  let tagReg = new RegExp("\#([^#]+)\#","g")
+  content = content.replace(atReg, function (reg, $1, $2) {
+    return ` <a class = "atReg" href=https://www.acfun.cn/u/${$1} target='_new'>${$2}</a>`;
+  })
+  content = content.replace(acReg,function(reg,$1,$2,$3,$4){
+    if($2 === 'video'){
+        return ` <a class = "acReg" href=https://www.acfun.cn/v/${$3} target='_new'>${$3}</a>`;
+    }
+    if($2 === 'article'){
+        return ` <a class = "acReg" href=https://www.acfun.cn/a/${$3} target='_new'>${$3}</a>`;
+    }
+  })
+  content = content.replace(tagReg,function(reg,$1){
+        return ` <a class = "tagReg" href=https://www.acfun.cn/search?keyword=${$1} target='_new'>${reg}</a>`;
+  })
+  return content;
 }
 
 async function contentHandler() {
@@ -96,6 +109,7 @@ async function contentHandler() {
     let x = JSON.parse(a);
     db_putSquareList(x);
     renderFunc(x, 0);
+    //!x.feedList && renderFunc(await getFromIndexed().slice(0,21),0)
   }
 }
 
@@ -166,7 +180,16 @@ let cssText = `
         }
         .mdui-card-content>a{
             text-decoration: none;
+        }
+        .mdui-card-content>a.atReg{
             color: #ff008c;
+        }
+        .mdui-card-content>a.acReg{
+            color: #007cffc9;
+        }
+        .mdui-card-content>a.tagReg{
+            color: #ff0000c4;
+            font-weight: bold;
         }
         .mdui-card-media{
             width:auto !important;
@@ -177,11 +200,18 @@ let cssText = `
         }
         img.mediaPic{
             transition-duration:.2s;
-            transform-origin: 0% 100%;
+            transform-origin: 0% 0%;
+            background: #cccccc24;
+            border-radius: 5px;
+            padding: 5px;
         }
         img.mediaPic:hover{
+            background: #a9a9a957;
             transition-delay:.5s;
             transform: scale(1.8);
+        }
+        .mdui-card-content:hover{
+            z-index:3
         }
         .mdui-card-actions{
             display:flex;
@@ -200,6 +230,7 @@ let cssText = `
         }
     `;
 createElementStyle(cssText);
+//TODO: 大图预览！
 contentHandler();
 squareListData.firstLoad = false;
 continuous();
