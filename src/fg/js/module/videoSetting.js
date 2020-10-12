@@ -498,7 +498,7 @@ class VideoSetting {
     }
   }
 
-  //倍速快捷键 TODO:自定义快捷键(现在默认shift + ↑/↓) 绑定位置
+  //倍速快捷键 TODO:自定义快捷键(现在默认shift + ↑/↓) FIXME:绑定位置
   PlaybackRateKeyCode(settingKeyCode) {
     // const videoDom = document.getElementById('player');
     // videoDom.setAttribute("tabindex","-1")

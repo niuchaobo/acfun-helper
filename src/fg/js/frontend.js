@@ -97,6 +97,7 @@ class ODHFront {
         if(REG.videoAndBangumi.test(href)){
             getAsyncDom('#ACPlayer .control-bar-top .box-right',()=>{
                 //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
+                //FIXME:页面onload执行前打开全屏，导致助手按钮首次显示不会被隐藏
                 this.videoSetting.monitorFullScreen();
                 //自定义倍速
                 this.options.custom_rate && this.videoSetting.customPlaybackRate();
