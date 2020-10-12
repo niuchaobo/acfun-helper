@@ -52,12 +52,14 @@ class ODHBack {
 
         //右键菜单
         chrome.contextMenus.create({
+            documentUrlPatterns:['https://*.acfun.cn/*'],
             title: '下载封面',
             contexts: ['link'],
             id:'1'
         });
 
         chrome.contextMenus.create({
+            documentUrlPatterns:['https://*.acfun.cn/*'],
             title: '下载原始封面',
             contexts: ['link'],
             parentId:'1',
@@ -69,6 +71,7 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
+            documentUrlPatterns:['https://*.acfun.cn/*'],
             title: '下载高清封面',
             contexts: ['link'],
             parentId:'1',
@@ -87,6 +90,7 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
+            documentUrlPatterns:['https://*.acfun.cn/*'],
             title: '加入到稍后再看', 
             contexts: ['link'], 
             id:'2',
