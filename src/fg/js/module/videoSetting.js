@@ -194,7 +194,6 @@ class VideoSetting {
   }
 
   //==============AB回放================
-
   addABPlayUI() {
     getAsyncDom(" .box-right ", () => {
       let html = `

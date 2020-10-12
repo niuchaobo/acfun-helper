@@ -74,29 +74,3 @@ $(document).ready(utilAsync(onReady));
 //       message: 'Hello Vue!'
 //   }
 // })   
-
-//==============Common Functions================//
-// 将时间转为最近
-function getTimeSinceNow(date) {
-  let currentDate = new Date();
-  let publishTime = new Date(date);
-  let oneDay = 3600 * 24 * 1000;
-  let oneWeek = oneDay * 7;
-  let oneMinute = 60 * 1000;
-  let oneHour = oneMinute * 60;
-  let during = currentDate.getTime() - publishTime.getTime();
-  if (during < oneMinute) {
-    return Math.floor(during / 1000) + "秒前";
-  } else if (during >= oneMinute && during < oneHour) {
-    return Math.floor(during / oneMinute) + "分前";
-  } else if (during > oneHour && during < oneDay) {
-    return Math.floor(during / oneHour) + "小时前";
-  } else if (during >= oneDay && during < oneWeek) {
-    return Math.floor(during / oneDay) + "天前";
-  } else if (during >= oneWeek) {
-    return `于${publishTime.getFullYear()}-${
-      publishTime.getMonth + 1
-    }-${publishTime.getDate()}`;
-  }
-}
-

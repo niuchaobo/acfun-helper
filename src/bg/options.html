@@ -420,7 +420,7 @@
           </div>
         </div>
 
-        <div class="mdui-panel-item mdui-panel-item-open devFeature">
+        <div class="mdui-panel-item devFeature">
           <div class="mdui-panel-item-header">
             <div class="mdui-panel-item-title">辅助功能</div>
             <div class="mdui-panel-item-summary">A</div>
@@ -778,6 +778,25 @@
                       </div>
                       <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
                           <input id="liveCommentTimeTag" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>评论弹幕标记</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>点击用户（评论弹幕）弹出用户框时，标记此条弹幕之前的所有此用户的评论弹幕（打开完记得关）</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="LiveUserFocus" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
                         </label></div>
                     </div>
@@ -1179,8 +1198,8 @@
 
         <div class="mdui-panel-item mdui-panel-item-open">
           <div class="mdui-panel-item-header">
-            <div class="mdui-panel-item-title">插件后台进程配置</div>
-            <div class="mdui-panel-item-summary">配置插件在后台的某些模块执行时刻</div>
+            <div class="mdui-panel-item-title">插件核心配置</div>
+            <div class="mdui-panel-item-summary">配置插件的某些模块</div>
             <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
           </div>
           <div class="mdui-panel-item-body">
@@ -1216,6 +1235,26 @@
                       <div class="mdui-col-xs-4 mdui-col-sm-6">
                         <label class="mdui-switch">
                           <input id="timer4Unread_daemonsw" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>插件前台-提前加载前台视频播放器模块</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>提前加载前台视频播放器模块（可能提升网络慢或者计算机性能低情况下的使用体验）</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6">
+                        <label class="mdui-switch">
+                          <input id="krnl_videossEarly" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
                         </label></div>
                     </div>
