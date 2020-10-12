@@ -1,82 +1,84 @@
 const defaults = {
-    enabled:true,//开启关闭插件
-    auto_throw:false,
-    to_attention:true,
-    to_attention_num:5,
-    to_special_items:[],
-    broadcastingUIDlistFollowing:{},
-    WatchPlanList:[],
-    activeTabKey:'activeTabId',
-    extendsName:'AcFun助手',
-    upUrlTemplate:'https://www.acfun.cn/u/{uid}',
-    userInfo:'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId={uid}',
-    banana_notice:true,
-    watchLater:true,
-    fetchPushList_daemonsw:true,
-    timer4Unread_daemonsw:true,
-    mark:false,//评论用户标记
-    scan:false,//评论用户扫描
-    upHighlight:true,//up主评论高亮
-    receive:false,//接收用户情报
-    filter:false,//up文章区屏蔽
-    beautify_nav:true,//首页右侧导航
-    beautify_personal:true,//顶栏个人中心优化
-    show_like:false,//视频投稿显示点赞数、投桃数
-    custom_rate:true,//开启自定义倍速
-    custom_rate_keyCode:[38,40],//shift ↑ ↓ 倍速播放快捷键
-    custom_easy_jump_keyCode:[65], //shift A 评论时间跳转快捷键
-    player_mode:'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
-    liveFloowNotif:false,
-    videoQualityStrategy:'0',
-    livePlayerEnhc:false,
-    autoJumpLastWatchSw:false,
-    hideAd:true,
-    liveHideAd:true,
-    liveHideAdType:1,
-    liveBansw:false,
-    PlayerDamakuSearchSw:false,
-    PlayerTimeCommentEasyJump:true,
-    PlaybackRateKeysw:false,
-    FilmModeExclusionsw:true,
-    endedAutoExitFullscreensw:true,
-    easySearchScanForPlayerTimesw:false,
-    Dev_indexBlurSW:false,
-    userHomeMoment:true,
-    Upgradeable: 0,
-    ABPlaysw:true,
-    ProgressBarsw:true,
-    ProgressBarStyle:{
-        barColor: "#fd4c5d",
-        barHeight: "0.4%",
-        loadedOpen: "open",
-        loadedColor: "#ffffffb3",
-        loadedHeight: "0.4%",
-      },
-    danmuSearchListToUsersw:true,
-    endedAutoJumpRecommandFirstDougasw:false,
-    autOpenVideoDescsw:true,
-    followLiveNotif:true,
-    liveCommentTimeTag:true,
-    LiveWatchTimeRec_popup:false,
-    articlePartIndexDarken:false,
-    uddPopUp:true,
-    uddPopUptype:0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
+  enabled: true,//开启关闭插件
+  auto_throw: false,
+  to_attention: true,
+  to_attention_num: 5,
+  to_special_items: [],
+  broadcastingUIDlistFollowing: {},
+  WatchPlanList: [],
+  activeTabKey: 'activeTabId',
+  extendsName: 'AcFun助手',
+  upUrlTemplate: 'https://www.acfun.cn/u/{uid}',
+  userInfo: 'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId={uid}',
+  banana_notice: true,
+  watchLater: true,
+  fetchPushList_daemonsw: true,
+  timer4Unread_daemonsw: true,
+  krnl_videossEarly: false,
+  mark: false,//评论用户标记
+  scan: false,//评论用户扫描
+  upHighlight: true,//up主评论高亮
+  receive: false,//接收用户情报
+  filter: false,//up文章区屏蔽
+  beautify_nav: true,//首页右侧导航
+  beautify_personal: true,//顶栏个人中心优化
+  show_like: false,//视频投稿显示点赞数、投桃数
+  custom_rate: true,//开启自定义倍速
+  custom_rate_keyCode: [38, 40],//shift ↑ ↓ 倍速播放快捷键
+  custom_easy_jump_keyCode: [65], //shift A 评论时间跳转快捷键
+  player_mode: 'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
+  liveFloowNotif: false,
+  videoQualityStrategy: '0',
+  livePlayerEnhc: false,
+  autoJumpLastWatchSw: false,
+  hideAd: true,
+  liveHideAd: true,
+  liveHideAdType: 1,
+  liveBansw: false,
+  PlayerDamakuSearchSw: false,
+  PlayerTimeCommentEasyJump: true,
+  PlaybackRateKeysw: false,
+  FilmModeExclusionsw: true,
+  endedAutoExitFullscreensw: true,
+  easySearchScanForPlayerTimesw: false,
+  Dev_indexBlurSW: false,
+  userHomeMoment: true,
+  Upgradeable: 0,
+  ABPlaysw: true,
+  ProgressBarsw: true,
+  ProgressBarStyle: {
+    barColor: "#fd4c5d",
+    barHeight: "0.4%",
+    loadedOpen: "open",
+    loadedColor: "#ffffffb3",
+    loadedHeight: "0.4%",
+  },
+  danmuSearchListToUsersw: true,
+  endedAutoJumpRecommandFirstDougasw: false,
+  autOpenVideoDescsw: true,
+  followLiveNotif: true,
+  liveCommentTimeTag: true,
+  LiveUserFocus: false,
+  LiveWatchTimeRec_popup: false,
+  articlePartIndexDarken: false,
+  uddPopUp: true,
+  uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
 const REG = {
-    index:new RegExp('http(s)?://www.acfun.cn/$'),
-    video:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+'),//视频
-    bangumi:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*'),//番剧
-    videoAndBangumi:new RegExp('((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))'),//视频与番剧
-    article:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+'),//文章
-    msg_comment:new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)'),//从我的消息-评论跳转
-    mlive:new RegExp("https://m.acfun.cn/live/detail/*"),//移动版直播
-    live:new RegExp("https://live.acfun.cn/live/*"),//直播
-    liveIndex:new RegExp("https://live.acfun.cn"),//直播主页
-    userHome:new RegExp("http(s)?://www.acfun.cn/u/\\d+"),//用户中心
-    partIndex:new RegExp("/v/list"),//分区主页
-    articleDetail:new RegExp("/v/as")//文章分区详细页
+  index: new RegExp('http(s)?://www.acfun.cn/$'),
+  video: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+'),//视频
+  bangumi: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*'),//番剧
+  videoAndBangumi: new RegExp('((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))'),//视频与番剧
+  article: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+'),//文章
+  msg_comment: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac\\d+#ncid=(\\d+)'),//从我的消息-评论跳转
+  mlive: new RegExp("https://m.acfun.cn/live/detail/*"),//移动版直播
+  live: new RegExp("https://live.acfun.cn/live/*"),//直播
+  liveIndex: new RegExp("https://live.acfun.cn"),//直播主页
+  userHome: new RegExp("http(s)?://www.acfun.cn/u/\\d+"),//用户中心
+  partIndex: new RegExp("/v/list"),//分区主页
+  articleDetail: new RegExp("/v/as")//文章分区详细页
 
 }
 
@@ -203,40 +205,40 @@ function localizeHtmlPage() {
         );
       }
     }
-    el.innerHTML = DOMPurify.sanitize( chrome.i18n.getMessage(el.getAttribute("data-i18n")));
+    el.innerHTML = DOMPurify.sanitize(chrome.i18n.getMessage(el.getAttribute("data-i18n")));
     //火狐警告使用innerHTML添加标签 ⬇
     // HTMLElement.prototype.htmlContent = function(html){
     //     var dom = new DOMParser().parseFromString('<template>'+html+'</template>', 'text/html').head;
     //     this.appendChild(dom.firstElementChild.content);
     // }
     // el.htmlContent( DOMPurify.sanitize(chrome.i18n.getMessage(el.getAttribute("data-i18n"))));
-    
+
   }
 }
 
 //=================助手更新状态处理===========
-function updateVersionIcon(){
-    chrome.storage.local.get(["Upgradeable"],  (data)=> {
-        if(data.Upgradeable === 1){
-            $('#update-box').css('display','inline-block')
-            $('.update-letter').html('助手有轻量更新，点击查看')
-            $('.head').addClass('lightUpdate')
-            $('#update-box').click(()=>{
-                window.open('https://www.acfun.cn/u/7054138')
-            })
-            return
-        }
-        if(data.Upgradeable === 2){
-            $('#update-box').css('display','inline-block')
-            $('.update-letter').html('助手有重大更新，点击查看')
-            $('.update-icon').css('background','red')
-            $('#update-box').click(()=>{
-                window.open('https://www.acfun.cn/u/7054138')
-            })
-            $('.head').addClass('heavyUpdate')
-            return 
-        }
-      }); 
+function updateVersionIcon() {
+  chrome.storage.local.get(["Upgradeable"], (data) => {
+    if (data.Upgradeable === 1) {
+      $('#update-box').css('display', 'inline-block')
+      $('.update-letter').html('助手有轻量更新，点击查看')
+      $('.head').addClass('lightUpdate')
+      $('#update-box').click(() => {
+        window.open('https://www.acfun.cn/u/7054138')
+      })
+      return
+    }
+    if (data.Upgradeable === 2) {
+      $('#update-box').css('display', 'inline-block')
+      $('.update-letter').html('助手有重大更新，点击查看')
+      $('.update-icon').css('background', 'red')
+      $('#update-box').click(() => {
+        window.open('https://www.acfun.cn/u/7054138')
+      })
+      $('.head').addClass('heavyUpdate')
+      return
+    }
+  });
 }
 
 async function updateStorage(progress, id, tabId) {
@@ -247,7 +249,7 @@ async function updateStorage(progress, id, tabId) {
   if (progress == 100) {
     item.lineText = "已完成";
   }
-  chrome.storage.local.set({ [id]: item }, function () {});
+  chrome.storage.local.set({ [id]: item }, function () { });
 }
 
 function myBrowser() {
@@ -402,7 +404,7 @@ function formatDate(now) {
   return year + "-" + month + "-" + date;
 }
 
-function getTimeSinceNow(date,newFormat=false) {
+function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy = 's') {
   // 将时间转为最近发布时间
   let currentDate = new Date();
   let publishTime = new Date(date);
@@ -411,6 +413,29 @@ function getTimeSinceNow(date,newFormat=false) {
   let oneMinute = 60 * 1000;
   let oneHour = oneMinute * 60;
   let during = currentDate.getTime() - publishTime.getTime();
+  if (highAccuracy) {
+    switch (accuracy) {
+      case 's':
+        return Math.floor(during / 1000) + "秒前";
+      case 'm':
+        let m = Math.floor(during / oneMinute);
+        let secExclude_m = Math.floor((during - oneMinute * m) / 1000);
+        if (newFormat) {
+          return `${m ? m + " 分" : ""}${secExclude_m} + 秒前`;
+        }
+        return m + "分" + secExclude_m + "秒前";
+      case 'h':
+        let h = Math.floor(during / oneHour);
+        let mExclude_h = Math.floor((during - oneHour * h) / oneMinute);
+        let secExclude_mh = Math.floor((during - h * oneHour - mExclude_h * oneMinute) / 1000)
+        if (newFormat) {
+          return `${h ? h + "小时" : ""}${mExclude_h ? mExclude_h + "分" : ""}${secExclude_mh + "秒前"}`
+        }
+        return h + "小时" + mExclude_h + "分" + secExclude_mh + "秒前"
+      default:
+        break;
+    }
+  }
   if (during < oneMinute) {
     return Math.floor(during / 1000) + "秒前";
   } else if (during >= oneMinute && during < oneHour) {
@@ -420,8 +445,8 @@ function getTimeSinceNow(date,newFormat=false) {
   } else if (during >= oneDay && during < oneWeek) {
     return Math.floor(during / oneDay) + "天前";
   } else if (during >= oneWeek) {
-    if(newFormat){
-      return `${publishTime.toLocaleDateString().replace(/\//g, "-")+" "+publishTime.toTimeString().substr(0, 8)}`;
+    if (newFormat) {
+      return `${publishTime.toLocaleDateString().replace(/\//g, "-") + " " + publishTime.toTimeString().substr(0, 8)}`;
     }
     return `${publishTime.getFullYear()}-${publishTime.getMonth() + 1}-${publishTime.getDate()}`;
   }
@@ -480,40 +505,40 @@ function domToString(node) {
   return str;
 }
 
-async function getAsyncDom(target, fn, time = 2500,isDev=false) {
-    let i = 0;
-    isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
-  re = (fn)=>{
-      return new Promise(resolve=>{
-        targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
-        if(targetDom){
-            i = 0; 
-            isDev && console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
-            resolve(fn())
-        }else{
-            if (i >= 9000 / time) {
-                i = 0;
-                isDev && resolve(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`)
-                return 
-            };
-              i++; 
-              setTimeout(() => {
-                isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target}第${i}次`);
-                resolve(re(fn));
-              }, time); 
-        }
-      })
+async function getAsyncDom(target, fn, time = 2500, isDev = false) {
+  let i = 0;
+  isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
+  re = (fn) => {
+    return new Promise(resolve => {
+      targetDom = document.getElementById(target) || document.getElementsByClassName(target).length || $(`${target}`).length || undefined
+      if (targetDom) {
+        i = 0;
+        isDev && console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
+        resolve(fn())
+      } else {
+        if (i >= 9000 / time) {
+          i = 0;
+          isDev && resolve(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`)
+          return
+        };
+        i++;
+        setTimeout(() => {
+          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target} - 第${i}次`);
+          resolve(re(fn));
+        }, time);
+      }
+    })
   }
   return await re(fn)
 }
 
-async function toUpInfo(upName){
-    //从Up名称解析为UID
-    let upUrl = fetch('https://www.acfun.cn/u/' + upName.toString()).then((response)=>{
-        let upUrl = response.url
-        return upUrl
-    })
+async function toUpInfo(upName) {
+  //从Up名称解析为UID
+  let upUrl = fetch('https://www.acfun.cn/u/' + upName.toString()).then((response) => {
+    let upUrl = response.url
     return upUrl
+  })
+  return upUrl
 }
 
 // let uil =await toUpInfo('qyqx')
@@ -525,19 +550,19 @@ function getDocumentTop() {
   //计算文档高度
   var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
   if (document.body) {
-      bodyScrollTop = document.body.scrollTop;
+    bodyScrollTop = document.body.scrollTop;
   }
   if (document.documentElement) {
-      documentScrollTop = document.documentElement.scrollTop;
+    documentScrollTop = document.documentElement.scrollTop;
   }
   scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop; return scrollTop;
 }
 function getWindowHeight() {
   //计算窗口高度
   var windowHeight = 0; if (document.compatMode == "CSS1Compat") {
-      windowHeight = document.documentElement.clientHeight;
+    windowHeight = document.documentElement.clientHeight;
   } else {
-      windowHeight = document.body.clientHeight;
+    windowHeight = document.body.clientHeight;
   }
   return windowHeight;
 }
@@ -545,107 +570,108 @@ function getScrollHeight() {
   //计算滚动条高度
   var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
   if (document.body) {
-      bodyScrollHeight = document.body.scrollHeight;
+    bodyScrollHeight = document.body.scrollHeight;
   }
   if (document.documentElement) {
-      documentScrollHeight = document.documentElement.scrollHeight;
+    documentScrollHeight = document.documentElement.scrollHeight;
   }
   scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight; return scrollHeight;
 }
 
 
 async function fetchResult(url) {
-    //fetch信息，同步返回
-    let result = fetch(url).then((response)=>{
-        return response.text();
-    })
-    return result
+  //fetch信息，同步返回
+  let result = fetch(url).then((response) => {
+    return response.text();
+  })
+  return result
 }
 
 debounce = (fn, delay) => {
-    let timer = null;
-    return function (args) {
-      let _this = this;
-      let _args = args;
-      if (timer) {
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-          fn.call(_this, _args);
-        }, delay);
-      } else {
-        timer = setTimeout(function () {
-          fn.call(_this, _args);
-        }, delay);
-      }
-    };
+  let timer = null;
+  return function (args) {
+    let _this = this;
+    let _args = args;
+    if (timer) {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        fn.call(_this, _args);
+      }, delay);
+    } else {
+      timer = setTimeout(function () {
+        fn.call(_this, _args);
+      }, delay);
+    }
   };
-  throttle = (func, delay)=> {            
-    　　var prev = Date.now();            
-    　　return function() {                
-    　　　　var context = this;                
-    　　　　var args = arguments;                
-    　　　　var now = Date.now();                
-    　　　　if (now - prev >= delay) {                    
-    　　　　　　func.apply(context, args);                    
-    　　　　　　prev = Date.now();                
-    　　　　}            
-    　　}        
-  }   
-
-  addElement = (options)=>{
-    let {tag = 'div',id='',css='',target = document.body} = options
-    let x = document.createElement(tag);
-    x.id = id;
-    x.style.cssText=css
-    target.append(x);
-    return x
+};
+throttle = (func, delay) => {
+  var prev = Date.now();
+  return function () {
+    var context = this;
+    var args = arguments;
+    var now = Date.now();
+    if (now - prev >= delay) {
+      func.apply(context, args);
+      prev = Date.now();
+    }
+  }
 }
 
-removeAPrefix = (_$targetDom) =>{
+addElement = (options) => {
+  let { tag = 'div', id = '', css = '', target = document.body } = options
+  let x = document.createElement(tag);
+  x.id = id;
+  x.style.cssText = css
+  target.append(x);
+  return x
+}
+
+removeAPrefix = (_$targetDom) => {
   let acid = _$targetDom.text().trim();
   let regAcid = new RegExp("ac(.*)");
-  if(acid==''){return}
+  if (acid == '') { return }
   let x = regAcid.exec(acid);
-  x==null?acid=acid:acid=x[1];
+  x == null ? acid = acid : acid = x[1];
   return acid
 }
 
-createElementStyle = (cssText,targetDom = document.head,id=null)=>{
-    let target = targetDom
-    let nod = document.createElement("style");
-    let str = cssText;
-    nod.type = "text/css";
-    id ? nod.id = id : null;
-    nod.textContent = str;
-    target.appendChild(nod);
-    return ()=>{ 
-        console.log(target)
-        console.log(id)
-        target.removeChild(document.getElementById(id)); }
+createElementStyle = (cssText, targetDom = document.head, id = null) => {
+  let target = targetDom
+  let nod = document.createElement("style");
+  let str = cssText;
+  nod.type = "text/css";
+  id ? nod.id = id : null;
+  nod.textContent = str;
+  target.appendChild(nod);
+  return () => {
+    console.log(target)
+    console.log(id)
+    target.removeChild(document.getElementById(id));
+  }
 }
 
 function timeToMinute(second) {
-    second = Math.floor(second)
-    var minute;
-    minute = Math.floor(second / 60);
-    second = second % 60;
-    minute += "";
-    second += "";
-    minute = minute.length == 1 ? "0" + minute : minute;
-    second = second.length == 1 ? "0" + second : second;
-    return minute + ":" + second;
-  }
+  second = Math.floor(second)
+  var minute;
+  minute = Math.floor(second / 60);
+  second = second % 60;
+  minute += "";
+  second += "";
+  minute = minute.length == 1 ? "0" + minute : minute;
+  second = second.length == 1 ? "0" + second : second;
+  return minute + ":" + second;
+}
 
 //播放器浮动通知气泡
 function leftBottomTip(text, importantText = "") {
-    $(".left-bottom-tip")
+  $(".left-bottom-tip")
     .eq(0)
     .append(
-        `<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`
+      `<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`
     );
-    let _timer = setTimeout(() => {
+  let _timer = setTimeout(() => {
     $(".left-bottom-tip").eq(0).children().eq(0).remove(); //这样写 并不能自定义持续时间
     clearInterval(_timer);
-    }, 2500);
+  }, 2500);
 }
 

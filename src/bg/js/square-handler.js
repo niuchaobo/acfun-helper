@@ -53,17 +53,15 @@ function renderFunc(x, type = 0) {
       <img class="mdui-card-header-avatar" src="${avatar}"/>
       <div class="mdui-card-header-title">${Uname}${
       sign ? `<div class="u-sign" title="${sign}">${sign}</div>` : ``
-    }</div>
-      <div class="mdui-card-header-subtitle">- ${getTimeSinceNow(
-        releTime
-      )}发布</div>
+      }</div>
+      <div class="mdui-card-header-subtitle">- ${getTimeSinceNow(releTime,true)}发布</div>
     </div>
     <div class="mdui-card-content">${content}
     `;
     if (Boolean(pic)) {
       card += `
     <div class="mdui-card-media">
-      <img class="mediaPic" src="${pic}"/>
+      <img class="lazyload mediaPic" src="./images/prpr.jpg" data-src="${pic}"/>
     </div>`;
     }
     card += `
@@ -159,6 +157,18 @@ async function contentHandler() {
       "https://api-new.app.acfun.cn/rest/app/feed/feedSquareV2?pcursor=&count=20"
     );
     let x = JSON.parse(a);
+    if (x.feedList.length == 0) {
+      globalSqlist = await getFromIndexed();
+      squareListData.index = 20;
+      var sqList = [];
+      sqList = globalSqlist.slice(squareListData.index + 1, squareListData.index + 11);
+      mdui.snackbar({
+        message: '主站获取的数据没有了（不要过多请求哦），加载本地缓存的数据中...'
+      });
+      renderFunc(sqList, 1);
+      squareListData.index += 11;
+      return
+    }
     db_putSquareList(x);
     renderFunc(x, 0);
   }
@@ -189,6 +199,7 @@ async function continuous() {
         message: "加载中...",
       });
       renderFunc(sqList, 1);
+      $("img.lazyload").lazyload({ threshold: 0.5 });
       squareListData.index += 11;
     }
   };
@@ -198,6 +209,11 @@ $("#refreshHere").on("click", function () {
   location.reload();
 });
 
-contentHandler();
-squareListData.firstLoad = false;
-continuous();
+function onReady(e) {
+  contentHandler().then(() => {
+    $("img.lazyload").lazyload({ threshold: 0.5 });
+  })
+  squareListData.firstLoad = false;
+  continuous();
+}
+window.addEventListener('load', e => onReady(e));

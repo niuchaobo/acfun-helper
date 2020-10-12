@@ -64,7 +64,7 @@ export async function renderPushInnerHtml() {
         xmlData +=
           data.username +
           ' </a><span class="time">' +
-          getTimeSinceNow(data.releaseDate) +
+          getTimeSinceNow(data.releaseDate,true,false) +
           "发布</span> </div> </div> </div> ";
         pushListData.innerText += xmlData;
       }
@@ -205,7 +205,7 @@ export async function renderLiveWatchTimeLst(){
           var raw_data =raw_data+ `
             <tr>
                 <td><a class="liveWatchListItem" data-key="${[lwList[i]]}" title="切换到标签页"  href="${resp.data[lwList[i]].url}">[切换]</a> ${resp.data[lwList[i]].title}</td>
-                <td>${getTimeSinceNow(resp.data[lwList[i]].startTime)}</td>
+                <td>${getTimeSinceNow(resp.data[lwList[i]].startTime,true,true,'h')}</td>
             </tr>
           `;
         }

@@ -1125,6 +1125,25 @@ $(document).ready(function () {
         });
     })
 
+    //=====================直播评论时间Tag============================
+    chrome.storage.local.get(['LiveUserFocus'],function(items){
+        var LiveUserFocus= items.LiveUserFocus;
+        if(LiveUserFocus){
+            document.getElementById('LiveUserFocus').checked='true';
+        }else{
+            document.getElementById('LiveUserFocus').checked=false;
+        }
+        $('#LiveUserFocus').on('click', function () {
+            if(!document.getElementById('LiveUserFocus').checked){
+                document.getElementById('LiveUserFocus').checked=false;
+                chrome.storage.local.set({'LiveUserFocus':false});
+            }else{
+                document.getElementById('LiveUserFocus').checked=true;
+                chrome.storage.local.set({'LiveUserFocus':true});
+            }
+        });
+    })
+
     //=====================页面优化============================
     chrome.storage.local.get(['hideAd'],function(items){
         var ifHideAd= items.hideAd;
@@ -1167,7 +1186,6 @@ $(document).ready(function () {
     });
 
     chrome.storage.local.get(['liveHideAdType'],function(items){
-        console.log(document.querySelector("#liveHideAdType").parentElement.children[1].children[1].children[items.liveHideAdType])
         document.querySelector("#liveHideAdType").parentElement.children[1].children[1].children[items.liveHideAdType].click();
         var inst = new mdui.Select('#liveHideAdType');
         $('#liveHideAdType').on('close.mdui.select', function () {
@@ -1534,7 +1552,7 @@ $(document).ready(function () {
                             message: `已移除 ${items.liveFloowings[this_uid]}`,
                           });
                           delete items.liveFloowings[this_uid];
-                          chrome.storage.local.set({'liveFloowings':items.liveFloowings},function(){console.log(items)});
+                          chrome.storage.local.set({'liveFloowings':items.liveFloowings});
                         });
                 }else if(errN == 1){
                     mdui.alert('你添加的用户已关注');
@@ -1715,7 +1733,7 @@ $(document).ready(function () {
                                 message: `已移除 ${items.liveBans[this_uid]}`,
                                 });
                                 delete items.liveBans[this_uid];
-                                chrome.storage.local.set({'liveBans':items.liveBans},function(){console.log(items)});
+                                chrome.storage.local.set({'liveBans':items.liveBans});
                             });
                     }else if(errN == 1){
                         mdui.alert('你添加的用户已关注');
@@ -1810,8 +1828,6 @@ $(document).ready(function () {
                                 fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload',{method:"POST", credentials: 'include', body:uploadData})
                                 .then((res=>{return res.text()}))
                                 .then((res)=>{
-                                    // console.log(res);
-                                    // if(res!=''){chrome.storage.local.set({'AcHlp-SyncToken':`${res}`})};
                                 })
                             // });
                         }           
@@ -1895,7 +1911,7 @@ $(document).ready(function () {
         });
     });
 
-    //====================直播观看计时表===================
+    //====================插件前台-提前加载前台视频播放器模块===================
     chrome.storage.local.get(['LiveWatchTimeRec_popup'],function(items){
         var LiveWatchTimeRec_popup= items.LiveWatchTimeRec_popup;
         if(LiveWatchTimeRec_popup){
@@ -1910,6 +1926,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('LiveWatchTimeRec_popup').checked=true;
                 chrome.storage.local.set({'LiveWatchTimeRec_popup':true});
+            }
+        });
+    });
+
+    //====================直播观看计时表===================
+    chrome.storage.local.get(['krnl_videossEarly'],function(items){
+        var krnl_videossEarly= items.krnl_videossEarly;
+        if(krnl_videossEarly){
+            document.getElementById('krnl_videossEarly').checked='true';
+        }else{
+            document.getElementById('krnl_videossEarly').checked=false;
+        }
+        $('#krnl_videossEarly').on('click', function () {
+            if(!document.getElementById('krnl_videossEarly').checked){
+                document.getElementById('krnl_videossEarly').checked=false;
+                chrome.storage.local.set({'krnl_videossEarly':false});
+            }else{
+                document.getElementById('krnl_videossEarly').checked=true;
+                chrome.storage.local.set({'krnl_videossEarly':true});
             }
         });
     });
