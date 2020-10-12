@@ -68,6 +68,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
 $(document).ready(utilAsync(onReady));
 
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     navigator.serviceWorker.register('./ServiceWorker/sworker.js');
+//   });
+// }
+
 // new Vue({
 //   el: '#app',
 //   data: {
