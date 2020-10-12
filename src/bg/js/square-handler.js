@@ -105,7 +105,7 @@ async function contentHandler() {
       "https://api-new.app.acfun.cn/rest/app/feed/feedSquareV2?pcursor=&count=20"
     );
     let x = JSON.parse(a);
-    if (x.feedList.length == 0) {
+    if (x.feedList.length <= 5) {
       globalSqlist = await getFromIndexed();
       squareListData.index = 20;
       var sqList = [];
@@ -189,6 +189,7 @@ let cssText = `
         }
         .mdui-card-content>a{
             text-decoration: none;
+            font-weight: bold;
         }
         .mdui-card-content>a.atReg{
             color: #ff008c;
@@ -198,7 +199,6 @@ let cssText = `
         }
         .mdui-card-content>a.tagReg{
             color: #ff0000c4;
-            font-weight: bold;
         }
         .mdui-card-media{
             width:auto !important;
@@ -234,8 +234,22 @@ let cssText = `
         .mdui-card-actions>div:nth-child(1){
             border-left: 0px;
         }
+        .mdui-snackbar-bottom, .mdui-snackbar-top{
+            left: 85%;
+            background-size: 200% 100%;
+            background-image: -webkit-linear-gradient(left, #000000 30%,#4c4c4c 55%, #777777 60%,#000000 80%);
+            animation: masked-animation 2s infinite linear;
+        }
         .btn-a{
             color:red;
+        }
+        @-webkit-keyframes masked-animation {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
         }
     `;
 createElementStyle(cssText);
