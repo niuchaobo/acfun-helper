@@ -97,8 +97,8 @@ class Div {
     this.div.id = "acfun-helper-div";
     this.div.style.position = "fixed";
     this.div.style.visibility = "hidden";
-    this.div.style.top=(height/2-20)/2+'px';
-    //this.div.style.top = 225 + 60 + 2 + "px"; //小窗口高度+顶部导航栏高度+间隙 (不会挡道小窗口播放默认播放位置),
+    //this.div.style.top=(height/2-20)/2+'px';
+    this.div.style.top = 225 + 60 + 2 + "px"; //小窗口高度+顶部导航栏高度+间隙 (不会挡道小窗口播放默认播放位置),
     this.div.style.zIndex = 9999; //TODO:此处改为999(比播放器层级低1)可以不用监听（直接被播放器覆盖），防止在页面未加载时点击全屏之后助手加载，监听失效问题(太多判断了 - -)
     this.div.addEventListener("mousedown", (e) => e.stopPropagation());
     this.div.addEventListener("click", (e) => this.showPopup(e));
