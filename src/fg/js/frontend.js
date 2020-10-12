@@ -120,7 +120,7 @@ class ODHFront {
 	onDomContentLoaded(e) {
 		// console.log("options",this.options);
 		//历史观看记录-本地获取
-		this.authInfo.historyView();
+		// this.authInfo.historyView();
 		let href = this.href;
 		//添加自定义样式
 		this.addStyle();

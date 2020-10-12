@@ -95,15 +95,15 @@ class WatchPlan {
         return;
     }
 
-    viewHistoryBackend(opts) {
-        try {
-            var x = JSON.parse(opts.msg).history.views;
-        } catch (error) {
-            console.log("[LOG]Backend-WatchPlan > viewHistoryBackend: viewHistory fetch Fail.");
-            return
-        }
-        db_putHistoryViews(x)
-    }
+    // viewHistoryBackend(opts) {
+    //     try {
+    //         var x = JSON.parse(opts.msg).history.views;
+    //     } catch (error) {
+    //         console.log("[LOG]Backend-WatchPlan > viewHistoryBackend: viewHistory fetch Fail.");
+    //         return
+    //     }
+    //     db_putHistoryViews(x)
+    // }
 
     livePageWatchTimeRec(params) {
         this.livePageWatchTimeRecList[`${params.tabid.id}`] = { windowId: params.tabid.windowId, index: params.tabid.index, startTime: params.startTime, url: params.tabid.url, title: params.tabid.title };

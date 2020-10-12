@@ -270,9 +270,9 @@ class ODHBack {
         this.WatchPlan.execWatch();
     }
 
-    api_historyView(params){
-        this.WatchPlan.viewHistoryBackend(params)
-    }
+    // api_historyView(params){
+    //     this.WatchPlan.viewHistoryBackend(params)
+    // }
 
     api_getLuckyHistory(){
         return new Promise(async (resolve) => {
