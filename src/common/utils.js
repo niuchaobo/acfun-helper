@@ -480,11 +480,11 @@ function domToString(node) {
   return str;
 }
 
-async function getAsyncDom(target, fn, time = 2500,isDev=false) {
+async function getAsyncDom(target, fn, time = 2500, infinity = true, isDev=false) {
     let i = 0;
     isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
   re = (fn)=>{
-      return new Promise(resolve=>{
+      return new Promise((resolve,reject)=>{
         targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
         if(targetDom){
             i = 0; 
@@ -492,9 +492,12 @@ async function getAsyncDom(target, fn, time = 2500,isDev=false) {
             resolve(fn())
         }else{
             if (i >= 9000 / time) {
-                i = 0;
-                isDev && resolve(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`)
-                return 
+                console.log(`[LOG]Common-Utils>getAsyncDom: ${target} 超时`)
+                if(!infinity) {
+                    i = 0;
+                    reject('Dom获取超时')
+                    return
+                }
             };
               i++; 
               setTimeout(() => {
@@ -619,8 +622,6 @@ createElementStyle = (cssText,targetDom = document.head,id=null)=>{
     nod.textContent = str;
     target.appendChild(nod);
     return ()=>{ 
-        console.log(target)
-        console.log(id)
         target.removeChild(document.getElementById(id)); }
 }
 

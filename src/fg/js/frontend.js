@@ -196,7 +196,7 @@ class ODHFront {
         //开启屏蔽功能
         this.options.filter && this.block.block();
         var pageInfo = null;
-        //视频 TODO:这玩意儿到底是个啥！？
+        //视频
         if(REG.video.test(href)){
             var div = document.createElement('div');
             div.style.display="none";
@@ -248,7 +248,6 @@ class ODHFront {
                 this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
                 //弹幕列表前往Acer个人主页
                 this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
-          
           })
         }
         this.authInfo.cookInfo();
