@@ -111,18 +111,19 @@ function renderFunc(x, type = 0) {
             color: #ff008c;
         }
         .mdui-card-media{
-            max-width: 40vw;
+            width:auto !important;
+            max-width: 20vw;
             padding-top: 10px;
-            min-width: 30vw;
+            min-width: 10vw;
            
         }
         img.mediaPic{
             transition-duration:.2s;
-            transform-origin: 50% 100%;
+            transform-origin: 0% 100%;
         }
         img.mediaPic:hover{
             transition-delay:.5s;
-            transform: scale(1.5);
+            transform: scale(1.8);
         }
         .mdui-card-actions{
             display:flex;
