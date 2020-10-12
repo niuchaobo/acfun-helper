@@ -405,7 +405,7 @@ function formatDate(now) {
 }
 
 function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy = 's') {
-  // 将时间转为最近发布时间
+  // 将时间转为最近发布时间,data->时间戳（毫秒） ，newFormat->美观一点的样式，去掉了为0部分 ，highAccuracy->是否提高显示的精度（比如不只是显示一个小时，需要将显示的内容具体到一个小时3分20秒之类的）,accuracy->显示的模式（s m h秒分时）
   let currentDate = new Date();
   let publishTime = new Date(date);
   let oneDay = 3600 * 24 * 1000;
@@ -675,3 +675,18 @@ function leftBottomTip(text, importantText = "") {
   }, 2500);
 }
 
+function bubbleSort(x) {
+  //冒泡排序一个数组
+  // let x = [1, 4, 2, 7, 88, 54, 65]
+  let temp
+  for (let i = x.length; i > 1; --i) {
+    for (let j = 1; j < i; ++j) {
+      if (x[j] > x[j + 1]) {
+        temp = x[j]
+        x[j] = x[j + 1]
+        x[j + 1] = temp
+      }
+    }
+  }
+  return x
+}
