@@ -78,7 +78,63 @@ function renderFunc(x, type = 0) {
     nod.innerHTML = card;
     document.getElementById("content-container").append(nod);
   }
-  let cssText = `
+}
+
+function setContent(content) {
+  let atReg = new RegExp("\\[at uid=(\\d+)\\](@\\S+)\\[/at\\]", "g");
+  let x = content.replace(atReg, function (reg, $1, $2) {
+    return ` <a href=https://www.acfun.cn/u/${$1} target='_new'>${$2}</a>`;
+  });
+  return x;
+}
+
+async function contentHandler() {
+  if (squareListData.firstLoad) {
+    let a = await fetchResult(
+      "https://api-new.app.acfun.cn/rest/app/feed/feedSquareV2?pcursor=&count=20"
+    );
+    let x = JSON.parse(a);
+    db_putSquareList(x);
+    renderFunc(x, 0);
+  }
+}
+
+async function getFromIndexed() {
+  let dbMaxNum = await db_SquareListCount();
+  let globalSqlist = await db_getSquareList(dbMaxNum);
+  return globalSqlist;
+}
+
+async function continuous() {
+  globalSqlist = await getFromIndexed();
+  squareListData.index = 20;
+  var sqList = [];
+  window.onscroll = function () {
+    if (
+      (getScrollHeight() == Math.floor(getDocumentTop() + getWindowHeight()) ||
+        getScrollHeight() == Math.ceil(getDocumentTop() + getWindowHeight())) &&
+      !squareListData.firstLoad
+    ) {
+      // console.log("scroll to bottom");
+      sqList = globalSqlist.slice(
+        squareListData.index + 1,
+        squareListData.index + 11
+      );
+      mdui.snackbar({
+        message: "加载中...",
+      });
+      renderFunc(sqList, 1);
+      squareListData.index += 11;
+    }
+  };
+}
+
+$("#refreshHere").on("click", function () {
+  location.reload();
+});
+
+
+let cssText = `
         .mdui-container{
             width:85vw;
         }
@@ -143,62 +199,7 @@ function renderFunc(x, type = 0) {
             color:red;
         }
     `;
-  createElementStyle(cssText);
-}
-
-function setContent(content) {
-  let atReg = new RegExp("\\[at uid=(\\d+)\\](@\\S+)\\[/at\\]", "g");
-  let x = content.replace(atReg, function (reg, $1, $2) {
-    return ` <a href=https://www.acfun.cn/u/${$1} target='_new'>${$2}</a>`;
-  });
-  return x;
-}
-
-async function contentHandler() {
-  if (squareListData.firstLoad) {
-    let a = await fetchResult(
-      "https://api-new.app.acfun.cn/rest/app/feed/feedSquareV2?pcursor=&count=20"
-    );
-    let x = JSON.parse(a);
-    db_putSquareList(x);
-    renderFunc(x, 0);
-  }
-}
-
-async function getFromIndexed() {
-  let dbMaxNum = await db_SquareListCount();
-  let globalSqlist = await db_getSquareList(dbMaxNum);
-  return globalSqlist;
-}
-
-async function continuous() {
-  globalSqlist = await getFromIndexed();
-  squareListData.index = 20;
-  var sqList = [];
-  window.onscroll = function () {
-    if (
-      (getScrollHeight() == Math.floor(getDocumentTop() + getWindowHeight()) ||
-        getScrollHeight() == Math.ceil(getDocumentTop() + getWindowHeight())) &&
-      !squareListData.firstLoad
-    ) {
-      // console.log("scroll to bottom");
-      sqList = globalSqlist.slice(
-        squareListData.index + 1,
-        squareListData.index + 11
-      );
-      mdui.snackbar({
-        message: "加载中...",
-      });
-      renderFunc(sqList, 1);
-      squareListData.index += 11;
-    }
-  };
-}
-
-$("#refreshHere").on("click", function () {
-  location.reload();
-});
-
+createElementStyle(cssText);
 contentHandler();
 squareListData.firstLoad = false;
 continuous();
