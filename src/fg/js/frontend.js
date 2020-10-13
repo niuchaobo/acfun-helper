@@ -149,8 +149,6 @@ class ODHFront {
 		if (REG.videoAndBangumi.test(href)) {
 			//播放器画质策略
 			this.videoSetting.videoQuality();
-			//显示点赞数
-			this.options.show_like && this.videoPageBeautify.showLikeCount();
 		}
 		//视频
 		if (REG.video.test(href)) {
@@ -187,6 +185,7 @@ class ODHFront {
 				this.pageBeautify.personBeautify();
 			})
 		}
+		//个人中心首页
 		if (REG.userHome.test(href) && this.options.userHomeMoment) {
 			this.pageBeautify.userMoment(href);
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false);

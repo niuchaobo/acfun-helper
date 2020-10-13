@@ -219,19 +219,7 @@ function beautifyUi() {
         $('.div-personal-switch h3').css('color', '#ccc');
     }
 
-    if (show_like) {
-        $('#like-switch').addClass('switch-close').attr('src', 'images/on.png');
-        $('.div-like-switch').css('background', '#fff');
-        $('#like-switch-l p').css('color', '#333');
-        $('.div-like-switch h3').css('color', '#333');
-    } else {
-        $('#like-switch').addClass('switch-open').attr('src', 'images/off.png');
-        $('.div-like-switch').css('background', '#ededed');
-        $('#like-switch-l p').css('color', '#ccc');
-        $('.div-like-switch h3').css('color', '#ccc');
-    }
 }
-
 
 function customVideoUi(){
     if (custom_rate) {
@@ -286,7 +274,6 @@ function restore_options() {
         filterUps = upMap(items);
         beautify_nav = options['beautify_nav'];
         beautify_personal = options['beautify_personal'];
-        show_like = options['show_like'];
         custom_rate = options['custom_rate'];
         player_mode = options['player_mode'];
 
@@ -661,32 +648,6 @@ $(document).ready(function () {
             });
         }
     });
-
-    $('#like-switch-r').click(function () {
-        if (show_like) {
-            options.show_like=false;
-            chrome.storage.local.set({
-                'show_like':false
-            }, function () {
-                // location.reload();
-                show_like = false;
-                beautifyUi();
-                odhback().opt_optionUpdate(options);
-            });
-        } else {
-            /* globals bridge */
-            options.show_like=true;
-            chrome.storage.local.set({
-                'show_like':true
-            }, function () {
-                // location.reload();
-                show_like = true;
-                beautifyUi();
-                odhback().opt_optionUpdate(options);
-            });
-        }
-    });
-
 
     $('#rate-switch-r').click(function () {
         if (custom_rate) {
@@ -1125,7 +1086,7 @@ $(document).ready(function () {
         });
     })
 
-    //=====================直播评论时间Tag============================
+    //=====================直播评论临时标记============================
     chrome.storage.local.get(['LiveUserFocus'],function(items){
         var LiveUserFocus= items.LiveUserFocus;
         if(LiveUserFocus){

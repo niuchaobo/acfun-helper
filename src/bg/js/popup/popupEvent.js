@@ -117,7 +117,7 @@ export async function viewHistory() {
 				var raw_data = raw_data + `
           <tr>
               <td class="dispLimit">${x.histories[i].user.name}<br>于${getTimeSinceNow(x.histories[i].browseTime, true, false)}</td>
-              <td><a title="Up: ${x.histories[i].user.name}" href="https://www.acfun.cn/v/ac" + ${x.histories[i].resourceId}" target="_blank">《${x.histories[i].title}》</a> </td>
+              <td><a title="Up: ${x.histories[i].user.name}" href="https://www.acfun.cn/v/ac${x.histories[i].resourceId}" target="_blank">《${x.histories[i].title}》</a> </td>
           </tr>
         `;
 			}
