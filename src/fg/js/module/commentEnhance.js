@@ -433,7 +433,7 @@ class CommentEnhance{
                 _fthis.changeUddPopUpCssStyle('out',type,this)
                 timer && clearTimeout(timer)
             })
-        })
+        },1000,false)
     }
 
     changeUddPopUpText(target,innerContent){

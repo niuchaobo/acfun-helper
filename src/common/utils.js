@@ -520,7 +520,7 @@ async function getAsyncDom(target, fn, time = 2500, infinity = true, isDev=false
                 console.log(`[LOG]Common-Utils>getAsyncDom: ${target} 超时`)
                 if(!infinity) {
                     i = 0;
-                    reject('Dom获取超时')
+                    resolve()
                     return
                 }
             };
