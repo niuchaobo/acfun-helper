@@ -17,13 +17,13 @@ class AuthInfo {
         // chrome.storage.local.get(['AcCookies'],function(a){console.log(a)});
     }
 
-    historyView() {
-        let params = {
-            title: 'HistoryViews',
-            msg: `${localStorage.cache}`,
-        }
-        chrome.runtime.sendMessage({ action: 'historyView', params: params }, function (response) {
-        });
-    }
+    // historyView() {
+    //     let params = {
+    //         title: 'HistoryViews',
+    //         msg: `${localStorage.cache}`,
+    //     }
+    //     chrome.runtime.sendMessage({ action: 'historyView', params: params }, function (response) {
+    //     });
+    // }
 
 }

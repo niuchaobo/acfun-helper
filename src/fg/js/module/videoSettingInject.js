@@ -95,18 +95,18 @@ let videoFunction = (function () {
             .children[0].children[0].click();
         });
     }
-    
+
   });
 
   try {
     //从Player获取douga & danmaku 信息，传递给父级
-    window.parent.postMessage(
-      {
-        to: "pageBtfy",
-        msg: `${JSON.stringify(window.player.videoInfo)}`,
-      },
-      "*"
-    );
+    // window.parent.postMessage(
+    //   {
+    //     to: "pageBtfy",
+    //     msg: `${JSON.stringify(window.player.videoInfo)}`,
+    //   },
+    //   "*"
+    // );
 
     window.parent.postMessage(
       {

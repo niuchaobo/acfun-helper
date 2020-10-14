@@ -154,7 +154,7 @@ class LuckyTtab {
         return res
     }
 
-    async RollOut(acid,num,follow){
+    async RollOut(acid,num,follow=false){
         //主函数
         let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
         let max = y['Comm_data_UIDList'].length;
@@ -190,7 +190,7 @@ class LuckyTtab {
         }, '*');
     }
 
-    async RollOutExp(acid,num,follow){
+    async RollOutExp(acid,num,follow=false){
         //排除上次执行的结果的主函数
         let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
         let max = y['Comm_data_UIDList'].length;
