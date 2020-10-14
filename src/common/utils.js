@@ -505,29 +505,32 @@ function domToString(node) {
   return str;
 }
 
-async function getAsyncDom(target, fn, time = 2500, isDev = false) {
-  let i = 0;
-  isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
-  re = (fn) => {
-    return new Promise(resolve => {
-      targetDom = document.getElementById(target) || document.getElementsByClassName(target).length || $(`${target}`).length || undefined
-      if (targetDom) {
-        i = 0;
-        isDev && console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
-        resolve(fn())
-      } else {
-        if (i >= 9000 / time) {
-          i = 0;
-          isDev && resolve(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`)
-          return
-        };
-        i++;
-        setTimeout(() => {
-          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target} - 第${i}次`);
-          resolve(re(fn));
-        }, time);
-      }
-    })
+async function getAsyncDom(target, fn, time = 2500, infinity = true, isDev=false) {
+    let i = 0;
+    isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
+  re = (fn)=>{
+      return new Promise((resolve,reject)=>{
+        targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
+        if(targetDom){
+            i = 0; 
+            isDev && console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
+            resolve(fn())
+        }else{
+            if (i >= 9000 / time) {
+                console.log(`[LOG]Common-Utils>getAsyncDom: ${target} 超时`)
+                if(!infinity) {
+                    i = 0;
+                    resolve()
+                    return
+                }
+            };
+              i++; 
+              setTimeout(() => {
+                isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target}第${i}次`);
+                resolve(re(fn));
+              }, time); 
+        }
+      })
   }
   return await re(fn)
 }
@@ -635,19 +638,16 @@ removeAPrefix = (_$targetDom) => {
   return acid
 }
 
-createElementStyle = (cssText, targetDom = document.head, id = null) => {
-  let target = targetDom
-  let nod = document.createElement("style");
-  let str = cssText;
-  nod.type = "text/css";
-  id ? nod.id = id : null;
-  nod.textContent = str;
-  target.appendChild(nod);
-  return () => {
-    console.log(target)
-    console.log(id)
-    target.removeChild(document.getElementById(id));
-  }
+createElementStyle = (cssText,targetDom = document.head,id=null)=>{
+    let target = targetDom
+    let nod = document.createElement("style");
+    let str = cssText;
+    nod.type = "text/css";
+    id ? nod.id = id : null;
+    nod.textContent = str;
+    target.appendChild(nod);
+    return ()=>{ 
+        target.removeChild(document.getElementById(id)); }
 }
 
 function timeToMinute(second) {

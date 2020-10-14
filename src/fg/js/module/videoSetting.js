@@ -441,18 +441,15 @@ class VideoSetting {
         )[0];
         var observerWeb = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
-            let flag = document.getElementsByClassName("tip-fullscreen")[0]
-              .innerText;
+            let fullscreenFlag = document.getElementsByClassName("tip-fullscreen")[0] .innerText == "退出网页全屏";
+            let fileModelFlag = document.getElementsByClassName("tip-film-model")[0] .innerText == "退出观影模式"
             let popupHelper = document.getElementById("acfun-popup-helper");
             let helperDiv = document.getElementById("acfun-helper-div");
-            if (flag == "退出网页全屏") {
+            if ( fullscreenFlag ) {
               popupHelper ? (popupHelper.style.display = "none") : "";
               helperDiv ? (helperDiv.style.display = "none") : "";
             } else {
-              if (
-                document.getElementsByClassName("tip-film-model")[0]
-                  .innerText == "退出观影模式"
-              )
+              if ( fileModelFlag )
                 return;
               popupHelper ? (popupHelper.style.display = "") : "";
               helperDiv ? (helperDiv.style.display = "") : "";
@@ -500,7 +497,7 @@ class VideoSetting {
     }
   }
 
-  //倍速快捷键 TODO:自定义快捷键(现在默认shift + ↑/↓) 绑定位置
+  //倍速快捷键 TODO:自定义快捷键(现在默认shift + ↑/↓) FIXME:绑定位置
   PlaybackRateKeyCode(settingKeyCode) {
     // const videoDom = document.getElementById('player');
     // videoDom.setAttribute("tabindex","-1")

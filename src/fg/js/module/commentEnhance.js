@@ -433,7 +433,7 @@ class CommentEnhance{
                 _fthis.changeUddPopUpCssStyle('out',type,this)
                 timer && clearTimeout(timer)
             })
-        })
+        },1000,false)
     }
 
     changeUddPopUpText(target,innerContent){
@@ -622,7 +622,7 @@ class CommentEnhance{
         });
     }
 
-    //选中时间 按shift+A 跳转 开关依赖评论区空降功能  TODO:与倍速快捷键一样都绑定到了document上 正则未做严格匹配(你甚至能让iphone8跳转到8s)
+    //选中时间 按shift+A 跳转 开关依赖评论区空降功能  FIXME:与倍速快捷键一样都绑定到了document上 正则未做严格匹配(你甚至能让iphone8跳转到8s)
     easySearchScanForPlayerTime(settingKeyCode){ 
         document.onkeypress = (e)=>{
             if(e.shiftKey && e.keyCode === settingKeyCode[0] ){
