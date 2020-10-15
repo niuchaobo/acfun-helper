@@ -578,4 +578,22 @@ class VideoSetting {
       }, 500)
     );
   }
+  
+  audioNodeGainFront() {
+    // 使用Web Audio API放大视频音量(超过100%之类的需求) TODO:制作交互以及设置页面的开关
+    //参考：http://www.voidcn.com/article/p-pqutjsey-bnu.html https://developer.mozilla.org/zh-CN/docs/Web/API/MediaElementAudioSourceNode
+    // source(音频源)-->gainNode(音频处理模块)-->audioContext.destination(音频上下文的输出)
+    let audioCtx = new window.AudioContext();
+    let audioTrack = document.querySelector("video");
+    //创建一个音源
+    let source = audioCtx.createMediaElementSource(audioTrack);
+    //创建增益节点
+    let gainNode = audioCtx.createGain();
+    //指定增益的倍数为2
+    gainNode.gain.value = 2;
+    //将音源与增益节点连接
+    source.connect(gainNode);
+    //将增益节点与音频处理图的输出连接
+    gainNode.connect(audioCtx.destination);
+  }  
 }

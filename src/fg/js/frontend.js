@@ -47,6 +47,9 @@ class ODHFront {
 		}
 	}
 
+	/**
+	 * 全局样式
+	 */
 	addStyle() {
 		let str =
 			".comment-mark-parent{bottom: -80px!important;}" +
