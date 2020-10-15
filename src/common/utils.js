@@ -558,6 +558,7 @@ function domToString(node) {
   return str;
 }
 
+
 /**
  * 监听DOM对象
  * @param {*} target DOM对象
@@ -704,6 +705,7 @@ removeAPrefix = (_$targetDom) => {
   return acid
 }
 
+
 /**
  * 在某个地方（默认为head下）增加一个css的style标签
  * @param cssText CSS样式文本
@@ -723,6 +725,7 @@ createElementStyle = (cssText, targetDom = document.head, id = null) => {
     // console.log(id)
     target.removeChild(document.getElementById(id));
   }
+
 }
 
 /**
