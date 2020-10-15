@@ -241,8 +241,12 @@ class PageBeautify {
 		document.getElementsByTagName("html")[0].style.cssText = "background:#303030";
 		createElementStyle(".delveField .ArticleDelveFieldContent li .article-delve-text a,.dynamicsUpdateTitle .dynamicsUpdateSub,.dynamicsUpdateTitle .dynamicsUpdateChange span,#container > div.ArticleBlockLeft.ArticleDynamicsContent.extend-pab > div.ArticleLeftTitle > div:nth-child(2) > a,#container > div.ArticleBlockLeft.ArticleDynamicsContent.extend-pab > div.ArticleLeftTitle > div:nth-child(1) > a,#container > div.delveField.ArticleBlockRight > div > b,.atc-title,.gg-title,.HotArticleText,.bar-action,.ArticleRightTitle,.ArticleRightTitle,.ref-bar-btn,.header .nav li a,.ArticleListUser .ArticleListUserContent>a,.atc-info>a{color:white !important;}", document.getElementsByTagName("head")[0]);
 		createElementStyle(".header .nav .nav-parent,.header .nav{background-color:#303030;}", document.getElementsByTagName("head")[0]);
+		createElementStyle(".nav-sub, .footer{display:none !important;}", document.getElementsByTagName("head")[0]);
 		createElementStyle(".footer{display:none !important;}", document.getElementsByTagName("head")[0]);
-		createElementStyle(".footer{display:none !important;}", document.getElementsByTagName("head")[0]);
+	}
+
+	darkenArticle(){
+
 	}
 
 	userMoment(href) {
