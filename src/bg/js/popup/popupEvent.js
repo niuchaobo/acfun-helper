@@ -234,7 +234,7 @@ export async function userInfoFetch() {
 					<td>${x.profile.name}</td>
 				</tr>
 				<tr>
-					<td>注册于</td>
+					<td>注册</td>
 					<td>${getTimeSinceNow(x.profile.registerTime, true)}</td>
 				</tr>
 				<tr>
@@ -243,7 +243,7 @@ export async function userInfoFetch() {
 				</tr>
 				<tr>
 					<td>认证</td>
-					<td>${x.profile.verifiedTypes.indexOf(1) != -1 ? "猴子" : ""} - ${x.profile.isContractUp ? "学院Up" : ""}</td>
+					<td>${x.profile.verifiedText} - ${x.profile.verifiedTypes.indexOf(1) != -1 ? "猴子" : ""} - ${x.profile.isContractUp ? "学院Up" : ""}</td>
 				</tr>
 				<tr>
 					<td>关注</td>

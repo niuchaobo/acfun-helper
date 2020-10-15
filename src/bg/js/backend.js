@@ -90,7 +90,6 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
-            documentUrlPatterns:['https://*.acfun.cn/*'],
             title: '加入到稍后再看', 
             contexts: ['link'], 
             id:'2',

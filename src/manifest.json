@@ -56,7 +56,7 @@
     "minimum_chrome_version": "50.0.0.0",
     "homepage_url": "https://www.acfun.cn/u/7054138",
     "options_page": "bg/options.html",
-    "permissions": ["contextMenus", "notifications", "tabs", "webRequest", "webRequestBlocking", "https://*/*", "http://*/*", "storage", "unlimitedStorage", "cookies"],
+    "permissions": ["contextMenus", "notifications", "tabs", "webRequest", "webRequestBlocking", "https://*/*", "http://*/*", "storage", "unlimitedStorage", "cookies","history"],
     "sandbox": {
         "pages": ["bg/sandbox/sandbox.html"]
     },
