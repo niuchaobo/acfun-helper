@@ -47,20 +47,25 @@ class ODHFront {
 		}
 	}
 
-    addStyle() {
-        let str =
-          ".comment-mark-parent{bottom: -80px!important;}" +
-          "#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
-          "span.simple {background-color: #d69acc !important;}" +
-          "span.pos {display:inline;font-size: 0.9em;margin: 5px;line-height: 18px;padding: 0px 4px;color: white;border-radius: 14px;}" +
-          ".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
-          "span.pos.up {background-color: #66ccff !important;}" +
-          "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
-          "p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
-          "";
-        let headDom = document.getElementsByTagName("head")[0]
-        createElementStyle(str, headDom)
-    }
+
+	/**
+	 * 全局样式
+	 */
+	addStyle() {
+		let str =
+			".comment-mark-parent{bottom: -80px!important;}" +
+			"#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
+			"span.simple {background-color: #d69acc !important;}" +
+			"span.pos {display:inline;font-size: 0.9em;margin: 5px;line-height: 18px;padding: 0px 4px;color: white;border-radius: 14px;}" +
+			".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
+			"span.pos.up {background-color: #66ccff !important;}" +
+			"p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
+			"p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
+			"";
+		let headDom = document.getElementsByTagName("head")[0]
+		createElementStyle(str, headDom)
+	}
+
 
 	addNightStyle() {
 		let div = document.createElement("div");

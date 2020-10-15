@@ -76,7 +76,7 @@ class LuckyTtab {
         })
     }
 
-    async getVCdetailCommentData(acid,follow){
+    async getVCdetailCommentData(acid,follow=false){
         let acCommentApi='https://www.acfun.cn/rest/pc-direct/comment/list?sourceId='+acid+'&sourceType=3&page=';
         let totalPageNum = await this.getTotalPageNum(acid).then((res)=>{return res});
         let Comm_data={};
@@ -112,21 +112,8 @@ class LuckyTtab {
     }
 
     async isFollowed(QueryUserId){
-        //使用用github@BDPO这位acer的新 判断是否关注PO主 的解决办法
         let checkApi = "https://www.acfun.cn/usercard.aspx?uid="+String(QueryUserId);
-        return new Promise((resolve,reject)=>{
-            fetch(checkApi).then((res)=>{return res.text();})
-            .then((res)=>{
-                let x = JSON.parse(res);
-                if(x.userjson.followed==1){
-                    resolve(true)
-                }else if(x.userjson.followed==0){
-                    resolve(false)
-                }else{
-                    resolve(false);
-                }
-            })
-        })
+        return false;
     }
 
     liveRoll(num){
@@ -258,7 +245,7 @@ class LuckyTtab {
         }, '*');
     }
 
-    async RollOutExcDb(acid,num,follow){
+    async RollOutExcDb(acid,num,follow=false){
         //读取上次抽中、并且被Up主标记到数据库中的已中用户Uid列表，以便从本次抽奖结果中排除
         let y = await this.getVCdetailCommentData(acid,follow).then((res)=>{return res});
         chrome.runtime.sendMessage({action: "getLuckyHistory",params:{responseRequire:true,asyncWarp:true}}, (response)=> {

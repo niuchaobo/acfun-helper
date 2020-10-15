@@ -1,9 +1,7 @@
 /**
  * 稍后再看
+ * @description 思路：我们利用保存好了的数组，当用户点击稍后再看的观看按钮时，我们取出数组中的前几个（自定义数量）元素，打开标签页；打开完了之后，我们维护一个字典：{tabId:{url,{tabInfo}}} =>这里是所有打开了并没有被关闭或者转换了url的标签页信息，如果标签关闭了，或者被导航至其他url时，我们会将其从字典中删除，并将其对应的url从数组中删除。=>观看完毕。其中，我们还要保证其在点击了按钮之后，页面一直保持着打开（自定义）着一定数量的标签（除非数组中满足不了数量的要求）；直到清空数组所有元素。
  */
-/*
-我们利用保存好了的数组，当用户点击稍后再看的观看按钮时，我们取出数组中的前几个（自定义数量）元素，打开标签页；打开完了之后，我们维护一个字典：{tabId:{url,{tabInfo}}} =>这里是所有打开了并没有被关闭或者转换了url的标签页信息，如果标签关闭了，或者被导航至其他url时，我们会将其从字典中删除，并将其对应的url从数组中删除。=>观看完毕。其中，我们还要保证其在点击了按钮之后，页面一直保持着打开（自定义）着一定数量的标签（除非数组中满足不了数量的要求）；直到清空数组所有元素。
-*/
 
 class WatchPlan {
     constructor() {
@@ -18,10 +16,17 @@ class WatchPlan {
         console.log("Registered WatchPlan Mod.");
     }
 
+    /**
+     * 设置稍后再看需要保持在前台的标签任务数
+     * @param {*} num 
+     */
     setWatchOptTabNum(num) {
         this.execWatchReqTabNum = num;
     }
 
+    /**
+     * 获取状态信息
+     */
     getOpRes() {
         return this.OpFlag;
     }
@@ -38,6 +43,11 @@ class WatchPlan {
         }
     }
 
+    /**
+     * 加入任务队列
+     * @param {*} data 主站投稿的URL
+     * @returns this.OpFlag 判断结果
+     */
     async PushInList(data) {
         var sw = await getStorage("watchLater");
         if (!sw.watchLater) { this.OpFlag = false; return }
@@ -55,8 +65,12 @@ class WatchPlan {
         }
     }
 
+    /**
+     * 打开标签，并返回一个tab Info字典
+     * @param {*} url 
+     * @returns tabInfo dict
+     */
     async execTabCreate(url) {
-        //打开标签，并返回一个tab Info字典
         return new Promise((resolve, reject) => {
             chrome.tabs.create({ url: url }, (e) => {
                 resolve(e);
@@ -64,6 +78,10 @@ class WatchPlan {
         });
     }
 
+    /**
+     * 稍后再看-核心
+     * @description 打开-监听-任务队列维护
+     */
     async execWatch() {
         //打开列表中的前面几项（默认3项），并监听他们的状态（onRemoved or onUpdated），状态改变之后就将其从列表中删除，并补上页面，保持页面数量在指定数量。
         this.ori_list = await getStorage("WatchPlanList");
@@ -105,14 +123,24 @@ class WatchPlan {
     //     db_putHistoryViews(x)
     // }
 
+    /**
+     * 维护
+     * @param {*} params 
+     */
     livePageWatchTimeRec(params) {
         this.livePageWatchTimeRecList[`${params.tabid.id}`] = { windowId: params.tabid.windowId, index: params.tabid.index, startTime: params.startTime, url: params.tabid.url, title: params.tabid.title };
     }
 
+    /**
+     * 获取直播观看时长计分板
+     */
     getLiveWatchTimeList() {
         return this.livePageWatchTimeRecList;
     }
 
+    /**
+     * 清除直播观看时长计分板
+     */
     cleanLiveWatchTimeList() {
         this.livePageWatchTimeRecList = {};
     }
@@ -121,6 +149,10 @@ class WatchPlan {
         delete this.livePageWatchTimeRecList[item];
     }
 
+    /**
+     * 更新直播观看时长计分板
+     * @description 清除不存在的信息
+     */
     async updateLiveWatchTimeList() {
         let lwList = Object.keys(this.livePageWatchTimeRecList)
         for (let i in lwList) {
@@ -133,6 +165,10 @@ class WatchPlan {
         return true
     }
 
+    /**
+     * 主站标签整理
+     * @param {*} mainWindowId 主窗口ID
+     */
     attentionTabs(mainWindowId){
         let wId;
         mainWindowId?wId=mainWindowId:wId=1;

@@ -1,5 +1,7 @@
 /* global rangeFromPoint */
-//视频播放页面弹幕列表搜索功能
+/**
+ * 视频播放页弹幕列表搜索模块
+ */
 class Search {
   constructor() {
     this.searchList = [];
@@ -69,8 +71,8 @@ class Search {
     let input = $("#acfun-helper-search-input");
     let text = input.val();
     if (!text) return;
-    $('#danmaku').bind('mouseleave',()=>{
-            $('#acfun-helper-search-close').trigger('click')
+    $('#danmaku').bind('mouseleave', () => {
+      $('#acfun-helper-search-close').trigger('click')
     })
     input.blur();
     this.firstSearchInit();
@@ -85,27 +87,27 @@ class Search {
     );
   }
 
-    danmakuSearchProgress(e){
-      let action = e.target.id;
-      if (action === "acfun-helper-search-title") {
-        $("#acfun-helper-search>div").addClass("search-hidden");
-      }
-      if (action === "acfun-helper-search-button" || e.keyCode === 13) {
-        if (!this.lock) return;
-        this.startSearch();
-      }
-      if (action === "acfun-helper-search-next") {
-        this.searchNext()
-      }
-      if (action === "acfun-helper-search-last") {
-        this.searchLast()
-      }
-      if (action === "acfun-helper-search-close") {
-        this.searchClose()
-      }
-    };
+  danmakuSearchProgress(e) {
+    let action = e.target.id;
+    if (action === "acfun-helper-search-title") {
+      $("#acfun-helper-search>div").addClass("search-hidden");
+    }
+    if (action === "acfun-helper-search-button" || e.keyCode === 13) {
+      if (!this.lock) return;
+      this.startSearch();
+    }
+    if (action === "acfun-helper-search-next") {
+      this.searchNext()
+    }
+    if (action === "acfun-helper-search-last") {
+      this.searchLast()
+    }
+    if (action === "acfun-helper-search-close") {
+      this.searchClose()
+    }
+  };
 
-  searchNext(){
+  searchNext() {
     let changePage = !$(".next-page").hasClass("disabled");
     this.i = this.i + 1;
     if (this.i == this.searchList.length || this.searchList.length === 0) {
@@ -122,7 +124,7 @@ class Search {
     this.danmakuSearchJump(this.searchList, target);
   }
 
-  searchLast(){
+  searchLast() {
     let changePage = !$(".last-page").hasClass("disabled");
     this.i = this.i - 1;
     if (this.i === -1 || this.searchList.length === 0) {
@@ -139,7 +141,7 @@ class Search {
     this.danmakuSearchJump(this.searchList, target);
   }
 
-  searchClose(){
+  searchClose() {
     this.buttonStatusChange(true);
     $("#acfun-helper-search-input").val("");
     $("#acfun-helper-search>div").removeClass("search-hidden");
@@ -178,19 +180,19 @@ class Search {
     $(".danmaku-items").bind(
       "DOMNodeInserted",
       debounce(() => {
-          this.pageChange(this.pageNum)
-          this.buttonStatusChange(true);
-          $("#danmaku .list-body").scrollTop(0);
-          let text = $("#acfun-helper-search-input").val();
-          getAsyncDom(
-            "danmaku-item",
-            this.danmakuSearch.bind(this, text),
-            200
-          ).then((res) => {
-            this.searchList = res;
-            this.danmakuSearchJump(this.searchList, this.i);
-            this.buttonStatusChange(false);
-          });
+        this.pageChange(this.pageNum)
+        this.buttonStatusChange(true);
+        $("#danmaku .list-body").scrollTop(0);
+        let text = $("#acfun-helper-search-input").val();
+        getAsyncDom(
+          "danmaku-item",
+          this.danmakuSearch.bind(this, text),
+          200
+        ).then((res) => {
+          this.searchList = res;
+          this.danmakuSearchJump(this.searchList, this.i);
+          this.buttonStatusChange(false);
+        });
       }, 500)
     );
   }
@@ -226,7 +228,7 @@ class Search {
     });
     return danmakuList;
   }
-  
+
   firstSearchInit() {
     this.searchList.forEach((item, index) => {
       $(item.item).css({ background: "", color: "" });

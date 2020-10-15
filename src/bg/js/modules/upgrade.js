@@ -7,11 +7,17 @@ class UpgradeAgent{
         this.dataTimer = null;
     }
 
+    /**
+     * 检查今天周几
+     */
     checkDay(){
         let x = new Date();
         return x.getDay();
     }
 
+    /**
+     * 检查是否是正确的日期
+     */
     ifRightDay(){
         let x = this.checkDay();
         if(x in this.checkConfigDay){
@@ -21,6 +27,9 @@ class UpgradeAgent{
         return false;
     }
 
+    /**
+     * 检查插件更新
+     */
     checkUpdate(){
         if(this.ifRightDay()){
             //POST版本号至服务器，服务器对比最新的版本之后返回一个int值，0：不需要更新，1：小版本更新-弱提醒，2：重要功能更新-强提醒(session and cache please)
@@ -40,6 +49,9 @@ class UpgradeAgent{
         }
     }
 
+    /**
+     * 总
+     */
     upgradeMain(){
         console.log("Registered Upgrade Check Mod.")
         this.checkUpdate();

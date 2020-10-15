@@ -96,6 +96,9 @@ export async function WatchLaterFOpenList() {
 	});
 }
 
+/**
+ * 启动稍后再看
+ */
 export async function WatchLaterFpopup() {
 	chrome.storage.local.get(['watchLater'], function (items) {
 		if (items.watchLater) {
@@ -126,6 +129,9 @@ export async function viewHistory() {
 		})
 }
 
+/**
+ * 稿件信息查询
+ */
 export async function fetchDougaInfo() {
 	let acid = $("#dougaInfoAcid").val();
 	let regAcid = new RegExp("ac(.*)");
@@ -202,6 +208,9 @@ export async function fetchDougaInfo() {
 		})
 }
 
+/**
+ * 个人信息查询
+ */
 export async function userInfoFetch() {
 	let uid = $("#userInfoUid").val();
 	let dougaCountFlag = 0;
@@ -234,7 +243,7 @@ export async function userInfoFetch() {
 					<td>${x.profile.name}</td>
 				</tr>
 				<tr>
-					<td>注册于</td>
+					<td>注册</td>
 					<td>${getTimeSinceNow(x.profile.registerTime, true)}</td>
 				</tr>
 				<tr>
@@ -243,7 +252,7 @@ export async function userInfoFetch() {
 				</tr>
 				<tr>
 					<td>认证</td>
-					<td>${x.profile.verifiedTypes.indexOf(1) != -1 ? "猴子" : ""} - ${x.profile.isContractUp ? "学院Up" : ""}</td>
+					<td>${x.profile.verifiedText} - ${x.profile.verifiedTypes.indexOf(1) != -1 ? "猴子" : ""} - ${x.profile.isContractUp ? "学院Up" : ""}</td>
 				</tr>
 				<tr>
 					<td>关注</td>
@@ -306,6 +315,9 @@ export async function userInfoFetch() {
 
 }
 
+/**
+ * 稿件动态推送列表筛选模式
+ */
 export function PushListDougaMode() {
 	//$('.PushListMode').addClass('active');
 	//clearPushListDougaButtonClass();
@@ -348,6 +360,9 @@ export function PushListDougaMode() {
 	}
 }
 
+/**
+ * AC日刊渲染
+ */
 export function renderAcDaily() {
 	fetch("https://api-new.app.acfun.cn/rest/app/acDailyMagazine")
 		.then((res) => { return res.text() })
@@ -364,6 +379,9 @@ export function renderAcDaily() {
 		})
 }
 
+/**
+ * 主站标签列队前台调用
+ */
 export function attentionTabs() {
 	chrome.windows.getCurrent({}, function (e) {
 		chrome.runtime.sendMessage({ action: "attentionTabs", params: { windowId: e.id } }, function (response) { });

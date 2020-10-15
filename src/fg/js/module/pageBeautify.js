@@ -131,7 +131,6 @@ class PageBeautify {
 			})
 			.then((res) => {
 				let a = JSON.parse(res);
-				console.log(a)
 				var url = window.location.toString();
 				let member = new RegExp("https://www.acfun.cn/member/.?");
 				let memberRes = member.exec(url);

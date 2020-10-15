@@ -5,6 +5,9 @@ var pushListData = {
 	firstLoad: true, // 第一次加载推送列表
 	arriveEnd: false, // 到达终点
 };
+/**
+ * 稿件动态信息渲染
+ */
 export async function renderPushInnerHtml() {
 	pushListData.busy = true;
 	if (pushListData.index == 1) {
@@ -92,6 +95,9 @@ export async function renderPushInnerHtml() {
 		});
 }
 
+/**
+ * 渲染直播开播的直播间信息
+ */
 export function renderLives() {
 	chrome.storage.local.get(["broadcastingUIDlist"], function (data) {
 		let No_data = "";
@@ -193,6 +199,9 @@ export function renderLives() {
 	})
 }
 
+/**
+ * 渲染直播观看时间计分板
+ */
 export async function renderLiveWatchTimeLst() {
 	let x = await getStorage("LiveWatchTimeRec_popup");
 	if (!x.LiveWatchTimeRec_popup) { return }
