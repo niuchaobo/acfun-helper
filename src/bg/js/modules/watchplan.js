@@ -169,32 +169,57 @@ class WatchPlan {
      * 主站标签整理
      * @param {*} mainWindowId 主窗口ID
      */
-    attentionTabs(mainWindowId){
+    attentionTabs(mainWindowId) {
         let wId;
-        mainWindowId?wId=mainWindowId:wId=1;
-        chrome.tabs.getAllInWindow(wId,function(e){
+        mainWindowId ? wId = mainWindowId : wId = 1;
+        chrome.tabs.getAllInWindow(wId, function (e) {
             //存储本窗口中是主站的标签的ID
             let x = [];
             let y = new RegExp("https://www.acfun.cn");
             let z = new RegExp("https://live.acfun.cn");
             for (let i = 0; i < e.length; i++) {
-                if (y.exec(e[i].url)||z.exec(e[i].url)) {
+                if (y.exec(e[i].url) || z.exec(e[i].url)) {
                     x.push(e[i].id);
                 }
             }
-            if(x.length!=0){
-                notice("自动整理",`在整理了在整理了！！整理了${x.length}个标签。`);
-            }else{
-                notice("自动整理",`没有什么能整理的标签页好不好。`);
+            if (x.length != 0) {
+                notice("自动整理", `在整理了在整理了！！整理了${x.length}个标签。`);
+            } else {
+                notice("自动整理", `没有什么能整理的标签页好不好。`);
                 return
             }
             //创建一个窗口并将主站相关的标签都移动至新窗口
-            chrome.windows.create((f)=>{
+            chrome.windows.create((f) => {
                 for (let j = 0; j < x.length; j++) {
-                    chrome.tabs.move(x[j],{windowId:f.id,index:1})
+                    chrome.tabs.move(x[j], { windowId: f.id, index: 1 })
                 }
             })
         })
+    }
+
+    xpGraph() {
+        getAllAboutAc = () => {
+            return new Promise((resolve, reject) => {
+                chrome.history.search({ text: "AcFun" }, (e) => {
+                    if (e.length != 0) {
+                        resolve(e);
+                    } else {
+                        reject(null);
+                    }
+                });
+            });
+        }
+        getSameUrlHist = (url) => {
+            return new Promise((resolve, reject) => {
+                chrome.history.getVisits({ url: url }, function (e) {
+                    if (e.length != 0) {
+                        resolve(e);
+                    } else {
+                        reject(null);
+                    }
+                })
+            })
+        }
     }
 
 }

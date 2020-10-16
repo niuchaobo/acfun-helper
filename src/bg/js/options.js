@@ -1343,6 +1343,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================视频播放器倍率音量放大===============
+    chrome.storage.local.get(['audioGain'],function(items){
+        var audioGain= items.audioGain;
+        if(audioGain){
+            document.getElementById('audioGain').checked='true';
+        }else{
+            document.getElementById('audioGain').checked=false;
+        }
+        $('#audioGain').on('click', function () {
+            if(!document.getElementById('audioGain').checked){
+                document.getElementById('audioGain').checked=false;
+                chrome.storage.local.set({'audioGain':false});
+            }else{
+                document.getElementById('audioGain').checked=true;
+                chrome.storage.local.set({'audioGain':true});
+            }
+        });
+    });
+
     //====================自动续播==================
     chrome.storage.local.get(['endedAutoJumpRecommandFirstDougasw'],function(items){
         var endedAutoJumpRecommandFirstDougasw= items.endedAutoJumpRecommandFirstDougasw;
