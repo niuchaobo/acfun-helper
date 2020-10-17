@@ -383,6 +383,24 @@ function restore_options() {
     });
 }
 
+    //=====================自动投蕉后同时给Up主的投稿点赞===================
+    chrome.storage.local.get(['LikeAfterBanna'],function(items){
+        var LikeAfterBanna= items.LikeAfterBanna;
+        if(LikeAfterBanna){
+            document.getElementById('LikeAfterBanna').checked='true';
+        }else{
+            document.getElementById('LikeAfterBanna').checked=false;
+        }
+        $('#LikeAfterBanna').on('click', function () {
+            if(!document.getElementById('LikeAfterBanna').checked){
+                document.getElementById('LikeAfterBanna').checked=false;
+                chrome.storage.local.set({'LikeAfterBanna':false});
+            }else{
+                document.getElementById('LikeAfterBanna').checked=true;
+                chrome.storage.local.set({'LikeAfterBanna':true});
+            }
+        });
+    });
 
 $(document).ready(function () {
     restore_options();
@@ -1491,7 +1509,6 @@ $(document).ready(function () {
     if(JSON.stringify(items) == '{}'){
         let a={}
         chrome.storage.local.set({'liveFloowings':a});
-        mdui.alert("列表初始化完成，请刷新页面");
     }else{
     $('#liveFollowAdd').on('click', function () {
         mdui.prompt('请输入你需要关注的用户UID', '添加关注',
@@ -1635,6 +1652,44 @@ $(document).ready(function () {
         })
     });
     
+    //====================番剧计划===============
+    chrome.storage.local.get(['BangumiPlan'],function(items){
+        var BangumiPlan= items.BangumiPlan;
+        if(BangumiPlan){
+            document.getElementById('BangumiPlan').checked='true';
+        }else{
+            document.getElementById('BangumiPlan').checked=false;
+        }
+        $('#BangumiPlan').on('click', function () {
+            if(!document.getElementById('BangumiPlan').checked){
+                document.getElementById('BangumiPlan').checked=false;
+                chrome.storage.local.set({'BangumiPlan':false});
+            }else{
+                document.getElementById('BangumiPlan').checked=true;
+                chrome.storage.local.set({'BangumiPlan':true});
+            }
+        });
+    });
+
+    //====================番剧更新提醒===============
+    chrome.storage.local.get(['BangumiNotif'],function(items){
+        var BangumiNotif= items.BangumiNotif;
+        if(BangumiNotif){
+            document.getElementById('BangumiNotif').checked='true';
+        }else{
+            document.getElementById('BangumiNotif').checked=false;
+        }
+        $('#BangumiNotif').on('click', function () {
+            if(!document.getElementById('BangumiNotif').checked){
+                document.getElementById('BangumiNotif').checked=false;
+                chrome.storage.local.set({'BangumiNotif':false});
+            }else{
+                document.getElementById('BangumiNotif').checked=true;
+                chrome.storage.local.set({'BangumiNotif':true});
+            }
+        });
+    });
+
     //===================直播屏蔽配置相关==========================//
     chrome.storage.local.get(['liveBansw'],function(items){
         var liveBans_status= items.liveBansw;
@@ -1868,6 +1923,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('fetchPushList_daemonsw').checked=true;
                 chrome.storage.local.set({'fetchPushList_daemonsw':true});
+            }
+        });
+    });
+    
+    //====================插件系统定时器===================
+    chrome.storage.local.get(['krnl_globalTimer'],function(items){
+        var krnl_globalTimer= items.krnl_globalTimer;
+        if(krnl_globalTimer){
+            document.getElementById('krnl_globalTimer').checked='true';
+        }else{
+            document.getElementById('krnl_globalTimer').checked=false;
+        }
+        $('#krnl_globalTimer').on('click', function () {
+            if(!document.getElementById('krnl_globalTimer').checked){
+                document.getElementById('krnl_globalTimer').checked=false;
+                chrome.storage.local.set({'krnl_globalTimer':false});
+            }else{
+                document.getElementById('krnl_globalTimer').checked=true;
+                chrome.storage.local.set({'krnl_globalTimer':true});
             }
         });
     });
