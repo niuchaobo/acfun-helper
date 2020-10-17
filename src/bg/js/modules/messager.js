@@ -191,7 +191,7 @@ class MsgNotifs{
                         db_putPushListHtml(out_data);
                     });
             })
-        },6000)
+        },60000)
     }
         
 }

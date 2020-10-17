@@ -71,7 +71,8 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
   5. 稍后再看（只要我无限地增加稍后再看列表，那不就是另外一个收藏夹吗( ;´д`)）      
   6. 直播观看计时（主播超长待机！我也待机！）   
   7. 在助手设置页面进入小广场，查看最近的广场动态信息     
-  8. 一键整理当前窗口中所有主站标签到新窗口中   
+  8. 一键整理当前窗口中所有主站标签到新窗口中     
+  9. 番剧更新提醒    
 
 ###### 插件相关
 
@@ -170,7 +171,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 ##### @ShigemoriHakura - [aclivechat AcFun直播弹幕姬 For OBS](https://github.com/ShigemoriHakura/aclivechat "项目地址")
 
-##### @baoyuanle - [AcfunQml 基于Qt QML的AcFun桌面客户端](https://github.com/baoyuanle/AcfunQml "项目地址")
+##### @goplayegg - [AcfunQml 基于Qt QML的AcFun桌面客户端](https://github.com/goplayegg/AcfunQml "项目地址")
 
 ---
 

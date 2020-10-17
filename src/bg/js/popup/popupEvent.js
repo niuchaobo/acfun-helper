@@ -90,6 +90,10 @@ export async function MomentSquareFpop() {
 	chrome.tabs.create({ url: chrome.extension.getURL('bg/square.html') });
 }
 
+export async function MyBangumiFpop() {
+	chrome.tabs.create({ url: chrome.extension.getURL('bg/bangumi.html') });
+}
+
 export async function WatchLaterFOpenList() {
 	mdui.snackbar({
 		message: `请移步助手 设置页面 - 内容设置。`,

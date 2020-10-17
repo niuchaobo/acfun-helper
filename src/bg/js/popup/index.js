@@ -18,12 +18,13 @@ import {
 	WatchLaterFpopup,
 	WatchLaterFOpenList,
 	MomentSquareFpop,
+	MyBangumiFpop,
 	LiveWatchTimeLstReact,
 	PushListDougaMode,
 	indexJump,
 	userInfoFetch,
 	renderAcDaily,
-	attentionTabs
+	attentionTabs,
 } from "./popupEvent.js";
 
 async function onReady() {
@@ -53,6 +54,7 @@ async function onReady() {
 	$("#WatchLaterFOpenList").click(WatchLaterFOpenList);
 	$("#attentionTabsFg").click(attentionTabs);
 	$("#MomentSquareFpop").click(MomentSquareFpop);
+	$("#MyBangumiFpop").click(MyBangumiFpop);
 	$("#AcDailyFetch").click(renderAcDaily);
 	$("#livePageWatchTimeRecList").click(e => { e.target.className === 'liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key, e.target.href) });
 	$(".PushListMode").click(PushListDougaMode);

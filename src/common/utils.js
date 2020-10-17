@@ -1,6 +1,7 @@
 const defaults = {
   enabled: true,//开启关闭插件
   auto_throw: false,
+  LikeAfterBanna: true,
   to_attention: true,
   to_attention_num: 5,
   to_special_items: [],
@@ -15,6 +16,7 @@ const defaults = {
   fetchPushList_daemonsw: true,
   timer4Unread_daemonsw: true,
   krnl_videossEarly: false,
+  krnl_globalTimer:true,
   mark: false,//评论用户标记
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
@@ -61,6 +63,8 @@ const defaults = {
   LiveUserFocus: false,
   LiveWatchTimeRec_popup: false,
   articlePartIndexDarken: false,
+  BangumiNotif:true,
+  BangumiPlan:true,
   audioGain: true,
   uddPopUp: true,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
@@ -393,7 +397,7 @@ function mysleep(ms) {
 }
 
 /**
- * 后台模块的通知封装
+ * 通知封装
  * @param {*} title 
  * @param {*} message 
  */
@@ -428,15 +432,21 @@ function uuidBuild() {
 
 /**
  * 时间戳到日期
- * @tutorial 2020-10-15 的类似格式
- * @param {*} now 
+ * @tutorial 2020-10-15 19:22:13 的类似格式
+ * @param {*} now 一个时间对象new Date()
  */
-function formatDate(now) {
-  var year = now.getFullYear();
-  var month = now.getMonth() + 1;
-  var date = now.getDate();
-  var hour = now.getHours();
-  return year + "-" + month + "-" + date;
+function formatDate(now, highAccuracy = false) {
+  let year = now.getFullYear();
+  let month = now.getMonth() + 1;
+  let date = now.getDate();
+  if (!highAccuracy) {
+    return year + "-" + month + "-" + date;
+  } else {
+    let hour = now.getHours();
+    let minute = now.getMinutes();
+    let second = now.getSeconds();
+    return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+  }
 }
 
 /**
@@ -490,6 +500,20 @@ function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy
       return `${publishTime.toLocaleDateString().replace(/\//g, "-") + " " + publishTime.toTimeString().substr(0, 8)}`;
     }
     return `${publishTime.getFullYear()}-${publishTime.getMonth() + 1}-${publishTime.getDate()}`;
+  }
+}
+
+/**
+ * 检查今天周几
+ * @param ifToday 是否是检查今天
+ * @param dateObj 传入时间对象 new Date()的返回
+ */
+function checkDay(ifToday=true,dateObj) {
+  if(ifToday){
+    let x = new Date();
+    return x.getDay();
+  }else{
+    return dateObj.getDay();
   }
 }
 
@@ -783,6 +807,7 @@ function bubbleSort(x) {
 
 /**
  * 队列
+ * @todo 之前想到了一个绝好的解决标签页面在后台执行失效的问题写下了这个队列的实现，但是过了几天就忘了，我现在先放在这儿，有好点子再来写完吧。
  */
 class Queue {
   constructor() {
@@ -825,7 +850,7 @@ class Queue {
    * 获取对首元素
    * @returns stat->是否存在:bool,data
    */
-  getFirst() {
+  getHead() {
     if (this.dataField.length != 0) {
       return { stat: true, data: this.dataField[0] };
     }
