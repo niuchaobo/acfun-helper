@@ -3,17 +3,57 @@
  */
 class Banana {
     constructor() {
-
+        this.reqBananaNum = 0;
     }
 
-    /**
-     * 渐进式投蕉
-     * @param {*} banana 
-     * @param {*} heart 
-     */
-    async ProgressiveBanana(banana, heart) {
-        console.log("hello from banana!");
-        window.odhfront.videoSetting.ProgressiveBananaExec(banana, heart);
+    judgeIfSelectUp(options, select) {
+        var up_name = '';
+        var banana_num = 0;
+        if (select) {
+            //判断是否为已关注up主
+            let followed = document.getElementsByClassName('follow-up followed');
+            if (!followed || followed.length <= 0) {
+                return { state: false }
+            }
+            up_name = document.getElementsByClassName('up-name')[0].innerText;
+            banana_num = options.to_attention_num;
+            return { state: true, name: up_name, num: banana_num };
+        } else {
+            //判断是否为指定up主
+            let up_url = document.getElementsByClassName('up-name')[0].href;
+            let flag = false;
+            let special_items = options.to_special_items;
+            for (let item of special_items) {
+                if (item.up_url == up_url) {
+                    up_name = item.name;
+                    banana_num = item.bananaNum;
+                    flag = true;
+                }
+            }
+            if (flag) {
+                return { state: true, name: up_name, num: banana_num }
+            } else {
+                return { state: false };
+            }
+        }
+    }
+
+    LikeHeartFront() {
+        let options = window.odhfront.options;
+        let LikeType = options.LikeHeartClass;
+        if (LikeType == "0") {
+            this.clickLike();
+        } else if (LikeType == "1") {
+            let x = this.judgeIfSelectUp(options, true)
+            if (x.state) {
+                this.clickLike();
+            }
+        } else if (LikeType == "2") {
+            let x = this.judgeIfSelectUp(options, false)
+            if (x.state) {
+                this.clickLike();
+            }
+        }
     }
 
     clickLike() {
@@ -41,33 +81,11 @@ class Banana {
         if (!options.auto_throw) {
             return;
         }
-        var up_name = '';
-        var banana_num = 0;
         var likeFlag = false;
         var res_obj = false;
-        if (options.to_attention) {
-            //判断是否为已关注up主
-            let followed = document.getElementsByClassName('follow-up followed');
-            if (!followed || followed.length <= 0) {
-                return;
-            }
-            up_name = document.getElementsByClassName('up-name')[0].innerText;
-            banana_num = options.to_attention_num;
-        } else {
-            //判断是否为指定up主
-            let up_url = document.getElementsByClassName('up-name')[0].href;
-            let flag = false;
-            let special_items = options.to_special_items;
-            for (let item of special_items) {
-                if (item.up_url == up_url) {
-                    up_name = item.name;
-                    banana_num = item.bananaNum;
-                    flag = true;
-                }
-            }
-            if (!flag) {
-                return;
-            }
+        let result = this.judgeIfSelectUp(options, options.to_attention)
+        if (!result.state) {
+            return;
         }
         //判断是否已投蕉
         var arr = document.getElementsByClassName('banana active');
@@ -81,18 +99,18 @@ class Banana {
             likeFlag = true;
         }
         if (arr.length == 0) {
-            res_obj = await bananaThrow(params, banana_num);
+            res_obj = await bananaThrow(params, result.num);
         }
 
         if (res_obj && likeFlag) {
             var title = "AcFun助手 - 自动二连";
-            var msg = '成功给 ' + up_name + ' 投食' + banana_num + '蕉' + `${likeFlag ? "并点了个赞" : ""}`;
+            var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉' + `${likeFlag ? "并点了个赞" : ""}`;
         } else if (res_obj == false && likeFlag) {
             var title = "AcFun助手 - 自动二连";
-            var msg = '成功给 ' + up_name + ' 点了个赞'
+            var msg = '成功给 ' + result.name + ' 点了个赞'
         } else if (res_obj && likeFlag == false) {
             var title = "AcFun助手 - 自动投蕉";
-            var msg = '成功给 ' + up_name + ' 投食' + banana_num + '蕉';
+            var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉';
         }
         if (options.banana_notice) {
             let action = "notice";
@@ -101,6 +119,57 @@ class Banana {
                 msg: msg,
             }
             chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
+        }
+    }
+
+    /**
+     * 渐进式投蕉主函数
+     * @param {*} banana 
+     * @param {*} heart 
+     * @param {*} allowShortVideo 
+     */
+    async ProgressiveBanana(banana, heart, allowShortVideo = false) {
+        let targetVideo = document.getElementsByTagName("video")[0];
+        let data = { bananaPercent: banana, heartPercent: heart }
+        let state = { bananaThis: 0, heartThis: false }
+        targetVideo.addEventListener('timeupdate', this.ProgressiveBananaMain.bind(null, data, state), false);
+        targetVideo.addEventListener('ended', this.ProgressiveBananaDone.bind(null), false);
+    }
+    async ProgressiveBananaDone() {
+        chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 5, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+    }
+    async ProgressiveBananaMain(data, state) {
+        let videoDuration = document.getElementsByTagName("video")[0].duration;
+        let nowPlayTime = document.getElementsByTagName("video")[0].currentTime;
+        let percent = Math.floor((nowPlayTime / videoDuration) * 1000)
+        console.log(percent)
+        if (percent >= data.heartPercent[0] && !state.heartThis) {
+            console.log("heart this")
+            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: "Heart", url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+            state.heartThis = true;
+        }
+        if (percent >= data.bananaPercent[0] && state.bananaThis == 0) {
+            console.log(10)
+            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 1, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+            state.bananaThis = 1;
+        } else if (percent >= data.bananaPercent[1] && state.bananaThis == 1) {
+            console.log(20)
+            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 2, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+            state.bananaThis++
+        } else if (percent >= data.bananaPercent[2] && state.bananaThis == 2) {
+            console.log(30)
+            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 3, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+            state.bananaThis++
+        } else if (percent >= data.bananaPercent[3] && state.bananaThis == 3) {
+            console.log(40)
+            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 4, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+            state.bananaThis++
+        } else if (percent >= data.bananaPercent[4] && state.bananaThis == 4) {
+            console.log(50)
+            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 5, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+            state.bananaThis++
+        } else if (state.bananaThis == 5) {
+            console.log("Ok")
         }
     }
 

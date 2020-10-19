@@ -164,17 +164,33 @@
               <div class="mdui-row">
                 <div class="mdui-row">
                   <div class="mdui-col-xs-9">
-                    <h3>投蕉后自动点赞</h3>
+                    <h3>自动点赞</h3>
                     <div class="mdui-row">
                       <div class="mdui-col-xs-8 mdui-col-sm-6">
-                        <p>自动投蕉后同时给Up主的投稿点赞</p>
+                        <p>自动给Up主的投稿点赞</p>
                       </div>
                       <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
-                          <input id="LikeAfterBanna" type="checkbox" />开关
+                          <input id="LikeHeart" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
                         </label></div>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid LikeHeartClasses">
+              <div class="mdui-col-xs-9">
+                <h2>自动点赞策略</h2><br>
+              </div>
+              <div class="mdui-row">
+                <div class="mdui-col-xs-8 mdui-col-sm-6">选择自动点赞范围</div>
+                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                  <select id="LikeHeartClass" class="mdui-select" mdui-select="{position: 'top'}">
+                    <option value="0">0 - 所有Up主</option>
+                    <option value="1">1 - 关注的</option>
+                    <option value="2">2 - 上文指定的</option>
+                  </select>
                 </div>
               </div>
             </div>

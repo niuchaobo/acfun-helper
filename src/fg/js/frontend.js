@@ -226,6 +226,8 @@ class ODHFront {
 			if (this.options[curKeyName]) {
 				this.ce.immedComt();
 			}
+			//自动点赞
+			this.options.LikeHeart && this.banana.LikeHeartFront();
 		}
 		//文章
 		if (REG.article.test(href)) {

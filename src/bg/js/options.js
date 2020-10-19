@@ -383,22 +383,34 @@ function restore_options() {
     });
 }
 
-    //=====================自动投蕉后同时给Up主的投稿点赞===================
-    chrome.storage.local.get(['LikeAfterBanna'],function(items){
-        var LikeAfterBanna= items.LikeAfterBanna;
-        if(LikeAfterBanna){
-            document.getElementById('LikeAfterBanna').checked='true';
+    //=====================自动给Up主的投稿点赞===================
+    chrome.storage.local.get(['LikeHeart'],function(items){
+        var LikeHeart= items.LikeHeart;
+        if(LikeHeart){
+            document.getElementById('LikeHeart').checked=true;
+            document.getElementsByClassName('LikeHeartClasses')[0].style.display = 'block';
         }else{
-            document.getElementById('LikeAfterBanna').checked=false;
+            document.getElementById('LikeHeart').checked=false;
+            document.getElementsByClassName('LikeHeartClasses')[0].style.display = 'none';
         }
-        $('#LikeAfterBanna').on('click', function () {
-            if(!document.getElementById('LikeAfterBanna').checked){
-                document.getElementById('LikeAfterBanna').checked=false;
-                chrome.storage.local.set({'LikeAfterBanna':false});
+        $('#LikeHeart').on('click', function () {
+            if(!document.getElementById('LikeHeart').checked){
+                document.getElementById('LikeHeart').checked=false;
+                chrome.storage.local.set({'LikeHeart':false});
+                document.getElementsByClassName('LikeHeartClasses')[0].style.display = 'none';
             }else{
-                document.getElementById('LikeAfterBanna').checked=true;
-                chrome.storage.local.set({'LikeAfterBanna':true});
+                document.getElementById('LikeHeart').checked=true;
+                document.getElementsByClassName('LikeHeartClasses')[0].style.display = 'block';
+                chrome.storage.local.set({'LikeHeart':true});
             }
+        });
+    });
+    chrome.storage.local.get(['LikeHeartClass'],function(items){
+        console.log(items)
+        document.querySelector("#LikeHeartClass").parentElement.children[1].children[1].children[items.LikeHeartClass].click()
+        var inst = new mdui.Select('#LikeHeartClass');
+        $('#LikeHeartClass').on('close.mdui.select', function () {
+            chrome.storage.local.set({'LikeHeartClass':inst.value});
         });
     });
 
