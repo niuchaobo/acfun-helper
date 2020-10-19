@@ -5,6 +5,8 @@ class VideoSetting {
   constructor() {
     window.addEventListener("load", (e) => this.onLoad(e));
     this.underWorld = null;
+    this.audioNodeGainFlag = false;
+    this.audioOriginVolume = 0;
     this.progressBarOptions = {
       id: "achlp-proBar",
       css:
@@ -140,7 +142,7 @@ class VideoSetting {
               qualitys[Lowest].click();
               break;
             case 4:
-              for (let x = 0; x <= qualitys.length - 1; ) {
+              for (let x = 0; x <= qualitys.length - 1;) {
                 if (vqreg2exp.test(qualitys[x].dataset.qualityType)) {
                   x++;
                 } else {
@@ -228,7 +230,7 @@ class VideoSetting {
       });
     });
   }
-  updateAbPlayFirst = ()=> {
+  updateAbPlayFirst = () => {
     if (this.abPlayFlag === 1) {
       leftBottomTip("请先", "停止");
       return;
@@ -249,12 +251,12 @@ class VideoSetting {
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
   }
-  updateAbPlaySecond = ()=> {
+  updateAbPlaySecond = () => {
     if (this.abPlayFlag === 1) {
       leftBottomTip("请先", "停止");
       return;
     }
-    let secondTime =  document.getElementsByTagName("video")[0].currentTime;
+    let secondTime = document.getElementsByTagName("video")[0].currentTime;
     if (this.abPlayFirst && secondTime <= this.abPlayFirst) {
       leftBottomTip("B要在A之后", "---鲁迅");
       return;
@@ -270,7 +272,7 @@ class VideoSetting {
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
   }
-  stopAbPlay = ()=> {
+  stopAbPlay = () => {
     this.abPlayFirst = this.abPlaySecond = undefined;
     $(".abplay-panel>ul>.updateAbPlayFirst").text("标记点A");
     $(".abplay-panel>ul>.updateAbPlaySecond").text("标记点B");
@@ -289,7 +291,7 @@ class VideoSetting {
       return;
     }
   }
-  abPlayMain = ()=> {
+  abPlayMain = () => {
     if (this.abPlayFlag == 0) {
       return;
     }
@@ -297,7 +299,7 @@ class VideoSetting {
       document.getElementsByTagName("video")[0].currentTime = this.abPlayFirst;
     }
   }
-  abPlayHandler = ()=> {
+  abPlayHandler = () => {
     let targetVideo = document.getElementsByTagName("video")[0];
     if (this.abPlayFirst === undefined || this.abPlaySecond === undefined) {
       leftBottomTip("请先设置", "标记点");
@@ -329,7 +331,7 @@ class VideoSetting {
     let { barColor, barHeight, loadedOpen, loadedColor, loadedHeight } = {
       ...options,
     };
-    
+
     this.progressBarOptions.css += `background-color: ${barColor};height: ${barHeight};`;
     addElement(this.progressBarOptions);
     getAsyncDom("control-bar-top", this.setProgressBarLength.bind(this));
@@ -441,15 +443,15 @@ class VideoSetting {
         )[0];
         var observerWeb = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
-            let fullscreenFlag = document.getElementsByClassName("tip-fullscreen")[0] .innerText == "退出网页全屏";
-            let fileModelFlag = document.getElementsByClassName("tip-film-model")[0] .innerText == "退出观影模式"
+            let fullscreenFlag = document.getElementsByClassName("tip-fullscreen")[0].innerText == "退出网页全屏";
+            let fileModelFlag = document.getElementsByClassName("tip-film-model")[0].innerText == "退出观影模式"
             let popupHelper = document.getElementById("acfun-popup-helper");
             let helperDiv = document.getElementById("acfun-helper-div");
-            if ( fullscreenFlag ) {
+            if (fullscreenFlag) {
               popupHelper ? (popupHelper.style.display = "none") : "";
               helperDiv ? (helperDiv.style.display = "none") : "";
             } else {
-              if ( fileModelFlag )
+              if (fileModelFlag)
                 return;
               popupHelper ? (popupHelper.style.display = "") : "";
               helperDiv ? (helperDiv.style.display = "") : "";
@@ -486,10 +488,12 @@ class VideoSetting {
         "body #main #main-content .left-column{width:100% !important;max-width:100%}" +
         ".ac-comment-usercard .area-comm-usercard-bottom{mix-blend-mode:exclusion}" +
         "body #main #main-content .right-column{position:absolute;right:-342px;top:160px;padding-left:1px;transition-duration:.2s;border-left:'6px  solid rgba(62, 62, 62, 0.4)'}" +
-        "body #main #main-content .right-column:hover{right: 0px; background:white; border-left-width:0px }";
-      ".ac-pc-comment{padding-right:15px}" +
+        "body #main #main-content .right-column:hover{right: 0px; background:white; border-left-width:0px }"+
+        ".ac-pc-comment{padding-right:15px}" +
         "#toolbar{transform:scale(0.8);transform-origin:bottom right}" +
-        ".player-box,.nav-parent,.video-description{border-bottom-color:white}";
+        ".player-box,.nav-parent,.video-description{border-bottom-color:white}" +
+        ".ac-comment-list .area-comment-title .name,{color: #bbbbbb;}" +
+        ".share,.mobile,#pagelet_bottomrecommend,#footer{display:none !important}"
       this.underWorld = createElementStyle(cssText, undefined, "underWorld");
     } else {
       this.underWorld && this.underWorld();
@@ -529,8 +533,8 @@ class VideoSetting {
     code === addRate
       ? (videoRate += 0.25)
       : code === reduceRate
-      ? (videoRate -= 0.25)
-      : "";
+        ? (videoRate -= 0.25)
+        : "";
     videoRate <= 0 ? (videoRate = 0.25) : videoRate >= 2 ? (videoRate = 2) : "";
     return videoRate;
   }
@@ -574,5 +578,68 @@ class VideoSetting {
         });
       }, 500)
     );
+  }
+
+
+  /**
+   * 倍率扩大音量 & UI
+   */
+  audioNodeGain() {
+    // 使用Web Audio API放大视频音量(超过100%之类的需求) TODO:制作交互以及设置页面的开关
+    //参考：http://www.voidcn.com/article/p-pqutjsey-bnu.html https://developer.mozilla.org/zh-CN/docs/Web/API/MediaElementAudioSourceNode
+    // source(音频源)-->gainNode(音频处理模块)-->audioContext.destination(音频上下文的输出)
+    let audioCtx = new window.AudioContext();
+    let audioTrack = document.querySelector("video");
+    // 创建一个音源
+    let source = audioCtx.createMediaElementSource(audioTrack);
+    // 创建增益节点
+    let gainNode = audioCtx.createGain();
+    // 设置初始增益值
+    gainNode.gain.value = 1;
+    // 首先要将他们挂接起来，否则视频会一直因为没有输出导致无法播放
+    // 将音频源与音频处理模块连接
+    source.connect(gainNode);
+    // 将音频处理模块的输出连接到音频上下文图的输出
+    gainNode.connect(audioCtx.destination);
+    let htmlUi = `
+    <div>
+      <label>倍数音量</label>
+      <div class="control-checkbox audioVolumeGain" data-bind-key="audioVolumeGain" data-bind-attr="false"></div>
+    </div>
+    `
+    $(".setting-panel>.setting-panel-content").append(htmlUi);
+    $(".setting-panel-content").click((e) => {
+      if (e.target.dataset.bindKey == "audioVolumeGain" && e.target.dataset.bindAttr == "false") {
+        this.audioOriginVolume = Number(document.querySelector(".volume-panel-content").children[0].innerText);
+        let title = "音量扩大倍数【0-3之间】，数值过大会导致爆音。";
+        let reg = /^[0-3](\.[0-9]{1,2})?$/;
+        let rate = prompt(title, "");
+        if (rate != null && rate != "") {
+          if (reg.test(rate)) {
+            gainNode.gain.value = rate;
+            leftBottomTip(`已经将音量改为原来的`, `${rate}倍。`);
+            document.querySelector(".volume-panel-content").children[0].innerText = Number(this.audioOriginVolume) * rate;
+            document.querySelector(".audioVolumeGain").dataset.bindAttr = "true";
+            this.audioNodeGainFlag = true;
+          } else {
+            window.parent.postMessage(
+              {
+                action: "notice",
+                params: {
+                  title: "AcFun助手",
+                  msg: "请输入正确的音量扩大倍数",
+                },
+              },
+              "*"
+            );
+          }
+        }
+      } else if (e.target.dataset.bindKey == "audioVolumeGain" && e.target.dataset.bindAttr == "true") {
+        gainNode.gain.value = 1;
+        leftBottomTip(`已经将音量还原为1倍。`);
+        document.querySelector(".audioVolumeGain").dataset.bindAttr = "false";
+        document.querySelector(".volume-panel-content").children[0].innerText = this.audioOriginVolume;
+      }
+    })
   }
 }

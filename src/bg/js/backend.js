@@ -90,7 +90,6 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
-            documentUrlPatterns:['https://*.acfun.cn/*'],
             title: '加入到稍后再看', 
             contexts: ['link'], 
             id:'2',
@@ -270,9 +269,9 @@ class ODHBack {
         this.WatchPlan.execWatch();
     }
 
-    api_historyView(params){
-        this.WatchPlan.viewHistoryBackend(params)
-    }
+    // api_historyView(params){
+    //     this.WatchPlan.viewHistoryBackend(params)
+    // }
 
     api_getLuckyHistory(){
         return new Promise(async (resolve) => {

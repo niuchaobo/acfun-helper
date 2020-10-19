@@ -47,20 +47,25 @@ class ODHFront {
 		}
 	}
 
-    addStyle() {
-        let str =
-          ".comment-mark-parent{bottom: -80px!important;}" +
-          "#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
-          "span.simple {background-color: #d69acc !important;}" +
-          "span.pos {display:inline;font-size: 0.9em;margin: 5px;line-height: 18px;padding: 0px 4px;color: white;border-radius: 14px;}" +
-          ".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
-          "span.pos.up {background-color: #66ccff !important;}" +
-          "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
-          "p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
-          "";
-        let headDom = document.getElementsByTagName("head")[0]
-        createElementStyle(str, headDom)
-    }
+
+	/**
+	 * 全局样式
+	 */
+	addStyle() {
+		let str =
+			".comment-mark-parent{bottom: -80px!important;}" +
+			"#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
+			"span.simple {background-color: #d69acc !important;}" +
+			"span.pos {display:inline;font-size: 0.9em;margin: 5px;line-height: 18px;padding: 0px 4px;color: white;border-radius: 14px;}" +
+			".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
+			"span.pos.up {background-color: #66ccff !important;}" +
+			"p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
+			"p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
+			"";
+		let headDom = document.getElementsByTagName("head")[0]
+		createElementStyle(str, headDom)
+	}
+
 
 	addNightStyle() {
 		let div = document.createElement("div");
@@ -82,44 +87,44 @@ class ODHFront {
 		//this.unLoad()
 		//页面的全部资源加载完后才会执行 包括 图片 视频等
 		window.addEventListener("load", (e) => {
-            this.onLoad(e);
-            !this.options.krnl_videossEarly && this.onACPlayerLoaded(e); 
+			this.onLoad(e);
+			!this.options.krnl_videossEarly && this.onACPlayerLoaded(e);
 		});
 		//Dom 渲染完即可执行 此时图片视频还可能没加载完
 		document.addEventListener("DOMContentLoaded", (e) => {
-            this.onDomContentLoaded(e);
-            this.options.krnl_videossEarly && this.onACPlayerLoaded(e);
+			this.onDomContentLoaded(e);
+			this.options.krnl_videossEarly && this.onACPlayerLoaded(e);
 		});
 	}
 
-    onACPlayerLoaded(e){
-        let href = this.href;
-        if(REG.videoAndBangumi.test(href)){
-            getAsyncDom('#ACPlayer .control-bar-top .box-right',()=>{
-                //在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
-                //FIXME:页面onload执行前打开全屏，导致助手按钮首次显示不会被隐藏
-                this.videoSetting.monitorFullScreen();
-                //自定义倍速
-                this.options.custom_rate && this.videoSetting.customPlaybackRate();
-                //倍速切换的快捷键
-                this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
-                //AB回放
-                this.options.ABPlaysw && this.videoSetting.addABPlayUI();
-                //画中画
-                this.videoSetting.callPicktureInPictureMode();
-                //全局进度条
-                this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle); 
-            },200)
-        }
-    }
+	onACPlayerLoaded(e) {
+		let href = this.href;
+		if (REG.videoAndBangumi.test(href)) {
+			getAsyncDom('#ACPlayer .control-bar-top .box-right', () => {
+				//在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
+				//FIXME:页面onload执行前打开全屏，导致助手按钮首次显示不会被隐藏
+				this.videoSetting.monitorFullScreen();
+				//自定义倍速
+				this.options.custom_rate && this.videoSetting.customPlaybackRate();
+				//倍速切换的快捷键
+				this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
+				//AB回放
+				this.options.ABPlaysw && this.videoSetting.addABPlayUI();
+				//画中画
+				this.videoSetting.callPicktureInPictureMode();
+				//全局进度条
+				this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle);
+			}, 200)
+		}
+	}
 
 	onDomContentLoaded(e) {
 		// console.log("options",this.options);
 		//历史观看记录-本地获取
-		this.authInfo.historyView();
+		// this.authInfo.historyView();
 		let href = this.href;
-        //添加自定义样式
-        this.addStyle();
+		//添加自定义样式
+		this.addStyle();
 		//屏蔽功能
 		this.options.filter && this.block.injectScript();
 		//夜间模式
@@ -145,8 +150,6 @@ class ODHFront {
 		if (REG.videoAndBangumi.test(href)) {
 			//播放器画质策略
 			this.videoSetting.videoQuality();
-			//显示点赞数
-			this.options.show_like && this.videoPageBeautify.showLikeCount();
 		}
 		//视频
 		if (REG.video.test(href)) {
@@ -183,6 +186,7 @@ class ODHFront {
 				this.pageBeautify.personBeautify();
 			})
 		}
+		//个人中心首页
 		if (REG.userHome.test(href) && this.options.userHomeMoment) {
 			this.pageBeautify.userMoment(href);
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false);
@@ -251,6 +255,8 @@ class ODHFront {
 				//弹幕列表前往Acer个人主页
 				this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
 			})
+			//倍率扩大音量
+			this.options.audioGain && this.videoSetting.audioNodeGain() ;
 		}
 		this.authInfo.cookInfo();
 	}
@@ -363,7 +369,7 @@ class ODHFront {
 		}
 		if (this.options.PlayerTimeCommentEasyJump) {
 			this.ce.searchScanForPlayerTime();
-        }
+		}
 		//跳转链接弹框
 		this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
 		let href = this.href;

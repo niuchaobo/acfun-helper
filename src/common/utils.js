@@ -1,6 +1,7 @@
 const defaults = {
   enabled: true,//开启关闭插件
   auto_throw: false,
+  LikeAfterBanna: true,
   to_attention: true,
   to_attention_num: 5,
   to_special_items: [],
@@ -15,6 +16,7 @@ const defaults = {
   fetchPushList_daemonsw: true,
   timer4Unread_daemonsw: true,
   krnl_videossEarly: false,
+  krnl_globalTimer:true,
   mark: false,//评论用户标记
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
@@ -61,6 +63,9 @@ const defaults = {
   LiveUserFocus: false,
   LiveWatchTimeRec_popup: false,
   articlePartIndexDarken: false,
+  BangumiNotif:true,
+  BangumiPlan:true,
+  audioGain: true,
   uddPopUp: true,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
 };
@@ -82,7 +87,10 @@ const REG = {
 
 }
 
-//以传过来的options为主体,如果其中没有就取默认值
+/**
+ * 以传过来的options为主体做好填充,如果其中没有就取默认值
+ * @param {*} options 
+ */
 function sanitizeOptions(options) {
   for (const key in defaults) {
     if (!options.hasOwnProperty(key)) {
@@ -92,7 +100,10 @@ function sanitizeOptions(options) {
   return options;
 }
 
-//以default为主体,如果传过来的options有对应的key,就用传过来的
+/**
+ * 以default为主体,如果传过来的options有对应的key,就用传过来的
+ * @param {*} options 
+ */
 function transOptions(options) {
   for (const key in defaults) {
     if (options.hasOwnProperty(key)) {
@@ -140,8 +151,10 @@ function upMapReverse(options) {
 }
 
 //===============配置处理=================
+/**
+ * 加载所有配置项
+ */
 async function optionsLoad() {
-  //加载所有配置项
   return new Promise((resolve, reject) => {
     chrome.storage.local.get(null, (options) => {
       resolve(sanitizeOptions(options));
@@ -149,8 +162,11 @@ async function optionsLoad() {
   });
 }
 
+/**
+ * 存储读取后修改的配置
+ * @param {*} options 
+ */
 async function optionsSave(options) {
-  //存储读取后修改的配置
   return new Promise((resolve, reject) => {
     chrome.storage.local.set(transOptions(options), resolve());
   });
@@ -164,6 +180,10 @@ async function getResult() {
   });
 }
 
+/**
+ * 获取插件存储值内容
+ * @param {*} key 
+ */
 async function getStorage(key) {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get(key, (res) => {
@@ -172,6 +192,10 @@ async function getStorage(key) {
   });
 }
 
+/**
+ * 删除插件存储值内容
+ * @param {*} key 
+ */
 function delStorage(key) {
   return new Promise((resolve, reject) => {
     chrome.storage.local.remove(key, (res) => {
@@ -216,7 +240,10 @@ function localizeHtmlPage() {
   }
 }
 
-//=================助手更新状态处理===========
+/**
+ * 助手更新状态处理
+ * @param 数据从插件存储中取
+ */
 function updateVersionIcon() {
   chrome.storage.local.get(["Upgradeable"], (data) => {
     if (data.Upgradeable === 1) {
@@ -252,8 +279,11 @@ async function updateStorage(progress, id, tabId) {
   chrome.storage.local.set({ [id]: item }, function () { });
 }
 
+/**
+ * 判断浏览器类型
+ * @returns string 'FF' 'Chrome' 'IE' 'Safari' 'IE' 'MSIE'
+ */
 function myBrowser() {
-  //判断浏览器类型
   var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
   var isOpera = userAgent.indexOf("Opera") > -1;
   if (isOpera) {
@@ -366,6 +396,11 @@ function mysleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+/**
+ * 通知封装
+ * @param {*} title 
+ * @param {*} message 
+ */
 function notice(title, message) {
   chrome.notifications.create(null, {
     type: "basic",
@@ -395,17 +430,33 @@ function uuidBuild() {
   );
 }
 
-function formatDate(now) {
-  //时间戳到日期
-  var year = now.getFullYear();
-  var month = now.getMonth() + 1;
-  var date = now.getDate();
-  var hour = now.getHours();
-  return year + "-" + month + "-" + date;
+/**
+ * 时间戳到日期
+ * @tutorial 2020-10-15 19:22:13 的类似格式
+ * @param {*} now 一个时间对象new Date()
+ */
+function formatDate(now, highAccuracy = false) {
+  let year = now.getFullYear();
+  let month = now.getMonth() + 1;
+  let date = now.getDate();
+  if (!highAccuracy) {
+    return year + "-" + month + "-" + date;
+  } else {
+    let hour = now.getHours();
+    let minute = now.getMinutes();
+    let second = now.getSeconds();
+    return `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+  }
 }
 
+/**
+ * 将时间转为最近发布时间
+ * @param {*} date 毫秒时间戳
+ * @param {*} newFormat 美观样式（去掉为0部分，优化年表示部分）
+ * @param {*} highAccuracy 提高显示精度比如不只是显示一个小时，需要将显示的内容具体到一个小时3分20秒）
+ * @param {*} accuracy 高精度模式下的显示模式（s m h秒分时）
+ */
 function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy = 's') {
-  // 将时间转为最近发布时间
   let currentDate = new Date();
   let publishTime = new Date(date);
   let oneDay = 3600 * 24 * 1000;
@@ -452,8 +503,25 @@ function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy
   }
 }
 
+/**
+ * 检查今天周几
+ * @param ifToday 是否是检查今天
+ * @param dateObj 传入时间对象 new Date()的返回
+ */
+function checkDay(ifToday=true,dateObj) {
+  if(ifToday){
+    let x = new Date();
+    return x.getDay();
+  }else{
+    return dateObj.getDay();
+  }
+}
+
+/**
+ * 获取cookies中key的信息
+ * @param {*} keys 
+ */
 function getcookie(keys) {
-  //获取cookies信息
   var arr = document.cookie.split(";");
   for (var i = 0; i < arr.length; i++) {
     var ass = arr[i].split("=");
@@ -464,8 +532,10 @@ function getcookie(keys) {
   return false;
 }
 
+/**
+ * 在视频投稿中判断自己是否为Up主（DOM判断方式；还有一个使用Api的判断方式）
+ */
 function adjustVideoUp() {
-  //在视频投稿中判断自己是否为Up主（DOM判断方式；还有一个使用Api的判断方式）
   let currentUserNameEncode = getcookie("ac_username");
   if (currentUserNameEncode != "" && currentUserNameEncode != undefined) {
     let userName = decodeURI(currentUserNameEncode);
@@ -480,8 +550,10 @@ function adjustVideoUp() {
   }
 }
 
+/**
+ * 在文章投稿中判断自己是否为Up主（DOM判断方式；还有一个使用Api的判断方式）
+ */
 function adjustArticleUp() {
-  //在文章投稿中判断自己是否为Up主（DOM判断方式；还有一个使用Api的判断方式）
   let currentUserNameEncode = getcookie("ac_username");
   if (currentUserNameEncode != "" && currentUserNameEncode != undefined) {
     let userName = decodeURI(currentUserNameEncode);
@@ -497,6 +569,11 @@ function adjustArticleUp() {
   }
 }
 
+/**
+ * 将DOM转化为文本
+ * @param {*} node
+ * @returns str 
+ */
 function domToString(node) {
   var tmpNode = document.createElement("div");
   tmpNode.appendChild(node);
@@ -505,38 +582,47 @@ function domToString(node) {
   return str;
 }
 
-async function getAsyncDom(target, fn, time = 2500, infinity = true, isDev=false) {
-    let i = 0;
-    isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
-  re = (fn)=>{
-      return new Promise((resolve,reject)=>{
-        targetDom = document.getElementById(target) || document.getElementsByClassName(target).length  || $(`${target}`).length|| undefined
-        if(targetDom){
-            i = 0; 
-            isDev && console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
-            resolve(fn())
-        }else{
-            if (i >= 9000 / time) {
-                console.log(`[LOG]Common-Utils>getAsyncDom: ${target} 超时`)
-                if(!infinity) {
-                    i = 0;
-                    resolve()
-                    return
-                }
-            };
-              i++; 
-              setTimeout(() => {
-                isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target}第${i}次`);
-                resolve(re(fn));
-              }, time); 
-        }
-      })
+
+/**
+ * 监听DOM对象
+ * @param {*} target DOM对象
+ * @param {*} fn 
+ * @param {*} time 定时器周期
+ * @param {*} isDev 是否显示详细的监听文本
+ */
+async function getAsyncDom(target, fn, time = 2500, isDev = false) {
+  let i = 0;
+  isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
+  re = (fn) => {
+    return new Promise(resolve => {
+      targetDom = document.getElementById(target) || document.getElementsByClassName(target).length || $(`${target}`).length || undefined
+      if (targetDom) {
+        i = 0;
+        isDev && console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
+        resolve(fn())
+      } else {
+        if (i >= 9000 / time) {
+          i = 0;
+          isDev && resolve(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`)
+          return
+        };
+        i++;
+        setTimeout(() => {
+          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target} - 第${i}次`);
+          resolve(re(fn));
+        }, time);
+      }
+    })
   }
   return await re(fn)
 }
 
+/**
+ * 从Up名称解析为UID
+ * @param {*} upName 
+ * @returns upUrl 返回Up主的主页地址
+ */
 async function toUpInfo(upName) {
-  //从Up名称解析为UID
   let upUrl = fetch('https://www.acfun.cn/u/' + upName.toString()).then((response) => {
     let upUrl = response.url
     return upUrl
@@ -547,8 +633,10 @@ async function toUpInfo(upName) {
 // let uil =await toUpInfo('qyqx')
 //   console.log(uil)
 
-//页面位置计算;一般用来判断是否到底部 getScrollHeight() == getWindowHeight() + getDocumentTop()
-//文档高度 = 可视窗口高度 + 滚动条高度
+/**
+ * 页面位置计算
+ * @tutorial 一般用来判断是否到底部 getScrollHeight() == getWindowHeight() + getDocumentTop();文档高度 = 可视窗口高度 + 滚动条高度
+ */
 function getDocumentTop() {
   //计算文档高度
   var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
@@ -581,9 +669,12 @@ function getScrollHeight() {
   scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight; return scrollHeight;
 }
 
-
+/**
+ * fetch信息，同步返回
+ * @param {*} url 
+ * @returns 返回结果的文本内容
+ */
 async function fetchResult(url) {
-  //fetch信息，同步返回
   let result = fetch(url).then((response) => {
     return response.text();
   })
@@ -638,18 +729,34 @@ removeAPrefix = (_$targetDom) => {
   return acid
 }
 
-createElementStyle = (cssText,targetDom = document.head,id=null)=>{
-    let target = targetDom
-    let nod = document.createElement("style");
-    let str = cssText;
-    nod.type = "text/css";
-    id ? nod.id = id : null;
-    nod.textContent = str;
-    target.appendChild(nod);
-    return ()=>{ 
-        target.removeChild(document.getElementById(id)); }
+
+/**
+ * 在某个地方（默认为head下）增加一个css的style标签
+ * @param cssText CSS样式文本
+ * @param targetDom 添加于
+ * @param id css标签的ID
+ */
+createElementStyle = (cssText, targetDom = document.head, id = null) => {
+  let target = targetDom
+  let nod = document.createElement("style");
+  let str = cssText;
+  nod.type = "text/css";
+  id ? nod.id = id : null;
+  nod.textContent = str;
+  target.appendChild(nod);
+  return () => {
+    // console.log(target)
+    // console.log(id)
+    target.removeChild(document.getElementById(id));
+  }
+
 }
 
+/**
+ * 从秒钟转化为分钟
+ * @param {*} second 传入的秒钟数
+ * @returns 分钟
+ */
 function timeToMinute(second) {
   second = Math.floor(second)
   var minute;
@@ -662,7 +769,11 @@ function timeToMinute(second) {
   return minute + ":" + second;
 }
 
-//播放器浮动通知气泡
+/**
+ * 播放器浮动通知气泡
+ * @param {*} text 通知文本
+ * @param {*} importantText 带有红色的重要通知文本
+ */
 function leftBottomTip(text, importantText = "") {
   $(".left-bottom-tip")
     .eq(0)
@@ -673,5 +784,103 @@ function leftBottomTip(text, importantText = "") {
     $(".left-bottom-tip").eq(0).children().eq(0).remove(); //这样写 并不能自定义持续时间
     clearInterval(_timer);
   }, 2500);
+}
+
+/**
+ * 排序一个数组
+ * @param x 需要排序的数组
+ */
+function bubbleSort(x) {
+  // let x = [1, 4, 2, 7, 88, 54, 65]
+  let temp
+  for (let i = x.length; i > 1; --i) {
+    for (let j = 1; j < i; ++j) {
+      if (x[j] > x[j + 1]) {
+        temp = x[j]
+        x[j] = x[j + 1]
+        x[j + 1] = temp
+      }
+    }
+  }
+  return x
+}
+
+/**
+ * 队列
+ * @todo 之前想到了一个绝好的解决标签页面在后台执行失效的问题写下了这个队列的实现，但是过了几天就忘了，我现在先放在这儿，有好点子再来写完吧。
+ */
+class Queue {
+  constructor() {
+    this.dataField = [];
+    this.enter = enter;
+    this.exit = exit;
+    this.getFirst = getFirst;
+    this.getTail = getTail;
+    this.clearQueue = clear;
+    this.isEmpty = isEmpty;
+  }
+
+  /**
+   * 入队，并返回状态和其值
+   * @param 入队对象
+   * @returns bool 成功与否
+   */
+  enter(obj) {
+    let x = this.dataField.length;
+    this.dataField.push(obj);
+    if (x != this.dataField.length) {
+      return true
+    } else {
+      return false
+    }
+  }
+  /**
+   * 出队，并返回状态和其值
+   * @param none
+   * @returns {stat:bool,data}
+   */
+  exit() {
+    if (this.isEmpty()) {
+      return { stat: false, data: '' };
+    } else {
+      return { stat: true, data: this.dataField.shift() };
+    }
+  }
+  /**
+   * 获取对首元素
+   * @returns stat->是否存在:bool,data
+   */
+  getHead() {
+    if (this.dataField.length != 0) {
+      return { stat: true, data: this.dataField[0] };
+    }
+    return { stat: false, data: '' };
+  }
+  /**
+   * 获取队尾元素
+   * @returns stat->是否存在:bool,data
+   */
+  getTail() {
+    if (this.dataField.length != 0) {
+      return { stat: true, data: this.dataField[length - 1] };
+    }
+    return { stat: false, data: '' };
+  }
+  /**
+   * 队列是否为空
+   * @returns bool
+   */
+  isEmpty() {
+    if (this.dataField.length == 0) {
+      return true
+    }
+    return false
+  }
+  /**
+   * 清除队列
+   */
+  clear() {
+    delete this.dataField
+  }
 }
 

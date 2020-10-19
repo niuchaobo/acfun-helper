@@ -21,7 +21,7 @@ class Ohminibox{
                         var x = JSON.parse(result);
                         var y=[];
                     } catch (error) {
-                        console.log("[LOG]Backend-Omnibox>registerOmnibox: 没有找到关键字");
+                        console.log(`    [LOG]Backend-Omnibox>registerOmnibox: [${formatDate(new Date(),true)}] 没有找到准确的关键字`);
                     }
                     try {
                         var keywordNum = x.suggestKeywords.length;

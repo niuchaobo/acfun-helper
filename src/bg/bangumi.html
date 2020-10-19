@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="js">
+
+<head>
+    <!--页面修改于：https://www.microsoftedgeinsider.com/zh-cn/whats-new-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="initial-scale=0.8,minimum-scale=0.7,width=device-width">
+    <title>我的番剧</title>
+    <link rel="stylesheet" href="./bangumiApp/app.css">
+    <script src="js/lib/dexie.min.js"></script>
+    <script src="../common/utils.js"></script>
+    <script charset="UTF-8" src="js/modules/indexedrv.js"></script>
+    <script charset="UTF-8" src="js/bangumi-handler.js"></script>
+</head>
+
+<body class="whatsnew" dir="ltr">
+
+    <main id="primaryArea">
+        <section class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="twelve columns align-center">
+                        <h1 class="spacenator">我的番剧</h1>
+                        <p class="spacenator sh1 measure-wide mh-auto">关注了一些什么番剧呢</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="align-center block pb-5x phone-pb-3x phone-pt-2x" role="tablist">
+            <button class="tip-filter selected" role="tab" aria-selected="true" data-categoryid="all">全部</button>
+            <button class="tip-filter" role="tab" aria-selected="false" style="color: #098179; border-color: #098179;"
+                data-categoryid="broadcasting">播出中</button>
+            <button class="tip-filter" role="tab" aria-selected="false" style="color: #D83D0E; border-color: #D83D0E;"
+                data-categoryid="ended">已完结</button>
+        </div>
+
+        <section class="tips-section pt-4x phone-pt-0x">
+            <div class="tips-container snap row">
+            </div>
+        </section>
+    </main>
+    <div class="tips-mobile-popup" style="display: none;"></div>
+
+    <script id="template-tip-card" type="text/template">
+    <div class="snap-item snap-tip-card "
+        data-categoryid="<%- data.category.id %>" data-tipid="<%- data.id %>"
+        <% if (data.isNew) { %>data-isnew="true"<% } %>
+        <% if (data.isFixed) { %>data-isfixed="true"<% } %>
+        style="z-index: <%- data.z %>;" tabindex="0" aria-expanded="false">
+
+        <div class="tip-selected-overlay"></div>
+
+        <div class="tip-outer">
+            <div class="tip tip-card <% if (data.video || data.image) { %>tip-hasmedia<% } %> " aria-label="<%= data.category.text %> <%= data.title %>">
+                <div class="tip-media">
+                    <% if (data.video) { %>
+                    <video muted playsinline preload="none" src="<%= data.video %>"></video>
+                    <% } else if (data.image) { %>
+                    <img src="<%= data.image %>" alt="">
+                    <% } %>
+                   <div class="tip-thumb" <% if (data.thumb) { %>style="background-image:url('<%= data.thumb %>') !important;" <% } %>></div>
+                </div>
+
+                <div class="tip-border"></div>
+
+                <div class="tip-content">
+                    <div class="tip-category-row">
+                        <div class="tip-category tip-category-<%- data.category.id %><% if (data.isFixed) { %>-fixed<% } %>" style="color: <%- data.category.color %>">
+                            <% if (!data.isFixed) { %><span class="tip-fixed-mobile">独家</span><% } %>
+                            <% if (!data.isFixed && data.isNew) { %><span class="tip-new-mobile">独家新番</span><% } %>
+                            <span><%- data.category.text %><% if (data.isFixed) { %> - 已修复<% } %></span>
+                        </div>
+                        <% if (data.tags) { %>
+                        <div class="tip-tags">
+                            <% if (data.tags.enterprise) { %><span class="tip-tag-enterprise">付费</span><% } %>
+                            <% if (data.tags.developer) { %><span class="tip-tag-developer">免费</span><% } %>
+                        </div>
+                        <% } %>
+
+                    </div>
+
+                    <h4 class="tip-title spacenator" lang="en"><%= data.title %></h4>
+                    <div class="tip-desc">
+                        <div class="tip-desc-summary" lang="en"></div>
+                        <div class="tip-desc-full" lang="en">
+                            <div aria-label=""><%= data.description %></div>
+                            <% for(var i=0, len = data.actions ? data.actions.length : 0; i < len; i++) { %>
+                            <a href="<%= data.actions[i].url %>" target="_blank" class="tip-action button button-smallcaps" <% if (!data.actions[i].sameTab) { %>target="_blank"<%}%>><%- data.actions[i].text %></a>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="tip-more">
+                        <span>详细</span>
+                    </div>
+                </div>
+                <% if (data.acfunOnly) { %><div class="tip-fixed">独家</div><% } %>
+                <% if (!data.acfunOnly && data.isOver) { %><div class="tip-new">完结</div><% } %>
+            </div>
+
+        </div>
+    </div>
+    
+</script>
+    <script src="./bangumiApp/libs.js"></script>
+    <script src="./bangumiApp/app.js"></script>
+</body>
+
+</html>

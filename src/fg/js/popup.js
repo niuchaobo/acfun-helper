@@ -9,15 +9,15 @@ class Popup {
 
     showAt(pos) {
         let status = this.popup.style.visibility;
-        if(status=='visible'){
+        if (status == 'visible') {
             this.hide();
             return;
         }
         var obj = document.getElementById("acfun-popup-helper");
         let h = obj.contentWindow.document.body.scrollHeight;
         let margin = 2;
-        var total = h+margin*2;
-        this.popup.style.height = total+"px";
+        var total = h + margin * 2;
+        this.popup.style.height = total + "px";
         this.popup.style.right = pos.x + 'px';
         this.popup.style.top = pos.y + 'px';
         this.popup.style.visibility = 'visible';
@@ -29,8 +29,8 @@ class Popup {
     showNextTo(point, content) {
 
         this.inject();
-        this.popup.setAttribute("x",point.x);
-        this.popup.setAttribute("y",point.y);
+        this.popup.setAttribute("x", point.x);
+        this.popup.setAttribute("y", point.y);
         const elementRect = this.getRangeRect(point);
         const popupRect = this.popup.getBoundingClientRect();
 
@@ -74,15 +74,15 @@ class Popup {
         }
     }
 
-    renderPopup(pageInfo,type,isUp) {
+    renderPopup(pageInfo, type, isUp) {
         let content = '';
-        if(type=='video'){
-            let videoInfo =  pageInfo.currentVideoInfo;
+        if (type == 'video') {
+            let videoInfo = pageInfo.currentVideoInfo;
             let title = pageInfo.title;
             let tmp = videoInfo.ksPlayJson;
             let tmpJson = JSON.parse(tmp);
             let infos = tmpJson.adaptationSet[0].representation;
-            if(infos==undefined){
+            if (infos == undefined) {
                 return;
             }
             content += `<div class="odh-headsection">
@@ -94,11 +94,11 @@ class Popup {
                 <div class="odh-headsection">
                     <span class="odh-expression">视频资源</span>
                 </div>`;
-            for(const info of infos){
+            for (const info of infos) {
                 let vedioUrl = info.url;
                 let id = hex_md5(vedioUrl);
-                let barId = id+"-bar";
-                let progressText = id+"-text";
+                let barId = id + "-bar";
+                let progressText = id + "-text";
                 let qualityLabel = info.qualityLabel;
                 content += `<div class="odh-definition">
                             <ul class="ec">
@@ -113,10 +113,10 @@ class Popup {
                         </div>`;
             }
         }
-        if(type=='live'){
+        if (type == 'live') {
             //直播测试
-            let src = chrome.runtime.getURL('/')+"bg/images/copy_link.png";
-            content+=`
+            let src = chrome.runtime.getURL('/') + "bg/images/copy_link.png";
+            content += `
             <div class="odh-headsection">
                     <span class="odh-expression">桌面版AcFun-Live程序</span>
                     <span style="margin-left: 20px;color:#d69acc" id="exec-live-msg"></span></div>
@@ -148,23 +148,23 @@ class Popup {
                 </div>
                 `;
         }
-        let html = this.popupHeader(type)+content;
-        if(type!='live'){
-            html+=this.popComment();
+        let html = this.popupHeader(type) + content;
+        if (type != 'live') {
+            html += this.popComment();
         }
         //抽奖部分
-        if(isUp==1){
-            html+=this.popLottery();
+        if (isUp == 1) {
+            html += this.popLottery();
         }
-        html+=this.popupFooter(type);
+        html += this.popupFooter(type);
         this.setContent(html);
     }
 
-    popComment(){
-        let {mark,scan,receive} = this.options;
-        let m = mark?"checked":"";
-        let s = scan?"checked":"";
-        let r = receive?"checked":"";
+    popComment() {
+        let { mark, scan, receive } = this.options;
+        let m = mark ? "checked" : "";
+        let s = scan ? "checked" : "";
+        let r = receive ? "checked" : "";
 
         return `<div class="odh-headsection">
                     <span class="odh-expression">评论才是本体</span>
@@ -193,8 +193,8 @@ class Popup {
                 `;
     }
 
-    popLottery(){
-        let src = chrome.runtime.getURL('/')+"bg/images/copy_link.png";
+    popLottery() {
+        let src = chrome.runtime.getURL('/') + "bg/images/copy_link.png";
         let str = "[img=图片]https://imgs.aixifan.com/content/2020_05_25/1.5904184183999112E9.jpg[/img]"
         return `<div class="odh-headsection">
                     <span class="odh-expression">评论区抽奖</span>
@@ -203,7 +203,9 @@ class Popup {
                      <label>
                         <span>抽多少个Acer :</span>
                         <input id="lucy-number" type="text" autocomplete="off" name="number" placeholder="请输入数字"/></label>
+                        <!--
                         <label>仅抽选已关注我的Acer：<input id="lucky-follow" style="vertical-align:top" name="follower" type="checkbox" value="" /></label>
+                        -->
                         <!--<label>
                         <span>是否需要关注Up主 :</span> 
                         <input id="lucy-follow" type="checkbox" name="uniq" />
@@ -223,7 +225,7 @@ class Popup {
 
     popupHeader(type) {
         let root = chrome.runtime.getURL('/');
-        let fn = ()=>{
+        let fn = () => {
             /*if(type=='live'){
                 return `<link rel="stylesheet" href="${root+'lib/video-js.css'}">`;
             }*/
@@ -232,9 +234,9 @@ class Popup {
         return `
         <html lang="en">
             <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title></title>
-                <link rel="stylesheet" href="${root+'fg/css/checkbox.css'}">
-                <link rel="stylesheet" href="${root+'fg/css/frame.css'}">
-                <link rel="stylesheet" href="${root+'fg/css/lucy.css'}">
+                <link rel="stylesheet" href="${root + 'fg/css/checkbox.css'}">
+                <link rel="stylesheet" href="${root + 'fg/css/frame.css'}">
+                <link rel="stylesheet" href="${root + 'fg/css/lucy.css'}">
                 ${fn()}
             </head>
             <body style="margin:0px;">
@@ -243,7 +245,7 @@ class Popup {
 
     popupFooter(type) {
         let root = chrome.runtime.getURL('/');
-        let fn = ()=>{
+        let fn = () => {
             /*if(type=='live'){
                 return `<script charset="UTF-8" src="${root+'lib/video.js'}"></script>
                         <script charset="UTF-8" src="${root+'lib/videojs-contrib-hls.min.js'}"></script>
@@ -255,9 +257,9 @@ class Popup {
         return `
             </div>
             ${fn()}
-            <script charset="UTF-8" src="${root+'lib/jquery-3.5.0.min.js'}"></script>
-            <script charset="UTF-8" src="${root+'bg/js/jqueryExtend.js'}"></script>
-            <script charset="UTF-8" src="${root+'fg/js/frame.js'}"></script>
+            <script charset="UTF-8" src="${root + 'lib/jquery-3.5.0.min.js'}"></script>
+            <script charset="UTF-8" src="${root + 'bg/js/jqueryExtend.js'}"></script>
+            <script charset="UTF-8" src="${root + 'fg/js/frame.js'}"></script>
             </body>
         </html>`;
     }
@@ -275,7 +277,7 @@ class Popup {
         this.popup = document.createElement('iframe');
         this.popup.id = 'acfun-popup-helper';
         this.popup.addEventListener('mousedown', (e) => e.stopPropagation());
-        this.popup.addEventListener('scroll', (e) => e.stopPropagation(),false);
+        this.popup.addEventListener('scroll', (e) => e.stopPropagation(), false);
 
         //this.wapper.appendChild(this.popup);
         try {
@@ -283,10 +285,10 @@ class Popup {
         } catch (TypeError) {
             var UidInCookies = 0;
         }
-        chrome.storage.local.set({LocalUserId : `${UidInCookies}`});
+        chrome.storage.local.set({ LocalUserId: `${UidInCookies}` });
 
-        window.addEventListener('scroll', (e) => e.stopPropagation(),{ passive: true });
-        let root =  document.body;
+        window.addEventListener('scroll', (e) => e.stopPropagation(), { passive: true });
+        let root = document.body;
         root.appendChild(this.popup);
     }
 }

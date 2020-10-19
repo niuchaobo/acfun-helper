@@ -219,19 +219,7 @@ function beautifyUi() {
         $('.div-personal-switch h3').css('color', '#ccc');
     }
 
-    if (show_like) {
-        $('#like-switch').addClass('switch-close').attr('src', 'images/on.png');
-        $('.div-like-switch').css('background', '#fff');
-        $('#like-switch-l p').css('color', '#333');
-        $('.div-like-switch h3').css('color', '#333');
-    } else {
-        $('#like-switch').addClass('switch-open').attr('src', 'images/off.png');
-        $('.div-like-switch').css('background', '#ededed');
-        $('#like-switch-l p').css('color', '#ccc');
-        $('.div-like-switch h3').css('color', '#ccc');
-    }
 }
-
 
 function customVideoUi(){
     if (custom_rate) {
@@ -286,7 +274,6 @@ function restore_options() {
         filterUps = upMap(items);
         beautify_nav = options['beautify_nav'];
         beautify_personal = options['beautify_personal'];
-        show_like = options['show_like'];
         custom_rate = options['custom_rate'];
         player_mode = options['player_mode'];
 
@@ -396,6 +383,24 @@ function restore_options() {
     });
 }
 
+    //=====================自动投蕉后同时给Up主的投稿点赞===================
+    chrome.storage.local.get(['LikeAfterBanna'],function(items){
+        var LikeAfterBanna= items.LikeAfterBanna;
+        if(LikeAfterBanna){
+            document.getElementById('LikeAfterBanna').checked='true';
+        }else{
+            document.getElementById('LikeAfterBanna').checked=false;
+        }
+        $('#LikeAfterBanna').on('click', function () {
+            if(!document.getElementById('LikeAfterBanna').checked){
+                document.getElementById('LikeAfterBanna').checked=false;
+                chrome.storage.local.set({'LikeAfterBanna':false});
+            }else{
+                document.getElementById('LikeAfterBanna').checked=true;
+                chrome.storage.local.set({'LikeAfterBanna':true});
+            }
+        });
+    });
 
 $(document).ready(function () {
     restore_options();
@@ -661,32 +666,6 @@ $(document).ready(function () {
             });
         }
     });
-
-    $('#like-switch-r').click(function () {
-        if (show_like) {
-            options.show_like=false;
-            chrome.storage.local.set({
-                'show_like':false
-            }, function () {
-                // location.reload();
-                show_like = false;
-                beautifyUi();
-                odhback().opt_optionUpdate(options);
-            });
-        } else {
-            /* globals bridge */
-            options.show_like=true;
-            chrome.storage.local.set({
-                'show_like':true
-            }, function () {
-                // location.reload();
-                show_like = true;
-                beautifyUi();
-                odhback().opt_optionUpdate(options);
-            });
-        }
-    });
-
 
     $('#rate-switch-r').click(function () {
         if (custom_rate) {
@@ -1125,7 +1104,7 @@ $(document).ready(function () {
         });
     })
 
-    //=====================直播评论时间Tag============================
+    //=====================直播评论临时标记============================
     chrome.storage.local.get(['LiveUserFocus'],function(items){
         var LiveUserFocus= items.LiveUserFocus;
         if(LiveUserFocus){
@@ -1382,6 +1361,25 @@ $(document).ready(function () {
         });
     });
 
+    //====================视频播放器倍率音量放大===============
+    chrome.storage.local.get(['audioGain'],function(items){
+        var audioGain= items.audioGain;
+        if(audioGain){
+            document.getElementById('audioGain').checked='true';
+        }else{
+            document.getElementById('audioGain').checked=false;
+        }
+        $('#audioGain').on('click', function () {
+            if(!document.getElementById('audioGain').checked){
+                document.getElementById('audioGain').checked=false;
+                chrome.storage.local.set({'audioGain':false});
+            }else{
+                document.getElementById('audioGain').checked=true;
+                chrome.storage.local.set({'audioGain':true});
+            }
+        });
+    });
+
     //====================自动续播==================
     chrome.storage.local.get(['endedAutoJumpRecommandFirstDougasw'],function(items){
         var endedAutoJumpRecommandFirstDougasw= items.endedAutoJumpRecommandFirstDougasw;
@@ -1511,7 +1509,6 @@ $(document).ready(function () {
     if(JSON.stringify(items) == '{}'){
         let a={}
         chrome.storage.local.set({'liveFloowings':a});
-        mdui.alert("列表初始化完成，请刷新页面");
     }else{
     $('#liveFollowAdd').on('click', function () {
         mdui.prompt('请输入你需要关注的用户UID', '添加关注',
@@ -1655,6 +1652,44 @@ $(document).ready(function () {
         })
     });
     
+    //====================番剧计划===============
+    chrome.storage.local.get(['BangumiPlan'],function(items){
+        var BangumiPlan= items.BangumiPlan;
+        if(BangumiPlan){
+            document.getElementById('BangumiPlan').checked='true';
+        }else{
+            document.getElementById('BangumiPlan').checked=false;
+        }
+        $('#BangumiPlan').on('click', function () {
+            if(!document.getElementById('BangumiPlan').checked){
+                document.getElementById('BangumiPlan').checked=false;
+                chrome.storage.local.set({'BangumiPlan':false});
+            }else{
+                document.getElementById('BangumiPlan').checked=true;
+                chrome.storage.local.set({'BangumiPlan':true});
+            }
+        });
+    });
+
+    //====================番剧更新提醒===============
+    chrome.storage.local.get(['BangumiNotif'],function(items){
+        var BangumiNotif= items.BangumiNotif;
+        if(BangumiNotif){
+            document.getElementById('BangumiNotif').checked='true';
+        }else{
+            document.getElementById('BangumiNotif').checked=false;
+        }
+        $('#BangumiNotif').on('click', function () {
+            if(!document.getElementById('BangumiNotif').checked){
+                document.getElementById('BangumiNotif').checked=false;
+                chrome.storage.local.set({'BangumiNotif':false});
+            }else{
+                document.getElementById('BangumiNotif').checked=true;
+                chrome.storage.local.set({'BangumiNotif':true});
+            }
+        });
+    });
+
     //===================直播屏蔽配置相关==========================//
     chrome.storage.local.get(['liveBansw'],function(items){
         var liveBans_status= items.liveBansw;
@@ -1888,6 +1923,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('fetchPushList_daemonsw').checked=true;
                 chrome.storage.local.set({'fetchPushList_daemonsw':true});
+            }
+        });
+    });
+    
+    //====================插件系统定时器===================
+    chrome.storage.local.get(['krnl_globalTimer'],function(items){
+        var krnl_globalTimer= items.krnl_globalTimer;
+        if(krnl_globalTimer){
+            document.getElementById('krnl_globalTimer').checked='true';
+        }else{
+            document.getElementById('krnl_globalTimer').checked=false;
+        }
+        $('#krnl_globalTimer').on('click', function () {
+            if(!document.getElementById('krnl_globalTimer').checked){
+                document.getElementById('krnl_globalTimer').checked=false;
+                chrome.storage.local.set({'krnl_globalTimer':false});
+            }else{
+                document.getElementById('krnl_globalTimer').checked=true;
+                chrome.storage.local.set({'krnl_globalTimer':true});
             }
         });
     });
