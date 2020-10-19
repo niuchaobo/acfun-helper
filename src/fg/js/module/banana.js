@@ -6,21 +6,21 @@ class Banana {
         this.reqBananaNum = 0;
     }
 
-    judgeIfSelectUp(options, select) {
+    judgeIfSelectUp(options, select, dougaType = "video") {
         var up_name = '';
         var banana_num = 0;
         if (select) {
             //判断是否为已关注up主
-            let followed = document.getElementsByClassName('follow-up followed');
+            let followed = dougaType == "video" ? document.getElementsByClassName('follow-up followed') : document.getElementsByClassName('focus alfocus')
             if (!followed || followed.length <= 0) {
                 return { state: false }
             }
-            up_name = document.getElementsByClassName('up-name')[0].innerText;
+            up_name = document.getElementsByClassName('up-name')[0].innerText
             banana_num = options.to_attention_num;
             return { state: true, name: up_name, num: banana_num };
         } else {
             //判断是否为指定up主
-            let up_url = document.getElementsByClassName('up-name')[0].href;
+            let up_url = dougaType == "video" ? document.getElementsByClassName('up-name')[0].href : document.getElementsByClassName('upname')[0].href.replace(".aspx","")
             let flag = false;
             let special_items = options.to_special_items;
             for (let item of special_items) {
@@ -38,32 +38,32 @@ class Banana {
         }
     }
 
-    LikeHeartFront() {
+    LikeHeartFront(Mode = "video") {
         let options = window.odhfront.options;
         let LikeType = options.LikeHeartClass;
         if (LikeType == "0") {
-            this.clickLike();
+            this.clickLike(Mode);
         } else if (LikeType == "1") {
-            let x = this.judgeIfSelectUp(options, true)
+            let x = this.judgeIfSelectUp(options, true, Mode)
             if (x.state) {
-                this.clickLike();
+                this.clickLike(Mode);
             }
         } else if (LikeType == "2") {
-            let x = this.judgeIfSelectUp(options, false)
+            let x = this.judgeIfSelectUp(options, false, Mode)
             if (x.state) {
-                this.clickLike();
+                this.clickLike(Mode);
             }
         }
     }
 
-    clickLike() {
-        var arrLike = document.getElementsByClassName('like active');
+    clickLike(dougaType = "video") {
+        var arrLike = dougaType == "video" ? document.getElementsByClassName('like active') : document.getElementsByClassName('likecount active')
         if (arrLike.length == 0) {
             //点赞操作 因为如果用API请求方式去点赞的话需要请求acfun.midground.st信息，暂时没有研究透，就先用点击了。
-            document.querySelector('div.like').click();
+            dougaType == "video" ? document.querySelector('div.like').click() : document.querySelector('.likecount').click();
             //改变页面上的点赞状态和数量
             $('.right-area .like').addClass('active');
-            document.querySelector(".likeCount").innerText = Number(document.querySelector(".likeCount").innerText) + 1;
+            dougaType == "video" ? document.querySelector(".likeCount").innerText = Number(document.querySelector(".likeCount").innerText) + 1 : "";
             let action = "notice";
             let msg = '成功点了个赞';
             let p = {
