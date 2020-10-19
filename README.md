@@ -15,7 +15,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 #### 公告
 
 > 1. 评论抽奖已经完善。（2020-08-09 12：08 排除上次抽奖结果的功能已加入，到底需不需要迁移随机数生成方案@wpscott 在[#issue70](https://github.com/niuchaobo/acfun-helper/issues/70) 已经给出了说明。）
-> 2. 我们插件开发组迫切需要会进行**开发**和**设计**的同志，如有兴趣，请直接加入我们的群或者提交 pr 哦 (=ﾟ ω ﾟ)=。
+> 2. 插件开发组迫切需要会**开发**和**设计**的同志，如有兴趣，请加入我们群或提交 pr 哦 (=ﾟ ω ﾟ)=。
 ---
 
 #### 主要功能
@@ -25,7 +25,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
   1. 首页增加**右侧导航栏**，方便快速跳转至目标分区。
   2. **个人中心入口增强**,显示你的听众、香蕉、金香蕉、UID、直播间入口等信息。
-  3. ~~~视频投稿页面**显示点赞数**信息。~~~(2020-10-12)    
+  3. <del>视频投稿页面**显示点赞数**信息。</del>(2020-10-12)    
   4. **评论区标记**,在评论区给 Up 添加一个蓝色标记。（终于不用翻到顶看看 Up 主是谁了，然来 Up 和我互动了？）
   5. **文章区 Up 屏蔽**,（你说的对，但是说得太不好听了吧( ´\_ゝ`)）
   6. 为用户中心首页增加动态标签，可以获取不超过30条的近期动态。(只能看不能说，不太hang)    
@@ -79,7 +79,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
   1. 配置文件导入导出。【插件配置（包含了屏蔽列表，Up 主标记列表和自动投蕉、播放器自动化配置）、播放器配置（弹幕关键词屏蔽列表、播放器配置等）】   
   2. 一键清除插件配置。（点击即爆炸，如若未想好，千万别输 Y）   
   3. 网络同步插件配置。（可以与服务器来同步配置了！）【服务器后端适配中和问题修复中，上线时间另定...】   
-  4. 联合**AcFun 直播桌面通知和下载助手**桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将 Up 加入/移出 开播通知列表中。   
+  4. <del>联合**AcFun 直播桌面通知和下载助手**桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将 Up 加入/移出 开播通知列表中。 </del>  (程序已开发了自带的UI，请使用其自带UI获得更好的体验，2020-10-18)
   5. 可选提前加载助手前台模块   
 
 ---
@@ -91,7 +91,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
     - 评论投票图表
     - 评论编辑器快捷键发送
     - 为评论时间播放器快速跳转添加一个点击后自动翻到播放器位置的开关或者对话框【在点开的评论加个提示 比方说【刚刚看到这里】 又或者拉上去之后在空白的地方加一个按钮【返回刚刚的评论】 之类的】
-    - 添加 稿件下抽奖、画中画模式、插件直播通知、地址栏（omnibox）支持【浏览器跳转】、弹幕下载、画质策略、弹幕搜索、评论区时间播放器快速跳转、直播时间Tag、AB回放、弹幕发送者主页跳转、全局进度条、、稍后再看 功能的使用说明
+    - 添加 稿件下抽奖、画中画模式、插件直播通知、地址栏（omnibox）支持【浏览器跳转】、弹幕下载、画质策略、弹幕搜索、评论区时间播放器快速跳转、直播时间Tag、AB回放、弹幕发送者主页跳转、全局进度条、稍后再看、倍率音量、番剧计划、小广场、 功能的使用说明
 
 ---
 
@@ -107,13 +107,13 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 #### 安装方法
 
-假如你能直接连接到下载地址，则直接安装；
+假如你能直接连接到扩展/插件商店，则直接安装；
 
-否则
+否则，先打开 Chrome 浏览器（或者同为 Chromium 内核的浏览器），打开插件管理的“开发人员模式”(或者“开发者模式”)；然后
 
-方法一：打开 Chrome 浏览器（或者同为 Chromium 内核的浏览器），地址栏输入 chrome://extensions/ （不同的浏览器可能地址不同，如 Chromium 内核的 Edge 浏览器的扩展管理页面为 edge://extensions/ ）将.crx 的文件拖拽到浏览器中间，会出现拖拽以安装的提示，如果浏览器能直接安装即成功，如果不能安装，或者提示只能通过 Chrome 网上应用商店安装该程序，请参照方法二
+方法一：，地址栏输入 chrome://extensions/ （不同的浏览器可能地址不同，如 Chromium 内核的 Edge 浏览器的扩展管理页面为 edge://extensions/ ）将.crx 的文件拖拽到浏览器中间，会出现拖拽以安装的提示，如果浏览器能直接安装即成功，如果不能安装，或者提示只能通过 Chrome 网上应用商店安装该程序，请参照方法二
 
-方法二：将.crx 的文件的扩展名改为.zip，并解压到指定的文件夹（这个文件夹不能删除！！！！【而且更新的时候你可以关掉浏览器再删掉内容再覆盖新版本的文件，注意只有在关闭浏览器的时候才能删除哦，这样就不会损失配置文件了。但是更建议使用配置导出。】）例如解压到了 test 文件夹，打开浏览器，地址栏输入 chrome://extensions/ （进入扩展管理页面）, 勾择开发者模式，点击'加载已解压的扩展程序'，选择到你刚刚.zip 文件解压出来的的 test 文件夹，点击确定。扩展程序列表随即出现你导入的扩展程序，并在地址栏旁的工具栏会显示一个红色的‘A’字母图标，即为成功。
+方法二：将.crx 的文件的扩展名改为.zip，并解压到指定的文件夹（这个文件夹不能删除！！！！【而且更新的时候你可以关掉浏览器再删掉内容再覆盖新版本的文件；注意只有在关闭浏览器的时候才能删除哦，这样就不会丢失配置文件了，或者使用配置导出。】）；例如解压到了 test 文件夹，打开浏览器，地址栏输入 chrome://extensions/ （进入扩展管理页面）, 点击'加载已解压的扩展程序'，选择到你刚刚.zip 文件解压出来的的 test 文件夹，点击确定。扩展程序列表随即出现你导入的扩展程序，并在地址栏旁的工具栏会显示一个红色的‘A’字母图标，即为成功。
 
 ---
 
@@ -126,14 +126,6 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 3. 输入 - （<=对，这就是一个减号），然后直接接 ac 号，跳转【注意，番剧的 ac 号还没有做适配，所以番剧跳转是没有的哦】;例如：-ac16240438
 [返回功能介绍](#searchBarBack)
 ---
-
-#### 如何与 acfunlive 程序协作
-
-> 首先我们找到 acfunlive 所下载的路径（找到名为 acfunlive.exe 所在的目录），然后我们按住 shift + 右键 ，右键菜单会有一条“在此处打开命令行窗口”（windows 10 版本的显示为“在此处打开 powershell 窗口”），然后点击进入，在命令行窗口中输入“./acfunlive.exe -web -listen”（powershell 则输入：“.\acfunlive.exe -web -listen”），然后保持命令行窗口后台运行即可。
-
-> 如果还想查看其它用法可以在命令行中输入“./acfunlive.exe -h”。更多食用方法请在下面的#相关项目 的项目地址中查看。
-
----
 <a id='connect'></a>
 #### 联系我们 
 
@@ -144,7 +136,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 #### 加入我们
 
     - 提个 Issue
-    - 直接在群内吐槽
+    - 在群内吐槽、贡献点子
     - 直接提交 Pull Request
 
 #### 开源许可证
@@ -165,9 +157,9 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 独立项目：
 
-##### @orzogc - [acfunlive AcFun直播通知和下载助手](https://github.com/orzogc/acfunlive "项目地址")
-
 ##### @wpscott - [AcfunDanmu AcFun 直播弹幕工具](https://github.com/wpscott/AcFunDanmaku "项目地址")
+
+##### @orzogc - [acfunlive AcFun直播通知和下载助手](https://github.com/orzogc/acfunlive "项目地址")
 
 ##### @ShigemoriHakura - [aclivechat AcFun直播弹幕姬 For OBS](https://github.com/ShigemoriHakura/aclivechat "项目地址")
 
@@ -175,18 +167,13 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 ---
 
-### 致谢（版面原因仅列出十位）
+### 致谢
 
-    * @heixiaobai https://github.com/heixiaobai
-    * @Sokwva https://github.com/Sokwva
     * @Sinyupl https://github.com/Sinyupl
-    * @condy0919 https://github.com/condy0919
-    * @orzogc https://github.com/orzogc
-    * @BDPO https://github.com/BDPO
-    * @DontBeAlarmed https://github.com/DontBeAlarmed
     * @wpscott https://github.com/wpscott
-    * @NocKit https://github.com/NocKit
-    * @SingSky https://github.com/SingSky
+    * @orzogc https://github.com/orzogc
+    * @condy0919 https://github.com/condy0919
+    * @catshitz https://github.com/catshitz
 
 ---
 

@@ -10,6 +10,7 @@ class WatchPlan {
         this.tabStateDic = {};
         this.ori_list = {};
         this.livePageWatchTimeRecList = {};
+        this.bananaTask = {};
     }
 
     onLoad() {
@@ -52,10 +53,12 @@ class WatchPlan {
         var sw = await getStorage("watchLater");
         if (!sw.watchLater) { this.OpFlag = false; return }
         var ori_list = await getStorage("WatchPlanList");
+        //假如任务队列为空，则先构造一个列表
         if (ori_list.WatchPlanList == null) {
             chrome.storage.local.set({ WatchPlanList: [] });
             ori_list = await getStorage("WatchPlanList");
         }
+        //假如传入数据（链接）为视频、文章、用户首页 并且 其不是先存在于任务队列中的数据 就假如队列，并修改操作状态信息为 是
         if ((REG.video.test(data) || REG.article.test(data) || REG.userHome.test(data)) && !this.ifExist(ori_list.WatchPlanList, data)) {
             ori_list.WatchPlanList.push(data)
             chrome.storage.local.set({ "WatchPlanList": ori_list.WatchPlanList });
@@ -124,7 +127,7 @@ class WatchPlan {
     // }
 
     /**
-     * 维护
+     * 将直播观看起始信息写入类中
      * @param {*} params 
      */
     livePageWatchTimeRec(params) {
@@ -165,6 +168,26 @@ class WatchPlan {
         return true
     }
 
+    async connectAcFunQmlByUrlScheme(url) {
+        if (REG.videoAndBangumi.test || Reg.article.test) {
+            console.log(url)
+            let x = RegExp("/ac(.*)")
+            let y = x.exec(url)
+            if (y != null) {
+                chrome.tabs.create({ url: "AcFunQml://" + y[1] }, (e) => { });
+                var msg = "启动中"
+            } else {
+                var msg = "不是稿件"
+            }
+            chrome.notifications.create(null, {
+                type: 'basic',
+                iconUrl: 'images/notice.png',
+                title: 'AcFun 助手',
+                message: msg,
+            });
+        }
+    }
+
     /**
      * 主站标签整理
      * @param {*} mainWindowId 主窗口ID
@@ -195,6 +218,54 @@ class WatchPlan {
                 }
             })
         })
+    }
+
+    /**
+     * 渐进式投蕉的后端接收函数
+     * @todo 很多事....
+     * @param {*} action 
+     * @param {*} url 
+     */
+    ProgressiveBananaRemote(action, url) {
+        let x = new RegExp("/v/ac(.*)")
+        let acId = x.exec(url)[1];
+        switch (action) {
+            case 0:
+                var bananaNum = 1
+                break;
+            case 1:
+                var bananaNum = 2
+                break;
+            case 2:
+                var bananaNum = 3
+                break;
+            case 3:
+                var bananaNum = 4
+                break;
+            case 4:
+                var bananaNum = 5
+                break;
+            case 5:
+                var bananaNum = 5
+                break;
+            case 'Heart':
+                break;
+        }
+        this.bananaTask[`${String(acId)}`] = { acId, bananaNum };
+        console.log(this.bananaTask)
+        this.ProgressiveBananaBackendMain();
+    }
+    
+    /**
+     * 投蕉的后台实现，需要使用任务队列
+     */
+    ProgressiveBananaBackendMain() {
+        let x = Object.keys(this.bananaTask);
+        for (let i = 0; i < x.length; i++) {
+            // bananaThrow(x[i],this.bananaTask[x[i]])
+            console.log(this.bananaTask[x[i]]);
+        }
+        console.log("no thing")
     }
 
     xpGraph() {

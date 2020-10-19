@@ -1376,6 +1376,7 @@ $(document).ready(function () {
             }else{
                 document.getElementById('audioGain').checked=true;
                 chrome.storage.local.set({'audioGain':true});
+                mdui.alert("启用此功能会导致与主站的“高级音效”冲突，确定要启用吗");
             }
         });
     });

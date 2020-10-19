@@ -2,6 +2,7 @@ const defaults = {
   enabled: true,//开启关闭插件
   auto_throw: false,
   LikeAfterBanna: true,
+  LikeHeart:false,
   to_attention: true,
   to_attention_num: 5,
   to_special_items: [],
@@ -753,6 +754,29 @@ createElementStyle = (cssText, targetDom = document.head, id = null) => {
 }
 
 /**
+ * 投蕉
+ * @param {*} params == {key:稿件Id}
+ * @param {*} banana_num  投蕉数
+ */
+async function bananaThrow(params, banana_num) {
+  //投蕉操作
+  let { key, callback } = params;
+  let header = new Map();
+  header.set("Content-Type", "application/x-www-form-urlencoded");
+  let data = "resourceId=" + key + "&count=" + banana_num + "&resourceType=2";
+  let result = await ajax('POST', "https://www.acfun.cn/rest/pc-direct/banana/throwBanana", data, header);
+  let res_obj = JSON.parse(result);
+  if (res_obj == undefined || res_obj.extData == undefined || res_obj.extData.bananaRealCount == undefined) {
+      return false;
+  }
+  //改变页面上的投蕉状态和数量
+  $('.right-area .banana').addClass('active');
+  document.querySelector(".bananaCount").innerText = Number(document.querySelector(".bananaCount").innerText) + Number(banana_num);
+  return true;
+}
+
+
+/**
  * 从秒钟转化为分钟
  * @param {*} second 传入的秒钟数
  * @returns 分钟
@@ -812,12 +836,12 @@ function bubbleSort(x) {
 class Queue {
   constructor() {
     this.dataField = [];
-    this.enter = enter;
-    this.exit = exit;
-    this.getFirst = getFirst;
-    this.getTail = getTail;
-    this.clearQueue = clear;
-    this.isEmpty = isEmpty;
+    this.enter = this.enter;
+    this.exit = this.exit;
+    this.getFirst = this.getFirst;
+    this.getTail = this.getTail;
+    this.clearQueue = this.clear;
+    this.isEmpty = this.isEmpty;
   }
 
   /**

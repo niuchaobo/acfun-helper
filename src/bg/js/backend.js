@@ -109,6 +109,17 @@ class ODHBack {
             }
         });
 
+        // chrome.contextMenus.create({
+        //     title: '从AcFunQml桌面客户端打开', 
+        //     contexts: ['link'], 
+        //     id:'3',
+        //     onclick: (params) =>{
+        //         let link_url = params.linkUrl;
+        //         this.WatchPlan.connectAcFunQmlByUrlScheme(link_url).then(()=>{
+        //         });
+        //     }
+        // });
+
         //当激活某个tab页时
         chrome.tabs.onActivated.addListener(function (tab) {
             let tabId = tab.tabId;
@@ -288,16 +299,18 @@ class ODHBack {
         this.WatchPlan.livePageWatchTimeRec(params);
     }
 
-    api_delLiveWatchTimeListItem(params){
-        this.WatchPlan.livePageWatchTimeRec(params.tabid);
-    }
-
     api_attentionTabs(params){
         return this.WatchPlan.attentionTabs(params.windowId);
     }
 
     api_updateLiveWatchTimeListItem(){
         return this.WatchPlan.updateLiveWatchTimeList();
+    }
+
+    api_progressiveBananaCall(params){
+        console.log("backend!")
+        let {action,url} = params
+        return this.WatchPlan.ProgressiveBananaRemote(action,url);
     }
 
     async api_initBackend(params) {
