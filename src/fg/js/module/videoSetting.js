@@ -7,6 +7,7 @@ class VideoSetting {
     this.underWorld = null;
     this.audioNodeGainFlag = false;
     this.audioOriginVolume = 0;
+    this.reqBananaNum = 0;
     this.progressBarOptions = {
       id: "achlp-proBar",
       css:
@@ -488,7 +489,7 @@ class VideoSetting {
         "body #main #main-content .left-column{width:100% !important;max-width:100%}" +
         ".ac-comment-usercard .area-comm-usercard-bottom{mix-blend-mode:exclusion}" +
         "body #main #main-content .right-column{position:absolute;right:-342px;top:160px;padding-left:1px;transition-duration:.2s;border-left:'6px  solid rgba(62, 62, 62, 0.4)'}" +
-        "body #main #main-content .right-column:hover{right: 0px; background:white; border-left-width:0px }"+
+        "body #main #main-content .right-column:hover{right: 0px; background:white; border-left-width:0px }" +
         ".ac-pc-comment{padding-right:15px}" +
         "#toolbar{transform:scale(0.8);transform-origin:bottom right}" +
         ".player-box,.nav-parent,.video-description{border-bottom-color:white}" +
@@ -580,9 +581,60 @@ class VideoSetting {
     );
   }
 
+  /**
+   * 渐进式投蕉主函数
+   * @param {*} banana 
+   * @param {*} heart 
+   * @param {*} allowShortVideo 
+   */
+  async ProgressiveBananaExec(banana, heart, allowShortVideo = false) {
+    let targetVideo = document.getElementsByTagName("video")[0];
+    let data = { bananaPercent: banana, heartPercent: heart }
+    let state = { bananaThis: 0, heartThis: false }
+    targetVideo.addEventListener('timeupdate', this.ProgressiveBananaMain.bind(null, data, state), false);
+    targetVideo.addEventListener('ended', this.ProgressiveBananaDone.bind(null), false);
+  }
+  async ProgressiveBananaDone() {
+    chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 5, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+  }
+  async ProgressiveBananaMain(data, state) {
+    let videoDuration = document.getElementsByTagName("video")[0].duration;
+    let nowPlayTime = document.getElementsByTagName("video")[0].currentTime;
+    let percent = Math.floor((nowPlayTime / videoDuration) * 1000)
+    console.log(percent)
+    if (percent >= data.heartPercent[0] && !state.heartThis) {
+      console.log("heart this")
+      chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: "Heart", url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+      state.heartThis = true;
+    }
+    if (percent >= data.bananaPercent[0] && state.bananaThis == 0) {
+      console.log(10)
+      chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 1, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+      state.bananaThis = 1;
+    } else if (percent >= data.bananaPercent[1] && state.bananaThis == 1) {
+      console.log(20)
+      chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 2, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+      state.bananaThis++
+    } else if (percent >= data.bananaPercent[2] && state.bananaThis == 2) {
+      console.log(30)
+      chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 3, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+      state.bananaThis++
+    } else if (percent >= data.bananaPercent[3] && state.bananaThis == 3) {
+      console.log(40)
+      chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 4, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+      state.bananaThis++
+    } else if (percent >= data.bananaPercent[4] && state.bananaThis == 4) {
+      console.log(50)
+      chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 5, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
+      state.bananaThis++
+    } else if (state.bananaThis == 5) {
+      console.log("Ok")
+    }
+  }
 
   /**
    * 倍率扩大音量 & UI
+   * @description 这个功能会重新挂接音频处理上下文的图，所以会导致主站播放器的高级音效失效，望周知
    */
   audioNodeGain() {
     // 使用Web Audio API放大视频音量(超过100%之类的需求) TODO:制作交互以及设置页面的开关
