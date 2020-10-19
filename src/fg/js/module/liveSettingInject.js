@@ -1,4 +1,4 @@
-let liveFunnction = (function () {
+let liveFunction = (function () {
   let testLive = new RegExp("https://live.acfun.cn/live/*").test(
     window.location.href
   );
@@ -26,7 +26,7 @@ let liveFunnction = (function () {
   }, 2000);
 
   //调用画中画模式(其实跟video是一个函数)
-  function l_setPictureInPictureMod() {
+  function l_setPictureInPictureMode() {
     let v = document.getElementsByTagName("video")[0];
     v.requestPictureInPicture();
     console.log(
@@ -34,9 +34,9 @@ let liveFunnction = (function () {
     );
   }
   return {
-      l_setPictureInPictureMod
+      l_setPictureInPictureMode
   }
 })();
 let {
-    l_setPictureInPictureMod
-} = {...liveFunnction}
+    l_setPictureInPictureMode
+} = {...liveFunction}
