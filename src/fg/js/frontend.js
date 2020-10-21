@@ -226,11 +226,14 @@ class ODHFront {
 			if (this.options[curKeyName]) {
 				this.ce.immedComt();
 			}
+			//自动点赞
+			this.options.LikeHeart && this.banana.LikeHeartFront();
 		}
 		//文章
 		if (REG.article.test(href)) {
 			let isUp = adjustArticleUp();
 			this.div.show(pageInfo, this.options, 'article', isUp);
+			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype), true);
 		}
 		//直播
