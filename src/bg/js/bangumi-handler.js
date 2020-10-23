@@ -1,11 +1,10 @@
-
 let rawData = {
     "aria": {
         "isNewVisit": false,
         "visitId": "8bfa60bb-66fb-5fbf-82c1-10315dd69cfe",
-        "osPlatform": "win7",
-        "selectedPlatform": "win7",
-        "pageName": "WhatsNew"
+        "osPlatform": "win",
+        "selectedPlatform": "win",
+        "pageName": "MyBangumi"
     }, "tips": []
 }
 

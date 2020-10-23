@@ -1,7 +1,8 @@
 const defaults = {
   enabled: true,//开启关闭插件
   auto_throw: false,
-  LikeAfterBanna: true,
+  LikeHeart: false,
+  LikeHeartClass: "0",
   to_attention: true,
   to_attention_num: 5,
   to_special_items: [],
@@ -16,7 +17,7 @@ const defaults = {
   fetchPushList_daemonsw: true,
   timer4Unread_daemonsw: true,
   krnl_videossEarly: false,
-  krnl_globalTimer:true,
+  krnl_globalTimer: true,
   mark: false,//评论用户标记
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
@@ -63,8 +64,8 @@ const defaults = {
   LiveUserFocus: false,
   LiveWatchTimeRec_popup: false,
   articlePartIndexDarken: false,
-  BangumiNotif:true,
-  BangumiPlan:true,
+  BangumiNotif: true,
+  BangumiPlan: true,
   audioGain: true,
   uddPopUp: true,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
@@ -318,7 +319,7 @@ function ajax(method, url, data, header) {
   }
   //var request = new content.XMLHttpRequest();
   //var request = content.XMLHttpRequest;
-  console.log(request);
+  // console.log(request);
   return new Promise(function (resolve, reject) {
     request.onreadystatechange = function () {
       if (request.readyState === 4) {
@@ -508,11 +509,11 @@ function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy
  * @param ifToday 是否是检查今天
  * @param dateObj 传入时间对象 new Date()的返回
  */
-function checkDay(ifToday=true,dateObj) {
-  if(ifToday){
+function checkDay(ifToday = true, dateObj) {
+  if (ifToday) {
     let x = new Date();
     return x.getDay();
-  }else{
+  } else {
     return dateObj.getDay();
   }
 }
@@ -753,6 +754,29 @@ createElementStyle = (cssText, targetDom = document.head, id = null) => {
 }
 
 /**
+ * 投蕉
+ * @param {*} params == {key:稿件Id}
+ * @param {*} banana_num  投蕉数
+ */
+async function bananaThrow(params, banana_num) {
+  //投蕉操作
+  let { key, callback } = params;
+  let header = new Map();
+  header.set("Content-Type", "application/x-www-form-urlencoded");
+  let data = "resourceId=" + key + "&count=" + banana_num + "&resourceType=2";
+  let result = await ajax('POST', "https://www.acfun.cn/rest/pc-direct/banana/throwBanana", data, header);
+  let res_obj = JSON.parse(result);
+  if (res_obj == undefined || res_obj.extData == undefined || res_obj.extData.bananaRealCount == undefined) {
+    return false;
+  }
+  //改变页面上的投蕉状态和数量
+  $('.right-area .banana').addClass('active');
+  document.querySelector(".bananaCount").innerText = Number(document.querySelector(".bananaCount").innerText) + Number(banana_num);
+  return true;
+}
+
+
+/**
  * 从秒钟转化为分钟
  * @param {*} second 传入的秒钟数
  * @returns 分钟
@@ -812,12 +836,12 @@ function bubbleSort(x) {
 class Queue {
   constructor() {
     this.dataField = [];
-    this.enter = enter;
-    this.exit = exit;
-    this.getFirst = getFirst;
-    this.getTail = getTail;
-    this.clearQueue = clear;
-    this.isEmpty = isEmpty;
+    this.enter = this.enter;
+    this.exit = this.exit;
+    this.getFirst = this.getFirst;
+    this.getTail = this.getTail;
+    this.clearQueue = this.clear;
+    this.isEmpty = this.isEmpty;
   }
 
   /**

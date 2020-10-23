@@ -488,7 +488,7 @@ class VideoSetting {
         "body #main #main-content .left-column{width:100% !important;max-width:100%}" +
         ".ac-comment-usercard .area-comm-usercard-bottom{mix-blend-mode:exclusion}" +
         "body #main #main-content .right-column{position:absolute;right:-342px;top:160px;padding-left:1px;transition-duration:.2s;border-left:'6px  solid rgba(62, 62, 62, 0.4)'}" +
-        "body #main #main-content .right-column:hover{right: 0px; background:white; border-left-width:0px }"+
+        "body #main #main-content .right-column:hover{right: 0px; background:white; border-left-width:0px }" +
         ".ac-pc-comment{padding-right:15px}" +
         "#toolbar{transform:scale(0.8);transform-origin:bottom right}" +
         ".player-box,.nav-parent,.video-description{border-bottom-color:white}" +
@@ -580,9 +580,9 @@ class VideoSetting {
     );
   }
 
-
   /**
    * 倍率扩大音量 & UI
+   * @description 这个功能会重新挂接音频处理上下文的图，所以会导致主站播放器的高级音效失效，望周知
    */
   audioNodeGain() {
     // 使用Web Audio API放大视频音量(超过100%之类的需求) TODO:制作交互以及设置页面的开关

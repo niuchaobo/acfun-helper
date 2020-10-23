@@ -114,6 +114,8 @@ class ODHFront {
 				this.videoSetting.callPicktureInPictureMode();
 				//全局进度条
 				this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle);
+				//渐进式投蕉
+				// this.banana.ProgressiveBanana([100,200,300,400,500],[150]);
 			}, 200)
 		}
 	}
@@ -224,11 +226,14 @@ class ODHFront {
 			if (this.options[curKeyName]) {
 				this.ce.immedComt();
 			}
+			//自动点赞
+			this.options.LikeHeart && this.banana.LikeHeartFront();
 		}
 		//文章
 		if (REG.article.test(href)) {
 			let isUp = adjustArticleUp();
 			this.div.show(pageInfo, this.options, 'article', isUp);
+			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype), true);
 		}
 		//直播
@@ -256,7 +261,7 @@ class ODHFront {
 				this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
 			})
 			//倍率扩大音量
-			this.options.audioGain && this.videoSetting.audioNodeGain() ;
+			this.options.audioGain && this.videoSetting.audioNodeGain();
 		}
 		this.authInfo.cookInfo();
 	}
@@ -334,7 +339,7 @@ class ODHFront {
 	}
 	//直播m3u8 url赋值到前台页面
 	async api_renderLive(params) {
-		if (!REG.liveIndex.test(this.href)) {
+		if (REG.live.test(this.href)) {
 			this.live.renderLive(params);
 		}
 	}
