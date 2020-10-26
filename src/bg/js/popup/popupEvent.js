@@ -115,18 +115,21 @@ export async function WatchLaterFpopup() {
 }
 
 export async function viewHistory() {
-	fetch('https://www.acfun.cn/rest/pc-direct/browse/history/list', { method: "POST", credentials: 'include', body: 'pageSize=10&pageNo=1&resourceTypes=', headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }) })
+	fetch('https://www.acfun.cn/rest/pc-direct/browse/history/list', { method: "POST", credentials: 'include', body: 'pageSize=20&pageNo=1&resourceTypes=', headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }) })
 		.then((res => { return res.text() }))
 		.then((res) => {
 			let x = JSON.parse(res);
 			var raw_data = "";
 			for (let i = 0; i < x.histories.length - 1; i++) {
+				if(x.histories[i].disable==true){
+					continue;
+				}
 				var raw_data = raw_data + `
-          <tr>
-              <td class="dispLimit">${x.histories[i].user.name}<br>于${getTimeSinceNow(x.histories[i].browseTime, true, false)}</td>
-              <td><a title="Up: ${x.histories[i].user.name}" href="https://www.acfun.cn/v/ac${x.histories[i].resourceId}" target="_blank">《${x.histories[i].title}》</a> </td>
-          </tr>
-        `;
+				<tr>
+					<td class="dispLimit">${x.histories[i].user.name}<br>于${getTimeSinceNow(x.histories[i].browseTime, true, false)}</td>
+					<td><a title="Up: ${x.histories[i].user.name}" href="https://www.acfun.cn/v/ac${x.histories[i].resourceId}" target="_blank">《${x.histories[i].title}》</a> </td>
+				</tr>
+				`;
 			}
 			$("#ViewHistory").append(raw_data);
 			$("#ViewHistoryAction").hide();
@@ -372,11 +375,10 @@ export function renderAcDaily() {
 		.then((res) => { return res.text() })
 		.then((res) => {
 			let data = JSON.parse(res);
-			console.log(data)
 			let Data = "";
 			for (let i = 0; i < data.acDailyData.contentList.length; i++) {
 				let xmlData = `
-      <div class="inner video" id="${data.acDailyData.contentList[i].contentId}"><div class="l"><a target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="thumb thumb-preview"><img class="lazyload preview" data-aid="${data.acDailyData.contentList[i].contentId}" src="./images/prpr.jpg" data-src="${data.acDailyData.contentList[i].cover}"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="${data.acDailyData.contentList[i].contentId}" target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="title">${data.acDailyData.contentList[i].title}</a> <p></p> <div class="info"><a target="_blank" data-uid="${data.acDailyData.contentList[i].contentId}" href="https://www.acfun.cn/u/${data.acDailyData.contentList[i].userId}" class="name" style="color: black;">${data.acDailyData.contentList[i].userName}</a><span class="time"></span> </div> </div> </div>`;
+      <div class="inner video" id="${data.acDailyData.contentList[i].contentId}"><div class="l"><a target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="thumb thumb-preview"><img class="preview" data-aid="${data.acDailyData.contentList[i].contentId}" src="${data.acDailyData.contentList[i].cover}"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="${data.acDailyData.contentList[i].contentId}" target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="title">${data.acDailyData.contentList[i].title}</a> <p></p> <div class="info"><a target="_blank" data-uid="${data.acDailyData.contentList[i].contentId}" href="https://www.acfun.cn/u/${data.acDailyData.contentList[i].userId}" class="name" style="color: black;">${data.acDailyData.contentList[i].userName}</a><span class="time"></span> </div> </div> </div>`;
 				Data += xmlData;
 			}
 			$("#pop-acDaily").append(Data);

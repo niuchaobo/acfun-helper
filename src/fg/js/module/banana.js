@@ -20,7 +20,7 @@ class Banana {
             return { state: true, name: up_name, num: banana_num };
         } else {
             //判断是否为指定up主
-            let up_url = dougaType == "video" ? document.getElementsByClassName('up-name')[0].href : document.getElementsByClassName('upname')[0].href.replace(".aspx","")
+            let up_url = dougaType == "video" ? document.getElementsByClassName('up-name')[0].href : document.getElementsByClassName('upname')[0].href.replace(".aspx", "")
             let flag = false;
             let special_items = options.to_special_items;
             for (let item of special_items) {
@@ -91,7 +91,6 @@ class Banana {
         var arr = document.getElementsByClassName('banana active');
         var arrLike = document.getElementsByClassName('like active');
         if (arrLike.length == 0 && options.LikeAfterBanna) {
-            //点赞操作 因为如果用API请求方式去点赞的话需要请求acfun.midground.st信息，暂时没有研究透，就先用点击了。
             document.querySelector('div.like').click();
             //改变页面上的点赞状态和数量
             $('.right-area .like').addClass('active');
@@ -119,6 +118,7 @@ class Banana {
                 msg: msg,
             }
             chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
+            options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
         }
     }
 

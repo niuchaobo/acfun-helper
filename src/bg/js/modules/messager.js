@@ -3,7 +3,7 @@
  */
 class MsgNotifs {
     constructor() {
-
+        
     }
 
     /**
@@ -231,6 +231,22 @@ class MsgNotifs {
                     });
             })
         }, 60000)
+    }
+
+    bananAudio(){
+        var audioElement = document.createElement('audio');
+        audioElement.setAttribute("preload", "auto");
+        audioElement.autobuffer = true;
+        audioElement.id = "bananAudio";
+        
+        var source1 = document.createElement('source');
+        source1.type= 'audio/mpeg';
+        source1.src= '../snd/banana.mp3';
+        audioElement.appendChild(source1);
+        audioElement.id = "bananaSrc";
+        
+        audioElement.load;
+        audioElement.play();
     }
 
 }
