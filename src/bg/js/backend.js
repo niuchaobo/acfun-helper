@@ -98,7 +98,7 @@ class ODHBack {
                 this.WatchPlan.PushInList(link_url).then(()=>{
                     let x = this.WatchPlan.getOpRes();
                     let sw=""
-                    x?sw="加入成功。":sw="稍后再看已被关闭，操作无效。"
+                    x?sw="加入成功。":sw="稍后再看已被关闭或为错误对象。"
                     chrome.notifications.create(null, {
                         type: 'basic',
                         iconUrl: 'images/notice.png',
@@ -305,6 +305,10 @@ class ODHBack {
 
     api_updateLiveWatchTimeListItem(){
         return this.WatchPlan.updateLiveWatchTimeList();
+    }
+
+    api_bananAudio(){
+        this.MsgNotfs.bananAudio();
     }
 
     api_progressiveBananaCall(params){

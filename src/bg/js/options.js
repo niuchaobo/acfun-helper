@@ -383,6 +383,25 @@ function restore_options() {
     });
 }
 
+    //=====================在投蕉后播放投蕉音效==========================
+    chrome.storage.local.get(['audioAfterBanana'],function(items){
+        var audioAfterBanana= items.audioAfterBanana;
+        if(audioAfterBanana){
+            document.getElementById('audioAfterBanana').checked='true';
+        }else{
+            document.getElementById('audioAfterBanana').checked=false;
+        }
+        $('#audioAfterBanana').on('click', function () {
+            if(!document.getElementById('audioAfterBanana').checked){
+                document.getElementById('audioAfterBanana').checked=false;
+                chrome.storage.local.set({'audioAfterBanana':false});
+            }else{
+                document.getElementById('audioAfterBanana').checked=true;
+                chrome.storage.local.set({'audioAfterBanana':true});
+            }
+        });
+    });
+
     //=====================自动给Up主的投稿点赞===================
     chrome.storage.local.get(['LikeHeart'],function(items){
         var LikeHeart= items.LikeHeart;
@@ -406,7 +425,6 @@ function restore_options() {
         });
     });
     chrome.storage.local.get(['LikeHeartClass'],function(items){
-        console.log(items)
         document.querySelector("#LikeHeartClass").parentElement.children[1].children[1].children[items.LikeHeartClass].click()
         var inst = new mdui.Select('#LikeHeartClass');
         $('#LikeHeartClass').on('close.mdui.select', function () {
@@ -1077,6 +1095,24 @@ $(document).ready(function () {
         });
     });
     
+    //=====================视频稿件评论区ac号信息弹框==========================
+    chrome.storage.local.get(['articleReadMode'],function(items){
+        var articleReadMode= items.articleReadMode;
+        if(articleReadMode){
+            document.getElementById('articleReadMode').checked='true';
+        }else{
+            document.getElementById('articleReadMode').checked=false;
+        }
+        $('#articleReadMode').on('click', function () {
+            if(!document.getElementById('articleReadMode').checked){
+                document.getElementById('articleReadMode').checked=false;
+                chrome.storage.local.set({'articleReadMode':false});
+            }else{
+                document.getElementById('articleReadMode').checked=true;
+                chrome.storage.local.set({'articleReadMode':true});
+            }
+        });
+    });
 
     //=====================Up主个人页面渲染动态============================
     chrome.storage.local.get(['userHomeMoment'],function(items){

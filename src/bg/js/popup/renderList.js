@@ -5,6 +5,7 @@ var pushListData = {
 	firstLoad: true, // 第一次加载推送列表
 	arriveEnd: false, // 到达终点
 };
+
 /**
  * 稿件动态信息渲染
  */

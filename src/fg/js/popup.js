@@ -133,7 +133,7 @@ class Popup {
         }
         let html = this.popupHeader(type) + content;
         if (type != 'live') {
-            html += this.popComment();
+            html += this.popComment(type);
         }
         //抽奖部分
         if (isUp == 1) {
@@ -143,13 +143,14 @@ class Popup {
         this.setContent(html);
     }
 
-    popComment() {
-        let { mark, scan, receive } = this.options;
+    popComment(type) {
+        let { mark, scan, receive, articleReadMode } = this.options;
         let m = mark ? "checked" : "";
         let s = scan ? "checked" : "";
         let r = receive ? "checked" : "";
+        let t = articleReadMode ? "checked" : "";
 
-        return `<div class="odh-headsection">
+        let domString = `<div class="odh-headsection">
                     <span class="odh-expression">评论才是本体</span>
                 </div>
                 <div class="odh-definition">
@@ -165,6 +166,16 @@ class Popup {
                         <input type="checkbox" ${m} id="comment-mark">
                         <label for="comment-mark"></label>
                     </div>
+                </div>`
+        if (type != 'video') {
+            domString +=
+                `
+                <div class="odh-definition">
+                    <label class="readmode">手动阅读模式</label>
+                    <div class="enabled">
+                        <input type="checkbox" ${t} id="readmode">
+                        <label for="readmode"></label>
+                    </div>
                 </div>
                 <!--<div class="odh-definition">
                     <label class="comment-label">是否接收情报</label>
@@ -174,6 +185,8 @@ class Popup {
                     </div>
                 </div>-->
                 `;
+        }
+        return domString;
     }
 
     popLottery() {
