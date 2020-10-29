@@ -135,7 +135,11 @@ let videoFunction = (function () {
     console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Faild.");
   }
 
-  //评论时间播放器快速跳转 - 处理函数
+  /**
+   * 评论时间播放器快速跳转 - 处理函数
+   * @param {*} time string eg:"00:01"or "00:00:10" 时间
+   * @param {*} part int 视频的第几p
+   */
   function quickJump(time, part) {
     let v_obj = document.getElementsByTagName("video")[0];
     let url = window.location.href;
@@ -156,8 +160,11 @@ let videoFunction = (function () {
     }, 500);
   }
 
+  /**
+   * 丢帧增量
+   * @description 获取当前时间之前的丢帧增加的数量
+   */
   function dropFrameIncrementAlz() {
-    //丢帧增量
     document
       .getElementsByTagName("video")[0]
       .addEventListener("timeupdate", function (e) {
@@ -170,6 +177,11 @@ let videoFunction = (function () {
   }
 
   //=======Common Functions=========
+  /**
+   * 时间描述转换为秒数
+   * @param {*} time string eg:"00:01"or "00:00:10" 时间
+   * @returns int seconds
+   */
   function Duration2Seconds(time) {
     let str = time;
     let arr = str.split(":");

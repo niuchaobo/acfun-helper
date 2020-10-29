@@ -16,6 +16,7 @@ class ODHFront {
 		this.danmaku = new Danmaku(); //弹幕服务
 		this.danmusearch = new Search();//弹幕列表搜索
 		this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
+		this.reader = new Reader(); //文章区阅读模式
 
 		chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
 		window.addEventListener("message", (e) => this.onFrameMessage(e)); //接收来自iframe的消息
@@ -235,6 +236,7 @@ class ODHFront {
 			this.div.show(pageInfo, this.options, 'article', isUp);
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype), true);
+			this.options.articleReadMode && this.reader.lightReadMode();
 		}
 		//直播
 		if (REG.live.test(href)) {
@@ -329,12 +331,22 @@ class ODHFront {
 	api_scan(params) {
 		let { value } = params;
 		this.options.scan = value;
+		//保存配置信息到插件配置存储
 		optionsSave(this.options);
 		if (value) {
 			this.ce.renderScan();
 			this.ce.renderScanForUp();
 		} else {
 			this.ce.clearScan();
+		}
+	}
+	api_lightReadMode(params) {
+		let { value } = params;
+		this.options.articleReadMode = value;
+		if (value) {
+			this.reader.lightReadMode(true);
+		} else {
+			this.reader.lightReadMode(false);
 		}
 	}
 	//直播m3u8 url赋值到前台页面

@@ -69,6 +69,8 @@ const defaults = {
   audioGain: true,
   uddPopUp: true,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
+  articleReadMode:false,
+  audioAfterBanana:false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -713,11 +715,17 @@ throttle = (func, delay) => {
 }
 
 addElement = (options) => {
-  let { tag = 'div', id = '', css = '', target = document.body } = options
+  let { tag = 'div', id = '', css = '', target = document.body, classes= '',createMode="append",thisHTML="" } = options
   let x = document.createElement(tag);
   x.id = id;
-  x.style.cssText = css
-  target.append(x);
+  x.className = classes;
+  x.innerHTML = thisHTML;
+  x.style.cssText = css;
+  if(createMode=="append"){
+    target.append(x);
+  }else if(createMode=="after"){
+    target.after(x);
+  }
   return x
 }
 
