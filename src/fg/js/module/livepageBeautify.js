@@ -213,17 +213,18 @@ class LivePageButfy {
                 const audioDom = document.querySelector(".volume")
                 let flag = String(controlDom.dataset.bindAttr)
                 let muteFlag = String(audioDom.dataset.bindAttr)
-                document.querySelector(".volume-icon").click()
-                document.getElementsByClassName("container-video")[0].children[0].pause();
-                if (flag == 'pause' && muteFlag == 'muted') {
+                muteFlag == 'muted'?document.querySelector(".volume-icon").click():""
+                flag == 'play'?document.getElementsByClassName("container-video")[0].children[0].pause():""
+                if (flag == 'pause' || muteFlag == 'muted') {
                     if (hideType == 0) {
                         createElementStyle('.tv-wrapper{display:none};')
                         document.querySelector(".tv-wrapper").remove()
                     }
-                    clearInterval(timer)
+                    // clearInterval(timer)
                 }
-            } catch (error) { console.log(error); console.log("[LOG]Frontend-livePageBeautify>LiveIndex: E.") }
-        }, 2000);
+            } catch (error) { 
+            }
+        }, 1000);
     }
 
     //直播站增加画中画模式

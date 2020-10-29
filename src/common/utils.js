@@ -3,6 +3,7 @@ const defaults = {
   auto_throw: false,
   LikeHeart: false,
   LikeHeartClass: "0",
+  LikeHeartNotif:true,
   to_attention: true,
   to_attention_num: 5,
   to_special_items: [],
@@ -69,8 +70,9 @@ const defaults = {
   audioGain: true,
   uddPopUp: true,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
-  articleReadMode:false,
-  audioAfterBanana:false,
+  articleReadMode: false,
+  articleBanana:false,
+  audioAfterBanana: false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -86,8 +88,10 @@ const REG = {
   liveIndex: new RegExp("https://live.acfun.cn"),//直播主页
   userHome: new RegExp("http(s)?://www.acfun.cn/u/\\d+"),//用户中心
   partIndex: new RegExp("/v/list"),//分区主页
-  articleDetail: new RegExp("/v/as")//文章分区详细页
-
+  articleDetail: new RegExp("/v/as"),//文章分区详细页
+  acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
+  acAid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac(\\d+)'),
+  
 }
 
 /**
@@ -185,7 +189,7 @@ async function getResult() {
 
 /**
  * 获取插件存储值内容
- * @param {*} key 
+ * @param {string} key 
  */
 async function getStorage(key) {
   return new Promise((resolve, reject) => {
@@ -197,7 +201,7 @@ async function getStorage(key) {
 
 /**
  * 删除插件存储值内容
- * @param {*} key 
+ * @param {string} key 
  */
 function delStorage(key) {
   return new Promise((resolve, reject) => {
@@ -245,7 +249,7 @@ function localizeHtmlPage() {
 
 /**
  * 助手更新状态处理
- * @param 数据从插件存储中取
+ * @description 数据从插件存储中取
  */
 function updateVersionIcon() {
   chrome.storage.local.get(["Upgradeable"], (data) => {
@@ -401,8 +405,8 @@ function mysleep(ms) {
 
 /**
  * 通知封装
- * @param {*} title 
- * @param {*} message 
+ * @param {string} title 
+ * @param {string} message 
  */
 function notice(title, message) {
   chrome.notifications.create(null, {
@@ -436,7 +440,7 @@ function uuidBuild() {
 /**
  * 时间戳到日期
  * @tutorial 2020-10-15 19:22:13 的类似格式
- * @param {*} now 一个时间对象new Date()
+ * @param {Date} now 一个时间对象new Date()
  */
 function formatDate(now, highAccuracy = false) {
   let year = now.getFullYear();
@@ -454,10 +458,10 @@ function formatDate(now, highAccuracy = false) {
 
 /**
  * 将时间转为最近发布时间
- * @param {*} date 毫秒时间戳
- * @param {*} newFormat 美观样式（去掉为0部分，优化年表示部分）
- * @param {*} highAccuracy 提高显示精度比如不只是显示一个小时，需要将显示的内容具体到一个小时3分20秒）
- * @param {*} accuracy 高精度模式下的显示模式（s m h秒分时）
+ * @param {string} date 毫秒时间戳
+ * @param {boolean} newFormat 美观样式（去掉为0部分，优化年表示部分）
+ * @param {boolean} highAccuracy 提高显示精度比如不只是显示一个小时，需要将显示的内容具体到一个小时3分20秒）
+ * @param {string} accuracy 高精度模式下的显示模式（s m h秒分时）
  */
 function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy = 's') {
   let currentDate = new Date();
@@ -508,8 +512,8 @@ function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy
 
 /**
  * 检查今天周几
- * @param ifToday 是否是检查今天
- * @param dateObj 传入时间对象 new Date()的返回
+ * @param {boolean} ifToday 是否是检查今天
+ * @param {Date} dateObj 传入时间对象 new Date()的返回
  */
 function checkDay(ifToday = true, dateObj) {
   if (ifToday) {
@@ -522,7 +526,7 @@ function checkDay(ifToday = true, dateObj) {
 
 /**
  * 获取cookies中key的信息
- * @param {*} keys 
+ * @param {string} keys 
  */
 function getcookie(keys) {
   var arr = document.cookie.split(";");
@@ -574,7 +578,7 @@ function adjustArticleUp() {
 
 /**
  * 将DOM转化为文本
- * @param {*} node
+ * @param {HTMLElement} node
  * @returns str 
  */
 function domToString(node) {
@@ -588,10 +592,10 @@ function domToString(node) {
 
 /**
  * 监听DOM对象
- * @param {*} target DOM对象
- * @param {*} fn 
- * @param {*} time 定时器周期
- * @param {*} isDev 是否显示详细的监听文本
+ * @param {HTMLElement} target DOM对象
+ * @param {function} fn 
+ * @param {number} time 定时器周期
+ * @param {boolean} isDev 是否显示详细的监听文本
  */
 async function getAsyncDom(target, fn, time = 2500, isDev = false) {
   let i = 0;
@@ -622,7 +626,7 @@ async function getAsyncDom(target, fn, time = 2500, isDev = false) {
 
 /**
  * 从Up名称解析为UID
- * @param {*} upName 
+ * @param {string} upName 
  * @returns upUrl 返回Up主的主页地址
  */
 async function toUpInfo(upName) {
@@ -674,7 +678,7 @@ function getScrollHeight() {
 
 /**
  * fetch信息，同步返回
- * @param {*} url 
+ * @param {string} url 
  * @returns 返回结果的文本内容
  */
 async function fetchResult(url) {
@@ -715,15 +719,15 @@ throttle = (func, delay) => {
 }
 
 addElement = (options) => {
-  let { tag = 'div', id = '', css = '', target = document.body, classes= '',createMode="append",thisHTML="" } = options
+  let { tag = 'div', id = '', css = '', target = document.body, classes = '', createMode = "append", thisHTML = "" } = options
   let x = document.createElement(tag);
   x.id = id;
   x.className = classes;
   x.innerHTML = thisHTML;
   x.style.cssText = css;
-  if(createMode=="append"){
+  if (createMode == "append") {
     target.append(x);
-  }else if(createMode=="after"){
+  } else if (createMode == "after") {
     target.after(x);
   }
   return x
@@ -741,9 +745,9 @@ removeAPrefix = (_$targetDom) => {
 
 /**
  * 在某个地方（默认为head下）增加一个css的style标签
- * @param cssText CSS样式文本
- * @param targetDom 添加于
- * @param id css标签的ID
+ * @param {string} cssText CSS样式文本
+ * @param {HTMLElement} targetDom 添加于
+ * @param {string} id css标签的ID
  */
 createElementStyle = (cssText, targetDom = document.head, id = null) => {
   let target = targetDom
@@ -763,30 +767,33 @@ createElementStyle = (cssText, targetDom = document.head, id = null) => {
 
 /**
  * 投蕉
- * @param {*} params == {key:稿件Id}
- * @param {*} banana_num  投蕉数
+ * @param {object} params == {key:稿件Id}
+ * @param {number} banana_num  投蕉数
+ * @param {string} dougaType String 投稿类型 "video" or "article"
+ * @tutorial 此接口下的resourceType参数，2为视频投稿，3为文章投稿
  */
-async function bananaThrow(params, banana_num) {
+async function bananaThrow(params, banana_num, dougaType = "video") {
   //投蕉操作
   let { key, callback } = params;
   let header = new Map();
+  let resType = 2;
+  if (dougaType == "article") {
+    resType = 3;
+  }
   header.set("Content-Type", "application/x-www-form-urlencoded");
-  let data = "resourceId=" + key + "&count=" + banana_num + "&resourceType=2";
+  let data = "resourceId=" + key + "&count=" + banana_num + "&resourceType=" + resType;
   let result = await ajax('POST', "https://www.acfun.cn/rest/pc-direct/banana/throwBanana", data, header);
   let res_obj = JSON.parse(result);
   if (res_obj == undefined || res_obj.extData == undefined || res_obj.extData.bananaRealCount == undefined) {
     return false;
   }
-  //改变页面上的投蕉状态和数量
-  $('.right-area .banana').addClass('active');
-  document.querySelector(".bananaCount").innerText = Number(document.querySelector(".bananaCount").innerText) + Number(banana_num);
   return true;
 }
 
 
 /**
  * 从秒钟转化为分钟
- * @param {*} second 传入的秒钟数
+ * @param {number} second 传入的秒钟数
  * @returns 分钟
  */
 function timeToMinute(second) {
@@ -803,8 +810,8 @@ function timeToMinute(second) {
 
 /**
  * 播放器浮动通知气泡
- * @param {*} text 通知文本
- * @param {*} importantText 带有红色的重要通知文本
+ * @param {string} text 通知文本
+ * @param {string} importantText 带有红色的重要通知文本
  */
 function leftBottomTip(text, importantText = "") {
   $(".left-bottom-tip")
@@ -820,7 +827,7 @@ function leftBottomTip(text, importantText = "") {
 
 /**
  * 排序一个数组
- * @param x 需要排序的数组
+ * @param {Int16Array} x 需要排序的数组
  */
 function bubbleSort(x) {
   // let x = [1, 4, 2, 7, 88, 54, 65]
@@ -854,7 +861,7 @@ class Queue {
 
   /**
    * 入队，并返回状态和其值
-   * @param 入队对象
+   * @param {*} 入队对象
    * @returns bool 成功与否
    */
   enter(obj) {
@@ -868,7 +875,6 @@ class Queue {
   }
   /**
    * 出队，并返回状态和其值
-   * @param none
    * @returns {stat:bool,data}
    */
   exit() {

@@ -6,8 +6,17 @@
 class WatchPlan {
     constructor() {
         this.OpFlag = true;
+        /**
+         * 需要保持的打开的稍后再看任务数量
+         */
         this.execWatchReqTabNum = 3;
+        /**
+         * 标签状态字典
+         */
         this.tabStateDic = {};
+        /**
+         * 任务列表
+         */
         this.ori_list = {};
         this.livePageWatchTimeRecList = {};
         this.bananaTask = {};
@@ -19,7 +28,7 @@ class WatchPlan {
 
     /**
      * 设置稍后再看需要保持在前台的标签任务数
-     * @param {*} num 
+     * @param {number} num 
      */
     setWatchOptTabNum(num) {
         this.execWatchReqTabNum = num;
@@ -46,7 +55,7 @@ class WatchPlan {
 
     /**
      * 加入任务队列
-     * @param {*} data 主站投稿的URL
+     * @param {string} data 主站投稿的URL
      * @returns this.OpFlag 判断结果
      */
     async PushInList(data) {
@@ -70,7 +79,7 @@ class WatchPlan {
 
     /**
      * 打开标签，并返回一个tab Info字典
-     * @param {*} url 
+     * @param {string} url 
      * @returns tabInfo dict
      */
     async execTabCreate(url) {
@@ -103,6 +112,7 @@ class WatchPlan {
                 this.ori_list.WatchPlanList.pop(this.ori_list.WatchPlanList.slice(-1)[0]);
             }
             if (Object.keys(this.tabStateDic).length == 0 && this.ori_list.WatchPlanList.length == 0) {
+                //清空存储中的任务列表，发送通知
                 chrome.storage.local.set({ WatchPlanList: [] });
                 chrome.notifications.create(null, {
                     type: 'basic',
@@ -128,7 +138,7 @@ class WatchPlan {
 
     /**
      * 将直播观看起始信息写入类中
-     * @param {*} params 
+     * @param {object} params 
      */
     livePageWatchTimeRec(params) {
         this.livePageWatchTimeRecList[`${params.tabid.id}`] = { windowId: params.tabid.windowId, index: params.tabid.index, startTime: params.startTime, url: params.tabid.url, title: params.tabid.title };
@@ -190,7 +200,7 @@ class WatchPlan {
 
     /**
      * 主站标签整理
-     * @param {*} mainWindowId 主窗口ID
+     * @param {Number} mainWindowId 主窗口ID
      */
     attentionTabs(mainWindowId) {
         let wId;

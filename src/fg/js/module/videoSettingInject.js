@@ -137,8 +137,8 @@ let videoFunction = (function () {
 
   /**
    * 评论时间播放器快速跳转 - 处理函数
-   * @param {*} time string eg:"00:01"or "00:00:10" 时间
-   * @param {*} part int 视频的第几p
+   * @param {string} time string eg:"00:01"or "00:00:10" 时间
+   * @param {number} part int 视频的第几p
    */
   function quickJump(time, part) {
     let v_obj = document.getElementsByTagName("video")[0];
@@ -179,7 +179,7 @@ let videoFunction = (function () {
   //=======Common Functions=========
   /**
    * 时间描述转换为秒数
-   * @param {*} time string eg:"00:01"or "00:00:10" 时间
+   * @param {string} time string eg:"00:01"or "00:00:10" 时间
    * @returns int seconds
    */
   function Duration2Seconds(time) {

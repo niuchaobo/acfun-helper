@@ -6,6 +6,12 @@ class Banana {
         this.reqBananaNum = 0;
     }
 
+    /**
+     * 判断是否为关注或者自定义列表中的Up主
+     * @param {object} options 插件配置对象
+     * @param {boolean} select 判断是否是“已关注的Up主”或者是“指定的Up主”
+     * @param {string} dougaType 判断稿件类型 video or article
+     */
     judgeIfSelectUp(options, select, dougaType = "video") {
         var up_name = '';
         var banana_num = 0;
@@ -56,6 +62,27 @@ class Banana {
         }
     }
 
+    /**
+     * 改变页面上的投蕉状态和数量
+     * @param {String} banana_num 投蕉数
+     * @param {String} type 投稿类型 video or article
+     */
+    pageBananaState(banana_num,type="video") {
+        if(type=="video"){
+            $('.right-area .banana').addClass('active');
+            document.querySelector(".bananaCount").innerText = Number(document.querySelector(".bananaCount").innerText) + Number(banana_num);
+        }else if(type=="article"){
+            document.querySelectorAll('.bananacount')[0].classList.add("active")
+            document.querySelectorAll('.bananacount')[1].classList.add("active")
+            document.querySelectorAll(".Jba_num")[0].innerText = Number(document.querySelectorAll(".Jba_num")[0].innerText) + Number(banana_num);
+            document.querySelectorAll(".Jba_num")[2].innerText = Number(document.querySelectorAll(".Jba_num")[2].innerText) + Number(banana_num);
+        }
+    }
+
+    /**
+     * 点赞
+     * @param {string} dougaType 投稿类型 video or article
+     */
     clickLike(dougaType = "video") {
         var arrLike = dougaType == "video" ? document.getElementsByClassName('like active') : document.getElementsByClassName('likecount active')
         if (arrLike.length == 0) {
@@ -74,6 +101,44 @@ class Banana {
             return true
         }
         return false
+    }
+
+    /**
+     * 文章投蕉
+     * @param {*} params 
+     */
+    async articleBanana(params) {
+        let options = window.odhfront.options;
+        if (!options.auto_throw) {
+            return;
+        }
+        var res_obj = false;
+        let result = this.judgeIfSelectUp(options, options.to_attention, "article")
+        if (!result.state) {
+            return;
+        }
+        var arr = document.getElementsByClassName('bananacount J_banana active');
+        if (arr.length == 0) {
+            res_obj = await bananaThrow(params, result.num, "article");
+        }else{
+            return;
+        }
+
+        if (res_obj) {
+            var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉';
+            this.pageBananaState(result.num,"article");
+        } else {
+            var msg = '或许早就成功给 ' + result.name + ' 投蕉了,刷新下页面试试';
+        }
+        if (options.banana_notice) {
+            let action = "notice";
+            let p = {
+                title: "AcFun助手 - 自动投蕉",
+                msg: msg,
+            }
+            chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
+            options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
+        }
     }
 
     async throwBanana(params) {
@@ -104,10 +169,12 @@ class Banana {
         if (res_obj && likeFlag) {
             var title = "AcFun助手 - 自动二连";
             var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉' + `${likeFlag ? "并点了个赞" : ""}`;
+            this.pageBananaState(result.num,"video");
         } else if (res_obj == false && likeFlag) {
             var title = "AcFun助手 - 自动二连";
             var msg = '成功给 ' + result.name + ' 点了个赞'
         } else if (res_obj && likeFlag == false) {
+            this.pageBananaState(result.num,"video");
             var title = "AcFun助手 - 自动投蕉";
             var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉';
         }

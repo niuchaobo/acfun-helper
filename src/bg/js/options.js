@@ -383,6 +383,25 @@ function restore_options() {
     });
 }
 
+    //=====================文章投蕉==========================
+    chrome.storage.local.get(['articleBanana'],function(items){
+        var articleBanana= items.articleBanana;
+        if(articleBanana){
+            document.getElementById('articleBanana').checked='true';
+        }else{
+            document.getElementById('articleBanana').checked=false;
+        }
+        $('#articleBanana').on('click', function () {
+            if(!document.getElementById('articleBanana').checked){
+                document.getElementById('articleBanana').checked=false;
+                chrome.storage.local.set({'articleBanana':false});
+            }else{
+                document.getElementById('articleBanana').checked=true;
+                chrome.storage.local.set({'articleBanana':true});
+            }
+        });
+    });
+
     //=====================在投蕉后播放投蕉音效==========================
     chrome.storage.local.get(['audioAfterBanana'],function(items){
         var audioAfterBanana= items.audioAfterBanana;
@@ -398,6 +417,25 @@ function restore_options() {
             }else{
                 document.getElementById('audioAfterBanana').checked=true;
                 chrome.storage.local.set({'audioAfterBanana':true});
+            }
+        });
+    });
+
+    //=====================点赞之后弹出通知==========================
+    chrome.storage.local.get(['LikeHeartNotif'],function(items){
+        var LikeHeartNotif= items.LikeHeartNotif;
+        if(LikeHeartNotif){
+            document.getElementById('LikeHeartNotif').checked='true';
+        }else{
+            document.getElementById('LikeHeartNotif').checked=false;
+        }
+        $('#LikeHeartNotif').on('click', function () {
+            if(!document.getElementById('LikeHeartNotif').checked){
+                document.getElementById('LikeHeartNotif').checked=false;
+                chrome.storage.local.set({'LikeHeartNotif':false});
+            }else{
+                document.getElementById('LikeHeartNotif').checked=true;
+                chrome.storage.local.set({'LikeHeartNotif':true});
             }
         });
     });

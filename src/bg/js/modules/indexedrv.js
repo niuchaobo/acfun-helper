@@ -219,7 +219,7 @@ function db_delLuckyHistory(uid) {
 /**
  * 将重要的番剧数据放入数据库
  * @todo 以后出现存储占用问题就改用这个方式
- * @param {*} Data Bangumi Api Data
+ * @param {Object} Data Bangumi Api Data
  */
 function db_putMyBangumi_Partly(Data) {
     initMyBangumi();
@@ -235,7 +235,7 @@ function db_putMyBangumi_Partly(Data) {
 
 /**
  * 将全部的番剧数据放入数据库
- * @param {*} Data Bangumi Api Data
+ * @param {object} Data Bangumi Api Data
  */
 function db_putMyBangumi_Full(Data) {
     initMyBangumi();
@@ -322,10 +322,10 @@ async function db_getUserMomentFromLocal(uid) {
 
 /**
  * 根据type排序番剧信息并返回
- * @param mode 查询类型 0:键值约束 1:有序的全部
- * @param {*} orderType 排序类型（单选，不然只能选后两个参数）'bangumiId:int','caption:string','updateDayOfWeek:int','areaShow:string'
- * @param limitKey 受约束的主键
- * @param limitValue 受约束的值
+ * @param {int} mode 查询类型 0:键值约束 1:有序的全部
+ * @param {string} orderType 排序类型（单选，不然只能选后两个参数）'bangumiId:int','caption:string','updateDayOfWeek:int','areaShow:string'
+ * @param {string} limitKey 受约束的主键
+ * @param {string} limitValue 受约束的值
  */
 async function db_getMybangumi(mode, orderType = '', limitKey = '', limitValue = '') {
     initMyBangumi();

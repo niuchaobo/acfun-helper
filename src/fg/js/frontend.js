@@ -237,6 +237,7 @@ class ODHFront {
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype), true);
 			this.options.articleReadMode && this.reader.lightReadMode();
+			this.options.articleBanana && this.banana.articleBanana({key:REG.acAid.exec(href)[2]});
 		}
 		//直播
 		if (REG.live.test(href)) {

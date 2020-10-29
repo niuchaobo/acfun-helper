@@ -12,7 +12,7 @@ class CommentEnhance{
 
     /**
      * 从个人中心评论跳转到对应的楼层,不完善(折叠中和非第一页的无法跳转)
-     * @param {*} href 
+     * @param {string} href 
      */
     async jumpToComment(href){
         let msg_comment = REG.msg_comment;
@@ -309,7 +309,7 @@ class CommentEnhance{
 
     /**
      * 评论区(折叠或翻页中)显示up主名字
-     * @param {*} rootCommentId 
+     * @param {string} rootCommentId 
      */
     renderSubScanForUp(rootCommentId){
         var timer = setInterval(function () {
@@ -386,8 +386,8 @@ class CommentEnhance{
 
     /**
      * 稿件跳转弹窗
-     * @param {*} type 
-     * @param {*} isArticle 
+     * @param {number} type 
+     * @param {boolean} isArticle 
      */
     uddPopUp(type = 0,isArticle){
         let _fthis = this;
@@ -646,7 +646,7 @@ class CommentEnhance{
     /**
      * 选中时间 按shift+A 跳转 开关依赖评论区空降功能
      * @todo 与倍速快捷键一样都绑定到了document上 正则未做严格匹配(你甚至能让iphone8跳转到8s)
-     * @param {*} settingKeyCode 
+     * @param {Int16Array} settingKeyCode 
      */
 
     easySearchScanForPlayerTime(settingKeyCode){ 
