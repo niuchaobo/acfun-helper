@@ -48,16 +48,16 @@ class Banana {
         let options = window.odhfront.options;
         let LikeType = options.LikeHeartClass;
         if (LikeType == "0") {
-            this.clickLike(Mode);
+            this.clickLike(options, Mode);
         } else if (LikeType == "1") {
             let x = this.judgeIfSelectUp(options, true, Mode)
             if (x.state) {
-                this.clickLike(Mode);
+                this.clickLike(options, Mode);
             }
         } else if (LikeType == "2") {
             let x = this.judgeIfSelectUp(options, false, Mode)
             if (x.state) {
-                this.clickLike(Mode);
+                this.clickLike(options, Mode);
             }
         }
     }
@@ -67,11 +67,11 @@ class Banana {
      * @param {String} banana_num 投蕉数
      * @param {String} type 投稿类型 video or article
      */
-    pageBananaState(banana_num,type="video") {
-        if(type=="video"){
+    pageBananaState(banana_num, type = "video") {
+        if (type == "video") {
             $('.right-area .banana').addClass('active');
             document.querySelector(".bananaCount").innerText = Number(document.querySelector(".bananaCount").innerText) + Number(banana_num);
-        }else if(type=="article"){
+        } else if (type == "article") {
             document.querySelectorAll('.bananacount')[0].classList.add("active")
             document.querySelectorAll('.bananacount')[1].classList.add("active")
             document.querySelectorAll(".Jba_num")[0].innerText = Number(document.querySelectorAll(".Jba_num")[0].innerText) + Number(banana_num);
@@ -81,9 +81,10 @@ class Banana {
 
     /**
      * 点赞
+     * @param {object} options
      * @param {string} dougaType 投稿类型 video or article
      */
-    clickLike(dougaType = "video") {
+    clickLike(options, dougaType = "video") {
         var arrLike = dougaType == "video" ? document.getElementsByClassName('like active') : document.getElementsByClassName('likecount active')
         if (arrLike.length == 0) {
             //点赞操作 因为如果用API请求方式去点赞的话需要请求acfun.midground.st信息，暂时没有研究透，就先用点击了。
@@ -97,7 +98,7 @@ class Banana {
                 title: "自动点赞",
                 msg: msg,
             }
-            chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
+            options.LikeHeartNotif && chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
             return true
         }
         return false
@@ -120,13 +121,13 @@ class Banana {
         var arr = document.getElementsByClassName('bananacount J_banana active');
         if (arr.length == 0) {
             res_obj = await bananaThrow(params, result.num, "article");
-        }else{
+        } else {
             return;
         }
 
         if (res_obj) {
             var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉';
-            this.pageBananaState(result.num,"article");
+            this.pageBananaState(result.num, "article");
         } else {
             var msg = '或许早就成功给 ' + result.name + ' 投蕉了,刷新下页面试试';
         }
@@ -137,8 +138,8 @@ class Banana {
                 msg: msg,
             }
             chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
-            options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
         }
+        options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
     }
 
     async throwBanana(params) {
@@ -169,12 +170,12 @@ class Banana {
         if (res_obj && likeFlag) {
             var title = "AcFun助手 - 自动二连";
             var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉' + `${likeFlag ? "并点了个赞" : ""}`;
-            this.pageBananaState(result.num,"video");
+            this.pageBananaState(result.num, "video");
         } else if (res_obj == false && likeFlag) {
             var title = "AcFun助手 - 自动二连";
             var msg = '成功给 ' + result.name + ' 点了个赞'
         } else if (res_obj && likeFlag == false) {
-            this.pageBananaState(result.num,"video");
+            this.pageBananaState(result.num, "video");
             var title = "AcFun助手 - 自动投蕉";
             var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉';
         }
@@ -185,8 +186,8 @@ class Banana {
                 msg: msg,
             }
             chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
-            options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
         }
+        options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
     }
 
     /**

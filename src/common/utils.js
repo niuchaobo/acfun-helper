@@ -3,7 +3,7 @@ const defaults = {
   auto_throw: false,
   LikeHeart: false,
   LikeHeartClass: "0",
-  LikeHeartNotif:true,
+  LikeHeartNotif: true,
   to_attention: true,
   to_attention_num: 5,
   to_special_items: [],
@@ -71,7 +71,7 @@ const defaults = {
   uddPopUp: true,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
   articleReadMode: false,
-  articleBanana:false,
+  articleBanana: false,
   audioAfterBanana: false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
@@ -91,7 +91,7 @@ const REG = {
   articleDetail: new RegExp("/v/as"),//文章分区详细页
   acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
   acAid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac(\\d+)'),
-  
+
 }
 
 /**
