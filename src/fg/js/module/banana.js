@@ -131,15 +131,10 @@ class Banana {
         } else {
             var msg = '或许早就成功给 ' + result.name + ' 投蕉了,刷新下页面试试';
         }
-        if (options.banana_notice) {
-            let action = "notice";
-            let p = {
-                title: "AcFun助手 - 自动投蕉",
-                msg: msg,
-            }
-            chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
+        if (res_obj) {
+            options.banana_notice && chrome.runtime.sendMessage({ action: "notice", params: { title: "AcFun助手 - 自动投蕉", msg: msg, } }, function (response) { });
+            options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
         }
-        options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
     }
 
     async throwBanana(params) {
@@ -165,6 +160,8 @@ class Banana {
         }
         if (arr.length == 0) {
             res_obj = await bananaThrow(params, result.num);
+        }else{
+            return;
         }
 
         if (res_obj && likeFlag) {
@@ -179,15 +176,10 @@ class Banana {
             var title = "AcFun助手 - 自动投蕉";
             var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉';
         }
-        if (options.banana_notice) {
-            let action = "notice";
-            let p = {
-                title: title,
-                msg: msg,
-            }
-            chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
+        if (res_obj) {
+            options.banana_notice && chrome.runtime.sendMessage({ action: "notice", params: { title: title, msg: msg, } }, function (response) { });
+            options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
         }
-        options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
     }
 
     /**

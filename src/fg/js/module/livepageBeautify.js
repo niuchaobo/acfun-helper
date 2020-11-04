@@ -213,8 +213,8 @@ class LivePageButfy {
                 const audioDom = document.querySelector(".volume")
                 let flag = String(controlDom.dataset.bindAttr)
                 let muteFlag = String(audioDom.dataset.bindAttr)
-                muteFlag == 'muted'?document.querySelector(".volume-icon").click():""
-                flag == 'play'?document.getElementsByClassName("container-video")[0].children[0].pause():""
+                muteFlag == 'muted' ? document.querySelector(".volume-icon").click() : ""
+                flag == 'play' ? document.getElementsByClassName("container-video")[0].children[0].pause() : ""
                 if (flag == 'pause' || muteFlag == 'muted') {
                     if (hideType == 0) {
                         createElementStyle('.tv-wrapper{display:none};')
@@ -222,7 +222,7 @@ class LivePageButfy {
                     }
                     // clearInterval(timer)
                 }
-            } catch (error) { 
+            } catch (error) {
             }
         }, 1000);
     }
@@ -254,25 +254,39 @@ class LivePageButfy {
     }
 
     followMe() {
-        var MutationObserver =
-            window.MutationObserver ||
-            window.WebKitMutationObserver ||
-            window.MozMutationObserver;
+        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         let element = document.querySelectorAll(".container-live-feed-messages>div.user-card")[0];
         var observer = new MutationObserver((mutations) => {
             mutations.forEach(async (mutation) => {
                 // let evidence = document.querySelectorAll(".container-live-feed-messages>div.user-card")[0];
                 if (element.className != "user-card hide") {
                     document.querySelectorAll("div.comment").forEach((e) => {
-                        if (e.children[0].children[1].className == "nickname" && e.children[0].children[1].innerText == element.children[0].children[0].children[1].children[0].children[0].innerText) {
-                            // console.log(e.children[0].children[1].innerText)
-                            e.children[0].children[1].style.border = "1px solid black";
+                        let objSubItem = e.children[0].childElementCount;
+                        var oprNum = 3;
+                        if (objSubItem == 3) {
+                            oprNum = 1;
+                        } else if (objSubItem == 4) {
+                            oprNum = 2
+                        } else if (objSubItem == 4) {
+                            oprNum = 3;
+                        }
+                        if (e.children[0].children[oprNum].className == "nickname" && e.children[0].children[oprNum].innerText == element.children[0].children[0].children[1].children[0].children[0].innerText) {
+                            e.children[0].children[oprNum].style.border = "1px solid black";
                         }
                     })
                 } else {
                     document.querySelectorAll("div.comment").forEach((e) => {
-                        if (e.children[0].children[1].className == "nickname" && e.children[0].children[1].innerText == element.children[0].children[0].children[1].children[0].children[0].innerText) {
-                            e.children[0].children[1].style.border = "";
+                        var oprNum = 3;
+                        let objSubItem = e.children[0].childElementCount;
+                        if (objSubItem == 3) {
+                            oprNum = 1;
+                        } else if (objSubItem == 4) {
+                            oprNum = 2
+                        } else if (objSubItem == 4) {
+                            oprNum = 3;
+                        }
+                        if (e.children[0].children[oprNum].className == "nickname" && e.children[0].children[oprNum].innerText == element.children[0].children[0].children[1].children[0].children[0].innerText) {
+                            e.children[0].children[oprNum].style.border = "";
                         }
                     })
                 }
