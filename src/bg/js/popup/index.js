@@ -16,7 +16,7 @@ import {
 	fetchDougaInfo,
 	viewHistory,
 	WatchLaterFpopup,
-	WatchLaterFOpenList,
+	StopWatchLaterFpopup,
 	MomentSquareFpop,
 	MyBangumiFpop,
 	LiveWatchTimeLstReact,
@@ -51,7 +51,7 @@ async function onReady() {
 	$("#UserInfoActionBtn").click(userInfoFetch);
 	$("#ViewHistoryAction").click(viewHistory);
 	$("#WatchLaterFpopup").click(WatchLaterFpopup);
-	$("#WatchLaterFOpenList").click(WatchLaterFOpenList);
+	$("#StopWatchLaterFpopup").click(StopWatchLaterFpopup);
 	$("#attentionTabsFg").click(attentionTabs);
 	$("#MomentSquareFpop").click(MomentSquareFpop);
 	$("#MyBangumiFpop").click(MyBangumiFpop);

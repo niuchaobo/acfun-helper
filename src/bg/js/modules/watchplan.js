@@ -20,6 +20,7 @@ class WatchPlan {
         this.ori_list = {};
         this.livePageWatchTimeRecList = {};
         this.bananaTask = {};
+        this.startToken = true;
     }
 
     onLoad() {
@@ -105,6 +106,11 @@ class WatchPlan {
         })
 
         var _daemon = setInterval(async () => {
+            if (this.startToken == false) {
+                clearInterval(_daemon);
+                this.startToken = true;
+                return;
+            }
             //判断 标签状态对象 里面的维护对象数（此次稍后再看排程列表长）是否比需要保持的稍后再看的标签保持数小，并且稍后再看列表不为空
             if (Object.keys(this.tabStateDic).length < this.execWatchReqTabNum && this.ori_list.WatchPlanList.length != 0) {
                 let info = await this.execTabCreate(this.ori_list.WatchPlanList.slice(-1)[0]);
@@ -124,6 +130,18 @@ class WatchPlan {
             }
         }, 2000);
         return;
+    }
+
+    exitWatchPlan() {
+        if (this.startToken) {
+            this.startToken = false;
+            chrome.notifications.create(null, {
+                type: 'basic',
+                iconUrl: 'images/notice.png',
+                title: 'AcFun 助手 - 稍后再看',
+                message: '已撤销此次稍后再看列表项排程（如需清除任务，就进入设置页面）'
+            });
+        }
     }
 
     // viewHistoryBackend(opts) {
@@ -265,7 +283,7 @@ class WatchPlan {
         console.log(this.bananaTask)
         this.ProgressiveBananaBackendMain();
     }
-    
+
     /**
      * 投蕉的后台实现，需要使用任务队列
      */

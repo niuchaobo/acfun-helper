@@ -280,6 +280,10 @@ class ODHBack {
         this.WatchPlan.execWatch();
     }
 
+    async api_stopWatchLater(){
+        this.WatchPlan.exitWatchPlan();
+    }
+
     // api_historyView(params){
     //     this.WatchPlan.viewHistoryBackend(params)
     // }
@@ -312,7 +316,6 @@ class ODHBack {
     }
 
     api_progressiveBananaCall(params){
-        console.log("backend!")
         let {action,url} = params
         return this.WatchPlan.ProgressiveBananaRemote(action,url);
     }

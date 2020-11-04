@@ -94,10 +94,11 @@ export async function MyBangumiFpop() {
 	chrome.tabs.create({ url: chrome.extension.getURL('bg/bangumi.html') });
 }
 
-export async function WatchLaterFOpenList() {
+export async function StopWatchLaterFpopup() {
 	mdui.snackbar({
-		message: `请移步助手 设置页面 - 内容设置。`,
+		message: `已撤销本次 稍后再看 排程。`,
 	});
+	chrome.runtime.sendMessage({ action: "stopWatchLater", params: {} }, function (response) { });
 }
 
 /**
@@ -121,7 +122,7 @@ export async function viewHistory() {
 			let x = JSON.parse(res);
 			var raw_data = "";
 			for (let i = 0; i < x.histories.length - 1; i++) {
-				if(x.histories[i].disable==true){
+				if (x.histories[i].disable == true) {
 					continue;
 				}
 				var raw_data = raw_data + `
@@ -280,9 +281,9 @@ export async function userInfoFetch() {
 			$("#UserInfoPrint").append(raw_data);
 			if (dougaCountFlag != 1) { return }
 			fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=2&sortType=3`).then((res) => { return res.text() })
-			.then((res) => {
-				let x = JSON.parse(res);
-				let raw_data = `
+				.then((res) => {
+					let x = JSON.parse(res);
+					let raw_data = `
 				<div class="mdui-table-fluid">
 					<table class="mdui-table">
 						<thead>
@@ -296,13 +297,13 @@ export async function userInfoFetch() {
 					</table>
 					</div>
 				`;
-				$("#UserInfoPrint").append(raw_data);
-			})
+					$("#UserInfoPrint").append(raw_data);
+				})
 			fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=3&sortType=3`).then((res) => { return res.text() })
-			.then((res) => {
-				let x = JSON.parse(res);
-				if (x.feed[0].contributeTime == undefined) { return }
-				let raw_data = `
+				.then((res) => {
+					let x = JSON.parse(res);
+					if (x.feed[0].contributeTime == undefined) { return }
+					let raw_data = `
 			<div class="mdui-table-fluid">
 				<table class="mdui-table">
 					<thead>
@@ -316,9 +317,9 @@ export async function userInfoFetch() {
 				</table>
 				</div>
 			`;
-				$("#UserInfoPrint").append(raw_data);
-			})
-	})
+					$("#UserInfoPrint").append(raw_data);
+				})
+		})
 
 }
 
