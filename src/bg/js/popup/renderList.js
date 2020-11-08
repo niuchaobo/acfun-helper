@@ -50,12 +50,12 @@ export async function renderPushInnerHtml() {
 					data.aid +
 					'" data-type="' + data.isArticle + '">' +
 					'<div class="l"><a target="_blank" href="'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
-				xmlData += 'https://www.acfun.cn' + data.url + '"';
+				xmlData += `https://www.acfun.cn${data.isArticle?"/a/ac":"/v/ac"}` + data.cid + '"';
 				xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
 				xmlData +=
 					data.aid +
-					'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' + data.aid + ' "target="_blank" href="' + "https://www.acfun.cn" +
-					data.url +
+					'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle?"/a/ac":"/v/ac"}` +
+					data.cid +
 					'" class="title">';
 				xmlData +=
 					data.title +
