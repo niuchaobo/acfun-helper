@@ -6,6 +6,8 @@ var pushListData = {
 	arriveEnd: false, // 到达终点
 };
 
+var popupLater = {};
+
 /**
  * 稿件动态信息渲染
  */
@@ -50,11 +52,11 @@ export async function renderPushInnerHtml() {
 					data.aid +
 					'" data-type="' + data.isArticle + '">' +
 					'<div class="l"><a target="_blank" href="'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
-				xmlData += `https://www.acfun.cn${data.isArticle?"/a/ac":"/v/ac"}` + data.cid + '"';
+				xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
 				xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
 				xmlData +=
 					data.aid +
-					'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle?"/a/ac":"/v/ac"}` +
+					'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"><label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i><p style="color:whitesmoke">等下就看</p></label> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
 					data.cid +
 					'" class="title">';
 				xmlData +=
@@ -93,6 +95,26 @@ export async function renderPushInnerHtml() {
 				}, 0);
 			}
 			$("img.lazyload").lazyload({ threshold: 0.2 });
+			$(".popupLater").click(e => {
+				if (e.target.checked == true && e.target.checked != undefined) {
+					// console.log(e.target.offsetParent.offsetParent.offsetParent);
+					if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
+						popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
+					} else {
+						popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
+					}
+				} else if (e.target.checked == false && e.target.checked != undefined) {
+					if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
+						delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
+					} else {
+						delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
+					}
+				}
+				// console.log(popupLater);
+				if (Object.length != 0) {
+					document.querySelector(".MultOpen").style.display = "block";
+				}
+			});
 		});
 }
 
@@ -198,6 +220,15 @@ export function renderLives() {
 			}
 		}
 	})
+}
+
+
+export function PopupLater() {
+	let x = Object.keys(popupLater);
+	for (let i = 0; i < x.length; i++) {
+		console.log(popupLater[x[i]]);
+		chrome.tabs.create({ url: popupLater[x[i]] });
+	}
 }
 
 /**

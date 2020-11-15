@@ -3,6 +3,7 @@ import {
 	renderPushInnerHtml,
 	renderLives,
 	renderLiveWatchTimeLst,
+	PopupLater,
 } from "./renderList.js";
 import {
 	openUpdateLog,
@@ -58,6 +59,7 @@ async function onReady() {
 	$("#AcDailyFetch").click(renderAcDaily);
 	$("#livePageWatchTimeRecList").click(e => { e.target.className === 'liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key, e.target.href) });
 	$(".PushListMode").click(PushListDougaMode);
+	$(".MultOpen").click(PopupLater);
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
