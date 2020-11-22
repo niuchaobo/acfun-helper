@@ -125,6 +125,7 @@ class PageBeautify {
 		chrome.storage.local.get(['LocalUserId'], function (Uid) {
 			if (Uid.LocalUserId == "0") { return }
 		});
+		let this_page = 0;
 		fetch(this.personInfo)
 			.then((res) => {
 				return res.text();
@@ -132,64 +133,83 @@ class PageBeautify {
 			.then((res) => {
 				let a = JSON.parse(res);
 				var url = window.location.toString();
-				let member = new RegExp("https://www.acfun.cn/member/.?");
-				let memberRes = member.exec(url);
-				if (memberRes) {
-					let node = $("#win-info-guide>div").find("a").eq(0);
-					if (node) {
-						node.after(
-							'<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
-							a.info.userId +
-							'">我的直播间</a></p>'
-						);
-						node.after(
-							'<p class="crx-guid-p">UID: ' + a.info.userId + "</p>"
-						);
-						node.after(
-							'<p class="crx-guid-p">香蕉: ' + a.info.banana + ' - 金香蕉: ' + a.info.goldBanana + "</p>"
-						);
-						node.after(
-							'<p class="crx-guid-p">关注 ' + a.info.following + ' - 听众: ' + a.info.followed + "</p>"
-						);
-						node.after(
-							'<p class="crx-guid-p">注册时间: ' +
-							formatDate(new Date(a.info.registerTime)) +
-							"</p>"
-						);
-					}
+				if (REG.userHome.test(url)) {
+					this_page = 1;
 				} else {
-					let node = $("#header-guide .guide-item-con").find("p").eq(0);
-					if (node) {
-						node.after(
-							'<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
-							a.info.userId +
-							'">我的直播间</a></p>'
-						);
-						node.after(
-							'<p class="crx-guid-p">UID: ' + a.info.userId + "</p>"
-						);
-						node.after(
-							'<p class="crx-guid-p">香蕉: ' + a.info.banana + "</p>"
-						);
-						node.after(
-							'<p class="crx-guid-p">金香蕉: ' + a.info.goldBanana + "</p>"
-						);
-						node.after(
-							'<p class="crx-guid-p">关注 ' + a.info.following + ' - 听众: ' + a.info.followed + "</p>"
-						);
-						node.after(
-							'<p class="crx-guid-p">注册时间: ' +
-							formatDate(new Date(a.info.registerTime)) +
-							"</p>"
-						);
-					}
+
 				}
+				let node = $("#header-guide .guide-item-con").find("p").eq(0);
+				if (node) {
+					node.after(
+						'<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
+						a.info.userId +
+						'">我的直播间</a></p>'
+					);
+					node.after(
+						'<p class="crx-guid-p">UID: ' + a.info.userId + "</p>"
+					);
+					node.after(
+						'<p class="crx-guid-p">香蕉: ' + a.info.banana + "</p>"
+					);
+					node.after(
+						'<p class="crx-guid-p">金香蕉: ' + a.info.goldBanana + "</p>"
+					);
+					node.after(
+						'<p class="crx-guid-p">关注 ' + a.info.following + ' - 听众: ' + a.info.followed + "</p>"
+					);
+					node.after(
+						'<p class="crx-guid-p">注册时间: ' +
+						formatDate(new Date(a.info.registerTime)) +
+						"</p>"
+					);
+				}
+				let cssStr = `
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con{
+					${this_page ? "width: 114px;" : ""}
+					padding:0px 0px 0px 0px;
+				}
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li{
+					${this_page ? "text-align: center;" : ""}
+					font-size:14px;
+				}
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover{
+					background-color:#ececec;
+				}
+				ul#guide-msg-list{
+					padding:0px 0px 0px 0px;
+				}
+				#guide-msg-list > li{
+					padding:10px 5px 10px 5px;
+				}
+				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li{
+					font-size: 14px;
+					line-height: 22px;
+					margin: 12px 0px 12px 0px;
+					height: 18px;
+				}
+				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a .item-title{
+					height: 20px;
+					line-height: 16px;
+				}
+				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a i.device{
+					height: 20px;
+					line-height: 16px;
+				}
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li a .badget{
+					top: 18px;
+				}
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li.followed-users .followed-live-title{
+					line-height: 14px;
+					height: 14px;
+				}
+				`
+				createElementStyle(cssStr);
 			});
 	}
 
-	indexBeautify(opt) {
+	indexBeautify(opt, shadowSw = false) {
 		let cssStr;
-		opt ? cssStr = ".header-top{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896 !important;} .header .nav{border-bottom: 1px solid #ffffff00 !important} .header.fixed .nav{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896;}" : cssStr = ".nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(2.25926vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(2.25926vw)}";
+		opt ? cssStr = ".header-top{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896 !important;} .header .nav{border-bottom: 1px solid #ffffff00 !important} .header.fixed .nav{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896;}" : cssStr = `.nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(2.25926vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(2.25926vw);${shadowSw ? "box-shadow: 0 2px 4px rgb(0 0 0 / 26%)" : ""};}`;
 		createElementStyle(cssStr);
 	}
 
@@ -245,7 +265,7 @@ class PageBeautify {
 		createElementStyle(".footer{display:none !important;}", document.getElementsByTagName("head")[0]);
 	}
 
-	darkenArticle(){
+	darkenArticle() {
 
 	}
 
