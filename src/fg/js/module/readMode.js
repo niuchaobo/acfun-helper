@@ -27,10 +27,11 @@ class Reader {
             div.article-content{
                 line-height: 30px;
             }
-            #article-content .article-content p{
+            #article-up > div.article-content > div > div{
+            /* #article-content .article-content p > div{ */
                 justify-content: center;
                 transition: all 1s cubic-bezier(.25,1,.39,0.89) .13s;
-                font-size: 18px;
+                font-size: 18px !important;
                 color: #000;
             }
         `

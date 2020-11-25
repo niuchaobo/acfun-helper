@@ -1651,6 +1651,25 @@ $(document).ready(function () {
         }
       );
     })}});
+    
+    //========================立即打开直播推送==========================//
+    chrome.storage.local.get(['liveFollowOpenNow'],function(items){
+        var liveFollowOpenNow= items.liveFollowOpenNow;
+        if(liveFollowOpenNow){
+            document.getElementById('liveFollowOpenNow').checked='true';
+        }else{
+            document.getElementById('liveFollowOpenNow').checked=false;
+        }
+        $('#liveFollowOpenNow').on('click', function () {
+            if(!document.getElementById('liveFollowOpenNow').checked){
+                document.getElementById('liveFollowOpenNow').checked=false;
+                chrome.storage.local.set({'liveFollowOpenNow':false});
+            }else{
+                document.getElementById('liveFollowOpenNow').checked=true;
+                chrome.storage.local.set({'liveFollowOpenNow':true});
+            }
+        });
+    });
 
     //========================稍后再看==========================//
     chrome.storage.local.get(['watchLater'],function(items){
