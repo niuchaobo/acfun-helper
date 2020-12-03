@@ -27,8 +27,8 @@ class Reader {
             div.article-content{
                 line-height: 30px;
             }
-            #article-up > div.article-content > div > div{
-            /* #article-content .article-content p > div{ */
+            /* #article-up > div.article-content{ */
+            #article-content .article-content p{
                 justify-content: center;
                 transition: all 1s cubic-bezier(.25,1,.39,0.89) .13s;
                 font-size: 18px !important;
