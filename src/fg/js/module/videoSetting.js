@@ -104,13 +104,17 @@ class VideoSetting {
     let v = document.getElementsByTagName("video")[0];
     v.requestPictureInPicture();
     console.log(
-      "[LOG]Frontend-videoSettingInject: Calling PictureInPicture Mode."
+      "[LOG]Frontend-videoSetting: Calling PictureInPicture Mode."
     );
   }
 
   //画质策略
   videoQuality() {
     var timer = setInterval(function () {
+      var isLogin = true;
+      if (!isLoginByUi()) {
+        isLogin = false;
+      }
       let nodes = $(".quality-panel");
       var vqregexp = RegExp("p60");
       var vqreg2exp = RegExp("2160p");
@@ -119,6 +123,9 @@ class VideoSetting {
         chrome.storage.local.get(["videoQualityStrategy"], function (items) {
           let mode = Number(items.videoQualityStrategy);
           let qualitys = document.querySelector(".quality-panel > ul").children;
+          if (isLogin && mode != 3) {
+            clearInterval(timer);
+          }
           switch (mode) {
             case 0:
               return;

@@ -9,6 +9,7 @@ const defaults = {
   to_special_items: [],
   broadcastingUIDlistFollowing: {},
   WatchPlanList: [],
+  MusicPlayList: { "windowSetting": { "left": 139, "top": 32, "width": 980, "height": 590 }, "List": {} },
   activeTabKey: 'activeTabId',
   extendsName: 'AcFun助手',
   upUrlTemplate: 'https://www.acfun.cn/u/{uid}',
@@ -80,6 +81,7 @@ const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 const REG = {
   index: new RegExp('http(s)?://www.acfun.cn/$'),
   video: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+'),//视频
+  player: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/player\\/ac\\d+'),//视频
   bangumi: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*'),//番剧
   videoAndBangumi: new RegExp('((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))'),//视频与番剧
   article: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+'),//文章
@@ -741,6 +743,17 @@ removeAPrefix = (_$targetDom) => {
   let x = regAcid.exec(acid);
   x == null ? acid = acid : acid = x[1];
   return acid
+}
+
+/**
+ * 使用UI对象来判断用户是否登录
+ * @returns {boolean} 状态
+ */
+function isLoginByUi() {
+  if (document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0) {
+    return false;
+  }
+  return true;
 }
 
 

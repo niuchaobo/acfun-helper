@@ -45,6 +45,9 @@ class Banana {
     }
 
     LikeHeartFront(Mode = "video") {
+        if (!isLoginByUi()) {
+            return;
+        }
         let options = window.odhfront.options;
         let LikeType = options.LikeHeartClass;
         if (LikeType == "0") {
@@ -109,6 +112,9 @@ class Banana {
      * @param {*} params 
      */
     async articleBanana(params) {
+        if(!isLoginByUi()){
+            return;
+        }
         let options = window.odhfront.options;
         if (!options.auto_throw) {
             return;
@@ -138,6 +144,9 @@ class Banana {
     }
 
     async throwBanana(params) {
+        if (!isLoginByUi()) {
+            return;
+        }
         let options = window.odhfront.options;
         if (!options.auto_throw) {
             return;
@@ -160,7 +169,7 @@ class Banana {
         }
         if (arr.length == 0) {
             res_obj = await bananaThrow(params, result.num);
-        }else{
+        } else {
             return;
         }
 
