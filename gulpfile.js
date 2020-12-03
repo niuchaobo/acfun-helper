@@ -1,6 +1,8 @@
 const { src, dest } = require('gulp')
 const gulpEsbuild = require('gulp-esbuild')
 const gulp = require("gulp");
+const del = require('del');
+
 
 function backend() {
     return src('./src/bg/js/*.js')
@@ -90,7 +92,7 @@ function fgMod() {
         .pipe(dest('./final/fg/js/module/'))
 }
 
-gulp.task("default",(e)=>{
+gulp.task("default", (e) => {
     console.log("Compressing...")
     backend()
     bangumiApp()
@@ -103,3 +105,26 @@ gulp.task("default",(e)=>{
     e()
     console.log("Done.")
 })
+
+gulp.task('betaSlim', function (e) {
+    console.log("Remove Extra Files...")
+    del([
+        'src/bg/guide.html',
+        'src/bg/lab.html',
+        'src/bg/luckyUserManage.html',
+        'src/bg/update-log.html',
+        'src/bg/images/option-*',
+        'src/bg/images/step*',
+        'src/bg/ServiceWorker/',
+        'src/lib/Wasm/',
+        'final/bg/guide.html',
+        'final/bg/lab.html',
+        'final/bg/luckyUserManage.html',
+        'final/bg/update-log.html',
+        'final/bg/images/option-*',
+        'final/bg/images/step*',
+        'final/bg/ServiceWorker/',
+        'final/lib/Wasm/'
+    ], e);
+    e();
+});
