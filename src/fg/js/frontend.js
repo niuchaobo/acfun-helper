@@ -101,7 +101,11 @@ class ODHFront {
 	onACPlayerLoaded(e) {
 		let href = this.href;
 		if (REG.videoAndBangumi.test(href)) {
+			let isLogin = false;
 			getAsyncDom('#ACPlayer .control-bar-top .box-right', () => {
+				if (isLoginByUi(false)) {
+					isLogin = true;
+				}
 				//在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
 				//FIXME:页面onload执行前打开全屏，导致助手按钮首次显示不会被隐藏
 				this.videoSetting.monitorFullScreen();
@@ -115,6 +119,10 @@ class ODHFront {
 				this.videoSetting.callPicktureInPictureMode();
 				//全局进度条
 				this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle);
+				//画质策略
+				this.videoSetting.videoQuality(isLogin);
+				//自动点赞
+				this.options.LikeHeart && this.banana.LikeHeartFront("video",isLogin);
 				//渐进式投蕉
 				// this.banana.ProgressiveBanana([100,200,300,400,500],[150]);
 			}, 200)
@@ -148,11 +156,6 @@ class ODHFront {
 			this.options.hideAd && this.pageBeautify.hideAds();
 			//分区首页nav高斯模糊
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(true);
-		}
-		//视频与番剧
-		if (REG.videoAndBangumi.test(href)) {
-			//播放器画质策略
-			this.videoSetting.videoQuality();
 		}
 		//视频
 		if (REG.video.test(href)) {
@@ -192,7 +195,7 @@ class ODHFront {
 		//个人中心首页
 		if (REG.userHome.test(href) && this.options.userHomeMoment) {
 			this.pageBeautify.userMoment(href);
-			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false,true);
+			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false, true);
 		}
 	}
 
@@ -227,8 +230,6 @@ class ODHFront {
 			if (this.options[curKeyName]) {
 				this.ce.immedComt();
 			}
-			//自动点赞
-			this.options.LikeHeart && this.banana.LikeHeartFront();
 		}
 		//文章
 		if (REG.article.test(href)) {
@@ -237,7 +238,7 @@ class ODHFront {
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype), true);
 			this.options.articleReadMode && this.reader.lightReadMode();
-			this.options.articleBanana && this.banana.articleBanana({key:REG.acAid.exec(href)[2]});
+			this.options.articleBanana && this.banana.articleBanana({ key: REG.acAid.exec(href)[2] });
 		}
 		//直播
 		if (REG.live.test(href)) {

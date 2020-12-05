@@ -599,6 +599,7 @@ function domToString(node) {
  * @param {function} fn 
  * @param {number} time 定时器周期
  * @param {boolean} isDev 是否显示详细的监听文本
+ * @todo 有时候，虽然DOM加载完了，但是因为页面不在前台，所以某些模块的函数没有得到执行，如果可以的话可以考虑加上使用document.visibilityState == "hidden"(万一插件根本没法获取到页面状态呢？)来判断，当页面切换到前台之后再执行那些函数。
  */
 async function getAsyncDom(target, fn, time = 2500, isDev = false) {
   let i = 0;
@@ -747,13 +748,21 @@ removeAPrefix = (_$targetDom) => {
 
 /**
  * 使用UI对象来判断用户是否登录
+ * @param {boolean} mode 默认为true，表示可以直接由UI判断出，而不需要使用jquery递归查询的办法去找出对象元素的css属性，以判断是否登录，false时是性能的下策，但是结果肯定没错。
  * @returns {boolean} 状态
  */
-function isLoginByUi() {
-  if (document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0) {
+function isLoginByUi(mode = true) {
+  if (mode) {
+    if (document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0) {
+      return false;
+    }
+    return true;
+  } else {
+    if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden")) {
+      return true;
+    }
     return false;
   }
-  return true;
 }
 
 

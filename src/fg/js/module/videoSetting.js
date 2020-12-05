@@ -109,12 +109,8 @@ class VideoSetting {
   }
 
   //画质策略
-  videoQuality() {
+  videoQuality(isLogin) {
     var timer = setInterval(function () {
-      var isLogin = true;
-      if (!isLoginByUi()) {
-        isLogin = false;
-      }
       let nodes = $(".quality-panel");
       var vqregexp = RegExp("p60");
       var vqreg2exp = RegExp("2160p");

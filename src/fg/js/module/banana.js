@@ -44,8 +44,8 @@ class Banana {
         }
     }
 
-    LikeHeartFront(Mode = "video") {
-        if (!isLoginByUi()) {
+    LikeHeartFront(Mode = "video",isLogin) {
+        if (!isLogin) {
             return;
         }
         let options = window.odhfront.options;
@@ -112,8 +112,11 @@ class Banana {
      * @param {*} params 
      */
     async articleBanana(params) {
-        if(!isLoginByUi()){
-            return;
+        var isLogin=false;
+        try {
+            isLogin = isLoginByUi(false);
+        } catch (error) {
+            console.log("[LOG]Front-Banana>articleBanana: 没找到登录判断依据。");
         }
         let options = window.odhfront.options;
         if (!options.auto_throw) {
@@ -144,7 +147,7 @@ class Banana {
     }
 
     async throwBanana(params) {
-        if (!isLoginByUi()) {
+        if (!isLoginByUi(false)) {
             return;
         }
         let options = window.odhfront.options;
