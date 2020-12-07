@@ -213,8 +213,9 @@ class LivePageButfy {
                 const audioDom = document.querySelector(".volume")
                 let flag = String(controlDom.dataset.bindAttr)
                 let muteFlag = String(audioDom.dataset.bindAttr)
-                muteFlag == 'muted' ? document.querySelector(".volume-icon").click() : ""
-                flag == 'play' ? document.getElementsByClassName("container-video")[0].children[0].pause() : ""
+                muteFlag != 'muted' ? document.querySelector(".volume-icon").click() : ""
+                flag == 'play' ? controlDom.click() : ""
+                // flag == 'play' ? document.getElementsByClassName("container-video")[0].children[0].pause() : ""
                 if (flag == 'pause' || muteFlag == 'muted') {
                     if (hideType == 0) {
                         createElementStyle('.tv-wrapper{display:none};')
@@ -224,7 +225,7 @@ class LivePageButfy {
                 }
             } catch (error) {
             }
-        }, 1000);
+        }, 500);
     }
 
     //直播站增加画中画模式

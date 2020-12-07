@@ -45,8 +45,12 @@ class Banana {
     }
 
     LikeHeartFront(Mode = "video",isLogin) {
-        if (!isLogin) {
+        if (!isLogin&&Mode=="video") {
             return;
+        }else if(Mode=="article"){
+            if(!isLoginByUi()){
+                return;
+            }
         }
         let options = window.odhfront.options;
         let LikeType = options.LikeHeartClass;
