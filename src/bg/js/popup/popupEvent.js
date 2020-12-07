@@ -122,7 +122,7 @@ export async function viewHistory() {
 			let x = JSON.parse(res);
 			var raw_data = "";
 			for (let i = 0; i < x.histories.length - 1; i++) {
-				if (x.histories[i].disable == true) {
+				if (x.histories[i].disable == true||x.histories[i].bangumiItemTitle!="") {
 					continue;
 				}
 				var raw_data = raw_data + `
