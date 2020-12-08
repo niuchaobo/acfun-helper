@@ -17,6 +17,7 @@ class ODHFront {
 		this.danmusearch = new Search();//弹幕列表搜索
 		this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
 		this.reader = new Reader(); //文章区阅读模式
+		this.musicPlayerFront = new musicPlayerFront();
 
 		chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
 		window.addEventListener("message", (e) => this.onFrameMessage(e)); //接收来自iframe的消息
@@ -123,8 +124,6 @@ class ODHFront {
 				this.videoSetting.videoQuality(isLogin);
 				//自动点赞
 				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
-				//渐进式投蕉
-				// this.banana.ProgressiveBanana([100,200,300,400,500],[150]);
 			}, 200)
 		}
 	}
@@ -156,6 +155,10 @@ class ODHFront {
 			this.options.hideAd && this.pageBeautify.hideAds();
 			//分区首页nav高斯模糊
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(true);
+		}
+		if (REG.player.test(href)) {
+			console.log("allow to hook playerListener")
+			this.musicPlayerFront.hookListener();
 		}
 		//视频
 		if (REG.video.test(href)) {

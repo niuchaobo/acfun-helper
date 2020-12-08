@@ -11,6 +11,7 @@ class ODHBack {
         this.Upgrade = new UpgradeAgent();
         // this.ReqOpDrv = new ReqOperationDrv();
         this.WatchPlan = new WatchPlan();
+        this.MusicPlayer = new MusicPlayer();
 
         this.Ominibox.registerOmnibox();
         this.MsgNotfs.timer4Unread();
@@ -109,6 +110,38 @@ class ODHBack {
             }
         });
 
+        chrome.contextMenus.create({
+            title: '添加到音乐播放器列表',
+            id: 'addToMusicPlayerlist',
+            contexts: ['link'],
+            onclick: (params) =>{
+                this.MusicPlayer.addItem(params.linkUrl);
+            }
+        });
+
+        chrome.contextMenus.create({
+            title: '启动音乐播放器',
+            id: 'startMusicPlayer',
+            contexts: ['link'],
+            onclick: () =>{
+                this.MusicPlayer.setSign("firstPlay");
+                this.MusicPlayer.main();
+            }
+        });
+
+        chrome.contextMenus.create({
+            title: '停止音乐播放器',
+            id: 'stopMusicPlayer',
+            contexts: ['link'],
+            onclick: (params) =>{
+                console.log("backend stop");
+                if(this.MusicPlayer.playInfo.Status){
+                    this.MusicPlayer.setSign("stop");
+                    // this.MusicPlayer.main();
+                }
+            }
+        });
+
         // chrome.contextMenus.create({
         //     title: '从AcFunQml桌面客户端打开', 
         //     contexts: ['link'], 
@@ -193,6 +226,7 @@ class ODHBack {
                 let action = 'throwBanana';
                 let params = {"key":ac_num};
                 chrome.tabs.sendMessage(tabId, {action, params}, function (response) {
+                    console.log(response)
                     let resJson = JSON.parse(response);
                     if(resJson && resJson.result == 0){
                         notice("投蕉提醒","AcFun助手已为您自动投蕉");
@@ -315,9 +349,9 @@ class ODHBack {
         this.MsgNotfs.bananAudio();
     }
 
-    api_progressiveBananaCall(params){
-        let {action,url} = params
-        return this.WatchPlan.ProgressiveBananaRemote(action,url);
+    api_musicPlayerSign(e){
+        console.log("api_musicPlayerSign: "+e.sign)
+        this.MusicPlayer.setSign(e.sign);
     }
 
     async api_initBackend(params) {

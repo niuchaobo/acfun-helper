@@ -19,7 +19,6 @@ class WatchPlan {
          */
         this.ori_list = {};
         this.livePageWatchTimeRecList = {};
-        this.bananaTask = {};
         this.startToken = true;
     }
 
@@ -246,79 +245,6 @@ class WatchPlan {
                 }
             })
         })
-    }
-
-    /**
-     * 渐进式投蕉的后端接收函数
-     * @todo 很多事....
-     * @param {*} action 
-     * @param {*} url 
-     */
-    ProgressiveBananaRemote(action, url) {
-        let x = new RegExp("/v/ac(.*)")
-        let acId = x.exec(url)[1];
-        switch (action) {
-            case 0:
-                var bananaNum = 1
-                break;
-            case 1:
-                var bananaNum = 2
-                break;
-            case 2:
-                var bananaNum = 3
-                break;
-            case 3:
-                var bananaNum = 4
-                break;
-            case 4:
-                var bananaNum = 5
-                break;
-            case 5:
-                var bananaNum = 5
-                break;
-            case 'Heart':
-                break;
-        }
-        this.bananaTask[`${String(acId)}`] = { acId, bananaNum };
-        console.log(this.bananaTask)
-        this.ProgressiveBananaBackendMain();
-    }
-
-    /**
-     * 投蕉的后台实现，需要使用任务队列
-     */
-    ProgressiveBananaBackendMain() {
-        let x = Object.keys(this.bananaTask);
-        for (let i = 0; i < x.length; i++) {
-            // bananaThrow(x[i],this.bananaTask[x[i]])
-            console.log(this.bananaTask[x[i]]);
-        }
-        console.log("no thing")
-    }
-
-    xpGraph() {
-        getAllAboutAc = () => {
-            return new Promise((resolve, reject) => {
-                chrome.history.search({ text: "AcFun" }, (e) => {
-                    if (e.length != 0) {
-                        resolve(e);
-                    } else {
-                        reject(null);
-                    }
-                });
-            });
-        }
-        getSameUrlHist = (url) => {
-            return new Promise((resolve, reject) => {
-                chrome.history.getVisits({ url: url }, function (e) {
-                    if (e.length != 0) {
-                        resolve(e);
-                    } else {
-                        reject(null);
-                    }
-                })
-            })
-        }
     }
 
 }

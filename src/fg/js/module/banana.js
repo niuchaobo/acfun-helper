@@ -203,6 +203,8 @@ class Banana {
      * @param {*} banana 
      * @param {*} heart 
      * @param {*} allowShortVideo 
+     * @example frontend 调用：this.banana.ProgressiveBanana([100,200,300,400,500],[150]);
+     * @todo 有一说一，挺难实现的好吧。
      */
     async ProgressiveBanana(banana, heart, allowShortVideo = false) {
         let targetVideo = document.getElementsByTagName("video")[0];

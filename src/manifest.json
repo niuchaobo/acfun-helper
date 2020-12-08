@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.8.1115",
+    "version": "1.2.8.1208",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -45,6 +45,7 @@
             "fg/js/module/luckyTurntab.js",
             "fg/js/module/videoSetting.js",
             "fg/js/module/readMode.js",
+            "fg/js/module/musicPlayerFront.js",
             "fg/js/frontend.js"
         ],
         "css": [
