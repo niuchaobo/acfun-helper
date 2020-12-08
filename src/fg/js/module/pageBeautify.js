@@ -213,6 +213,14 @@ class PageBeautify {
 		createElementStyle(cssStr);
 	}
 
+	simplifiyPlayerRecm(){
+		let cssStr;
+		cssStr = `#ACPlayer > div > div.container-video > div > div.recommend-container > div{
+			display:none
+		}`;
+		createElementStyle(cssStr,document.head,"simplifiyPlayerRecommend");
+	}
+
 	hideAds() {
 		var timer = setInterval(function () {
 			let checknode = $('.pause-display-container');

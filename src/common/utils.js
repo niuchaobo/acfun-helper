@@ -41,6 +41,7 @@ const defaults = {
   liveHideAd: true,
   liveHideAdType: 1,
   liveBansw: false,
+  playerRecommendHide: true,
   PlayerDamakuSearchSw: false,
   PlayerTimeCommentEasyJump: true,
   PlaybackRateKeysw: false,
@@ -769,11 +770,11 @@ function isLoginByUi(mode = true) {
 /**
  * 在某个地方（默认为head下）增加一个css的style标签
  * @param {string} cssText CSS样式文本
- * @param {HTMLElement} targetDom 添加于
+ * @param {HTMLElement} targetDom 添加于，默认是document.head
  * @param {string} id css标签的ID
  */
-createElementStyle = (cssText, targetDom = document.head, id = null) => {
-  let target = targetDom
+function createElementStyle(cssText, targetDom = document.head, id = null) {
+  let target = targetDom;
   let nod = document.createElement("style");
   let str = cssText;
   nod.type = "text/css";

@@ -1171,6 +1171,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================隐藏播放器推荐宫格============================
+    chrome.storage.local.get(['playerRecommendHide'],function(items){
+        var playerRecommendHide= items.playerRecommendHide;
+        if(playerRecommendHide){
+            document.getElementById('playerRecommendHide').checked='true';
+        }else{
+            document.getElementById('playerRecommendHide').checked=false;
+        }
+        $('#playerRecommendHide').on('click', function () {
+            if(!document.getElementById('playerRecommendHide').checked){
+                document.getElementById('playerRecommendHide').checked=false;
+                chrome.storage.local.set({'playerRecommendHide':false});
+            }else{
+                document.getElementById('playerRecommendHide').checked=true;
+                chrome.storage.local.set({'playerRecommendHide':true});
+            }
+        });
+    });
+
     //=====================直播评论时间Tag============================
     chrome.storage.local.get(['liveCommentTimeTag'],function(items){
         var liveCommentTimeTag= items.liveCommentTimeTag;

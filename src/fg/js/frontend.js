@@ -122,7 +122,7 @@ class ODHFront {
 				//画质策略
 				this.videoSetting.videoQuality(isLogin);
 				//自动点赞
-				this.options.LikeHeart && this.banana.LikeHeartFront("video",isLogin);
+				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
 				//渐进式投蕉
 				// this.banana.ProgressiveBanana([100,200,300,400,500],[150]);
 			}, 200)
@@ -165,6 +165,7 @@ class ODHFront {
 			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
+			this.options.playerRecommendHide && this.pageBeautify.simplifiyPlayerRecm();
 		}
 		//直播
 		if (REG.live.test(href)) {
