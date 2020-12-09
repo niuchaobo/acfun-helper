@@ -23,7 +23,7 @@ class MusicPlayer {
 
     async addItem(link) {
         let playList_raw = await getStorage("MusicPlayList");
-        console.log(playList_raw)
+
         if (playList_raw.MusicPlayList == null) {
             playList_raw["MusicPlayList"] = {};
             chrome.storage.local.set({ "MusicPlayList": playList_raw });
@@ -37,8 +37,8 @@ class MusicPlayer {
             if (REG.acVid.test) {
                 let acvid = REG.acVid.exec(link)
                 let this_dougaInfo = JSON.parse(await fetchResult("https://mini.pocketword.cn/api/acfun/info?dougaId=" + acvid[2]));
-                console.log(this_dougaInfo);
-                this_list[acvid[2]] = { "upName": this_dougaInfo.user.name, "dougaName": this_dougaInfo.title, "uploadTime": this_dougaInfo.createTime, "viewCount": this_dougaInfo.viewCount }
+                // console.log(this_dougaInfo);
+                this_list[acvid[2]] = { "upName": this_dougaInfo.user.name, "dougaName": this_dougaInfo.title, "uploadTime": this_dougaInfo.createTime, "viewCount": this_dougaInfo.viewCount, "coverCdnUrls": this_dougaInfo.coverCdnUrls[0].url }
             }
         }
         playList_raw.MusicPlayList.List = this_list;
@@ -46,7 +46,7 @@ class MusicPlayer {
     }
 
     async cleanTask(playList, playListObj) {
-        console.log("clean")
+        // console.log("clean")
         // playList=["1","2"]
         // playListObj={"1":1,"2":2,"3":3,"4":4};
         var originData = await getStorage("MusicPlayList");
@@ -61,7 +61,7 @@ class MusicPlayer {
                 }
             }
         }
-        console.log(originData.MusicPlayList)
+        // console.log(originData.MusicPlayList)
         chrome.storage.local.set({ "MusicPlayList": originData.MusicPlayList });
     }
 
@@ -74,7 +74,6 @@ class MusicPlayer {
     }
 
     createPlayerWindow(acid) {
-        console.log(acid);
         if (this.playInfo.windowSetting.left != undefined) {
             var left = this.playInfo.windowSetting.left;
             var top = this.playInfo.windowSetting.top;
@@ -93,46 +92,34 @@ class MusicPlayer {
         features += ',width=' + width;
         features += ',height=' + height;
 
-        console.log(features)
         this.playerPage = window.open(this.PageLocation + acid, 'AcFunMusicPlayer', features);
-        console.log(this.playerPage)
         this.playerWindow.windowId = 1;
     }
 
-    async startPlayer() {
+    async startPlayer(startIndex) {
         if (this.PlayerSign == "firstPlay") {
 
             this.playInfo.playList_raw = await getStorage("MusicPlayList");
-            console.log(this.playInfo.playList_raw);
+            // console.log(this.playInfo.playList_raw);
             if (JSON.stringify(this.playInfo.playList_raw.MusicPlayList.List) == '{}') {
-                console.log("dict empty");
-                this.PlayerSign = "exit";
+                this.PlayerSign = "stop";
                 return;
             }
 
             this.playInfo.playListObj = this.playInfo.playList_raw.MusicPlayList.List;
             this.playInfo.playList = Object.keys(this.playInfo.playList_raw.MusicPlayList.List);
-
-            this.playInfo.Playing = 0;
+            this.playInfo.Playing = Number(startIndex);
             this.playInfo.Status = true;
 
             this.createPlayerWindow(this.playInfo.playList[this.playInfo.Playing]);
-
-            // let watchDone = this.playInfo.playList.shift();
-            // delete this.playInfo.playListObj[watchDone];
             this.doneSigntask();
-
         } else if (this.PlayerSign == "deleteThis") {
             let oldInfo = this.playInfo.Playing;
             this.playInfo.playList.shift(oldInfo);
             delete this.playInfo.playListObj[oldInfo];
 
             this.doneSigntask();
-        } else if (this.PlayerSign == "focusPlayerWindow") {
-            this.playerPage.focus();
-            this.doneSigntask();
         } else if (this.PlayerSign == "next") {
-            console.log("next");
 
             this.playInfo.Playing++;
             this.playInfo.Status = true;
@@ -143,7 +130,6 @@ class MusicPlayer {
             }
             this.playerPage.location = this.PageLocation + this.playInfo.playList[this.playInfo.Playing];
 
-            console.log("changed page");
             this.doneSigntask();
         } else if (this.PlayerSign == "last") {
             this.playInfo.Playing--;
@@ -151,28 +137,30 @@ class MusicPlayer {
 
             this.playerPage.location = this.PageLocation + this.playInfo.playList[this.playInfo.Playing];
             this.doneSigntask();
-        } else {
-            console.log(`Player Status: ${this.playInfo.playList.length ? "Playing" : "Will Soon Stop"}`);
         }
     }
 
-    main() {
+    focusPlayer() {
+        if(this.playInfo.Status){
+            this.playerPage.focus();
+        }
+    }
+
+    main(startIndex = 0) {
         let playerTask = setInterval(() => {
-            this.startPlayer();
-            console.log(this.playInfo)
-            console.log(this.PlayerSign);
-            if (this.PlayerSign == "stop") {
+            this.startPlayer(startIndex);
+            let windowclosed = this.playerPage.closed;
+            if (this.PlayerSign == "stop"||windowclosed) {
                 try {
                     this.playerPage.close();
                 } catch (error) {
-                    console.log("err to close window");
+                    // console.log("err to close window");
                 }
                 this.playInfo.Playing = -1;
                 this.playerWindow.windowId = -1;
                 this.playInfo.Status = false;
 
-                console.log("stoped");
-                notice("2333", "end");
+                notice("AcFun助手", `${!windowclosed?"音乐播放器任务队列全部完成。":"播放器已关闭。"}`);
                 this.doneSigntask();
                 clearInterval(playerTask);
             }

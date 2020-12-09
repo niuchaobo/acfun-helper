@@ -21,7 +21,7 @@ class musicPlayerFront {
     }
 
     nextOne() {
-        alert("next ready");
+        // alert("next ready");
         chrome.runtime.sendMessage({ action: "musicPlayerSign", params: { sign: "next" } }, function (response) { });
     }
 
@@ -29,6 +29,11 @@ class musicPlayerFront {
         chrome.runtime.sendMessage({ action: "musicPlayerSign", params: { sign: sign } }, function (response) { });
     }
 
+    /**
+     * 给播放器添加操作UI
+     * @description
+     * @todo <li class = 'addThisToList' sytle="display:none">✚ 添加</li><li class = 'jumpToNext' sytle="display:none">↰ 等下播放</li>
+     */
     addMusicPlayerUI() {
         var timer = setInterval(() => {
             let nodes = $('.box-right');
@@ -38,10 +43,8 @@ class musicPlayerFront {
                 <div class="control-btn speed" type='musicPlayer'><span data-bind-key="musicPlayer">Mp</span>
                     <div class="speed-panel musicPlayer-panel">
                         <ul>
-                            <li class = 'lastOne' data-val="last" >◀ 上一首</li>
-                            <li class = 'nextOne' data-val="next" >▶ 下一首</li>
-                            <li class = 'addThisToList' >✚ 添加</li>
-                            <li class = 'jumpToNext' >↰ 等下播放</li>
+                            <li class = 'lastOne' data-val="last" >◀上一首</li>
+                            <li class = 'nextOne' data-val="next" >▶下一首</li>
                         </ul>
                         <div class="transparent-placeholder"></div>
                 </div>
@@ -57,18 +60,16 @@ class musicPlayerFront {
                             this.nextOne();
                             break;
                         case "addThisToList":
-                            this.handler();
+                            // chrome.runtime.sendMessage({ action: "musicPlayerAdd", params: { linkUrl: window.location.href } }, function (response) { });
                             break;
                         case "jumpToNext":
-                            this.handler();
+                            // this.handler();
                             break;
                     }
                 });
                 clearInterval(timer);
             }
         }, 200)
-
-
     }
 
 }

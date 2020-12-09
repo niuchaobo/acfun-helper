@@ -349,9 +349,21 @@ class ODHBack {
         this.MsgNotfs.bananAudio();
     }
 
+    api_musicPlayerStart(e){
+        this.MusicPlayer.setSign("firstPlay");
+        this.MusicPlayer.main(e.index);
+    }
+
     api_musicPlayerSign(e){
-        console.log("api_musicPlayerSign: "+e.sign)
         this.MusicPlayer.setSign(e.sign);
+    }
+
+    api_musicPlayerfocusPlayer(){
+        this.MusicPlayer.focusPlayer();
+    }
+
+    api_musicPlayerAdd(e){
+        this.MusicPlayer.addItem(e.linkUrl);
     }
 
     async api_initBackend(params) {

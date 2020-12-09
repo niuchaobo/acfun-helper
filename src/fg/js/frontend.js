@@ -156,10 +156,6 @@ class ODHFront {
 			//分区首页nav高斯模糊
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(true);
 		}
-		if (REG.player.test(href)) {
-			console.log("allow to hook playerListener")
-			this.musicPlayerFront.hookListener();
-		}
 		//视频
 		if (REG.video.test(href)) {
 			//播放器和弹幕功能
@@ -208,6 +204,11 @@ class ODHFront {
 		//根据cookie判断当前登录用户是不是up
 		//let is_up = this.adjuatUp();
 		let href = this.href;
+		//音乐播放器
+		if (REG.player.test(href)) {
+			this.musicPlayerFront.hookListener();
+			return;
+		}
 		//开启屏蔽功能
 		this.options.filter && this.block.block();
 		var pageInfo = null;

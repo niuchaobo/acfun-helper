@@ -26,6 +26,10 @@ import {
 	userInfoFetch,
 	renderAcDaily,
 	attentionTabs,
+	openMusicPlayerSetting,
+	musicPlayerPopupStart,
+	musicPlayerPopupStop,
+	musicPlayerPopupShow
 } from "./popupEvent.js";
 
 async function onReady() {
@@ -57,6 +61,10 @@ async function onReady() {
 	$("#MomentSquareFpop").click(MomentSquareFpop);
 	$("#MyBangumiFpop").click(MyBangumiFpop);
 	$("#AcDailyFetch").click(renderAcDaily);
+	$("#musicPlayerPopupStart").click(musicPlayerPopupStart);
+	$("#musicPlayerPopupStop").click(musicPlayerPopupStop);
+	$("#musicPlayerPopupShow").click(musicPlayerPopupShow);
+	$("#musicPlayerPopupOpenList").click(openMusicPlayerSetting);
 	$("#livePageWatchTimeRecList").click(e => { e.target.className === 'liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key, e.target.href) });
 	$(".PushListMode").click(PushListDougaMode);
 	$(".MultOpen").click(PopupLater);

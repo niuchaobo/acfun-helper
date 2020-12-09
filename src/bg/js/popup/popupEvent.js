@@ -20,6 +20,13 @@ export function openSetting() {
 	a.dispatchEvent(e);
 }
 
+export function openMusicPlayerSetting() {
+	var a = $("<a href='musicPlayerMang.html' target='_blank'></a>").get(0);
+	var e = document.createEvent("MouseEvents");
+	e.initEvent("click", true, true);
+	a.dispatchEvent(e);
+}
+
 export function indexJump() {
 	switch (this.id) {
 		case 'pop-toUcenter':
@@ -115,6 +122,24 @@ export async function WatchLaterFpopup() {
 	})
 }
 
+export async function musicPlayerPopupStart() {
+	mdui.snackbar({
+		message: `已经启动播放器了！`,
+	});
+	chrome.runtime.sendMessage({ action: "musicPlayerStart", params: {} }, function (response) { });
+}
+
+export async function musicPlayerPopupStop() {
+	mdui.snackbar({
+		message: `已经在关闭播放器啦。`,
+	});
+	chrome.runtime.sendMessage({ action: "musicPlayerSign", params: { sign: "stop" } }, function (response) { });
+}
+
+export async function musicPlayerPopupShow() {
+	chrome.runtime.sendMessage({ action: "musicPlayerfocusPlayer", params: {} }, function (response) { });
+}
+
 export async function viewHistory() {
 	fetch('https://www.acfun.cn/rest/pc-direct/browse/history/list', { method: "POST", credentials: 'include', body: 'pageSize=20&pageNo=1&resourceTypes=', headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }) })
 		.then((res => { return res.text() }))
@@ -122,7 +147,7 @@ export async function viewHistory() {
 			let x = JSON.parse(res);
 			var raw_data = "";
 			for (let i = 0; i < x.histories.length - 1; i++) {
-				if (x.histories[i].disable == true||x.histories[i].bangumiItemTitle!="") {
+				if (x.histories[i].disable == true || x.histories[i].bangumiItemTitle != "") {
 					continue;
 				}
 				var raw_data = raw_data + `
