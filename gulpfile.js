@@ -5,36 +5,36 @@ const del = require('del');
 
 
 function backend() {
-    return src('./src/bg/js/*.js')
+    return src('./src/bg/*.js')
         .pipe(gulpEsbuild({
             minify: true,
             loader: {
                 '.js': 'js'
             }
         }))
-        .pipe(dest('./final/bg/js/'))
+        .pipe(dest('./final/bg/'))
 }
 
 function backMods() {
-    return src('./src/bg/js/modules/*.js')
+    return src('./src/bg/modules/*.js')
         .pipe(gulpEsbuild({
             minify: true,
             loader: {
                 '.js': 'js'
             }
         }))
-        .pipe(dest('./final/bg/js/modules/'))
+        .pipe(dest('./final/bg/modules/'))
 }
 
 function backPopup() {
-    return src('./src/bg/js/popup/*.js')
+    return src('./src/bg/popup/*.js')
         .pipe(gulpEsbuild({
             minify: true,
             loader: {
                 '.js': 'js'
             }
         }))
-        .pipe(dest('./final/bg/js/popup/'))
+        .pipe(dest('./final/bg/popup/'))
 }
 
 function bangumiApp() {
@@ -71,25 +71,25 @@ function common() {
 }
 
 function fg() {
-    return src('./src/fg/js/*.js')
+    return src('./src/fg/*.js')
         .pipe(gulpEsbuild({
             minify: true,
             loader: {
                 '.js': 'js'
             }
         }))
-        .pipe(dest('./final/fg/js/'))
+        .pipe(dest('./final/fg/'))
 }
 
 function fgMod() {
-    return src('./src/fg/js/module/*.js')
+    return src('./src/fg/modules/*.js')
         .pipe(gulpEsbuild({
             minify: true,
             loader: {
                 '.js': 'js'
             }
         }))
-        .pipe(dest('./final/fg/js/module/'))
+        .pipe(dest('./final/fg/modules/'))
 }
 
 gulp.task("default", (e) => {
