@@ -1371,6 +1371,40 @@ $(document).ready(function () {
         });
     });
 
+    //=====================音乐播放器-自动播放================
+    chrome.storage.local.get(['MusicPlayList'],function(items){
+        var MusicPlayList_onLoadAutoPlaysw= items.MusicPlayList.onLoadAutoPlay;
+        if(MusicPlayList_onLoadAutoPlaysw){
+            document.getElementById('MusicPlayList_onLoadAutoPlay').checked='true';
+        }else{
+            document.getElementById('MusicPlayList_onLoadAutoPlay').checked=false;
+        }
+        $('#MusicPlayList_onLoadAutoPlay').on('click', function () {
+            if(!document.getElementById('MusicPlayList_onLoadAutoPlay').checked){
+                document.getElementById('MusicPlayList_onLoadAutoPlay').checked=false;
+                items.MusicPlayList.onLoadAutoPlay=false;
+            }else{
+                document.getElementById('MusicPlayList_onLoadAutoPlay').checked=true;
+                items.MusicPlayList.onLoadAutoPlay=true;
+            }
+            chrome.storage.local.set({'MusicPlayList':items.MusicPlayList});
+        });
+    });
+
+    //=====================音乐播放器-页面模式================
+    chrome.storage.local.get(['MusicPlayList'],function(items){
+        var MusicPlayList_playerMode= items.MusicPlayList;
+        // MusicPlayList_playerMode.playerMode = 1;
+        console.log(MusicPlayList_playerMode)
+        document.querySelector("#MusicPlayList_playerMode").parentElement.children[1].children[1].children[Number(MusicPlayList_playerMode.playerMode)].click()
+        var inst = new mdui.Select('#MusicPlayList_playerMode');
+        
+        $('#MusicPlayList_playerMode').on('close.mdui.select', function () {
+            items.MusicPlayList.playerMode = Number(inst.value);
+            chrome.storage.local.set({'MusicPlayList':items.MusicPlayList});
+        });
+    });
+
     //=====================评论区时间选中播放器快速跳转================
     chrome.storage.local.get(['easySearchScanForPlayerTimesw'],function(items){
         var easySearchScanForPlayerTimesw= items.easySearchScanForPlayerTimesw;

@@ -4,11 +4,19 @@
 class musicPlayerFront {
     constructor() {
         this.playingUrl = window.location.toString();
+        this.targetVideo = {};
+        this.modOption = {};
+        this.loadOption();
+        this.autoNextP = false;
+    }
+
+    async loadOption() {
+        this.modOption = await getStorage("MusicPlayList");
     }
 
     hookListener() {
-        let targetVideo = document.getElementsByTagName("video")[0];
-        targetVideo.addEventListener('ended', this.nextOne.bind(null), false);
+        this.targetVideo = document.getElementsByTagName("video")[0];
+        this.targetVideo.addEventListener('ended', this.nextOne.bind(null), false);
         // targetVideo.addEventListener("timeupdate", function () {
         //     console.log(targetVideo.currentTime)
         //     if (targetVideo.currentTime == targetVideo.duration) {
@@ -18,6 +26,12 @@ class musicPlayerFront {
         // }, false);
         console.log("hooked");
         this.addMusicPlayerUI();
+        if (this.modOption.MusicPlayList["onLoadAutoPlay"] != undefined && this.modOption.MusicPlayList["onLoadAutoPlay"]) {
+            this.targetVideo.play();
+        }
+        if (document.querySelector(".setting-panel-content").children[0].children[1].dataset.bindAttr == "false") {
+            this.autoNextP = true;
+        }
     }
 
     nextOne() {
@@ -37,7 +51,7 @@ class musicPlayerFront {
     addMusicPlayerUI() {
         var timer = setInterval(() => {
             let nodes = $('.box-right');
-            if (nodes.length>0) {
+            if (nodes.length > 0) {
                 console.log("this")
                 let html = `
                 <div class="control-btn speed" type='musicPlayer'><span data-bind-key="musicPlayer">Mp</span>

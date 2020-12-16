@@ -9,7 +9,7 @@ const defaults = {
   to_special_items: [],
   broadcastingUIDlistFollowing: {},
   WatchPlanList: [],
-  MusicPlayList: { "windowSetting": { "left": 139, "top": 32, "width": 980, "height": 590 }, "List": {} },
+  MusicPlayList: { "windowSetting": { "left": 139, "top": 32, "width": 980, "height": 590 }, "onLoadAutoPlay": true, "playerMode": 1, "List": {} },
   activeTabKey: 'activeTabId',
   extendsName: 'AcFun助手',
   upUrlTemplate: 'https://www.acfun.cn/u/{uid}',
@@ -847,6 +847,23 @@ function leftBottomTip(text, importantText = "") {
     $(".left-bottom-tip").eq(0).children().eq(0).remove(); //这样写 并不能自定义持续时间
     clearInterval(_timer);
   }, 2500);
+}
+
+/**
+ * 用户展示中心左下角通知
+ * @param {*} msg 
+ * @param {*} notifLevel 通知级别（info 蓝色;error 红色;success 绿色;warning 橙色;）
+ * @param {*} notifIcon 通知级别符号 banana;success;error;warning;logout;help;arrow-round-right;comments;envelope;info;yonghu;app-phone;close;arrow-slim-up;rank;arrow-slim-right;loading;triangle-right;eye;eye-new;crown;arrow-round-left;plus-circle;history;upload;collect;calendar;danmu;danmu-new;view-player;view-player-new;arrow-round-up;arrow-round-down;triangle-slim-right;chevron-left;th-list2;circle-triangle-w;circle-triangle-e;label;th-large1;th3;th-large;th-list;th;step-forward;step-backward;prompt;helps;delete;to-comm;to-comm-new;delete1;chevron-right;chuang-zuo-zhong-xin;
+ * @param {*} time 显示时间
+ */
+function uCentTip(msg, notifLevel = "success", notifIcon = "success", time = 2500) {
+  $("#g-toast").eq(0).append(`
+    <p class="info ${notifLevel}" style="left: 0px;"><i class="icon icon-${notifIcon}"></i><span>${msg}</span></p>
+  `);
+  let _timer = setTimeout(() => {
+    $("#g-toast").eq(0).children().eq(1).remove();
+    clearInterval(_timer);
+  }, time);
 }
 
 /**

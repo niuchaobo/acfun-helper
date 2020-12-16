@@ -20,7 +20,7 @@ class LivePageButfy {
     commentTimeTag() {
         let root = chrome.runtime.getURL('/');
         let sc = document.createElement("script");
-        sc.src = `${root}fg/js/module/liveSettingInject.js`;
+        sc.src = `${root}fg/modules/liveSettingInject.js`;
         document.head.appendChild(sc);
     }
 

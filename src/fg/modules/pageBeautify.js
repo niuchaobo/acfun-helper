@@ -164,15 +164,15 @@ class PageBeautify {
 					);
 				}
 				let cssStr = `
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con,.header .guide-msg .guide-item-con{
 					${this_page ? "width: 114px;" : ""}
 					padding:0px 0px 0px 0px;
 				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li,.header-guide .guide-msg .guide-item-con ul li{
 					${this_page ? "text-align: center;" : ""}
 					font-size:14px;
 				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover,.header-guide .guide-msg .guide-item-con ul li:hover{
 					background-color:#ececec;
 				}
 				ul#guide-msg-list{
@@ -181,24 +181,24 @@ class PageBeautify {
 				#guide-msg-list > li{
 					padding:10px 5px 10px 5px;
 				}
-				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li{
+				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li,.header .guide-item.guide-history .guide-item-con li{
 					font-size: 14px;
 					line-height: 22px;
 					margin: 12px 0px 12px 0px;
 					height: 18px;
 				}
-				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a .item-title{
+				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a .item-title,.header .guide-item.guide-history .guide-item-con li a .item-title{
 					height: 20px;
 					line-height: 16px;
 				}
-				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a i.device{
+				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a i.device,.header .guide-item.guide-history .guide-item-con li a i.device{
 					height: 20px;
 					line-height: 16px;
 				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li a .badget{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li a .badget,.header .guide-item.guide-history .guide-item-con ul li a .badget{
 					top: 18px;
 				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li.followed-users .followed-live-title{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li.followed-users .followed-live-title,.header .guide-item.guide-history .guide-item-con ul li.followed-users .followed-live-title{
 					line-height: 14px;
 					height: 14px;
 				}
@@ -207,18 +207,71 @@ class PageBeautify {
 			});
 	}
 
-	indexBeautify(opt, shadowSw = false) {
+	indexBeautify(opt, shadowSw = false, searchBox = true) {
 		let cssStr;
-		opt ? cssStr = ".header-top{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896 !important;} .header .nav{border-bottom: 1px solid #ffffff00 !important} .header.fixed .nav{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896;}" : cssStr = `.nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(2.25926vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(2.25926vw);${shadowSw ? "box-shadow: 0 2px 4px rgb(0 0 0 / 26%)" : ""};}`;
+		//模糊
+		opt ? cssStr = ".header-top{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896 !important;} .header .nav{border-bottom: 1px solid #ffffff00 !important} .header.fixed .nav{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896;}" : cssStr = `.nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(1.2vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(1.2vw);${shadowSw ? "box-shadow: 0 2px 4px rgb(0 0 0 / 26%)" : ""};}`;
+		//banner定位修正
+		cssStr += `.header .header-banner{margin-top: -47px;}`
+		//搜索栏 - 分区主页 - 主页 - 个人展示中心
+		searchBox ? cssStr += `.search-box input,[data-c-w-header] .search-box .form input,[data-c-w-header] .search-box .form input{border: none;background: 0 0;border-bottom: 1px solid;color: black;border-radius: 0px!important;} .search-box .search-btn{background: ##ff4b4b70;border-radius: 0px;}` : "";
 		createElementStyle(cssStr);
 	}
 
-	simplifiyPlayerRecm(){
+	simplifiyPartIndex() {
+		let cssStr;
+		cssStr = `.block-video .block-title p{
+			display:none
+		}`;
+		createElementStyle(cssStr, document.head, "simplifiyPartIndex");
+	}
+
+	userCenterBeautify() {
+		let cssStr;
+		cssStr = `#ac-space .tab-content{background: #ffffffad;} #ac-space .tab{background: #fffffff7;}
+		#ac-space-album-list, #ac-space-article-list, #ac-space-video-list{background: #ffffffad;}
+		#ac-space-info {
+			border: 0px;
+			background: #fff0;
+			top: -30px;
+		}
+		#ac-space-info .info .actions .unfollowed:hover {
+			background-color: #c33b46;
+		}
+		#ac-space-info .info .main {
+			border-radius: 10px 10px 10px 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, .3);
+			top: -30px;
+		}
+		#ac-space-info .info .main .top .share {
+			display: none;
+		}
+		
+		.ac-space-video:hover figure.video>img{
+			transform: scale(1.08);
+		}
+		
+		.ac-space-video:hover figure.video>.mask{
+			box-shadow: 0 2px 4px rgb(0 0 0 / 26%);
+			transform: scale(1.08);
+		}
+		
+		.ac-space-video .video img{
+			transition: all .2s ease-in-out;
+		}
+		
+		.ac-space-video .video .icon-play, .ac-space-video .video .mask{
+			transition: all .2s ease-in-out;
+		}`;
+		createElementStyle(cssStr, document.head, "simplifiyPartIndex");
+	}
+
+	simplifiyPlayerRecm() {
 		let cssStr;
 		cssStr = `#ACPlayer > div > div.container-video > div > div.recommend-container > div{
 			display:none
 		}`;
-		createElementStyle(cssStr,document.head,"simplifiyPlayerRecommend");
+		createElementStyle(cssStr, document.head, "simplifiyPlayerRecommend");
 	}
 
 	hideAds() {

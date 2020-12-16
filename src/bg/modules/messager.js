@@ -33,48 +33,48 @@ class MsgNotifs {
                                 //i就是UID
                                 let ApiUrl = 'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='
                                 fetch(ApiUrl + i).then((res) => { return res.text() })
-                                .then((res) => {
-                                    //判断直播状态
-                                    let x = JSON.parse(res);
-                                    if (x.profile.liveId != undefined) {
-                                        var state = true;
-                                    } else {
-                                        var state = false;
-                                    }
-                                    //将状态写入本次直播状态信息字典
-                                    y[i] = state;
-                                    //如果上次直播状态就是现在的直播状态就不提示，否则
-                                    if (state == broadcastingUIDlist.broadcastingUIDlist[i]) {
-                                        // console.log('same!');
-                                    } else {
-                                        let lastState = broadcastingUIDlist.broadcastingUIDlist[i]
-                                        //假如上次直播状态为 否,并且上次直播状态与本次直播状态不一致（意思是现在为 是）
-                                        if (lastState == false) {
-                                            chrome.notifications.create(null, {
-                                                type: 'basic',
-                                                iconUrl: 'images/notice.png',
-                                                title: 'AcFun助手',
-                                                message: `${x.profile.name}  正在直播了！`
-                                            });
-                                            chrome.storage.local.get(['liveFollowOpenNow'], function (a) {
-                                                if (a.liveFollowOpenNow) {
-                                                    chrome.tabs.create({ url: `https://live.acfun.cn/live/${i}` });
-                                                }
-                                            });
+                                    .then((res) => {
+                                        //判断直播状态
+                                        let x = JSON.parse(res);
+                                        if (x.profile.liveId != undefined) {
+                                            var state = true;
                                         } else {
-                                            // console.log(`${x.profile.name}  下播了！`);
-                                            // chrome.notifications.create(null, {
-                                            //     type: 'basic',
-                                            //     iconUrl: 'images/notice.png',
-                                            //     title: 'AcFun助手',
-                                            //     message: `${x.profile.name}  下播了！`
-                                            // });
+                                            var state = false;
                                         }
-                                    }
-                                    // 状态写入存储
-                                    chrome.storage.local.set({ 'broadcastingUIDlist': y });
-                                    // chrome.storage.local.get(['broadcastingUIDlist'],function(e){console.log(e)});
-                                });
+                                        //将状态写入本次直播状态信息字典
+                                        y[i] = state;
+                                        //如果上次直播状态就是现在的直播状态就不提示，否则
+                                        if (state == broadcastingUIDlist.broadcastingUIDlist[i]) {
+                                            // console.log('same!');
+                                        } else {
+                                            let lastState = broadcastingUIDlist.broadcastingUIDlist[i]
+                                            //假如上次直播状态为 否,并且上次直播状态与本次直播状态不一致（意思是现在为 是）
+                                            if (lastState == false) {
+                                                chrome.notifications.create(null, {
+                                                    type: 'basic',
+                                                    iconUrl: 'images/notice.png',
+                                                    title: 'AcFun助手',
+                                                    message: `${x.profile.name}  正在直播了！`
+                                                });
+                                                chrome.storage.local.get(['liveFollowOpenNow'], function (a) {
+                                                    if (a.liveFollowOpenNow) {
+                                                        chrome.tabs.create({ url: `https://live.acfun.cn/live/${i}` });
+                                                    }
+                                                });
+                                            } else {
+                                                // console.log(`${x.profile.name}  下播了！`);
+                                                // chrome.notifications.create(null, {
+                                                //     type: 'basic',
+                                                //     iconUrl: 'images/notice.png',
+                                                //     title: 'AcFun助手',
+                                                //     message: `${x.profile.name}  下播了！`
+                                                // });
+                                            }
+                                        }
+                                        // 状态写入存储
+                                        chrome.storage.local.set({ 'broadcastingUIDlist': y });
+                                        // chrome.storage.local.get(['broadcastingUIDlist'],function(e){console.log(e)});
+                                    });
                             }
                         });
                     });
@@ -172,19 +172,25 @@ class MsgNotifs {
      */
     async timer4Unread() {
         console.log("Start timer4Unread Mod");
-        window.setInterval(async function () {
+        var startAgent = window.setInterval(async function () {
+            clearInterval(startAgent);
+        }, 1000)
+        var _thread = window.setInterval(async () => {
             let sw = await getStorage("timer4Unread_daemonsw")
             if (sw.timer4Unread_daemonsw == false) { chrome.browserAction.setTitle({ title: `AcFun助手，Ac在爱一直在` }); chrome.browserAction.setBadgeText({ text: "" }); return }
             chrome.storage.local.get(['LocalUserId'], function (Uid) {
-                if (Uid.LocalUserId == "0") { return }
+                if (Uid.LocalUserId == "0") { clearInterval(_thread) }
                 fetch('https://member.acfun.cn/common/api/getUnreadMess', {
-                    method: "POST", headers: {
+                    method: "POST", credentials: 'include', headers: {
                         'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
                     }, body: ""
                 })
                     .then((res => { return res.text() }))
                     .then((res) => {
                         let b = JSON.parse(res);
+                        if (b.unReadCount.new_system_notify == undefined) {
+                            return;
+                        }
                         let a0 = b.unReadCount.new_comment;//评论
                         let a1 = b.unReadCount.new_comment_like;//赞
                         let a2 = b.unReadFollowFeedCount;//动态

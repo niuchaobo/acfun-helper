@@ -28,24 +28,24 @@ class ODHBack {
         chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
 
         //监听storage变化,可用于数据云同步
-        chrome.storage.onChanged.addListener(function (changes,areaName) {
+        chrome.storage.onChanged.addListener(function (changes, areaName) {
 
         });
 
         chrome.webRequest.onBeforeRequest.addListener(
-             this.onCommentRequest.bind(this),
+            this.onCommentRequest.bind(this),
             {
-                urls: ["https://www.acfun.cn/rest/pc-direct/comment/*","*://*/livecloud*"]
+                urls: ["https://www.acfun.cn/rest/pc-direct/comment/*", "*://*/livecloud*"]
             },
             []
         );
 
         //当关闭标签页时删除此标签页存储的视频信息
         chrome.tabs.onRemoved.addListener(async function (tabId, removeInfo) {
-            let result = await getStorage(tabId+"").then(result => {return result[tabId]});
-            let obj =await getStorage(result);
+            let result = await getStorage(tabId + "").then(result => { return result[tabId] });
+            let obj = await getStorage(result);
             let arr = Object.values(obj);
-            for(var lineId of arr){
+            for (var lineId of arr) {
                 delStorage(lineId + "");
             }
             delStorage(tabId + "");
@@ -53,32 +53,32 @@ class ODHBack {
 
         //右键菜单
         chrome.contextMenus.create({
-            documentUrlPatterns:['https://*.acfun.cn/*'],
+            documentUrlPatterns: ['https://*.acfun.cn/*'],
             title: '下载封面',
             contexts: ['link'],
-            id:'1'
+            id: '1'
         });
 
         chrome.contextMenus.create({
-            documentUrlPatterns:['https://*.acfun.cn/*'],
+            documentUrlPatterns: ['https://*.acfun.cn/*'],
             title: '下载原始封面',
             contexts: ['link'],
-            parentId:'1',
-            onclick: function(params,tab){
+            parentId: '1',
+            onclick: function (params, tab) {
                 let link_url = params.linkUrl;
-                this.tabInvoke(tab.id, 'downloadCover', {link_url:link_url,type:'normal'});
+                this.tabInvoke(tab.id, 'downloadCover', { link_url: link_url, type: 'normal' });
 
             }.bind(this)
         });
 
         chrome.contextMenus.create({
-            documentUrlPatterns:['https://*.acfun.cn/*'],
+            documentUrlPatterns: ['https://*.acfun.cn/*'],
             title: '下载高清封面',
             contexts: ['link'],
-            parentId:'1',
-            onclick: function(params,tab){
+            parentId: '1',
+            onclick: function (params, tab) {
                 let link_url = params.linkUrl;
-                this.tabInvoke(tab.id, 'downloadCover', {link_url:link_url,type:'high'});
+                this.tabInvoke(tab.id, 'downloadCover', { link_url: link_url, type: 'high' });
             }.bind(this)
         });
 
@@ -86,26 +86,26 @@ class ODHBack {
             title: '使用AcFun搜索【%s】', // %s表示选中的文字
             contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
             onclick: function (params) {
-                chrome.tabs.create({url: 'https://www.acfun.cn/search?keyword=' + encodeURI(params.selectionText)});
+                chrome.tabs.create({ url: 'https://www.acfun.cn/search?keyword=' + encodeURI(params.selectionText) });
             }
         });
 
         chrome.contextMenus.create({
-            title: '加入到稍后再看', 
-            contexts: ['link'], 
-            id:'2',
-            onclick: (params) =>{
+            title: '加入到稍后再看',
+            contexts: ['link'],
+            id: '2',
+            onclick: (params) => {
                 let link_url = params.linkUrl;
-                this.WatchPlan.PushInList(link_url).then(()=>{
+                this.WatchPlan.PushInList(link_url).then(() => {
                     let x = this.WatchPlan.getOpRes();
-                    let sw=""
-                    x?sw="加入成功。":sw="稍后再看已被关闭或为错误对象。"
+                    let sw = ""
+                    x ? sw = "加入成功。" : sw = "稍后再看已被关闭或为错误对象。"
                     chrome.notifications.create(null, {
                         type: 'basic',
                         iconUrl: 'images/notice.png',
                         title: 'AcFun 助手 - 稍后再看',
                         message: `${sw}`
-                    });    
+                    });
                 });
             }
         });
@@ -114,7 +114,7 @@ class ODHBack {
             title: '添加到音乐播放器列表',
             id: 'addToMusicPlayerlist',
             contexts: ['link'],
-            onclick: (params) =>{
+            onclick: (params) => {
                 this.MusicPlayer.addItem(params.linkUrl);
             }
         });
@@ -123,7 +123,7 @@ class ODHBack {
             title: '启动音乐播放器',
             id: 'startMusicPlayer',
             contexts: ['link'],
-            onclick: () =>{
+            onclick: () => {
                 this.MusicPlayer.setSign("firstPlay");
                 this.MusicPlayer.main();
             }
@@ -133,9 +133,9 @@ class ODHBack {
             title: '停止音乐播放器',
             id: 'stopMusicPlayer',
             contexts: ['link'],
-            onclick: (params) =>{
+            onclick: (params) => {
                 console.log("backend stop");
-                if(this.MusicPlayer.playInfo.Status){
+                if (this.MusicPlayer.playInfo.Status) {
                     this.MusicPlayer.setSign("stop");
                     // this.MusicPlayer.main();
                 }
@@ -156,17 +156,25 @@ class ODHBack {
         //当激活某个tab页时
         chrome.tabs.onActivated.addListener(function (tab) {
             let tabId = tab.tabId;
-            chrome.storage.local.set({activeTabId: tabId}, function () {
+            chrome.storage.local.set({ activeTabId: tabId }, function () {
                 if (chrome.runtime.lastError) {
                     notice('发生错误', chrome.runtime.lastError.message);
                 }
             });
         });
 
+        chrome.commands.onCommand.addListener((command) => {
+            if (command === "toggle") {
+                window.open("https://www.acfun.cn/")
+            } else if (command == "watchLater") {
+                this.WatchPlan.execWatch();
+            }
+        });
+
     }
 
-    onCommentRequest(req){
-        if(!this.options.enabled){
+    onCommentRequest(req) {
+        if (!this.options.enabled) {
             return;
         }
         let url = req.url;
@@ -177,14 +185,14 @@ class ODHBack {
         // let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.hlspull.etoote.com/.*m3u8");
         let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.pull.etoote.com/livecloud/.*");
 
-        if(commentListReg.test(url)){
-            this.tabInvoke(tabId, 'renderList', {url:url});
-        }else if(commentSubReg.test(url)){
+        if (commentListReg.test(url)) {
+            this.tabInvoke(tabId, 'renderList', { url: url });
+        } else if (commentSubReg.test(url)) {
             let rootCommentId = url.match(commentSubReg)[1];
-            this.tabInvoke(tabId, 'renderSub', {rootCommentId: rootCommentId,url:url});
-        }else if(liveReg.test(url)){
+            this.tabInvoke(tabId, 'renderSub', { rootCommentId: rootCommentId, url: url });
+        } else if (liveReg.test(url)) {
             // console.log("url1",url);
-            this.tabInvoke(tabId, 'renderLive', {url:url});
+            this.tabInvoke(tabId, 'renderLive', { url: url });
         }
         this.authInfo.fetchPasstoken();
         this.authInfo.getAccessToken();
@@ -193,7 +201,7 @@ class ODHBack {
     onInstalled(details) {
         initializeDBTable();
         if (details.reason === 'install') {
-            chrome.tabs.create({url: chrome.extension.getURL('bg/guide.html')});
+            chrome.tabs.create({ url: chrome.extension.getURL('bg/guide.html') });
             return;
         }
         if (details.reason === 'update') {
@@ -209,33 +217,27 @@ class ODHBack {
     }
 
     async onTabReady(tab) {
-        this.options =await optionsLoad();
+        this.options = await optionsLoad();
         let tabId = tab.id;
-        this.tabInvoke(tabId, 'setFrontendOptions', {options: this.options});
+        this.tabInvoke(tabId, 'setFrontendOptions', { options: this.options });
     }
 
-    async onTabUpdate(tabId,changeInfo,tab) {
-        this.options =await optionsLoad();
-        if(changeInfo.status == 'complete'){
+    async onTabUpdate(tabId, changeInfo, tab) {
+        this.options = await optionsLoad();
+        if (changeInfo.status == 'complete') {
             let url = tab.url;
-            let reg = new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)');
-            if(reg.test(url)){
-                let ac = reg.exec(url);
+            if (REG.acVid.test(url)) {
+                let ac = REG.acVid.exec(url);
                 let ac_num = ac[2];
                 //autoThrowBanana();
                 let action = 'throwBanana';
-                let params = {"key":ac_num};
-                chrome.tabs.sendMessage(tabId, {action, params}, function (response) {
-                    console.log(response)
-                    let resJson = JSON.parse(response);
-                    if(resJson && resJson.result == 0){
-                        notice("投蕉提醒","AcFun助手已为您自动投蕉");
-                    }
+                let params = { "key": ac_num };
+                chrome.tabs.sendMessage(tabId, { action, params }, function (response) {
                 });
                 //this.callback();
             }
         }
-        this.tabInvoke(tabId, 'setFrontendOptions', {options: this.options});
+        this.tabInvoke(tabId, 'setFrontendOptions', { options: this.options });
     }
 
     //================Message Hub and Handler================//
@@ -248,30 +250,36 @@ class ODHBack {
     }
 
     tabInvoke(tabId, action, params) {
-        chrome.tabs.sendMessage(tabId, {action, params}, () => null);
+        chrome.tabs.sendMessage(tabId, { action, params }, () => null);
     }
 
     onMessage(request, sender, callback) {
-        const {action, params} = request;
+        const { action, params } = request;
         const method = this['api_' + action];
 
-        if (typeof(method) === 'function') {
-            if(params["receipt"]){
-                //信源程序是否需要通过tabid来获取回执
-                params.tabid=sender.tab;
+        /*
+        调用示例
+        chrome.runtime.sendMessage({action:"`调用的函数名`",params:{receipt: `这里选择是否告知被调用函数前台调用函数所在页面的tabid`,responseRequire:`此处选择是否需要返回函数运行结果`,asyncWarp:`此处选择是否需要进行结果返回的异步封装`,...其他参数}},function(resp){//process code})
+        */
+        if (typeof (method) === 'function') {
+            if (params["receipt"]) {
+                //信源程序是否需要通过tabid来获取回执<-我也忘记这个注释是什么意思了，好像是说这个参数置true可以告知被调用函数前台调用函数所在页面的tabid以便重新利用。
+                params.tabid = sender.tab;
                 params.callback = callback;
                 method.call(this, params);
-            }else if(params["responseRequire"]&&params["asyncWarp"]==false){
+            } else if (params["responseRequire"] && params["asyncWarp"] == false) {
+                //调用函数需要得到被调用函数的结果，并且被调用函数是同步的，结果不需要进行异步封装。
                 params.callback = callback;
-                let x = method.call(this,params);
-                callback({data:x});
-            }else if(params["responseRequire"]&&params["asyncWarp"]){
-                //这里判断是否需要有返回信息。
+                let x = method.call(this, params);
+                callback({ data: x });
+            } else if (params["responseRequire"] && params["asyncWarp"]) {
+                //调用异步函数且返回结果
                 params.callback = callback;
-                method.call(this, params).then(resp=>{
-                    callback({data:resp});
+                method.call(this, params).then(resp => {
+                    callback({ data: resp });
                 })
-            }else{
+            } else {
+                //仅调用
                 params.callback = callback;
                 method.call(this, params);
             }
@@ -285,7 +293,7 @@ class ODHBack {
             params
         } = e.data;
         const method = this['api_' + action];
-        if (typeof(method) === 'function')
+        if (typeof (method) === 'function')
             method.call(this, params);
     }
 
@@ -293,10 +301,10 @@ class ODHBack {
     setFrontendOptions(options) {
         switch (options.enabled) {
             case false:
-                chrome.browserAction.setBadgeText({text: 'off'});
+                chrome.browserAction.setBadgeText({ text: 'off' });
                 break;
             case true:
-                chrome.browserAction.setBadgeText({text: ''});
+                chrome.browserAction.setBadgeText({ text: '' });
                 break;
         }
         this.tabInvokeAll('setFrontendOptions', {
@@ -305,16 +313,16 @@ class ODHBack {
     }
 
     //================Inner Api==================//
-    api_notice(params){
-        let {title,msg} = params;
-        notice(title,msg);
+    api_notice(params) {
+        let { title, msg } = params;
+        notice(title, msg);
     }
 
-    async api_watchLater(){
+    async api_watchLater() {
         this.WatchPlan.execWatch();
     }
 
-    async api_stopWatchLater(){
+    async api_stopWatchLater() {
         this.WatchPlan.exitWatchPlan();
     }
 
@@ -322,47 +330,47 @@ class ODHBack {
     //     this.WatchPlan.viewHistoryBackend(params)
     // }
 
-    api_getLuckyHistory(){
+    api_getLuckyHistory() {
         return new Promise(async (resolve) => {
             let x = await db_getLuckyHistory("userList");
             resolve(x);
         });
     }
 
-    api_getLiveWatchTimeList(){
+    api_getLiveWatchTimeList() {
         return this.WatchPlan.getLiveWatchTimeList();
     }
 
-    api_livePageWatchTimeRec(params){
+    api_livePageWatchTimeRec(params) {
         this.WatchPlan.livePageWatchTimeRec(params);
     }
 
-    api_attentionTabs(params){
+    api_attentionTabs(params) {
         return this.WatchPlan.attentionTabs(params.windowId);
     }
 
-    api_updateLiveWatchTimeListItem(){
+    api_updateLiveWatchTimeListItem() {
         return this.WatchPlan.updateLiveWatchTimeList();
     }
 
-    api_bananAudio(){
+    api_bananAudio() {
         this.MsgNotfs.bananAudio();
     }
 
-    api_musicPlayerStart(e){
+    api_musicPlayerStart(e) {
         this.MusicPlayer.setSign("firstPlay");
         this.MusicPlayer.main(e.index);
     }
 
-    api_musicPlayerSign(e){
+    api_musicPlayerSign(e) {
         this.MusicPlayer.setSign(e.sign);
     }
 
-    api_musicPlayerfocusPlayer(){
+    api_musicPlayerfocusPlayer() {
         this.MusicPlayer.focusPlayer();
     }
 
-    api_musicPlayerAdd(e){
+    api_musicPlayerAdd(e) {
         this.MusicPlayer.addItem(e.linkUrl);
     }
 
@@ -377,7 +385,7 @@ class ODHBack {
     }
 
     async api_Fetch(params) {
-        let {url, callbackId} = params;
+        let { url, callbackId } = params;
         let request = {
             url,
             type: 'GET',
@@ -405,17 +413,17 @@ class ODHBack {
         //if (loadresults) {
         //    let namelist = loadresults.map(x => x.result.objectname);
         //    this.options.dictSelected = namelist.includes(options.dictSelected) ? options.dictSelected : namelist[0];
-         //   this.options.dictNamelist = loadresults.map(x => x.result);
+        //   this.options.dictNamelist = loadresults.map(x => x.result);
         //}
         //await this.setScriptsOptions(this.options);
         optionsSave(this.options);
         return this.options;
     }
 
-    async opt_optionUpdate(options){
+    async opt_optionUpdate(options) {
         this.options = options;
     }
-    
+
     async loadScripts(list) {
         let promises = list.map((name) => this.loadScript(name));
         let results = await Promise.all(promises);
@@ -426,18 +434,18 @@ class ODHBack {
 
     async loadScript(name) {
         return new Promise((resolve, reject) => {
-            this.agent.postMessage('loadScript', {name}, result => resolve(result));
+            this.agent.postMessage('loadScript', { name }, result => resolve(result));
         });
     }
 
     async setScriptsOptions(options) {
         return new Promise((resolve, reject) => {
-            this.agent.postMessage('setScriptsOptions', {options}, result => resolve(result));
+            this.agent.postMessage('setScriptsOptions', { options }, result => resolve(result));
         });
     }
 
     callback(data, callbackId) {
-        this.agent.postMessage('callback', {data, callbackId});
+        this.agent.postMessage('callback', { data, callbackId });
     }
 
     async popTranslation(expression) {
@@ -680,7 +688,7 @@ class ODHBack {
 
 
 
-function getInstance(){
+function getInstance() {
     return new ODHBack();
 }
 //getInstance();

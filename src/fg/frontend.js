@@ -195,6 +195,7 @@ class ODHFront {
 		//个人中心首页
 		if (REG.userHome.test(href) && this.options.userHomeMoment) {
 			this.pageBeautify.userMoment(href);
+			this.pageBeautify.userCenterBeautify();
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false, true);
 		}
 	}

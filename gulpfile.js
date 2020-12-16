@@ -1,8 +1,19 @@
 const { src, dest } = require('gulp')
 const gulpEsbuild = require('gulp-esbuild')
+const gulpHtmlmin = require('gulp-htmlmin')
 const gulp = require("gulp");
 const del = require('del');
 
+var options = {
+    collapseWhitespace: true,
+    collapseBooleanAttributes: true,
+    removeComments: true,
+    removeEmptyAttributes: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    minifyJS: true,
+    minifyCSS: true
+};
 
 function backend() {
     return src('./src/bg/*.js')
@@ -13,6 +24,12 @@ function backend() {
             }
         }))
         .pipe(dest('./final/bg/'))
+}
+
+function backendHtml() {
+    return src('./src/bg/*.html')
+        .pipe(gulpHtmlmin(options))
+        .pipe(gulp.dest('./final/bg/'));
 }
 
 function backMods() {
@@ -102,6 +119,7 @@ gulp.task("default", (e) => {
     fg()
     fgMod()
     common()
+    backendHtml()
     e()
     console.log("Done.")
 })

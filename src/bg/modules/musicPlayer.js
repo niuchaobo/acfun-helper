@@ -3,7 +3,8 @@
  */
 class MusicPlayer {
     constructor() {
-        this.PageLocation = "https://www.acfun.cn/player/ac"
+        this.PageLocation0 = "https://www.acfun.cn/v/ac"
+        this.PageLocation1 = "https://www.acfun.cn/player/ac"
         this.playerPage = {};
         this.playerWindow = { windowId: -1 };
         this.playInfo = {
@@ -73,7 +74,7 @@ class MusicPlayer {
         this.PlayerSign = null;
     }
 
-    createPlayerWindow(acid) {
+    async createPlayerWindow(acid) {
         if (this.playInfo.windowSetting.left != undefined) {
             var left = this.playInfo.windowSetting.left;
             var top = this.playInfo.windowSetting.top;
@@ -91,8 +92,10 @@ class MusicPlayer {
         features += ',top=' + top;
         features += ',width=' + width;
         features += ',height=' + height;
+        let x = await getStorage("MusicPlayList");
+        let pageUrl = x.MusicPlayList.playerMode==0?this.PageLocation0:this.PageLocation1;
 
-        this.playerPage = window.open(this.PageLocation + acid, 'AcFunMusicPlayer', features);
+        this.playerPage = window.open(pageUrl + acid, 'AcFunMusicPlayer', features);
         this.playerWindow.windowId = 1;
     }
 
