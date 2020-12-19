@@ -13,7 +13,8 @@ class MusicPlayer {
             "playList_raw": "",
             "windowSetting": {},
             "playListObj": {},
-            "playList": {}
+            "playList": {},
+            "playerMode": 0,
         }
         this.PlayerSign = "";
     }
@@ -93,7 +94,9 @@ class MusicPlayer {
         features += ',width=' + width;
         features += ',height=' + height;
         let x = await getStorage("MusicPlayList");
-        let pageUrl = x.MusicPlayList.playerMode==0?this.PageLocation0:this.PageLocation1;
+        this.playInfo.playerMode = Number(x.MusicPlayList.playerMode);
+        
+        let pageUrl = this.playInfo.playerMode == 0 ? this.PageLocation0 : this.PageLocation1;
 
         this.playerPage = window.open(pageUrl + acid, 'AcFunMusicPlayer', features);
         this.playerWindow.windowId = 1;
@@ -131,20 +134,20 @@ class MusicPlayer {
                 this.PlayerSign = "stop";
                 return;
             }
-            this.playerPage.location = this.PageLocation + this.playInfo.playList[this.playInfo.Playing];
+            this.playerPage.location = this.playInfo.playerMode == 0 ? this.PageLocation0 + this.playInfo.playList[this.playInfo.Playing] : this.PageLocation1 + this.playInfo.playList[this.playInfo.Playing];
 
             this.doneSigntask();
         } else if (this.PlayerSign == "last") {
             this.playInfo.Playing--;
             this.playInfo.Status = true;
 
-            this.playerPage.location = this.PageLocation + this.playInfo.playList[this.playInfo.Playing];
+            this.playerPage.location = this.playInfo.playerMode == 0 ? this.PageLocation0 + this.playInfo.playList[this.playInfo.Playing] : this.PageLocation1 + this.playInfo.playList[this.playInfo.Playing];
             this.doneSigntask();
         }
     }
 
     focusPlayer() {
-        if(this.playInfo.Status){
+        if (this.playInfo.Status) {
             this.playerPage.focus();
         }
     }
@@ -153,7 +156,7 @@ class MusicPlayer {
         let playerTask = setInterval(() => {
             this.startPlayer(startIndex);
             let windowclosed = this.playerPage.closed;
-            if (this.PlayerSign == "stop"||windowclosed) {
+            if (this.PlayerSign == "stop" || windowclosed) {
                 try {
                     this.playerPage.close();
                 } catch (error) {
@@ -163,7 +166,7 @@ class MusicPlayer {
                 this.playerWindow.windowId = -1;
                 this.playInfo.Status = false;
 
-                notice("AcFun助手", `${!windowclosed?"音乐播放器任务队列全部完成。":"播放器已关闭。"}`);
+                notice("AcFun助手", `${!windowclosed ? "音乐播放器任务队列全部完成。" : "播放器已关闭。"}`);
                 this.doneSigntask();
                 clearInterval(playerTask);
             }

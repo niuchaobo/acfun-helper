@@ -85,6 +85,18 @@ let videoFunction = (function () {
       }
     }
 
+    if (window.name == "AcFunMusicPlayer") {
+      // console.log(Object.getOwnPropertyDescriptor(window.player.videoInfo, "videoList").value)
+      window.parent.postMessage(
+        {
+          to: "MpFront",
+          msg: `${window.name}`,
+        },
+        "*"
+      );
+      localStorage.setItem("AcFun-Helper", `{"isMultiPart":true}`)
+    }
+
     if (options.endedAutoJumpRecommandFirstDougasw) {
       //自动观看“大家都在看”栏目第一个稿件
       document

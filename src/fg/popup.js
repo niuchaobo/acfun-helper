@@ -253,7 +253,7 @@ class Popup {
         return `
             </div>
             ${fn()}
-            <script charset="UTF-8" src="${root + 'lib/jquery-3.5.0.min.js'}"></script>
+            <script charset="UTF-8" src="${root + 'lib/jquery-3.5.1.min.js'}"></script>
             <script charset="UTF-8" src="${root + 'bg/lib/jqueryExtend.js'}"></script>
             <script charset="UTF-8" src="${root + 'fg/frame.js'}"></script>
             </body>

@@ -1394,8 +1394,9 @@ $(document).ready(function () {
     //=====================音乐播放器-页面模式================
     chrome.storage.local.get(['MusicPlayList'],function(items){
         var MusicPlayList_playerMode= items.MusicPlayList;
-        // MusicPlayList_playerMode.playerMode = 1;
-        console.log(MusicPlayList_playerMode)
+        if(MusicPlayList_playerMode.playerMode==undefined){
+            MusicPlayList_playerMode.playerMode = 1;
+        }
         document.querySelector("#MusicPlayList_playerMode").parentElement.children[1].children[1].children[Number(MusicPlayList_playerMode.playerMode)].click()
         var inst = new mdui.Select('#MusicPlayList_playerMode');
         

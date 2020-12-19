@@ -9,7 +9,7 @@ const defaults = {
   to_special_items: [],
   broadcastingUIDlistFollowing: {},
   WatchPlanList: [],
-  MusicPlayList: { "windowSetting": { "left": 139, "top": 32, "width": 980, "height": 590 }, "onLoadAutoPlay": true, "playerMode": 1, "List": {} },
+  MusicPlayList: { "windowSetting": { "left": 139, "top": 32, "width": 980, "height": 590 }, "onLoadAutoPlay": true, "playerMode": 1, "multiPartContinue": true, "List": {} },
   activeTabKey: 'activeTabId',
   extendsName: 'AcFun助手',
   upUrlTemplate: 'https://www.acfun.cn/u/{uid}',
@@ -598,8 +598,8 @@ function domToString(node) {
  * 监听DOM对象
  * @param {HTMLElement} target DOM对象
  * @param {function} fn 
- * @param {number} time 定时器周期
- * @param {boolean} isDev 是否显示详细的监听文本
+ * @param {number} time 定时器周期 2500
+ * @param {boolean} isDev 是否显示详细的监听文本 false
  * @todo 有时候，虽然DOM加载完了，但是因为页面不在前台，所以某些模块的函数没有得到执行，如果可以的话可以考虑加上使用document.visibilityState == "hidden"(万一插件根本没法获取到页面状态呢？)来判断，当页面切换到前台之后再执行那些函数。
  */
 async function getAsyncDom(target, fn, time = 2500, isDev = false) {

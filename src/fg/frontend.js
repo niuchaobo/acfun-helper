@@ -162,6 +162,8 @@ class ODHFront {
 			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
 			this.danmaku.cacheStore();
 			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
+			//音乐播放器监听
+			this.musicPlayerFront.main();
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
 			this.options.playerRecommendHide && this.pageBeautify.simplifiyPlayerRecm();
