@@ -143,6 +143,90 @@ class WatchPlan {
         }
     }
 
+    async addWatchLaterItemToApp(acid, resType) {
+        let result;
+        try {
+            result = JSON.parse(await fetchResult("https://api-new.app.acfun.cn/rest/app/addWaiting", "POST", `resourceId=${acid}&resourceType=${resType == "video" ? "2" : "3"}`, true));
+            console.log(result);
+        } catch (error) {
+            console.log(error)
+            result = { "result": 1 };
+        }
+        if (result.result == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    async getAppWatchLater() {
+        let raw = await fetchResult("https://api-new.app.acfun.cn/rest/app/waitingList", "POST", "pcursor=0&count=100", true);
+        let wlList = JSON.parse(raw);
+        return wlList;
+    }
+
+    async syncAppWatchLater() {
+        let appData = await this.getAppWatchLater();
+        let appDataList = [];
+        let localDataList = await getStorage("WatchPlanList");
+        //将app上的稍后再看数据同步至本地
+        try {
+            appData.list.forEach((e) => {
+                //同步视频
+                if (e.type == "2") {
+                    appDataList.push("https://www.acfun.cn/v/ac" + e.contentId);
+                    // 如果这条记录不存在于本地记录 就 加入
+                    if (localDataList.WatchPlanList.indexOf("https://www.acfun.cn/v/ac" + e.contentId) == -1) {
+                        this.PushInList("https://www.acfun.cn/v/ac" + e.contentId);
+                    }
+                }
+            })
+            //将本地视频同步至app
+            localDataList.WatchPlanList.forEach((e) => {
+                //同步视频
+                if (REG.video.test(e) && appDataList.indexOf(e) == -1) {
+                    console.log(e)
+                    if (this.addWatchLaterItemToApp(REG.acVid.exec(e)[2], "video")) {
+                    } else {
+                        throw new Error("Data fetch Faild.");
+                    }
+                }
+            })
+        } catch (error) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 取消稍后再看
+     * @todo 批量怎么组装body
+     */
+    async removeWatchLaterItemFromApp(acids, resType) {
+        let result = JSON.parse(await fetchResult("https://api-new.app.acfun.cn/rest/app/cancelWaiting", "POST", `resourceIds=${acids}&resourceType=${resType == "video" ? "2" : "3"}`, true));
+        if (result.result == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    async removeAllDiffWatchLaterListItemFromLocal(acids, resType) {
+        let appData = await this.getAppWatchLater();
+        let appDataList = [];
+        let localDataList = await getStorage("WatchPlanList");
+        appData.list.forEach((e) => {
+            //同步视频
+            if (e.type == "2") {
+                appDataList.push("https://www.acfun.cn/v/ac" + e.contentId);
+            }
+        })
+        localDataList.WatchPlanList.forEach((e) => {
+            if (appDataList.indexOf(e)) {
+                localDataList.WatchPlanList.shift(e);
+            }
+        })
+        chrome.storage.local.set({ "WatchPlanList": localDataList.WatchPlanList });
+    }
+
     // viewHistoryBackend(opts) {
     //     try {
     //         var x = JSON.parse(opts.msg).history.views;

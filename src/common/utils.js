@@ -251,34 +251,6 @@ function localizeHtmlPage() {
   }
 }
 
-/**
- * 助手更新状态处理
- * @description 数据从插件存储中取
- */
-function updateVersionIcon() {
-  chrome.storage.local.get(["Upgradeable"], (data) => {
-    if (data.Upgradeable === 1) {
-      $('#update-box').css('display', 'inline-block')
-      $('.update-letter').html('助手有轻量更新，点击查看')
-      $('.head').addClass('lightUpdate')
-      $('#update-box').click(() => {
-        window.open('https://www.acfun.cn/u/7054138')
-      })
-      return
-    }
-    if (data.Upgradeable === 2) {
-      $('#update-box').css('display', 'inline-block')
-      $('.update-letter').html('助手有重大更新，点击查看')
-      $('.update-icon').css('background', 'red')
-      $('#update-box').click(() => {
-        window.open('https://www.acfun.cn/u/7054138')
-      })
-      $('.head').addClass('heavyUpdate')
-      return
-    }
-  });
-}
-
 async function updateStorage(progress, id, tabId) {
   let item = await getStorage(id).then((result) => {
     return result[id];
@@ -593,7 +565,6 @@ function domToString(node) {
   return str;
 }
 
-
 /**
  * 监听DOM对象
  * @param {HTMLElement} target DOM对象
@@ -686,10 +657,25 @@ function getScrollHeight() {
  * @param {string} url 
  * @returns 返回结果的文本内容
  */
-async function fetchResult(url) {
-  let result = fetch(url).then((response) => {
-    return response.text();
-  })
+async function fetchResult(url, method, data, withCredentials) {
+  var result;
+  if (method == "POST" && withCredentials) {
+    result = fetch(url, {
+      method: "POST", credentials: 'include', headers: {
+        'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
+      }, body: data
+    }).then((res => { return res.text() }))
+  } else if (method == "POST" && withCredentials == false) {
+    result = fetch(url, {
+      method: "POST", headers: {
+        'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
+      }, body: data
+    }).then((res => { return res.text() }))
+  } else {
+    result = fetch(url).then((response) => {
+      return response.text();
+    })
+  }
   return result
 }
 
@@ -766,7 +752,6 @@ function isLoginByUi(mode = true) {
   }
 }
 
-
 /**
  * 在某个地方（默认为head下）增加一个css的style标签
  * @param {string} cssText CSS样式文本
@@ -814,7 +799,6 @@ async function bananaThrow(params, banana_num, dougaType = "video") {
   return true;
 }
 
-
 /**
  * 从秒钟转化为分钟
  * @param {number} second 传入的秒钟数
@@ -831,135 +815,3 @@ function timeToMinute(second) {
   second = second.length == 1 ? "0" + second : second;
   return minute + ":" + second;
 }
-
-/**
- * 播放器浮动通知气泡
- * @param {string} text 通知文本
- * @param {string} importantText 带有红色的重要通知文本
- */
-function leftBottomTip(text, importantText = "") {
-  $(".left-bottom-tip")
-    .eq(0)
-    .append(
-      `<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`
-    );
-  let _timer = setTimeout(() => {
-    $(".left-bottom-tip").eq(0).children().eq(0).remove(); //这样写 并不能自定义持续时间
-    clearInterval(_timer);
-  }, 2500);
-}
-
-/**
- * 用户展示中心左下角通知
- * @param {*} msg 
- * @param {*} notifLevel 通知级别（info 蓝色;error 红色;success 绿色;warning 橙色;）
- * @param {*} notifIcon 通知级别符号 banana;success;error;warning;logout;help;arrow-round-right;comments;envelope;info;yonghu;app-phone;close;arrow-slim-up;rank;arrow-slim-right;loading;triangle-right;eye;eye-new;crown;arrow-round-left;plus-circle;history;upload;collect;calendar;danmu;danmu-new;view-player;view-player-new;arrow-round-up;arrow-round-down;triangle-slim-right;chevron-left;th-list2;circle-triangle-w;circle-triangle-e;label;th-large1;th3;th-large;th-list;th;step-forward;step-backward;prompt;helps;delete;to-comm;to-comm-new;delete1;chevron-right;chuang-zuo-zhong-xin;
- * @param {*} time 显示时间
- */
-function uCentTip(msg, notifLevel = "success", notifIcon = "success", time = 2500) {
-  $("#g-toast").eq(0).append(`
-    <p class="info ${notifLevel}" style="left: 0px;"><i class="icon icon-${notifIcon}"></i><span>${msg}</span></p>
-  `);
-  let _timer = setTimeout(() => {
-    $("#g-toast").eq(0).children().eq(1).remove();
-    clearInterval(_timer);
-  }, time);
-}
-
-/**
- * 排序一个数组
- * @param {Int16Array} x 需要排序的数组
- */
-function bubbleSort(x) {
-  // let x = [1, 4, 2, 7, 88, 54, 65]
-  let temp
-  for (let i = x.length; i > 1; --i) {
-    for (let j = 1; j < i; ++j) {
-      if (x[j] > x[j + 1]) {
-        temp = x[j]
-        x[j] = x[j + 1]
-        x[j + 1] = temp
-      }
-    }
-  }
-  return x
-}
-
-/**
- * 队列
- * @todo 之前想到了一个绝好的解决标签页面在后台执行失效的问题写下了这个队列的实现，但是过了几天就忘了，我现在先放在这儿，有好点子再来写完吧。
- */
-class Queue {
-  constructor() {
-    this.dataField = [];
-    this.enter = this.enter;
-    this.exit = this.exit;
-    this.getFirst = this.getFirst;
-    this.getTail = this.getTail;
-    this.clearQueue = this.clear;
-    this.isEmpty = this.isEmpty;
-  }
-
-  /**
-   * 入队，并返回状态和其值
-   * @param {*} 入队对象
-   * @returns bool 成功与否
-   */
-  enter(obj) {
-    let x = this.dataField.length;
-    this.dataField.push(obj);
-    if (x != this.dataField.length) {
-      return true
-    } else {
-      return false
-    }
-  }
-  /**
-   * 出队，并返回状态和其值
-   * @returns {stat:bool,data}
-   */
-  exit() {
-    if (this.isEmpty()) {
-      return { stat: false, data: '' };
-    } else {
-      return { stat: true, data: this.dataField.shift() };
-    }
-  }
-  /**
-   * 获取对首元素
-   * @returns stat->是否存在:bool,data
-   */
-  getHead() {
-    if (this.dataField.length != 0) {
-      return { stat: true, data: this.dataField[0] };
-    }
-    return { stat: false, data: '' };
-  }
-  /**
-   * 获取队尾元素
-   * @returns stat->是否存在:bool,data
-   */
-  getTail() {
-    if (this.dataField.length != 0) {
-      return { stat: true, data: this.dataField[length - 1] };
-    }
-    return { stat: false, data: '' };
-  }
-  /**
-   * 队列是否为空
-   * @returns bool
-   */
-  isEmpty() {
-    if (this.dataField.length == 0) {
-      return true
-    }
-    return false
-  }
-  /**
-   * 清除队列
-   */
-  clear() {
-    delete this.dataField
-  }
-}
-

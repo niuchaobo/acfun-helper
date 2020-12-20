@@ -13,6 +13,9 @@
   <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
   <script type="text/javascript" src="./pageHandler/options.js"></script>
   <script type="text/javascript" src="../common/utils.js"></script>
+  <script type="text/javascript" src="../common/dataStructs.js"></script>
+  <script type="text/javascript" src="../common/uiReact.js"></script>
+  <script type="text/javascript" src="../common/encyclopedia.js"></script>
   <style>
     ::-webkit-scrollbar {
       width: 8px;
@@ -560,11 +563,23 @@
                 <button id="watchLaterStart"
                   class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>开始稍后再看</a></button>
               </div>
-              <div class="mdui-col-xs-3 mdui-col-sm-3">
+              <div class="mdui-col-xs-3 mdui-col-sm-2">
+                <button id="syncwatchLaterList"
+                  class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>与App同步</a></button>
+              </div>
+              <div class="mdui-col-xs-3 mdui-col-sm-2">
+                <button id="removeDiffWatchLaterList"
+                  class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>删除与App差异</a></button>
+              </div>
+              <div class="mdui-col-xs-3 mdui-col-sm-2">
                 <label class="mdui-switch">
                   <input id="watchLater" type="checkbox" />
-                  <i class="mdui-switch-icon"></i>--启用稍后再看--
+                  <i class="mdui-switch-icon"></i>--稍后再看--
                 </label></div>
+                <div class="mdui-col-xs-3 mdui-col-sm-2">
+                  <div id="syncwatchLaterListProcessBar" class="mdui-spinner mdui-spinner-colorful"
+                  style="display: none;"></div>      
+                </div>
             </div>
             <ul id="watchLaterList" class="mdui-list">
               <li id="firstwatchLaterList" class="mdui-list-item mdui-ripple" data-key="0" style="cursor:default">
@@ -1661,7 +1676,7 @@
         </div>
 
         <br>
-        
+
         <div class="mdui-card">
           <div class="mdui-card-header">
             <img class="mdui-card-header-avatar" src="images/wpscott-github.jpg" />
@@ -1671,41 +1686,43 @@
           <div class="mdui-card-media">
             <div class="mdui-card-primary">
               <div class="mdui-card-primary-title"><a href="https://github.com/wpscott/AcFunDanmaku"
-                target="_blank">AcFunDanmaku</a></div>
-                <div class="mdui-card-primary-subtitle">AcFun直播弹幕及评论工具</div>
-              </div>
-              <div class="mdui-card-content">AcFunDanmaku是用C# 和 .Net Core 3.1编写的AcFun直播弹幕工具。 该项目分为13个子项目。</div>
+                  target="_blank">AcFunDanmaku</a></div>
+              <div class="mdui-card-primary-subtitle">AcFun直播弹幕及评论工具</div>
             </div>
-            <div class="mdui-card-media">
-              <div class="mdui-card-primary">
-                <div class="mdui-card-primary-title"><a href="https://github.com/wpscott/AVUP.Fun"
+            <div class="mdui-card-content">AcFunDanmaku是用C# 和 .Net Core 3.1编写的AcFun直播弹幕工具。 该项目分为13个子项目。</div>
+          </div>
+          <div class="mdui-card-media">
+            <div class="mdui-card-primary">
+              <div class="mdui-card-primary-title"><a href="https://github.com/wpscott/AVUP.Fun"
                   target="_blank">AVUP.Fun</a></div>
-                  <div class="mdui-card-primary-subtitle">AVUP.Fun</div>
-                </div>
-                <div class="mdui-card-content">基于Confluent Kafka与ClickHouse的数据仓库搭建</div>
-              </div>
+              <div class="mdui-card-primary-subtitle">AVUP.Fun</div>
             </div>
+            <div class="mdui-card-content">基于Confluent Kafka与ClickHouse的数据仓库搭建</div>
+          </div>
+        </div>
 
-            <br>
-            
-            <div class="mdui-card">
-              <div class="mdui-card-header">
-                <img class="mdui-card-header-avatar" src="https://tx-free-imgs.acfun.cn/content/2020_10_10/1.602323687477298E9.png?imageMogr2/format/webp/quality/75!/ignore-error/1" />
-                <div class="mdui-card-header-title"><a href="https://www.acfun.cn/u/165288" target="_blank">星雨漂流</a>
-                </div>
-                <div class="mdui-card-header-subtitle">开发者</div>
-              </div>
-              <div class="mdui-card-media">
-                <div class="mdui-card-primary">
-                  <div class="mdui-card-primary-title"><a href="https://greasyfork.org/zh-CN/scripts/408421-acfun%E7%9B%B4%E6%92%AD%E7%9B%91%E6%8E%A7"
-                      target="_blank">Acfun直播监控-脚本</a></div>
-                  <div class="mdui-card-primary-subtitle">我只制作DD的工具，但我并不是DD</div>
-                </div>
-                <div class="mdui-card-content">帮助dd提高直播观看体验</div>
-              </div>
+        <br>
+
+        <div class="mdui-card">
+          <div class="mdui-card-header">
+            <img class="mdui-card-header-avatar"
+              src="https://tx-free-imgs.acfun.cn/content/2020_10_10/1.602323687477298E9.png?imageMogr2/format/webp/quality/75!/ignore-error/1" />
+            <div class="mdui-card-header-title"><a href="https://www.acfun.cn/u/165288" target="_blank">星雨漂流</a>
             </div>
-    
-            <br>
+            <div class="mdui-card-header-subtitle">开发者</div>
+          </div>
+          <div class="mdui-card-media">
+            <div class="mdui-card-primary">
+              <div class="mdui-card-primary-title"><a
+                  href="https://greasyfork.org/zh-CN/scripts/408421-acfun%E7%9B%B4%E6%92%AD%E7%9B%91%E6%8E%A7"
+                  target="_blank">Acfun直播监控-脚本</a></div>
+              <div class="mdui-card-primary-subtitle">我只制作DD的工具，但我并不是DD</div>
+            </div>
+            <div class="mdui-card-content">帮助dd提高直播观看体验</div>
+          </div>
+        </div>
+
+        <br>
       </div>
 
     </div>

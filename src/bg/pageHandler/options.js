@@ -1754,6 +1754,44 @@ $(document).ready(function () {
                 });
             }
         });
+        $('#syncwatchLaterList').click(()=> {
+            if(document.getElementById('watchLater').checked){
+                mdui.snackbar({
+                    message: `已经启动 稍后再看 App同步任务。`,
+                });
+                document.querySelector("#syncwatchLaterListProcessBar").style.display="block";
+                chrome.runtime.sendMessage({action: "syncWatchLaterList",params: { responseRequire: true, asyncWarp: true }}, function (response) {
+                    console.log(response);
+                    if(response){
+                        mdui.snackbar({
+                            message: `成功完成 稍后再看 App同步任务。`,
+                        });
+                    }else{
+                        mdui.snackbar({
+                            message: `稍后再看 App同步任务 失败`,
+                        });                        
+                    }
+                    mysleep(2630).then(()=>{
+                        document.querySelector("#syncwatchLaterListProcessBar").style.display="none";
+                    })
+                });
+            }else{
+                mdui.snackbar({
+                    message: `稍后再看没有打开。`,
+                });
+            }
+        });
+        $('#removeDiffWatchLaterList').click(()=> {
+            document.querySelector("#syncwatchLaterListProcessBar").style.display="block";
+            mdui.snackbar({
+                message: `进行 稍后再看 删除本端与App的差异任务。`,
+            });
+            chrome.runtime.sendMessage({action: "removeDiffWatchLaterList",params:{}}, function (response) {});
+            mysleep(2630).then(()=>{
+                document.querySelector("#syncwatchLaterListProcessBar").style.display="none";
+                window.location.reload();
+            })
+        })
         let eventObj = document.getElementById('watchLaterList');
         eventObj.onclick = async (ev)=>{
             var ev = ev || window.event;

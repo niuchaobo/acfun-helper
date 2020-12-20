@@ -326,6 +326,14 @@ class ODHBack {
         this.WatchPlan.exitWatchPlan();
     }
 
+    async api_syncWatchLaterList() {
+        return this.WatchPlan.syncAppWatchLater();
+    }
+
+    async api_removeDiffWatchLaterList() {
+        this.WatchPlan.removeAllDiffWatchLaterListItemFromLocal();
+    }
+
     // api_historyView(params){
     //     this.WatchPlan.viewHistoryBackend(params)
     // }
