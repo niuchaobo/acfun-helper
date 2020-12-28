@@ -815,3 +815,37 @@ function timeToMinute(second) {
   second = second.length == 1 ? "0" + second : second;
   return minute + ":" + second;
 }
+
+/**
+ * 文件下载 For Front
+ * @param {*} element 文件内容
+ * @param {*} fileName 文件名
+ */
+function downloadThings(element, fileName) {
+  var blob = new Blob([element], { type: 'application/octet-stream' });
+  var url = window.URL.createObjectURL(blob);
+  var saveas = document.createElement('a');
+  saveas.href = url;
+  saveas.style.display = 'none';
+  document.body.appendChild(saveas);
+  saveas.download = fileName;
+  saveas.click();
+  setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
+  document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
+}
+
+/**
+ * 输出一个在此范围的随机数
+ * @param {Number} minNum 起始
+ * @param {Number} maxNum 结束
+ */
+function randomNum(minNum, maxNum) {
+  switch (arguments.length) {
+    case 1:
+      return parseInt(Math.random() * minNum + 1, 10);
+    case 2:
+      return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+    default:
+      return 0;
+  }
+} 

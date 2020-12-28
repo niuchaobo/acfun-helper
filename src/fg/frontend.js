@@ -304,6 +304,9 @@ class ODHFront {
 	api_downloadDanmaku(params) {
 		this.download.downloadDanmaku(params);
 	}
+	api_assDanmaku() {
+		this.danmaku.sanitizeJsonDanmakuToAss();
+	}
 	//自动投蕉
 	async api_throwBanana(params) {
 		if (!this.options.enabled) {

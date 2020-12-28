@@ -1,27 +1,27 @@
 /**
  * 视频下载,封面下载
  */
-class Download{
-    constructor(){
+class Download {
+    constructor() {
 
     }
 
-    async downloadVideo(params){
+    async downloadVideo(params) {
         let activeKey = window.odhfront.options.activeTabKey;
-        let { url, title, id, qualityLabel} = params;
+        let { url, title, id, qualityLabel } = params;
         let m3u8 = url;
-        let tabId =await getStorage(activeKey).then(result=>{return result[activeKey]});
-        let fileName = title+"-"+qualityLabel+".mp4";
+        let tabId = await getStorage(activeKey).then(result => { return result[activeKey] });
+        let fileName = title + "-" + qualityLabel + ".mp4";
 
-        var MyBlobBuilder = function() {
+        var MyBlobBuilder = function () {
             this.parts = [];
         }
-        MyBlobBuilder.prototype.append = function(part) {
+        MyBlobBuilder.prototype.append = function (part) {
             this.parts.push(part);
             this.blob = undefined; // Invalidate the blob
         };
 
-        MyBlobBuilder.prototype.getBlob = function() {
+        MyBlobBuilder.prototype.getBlob = function () {
             if (!this.blob) {
                 this.blob = new Blob(this.parts, { type: "" });
             }
@@ -33,7 +33,7 @@ class Download{
         // console.log("[LOG]Frontend-Download>downloadVideo: "+m3u8);
         if (reg.test(m3u8)) {
             prefix = m3u8.match(reg)[0];
-        }else if(reg_new.test(m3u8)){
+        } else if (reg_new.test(m3u8)) {
             prefix = m3u8.match(reg_new)[0];
         }
         let res = await parseM3u8(m3u8);
@@ -41,11 +41,11 @@ class Download{
         let seArr = new Array();
         if (segments.length == 0) {
             let action = 'notice';
-            let p={
-                title:"警告",
-                msg:"视频信息已过期，请刷新当前页面",
+            let p = {
+                title: "警告",
+                msg: "视频信息已过期，请刷新当前页面",
             }
-            chrome.runtime.sendMessage({action:action,params:p}, function(response) {
+            chrome.runtime.sendMessage({ action: action, params: p }, function (response) {
 
             });
             return;
@@ -61,16 +61,16 @@ class Download{
         }
         let index = 0;
         var myBlobBuilder = new MyBlobBuilder();
-        for(let url of seArr){
+        for (let url of seArr) {
             index++;
             var a = null;
-            try{
+            try {
                 a = await getVideo(url);
-            }catch (e) {
+            } catch (e) {
                 let action = 'notice';
-                let p={
-                    title:"警告",
-                    msg:"视频下载失败，请刷新后重试",
+                let p = {
+                    title: "警告",
+                    msg: "视频下载失败，请刷新后重试",
                 }
                 /*chrome.runtime.sendMessage({action:action,params:p}, function(response) {
 
@@ -80,15 +80,15 @@ class Download{
             myBlobBuilder.append(a);
 
             //计算当前进度
-            let progress = parseInt(index/seArr.length*100);
+            let progress = parseInt(index / seArr.length * 100);
             //更新storage数据
             var obj = document.getElementById("acfun-popup-helper");
             var frameWindow = obj.contentWindow;
             frameWindow.postMessage({
                 action: 'updateProgress',
                 params: {
-                    progress:progress,
-                    id:id,
+                    progress: progress,
+                    id: id,
                 }
             }, '*');
             //this.updateStorage(progress,id,tabId);
@@ -109,37 +109,37 @@ class Download{
     }
 
     downloadCover(params) {
-        let {link_url,type} = params;
-        link_url = link_url.replace("https://www.acfun.cn","");
+        let { link_url, type } = params;
+        link_url = link_url.replace("https://www.acfun.cn", "");
         $('.home-main-content a,.main a,.tab-content a').each(function () {
             let href = $(this).attr('href');
-            if(link_url==href){
-                if($(this).has('img').length){
+            if (link_url == href) {
+                if ($(this).has('img').length) {
                     let _img = $(this).find('img').eq(0);
                     let img_url = _img.attr('src');
                     let fileName = _img.attr('alt');
-                    if(fileName==undefined){
+                    if (fileName == undefined) {
                         fileName = "cover";
                     }
 
-                    img_url = img_url.replace(/(webp)/,'gif').replace("http://","https://");
+                    img_url = img_url.replace(/(webp)/, 'gif').replace("http://", "https://");
                     //如果是高清
-                    if(type=='high'){
+                    if (type == 'high') {
                         //   /w/320/h/180
-                        img_url = img_url.replace(/\/w\/\d+\/h\/\d+/,"").replace(/(\?.*)/,'');
+                        img_url = img_url.replace(/\/w\/\d+\/h\/\d+/, "").replace(/(\?.*)/, '');
                     }
-                    let suffix = img_url.replace(/(.*\.)/, '').replace(/(\?.*)/,'');
+                    let suffix = img_url.replace(/(.*\.)/, '').replace(/(\?.*)/, '');
                     let reg = new RegExp("jpg|jpeg|gif|bmp|png");
-                    if(!reg.test(suffix)){
+                    if (!reg.test(suffix)) {
                         suffix = 'png';
                     }
-                    let filename =fileName +"."+ suffix;
+                    let filename = fileName + "." + suffix;
                     fetch(img_url) // 返回一个Promise对象
-                        .then((res)=>{
+                        .then((res) => {
                             //console.log(res.blob()) // res.blob()是一个Promise对象
                             return res.blob();
                         })
-                        .then((res)=>{
+                        .then((res) => {
                             //console.log(res) // res是最终的结果
                             let a = document.createElement('a');
                             let blob = new Blob([res]);
@@ -156,9 +156,45 @@ class Download{
 
     }
 
-    downloadDanmaku(){
-        try {
-            let e = JSON.parse(sessionStorage.getItem("danmakuCache"));
+    async downloadDanmaku() {
+        let acid = REG.acVid.exec(window.location.href)[2];
+        let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + acid));
+        // console.log(videoInfo)
+        // try {
+            let e = {};
+            e = JSON.parse(sessionStorage.getItem("danmakuCache"));
+            if (JSON.parse(e.msg).length == 0 || e.msg == undefined) {
+                // let danmus = [];
+                // let danmakuNum = videoInfo.danmakuCount;
+                // console.log("danmakuNum: " + danmakuNum);
+                // let remainNum = danmakuNum % 200;
+                // console.log("remainNum: " + remainNum);
+
+                let rawRes = await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=1&count=` + 2000 + "&sortType=1&asc=false", true);
+                let res = JSON.parse(rawRes)
+
+                e.msg = JSON.stringify(res.danmakus);
+
+                // let rawRes = await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=1&count=` + remainNum + "&sortType=1&asc=false", true);
+                // let res = JSON.parse(rawRes)
+                // danmus = danmus.concat(res.danmakus)
+
+                // danmakuNum = danmakuNum - remainNum;
+                // let tryNum = danmakuNum / 200;
+                // let nowCount = remainNum;
+                // console.log("tryNum: " + tryNum);
+
+                // for (let i = 0; i <= tryNum; i++) {
+                //     console.log("nowCount: " + nowCount);
+                //     let rawRes = await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=` + nowCount + "&count=" + 200 + "&sortType=1&asc=false", true);
+                //     let res = JSON.parse(rawRes)
+                //     console.log(i)
+                //     console.log(res)
+                //     danmus = danmus.concat(res.danmakus)
+                //     nowCount += 200;
+
+                // }
+            }
             var blob = new Blob([e.msg], { type: 'application/octet-stream' });
             var url = window.URL.createObjectURL(blob);
             var saveas = document.createElement('a');
@@ -169,9 +205,9 @@ class Download{
             saveas.click();
             setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
             document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
-        } catch (error) {
-            alert("可能遇到了某些错误，请刷新一下页面。")
-        }
+        // } catch (error) {
+        //     alert("可能遇到了某些错误，请刷新一下页面。")
+        // }
     }
 
 }

@@ -90,6 +90,7 @@ class Popup {
             <span style="margin-left: 20px;color:#d69acc" id="danmaku-sources"></span></div>
             <div class="odh-definition">
             <span id="danmakuDownload" class="pos danmakuDownload" style="cursor:pointer">下载此视频弹幕资源</span>
+            <span id="assDanmaku" class="pos assDanmaku" style="cursor:pointer">下载Ass弹幕</span>
             </div>
                 <div class="odh-headsection">
                     <span class="odh-expression">视频资源</span>

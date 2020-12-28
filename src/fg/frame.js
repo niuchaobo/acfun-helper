@@ -4,14 +4,23 @@ function getImageSource(id) {
 }
 
 function downloadDanmaku() {
-    try {
-        let danmaku_dldBtn = document.getElementById('danmakuDownload');
-        danmaku_dldBtn.addEventListener('click', function () {
+    alert("因为Api接口限制，可能弹幕下载不全。")
+    window.parent.postMessage({
+        action: 'downloadDanmaku',
+    }, '*');
+}
+
+function assDanmaku() {
+    if (window.parent.document.querySelector(".control-btn.quality").children[0].innerText.toLowerCase() == "自动") {
+        alert("请先选择一个确定的分辨率，以便助手确认字幕的宽高。");
+    } else {
+        try {
             window.parent.postMessage({
-                action: 'downloadDanmaku',
+                action: 'assDanmaku',
             }, '*');
-        })
-    } catch (error) {
+        } catch (error) {
+            alert("可能出现了某种错误。")
+        }
     }
 }
 
@@ -183,7 +192,8 @@ function api_showLucyResult(params) {
 
 function onDomContentLoaded() {
     registVideoClick();
-    downloadDanmaku();
+    $("#danmakuDownload").bind('click', downloadDanmaku);
+    $("#assDanmaku").bind('click', assDanmaku);
     $("#comment-scan").change(scanChange);
     $("#comment-mark").change(markChange);
     $("#comment-receive").change(receiveChange);

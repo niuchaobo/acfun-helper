@@ -7,6 +7,10 @@ class Danmaku {
         this.devMode = true;
         this.acid = 0;
         this.videoInfo = {};
+        this.duration = 10;
+        this.danmuMotionList = [];
+        this.videoQualitiesRefer = videoQualitiesRefer;
+        this.thisVideoQuality = 0;
     }
 
     /**
@@ -45,17 +49,18 @@ class Danmaku {
                     this.assDanmakuProcess(x.danmakus, x.danmakus.length, false, videoInfo);
                 })
         }
-        this.assDanmakuProcess(danmakuRes, danmakuLength, true, videoInfo);
     }
 
     async assDanmakuProcess(danmakuRes, danmakuLength, mode, videoInfo) {
+        // let thisVideoQuality = "1080p";
         let thisVideoQuality = document.querySelector(".control-btn.quality").children[0].innerText.toLowerCase();
-        let fontsize = danmakuRes[0].size;
+        this.thisVideoQuality = thisVideoQuality;
+        let fontsize = Number(danmakuRes[0].size) + 15;
         // let fontsize = 65;
         // Function refer:https://github.com/orzogc/acfundanmu
         // ass文件的Script Info
-        console.log(thisVideoQuality)
-        console.log(videoQualitiesRefer[thisVideoQuality])
+        this.devMode ? console.log(thisVideoQuality) : ""
+        this.devMode ? console.log(this.videoQualitiesRefer[thisVideoQuality]) : ""
         let scriptInfo = `[Script Info]
 ; AcVid: ${this.acid}
 ; StreamName: ${videoInfo.title}
@@ -64,8 +69,8 @@ Original Script: ${this.acid} - ${videoInfo.user.name} - ${videoInfo.title}
 Script Updated By: 使用AcFun助手获取
 ScriptType: v4.00+
 Collisions: Normal
-PlayResX: ${videoQualitiesRefer[thisVideoQuality].width}
-PlayResY: ${videoQualitiesRefer[thisVideoQuality].height}
+PlayResX: ${this.videoQualitiesRefer[thisVideoQuality].width}
+PlayResY: ${this.videoQualitiesRefer[thisVideoQuality].height}
 `
 
         // ass文件的V4+ Styles
@@ -80,36 +85,48 @@ Style: Danmu,Microsoft YaHei,${fontsize},&H00FFFFFF,&H00FFFFFF,&H00000000,&H0000
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n`
         this.devMode ? console.log("process danmaku") : ""
 
-        if (mode) {
-            for (let i = 0; i < danmakuLength; i++) {
-                let startTime = this.timeProc(Number(danmakuRes[i].time))
-                let fontTailX = danmakuRes[i].message.length * fontsize;
-                events += `Dialogue: 0,${startTime},${startTime + 10},Danmu,${danmakuRes[i].user},20,20,2,,{\\move(${videoQualitiesRefer[thisVideoQuality].width + fontTailX},${fontsize},${0 - fontTailX},${fontsize})}${danmakuRes[i].message}${danmakuRes[i].repeatNum > 1 ? " x" + danmakuRes[i].repeatNum : ""}\n`
+        var startTime, fontTailX, toLeftTime, toLeftVelocity
+        //先构建对象运动表
+        for (let i = 0; i < danmakuLength; i++) {
+            //略过高级弹幕
+            if (danmakuRes[i].danmakuType != 0) {
+                this.danmuMotionList[i] = { "type": 1 }
+                continue;
             }
-        } else {
-            for (let i = 0; i < danmakuLength; i++) {
-                let startTime = this.timeProc(danmakuRes[i].position / 1e3);
-                let fontTailX = danmakuRes[i].body.length * fontsize;
-                events += `Dialogue: 0,${startTime},${this.timeProc(danmakuRes[i].position / 1e3, 10)},Danmu,${danmakuRes[i].userId},20,20,2,,{\\move(${videoQualitiesRefer[thisVideoQuality].width + fontTailX},${fontsize},${0 - fontTailX},${fontsize})}${danmakuRes[i].body}\n`
-            }
+            //弹幕挂载时间（文本）（弹幕左边界 接触到 视频的右边界）
+            startTime = danmakuRes[i].position / 1e3;
+            //弹幕的长度
+            fontTailX = danmakuRes[i].body.length * fontsize;
+            //运动到出界的时间点
+            toLeftTime = startTime + this.duration + (this.videoQualitiesRefer[thisVideoQuality].width + fontTailX) / this.videoQualitiesRefer[thisVideoQuality].width;
+            //速度
+            toLeftVelocity = (this.videoQualitiesRefer[thisVideoQuality].width + fontTailX) / this.duration;
 
-            let result = scriptInfo + sytles + events;
-
-            this.devMode ? console.log("download danmaku") : ""
-
-            var blob = new Blob([result], { type: 'application/octet-stream' });
-            var url = window.URL.createObjectURL(blob);
-            var saveas = document.createElement('a');
-            saveas.href = url;
-            saveas.style.display = 'none';
-            document.body.appendChild(saveas);
-            saveas.download = `${this.acid} - ${videoInfo.user.name} - ${videoInfo.title}.ass`;
-            saveas.click();
-            setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
-            document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
+            this.danmuMotionList[i] = { "startTime": startTime, "fontTailX": fontTailX, "toLeftTime": toLeftTime, "toLeftVelocity": toLeftVelocity, "type": 0 }
         }
-    }
 
+        let channelNum = Math.floor(1080 / 65);
+        // console.log(this.danmuMotionList)
+        //逐个击破
+        for (let i = 0; i < danmakuLength; i++) {
+            if (this.danmuMotionList[i].type != 0) {
+                continue;
+            }
+            if (this.danmakuChannelCheck(i)) {
+                let randHeigh = fontsize * randomNum(2, channelNum);
+                events += `Dialogue: 0,${this.timeProc(this.danmuMotionList[i].startTime)},${this.timeProc(this.danmuMotionList[i].toLeftTime)},Danmu,${danmakuRes[i].userId},20,20,2,,{\\move(${this.videoQualitiesRefer[thisVideoQuality].width + fontTailX},${randHeigh},${- fontTailX},${randHeigh})}${danmakuRes[i].body}\n`
+            } else {
+                events += `Dialogue: 0,${this.timeProc(this.danmuMotionList[i].startTime)},${this.timeProc(this.danmuMotionList[i].toLeftTime)},Danmu,${danmakuRes[i].userId},20,20,2,,{\\move(${this.videoQualitiesRefer[thisVideoQuality].width + fontTailX},${fontsize},${- fontTailX},${fontsize})}${danmakuRes[i].body}\n`
+            }
+        }
+
+        this.devMode ? console.log(this.danmuMotionList) : ""
+
+        let result = scriptInfo + sytles + events;
+
+        this.devMode ? console.log("download danmaku") : ""
+        downloadThings(result, `${this.acid} - ${videoInfo.user.name} - ${videoInfo.title}.ass`)
+    }
 
     timeProc(second, offset = 0) {
         var minute, hours;
@@ -124,4 +141,30 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
         second = second.length == 1 ? "0" + second : second;
         return hours + ":" + minute + ":" + (second + offset).toFixed(2);
     }
+
+    danmakuChannelCheck(index) {
+        // refer:https://www.zhihu.com/question/370464345/answer/1021530502
+        const lastBullet = this.danmuMotionList[index - 1];
+        const bullet = this.danmuMotionList[index];
+        // console.log(this.thisVideoQuality)
+        // console.log(this.videoQualitiesRefer[this.thisVideoQuality])
+        if (lastBullet) {
+            const lastBulletPos = this.videoQualitiesRefer[this.thisVideoQuality].width;
+
+            // 基本公式：s = v * t
+            const lastS = this.videoQualitiesRefer[this.thisVideoQuality].width + lastBulletPos.fontTailX;
+            const lastV = (this.videoQualitiesRefer[this.thisVideoQuality].width + lastBulletPos.fontTailX) / this.duration;
+            const lastT = lastS / lastV;
+
+            const newS = this.videoQualitiesRefer[this.thisVideoQuality].width;
+            const newV = (this.videoQualitiesRefer[this.thisVideoQuality].width + bullet.fontTailX) / this.duration;
+            const newT = newS / newV;
+
+            if (lastV < newV && lastT > newT) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
