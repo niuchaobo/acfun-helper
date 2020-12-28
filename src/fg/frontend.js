@@ -238,6 +238,7 @@ class ODHFront {
 			if (this.options[curKeyName]) {
 				this.ce.immedComt();
 			}
+			// this.danmaku.sanitizeJsonDanmakuToAss();
 		}
 		//文章
 		if (REG.article.test(href)) {

@@ -6,6 +6,7 @@ class Danmaku {
     constructor() {
         this.devMode = true;
         this.acid = 0;
+        this.videoInfo = {};
     }
 
     /**
@@ -22,6 +23,8 @@ class Danmaku {
     async sanitizeJsonDanmakuToAss() {
         this.devMode ? console.log("loaded") : ""
 
+        this.acid = REG.acVid.exec(window.location.href)[2];
+        let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + this.acid));
         let danmakuResRaw = JSON.parse(sessionStorage.getItem("danmakuCache"));
         let danmakuRes = danmakuResRaw.msg
         this.devMode ? console.log("get danmaku") : ""
@@ -33,23 +36,22 @@ class Danmaku {
             fetch('https://www.acfun.cn/rest/pc-direct/new-danmaku/list', {
                 method: "POST", credentials: 'include', headers: {
                     'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
-                }, body: `resourceId=${this.acid}&resourceType=9&enableAdvanced=true&pcursor=1&count=2000&sortType=1&asc=false`
+                }, body: `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=1&count=2000&sortType=1&asc=false`
             })
                 .then((res => { return res.text() }))
                 .then((res) => {
                     let x = JSON.parse(res);
                     this.devMode ? console.log(x) : ""
-                    this.assDanmakuProcess(x.danmakus, x.danmakus.length);
+                    this.assDanmakuProcess(x.danmakus, x.danmakus.length, false, videoInfo);
                 })
         }
-        this.assDanmakuProcess(danmakuRes, danmakuLength);
+        this.assDanmakuProcess(danmakuRes, danmakuLength, true, videoInfo);
     }
 
-    async assDanmakuProcess(danmakuRes, danmakuLength, mode) {
-        this.acid = REG.acVid.exec(window.location.href)[2];
+    async assDanmakuProcess(danmakuRes, danmakuLength, mode, videoInfo) {
         let thisVideoQuality = document.querySelector(".control-btn.quality").children[0].innerText.toLowerCase();
-        let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + this.acid));
-        let fontsize = 65;
+        let fontsize = danmakuRes[0].size;
+        // let fontsize = 65;
         // Function refer:https://github.com/orzogc/acfundanmu
         // ass文件的Script Info
         console.log(thisVideoQuality)
@@ -82,15 +84,14 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
             for (let i = 0; i < danmakuLength; i++) {
                 let startTime = this.timeProc(Number(danmakuRes[i].time))
                 let fontTailX = danmakuRes[i].message.length * fontsize;
-                events += `Dialogue: 0,${startTime},${startTime + 10},Danmu,${danmakuRes[i].user},20,20,2,,{\move(${videoQualitiesRefer[thisVideoQuality].width + fontTailX},${fontsize},${0 - fontTailX},${fontsize})}${danmakuRes[i].message}${danmakuRes[i].repeatNum > 1 ? " x" + danmakuRes[i].repeatNum : ""}\n`
+                events += `Dialogue: 0,${startTime},${startTime + 10},Danmu,${danmakuRes[i].user},20,20,2,,{\\move(${videoQualitiesRefer[thisVideoQuality].width + fontTailX},${fontsize},${0 - fontTailX},${fontsize})}${danmakuRes[i].message}${danmakuRes[i].repeatNum > 1 ? " x" + danmakuRes[i].repeatNum : ""}\n`
             }
         } else {
             for (let i = 0; i < danmakuLength; i++) {
-                let startTime = this.timeProc(danmakuRes[i].position / 1e3)
+                let startTime = this.timeProc(danmakuRes[i].position / 1e3);
                 let fontTailX = danmakuRes[i].body.length * fontsize;
-                events += `Dialogue: 0,${startTime},${this.timeProc(danmakuRes[i].position / 1e3,10)},Danmu,${danmakuRes[i].userId},20,20,2,,{\move(${videoQualitiesRefer[thisVideoQuality].width + fontTailX},${fontsize},${0 - fontTailX},${fontsize})}${danmakuRes[i].body}\n`
+                events += `Dialogue: 0,${startTime},${this.timeProc(danmakuRes[i].position / 1e3, 10)},Danmu,${danmakuRes[i].userId},20,20,2,,{\\move(${videoQualitiesRefer[thisVideoQuality].width + fontTailX},${fontsize},${0 - fontTailX},${fontsize})}${danmakuRes[i].body}\n`
             }
-
 
             let result = scriptInfo + sytles + events;
 
@@ -111,7 +112,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
 
 
     timeProc(second, offset = 0) {
-        var minute,hours;
+        var minute, hours;
         second = second + offset//6060
         minute = Math.floor(second / 60);//101
         hours = Math.floor(second / 60 / 60);//1
@@ -121,6 +122,6 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
 
         minute = minute.length == 1 ? "0" + minute : minute;
         second = second.length == 1 ? "0" + second : second;
-        return hours + ":" + minute + ":" + second+offset;
+        return hours + ":" + minute + ":" + (second + offset).toFixed(2);
     }
 }

@@ -55,11 +55,12 @@ class PageBeautify {
 			border: "1px solid rgb(235, 233, 233)",
 			color: "rgb(182, 170, 170)",
 			height: "auto",
+			"box-shadow": "rgba(0, 0, 0, 0.16) 0px 3px 10px 0px"
 		});
 		//右侧导航html
 		let root = chrome.runtime.getURL("/");
 		let fn = () => {
-			return `<script charset="UTF-8" src="${root + "fg/js/nav.js"}"></script>`;
+			return `<script charset="UTF-8" src="${root + "fg/nav.js"}"></script>`;
 		};
 		let content = `
                         ${fn()}
@@ -164,43 +165,69 @@ class PageBeautify {
 					);
 				}
 				let cssStr = `
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con,.header .guide-msg .guide-item-con{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con{
 					${this_page ? "width: 114px;" : ""}
 					padding:0px 0px 0px 0px;
 				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li,.header-guide .guide-msg .guide-item-con ul li{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li{
 					${this_page ? "text-align: center;" : ""}
 					font-size:14px;
 				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover,.header-guide .guide-msg .guide-item-con ul li:hover{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover{
 					background-color:#ececec;
 				}
 				ul#guide-msg-list{
 					padding:0px 0px 0px 0px;
 				}
-				#guide-msg-list > li{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li,
+				.header .guide-msg .guide-item-con .msg-item a{
 					padding:10px 5px 10px 5px;
 				}
-				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li,.header .guide-item.guide-history .guide-item-con li{
+				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li{
 					font-size: 14px;
 					line-height: 22px;
 					margin: 12px 0px 12px 0px;
 					height: 18px;
 				}
-				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a .item-title,.header .guide-item.guide-history .guide-item-con li a .item-title{
+				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a .item-title{
 					height: 20px;
 					line-height: 16px;
 				}
-				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a i.device,.header .guide-item.guide-history .guide-item-con li a i.device{
+				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a i.device{
 					height: 20px;
 					line-height: 16px;
 				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li a .badget,.header .guide-item.guide-history .guide-item-con ul li a .badget{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li a .badget{
 					top: 18px;
 				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li.followed-users .followed-live-title,.header .guide-item.guide-history .guide-item-con ul li.followed-users .followed-live-title{
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li.followed-users .followed-live-title{
 					line-height: 14px;
 					height: 14px;
+				}
+
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li.dynamics{
+					padding-top: 10px;
+				}
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:last-child{
+					padding-bottom: 10px;
+				}
+
+				.header .guide-msg .guide-item-con .msg-item{
+					font-size: 14px;
+					line-height: 1.5;
+					padding: 0 0 0 0;
+				}
+				#guide-msg-list > li:hover{
+					background-color:#ececec;
+				}
+				.header .guide-item li a:hover,
+				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover a,
+				#header #nav .guide-msg .guide-item-con a:hover
+				{
+					color: #000;
+				}
+				.header .guide-msg .guide-item-con .msg-item:last-child{
+					padding-bottom: 0;
 				}
 				`
 				createElementStyle(cssStr);
@@ -218,14 +245,25 @@ class PageBeautify {
 		createElementStyle(cssStr);
 	}
 
-	simplifiyPartIndex() {
+	simplifiyIndex(ifPartIndex=false) {
 		let cssStr;
-		cssStr = `.block-video .block-title p{
+		if(ifPartIndex){
+			cssStr = `
+			.block-video .block-title p{
+				display:none
+			}
+			`;
+		}
+		cssStr = `
+		.normal-video .normal-video-info,
+		.ranked-list .ranked-list-content .list-content-videos .video-item-big .block-right .video-info
+		{
 			display:none
-		}`;
+		}
+		`;
 		createElementStyle(cssStr, document.head, "simplifiyPartIndex");
 	}
-
+	
 	userCenterBeautify() {
 		let cssStr;
 		cssStr = `#ac-space .tab-content{background: #ffffffad;} #ac-space .tab{background: #fffffff7;}

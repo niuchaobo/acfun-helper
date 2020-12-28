@@ -188,7 +188,7 @@ class MsgNotifs {
                     .then((res => { return res.text() }))
                     .then((res) => {
                         let b = JSON.parse(res);
-                        if (b.unReadCount.new_system_notify == undefined) {
+                        if (b.unReadCount == undefined || b.unReadCount.new_system_notify == undefined) {
                             return;
                         }
                         let a0 = b.unReadCount.new_comment;//评论
