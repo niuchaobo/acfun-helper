@@ -4,7 +4,7 @@
 
 class Danmaku {
     constructor() {
-        this.devMode = true;
+        this.devMode = false;
         this.acid = 0;
         this.videoInfo = {};
         this.duration = 10;
@@ -24,6 +24,10 @@ class Danmaku {
         })
     }
 
+    /**
+     * 获取弹幕信息格式化为Ass格式的弹幕（待完善）
+     * @todo 没有解决好弹幕重叠问题
+     */
     async sanitizeJsonDanmakuToAss() {
         this.devMode ? console.log("loaded") : ""
 
@@ -51,13 +55,22 @@ class Danmaku {
         }
     }
 
+    /**
+     * Json2Ass弹幕处理核心逻辑
+     * @param {*} danmakuRes JSON格式弹幕
+     * @param {*} danmakuLength 弹幕数据长度
+     * @param {*} mode 模式（废弃，原本是有备用方案使用本地的window.player.danmaku的内容，但是常常获取不到）
+     * @param {*} videoInfo 视频信息
+     * @todo 多分P、弹幕重叠问题
+     * @refer 处理逻辑参考：https://github.com/orzogc/acfundanmu
+     * @refer UTF8 to UTF8-BOM参考：https://www.itranslater.com/qa/details/2583765774754120704
+     */
     async assDanmakuProcess(danmakuRes, danmakuLength, mode, videoInfo) {
-        // let thisVideoQuality = "1080p";
         let thisVideoQuality = document.querySelector(".control-btn.quality").children[0].innerText.toLowerCase();
         this.thisVideoQuality = thisVideoQuality;
         let fontsize = Number(danmakuRes[0].size) + 15;
         // let fontsize = 65;
-        // Function refer:https://github.com/orzogc/acfundanmu
+
         // ass文件的Script Info
         this.devMode ? console.log(thisVideoQuality) : ""
         this.devMode ? console.log(this.videoQualitiesRefer[thisVideoQuality]) : ""
@@ -83,6 +96,7 @@ Style: Danmu,Microsoft YaHei,${fontsize},&H00FFFFFF,&H00FFFFFF,&H00000000,&H0000
         let events = `
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n`
+
         this.devMode ? console.log("process danmaku") : ""
 
         var startTime, fontTailX, toLeftTime, toLeftVelocity
@@ -121,11 +135,21 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
         }
 
         this.devMode ? console.log(this.danmuMotionList) : ""
-
+        //内容整合
         let result = scriptInfo + sytles + events;
 
         this.devMode ? console.log("download danmaku") : ""
-        downloadThings(result, `${this.acid} - ${videoInfo.user.name} - ${videoInfo.title}.ass`)
+        //下载的时候，文件编码需要转化为UTF8-BOM
+        var blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]),result],{ type: "text/plain;charset=utf-8" })
+        var url = window.URL.createObjectURL(blob);
+        var saveas = document.createElement('a');
+        saveas.href = url;
+        saveas.style.display = 'none';
+        document.body.appendChild(saveas);
+        saveas.download = `${this.acid} - ${videoInfo.user.name} - ${videoInfo.title}.ass`;
+        saveas.click();
+        setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
+        document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
     }
 
     timeProc(second, offset = 0) {
@@ -137,17 +161,54 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
         minute = minute - hours * 60;
         second = second - hours * 60 * 60 - minute * 60;
 
-        minute = minute.length == 1 ? "0" + minute : minute;
-        second = second.length == 1 ? "0" + second : second;
-        return hours + ":" + minute + ":" + (second + offset).toFixed(2);
+        return hours + ":" + this.paddingNum(minute, 2) + ":" + this.paddingNum((second + offset).toFixed(2));
     }
 
+    /**
+     * 加0
+     * @param {number} num 时间-小数
+     * @param {*} len 预留位数
+     */
+    paddingNum = function (num, len) {
+        if (num - Number(num).toFixed() != 0) {
+            let remain = String(num - Number(num).toFixed()).split(".");
+            remain = remain[1];
+            remain = remain.split("");
+            remain = remain[0] + remain[1];
+            num = Number(num).toFixed();
+            num = '' + num;
+            while (num.length < len) num = '0' + num;
+            return num + String("." + remain);
+        } else {
+            num = '' + num;
+            while (num.length < len) num = '0' + num;
+            return num;
+        }
+    }
+
+    /**
+     * 检查此条弹幕是否可能与上一条弹幕重叠
+     * @param {Number} index 此条弹幕在弹幕运动信息列表中的索引
+     * @description 弹幕不重叠——核心诉求
+                    场景简单——弹幕匀速运动
+                    性能较好——避免密集的实时弹幕位置计算
+
+                    对于典型的弹幕场景，每个弹幕元素作水平直线运动，竖直方向（即纵向）的速度分量为0。这就意味着：弹幕元素彼此之间在竖直方向没有发生相对运动，因此弹幕在纵向的间距可通过对容器划分「轨道」进行隔离。
+
+                    在上面的讨论中，通过引入轨道的概念，避免了竖直方向上&不同轨道之间的弹幕重叠干扰。
+                    对于水平方向的分析，我们不妨先从简单的单个弹幕元素看起来。每个弹幕元素会经历这样三个阶段：出生在容器右侧——挂载进入到容器中——运动完全离开容器——移除;每一条默默划过的弹幕，实际上包含空间和时间两个维度的描述：空间维度：包括弹幕君的一些包括宽高、相对位置等几何属性；时间维度：startTime 通常用于记录用户生成该弹幕的时刻，这是一个相对开始播放的时间偏移量。该属性指导了弹幕元素的默认出现时机，以及在候选队列中的出场次序。duration，弹幕在容器中飘过的持续时间。由于弹幕场景中每个弹幕元素的水平位移量是固定的，因此 duration 也间接决定了弹幕的运动速度。
+                    left和top指定了弹幕元素的出生点位；width和height标识了弹幕元素的高矮胖瘦；startTime和duration则分别决定了弹幕元素在候选列表中的顺序和展示时长。同一轨道中所有弹幕元素从右向左&同向匀速运动；在展示期间，轨道中所有弹幕元素均不发生重叠。
+                    不难想到，「轨道中所有弹幕元素均不发生重叠」的问题可以归约为：「如何避免轨道中前后两个相邻弹幕弹幕元素之间的重叠」。
+                    我们成功地将一系列弹幕间的运动关系，降维到了相邻弹幕元素的两两关系。
+                    追及问题
+                    判断两个弹幕在水平方向上是否发生重叠，实质就是就是对追及问题进行讨论了。基于红领巾时代掌握的知识，我们知道：对于两个对象的匀速直线运动，通过公式路程差 / 速度差 = 追及时间来判断对象是否会相遇（追及时间是否大于0）。这里的「相遇」，与弹幕场景中「重叠」的概念不谋而合。实际操作中，对于一个寻求某条合适轨道的弹幕元素，只需要将其与轨道中最后加入的弹幕元素（即轨道中最右侧的弹幕元素）进行比较，通过两者的追及问题计算，便可判断该轨道是否满足当前候选弹幕的插入条件。
+                    经过上面checkChannel()的计算，如果返回true则表示当前轨道可以接受候选弹幕的挂载。
+        @refer https://www.zhihu.com/question/370464345/answer/1021530502
+        @todo 貌似我并没有理解好这个函数的原理，没有利用好，弹幕还是会有很多重叠的问题，看看以后还有机会完善吧。
+     */
     danmakuChannelCheck(index) {
-        // refer:https://www.zhihu.com/question/370464345/answer/1021530502
         const lastBullet = this.danmuMotionList[index - 1];
         const bullet = this.danmuMotionList[index];
-        // console.log(this.thisVideoQuality)
-        // console.log(this.videoQualitiesRefer[this.thisVideoQuality])
         if (lastBullet) {
             const lastBulletPos = this.videoQualitiesRefer[this.thisVideoQuality].width;
 

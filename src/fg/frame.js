@@ -4,7 +4,7 @@ function getImageSource(id) {
 }
 
 function downloadDanmaku() {
-    alert("因为Api接口限制，可能弹幕下载不全。")
+    alert("因为Api接口限制，可能弹幕下载不全。");
     window.parent.postMessage({
         action: 'downloadDanmaku',
     }, '*');
@@ -14,6 +14,7 @@ function assDanmaku() {
     if (window.parent.document.querySelector(".control-btn.quality").children[0].innerText.toLowerCase() == "自动") {
         alert("请先选择一个确定的分辨率，以便助手确认字幕的宽高。");
     } else {
+        alert("因为Api接口限制，可能弹幕下载不全。");
         try {
             window.parent.postMessage({
                 action: 'assDanmaku',

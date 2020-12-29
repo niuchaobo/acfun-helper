@@ -7,10 +7,10 @@ const videoQualitiesRefer =
     "720p60": { "limitType": 1, "qualityType": "720p60", "qualityLabel": "720P60" },
     "1080p+": { "limitType": 1, "qualityType": "1080p+", "qualityLabel": "1080P+", "definition": "HD", "width": 1920, "height": 1080 },
     "1080p": { "limitType": 1, "qualityType": "1080p", "qualityLabel": "1080P", "definition": "HD", "width": 1920, "height": 1080 },
-    "720p": { "defaultSelect": true, "qualityType": "720p", "qualityLabel": "720P", "width": 1280, "height": 720 },
-    "540P": { "qualityType": "540p", "qualityLabel": "540P", "width": 960, "height": 540 },
-    "480P": { "qualityType": "480p", "qualityLabel": "480P", "width": 720, "height": 480 },
-    "360P": { "qualityType": "360p", "qualityLabel": "360P", "width": 640, "height": 360 }
+    "720p": { "qualityType": "720p", "qualityLabel": "720P", "width": 1280, "height": 720 },
+    "540p": { "qualityType": "540p", "qualityLabel": "540P", "width": 960, "height": 540 },
+    "480p": { "qualityType": "480p", "qualityLabel": "480P", "width": 720, "height": 480 },
+    "360p": { "qualityType": "360p", "qualityLabel": "360P", "width": 640, "height": 360 }
 }
 
 const acfunApis = {
