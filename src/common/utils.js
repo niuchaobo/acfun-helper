@@ -47,6 +47,7 @@ const defaults = {
   PlaybackRateKeysw: false,
   FilmModeExclusionsw: true,
   endedAutoExitFullscreensw: true,
+  endedAutoToCommentArea: false,
   easySearchScanForPlayerTimesw: false,
   Dev_indexBlurSW: false,
   userHomeMoment: true,

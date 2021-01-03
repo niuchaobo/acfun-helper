@@ -79,6 +79,12 @@ let videoFunction = (function () {
               window.player.emit("filmModeChanged", false);
               window.player.emit("fullScreenChange", false);
             }
+            if (options.endedAutoToCommentArea) {
+              _thisTimer = setTimeout(e=>{
+                document.querySelector("#to-comm").click();
+                clearTimeout(_thisTimer);
+              },435);
+            }
           });
       } catch (error) {
         console.log("[LOG]Frontend-videoSettingInject: May not in douga Page.");

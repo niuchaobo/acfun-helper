@@ -1451,14 +1451,36 @@ $(document).ready(function () {
             document.getElementById('endedAutoExitFullscreensw').checked='true';
         }else{
             document.getElementById('endedAutoExitFullscreensw').checked=false;
+            document.querySelector("#endedAutoToCommentAreasw").style.display="none";
         }
         $('#endedAutoExitFullscreensw').on('click', function () {
             if(!document.getElementById('endedAutoExitFullscreensw').checked){
                 document.getElementById('endedAutoExitFullscreensw').checked=false;
                 chrome.storage.local.set({'endedAutoExitFullscreensw':false});
+                document.querySelector("#endedAutoToCommentAreasw").style.display="none";
             }else{
                 document.getElementById('endedAutoExitFullscreensw').checked=true;
                 chrome.storage.local.set({'endedAutoExitFullscreensw':true});
+                document.querySelector("#endedAutoToCommentAreasw").style.display="block";
+            }
+        });
+    });
+
+    //====================配置播放结束自动退出全屏然后滚动到评论区===============
+    chrome.storage.local.get(['endedAutoToCommentArea'],function(items){
+        var endedAutoToCommentArea= items.endedAutoToCommentArea;
+        if(endedAutoToCommentArea){
+            document.getElementById('endedAutoToCommentArea').checked='true';
+        }else{
+            document.getElementById('endedAutoToCommentArea').checked=false;
+        }
+        $('#endedAutoToCommentArea').on('click', function () {
+            if(!document.getElementById('endedAutoToCommentArea').checked){
+                document.getElementById('endedAutoToCommentArea').checked=false;
+                chrome.storage.local.set({'endedAutoToCommentArea':false});
+            }else{
+                document.getElementById('endedAutoToCommentArea').checked=true;
+                chrome.storage.local.set({'endedAutoToCommentArea':true});
             }
         });
     });
