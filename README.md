@@ -89,13 +89,17 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 ---
 
 #### TodoList
+<details>
+  <summary>TodoList</summary>
 
     - 将抽奖的结果可选保存于sessionStorage或者IndexedDB（甚至在filesystem中的SQLite3数据库中，以便迁移数据）来防止在一段时间内出现的结果重复
     - 完善插件和播放器配置网络同步 =>（基本可用，但是火狐浏览器下同步可能会出现问题）
     - 评论编辑器快捷键发送
     - 为评论时间播放器快速跳转添加一个点击后自动翻到播放器位置的开关或者对话框【在点开的评论加个提示 比方说【刚刚看到这里】 又或者拉上去之后在空白的地方加一个按钮【返回刚刚的评论】 之类的】
     - 添加 稿件下抽奖、画中画模式、插件直播通知、地址栏（omnibox）支持【浏览器跳转】、弹幕下载、画质策略、弹幕搜索、评论区时间播放器快速跳转、直播时间Tag、AB回放、弹幕发送者主页跳转、全局进度条、稍后再看、倍率音量、番剧计划、小广场、音乐播放器 功能的使用说明
-    - 将稍后再看接入主站    
+
+</details>
+
 
 ---
 
@@ -149,12 +153,16 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 #### 提要
 
+<details>
+  <summary>提要</summary>
+
     * jquery 3.5.0
     * mdui 0.4.3
     * dexie 3.0.1
 
     * esbuild 0.8.2     
     * gulp 4.0.2    
+</details>    
 
 #### 相关项目
 
@@ -168,9 +176,19 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 ##### @orzogc - [acfunlive AcFun直播通知和下载助手](https://github.com/orzogc/acfunlive "项目地址")
 
-##### @ShigemoriHakura - [aclivechat AcFun直播弹幕姬 For OBS](https://github.com/ShigemoriHakura/aclivechat "项目地址")
-
 ##### @goplayegg - [AcfunQml 基于Qt QML的AcFun桌面客户端](https://github.com/goplayegg/AcfunQml "项目地址")
+
+##### @CrystalSpire - [Acfun TV 客户端 第三方的Tv客户端](https://github.com/CrystalSpire/AcFun "项目地址")
+
+##### @kanoyami - [aclivechat-node JavaScript全栈 的 AcFun直播弹幕姬](https://github.com/kanoyami/aclivechat-node "项目地址")
+
+##### @ShigemoriHakura - [ACFun-Live-Helper AcFunOBS直播助手](https://github.com/ShigemoriHakura/ACFun-Live-Helper "项目地址")
+
+##### @Yzi - [AcFun TheaterMode 将AcFun播放页更改为类似于Youtube的剧场模式](https://github.com/Yzi/AcFun-TheaterMode "项目地址")
+
+##### @maysrp - [ACFUN_Clock_auto(ESP32 Micropython ESP32 Clock acfun fans clock) ACFUN电子钟自动配网版](https://github.com/maysrp/ACFUN_Clock_auto "项目地址")
+
+##### @baldhumanity - [AcfunComplement ACFUN补全计划-屏蔽功能](https://github.com/baldhumanity/AcfunComplement "项目地址")
 
 ---
 
