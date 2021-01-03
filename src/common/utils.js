@@ -77,6 +77,7 @@ const defaults = {
   articleReadMode: false,
   articleBanana: false,
   audioAfterBanana: false,
+  picDrag: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

@@ -1190,6 +1190,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================文章区图片拖动支持============================
+    chrome.storage.local.get(['picDrag'],function(items){
+        var picDrag= items.picDrag;
+        if(picDrag){
+            document.getElementById('picDrag').checked='true';
+        }else{
+            document.getElementById('picDrag').checked=false;
+        }
+        $('#picDrag').on('click', function () {
+            if(!document.getElementById('picDrag').checked){
+                document.getElementById('picDrag').checked=false;
+                chrome.storage.local.set({'picDrag':false});
+            }else{
+                document.getElementById('picDrag').checked=true;
+                chrome.storage.local.set({'picDrag':true});
+            }
+        });
+    });
+
     //=====================直播评论时间Tag============================
     chrome.storage.local.get(['liveCommentTimeTag'],function(items){
         var liveCommentTimeTag= items.liveCommentTimeTag;
