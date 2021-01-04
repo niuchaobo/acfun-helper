@@ -5,8 +5,97 @@ var pushListData = {
 	firstLoad: true, // 第一次加载推送列表
 	arriveEnd: false, // 到达终点
 };
+var groupPushListData = {
+	index: 0,
+	innerText: "",
+	busy: false,
+	firstLoad: true,
+	arriveEnd: false,
+};
 
 var popupLater = {};
+
+export async function renderFollowGroup() {
+	let rawRes = await fetchResult("https://www.acfun.cn/rest/pc-direct/relation/getGroups");
+	let Res = JSON.parse(rawRes);
+	for (let i = 0; i < Res.groupList.length; i++) {
+		$("#followGroups").append(
+			`
+			<li class="mdui-menu-item">
+			<a class="mdui-ripple" data-count="${Res.groupList[i].followingCount}" data-id="${Res.groupList[i].groupId}">${Res.groupList[i].groupName}</a>
+			</li>
+		`
+		);
+	}
+}
+
+export async function renderGroupPush(gid) {
+	$("#pop-groupPush").empty();
+	groupPushListData.innerText="";
+	let raw = await fetchResult(`https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=1&gid=${gid}&count=30&pcursor=1`);
+	let res = JSON.parse(raw);
+	let xmlData = "";
+	for (let i = 0; i < res.feedList.length; i++) {
+		let data = res.feedList[i];
+		let dougaType = data.isArticle ? "article" : "video";
+		xmlData = '<div class="inner ' + dougaType + '" id="';
+		xmlData +=
+			data.aid +
+			'" data-type="' + data.isArticle + '">' +
+			'<div class="l"><a target="_blank" href="';
+		xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
+		xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
+		xmlData +=
+			data.aid +
+			'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"><label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i><p style="color:whitesmoke">等下就看</p></label> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
+			data.cid +
+			'" class="title">';
+		xmlData +=
+			data.title +
+			'</a> </p> <div class="info"><a target="_blank" data-uid="';
+		xmlData +=
+			data.aid +
+			'" href="https://www.acfun.cn/u/' +
+			data.userId +
+			'" class="name"> ';
+		xmlData +=
+			data.username +
+			' </a><span class="time">' +
+			getTimeSinceNow(data.releaseDate, true, false) +
+			"发布</span> </div> </div> </div> ";
+		groupPushListData.innerText += xmlData;
+	}
+	$("#pop-groupPush").append(groupPushListData.innerText);
+	pushListData.index++
+	$("img.lazyload").lazyload({ threshold: 0.2 });
+	// window.onscroll = function () {
+	// 	if (
+	// 		(getScrollHeight() == Math.floor(getDocumentTop() + getWindowHeight()) ||
+	// 			getScrollHeight() == Math.ceil(getDocumentTop() + getWindowHeight()))
+	// 	) {
+	// 		console.log("scroll to bottom");
+	// 	}
+	// };
+	$(".popupLater").click(e => {
+		if (e.target.checked == true && e.target.checked != undefined) {
+			if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
+				popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
+			} else {
+				popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
+			}
+		} else if (e.target.checked == false && e.target.checked != undefined) {
+			if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
+				delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
+			} else {
+				delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
+			}
+		}
+		if (Object.length != 0) {
+			document.querySelector(".MultOpen").style.display = "block";
+		}
+	});
+
+}
 
 /**
  * 稿件动态信息渲染

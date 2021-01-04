@@ -3,6 +3,8 @@ import {
 	renderPushInnerHtml,
 	renderLives,
 	renderLiveWatchTimeLst,
+	renderFollowGroup,
+	renderGroupPush,
 	PopupLater,
 } from "./renderList.js";
 import {
@@ -33,6 +35,8 @@ import {
 } from "./popupEvent.js";
 
 async function onReady() {
+	renderFollowGroup();
+	$("#followGroups").click(e => { renderGroupPush(e.target.dataset.id) })
 	localizeHtmlPage(); //global function
 	updateVersionIcon(); //更新提醒
 	let options = await optionsLoad(); //global function
