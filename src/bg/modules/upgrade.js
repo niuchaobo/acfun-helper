@@ -1,5 +1,6 @@
 /**
  * 定时更新数据
+ * @todo 部分功能可以采用 chrome.alarms 的方式实现，create − chrome.alarms.create(string name, object alarmInfo)；get − chrome.alarms.get(string name, function callback)；getAll − chrome.alarms.getAll(function callback)；clear − chrome.alarms.clear(string name, function callback)；clearAll − chrome.alarms.clearAll(function callback)
  */
 class UpgradeAgent {
     constructor() {

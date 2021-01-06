@@ -78,12 +78,12 @@ let videoFunction = (function () {
             if (!window.player._loop && nowMode) {
               window.player.emit("filmModeChanged", false);
               window.player.emit("fullScreenChange", false);
-            }
-            if (options.endedAutoToCommentArea) {
-              _thisTimer = setTimeout(e=>{
-                document.querySelector("#to-comm").click();
-                clearTimeout(_thisTimer);
-              },435);
+              if (options.endedAutoToCommentArea) {
+                _thisTimer = setTimeout(e => {
+                  document.querySelector("#to-comm").click();
+                  clearTimeout(_thisTimer);
+                }, 435);
+              }
             }
           });
       } catch (error) {
