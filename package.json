@@ -8,8 +8,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "betaSlim": "gulp && gulp betaSlim && echo \"删除一些文件以便减少插件体积，用于测试，命令执行完成之后，只要js文件存在，就可以将其他文件复制到final文件夹中了(请不要覆盖已经压缩好的文件)\" && exit 0",
-    "start": "gulp && echo \"命令执行完成之后，只要js文件存在，就可以将其他文件复制到final文件夹中了(请不要覆盖已经压缩好的文件)\" && exit 0"
+    "betaSlim": "gulp betaSlim && echo \"删除一些文件以便减少插件体积，用于测试，命令执行完成之后，只要js文件存在，就可以将其他文件复制到final文件夹中了(请不要覆盖已经压缩好的文件)\" && exit 0",
+    "start": "gulp && echo \"命令执行完成之后，只要js文件存在，就可以将其他文件复制到final文件夹中了(请不要覆盖已经压缩好的文件，livepageBeautify可能存在压缩之后的问题，请用原文件覆盖)\" && exit 0"
   },
   "author": "ncb",
   "license": "MPL-2.0",
