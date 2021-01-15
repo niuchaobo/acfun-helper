@@ -7,6 +7,8 @@ class VideoSetting {
     this.underWorld = null;
     this.audioNodeGainFlag = false;
     this.audioOriginVolume = 0;
+    this.mediaSessionNowPlayingIndex = 0;
+    this.devMode = false;
     this.progressBarOptions = {
       id: "achlp-proBar",
       css:
@@ -645,4 +647,80 @@ class VideoSetting {
       }
     })
   }
+
+  /**
+   * Windows MediaSession 支持
+   * @refer https://www.cnblogs.com/ajanuw/p/8422176.html https://w3c.github.io/mediasession/#the-mediasession-interface https://developer.mozilla.org/zh-CN/docs/Web/API/MediaSession#%E4%BE%8B%E5%AD%90
+   * @ideaRefer https://github.com/Yzi/AcFun-TheaterMode
+   */
+  videoMediaSession() {
+    window.addEventListener('message', (e) => {
+      let videoInfo = {};
+      if (e.data.to == 'videoInfo') {
+        try {
+          videoInfo = JSON.parse(e.data.msg)
+        } catch (error) {
+          videoInfo = {
+            "title": document.querySelector(".video-description.clearfix>.title").innerText,
+            "channel": {
+              "parentName": document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second").innerText,
+              "name": document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third").innerText
+            },
+            coverUrl: document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src
+          }
+        }
+
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: `${videoInfo.title} - ${videoInfo.channel.parentName} > ${videoInfo.channel.name}`,
+          artist: videoInfo.user.name,
+          artwork: [
+            { src: videoInfo.coverUrl, sizes: '284x166', type: 'image/jpeg' },
+          ]
+        });
+
+        navigator.mediaSession.setActionHandler('seekbackward', function () {
+          document.querySelector("video").currentTime -= 5
+        })
+        navigator.mediaSession.setActionHandler('seekforward', function () {
+          document.querySelector("video").currentTime += 5
+        });
+        //鸡肋的时间设定
+        navigator.mediaSession.setActionHandler("seekto", function (details) {
+          document.querySelector("video").currentTime = Number(details.seekTime);
+        });
+
+
+        if (videoInfo.videoList.length > 1) {
+          this.mediaSessionNowPlayingIndex = 0;
+
+          navigator.mediaSession.setActionHandler('previoustrack', () => {
+            if (this.mediaSessionNowPlayingIndex <= 0) {
+              //do nothing
+            } else {
+              this.mediaSessionNowPlayingIndex--;
+              this.devMode ? console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`) : ""
+              document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
+              document.querySelector("video").play();
+            }
+          });
+
+          navigator.mediaSession.setActionHandler('nexttrack', () => {
+            if (this.mediaSessionNowPlayingIndex == videoInfo.videoList.length - 1) {
+              //do nothing
+            } else {
+              this.mediaSessionNowPlayingIndex++;
+              this.devMode ? console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`) : ""
+
+              document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
+              document.querySelector(".btn-play.control-btn").click();
+              document.querySelector("video").play();
+            }
+          });
+        }
+
+      }
+
+    })
+  }
+
 }

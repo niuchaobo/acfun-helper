@@ -80,6 +80,7 @@ const defaults = {
   picDrag: true,
   commentPageEasyTrans: true,
   liveMediaSession:false,
+  videoMediaSession:false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

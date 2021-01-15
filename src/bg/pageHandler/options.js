@@ -1606,6 +1606,30 @@ $(document).ready(function () {
         });
     });
 
+    //====================视频播放器 MediaSession支持===============
+    chrome.storage.local.get(['videoMediaSession'],function(items){
+        if("mediaSession" in navigator){
+
+        }else{
+            document.getElementById('videoMediaSession').disabled=true;
+        }
+        var videoMediaSession= items.videoMediaSession;
+        if(videoMediaSession){
+            document.getElementById('videoMediaSession').checked='true';
+        }else{
+            document.getElementById('videoMediaSession').checked=false;
+        }
+        $('#videoMediaSession').on('click', function () {
+            if(!document.getElementById('videoMediaSession').checked){
+                document.getElementById('videoMediaSession').checked=false;
+                chrome.storage.local.set({'videoMediaSession':false});
+            }else{
+                document.getElementById('videoMediaSession').checked=true;
+                chrome.storage.local.set({'videoMediaSession':true});
+            }
+        });
+    });
+
     //====================自动续播==================
     chrome.storage.local.get(['endedAutoJumpRecommandFirstDougasw'],function(items){
         var endedAutoJumpRecommandFirstDougasw= items.endedAutoJumpRecommandFirstDougasw;

@@ -117,14 +117,14 @@ let videoFunction = (function () {
   });
 
   try {
-    //从Player获取douga & danmaku 信息，传递给父级
-    // window.parent.postMessage(
-    //   {
-    //     to: "pageBtfy",
-    //     msg: `${JSON.stringify(window.player.videoInfo)}`,
-    //   },
-    //   "*"
-    // );
+    // 从Player获取douga & danmaku 信息，传递给父级
+    window.parent.postMessage(
+      {
+        to: "videoInfo",
+        msg: `${JSON.stringify(window.player.videoInfo)}`,
+      },
+      "*"
+    );
 
     window.parent.postMessage(
       {

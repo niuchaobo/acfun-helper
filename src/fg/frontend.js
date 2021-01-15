@@ -124,6 +124,8 @@ class ODHFront {
 				this.videoSetting.videoQuality(isLogin);
 				//自动点赞
 				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
+				//MediaSession
+				this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 			}, 200)
 		}
 	}
@@ -286,7 +288,7 @@ class ODHFront {
 	onCommentAreaLoaded(e) {
 		getAsyncDom(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
-		}, 1000, true)
+		},3000)
 	}
 
 	//抽奖
