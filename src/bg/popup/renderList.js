@@ -15,6 +15,9 @@ var groupPushListData = {
 
 var popupLater = {};
 
+/**
+ * 渲染关注分组选单内容
+ */
 export async function renderFollowGroup() {
 	let rawRes = await fetchResult("https://www.acfun.cn/rest/pc-direct/relation/getGroups");
 	let Res = JSON.parse(rawRes);
@@ -29,6 +32,10 @@ export async function renderFollowGroup() {
 	}
 }
 
+/**
+ * 渲染分组投稿动态具体内容
+ * @param {string} gid 
+ */
 export async function renderGroupPush(gid) {
 	$("#pop-groupPush").empty();
 	groupPushListData.innerText="";
@@ -91,7 +98,7 @@ export async function renderGroupPush(gid) {
 			}
 		}
 		if (Object.length != 0) {
-			document.querySelector(".MultOpen").style.display = "block";
+			document.querySelector(".MultOpen2").style.display = "block";
 		}
 	});
 
@@ -99,10 +106,6 @@ export async function renderGroupPush(gid) {
 
 /**
  * 稿件动态信息渲染
- * @todo 根据分组筛选稿件动态
- * @Api 获取稿件动态 https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=0&gid=-1&count=10&pcursor=1
- * @Api 获取Up主分组 https://www.acfun.cn/rest/pc-direct/relation/getGroups
- * @todoDesc https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=1&gid=`${这里填入获取到的组Id}`&count=10&pcursor=1
  */
 export async function renderPushInnerHtml() {
 	pushListData.busy = true;

@@ -78,6 +78,7 @@ const defaults = {
   articleBanana: false,
   audioAfterBanana: false,
   picDrag: true,
+  commentPageEasyTrans: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -606,6 +607,7 @@ async function getAsyncDom(target, fn, time = 2500, isDev = false) {
  * 从Up名称解析为UID
  * @param {string} upName 
  * @returns upUrl 返回Up主的主页地址
+ * @callMethod let uid =await toUpInfo('qyqx')
  */
 async function toUpInfo(upName) {
   let upUrl = fetch('https://www.acfun.cn/u/' + upName.toString()).then((response) => {
@@ -614,9 +616,6 @@ async function toUpInfo(upName) {
   })
   return upUrl
 }
-
-// let uil =await toUpInfo('qyqx')
-//   console.log(uil)
 
 /**
  * 页面位置计算

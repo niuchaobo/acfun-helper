@@ -4,7 +4,7 @@
 
 class Danmaku {
     constructor() {
-        this.devMode = false;
+        this.devMode = true;
         this.acid = 0;
         this.videoInfo = {};
         this.duration = 10;
@@ -33,26 +33,17 @@ class Danmaku {
 
         this.acid = REG.acVid.exec(window.location.href)[2];
         let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + this.acid));
-        let danmakuResRaw = JSON.parse(sessionStorage.getItem("danmakuCache"));
-        let danmakuRes = danmakuResRaw.msg
-        this.devMode ? console.log("get danmaku") : ""
-        this.devMode ? console.log(danmakuRes) : ""
-        let danmakuLength = JSON.parse(danmakuRes).length;
-        this.devMode ? console.log(danmakuLength) : ""
-        if (danmakuLength == 0) {
-            this.devMode ? console.log("danmaku empty") : ""
-            fetch('https://www.acfun.cn/rest/pc-direct/new-danmaku/list', {
-                method: "POST", credentials: 'include', headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
-                }, body: `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=1&count=2000&sortType=1&asc=false`
+        fetch('https://www.acfun.cn/rest/pc-direct/new-danmaku/list', {
+            method: "POST", credentials: 'include', headers: {
+                'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
+            }, body: `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=1&count=2000&sortType=1&asc=false`
+        })
+            .then((res => { return res.text() }))
+            .then((res) => {
+                let x = JSON.parse(res);
+                this.devMode ? console.log(x) : ""
+                this.assDanmakuProcess(x.danmakus, x.danmakus.length, false, videoInfo);
             })
-                .then((res => { return res.text() }))
-                .then((res) => {
-                    let x = JSON.parse(res);
-                    this.devMode ? console.log(x) : ""
-                    this.assDanmakuProcess(x.danmakus, x.danmakus.length, false, videoInfo);
-                })
-        }
     }
 
     /**
@@ -140,7 +131,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
 
         this.devMode ? console.log("download danmaku") : ""
         //下载的时候，文件编码需要转化为UTF8-BOM
-        var blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]),result],{ type: "text/plain;charset=utf-8" })
+        var blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), result], { type: "text/plain;charset=utf-8" })
         var url = window.URL.createObjectURL(blob);
         var saveas = document.createElement('a');
         saveas.href = url;

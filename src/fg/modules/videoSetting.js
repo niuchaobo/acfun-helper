@@ -585,11 +585,11 @@ class VideoSetting {
 
   /**
    * 倍率扩大音量 & UI
-   * @description 这个功能会重新挂接音频处理上下文的图，所以会导致主站播放器的高级音效失效，望周知
+   * @description 使用Web Audio API放大视频音量(超过100%之类的需求)
+   * @notice 这个功能会重新挂接音频处理上下文的图，所以会导致主站播放器的高级音效失效，望周知
+   * @refer http://www.voidcn.com/article/p-pqutjsey-bnu.html https://developer.mozilla.org/zh-CN/docs/Web/API/MediaElementAudioSourceNode
    */
   audioNodeGain() {
-    // 使用Web Audio API放大视频音量(超过100%之类的需求) TODO:制作交互以及设置页面的开关
-    //参考：http://www.voidcn.com/article/p-pqutjsey-bnu.html https://developer.mozilla.org/zh-CN/docs/Web/API/MediaElementAudioSourceNode
     // source(音频源)-->gainNode(音频处理模块)-->audioContext.destination(音频上下文的输出)
     let audioCtx = new window.AudioContext();
     let audioTrack = document.querySelector("video");

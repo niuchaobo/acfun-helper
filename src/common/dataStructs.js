@@ -95,3 +95,36 @@ function bubbleSort(x) {
     }
     return x
 }
+
+/**
+ * 将常见的数据类型转化为字符串
+ * @param {*} e 
+ */
+function convertEverthingToStr(e) {
+    var t;
+    switch (typeof (t = e)) {
+        case "string":
+            return t;
+        case "number":
+            return t.toString();
+        case "array":
+            return JSON.stringify({
+                _obj: t
+            }).replace(/{(.*)}/, "$1").replace(/"_obj":/, "");
+        case "object":
+            return JSON.stringify(t);
+        case "boolean":
+            return t.toString();
+        case "undefined":
+            return "undefined";
+        case "null":
+            return "null";
+        default:
+            try {
+                return t.toString()
+            } catch (e) {
+                return e,
+                    ""
+            }
+    }
+}

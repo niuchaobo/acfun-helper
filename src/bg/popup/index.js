@@ -72,6 +72,7 @@ async function onReady() {
 	$("#livePageWatchTimeRecList").click(e => { e.target.className === 'liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key, e.target.href) });
 	$(".PushListMode").click(PushListDougaMode);
 	$(".MultOpen").click(PopupLater);
+	$(".MultOpen2").click(PopupLater);
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {

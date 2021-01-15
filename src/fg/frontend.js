@@ -239,6 +239,7 @@ class ODHFront {
 				this.ce.immedComt();
 			}
 			// this.danmaku.sanitizeJsonDanmakuToAss();
+			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 		}
 		//文章
 		if (REG.article.test(href)) {
@@ -249,6 +250,7 @@ class ODHFront {
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype), true);
 			this.options.articleReadMode && this.reader.lightReadMode();
 			this.options.articleBanana && this.banana.articleBanana({ key: REG.acAid.exec(href)[2] });
+			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 		}
 		//直播
 		if (REG.live.test(href)) {
@@ -280,7 +282,11 @@ class ODHFront {
 		this.authInfo.cookInfo();
 	}
 
-
+	onCommentAreaLoaded(e) {
+		getAsyncDom(".comment-area .pager__wrapper", () => {
+			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
+		})
+	}
 
 	//抽奖
 	api_lottery(params) {

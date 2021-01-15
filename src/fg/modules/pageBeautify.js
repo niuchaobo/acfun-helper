@@ -245,9 +245,9 @@ class PageBeautify {
 		createElementStyle(cssStr);
 	}
 
-	simplifiyIndex(ifPartIndex=false) {
+	simplifiyIndex(ifPartIndex = false) {
 		let cssStr;
-		if(ifPartIndex){
+		if (ifPartIndex) {
 			cssStr = `
 			.block-video .block-title p{
 				display:none
@@ -263,7 +263,7 @@ class PageBeautify {
 		`;
 		createElementStyle(cssStr, document.head, "simplifiyPartIndex");
 	}
-	
+
 	userCenterBeautify() {
 		let cssStr;
 		cssStr = `#ac-space .tab-content{background: #ffffffad;} #ac-space .tab{background: #fffffff7;}
@@ -409,5 +409,32 @@ class PageBeautify {
 		document.getElementsByClassName("tab")[0].children[0].children[3].innerText = `动态 ${z}`;
 		//可以在动态最下面增加一个按钮，点击就增加新的30条动态信息。
 		// document.getElementsByClassName("tab-list")[0].children[3].classList[0] == "active"
+	}
+
+	commentPageEasyTrans() {
+		if (document.querySelector(".pager__wrapper") != null) {
+			let elem = `
+			<div id="comment-lastPage" title="上一页评论" class="icon icon-to-comm tool-item tool-to-comm"><span class="pts">上一页</span></div>
+			<div id="comment-nextPage" title="下一页评论" class="icon icon-to-comm tool-item tool-to-comm"><span class="pts">下一页</span></div>
+			`
+			$("#toolbar").eq(0).append(elem);
+			$("#comment-lastPage").click(e => {
+				if (document.querySelector(".pager__btn.pager__btn__prev.pager__btn__disabled") == null) {
+					document.querySelector(".pager__btn.pager__btn__prev").click()
+					LeftBottomNotif("评论翻到上一页。", "info", 2500)
+				} else {
+					LeftBottomNotif("已经是第一页了。", "warning", 2500)
+				}
+			});
+			$("#comment-nextPage").click(e => {
+				if (document.querySelector(".pager__btn.pager__btn__next.pager__btn__disabled") == null) {
+					document.querySelector(".pager__btn.pager__btn__next").click()
+					LeftBottomNotif("评论翻到下一页。", "info", 2500)
+				} else {
+					LeftBottomNotif("已经是最后页了。", "warning", 2500)
+				}
+			});
+		}
+
 	}
 }

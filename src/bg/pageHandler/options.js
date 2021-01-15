@@ -1209,6 +1209,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================评论区快捷翻页============================
+    chrome.storage.local.get(['commentPageEasyTrans'],function(items){
+        var commentPageEasyTrans= items.commentPageEasyTrans;
+        if(commentPageEasyTrans){
+            document.getElementById('commentPageEasyTrans').checked='true';
+        }else{
+            document.getElementById('commentPageEasyTrans').checked=false;
+        }
+        $('#commentPageEasyTrans').on('click', function () {
+            if(!document.getElementById('commentPageEasyTrans').checked){
+                document.getElementById('commentPageEasyTrans').checked=false;
+                chrome.storage.local.set({'commentPageEasyTrans':false});
+            }else{
+                document.getElementById('commentPageEasyTrans').checked=true;
+                chrome.storage.local.set({'commentPageEasyTrans':true});
+            }
+        });
+    });
+
     //=====================直播评论时间Tag============================
     chrome.storage.local.get(['liveCommentTimeTag'],function(items){
         var liveCommentTimeTag= items.liveCommentTimeTag;

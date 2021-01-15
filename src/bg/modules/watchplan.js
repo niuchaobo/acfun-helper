@@ -279,24 +279,36 @@ class WatchPlan {
         return true
     }
 
+    /**
+     * AcFunQml链接桥 - 通过AcFunQml打开此稿件
+     * @param {String} url 
+     * @todo 打开文章稿件和动态
+     */
     async connectAcFunQmlByUrlScheme(url) {
-        if (REG.videoAndBangumi.test || Reg.article.test) {
-            console.log(url)
-            let x = RegExp("/ac(.*)")
-            let y = x.exec(url)
-            if (y != null) {
-                chrome.tabs.create({ url: "AcFunQml://" + y[1] }, (e) => { });
-                var msg = "启动中"
+        var msg = "";
+        if (url && (REG.article.test(url) || REG.video.test(url))) {
+            let acid = "";
+            let commandObj = {};
+            acid = REG.acVid.exec(url)
+            if (acid == null) {
+                acid = REG.acAid.test(url)
+                // commandObj = {"v":1,"acId":"16184205","type":"video"};
             } else {
-                var msg = "不是稿件"
+                commandObj = { "v": 1, "acId": String(acid[2]), "type": "video" };
             }
-            chrome.notifications.create(null, {
-                type: 'basic',
-                iconUrl: 'images/notice.png',
-                title: 'AcFun 助手',
-                message: msg,
-            });
+            if (acid != null) {
+                chrome.tabs.create({ url: "AcfunQml://" + encodeURI(JSON.stringify(commandObj)) }, (e) => { });
+                msg = "启动AcFunQml中。"
+            }
+        } else {
+            msg = "无法启动AcFunQml，参数可能不是稿件。"
         }
+        chrome.notifications.create(null, {
+            type: 'basic',
+            iconUrl: 'images/notice.png',
+            title: 'AcFun 助手',
+            message: msg,
+        });
     }
 
     /**

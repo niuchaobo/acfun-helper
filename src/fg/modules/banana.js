@@ -217,38 +217,14 @@ class Banana {
         chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 5, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
     }
     async ProgressiveBananaMain(data, state) {
-        let videoDuration = document.getElementsByTagName("video")[0].duration;
-        let nowPlayTime = document.getElementsByTagName("video")[0].currentTime;
-        let percent = Math.floor((nowPlayTime / videoDuration) * 1000)
-        console.log(percent)
-        if (percent >= data.heartPercent[0] && !state.heartThis) {
-            console.log("heart this")
-            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: "Heart", url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
-            state.heartThis = true;
-        }
-        if (percent >= data.bananaPercent[0] && state.bananaThis == 0) {
-            console.log(10)
-            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 1, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
-            state.bananaThis = 1;
-        } else if (percent >= data.bananaPercent[1] && state.bananaThis == 1) {
-            console.log(20)
-            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 2, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
-            state.bananaThis++
-        } else if (percent >= data.bananaPercent[2] && state.bananaThis == 2) {
-            console.log(30)
-            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 3, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
-            state.bananaThis++
-        } else if (percent >= data.bananaPercent[3] && state.bananaThis == 3) {
-            console.log(40)
-            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 4, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
-            state.bananaThis++
-        } else if (percent >= data.bananaPercent[4] && state.bananaThis == 4) {
-            console.log(50)
-            chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 5, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
-            state.bananaThis++
-        } else if (state.bananaThis == 5) {
-            console.log("Ok")
-        }
+        // let videoDuration = document.getElementsByTagName("video")[0].duration;
+        // let nowPlayTime = document.getElementsByTagName("video")[0].currentTime;
+        // let percent = Math.floor((nowPlayTime / videoDuration) * 1000)
+        // console.log(percent)
+        /**
+         * 视频观看百分比，[]
+         */
+        let percent = Number(document.querySelector(".pro-current").style.width.toString().replace("%",""));
     }
 
 }

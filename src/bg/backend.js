@@ -142,16 +142,16 @@ class ODHBack {
             }
         });
 
-        // chrome.contextMenus.create({
-        //     title: '从AcFunQml桌面客户端打开', 
-        //     contexts: ['link'], 
-        //     id:'3',
-        //     onclick: (params) =>{
-        //         let link_url = params.linkUrl;
-        //         this.WatchPlan.connectAcFunQmlByUrlScheme(link_url).then(()=>{
-        //         });
-        //     }
-        // });
+        chrome.contextMenus.create({
+            title: '从AcFunQml桌面客户端打开', 
+            contexts: ['link'], 
+            id:'3',
+            onclick: (params) =>{
+                let link_url = params.linkUrl;
+                this.WatchPlan.connectAcFunQmlByUrlScheme(link_url).then(()=>{
+                });
+            }
+        });
 
         //当激活某个tab页时
         chrome.tabs.onActivated.addListener(function (tab) {
