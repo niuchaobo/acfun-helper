@@ -201,6 +201,7 @@ class ODHFront {
 			this.pageBeautify.userMoment(href);
 			this.pageBeautify.userCenterBeautify();
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false, true);
+			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind();
 		}
 	}
 
@@ -288,7 +289,7 @@ class ODHFront {
 	onCommentAreaLoaded(e) {
 		getAsyncDom(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
-		},3000)
+		}, 3000)
 	}
 
 	//抽奖

@@ -4,6 +4,7 @@
 class PageBeautify {
 	constructor() {
 		this.personInfo = "https://www.acfun.cn/rest/pc-direct/user/personalInfo";
+		this.devMode = false;
 	}
 
 	//-----------------导航---------------------
@@ -409,6 +410,61 @@ class PageBeautify {
 		document.getElementsByClassName("tab")[0].children[0].children[3].innerText = `动态 ${z}`;
 		//可以在动态最下面增加一个按钮，点击就增加新的30条动态信息。
 		// document.getElementsByClassName("tab-list")[0].children[3].classList[0] == "active"
+	}
+
+	pageTransKeyBind() {
+		LeftBottomNotif("我们现在可以使用Shift+PageUp/PageDown来翻页啦！", "info", 8500);
+		document.onkeydown = function (event) {
+			var e = event || window.e;
+			var keyCode = e.keyCode || e.which || e.charCode;
+			var shiftKey = e.shiftKey || e.metaKey;
+			if (shiftKey && keyCode == 33) {
+				console.log("up")
+				let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev")
+				for (let i = 0; i < targetElem.length; i++) {
+					this.devMode ? console.log(targetElem[i]) : ""
+					this.devMode ? console.log(targetElem[i].parentElement.parentElement.parentElement.classList) : ""
+					this.devMode ? console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active")) : ""
+
+					if (
+						targetElem[i].className == "pager__btn pager__btn__prev"
+						&&
+						(
+							targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active"
+							||
+							targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"
+						)
+					) {
+						this.devMode ? console.log(targetElem[i]) : ""
+						this.devMode ? console.log("我点了，你呢") : ""
+						targetElem[i].click();
+					}
+				}
+			} else if (shiftKey && keyCode == 34) {
+				console.log("down")
+				let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next")
+				for (let i = 0; i < targetElem.length; i++) {
+					this.devMode ? console.log(targetElem[i]) : ""
+					this.devMode ? console.log(targetElem[i].parentElement.parentElement.parentElement.classList) : ""
+					this.devMode ? console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active")) : ""
+
+					if (
+						targetElem[i].className == "pager__btn pager__btn__next"
+						&&
+						(
+							targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active"
+							||
+							targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"
+						)
+					) {
+						this.devMode ? console.log(targetElem[i]) : ""
+						this.devMode ? console.log("我点了，你呢") : ""
+						targetElem[i].click();
+					}
+				}
+			}
+			// e.preventDefault();
+		}
 	}
 
 	commentPageEasyTrans() {

@@ -81,6 +81,7 @@ const defaults = {
   commentPageEasyTrans: true,
   liveMediaSession:false,
   videoMediaSession:false,
+  pageTransKeyBind:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

@@ -1228,6 +1228,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================个人中心快捷键翻页============================
+    chrome.storage.local.get(['pageTransKeyBind'],function(items){
+        var pageTransKeyBind= items.pageTransKeyBind;
+        if(pageTransKeyBind){
+            document.getElementById('pageTransKeyBind').checked='true';
+        }else{
+            document.getElementById('pageTransKeyBind').checked=false;
+        }
+        $('#pageTransKeyBind').on('click', function () {
+            if(!document.getElementById('pageTransKeyBind').checked){
+                document.getElementById('pageTransKeyBind').checked=false;
+                chrome.storage.local.set({'pageTransKeyBind':false});
+            }else{
+                document.getElementById('pageTransKeyBind').checked=true;
+                chrome.storage.local.set({'pageTransKeyBind':true});
+            }
+        });
+    });
+
     //=====================直播评论时间Tag============================
     chrome.storage.local.get(['liveCommentTimeTag'],function(items){
         var liveCommentTimeTag= items.liveCommentTimeTag;
