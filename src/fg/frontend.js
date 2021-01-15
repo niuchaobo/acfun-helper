@@ -283,9 +283,9 @@ class ODHFront {
 	}
 
 	onCommentAreaLoaded(e) {
-		getAsyncDom(".comment-area .pager__wrapper", () => {
+		getAsyncDom(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
-		})
+		},1000,true)
 	}
 
 	//抽奖
