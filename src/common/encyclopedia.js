@@ -27,4 +27,5 @@ const acfunApis = {
      */
     videoContributeList : `https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&resourceType=2&sortType=3&authorId=`,
     acDaily : `https://api-new.app.acfun.cn/rest/app/acDailyMagazine`,
+    liveInfo : `https://live.acfun.cn/api/live/info?authorId=`,
 }

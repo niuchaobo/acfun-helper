@@ -4,7 +4,7 @@
 
 class Danmaku {
     constructor() {
-        this.devMode = true;
+        this.devMode = false;
         this.acid = 0;
         this.videoInfo = {};
         this.duration = 10;

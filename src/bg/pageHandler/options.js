@@ -1266,6 +1266,31 @@ $(document).ready(function () {
         });
     })
 
+    //=====================Windows MediaSession支持============================
+    chrome.storage.local.get(['liveMediaSession'],function(items){
+        if("mediaSession" in navigator){
+            var liveMediaSession= items.liveMediaSession;
+            if(liveMediaSession){
+                document.getElementById('liveMediaSession').checked='true';
+            }else{
+                document.getElementById('liveMediaSession').checked=false;
+            }
+            $('#liveMediaSession').on('click', function () {
+                if(!document.getElementById('liveMediaSession').checked){
+                    document.getElementById('liveMediaSession').checked=false;
+                    chrome.storage.local.set({'liveMediaSession':false});
+                }else{
+                    document.getElementById('liveMediaSession').checked=true;
+                    chrome.storage.local.set({'liveMediaSession':true});
+                }
+            });
+        }else{
+            let elem = document.getElementById('liveMediaSession');
+            elem.disabled = true;
+            elem.parentElement.parentElement.parentElement.children[2].style.display = "block";
+        }
+    })
+
     //=====================页面优化============================
     chrome.storage.local.get(['hideAd'],function(items){
         var ifHideAd= items.hideAd;

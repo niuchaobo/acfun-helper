@@ -180,7 +180,7 @@ class ODHFront {
 					this.livePageBeautify.appendWidePlayer();
 					this.livePageBeautify.simplifyDanmu();
 					if (this.options.LiveWatchTimeRec_popup) {
-						this.livePageBeautify.watchTimeRecord();
+						this.live.watchTimeRecord();
 					}
 					clearInterval(timer);
 				}
@@ -257,6 +257,7 @@ class ODHFront {
 			$(".open-app-confirm").hide();
 			this.div.show(pageInfo, this.options, 'live', '');
 			this.options.LiveUserFocus && this.livePageBeautify.followMe();
+			this.options.liveMediaSession && this.live.liveMediaSession(href);
 			//直播画中画模式
 			this.livePageBeautify.callPicktureInPictureModeForLive()
 		}
@@ -285,7 +286,7 @@ class ODHFront {
 	onCommentAreaLoaded(e) {
 		getAsyncDom(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
-		},1000,true)
+		}, 1000, true)
 	}
 
 	//抽奖
