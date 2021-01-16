@@ -79,9 +79,12 @@ const defaults = {
   audioAfterBanana: false,
   picDrag: true,
   commentPageEasyTrans: true,
-  liveMediaSession:false,
-  videoMediaSession:false,
-  pageTransKeyBind:true,
+  liveMediaSession: false,
+  videoMediaSession: false,
+  userCenterBeautify: true,
+  pageTransKeyBind: true,
+  widenUCVideoList: true,
+
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -101,7 +104,7 @@ const REG = {
   articleDetail: new RegExp("/v/as"),//文章分区详细页
   acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
   acAid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac(\\d+)'),
-  liveRoomID:new RegExp("http(s)?://live.acfun.cn/live/(\\d+)")
+  liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)")
 }
 
 /**

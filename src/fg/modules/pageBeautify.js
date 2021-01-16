@@ -289,7 +289,12 @@ class PageBeautify {
 		.ac-space-video:hover figure.video>img{
 			transform: scale(1.08);
 		}
-		
+		.ac-space-video{
+			margin-right: 0px;
+			margin-bottom: 20px;
+			margin-top: 10px;
+			margin-left: 10px;
+		}
 		.ac-space-video:hover figure.video>.mask{
 			box-shadow: 0 2px 4px rgb(0 0 0 / 26%);
 			transform: scale(1.08);
@@ -303,6 +308,28 @@ class PageBeautify {
 			transition: all .2s ease-in-out;
 		}`;
 		createElementStyle(cssStr, document.head, "simplifiyPartIndex");
+	}
+
+	widenUCVideoList() {
+		let cssStr = `
+		.ac-space-video {
+			width: 1000px;
+			height: 100px;
+			margin-left: 10px;
+			margin-top: 10px;
+		}
+		article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
+			display: flex;
+			margin-left: 20px;
+		}
+		.ac-space-video .title{
+			width: 700px !important;
+		}
+		.ac-space-video .video .title{
+			font-size: 18px;
+		}
+		`
+		createElementStyle(cssStr, document.head, "widenUCVideoList");
 	}
 
 	simplifiyPlayerRecm() {

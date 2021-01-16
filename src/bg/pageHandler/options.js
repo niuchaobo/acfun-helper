@@ -1228,6 +1228,44 @@ $(document).ready(function () {
         });
     });
 
+    //=====================个人中心排版优化============================
+    chrome.storage.local.get(['userCenterBeautify'],function(items){
+        var userCenterBeautify= items.userCenterBeautify;
+        if(userCenterBeautify){
+            document.getElementById('userCenterBeautify').checked='true';
+        }else{
+            document.getElementById('userCenterBeautify').checked=false;
+        }
+        $('#userCenterBeautify').on('click', function () {
+            if(!document.getElementById('userCenterBeautify').checked){
+                document.getElementById('userCenterBeautify').checked=false;
+                chrome.storage.local.set({'userCenterBeautify':false});
+            }else{
+                document.getElementById('userCenterBeautify').checked=true;
+                chrome.storage.local.set({'userCenterBeautify':true});
+            }
+        });
+    });
+
+    //=====================个人中心宽式视频列表============================
+    chrome.storage.local.get(['widenUCVideoList'],function(items){
+        var widenUCVideoList= items.widenUCVideoList;
+        if(widenUCVideoList){
+            document.getElementById('widenUCVideoList').checked='true';
+        }else{
+            document.getElementById('widenUCVideoList').checked=false;
+        }
+        $('#widenUCVideoList').on('click', function () {
+            if(!document.getElementById('widenUCVideoList').checked){
+                document.getElementById('widenUCVideoList').checked=false;
+                chrome.storage.local.set({'widenUCVideoList':false});
+            }else{
+                document.getElementById('widenUCVideoList').checked=true;
+                chrome.storage.local.set({'widenUCVideoList':true});
+            }
+        });
+    });
+
     //=====================个人中心快捷键翻页============================
     chrome.storage.local.get(['pageTransKeyBind'],function(items){
         var pageTransKeyBind= items.pageTransKeyBind;
