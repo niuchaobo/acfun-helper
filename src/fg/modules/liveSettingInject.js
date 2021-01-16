@@ -18,7 +18,8 @@ let liveFunction = (function () {
             let x = new Date();
             let w = e.target.children[0].innerHTML;
             e.target.children[0].innerHTML =
-              `<span>[${x.getHours()}:${x.getMinutes()}] </span>` + w;
+              `<span>[${x.getHours().toString().length == 1 ? "0" + x.getHours().toString() : x.getHours()}:${x.getMinutes().toString().length == 1 ? "0" + x.getMinutes().toString() : x.getMinutes()}] </span>` + w;
+            // `<span>[${x.getHours()}:${x.getMinutes()}] </span>` + w;
           }
         });
       clearInterval(_timer);
@@ -34,9 +35,9 @@ let liveFunction = (function () {
     );
   }
   return {
-      l_setPictureInPictureMode
+    l_setPictureInPictureMode
   }
 })();
 let {
-    l_setPictureInPictureMode
-} = {...liveFunction}
+  l_setPictureInPictureMode
+} = { ...liveFunction }
