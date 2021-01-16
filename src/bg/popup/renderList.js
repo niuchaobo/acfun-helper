@@ -32,15 +32,7 @@ export async function renderFollowGroup() {
 	}
 }
 
-/**
- * 渲染分组投稿动态具体内容
- * @param {string} gid 
- */
-export async function renderGroupPush(gid) {
-	$("#pop-groupPush").empty();
-	groupPushListData.innerText="";
-	let raw = await fetchResult(`https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=1&gid=${gid}&count=30&pcursor=1`);
-	let res = JSON.parse(raw);
+function PharseGroupPushData(res) {
 	let xmlData = "";
 	for (let i = 0; i < res.feedList.length; i++) {
 		let data = res.feedList[i];
@@ -73,16 +65,36 @@ export async function renderGroupPush(gid) {
 		groupPushListData.innerText += xmlData;
 	}
 	$("#pop-groupPush").append(groupPushListData.innerText);
-	pushListData.index++
+	groupPushListData.innerText = "";
+}
+
+/**
+ * 渲染分组投稿动态具体内容
+ * @param {string} gid 
+ */
+export async function renderGroupPush(gid) {
+	$("#pop-groupPush").empty();
+	groupPushListData.innerText = "";
+	let raw = await fetchResult(`https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=1&gid=${gid}&count=10&pcursor=1`);
+	groupPushListData.index = 1
+	let res = JSON.parse(raw);
+	PharseGroupPushData(res);
 	$("img.lazyload").lazyload({ threshold: 0.2 });
-	// window.onscroll = function () {
-	// 	if (
-	// 		(getScrollHeight() == Math.floor(getDocumentTop() + getWindowHeight()) ||
-	// 			getScrollHeight() == Math.ceil(getDocumentTop() + getWindowHeight()))
-	// 	) {
-	// 		console.log("scroll to bottom");
-	// 	}
-	// };
+	window.onscroll = () => {
+		if (document.querySelector("#tabGroupPushList").classList[1] == "mdui-tab-active") {
+			if (
+				(getScrollHeight() == Math.floor(getDocumentTop() + getWindowHeight()) ||
+					getScrollHeight() == Math.ceil(getDocumentTop() + getWindowHeight()))
+			) {
+				groupPushListData.index++;
+				fetch(`https://www.acfun.cn/rest/pc-direct/feed/followFeed?isGroup=1&gid=${gid}&count=10&pcursor=${groupPushListData.index}`).then((data) => { return data.text() })
+					.then((data) => {
+						PharseGroupPushData(JSON.parse(data));
+						$("img.lazyload").lazyload({ threshold: 0.2 });
+					})
+			}
+		}
+	};
 	$(".popupLater").click(e => {
 		if (e.target.checked == true && e.target.checked != undefined) {
 			if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
@@ -178,14 +190,16 @@ export async function renderPushInnerHtml() {
 			if (pushListData.firstLoad) {
 				setTimeout(() => {
 					$(window).bind("scroll", (e) => {
-						if (pushListData.busy || pushListData.arriveEnd) {
-							return;
-						}
-						pushListData.firstLoad = false;
-						let scrollTop = $(window).scrollTop();
-						if (scrollTop + 10 > $(document).height() - $(window).height()) {
-							pushListData.busy = false;
-							renderPushInnerHtml();
+						if (document.querySelector("#tabPushList").classList[1] == "mdui-tab-active") {
+							if (pushListData.busy || pushListData.arriveEnd) {
+								return;
+							}
+							pushListData.firstLoad = false;
+							let scrollTop = $(window).scrollTop();
+							if (scrollTop + 10 > $(document).height() - $(window).height()) {
+								pushListData.busy = false;
+								renderPushInnerHtml();
+							}
 						}
 					});
 				}, 0);
