@@ -143,13 +143,11 @@ class WatchPlan {
         }
     }
 
-    async addWatchLaterItemToApp(acid, resType) {
+    async addWatchLaterItemToApp(acid, resType = "video") {
         let result;
         try {
             result = JSON.parse(await fetchResult("https://api-new.app.acfun.cn/rest/app/addWaiting", "POST", `resourceId=${acid}&resourceType=${resType == "video" ? "2" : "3"}`, true));
-            console.log(result);
         } catch (error) {
-            console.log(error)
             result = { "result": 1 };
         }
         if (result.result == 0) {
@@ -184,7 +182,6 @@ class WatchPlan {
             localDataList.WatchPlanList.forEach((e) => {
                 //同步视频
                 if (REG.video.test(e) && appDataList.indexOf(e) == -1) {
-                    console.log(e)
                     if (this.addWatchLaterItemToApp(REG.acVid.exec(e)[2], "video")) {
                     } else {
                         throw new Error("Data fetch Faild.");
@@ -225,6 +222,19 @@ class WatchPlan {
             }
         })
         chrome.storage.local.set({ "WatchPlanList": localDataList.WatchPlanList });
+    }
+
+    async immediateAddWatchLaterToApp(url) {
+        if (REG.video.test(url)) {
+            let acid = REG.acVid.exec(url)[2];
+            let result = this.addWatchLaterItemToApp(acid);
+            chrome.notifications.create(null, {
+                type: 'basic',
+                iconUrl: 'images/notice.png',
+                title: 'AcFun 助手 - 稍后再看',
+                message: `此投稿加入App稍后再看列表${result ? "成功" : "失败"}`
+            });
+        }
     }
 
     // viewHistoryBackend(opts) {

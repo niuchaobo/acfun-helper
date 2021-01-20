@@ -1397,6 +1397,24 @@ $(document).ready(function () {
         });
     });
 
+    chrome.storage.local.get(['liveHideAdMute'],function(items){
+        var liveHideAdMute= items.liveHideAdMute;
+        if(liveHideAdMute){
+            document.getElementById('liveHideAdMute').checked='true';
+        }else{
+            document.getElementById('liveHideAdMute').checked=false;
+        }
+        $('#liveHideAdMute').on('click', function () {
+            if(!document.getElementById('liveHideAdMute').checked){
+                document.getElementById('liveHideAdMute').checked=false;
+                chrome.storage.local.set({'liveHideAdMute':false});
+            }else{
+                document.getElementById('liveHideAdMute').checked=true;
+                chrome.storage.local.set({'liveHideAdMute':true});
+            }
+        });
+    });
+
     chrome.storage.local.get(['livePlayerEnhc'],function(items){
         var livePlayerEnhc= items.livePlayerEnhc;
         if(livePlayerEnhc){

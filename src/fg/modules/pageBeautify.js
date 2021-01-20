@@ -327,6 +327,7 @@ class PageBeautify {
 		}
 		.ac-space-video .video .title{
 			font-size: 18px;
+			line-height: 100px;
 		}
 		`
 		createElementStyle(cssStr, document.head, "widenUCVideoList");

@@ -268,7 +268,7 @@ class ODHFront {
 		//直播首页
 		if (REG.liveIndex.test(href) && !REG.live.test(href)) {
 			//直播ad屏蔽
-			this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType);
+			this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType, this.options.liveHideAdMute);
 			//直播站首页用户屏蔽
 			this.options.liveBansw && this.block.liveUserBlock();
 		}

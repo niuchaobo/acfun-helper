@@ -51,6 +51,24 @@ class ODHBack {
             delStorage(tabId + "");
         });
 
+        chrome.contextMenus.create({
+            title: '将此链接添加到App稍后再看',
+            id: 'immediateAddLinkWatchLaterToApp',
+            contexts: ['link'],
+            onclick: (params) => {
+                this.WatchPlan.immediateAddWatchLaterToApp(params.linkUrl);
+            }
+        });
+
+        chrome.contextMenus.create({
+            title: '将此页面添加到App稍后再看',
+            id: 'immediateAddPageWatchLaterToApp',
+            contexts: ['link'],
+            onclick: (params) => {
+                this.WatchPlan.immediateAddWatchLaterToApp(params.pageUrl);
+            }
+        });
+
         //右键菜单
         chrome.contextMenus.create({
             documentUrlPatterns: ['https://*.acfun.cn/*'],

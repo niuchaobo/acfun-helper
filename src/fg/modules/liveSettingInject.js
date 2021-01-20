@@ -19,7 +19,6 @@ let liveFunction = (function () {
             let w = e.target.children[0].innerHTML;
             e.target.children[0].innerHTML =
               `<span>[${x.getHours().toString().length == 1 ? "0" + x.getHours().toString() : x.getHours()}:${x.getMinutes().toString().length == 1 ? "0" + x.getMinutes().toString() : x.getMinutes()}] </span>` + w;
-            // `<span>[${x.getHours()}:${x.getMinutes()}] </span>` + w;
           }
         });
       clearInterval(_timer);

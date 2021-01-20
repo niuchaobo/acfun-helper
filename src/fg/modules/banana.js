@@ -17,7 +17,17 @@ class Banana {
         var banana_num = 0;
         if (select) {
             //判断是否为已关注up主
-            let followed = dougaType == "video" ? document.getElementsByClassName('follow-up followed') : document.getElementsByClassName('focus alfocus')
+            let followed;
+            if (dougaType == "video") {
+                //判断联合投稿
+                if (document.querySelector("#main-content > div.left-column > div.introduction > div.up-area.staff-area") == null) {
+                    followed = document.getElementsByClassName('follow-up followed');
+                } else {
+                    followed = document.querySelector("#main-content > div.left-column > div.introduction > div.up-area.staff-area > div.up-details.staff-details > div.follow").classList.value == "follow hidden";
+                }
+            } else {
+                followed = document.getElementsByClassName('focus alfocus');
+            }
             if (!followed || followed.length <= 0) {
                 return { state: false }
             }
@@ -44,11 +54,11 @@ class Banana {
         }
     }
 
-    LikeHeartFront(Mode = "video",isLogin) {
-        if (!isLogin&&Mode=="video") {
+    LikeHeartFront(Mode = "video", isLogin) {
+        if (!isLogin && Mode == "video") {
             return;
-        }else if(Mode=="article"){
-            if(!isLoginByUi()){
+        } else if (Mode == "article") {
+            if (!isLoginByUi()) {
                 return;
             }
         }
@@ -116,7 +126,7 @@ class Banana {
      * @param {*} params 
      */
     async articleBanana(params) {
-        var isLogin=false;
+        var isLogin = false;
         try {
             isLogin = isLoginByUi(false);
         } catch (error) {
@@ -224,7 +234,7 @@ class Banana {
         /**
          * 视频观看百分比，[]
          */
-        let percent = Number(document.querySelector(".pro-current").style.width.toString().replace("%",""));
+        let percent = Number(document.querySelector(".pro-current").style.width.toString().replace("%", ""));
     }
 
 }

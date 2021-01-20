@@ -661,18 +661,25 @@ class VideoSetting {
           videoInfo = JSON.parse(e.data.msg)
         } catch (error) {
           videoInfo = {
-            "title": document.querySelector(".video-description.clearfix>.title").innerText,
+            "title": document.querySelectorAll("meta")[5].content.split(",")[0] || document.querySelector(".video-description.clearfix>.title").innerText,
             "channel": {
-              "parentName": document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second").innerText,
-              "name": document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third").innerText
+              "parentName": document.querySelectorAll("meta")[5].content.split(",")[1] || document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second").innerText,
+              "name": document.querySelectorAll("meta")[5].content.split(",")[2] || document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third").innerText
+            },
+            "user": {
+              "name": document.querySelectorAll("meta")[5].content.split(",")[3],
             },
             coverUrl: document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src
+          }
+          let videoList = [];
+          if (videoList = document.querySelector(".scroll-div.over-parts").children) {
+            videoInfo["videoList"] = videoList;
           }
         }
 
         navigator.mediaSession.metadata = new MediaMetadata({
           title: `${videoInfo.title} - ${videoInfo.channel.parentName} > ${videoInfo.channel.name}`,
-          artist: videoInfo.user.name,
+          artist: "AcFun: " + videoInfo.user.name,
           artwork: [
             { src: videoInfo.coverUrl, sizes: '284x166', type: 'image/jpeg' },
           ]
@@ -700,8 +707,8 @@ class VideoSetting {
               this.mediaSessionNowPlayingIndex--;
               this.devMode ? console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`) : ""
               document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
-              document.querySelector("video").play();
             }
+            document.querySelector("video").play()
           });
 
           navigator.mediaSession.setActionHandler('nexttrack', () => {
@@ -713,13 +720,11 @@ class VideoSetting {
 
               document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
               document.querySelector(".btn-play.control-btn").click();
-              document.querySelector("video").play();
             }
+            document.querySelector("video").play()
           });
         }
-
       }
-
     })
   }
 

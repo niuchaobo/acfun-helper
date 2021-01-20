@@ -173,7 +173,7 @@ class LivePageButfy {
         createElementStyle(cssStr)
     }
 
-    LivehideAds(type) {
+    LivehideAds(type, mute) {
         var hideType = "";
         type == '0' ? hideType = 0 : hideType = 1;
         //大约可以节约接近20%的CPU资源(以接近四代i3低压CPU的水平测试)，主要消耗来源是gif的动图和播放器。
@@ -184,10 +184,10 @@ class LivePageButfy {
                 const audioDom = document.querySelector(".volume")
                 let flag = String(controlDom.dataset.bindAttr)
                 let muteFlag = String(audioDom.dataset.bindAttr)
-                muteFlag != 'muted' ? document.querySelector(".volume-icon").click() : ""
+                muteFlag != 'muted' && mute ? document.querySelector(".volume-icon").click() : ""
                 flag == 'play' ? controlDom.click() : ""
                 // flag == 'play' ? document.getElementsByClassName("container-video")[0].children[0].pause() : ""
-                if (flag == 'pause' || muteFlag == 'muted') {
+                if (flag == 'pause') {
                     if (hideType == 0) {
                         createElementStyle('.tv-wrapper{display:none};')
                         document.querySelector(".tv-wrapper").remove()

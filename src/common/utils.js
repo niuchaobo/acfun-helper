@@ -8,6 +8,7 @@ const defaults = {
   to_attention_num: 5,
   to_special_items: [],
   broadcastingUIDlistFollowing: {},
+  MarkedComment: { setting: { enabled: true, storeLocation: "ExtensionStore", storePlugin: ["ExtensionStore","IndexedDB", "Nextcloud", "UserdefinedServer"] }, datasets: {} },
   WatchPlanList: [],
   MusicPlayList: { "windowSetting": { "left": 139, "top": 32, "width": 980, "height": 590 }, "onLoadAutoPlay": true, "playerMode": 1, "multiPartContinue": true, "List": {} },
   activeTabKey: 'activeTabId',
