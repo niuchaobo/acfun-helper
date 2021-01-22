@@ -151,13 +151,13 @@ class PageBeautify {
 						'<p class="crx-guid-p">UID: ' + a.info.userId + "</p>"
 					);
 					node.after(
-						'<p class="crx-guid-p">香蕉: ' + a.info.banana + "</p>"
+						'<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=banana" target="_blank">香蕉: ' + a.info.banana + "</a></p>"
 					);
 					node.after(
-						'<p class="crx-guid-p">金香蕉: ' + a.info.goldBanana + "</p>"
+						'<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=golden-banana" target="_blank">金香蕉: ' + a.info.goldBanana + "</p>"
 					);
 					node.after(
-						'<p class="crx-guid-p">关注 ' + a.info.following + ' - 听众: ' + a.info.followed + "</p>"
+						'<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=following" target="_blank">关注 ' + a.info.following + '</a> - <a href="https://www.acfun.cn/member/#area=followers" target="_blank">听众: ' + a.info.followed + "</a></p>"
 					);
 					node.after(
 						'<p class="crx-guid-p">注册时间: ' +

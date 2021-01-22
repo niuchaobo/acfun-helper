@@ -1433,6 +1433,24 @@ $(document).ready(function () {
         });
     });
 
+    chrome.storage.local.get(['liveIndexRankNum'],function(items){
+        var liveIndexRankNum= items.liveIndexRankNum;
+        if(liveIndexRankNum){
+            document.getElementById('liveIndexRankNum').checked='true';
+        }else{
+            document.getElementById('liveIndexRankNum').checked=false;
+        }
+        $('#liveIndexRankNum').on('click', function () {
+            if(!document.getElementById('liveIndexRankNum').checked){
+                document.getElementById('liveIndexRankNum').checked=false;
+                chrome.storage.local.set({'liveIndexRankNum':false});
+            }else{
+                document.getElementById('liveIndexRankNum').checked=true;
+                chrome.storage.local.set({'liveIndexRankNum':true});
+            }
+        });
+    });
+
     //=====================弹幕搜索================
     chrome.storage.local.get(['PlayerDamakuSearchSw'],function(items){
         var PlayerDamakuSearchSw= items.PlayerDamakuSearchSw;

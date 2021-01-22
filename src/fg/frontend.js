@@ -271,6 +271,8 @@ class ODHFront {
 			this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType, this.options.liveHideAdMute);
 			//直播站首页用户屏蔽
 			this.options.liveBansw && this.block.liveUserBlock();
+			//直播站主页数量标号
+			this.options.liveIndexRankNum && this.livePageBeautify.listCountFront();
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {

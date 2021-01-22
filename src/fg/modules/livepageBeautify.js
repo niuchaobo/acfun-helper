@@ -15,6 +15,7 @@ class LivePageButfy {
                     <span class="tip-pip" style="position: absolute;display: none;bottom: 40px;text-align: center;background: rgba(21,21,21,0.8);border-radius: 4px;line-height: 32px;height: 32px;opacity: 0.9;font-size: 14px;color: #FFFFFF;letter-spacing: 0;width: 116px;left: 50%;-webkit-transform: translate(-50%); transform: translate(-50%);" >进入画中画</span>
                 </div>`
         this.hideAdType = 'hide';
+        this.devMode = false;
     }
 
     commentTimeTag() {
@@ -173,11 +174,45 @@ class LivePageButfy {
         createElementStyle(cssStr)
     }
 
+    /**
+     * 遍历直播站列表修改标号
+     */
+    listCountTag() {
+        this.devMode && console.log("NumberThis");
+        let listCount = 0;
+        document.querySelectorAll("div.live-status > div.live-status-desc").forEach((e) => {
+            listCount++;
+            e.innerHTML = `第${listCount}`;
+        })
+    }
+    
+    /**
+     * 使用Observe来监测直播站列表页面变化更新列表标号
+     */
+    listCountFront() {
+        this.listCountTag();
+        var config = { attributes: true, childList: true, subtree: true };
+        var pageChangeObserver = document.querySelectorAll(".pager-wrapper.pager-container")[0];
+        var cateChangeObserver = document.querySelectorAll(".category-wrapper")[0];
+        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+        var obsrvcall = (mutations) => {
+            this.listCountTag();
+            mysleep(5000).then(() => {
+                this.listCountTag();
+            })
+            this.devMode && console.log("PageChanged");
+        }
+        var observer = new MutationObserver(obsrvcall);
+        var catobserver = new MutationObserver(obsrvcall);
+        observer.observe(pageChangeObserver, config);
+        catobserver.observe(cateChangeObserver, config);
+    }
+
     LivehideAds(type, mute) {
         var hideType = "";
         type == '0' ? hideType = 0 : hideType = 1;
         //大约可以节约接近20%的CPU资源(以接近四代i3低压CPU的水平测试)，主要消耗来源是gif的动图和播放器。
-        document.querySelectorAll(".live-status").forEach((e) => { e.remove() });
+        // document.querySelectorAll(".living-icon").forEach((e) => { e.remove() });
         var timer = setInterval(() => {
             try {
                 const controlDom = document.querySelector(".btn-span")
