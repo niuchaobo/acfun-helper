@@ -79,6 +79,7 @@ const defaults = {
   articleBanana: false,
   audioAfterBanana: false,
   picDrag: true,
+  picRotate: true,
   commentPageEasyTrans: true,
   liveMediaSession: false,
   videoMediaSession: false,
@@ -601,7 +602,7 @@ async function getAsyncDom(target, fn, time = 2500, isDev = false) {
         };
         i++;
         setTimeout(() => {
-          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target} - 第${i}次`);
+          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听 ${target} - 第${i}次`);
           resolve(re(fn));
         }, time);
       }
@@ -717,7 +718,12 @@ throttle = (func, delay) => {
   }
 }
 
-addElement = (options) => {
+/**
+ * 插入DOM对象
+ * @param {Object} options { tag = 'div', id = '', css = '', target = document.body, classes = '', createMode = "append", thisHTML = "" }
+ * @innerParam {String} createMode append,after,headAppend
+ */
+function addElement(options) {
   let { tag = 'div', id = '', css = '', target = document.body, classes = '', createMode = "append", thisHTML = "" } = options
   let x = document.createElement(tag);
   x.id = id;
@@ -728,11 +734,14 @@ addElement = (options) => {
     target.append(x);
   } else if (createMode == "after") {
     target.after(x);
+  } else if (createMode == "headAppnd") {
+    let tempTarget = target.firstChild;
+    target.insertBefore(x, tempTarget);
   }
   return x
 }
 
-removeAPrefix = (_$targetDom) => {
+function removeAPrefix(_$targetDom) {
   let acid = _$targetDom.text().trim();
   let regAcid = new RegExp("ac(.*)");
   if (acid == '') { return }

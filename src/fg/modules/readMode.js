@@ -8,6 +8,7 @@ class Reader {
     constructor() {
         this.enableMode = 0;
         this.hasEnabledLightMode = false;
+        this.curRotAngle = 0;
     }
 
     lightReadMode(sw = true) {
@@ -53,10 +54,11 @@ class Reader {
 
     /**
      * 文章区漫画模式图片拖动支持
+     * @param rotateSup 启用旋转支持
      * @refer https://www.acfun.cn/a/ac17306571
      * @author 奋不顾身 - https://www.acfun.cn/u/684816
      */
-    picDrag() {
+    picDrag(rotateSup) {
         //文章区漫画模式支持拖动
         var mangaNode = document.querySelector('#area-window');
         var mangaOptions = { attributes: false, childList: true, subtree: false, attributeOldValue: false };
@@ -65,6 +67,7 @@ class Reader {
         var mangaObserver = new MutationObserver(() => {
             if (document.querySelector('#box-image-manga')) {
                 this.drag();
+                rotateSup && this.picRotate();
             }
         });
         mangaObserver.observe(mangaNode, mangaOptions);
@@ -76,7 +79,7 @@ class Reader {
     drag() {
         var isDown = false;
         //弹出左下角通知。
-        LeftBottomNotif(" √ 您现在也可以使用鼠标拖动图片了。","banana");
+        LeftBottomNotif(" √ 您现在也可以使用鼠标拖动图片了。", "banana");
 
         var dv = document.querySelector('#box-image-manga');
         var x = 0;
@@ -120,5 +123,15 @@ class Reader {
         }
     }
 
+    /**
+     * 文章区漫画模式图片旋转支持
+     */
+    picRotate() {
+        addElement({ tag: "a", id: "btn-feedback-manga", classes: "btn primary", thisHTML: `<i class="icon icon-arrow-round-right"></i>旋转45°`, target: document.querySelector("#area-tool-manga"), createMode: "headAppnd" })
+        document.querySelector("#btn-feedback-manga").addEventListener('click', () => {
+            this.curRotAngle += 45;
+            document.querySelector("#box-image-manga > img").style.transform = `rotate(${(this.curRotAngle) % 360}deg)`
+        });
+    }
 
 }

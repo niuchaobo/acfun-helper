@@ -249,7 +249,7 @@ class ODHFront {
 		if (REG.article.test(href)) {
 			let isUp = adjustArticleUp();
 			this.div.show(pageInfo, this.options, 'article', isUp);
-			this.options.picDrag && this.reader.picDrag();
+			this.options.picDrag && this.reader.picDrag(this.options.picRotate);
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype), true);
 			this.options.articleReadMode && this.reader.lightReadMode();

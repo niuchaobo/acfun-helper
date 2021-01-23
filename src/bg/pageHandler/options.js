@@ -1209,6 +1209,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================文章区图片旋转支持============================
+    chrome.storage.local.get(['picRotate'],function(items){
+        var picRotate= items.picRotate;
+        if(picRotate){
+            document.getElementById('picRotate').checked='true';
+        }else{
+            document.getElementById('picRotate').checked=false;
+        }
+        $('#picRotate').on('click', function () {
+            if(!document.getElementById('picRotate').checked){
+                document.getElementById('picRotate').checked=false;
+                chrome.storage.local.set({'picRotate':false});
+            }else{
+                document.getElementById('picRotate').checked=true;
+                chrome.storage.local.set({'picRotate':true});
+            }
+        });
+    });
+
     //=====================评论区快捷翻页============================
     chrome.storage.local.get(['commentPageEasyTrans'],function(items){
         var commentPageEasyTrans= items.commentPageEasyTrans;
