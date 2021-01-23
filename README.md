@@ -16,7 +16,6 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 > 1. 评论抽奖已经完善。（2020-08-09 12：08 排除上次抽奖结果的功能已加入，到底需不需要迁移随机数生成方案@wpscott 在[#issue70](https://github.com/niuchaobo/acfun-helper/issues/70) 已经给出了说明。）
 > 2. 插件开发组迫切需要会**开发**和**设计**的同志，如有兴趣，请加入我们群或提交 pr 哦 (=ﾟ ω ﾟ)=。
-> 3. 主导开发者同志由于工作和家庭，事务繁多，现在没有办法更新正式版。
 ---
 
 #### 主要功能
@@ -31,7 +30,9 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
   5. **文章区 Up 屏蔽**,（你说的对，但是说得太不好听了吧( ´\_ゝ`)）
   6. 为用户中心首页增加动态标签，可以获取不超过30条的近期动态。(只能看不能说，不太hang)    
   7. 美化主页的顶栏（这波啊，叫亚克力板）     
-  8. 文章区阅读模式   
+  8. 文章区阅读模式、漫画模式旋转和拖动支持   
+  9. 个人中心视频稿件列表优化     
+  10. 多评论页面支持使用快捷键（Shift + PageUp/PageDown）翻页     
 
 ##### 主站
 
@@ -52,11 +53,11 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
   15. 自动播放下一个推荐视频。（“大家都在看”列表播放）  
   16. **评论区抽奖!!!**。【自己的稿件内打开网页右侧“助手”按钮界面，自定义抽奖人数+随机+去重（单个页面内独立的一次结果是不重复的），且助手会直接给出私信中奖 Acer 的链接，并且会详细告知楼层信息 !!!!(**注意一下**，其中“独立抽奖”是指每次抽奖的结果都是单独的，每次抽奖的用户都是单独的；而“排除上次结果抽奖”是指上次抽中的用户是从本次抽奖中排除的，上次抽奖的用户不会放到本次抽奖中。)】（可以给我来个专用抽奖工具吗，咱们三七分成？( ﾟ ∀。)）   
   17. 为视频稿件下评论区中的指向视频的ac号增加信息弹窗。    
-  18. 视频 MediaSession 支持          
+  18. 视频、直播 MediaSession 支持          
   19. 评论区快捷翻页             
   20. 个人中心快捷键翻页         
   21. AcFunQml打开此稿件         
-  22. 隐藏播放后视频推荐           
+  22. 隐藏播放后视频推荐   
 
 
 ##### 直播站
@@ -195,8 +196,6 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 ##### @maysrp - [ACFUN_Clock_auto(ESP32 Micropython ESP32 Clock acfun fans clock) ACFUN电子钟自动配网版](https://github.com/maysrp/ACFUN_Clock_auto "项目地址")
 
 ##### @baldhumanity - [AcfunComplement ACFUN补全计划-屏蔽功能](https://github.com/baldhumanity/AcfunComplement "项目地址")
-
-##### @czzonet - [acfun-video-cli 使用Node下载Acfun视频](https://github.com/czzonet/acfun-video-cli "项目地址")
 
 ---
 
