@@ -2011,6 +2011,7 @@ $(document).ready(function () {
             }
         }
         $('#firstwatchLaterList').click(async ()=>{
+            $("#watchLaterList").empty();
             let x = await getStorage("WatchPlanList");
             for(let i in x.WatchPlanList){
                 let y = new RegExp("/v/ac([0-9].*)");

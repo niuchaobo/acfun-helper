@@ -53,6 +53,15 @@ class WatchPlan {
         }
     }
 
+    async EmptyFix() {
+        var ori_list = await getStorage("WatchPlanList");
+        //假如任务队列为空，则先构造一个列表
+        if (ori_list.WatchPlanList == null) {
+            chrome.storage.local.set({ WatchPlanList: [] });
+            ori_list = await getStorage("WatchPlanList");
+        }
+
+    }
     /**
      * 加入任务队列
      * @param {string} data 主站投稿的URL
@@ -61,12 +70,8 @@ class WatchPlan {
     async PushInList(data) {
         var sw = await getStorage("watchLater");
         if (!sw.watchLater) { this.OpFlag = false; return }
+        await this.EmptyFix();
         var ori_list = await getStorage("WatchPlanList");
-        //假如任务队列为空，则先构造一个列表
-        if (ori_list.WatchPlanList == null) {
-            chrome.storage.local.set({ WatchPlanList: [] });
-            ori_list = await getStorage("WatchPlanList");
-        }
         //假如传入数据（链接）为视频、文章、用户首页 并且 其不是先存在于任务队列中的数据 就假如队列，并修改操作状态信息为 是
         if ((REG.video.test(data) || REG.article.test(data) || REG.userHome.test(data)) && !this.ifExist(ori_list.WatchPlanList, data)) {
             ori_list.WatchPlanList.push(data)
@@ -75,6 +80,19 @@ class WatchPlan {
         } else {
             this.OpFlag = false
         }
+    }
+    /**
+     * 批量加入任务队列
+     * @param {List} list UrlList
+     */
+    async MassInsert(list) {
+        var sw = await getStorage("watchLater");
+        if (!sw.watchLater) { this.OpFlag = false; return }
+        await this.EmptyFix();
+        await getStorage("WatchPlanList").then((ori_list) => {
+            let res = ori_list.WatchPlanList.concat(list);
+            chrome.storage.local.set({ "WatchPlanList": res });
+        })
     }
 
     /**
@@ -165,6 +183,7 @@ class WatchPlan {
     async syncAppWatchLater() {
         let appData = await this.getAppWatchLater();
         let appDataList = [];
+        let mergeList = [];
         let localDataList = await getStorage("WatchPlanList");
         //将app上的稍后再看数据同步至本地
         try {
@@ -174,10 +193,11 @@ class WatchPlan {
                     appDataList.push("https://www.acfun.cn/v/ac" + e.contentId);
                     // 如果这条记录不存在于本地记录 就 加入
                     if (localDataList.WatchPlanList.indexOf("https://www.acfun.cn/v/ac" + e.contentId) == -1) {
-                        this.PushInList("https://www.acfun.cn/v/ac" + e.contentId);
+                        mergeList.push("https://www.acfun.cn/v/ac" + e.contentId);
                     }
                 }
             })
+            this.MassInsert(mergeList);
             //将本地视频同步至app
             localDataList.WatchPlanList.forEach((e) => {
                 //同步视频
