@@ -21,7 +21,7 @@ class musicPlayerFront {
 
     async loadOption() {
         this.modOption = await getStorage("MusicPlayList");
-        console.log("[LOG]MusicPlayerFront>loadOption:loaded Configuration.");
+        fgConsole(this,this.loadOption,"loaded Configuration.",1,false)
     }
 
     main() {

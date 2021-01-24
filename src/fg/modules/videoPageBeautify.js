@@ -25,9 +25,6 @@ class videoPageBeautify {
         if (e.data.msg != "undefined") {
           var a = JSON.parse(e.data.msg);
         } else {
-          console.log(
-            "[LOG]Frontend-pageBeautify: Douga Info Receive From InjectScript Fail,May Influent sth."
-          );
           let url = window.location.toString();
           let videoPage = new RegExp("http(s)?://www.acfun.cn/v/ac(.*)");
           let acVid = videoPage.exec(url)[2];

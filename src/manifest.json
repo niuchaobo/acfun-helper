@@ -30,6 +30,7 @@
                 "bg/lib/m3u8-parser.min.js",
                 "bg/lib/md5.js",
                 "common/utils.js",
+                "common/consoleProxy.js",
                 "common/encyclopedia.js",
                 "common/uiReact.js",
                 "common/dataStructs.js",

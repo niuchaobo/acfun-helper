@@ -21,6 +21,7 @@ const defaults = {
   timer4Unread_daemonsw: true,
   krnl_videossEarly: false,
   krnl_globalTimer: true,
+  logSetting: { "consoleOutput": true, "logLevel": 4 },
   mark: false,//评论用户标记
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
@@ -659,6 +660,18 @@ function getScrollHeight() {
     documentScrollHeight = document.documentElement.scrollHeight;
   }
   scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight; return scrollHeight;
+}
+
+function getEsClassName(esClass) {
+  return esClass.constructor.toString().match(/class\s+([^ \(]+)\s*\{/i)[1]
+}
+
+function getEsFuncName(esFunc) {
+  let result = arguments[0].name;
+  if (!result) {
+    result = esFunc.toString().toString().match(/\s+([^ \(]+)\s*\(/i)[1]
+  }
+  return result
 }
 
 /**

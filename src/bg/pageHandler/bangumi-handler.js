@@ -10,7 +10,6 @@ let rawData = {
 
 async function fetchSerializationData() {
     let x = await db_getMybangumi(1, 'updateDayOfWeek');
-    console.log(x)
     for (let i = 0; i < x.length; i++) {
         let y = x[i];
         // let exclude1 = new RegExp('APP播放页面下滑进入番剧话题，获取更多优质内容推荐。(.*)');

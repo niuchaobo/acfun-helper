@@ -336,7 +336,6 @@ export function renderLives() {
 export function PopupLater() {
 	let x = Object.keys(popupLater);
 	for (let i = 0; i < x.length; i++) {
-		console.log(popupLater[x[i]]);
 		chrome.tabs.create({ url: popupLater[x[i]] });
 	}
 }
