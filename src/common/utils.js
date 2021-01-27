@@ -73,7 +73,7 @@ const defaults = {
   articlePartIndexDarken: false,
   BangumiNotif: true,
   BangumiPlan: true,
-  audioGain: true,
+  audioGain: false,
   uddPopUp: true,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
   articleReadMode: false,
@@ -86,7 +86,7 @@ const defaults = {
   videoMediaSession: false,
   userCenterBeautify: true,
   pageTransKeyBind: true,
-  widenUCVideoList: true,
+  widenUCVideoList: false,
   liveIndexRankNum: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];

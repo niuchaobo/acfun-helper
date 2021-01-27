@@ -70,6 +70,7 @@ function devConsole(department, module, funcName, message, logLevel, timeSw) {
  * @param {string} msg 
  * @param {number} logLevel 
  * @param {boolean} timesw 
+ * @example fgConsole(this,this.loadOption,"loaded Configuration.",1,false)
  */
 function fgConsole(cls, clsFunc, msg, logLevel = 0, timesw) {
     devConsole("fg", getEsClassName(cls), getEsFuncName(clsFunc), msg, logLevel, timesw)

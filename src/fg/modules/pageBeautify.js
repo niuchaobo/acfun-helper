@@ -440,58 +440,115 @@ class PageBeautify {
 		// document.getElementsByClassName("tab-list")[0].children[3].classList[0] == "active"
 	}
 
-	pageTransKeyBind() {
-		LeftBottomNotif("我们现在可以使用Shift+PageUp/PageDown来翻页啦！", "info", 8500);
-		document.onkeydown = function (event) {
+	/**
+	 * 页面快捷键翻页绑定
+	 * @param {*} mode 支持的页面："uc" 用户展示中心 "depList" 分区视频列表
+	 */
+	pageTransKeyBind(mode) {
+		switch (mode) {
+			case "uc":
+				LeftBottomNotif("我们现在可以使用Shift+PageUp/PageDown来翻页啦！", "info", 8500);
+				break;
+			default:
+				break;
+		}
+		document.onkeydown = (event) => {
 			var e = event || window.e;
 			var keyCode = e.keyCode || e.which || e.charCode;
 			var shiftKey = e.shiftKey || e.metaKey;
-			if (shiftKey && keyCode == 33) {
-				console.log("up")
-				let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev")
-				for (let i = 0; i < targetElem.length; i++) {
-					this.devMode ? console.log(targetElem[i]) : ""
-					this.devMode ? console.log(targetElem[i].parentElement.parentElement.parentElement.classList) : ""
-					this.devMode ? console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active")) : ""
-
-					if (
-						targetElem[i].className == "pager__btn pager__btn__prev"
-						&&
-						(
-							targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active"
-							||
-							targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"
-						)
-					) {
-						this.devMode ? console.log(targetElem[i]) : ""
-						this.devMode ? console.log("我点了，你呢") : ""
-						targetElem[i].click();
+			switch (mode) {
+				case "uc":
+					//User Center
+					if (shiftKey && keyCode == 33) {
+						this.pageUp4UC();
+					} else if (shiftKey && keyCode == 34) {
+						this.pageDown4UC();
 					}
-				}
-			} else if (shiftKey && keyCode == 34) {
-				console.log("down")
-				let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next")
-				for (let i = 0; i < targetElem.length; i++) {
-					this.devMode ? console.log(targetElem[i]) : ""
-					this.devMode ? console.log(targetElem[i].parentElement.parentElement.parentElement.classList) : ""
-					this.devMode ? console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active")) : ""
-
-					if (
-						targetElem[i].className == "pager__btn pager__btn__next"
-						&&
-						(
-							targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active"
-							||
-							targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"
-						)
-					) {
-						this.devMode ? console.log(targetElem[i]) : ""
-						this.devMode ? console.log("我点了，你呢") : ""
-						targetElem[i].click();
+					break;
+				case "depList":
+					if (shiftKey && keyCode == 33) {
+						this.pageUp4depList();
+					} else if (shiftKey && keyCode == 34) {
+						this.pageDown4depList();
 					}
-				}
+					break;
+
+				default:
+					break;
 			}
 			// e.preventDefault();
+		}
+	}
+
+	pageUp4depList() {
+		this.devMode && console.log("up")
+		let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev")
+		if (targetElem.length == 0) {
+			return
+		}
+		if (targetElem[0].className == "pager__btn pager__btn__prev") {
+			this.devMode && console.log(targetElem[0])
+			this.devMode && console.log("我点了，你呢")
+			targetElem[0].click();
+		}
+	}
+
+	pageDown4depList() {
+		let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next")
+		if (targetElem.length == 0) {
+			return
+		}
+		if (targetElem[0].className == "pager__btn pager__btn__next") {
+			this.devMode ? console.log(targetElem[0]) : ""
+			this.devMode ? console.log("我点了，你呢") : ""
+			targetElem[0].click();
+		}
+	}
+
+	pageUp4UC() {
+		this.devMode && console.log("down")
+		let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev")
+		for (let i = 0; i < targetElem.length; i++) {
+			this.devMode ? console.log(targetElem[i]) : ""
+			this.devMode ? console.log(targetElem[i].parentElement.parentElement.parentElement.classList) : ""
+			this.devMode ? console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active")) : ""
+			if (
+				targetElem[i].className == "pager__btn pager__btn__prev"
+				&&
+				(
+					targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active"
+					||
+					targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"
+				)
+			) {
+				this.devMode ? console.log(targetElem[i]) : ""
+				this.devMode ? console.log("我点了，你呢") : ""
+				targetElem[i].click();
+			}
+		}
+	}
+
+	pageDown4UC() {
+		this.devMode && console.log("down")
+		let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next")
+		for (let i = 0; i < targetElem.length; i++) {
+			this.devMode ? console.log(targetElem[i]) : ""
+			this.devMode ? console.log(targetElem[i].parentElement.parentElement.parentElement.classList) : ""
+			this.devMode ? console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active")) : ""
+
+			if (
+				targetElem[i].className == "pager__btn pager__btn__next"
+				&&
+				(
+					targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active"
+					||
+					targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"
+				)
+			) {
+				this.devMode ? console.log(targetElem[i]) : ""
+				this.devMode ? console.log("我点了，你呢") : ""
+				targetElem[i].click();
+			}
 		}
 	}
 

@@ -157,6 +157,8 @@ class ODHFront {
 			this.options.hideAd && this.pageBeautify.hideAds();
 			//分区首页nav高斯模糊
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(true);
+			//快捷键翻页
+			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
 		}
 		//视频
 		if (REG.video.test(href)) {
@@ -202,7 +204,7 @@ class ODHFront {
 			this.options.userCenterBeautify && this.pageBeautify.userCenterBeautify();
 			this.options.widenUCVideoList && this.pageBeautify.widenUCVideoList();
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false, true);
-			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind();
+			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("uc");
 		}
 	}
 
