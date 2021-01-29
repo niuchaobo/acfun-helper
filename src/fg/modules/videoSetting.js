@@ -705,7 +705,7 @@ class VideoSetting {
               //do nothing
             } else {
               this.mediaSessionNowPlayingIndex--;
-              this.devMode ? console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`) : ""
+              this.devMode && console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`)
               document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
             }
             document.querySelector("video").play()
@@ -716,8 +716,7 @@ class VideoSetting {
               //do nothing
             } else {
               this.mediaSessionNowPlayingIndex++;
-              this.devMode ? console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`) : ""
-
+              this.devMode && console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`)
               document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
               document.querySelector(".btn-play.control-btn").click();
             }

@@ -442,7 +442,7 @@ class PageBeautify {
 
 	/**
 	 * 页面快捷键翻页绑定
-	 * @param {*} mode 支持的页面："uc" 用户展示中心 "depList" 分区视频列表
+	 * @param {*} mode 支持的页面："uc" 用户展示中心 "depList" 分区视频列表、文章
 	 */
 	pageTransKeyBind(mode) {
 		switch (mode) {
@@ -499,8 +499,8 @@ class PageBeautify {
 			return
 		}
 		if (targetElem[0].className == "pager__btn pager__btn__next") {
-			this.devMode ? console.log(targetElem[0]) : ""
-			this.devMode ? console.log("我点了，你呢") : ""
+			this.devMode && console.log(targetElem[0])
+			this.devMode && console.log("我点了，你呢")
 			targetElem[0].click();
 		}
 	}
@@ -509,9 +509,9 @@ class PageBeautify {
 		this.devMode && console.log("down")
 		let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev")
 		for (let i = 0; i < targetElem.length; i++) {
-			this.devMode ? console.log(targetElem[i]) : ""
-			this.devMode ? console.log(targetElem[i].parentElement.parentElement.parentElement.classList) : ""
-			this.devMode ? console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active")) : ""
+			this.devMode && console.log(targetElem[i])
+			this.devMode && console.log(targetElem[i].parentElement.parentElement.parentElement.classList)
+			this.devMode && console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"))
 			if (
 				targetElem[i].className == "pager__btn pager__btn__prev"
 				&&
@@ -521,8 +521,8 @@ class PageBeautify {
 					targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"
 				)
 			) {
-				this.devMode ? console.log(targetElem[i]) : ""
-				this.devMode ? console.log("我点了，你呢") : ""
+				this.devMode && console.log(targetElem[i])
+				this.devMode && console.log("我点了，你呢")
 				targetElem[i].click();
 			}
 		}
@@ -532,9 +532,9 @@ class PageBeautify {
 		this.devMode && console.log("down")
 		let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next")
 		for (let i = 0; i < targetElem.length; i++) {
-			this.devMode ? console.log(targetElem[i]) : ""
-			this.devMode ? console.log(targetElem[i].parentElement.parentElement.parentElement.classList) : ""
-			this.devMode ? console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active")) : ""
+			this.devMode && console.log(targetElem[i])
+			this.devMode && console.log(targetElem[i].parentElement.parentElement.parentElement.classList)
+			this.devMode && console.log((targetElem[i].parentElement.parentElement.parentElement.classList[1] == "active" || targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"))
 
 			if (
 				targetElem[i].className == "pager__btn pager__btn__next"
@@ -545,8 +545,8 @@ class PageBeautify {
 					targetElem[i].parentElement.parentElement.parentElement.parentElement.classList[1] == "active"
 				)
 			) {
-				this.devMode ? console.log(targetElem[i]) : ""
-				this.devMode ? console.log("我点了，你呢") : ""
+				this.devMode && console.log(targetElem[i])
+				this.devMode && console.log("我点了，你呢")
 				targetElem[i].click();
 			}
 		}

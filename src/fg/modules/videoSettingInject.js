@@ -75,14 +75,28 @@ let videoFunction = (function () {
                 .bindAttr == "true" ||
               document.querySelector("div.btn-fullscreen").children[0].dataset
                 .bindAttr == "web";
+            let isMultiPart = document.querySelector("#main-content > div.right-column > div.part") != null;
             if (!window.player._loop && nowMode) {
-              window.player.emit("filmModeChanged", false);
-              window.player.emit("fullScreenChange", false);
-              if (options.endedAutoToCommentArea) {
-                _thisTimer = setTimeout(e => {
-                  document.querySelector("#to-comm").click();
-                  clearTimeout(_thisTimer);
-                }, 435);
+              if (isMultiPart) {
+                if (document.querySelector(".control-checkbox").dataset.bindAttr == "false") {
+                  window.player.emit("filmModeChanged", false);
+                  window.player.emit("fullScreenChange", false);
+                  if (options.endedAutoToCommentArea) {
+                    _thisTimer = setTimeout(e => {
+                      document.querySelector("#to-comm").click();
+                      clearTimeout(_thisTimer);
+                    }, 435);
+                  }
+                }
+              } else {
+                window.player.emit("filmModeChanged", false);
+                window.player.emit("fullScreenChange", false);
+                if (options.endedAutoToCommentArea) {
+                  _thisTimer = setTimeout(e => {
+                    document.querySelector("#to-comm").click();
+                    clearTimeout(_thisTimer);
+                  }, 435);
+                }
               }
             }
           });

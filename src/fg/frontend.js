@@ -257,6 +257,7 @@ class ODHFront {
 			this.options.articleReadMode && this.reader.lightReadMode();
 			this.options.articleBanana && this.banana.articleBanana({ key: REG.acAid.exec(href)[2] });
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
+			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
 		}
 		//直播
 		if (REG.live.test(href)) {

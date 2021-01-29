@@ -43,7 +43,7 @@ class LivePageButfy {
 
     widePlayerStyle() {
         //这里是宽屏模式的样式，第一行包含了因为弹幕时间Tag功能加入导致用户名颜色变为黑色的纠正样式
-        let cssStr = `.container-live-feed-messages .live-feed-messages>div.comment>div span:nth-child(2){color: #409bef;}.main{transiton: all 0.5s;padding:0 !important;} .live-player-container{padding-bottom: 54.25% !important;}.main_wide{width: 100%!important; margin:0!important;padding:0!important ; max-width:100% !important;height:100vh;} .control-btn svg{width: 20px; height: auto;} .wide_app{width:100%;}.main_wide .live-info{display:none;} .main_wide .container-gift-bar{display:none;} .wide_app #header{display: none!important;} .main_wide>.container-live-feed{margin:0 !important;position:relative;transition-duration: .15s;}.main_wide>.width_hidden{width:0!important;}#wide-player-right{  position: absolute;  top: calc(50% - 50px);  background: #ccc;  left: -15px;  z-index: 1000;  height: 100px;  width: 15px;  line-height: 100px;  border-radius: 15px 0px 0 15px;  opacity:0.3;  text-align: center;  cursor: pointer; } #wide-player-right:hover{opacity:1 }`;
+        let cssStr = `.container-live-feed-messages .live-feed-messages>div.comment>div span:nth-child(2){color: #409bef;}.main{transiton: all 0.5s;padding:0 !important;} .live-player-container{padding-bottom: 54.25% !important;}.main_wide{width: 100%!important; margin:0!important;padding:0!important ; max-width:100% !important;height:100vh;} .control-btn svg{width: 20px; height: auto;} .wide_app{width:100%;}.main_wide .live-info{display:none;} .main_wide .container-gift-bar{display:none;} .wide_app #header{display: none!important;} .main_wide>.container-live-feed{margin:0 !important;position:relative;transition-duration: .15s;}.main_wide>.width_hidden{width:0!important;}#wide-player-right{  position: absolute;  top: calc(50% - 50px);  background: #ccc;  left: -15px;  z-index: 1000;  height: 100px;  width: 15px;  line-height: 100px;  border-radius: 15px 0px 0 15px;  opacity:0.2;  text-align: center;  cursor: pointer; } #wide-player-right:hover{opacity:1 }`;
         let mainDom = document.getElementsByClassName('main')[0]
         createElementStyle(cssStr, mainDom)
     }
@@ -133,7 +133,7 @@ class LivePageButfy {
     simplifyDanmu() {
         let noticeIcon = this.noticeIcon;
         $('.live-feed .face-text').append(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`)
-        $('#app').append('<div class="hide_popup"><ul style="width:120px"><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="container-live-anim">屏蔽礼物气泡</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="rich-text">屏蔽红包</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li></ul></div>')
+        $('#app').append('<div class="hide_popup"><ul style="width:120px"><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="container-live-anim">屏蔽礼物气泡</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="rich-text">屏蔽红包</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="join-club">屏蔽守护团消息</input></li></ul></div>')
         document.getElementsByClassName('hide_popup')[0].style.cssText = 'position: absolute; z-index: 100;display: none;position: absolute; z-index: 100;display: none;background-color: rgba(255, 255, 255, 0.92);margin: 10px;padding: 5px;box-shadow: rgb(197, 197, 197) 5px 5px 5px 1px;';
         document.getElementsByClassName('notice_icon')[0].style.cssText = 'position: absolute; width: 18px; heigth: auto; left: 35px; top: 0px; cursor: pointer;';
         document.getElementsByClassName('notice_icon')[0].children[0].style.cssText = 'width: 100%; height: auto';
@@ -144,7 +144,7 @@ class LivePageButfy {
             e.preventDefault();
             e.stopPropagation();
             $('.hide_popup').css('display') === "none" ?
-                $('.hide_popup').css({ left: e.pageX - 50 + 'px', top: e.pageY - 250 + 'px' }).show() :
+                $('.hide_popup').css({ left: e.pageX - 50 + 'px', top: e.pageY - 285 + 'px' }).show() :
                 $('.hide_popup').hide()
         })
         this.addBanStyle()
@@ -170,7 +170,7 @@ class LivePageButfy {
     }
 
     addBanStyle() {
-        let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;} .container-live-slot .ban_container-live-anim{display:none !important;} .ban_rich-text .rich-text{display:none !important;}"
+        let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;} .container-live-slot .ban_container-live-anim{display:none !important;} .ban_rich-text .rich-text{display:none !important;} .ban_join-club .join-club{display:none !important;}"
         createElementStyle(cssStr)
     }
 

@@ -12,7 +12,7 @@ class Live {
         let retry = 10;
         while (retry > 0) {
             //发送
-            this.devMode ? console.log("[LOG]Frontend-Live>renderLive: retry:" + retry):"";
+            this.devMode && console.log("[LOG]Frontend-Live>renderLive: retry:" + retry);
             var obj = document.getElementById("acfun-popup-helper");
             if (obj != null && obj != undefined) {
                 var frameWindow = obj.contentWindow;
@@ -40,7 +40,7 @@ class Live {
         let liveData = JSON.parse(await fetchResult(acfunApis.liveInfo + roomId));
         console.log(liveData)
         if (liveData.streamName == undefined) {
-            this.devMode ? console.log("offline") : ""
+            this.devMode && console.log("offline")
             return;
         }
         navigator.mediaSession.metadata = new MediaMetadata({
