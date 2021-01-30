@@ -658,7 +658,11 @@ class VideoSetting {
       let videoInfo = {};
       if (e.data.to == 'videoInfo') {
         try {
-          videoInfo = JSON.parse(e.data.msg)
+          videoInfo = JSON.parse(e.data.msg);
+          if (videoInfo.ksPlayJson && JSON.parse(videoInfo.ksPlayJson).businessType == "1") {
+            //番剧的videoInfo对象内容不一样，从dom下手
+            throw TypeError;
+          }
         } catch (error) {
           videoInfo = {
             "title": document.querySelectorAll("meta")[5].content.split(",")[0] || document.querySelector(".video-description.clearfix>.title").innerText,
@@ -669,13 +673,29 @@ class VideoSetting {
             "user": {
               "name": document.querySelectorAll("meta")[5].content.split(",")[3],
             },
-            coverUrl: document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src
+            coverUrl: ""
           }
+          //封面
+          try {
+            //Up主头像
+            videoInfo.coverUrl = document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src;
+          } catch (error) {
+            try {
+              //直接拿番剧推荐视频封面
+              videoInfo.coverUrl = document.querySelector("#main-content > div.right-column > div.highlights > div.clearfix.area.highlights-list > figure:nth-child(1) > a > img").src;
+            } catch (error) {
+              //没有番剧推荐视频那就拿大家都在看的封面得了
+              videoInfo.coverUrl = document.querySelector("#pagelet_newrecommend > div > div > figure:nth-child(1) > a > img").src;
+            }
+          }
+          //分P
           let videoList = [];
           if (videoList = document.querySelector(".scroll-div.over-parts").children) {
             videoInfo["videoList"] = videoList;
           }
         }
+
+        // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
 
         navigator.mediaSession.metadata = new MediaMetadata({
           title: `${videoInfo.title} - ${videoInfo.channel.parentName} > ${videoInfo.channel.name}`,
@@ -695,7 +715,6 @@ class VideoSetting {
         navigator.mediaSession.setActionHandler("seekto", function (details) {
           document.querySelector("video").currentTime = Number(details.seekTime);
         });
-
 
         if (videoInfo.videoList.length > 1) {
           this.mediaSessionNowPlayingIndex = 0;
