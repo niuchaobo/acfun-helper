@@ -160,7 +160,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
      * @param {number} num 时间-小数
      * @param {*} len 预留位数
      */
-    paddingNum = function (num, len) {
+    paddingNum (num, len) {
         if (num - Number(num).toFixed() != 0) {
             let remain = String(num - Number(num).toFixed()).split(".");
             remain = remain[1];

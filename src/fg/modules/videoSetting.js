@@ -235,7 +235,7 @@ class VideoSetting {
       });
     });
   }
-  updateAbPlayFirst = () => {
+  updateAbPlayFirst(){
     if (this.abPlayFlag === 1) {
       leftBottomTip("请先", "停止");
       return;
@@ -256,7 +256,7 @@ class VideoSetting {
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
   }
-  updateAbPlaySecond = () => {
+    updateAbPlaySecond(){
     if (this.abPlayFlag === 1) {
       leftBottomTip("请先", "停止");
       return;
@@ -277,7 +277,7 @@ class VideoSetting {
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
   }
-  stopAbPlay = () => {
+  stopAbPlay(){
     this.abPlayFirst = this.abPlaySecond = undefined;
     $(".abplay-panel>ul>.updateAbPlayFirst").text("标记点A");
     $(".abplay-panel>ul>.updateAbPlaySecond").text("标记点B");
@@ -296,7 +296,7 @@ class VideoSetting {
       return;
     }
   }
-  abPlayMain = () => {
+  abPlayMain(){
     if (this.abPlayFlag == 0) {
       return;
     }
@@ -304,7 +304,7 @@ class VideoSetting {
       document.getElementsByTagName("video")[0].currentTime = this.abPlayFirst;
     }
   }
-  abPlayHandler = () => {
+  abPlayHandler(){
     let targetVideo = document.getElementsByTagName("video")[0];
     if (this.abPlayFirst === undefined || this.abPlaySecond === undefined) {
       leftBottomTip("请先设置", "标记点");
