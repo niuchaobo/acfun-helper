@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
     <link rel="stylesheet" type="text/css" href="css/checkbox.css" />
     <link rel="stylesheet" type="text/css" href="css/popup.css" />
     <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css" />
-    <script src="js/lib/dexie.min.js"></script>
-    <script charset="UTF-8" src="js/modules/indexedrv.js"></script>
+    <script src="lib/dexie.min.js"></script>
+    <script charset="UTF-8" src="modules/indexedrv.js"></script>
     <title data-i18n="optTitle">AcFun助手</title>
 </head>
 
-<body style="width: 300px; overflow-x: hidden;background-color: #f6f2f2;">
-    <div class="container">
+<body style="width: 100%;min-width: 300px;overflow-x: hidden;background-color: #f6f2f2;"
+    class="mdui-appbar-with-toolbar">
+    <div class="container mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide">
         <div class="top-fixed mdui-hoverable">
             <div class="head">
                 <div class="item">
@@ -34,32 +34,38 @@
             </div>
             <div class="mdui-row-xs-2 mdui-row-gapless">
                 <div class="mdui-col-xs-4" id="pop-introduce">
-                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
                         <i class="mdui-icon material-icons">book</i> 使用说明
                     </button>
                 </div>
                 <div class="mdui-col-xs-4" id="pop-setting">
-                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
                         <i class="mdui-icon material-icons">settings</i> 设置
                     </button>
                 </div>
                 <div class="mdui-col-xs-4" id="pop-update-log">
-                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
                         <i class="mdui-icon material-icons">chrome_reader_mode</i> 更新志
                     </button>
                 </div>
                 <div class="mdui-col-xs-4" id="pop-toLiveIndex">
-                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
                         <i class="mdui-icon material-icons">live_tv</i> 直播站
                     </button>
                 </div>
                 <div class="mdui-col-xs-4" id="pop-toUcenter">
-                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
                         <i class="mdui-icon material-icons">account_circle</i> 个人中心
                     </button>
                 </div>
                 <div class="mdui-col-xs-4" id="pop-toArticlePart">
-                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                        style="cursor: default;">
                         <i class="mdui-icon material-icons">art_track</i> 文章区
                     </button>
                 </div>
@@ -76,49 +82,91 @@
                 </div>-->
 
             <div class="mdui-tab pop-common mdui-tab-centered" mdui-tab style="height: 28px; min-height: 28px;">
-                <a href="#PushList" id="tabPushList" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">稿件动态</a>
-                <a href="#SubLive" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">生放送</a>
-                <a href="#Special" class="mdui-ripple" style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;text-transform: capitalize;">Special</a>
+                <a href="#PushList" id="tabPushList" class="mdui-ripple"
+                    style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">稿件动态</a>
+                <a href="#GroupPushList" id="tabGroupPushList" class="mdui-ripple"
+                    style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">分组动态</a>
+                <a href="#SubLive" class="mdui-ripple"
+                    style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">生放送</a>
+                <a href="#Special" class="mdui-ripple"
+                    style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;text-transform: capitalize;">Special</a>
             </div>
-            <div id="PushList">
-                <div id="pop-push" class="pop-push"></div>
-                <button class="mdui-fab mdui-fab-fixed PushListMode" mdui-headroom style="width: 40px;min-width: 40px;height: 40px;position: fixed !important;background-color: rgba(62, 123, 255, 0.9) !important;z-index: 7002;" data-type="all" title="全部投稿">
-                    <i class="mdui-icon material-icons" style="height: 40px;line-height: 40px;margin-top: 0;margin-left: 0;width:40px;">art_track</i>
-                </button>
+        </div>
+    </div>
+
+
+
+    <div class="MainContent mdui-container-fluid" style="padding-top: 75px;">
+
+        <div id="PushList">
+            <div id="pop-push" class="pop-push"></div>
+            <button class="mdui-fab mdui-fab-fixed PushListMode" mdui-headroom
+                style="width: 40px;min-width: 40px;height: 40px;position: fixed !important;background-color: rgba(62, 123, 255, 0.9) !important;z-index: 7002;"
+                data-type="all" title="全部投稿">
+                <i class="mdui-icon material-icons"
+                    style="height: 40px;line-height: 40px;margin-top: 0;margin-left: 0;width:40px;">art_track</i>
+            </button>
+            <button class="mdui-fab mdui-fab-fixed MultOpen" mdui-headroom
+                style="display: none;width: 40px;min-width: 40px;height: 40px;position: fixed !important;background-color: #18ff71e6 !important;z-index: 7000; top: 670px;"
+                title="打开多选的稿件">
+                <i class="mdui-icon material-icons"
+                    style="height: 40px;line-height: 40px;margin-top: 0;margin-left: 0;width:40px;">check</i>
+            </button>
+        </div>
+
+        <div id="GroupPushList">
+            <button class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#followGroups'}">分组列表</button>
+            <ul class="mdui-menu" id="followGroups">
+            </ul>
+            <div id="pop-groupPush" class="pop-push">
+                <div style="height: 800px;"></div>
             </div>
+            <button class="mdui-fab mdui-fab-fixed PushListMode" mdui-headroom
+                style="width: 40px;min-width: 40px;height: 40px;position: fixed !important;background-color: rgba(62, 123, 255, 0.9) !important;z-index: 7002;"
+                data-type="all" title="全部投稿">
+                <i class="mdui-icon material-icons"
+                    style="height: 40px;line-height: 40px;margin-top: 0;margin-left: 0;width:40px;">art_track</i>
+            </button>
+            <button class="mdui-fab mdui-fab-fixed MultOpen2" mdui-headroom
+                style="display: none;width: 40px;min-width: 40px;height: 40px;position: fixed !important;background-color: #18ff71e6 !important;z-index: 7000; top: 670px;"
+                title="打开多选的稿件">
+                <i class="mdui-icon material-icons"
+                    style="height: 40px;line-height: 40px;margin-top: 0;margin-left: 0;width:40px;">check</i>
+            </button>
+        </div>
 
-            <div id="SubLive">
-                <div class="mdui-panel mdui-panel-gapless" mdui-panel>
+        <div id="SubLive">
+            <div class="mdui-panel mdui-panel-gapless" mdui-panel>
 
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">自定关注</div>
-                            <div class="mdui-panel-item-summary">自定义关注的直播</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body">
-                            <div id="pop-push-lives" class="pop-push"></div>
-                        </div>
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">自定关注</div>
+                        <div class="mdui-panel-item-summary">自定义关注的直播</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">关注Up</div>
-                            <div class="mdui-panel-item-summary">主站关注Up直播</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body">
-                            <div id="pop-push-lives2" class="pop-push"></div>
-                        </div>
+                    <div class="mdui-panel-item-body">
+                        <div id="pop-push-lives" class="pop-push"></div>
                     </div>
-
                 </div>
-            </div>
 
-            <div id="Special">
-                <div class="mdui-panel mdui-panel-gapless" mdui-panel>
-                    <div id="rootNotif" class="mdui-panel mdui-panel-gapless" mdui-panel style="display: none;">
-                        <div class="mdui-panel-item mdui-panel-item-open">
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">关注Up</div>
+                        <div class="mdui-panel-item-summary">主站关注Up直播</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <div id="pop-push-lives2" class="pop-push"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="Special">
+            <div class="mdui-panel mdui-panel-gapless" mdui-panel>
+                <div id="rootNotif" class="mdui-panel mdui-panel-gapless" mdui-panel style="display: none;">
+                    <div class="mdui-panel-item mdui-panel-item-open">
                         <div class="mdui-panel-item-header">
                             <div class="mdui-panel-item-title">插件公告</div>
                             <div class="mdui-panel-item-summary">请多多留意</div>
@@ -129,214 +177,248 @@
                                 山川异域，风月同天。
                             </h3>
                         </div>
-                        </div>
                     </div>
-                    
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">UID加入</div>
-                            <div class="mdui-panel-item-summary">直播间</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
-                            <div class="mdui-col-xs-6">
-                                <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
-                                    <input id="live-id" class="mdui-textfield-input" style="cursor: default;" type="text" placeholder="直播Up的UID" />
-                                </div>
-                            </div>
-                            <div class="mdui-col-xs-6">
-                                <button id="go-live" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">加入直播间
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">用户信息</div>
-                            <div class="mdui-panel-item-summary">用户数据查询</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
-                            <div class="mdui-col-xs-6">
-                                <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
-                                    <input id="userInfoUid" class="mdui-textfield-input" style="cursor: default;" type="text" placeholder="用户UID" />
-                                </div>
-                            </div>
-                            <div class="mdui-col-xs-6">
-                                <button id="UserInfoActionBtn" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;"> 查询
-                                </button>
-                            </div>
-                            <div class="mdui-container-fluid" id="UserInfoPrint"></div>
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">稿件信息</div>
-                            <div class="mdui-panel-item-summary">视频数据查询</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
-                            <div class="mdui-col-xs-6">
-                                <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
-                                    <input id="dougaInfoAcid" class="mdui-textfield-input" style="cursor: default;" type="text" placeholder="视频稿件AcID" />
-                                </div>
-                            </div>
-                            <div class="mdui-col-xs-6">
-                                <button id="dougaInfoAcidbtn" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">
-                                    查询
-                                </button>
-                            </div>
-                            <div class="mdui-container-fluid" id="dougaInfoPrint"></div>
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">直播计时</div>
-                            <div class="mdui-panel-item-summary">（计时板）</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
-                            <div class="mdui-container-fluid" style="/* white-space: nowrap; */overflow: hidden;text-overflow: ellipsis;">
-                                <div class="mdui-table-fluid">
-                                    <table class="mdui-table">
-                                        <thead>
-                                            <tr>
-                                                <th>标签</th>
-                                                <th>计时-打开于</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="livePageWatchTimeRecList">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">观看历史</div>
-                            <div class="mdui-panel-item-summary">回头看</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
-                            <button id="ViewHistoryAction" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">展开
-                            </button>
-                            <div class="mdui-container-fluid">
-                                <div class="mdui-table-fluid">
-                                    <table class="mdui-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Up-时间</th>
-                                                <th>稿件</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="ViewHistory">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">整理主站</div>
-                            <div class="mdui-panel-item-summary">（标签至新窗口）</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body">
-                            <button id="attentionTabsFg" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">整理
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">稍后再看</div>
-                            <div class="mdui-panel-item-summary">（收藏夹）</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body">
-                            <button id="WatchLaterFOpenList" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">查看列表
-                            <button id="WatchLaterFpopup" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">开始排程
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">动态广场</div>
-                            <div class="mdui-panel-item-summary">（小~广场）</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body">
-                            <button id="MomentSquareFpop" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">进入
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item mdui-panel-item-open">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">我的追番</div>
-                            <div class="mdui-panel-item-summary">（二次元真棒！）</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body">
-                            <button id="MyBangumiFpop" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">进入
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="mdui-panel-item">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">Ac日刊</div>
-                            <div class="mdui-panel-item-summary">（优秀稿件推荐）</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body">
-                            <button id="AcDailyFetch" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">查看
-                            </button>
-                            <div id="pop-acDaily" class="pop-acDaily"></div>
-                        </div>
-                    </div>
-
-                    <!-- <div class="mdui-panel-item">
-                        <div class="mdui-panel-item-header">
-                            <div class="mdui-panel-item-title">DevTest</div>
-                            <div class="mdui-panel-item-summary">（测试）</div>
-                            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                        </div>
-                        <div class="mdui-panel-item-body">
-                            <div id="app">
-                                {{ message }}
-                            </div>                            
-                        </div>
-                    </div> -->
-
                 </div>
 
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">直播计时</div>
+                        <div class="mdui-panel-item-summary">（计时板）</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                        <div class="mdui-container-fluid"
+                            style="/* white-space: nowrap; */overflow: hidden;text-overflow: ellipsis;">
+                            <div class="mdui-table-fluid">
+                                <table class="mdui-table">
+                                    <thead>
+                                        <tr>
+                                            <th>标签</th>
+                                            <th>计时-打开于</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="livePageWatchTimeRecList">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">用户信息</div>
+                        <div class="mdui-panel-item-summary">用户数据查询</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                        <div class="mdui-col-xs-6">
+                            <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
+                                <input id="userInfoUid" class="mdui-textfield-input" style="cursor: default;"
+                                    type="text" placeholder="用户UID" />
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-6">
+                            <button id="UserInfoActionBtn" class="mdui-btn mdui-ripple"
+                                style="cursor: default; left: 5px;">
+                                查询
+                            </button>
+                        </div>
+                        <div class="mdui-container-fluid" id="UserInfoPrint"></div>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">稿件信息</div>
+                        <div class="mdui-panel-item-summary">视频数据查询</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                        <div class="mdui-col-xs-6">
+                            <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
+                                <input id="dougaInfoAcid" class="mdui-textfield-input" style="cursor: default;"
+                                    type="text" placeholder="视频稿件AcID" />
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-6">
+                            <button id="dougaInfoAcidbtn" class="mdui-btn mdui-ripple"
+                                style="cursor: default; left: 5px;">
+                                查询
+                            </button>
+                        </div>
+                        <div class="mdui-container-fluid" id="dougaInfoPrint"></div>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">观看历史</div>
+                        <div class="mdui-panel-item-summary">回头看</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                        <button id="ViewHistoryAction" class="mdui-btn mdui-ripple"
+                            style="cursor: default; left: 5px;">展开
+                        </button>
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-table-fluid">
+                                <table class="mdui-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Up-时间</th>
+                                            <th>稿件</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ViewHistory">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">整理主站</div>
+                        <div class="mdui-panel-item-summary">（标签至新窗口）</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <button id="attentionTabsFg" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">整理
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">音乐播</div>
+                        <div class="mdui-panel-item-summary">（放器！）</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <button id="musicPlayerPopupStart" class="mdui-btn mdui-ripple"
+                            style="cursor: default; left: 5px;">开始</button>
+                        <button id="musicPlayerPopupStop" class="mdui-btn mdui-ripple"
+                            style="cursor: default; left: 5px;">结束</button>
+                        <button id="musicPlayerPopupShow" class="mdui-btn mdui-ripple"
+                            style="cursor: default; left: 5px;">置前台</button>
+                        <button id="musicPlayerPopupOpenList" class="mdui-btn mdui-ripple"
+                            style="cursor: default; left: 5px;">任务列表</button>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">稍后再看</div>
+                        <div class="mdui-panel-item-summary">（收藏夹）</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <button id="WatchLaterFpopup" class="mdui-btn mdui-ripple"
+                            style="cursor: default; left: 5px;">开始</button>
+                        <button id="StopWatchLaterFpopup" class="mdui-btn mdui-ripple"
+                            style="cursor: default; left: 5px;">结束</button>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">我的追番</div>
+                        <div class="mdui-panel-item-summary">（二次元真棒！）</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <button id="MyBangumiFpop" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">进入
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">动态广场</div>
+                        <div class="mdui-panel-item-summary">（小~广场）</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <button id="MomentSquareFpop" class="mdui-btn mdui-ripple"
+                            style="cursor: default; left: 5px;">进入
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">UID加入</div>
+                        <div class="mdui-panel-item-summary">直播间</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                        <div class="mdui-col-xs-6">
+                            <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
+                                <input id="live-id" class="mdui-textfield-input" style="cursor: default;" type="text"
+                                    placeholder="直播Up的UID" />
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-6">
+                            <button id="go-live" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">加入直播间
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">Ac日刊</div>
+                        <div class="mdui-panel-item-summary">（优秀稿件推荐）</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <button id="AcDailyFetch" class="mdui-btn mdui-ripple" style="cursor: default; left: 5px;">查看
+                        </button>
+                        <div id="pop-acDaily" class="pop-acDaily"></div>
+                    </div>
+                </div>
+
+                <!-- <div class="mdui-panel-item">
+                <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">DevTest</div>
+                    <div class="mdui-panel-item-summary">（测试）</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <div class="mdui-panel-item-body">
+                    <div id="app">
+                        {{ message }}
+                    </div>                            
+                </div>
+            </div> -->
+
             </div>
+
         </div>
-        <div id="pop-body" class="body"></div>
+
+        <button class="mdui-fab mdui-fab-fixed mdui-color-pink-700 toTop toTop-bg-color" mdui-headroom
+            style="opacity: 0;width: 40px;min-width: 40px;height: 40px;position: fixed !important;right: 16px;background-color: rgba(239, 19, 19, 0.9) !important;z-index: 7001;">
+            <i class="mdui-icon material-icons"
+                style="height: 40px;line-height: 40px;margin-top: 0;margin-left: 0;width: 40px;">arrow_upward</i>
+        </button>
+
     </div>
-    <button class="mdui-fab mdui-fab-fixed mdui-color-pink-700 toTop toTop-bg-color" mdui-headroom style="opacity: 0;width: 40px;min-width: 40px;height: 40px;position: fixed !important;right: 16px;background-color: rgba(239, 19, 19, 0.9) !important;z-index: 7001;">
-        <i class="mdui-icon material-icons" style="height: 40px;line-height: 40px;margin-top: 0;margin-left: 0;width: 40px;">arrow_upward</i>
-    </button>
-    <!--script src="js/polyfill.js"></script-->
-    <script src="../lib/jquery-3.5.0.min.js"></script>
-    <script src="js/lib/purify.min.js"></script>
-    <script src="../common/utils.js"></script>
-    <script type='module' src="js/popup/index.js"></script>
-    <script src="js/lib/md5.js"></script>
-    <script type="text/javascript" src="js/jquery.mloading.js"></script>
-    <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
-    <script type="text/javascript" src="./js/lib/lazyload.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
-    <!--<script src="../fg/js/frame.js"></script>-->
+
 </body>
+
+<script src="../lib/jquery-3.5.1.min.js"></script>
+<script src="lib/purify.min.js"></script>
+<script src="../common/utils.js"></script>
+<script src="../common/dataStructs.js"></script>
+<script src="../common/encyclopedia.js"></script>
+<script src="../common/uiReact.js"></script>
+<script type='module' src="popup/index.js"></script>
+<script src="lib/md5.js"></script>
+<script type="text/javascript" src="./lib/jquery.mloading.js"></script>
+<script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
+<script type="text/javascript" src="./lib/lazyload.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+<!--<script src="../fg/frame.js"></script>-->
 
 </html>

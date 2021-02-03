@@ -39,7 +39,7 @@
     border: none;
     border-radius: 37px;
     transition: all .5s ease;
-    cursor: pointer;
+    cursor: default;
     position: absolute;
     top: 4px;
     z-index: 1;
@@ -49,5 +49,5 @@
 
 .enabled input[type=checkbox]:checked+label {
     left: 32px;
-    background: #d69acc;
+    background: #fd4c5d;
 }

@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.8.1025",
+    "version": "1.2.9.123",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -19,61 +19,98 @@
     "background": {
         "page": "bg/background.html"
     },
-    "content_scripts": [{
-        "matches": ["https://*.acfun.cn/*"],
-        "js": [
-            "lib/jquery-3.5.0.min.js",
-            "mdui/js/mdui.min.js",
-            "bg/js/lib/m3u8-parser.min.js",
-            "bg/js/lib/md5.js",
-            "common/utils.js",
-            "fg/js/api.js",
-            "fg/js/popup.js",
-            "fg/js/div.js",
-            "fg/js/module/danmakuSearch.js",
-            "fg/js/module/block.js",
-            "fg/js/module/pageBeautify.js",
-            "fg/js/module/videoPageBeautify.js",
-            "fg/js/module/livepageBeautify.js",
-            "fg/js/module/commentEnhance.js",
-            "fg/js/module/download.js",
-            "fg/js/module/live.js",
-            "fg/js/module/danmaku.js",
-            "fg/js/module/authInfo.js",
-            "fg/js/module/banana.js",
-            "fg/js/module/playerConfig.js",
-            "fg/js/module/luckyTurntab.js",
-            "fg/js/module/videoSetting.js",
-            "fg/js/module/readMode.js",
-            "fg/js/frontend.js"
-        ],
-        "css": [
-            "fg/css/client.css",
-            "fg/css/home_nav.css"
-
-        ],
-        "run_at": "document_start"
-    }],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*.acfun.cn/*"
+            ],
+            "js": [
+                "lib/jquery-3.5.1.min.js",
+                "mdui/js/mdui.min.js",
+                "bg/lib/m3u8-parser.min.js",
+                "bg/lib/md5.js",
+                "common/utils.js",
+                "common/consoleProxy.js",
+                "common/encyclopedia.js",
+                "common/uiReact.js",
+                "common/dataStructs.js",
+                "fg/api.js",
+                "fg/popup.js",
+                "fg/div.js",
+                "fg/modules/danmakuSearch.js",
+                "fg/modules/block.js",
+                "fg/modules/pageBeautify.js",
+                "fg/modules/videoPageBeautify.js",
+                "fg/modules/livepageBeautify.js",
+                "fg/modules/commentEnhance.js",
+                "fg/modules/download.js",
+                "fg/modules/live.js",
+                "fg/modules/danmaku.js",
+                "fg/modules/authInfo.js",
+                "fg/modules/banana.js",
+                "fg/modules/playerConfig.js",
+                "fg/modules/luckyTurntab.js",
+                "fg/modules/videoSetting.js",
+                "fg/modules/readMode.js",
+                "fg/modules/musicPlayerFront.js",
+                "fg/frontend.js"
+            ],
+            "css": [
+                "fg/css/client.css",
+                "fg/css/home_nav.css"
+            ],
+            "run_at": "document_start"
+        }
+    ],
     "minimum_chrome_version": "50.0.0.0",
     "homepage_url": "https://www.acfun.cn/u/7054138",
     "options_page": "bg/options.html",
-    "permissions": ["contextMenus", "notifications", "tabs", "webRequest", "webRequestBlocking", "https://*/*", "http://*/*", "storage", "unlimitedStorage", "cookies"],
+    "permissions": [
+        "contextMenus",
+        "notifications",
+        "tabs",
+        "webRequest",
+        "webRequestBlocking",
+        "https://*/*",
+        "http://*/*",
+        "storage",
+        "unlimitedStorage",
+        "cookies"
+    ],
     "sandbox": {
-        "pages": ["bg/sandbox/sandbox.html"]
+        "pages": [
+            "bg/sandbox/sandbox.html"
+        ]
     },
-    "omnibox": { "keyword": "ac" },
+    "omnibox": {
+        "keyword": "ac"
+    },
+    "commands": {
+        "toggle": {
+            "openAcFun": {
+                "default": "Ctrl+Shift+A"
+            },
+            "description": "打开主站"
+        },
+        "watchLater": {
+            "watchLaterStart": {
+                "default": "Ctrl+Shift+W"
+            },
+            "description": "稍后再看"
+        }
+    },
     "content_security_policy": "style-src 'self' 'unsafe-inline';script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; object-src 'self' ;",
     "web_accessible_resources": [
-        "fg/js/acfunxhr.js",
+        "fg/acfunxhr.js",
         "fg/css/frame.css",
         "fg/css/lucy.css",
-        "fg/js/frame.js",
+        "fg/frame.js",
         "fg/css/checkbox.css",
-        "lib/jquery-3.5.0.min.js",
-        "bg/js/jqueryExtend.js",
+        "lib/jquery-3.5.1.min.js",
+        "bg/lib/jqueryExtend.js",
         "bg/images/copy_link.png",
-        "fg/js/nav.js",
-        "fg/js/module/videoSettingInject.js",
-        "fg/js/module/liveSettingInject.js"
+        "fg/nav.js",
+        "fg/modules/videoSettingInject.js",
+        "fg/modules/liveSettingInject.js"
     ]
 }
