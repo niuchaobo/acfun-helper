@@ -8,11 +8,14 @@
   <link rel="stylesheet" href="css/options.css">
   <link rel="stylesheet" type="text/css" href="css/jquery.mloading.css" />
   <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css" />
-  <script src="../lib/jquery-3.5.0.min.js"></script>
-  <script type="text/javascript" src="js/jquery.mloading.js"></script>
+  <script src="../lib/jquery-3.5.1.min.js"></script>
+  <script type="text/javascript" src="./lib/jquery.mloading.js"></script>
   <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
-  <script type="text/javascript" src="js/options.js"></script>
+  <script type="text/javascript" src="./pageHandler/options.js"></script>
   <script type="text/javascript" src="../common/utils.js"></script>
+  <script type="text/javascript" src="../common/dataStructs.js"></script>
+  <script type="text/javascript" src="../common/uiReact.js"></script>
+  <script type="text/javascript" src="../common/encyclopedia.js"></script>
   <style>
     ::-webkit-scrollbar {
       width: 8px;
@@ -97,7 +100,7 @@
                 <tbody>
                   <tr>
                     <td style="margin-left: 20px" id="thead-tip" class="">
-                      当您浏览已关注的Up主的视频时，自动投蕉
+                      当您浏览已关注的Up主的投稿时，自动投蕉
                     </td>
                   </tr>
                 </tbody>
@@ -127,7 +130,7 @@
                 <tbody>
                   <tr>
                     <td id="thead-tip-special" class="">
-                      当您浏览以下Up主视频时，将自动投蕉
+                      当您浏览以下Up主视频时，将自动投蕉（需要登录）
                     </td>
                     <td>
                       <span id="add" class="">+ 添加Up主</span>
@@ -164,6 +167,25 @@
               <div class="mdui-row">
                 <div class="mdui-row">
                   <div class="mdui-col-xs-9">
+                    <h3>文章投蕉</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>同时给上面Up的文章投蕉（需要登录）</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="articleBanana" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
                     <h3>投蕉音效</h3>
                     <div class="mdui-row">
                       <div class="mdui-col-xs-8 mdui-col-sm-6">
@@ -186,10 +208,29 @@
                     <h3>自动点赞</h3>
                     <div class="mdui-row">
                       <div class="mdui-col-xs-8 mdui-col-sm-6">
-                        <p>自动给Up主的投稿点赞</p>
+                        <p>自动给Up主的投稿点赞（需要登录）</p>
                       </div>
                       <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
                           <input id="LikeHeart" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>自动点赞通知</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>自动给Up主的投稿点赞之后弹出通知</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="LikeHeartNotif" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
                         </label></div>
                     </div>
@@ -321,21 +362,27 @@
                   <div class="mdui-col-xs-12">
                     <h3>关注列表</h3>
                     <div class="mdui-row">
-                      <div class="mdui-col-xs-3 mdui-col-sm-3"><button
+                      <div class="mdui-col-xs-3 mdui-col-sm-2"><button
                           class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="liveFollowAdd"><i
                             class="mdui-icon material-icons">add</i></button>添加关注用户</div>
-                      <div class="mdui-col-xs-3 mdui-col-sm-3"><label class="mdui-switch">
+                      <div class="mdui-col-xs-3 mdui-col-sm-2"><label class="mdui-switch">
                           <input id="liveFollowNotifsw" type="checkbox" />
-                          <i class="mdui-switch-icon"></i>--启用自定义关注Up开播提醒--
+                          <i class="mdui-switch-icon"></i>--自定Up开播提醒--
                         </label></div>
-                      <div class="mdui-col-xs-3 mdui-col-sm-3">
+                      <div class="mdui-col-xs-3 mdui-col-sm-2" title="只要自义Up开播弹出通知就立刻打开Up的直播页面"><label
+                          class="mdui-switch">
+                          <input id="liveFollowOpenNow" type="checkbox" />
+                          <i class="mdui-switch-icon"></i>--立即打开页面--
+                        </label></div>
+                      <div class="mdui-col-xs-3 mdui-col-sm-2">
                         <label class="mdui-switch">
                           <input id="followLiveNotif" type="checkbox" />
-                          <i class="mdui-switch-icon"></i>--启用关注在主站关注的Up开播提醒--
-                        </label></div>
-                      <div class="mdui-col-xs-3 mdui-col-sm-3">
+                          <i class="mdui-switch-icon"></i>--关注Up开播提醒--
+                        </label>
+                      </div>
+                      <div class="mdui-col-xs-3 mdui-col-sm-2">
                         <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                            href="/bg/liveFollow-bridge.html" target="_blank">进入关注选择列表</a></button>
+                            href="/bg/liveFollow-bridge.html" target="_blank">关注选单</a></button>
                       </div>
                     </div>
                   </div>
@@ -513,24 +560,34 @@
           <div class="mdui-panel-item-body">
             <h3>稍后再看列表</h3>
             <div class="mdui-row">
-              <div class="mdui-col-xs-3 mdui-col-sm-3">
+              <div class="mdui-col-xs-3 mdui-col-sm-2">
                 <button id="watchLaterStart"
                   class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>开始稍后再看</a></button>
               </div>
-              <div class="mdui-col-xs-3 mdui-col-sm-3">
+              <div class="mdui-col-xs-3 mdui-col-sm-2">
+                <button id="firstwatchLaterList"
+                  class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>加载列表</a></button>
+              </div>
+              <div class="mdui-col-xs-3 mdui-col-sm-2">
+                <button id="syncwatchLaterList"
+                  class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>与App同步</a></button>
+              </div>
+              <div class="mdui-col-xs-3 mdui-col-sm-2">
+                <button id="removeDiffWatchLaterList"
+                  class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>删除与App差异</a></button>
+              </div>
+              <div class="mdui-col-xs-3 mdui-col-sm-2">
                 <label class="mdui-switch">
                   <input id="watchLater" type="checkbox" />
-                  <i class="mdui-switch-icon"></i>--启用稍后再看--
-                </label></div>
+                  <i class="mdui-switch-icon"></i>--稍后再看--
+                </label>
+              </div>
+              <div class="mdui-col-xs-3 mdui-col-sm-2">
+                <div id="syncwatchLaterListProcessBar" class="mdui-spinner mdui-spinner-colorful"
+                  style="display: none;"></div>
+              </div>
             </div>
             <ul id="watchLaterList" class="mdui-list">
-              <li id="firstwatchLaterList" class="mdui-list-item mdui-ripple" data-key="0" style="cursor:default">
-                <i class="mdui-list-item-icon mdui-icon material-icons" data-key="0" style="cursor:pointer">delete</i>
-                <a href="https://www.acfun.cn/z/ac14671385" target="_blank">
-                  <i class="mdui-list-item-icon mdui-icon material-icons" data-key="0"
-                    style="cursor:pointer">desktop_windows</i></a>
-                <div class="mdui-list-item-content">点击加载列表</div>
-              </li>
             </ul>
             <div class="mdui-panel-item-actions">
               <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
@@ -552,29 +609,19 @@
                 <label class="mdui-switch">
                   <input id="BangumiPlan" type="checkbox" />
                   <i class="mdui-switch-icon"></i>--番剧信息获取--
-                </label></div>
+                </label>
+              </div>
               <div class="mdui-col-xs-3 mdui-col-sm-3">
                 <label class="mdui-switch">
                   <input id="BangumiNotif" type="checkbox" />
                   <i class="mdui-switch-icon"></i>--番剧更新通知--
-                </label></div>
+                </label>
+              </div>
             </div>
             <div class="mdui-panel-item-actions">
               <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
               <button class="mdui-btn mdui-ripple">保存</button>
             </div>
-          </div>
-        </div>
-
-        <div class="mdui-panel-item mdui-panel-item-open">
-          <div class="mdui-panel-item-header">
-            <div class="mdui-panel-item-title">AcFunlive 程序交互设置</div>
-            <div class="mdui-panel-item-summary">在此页面设置acfunlive程序</div>
-            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-          </div>
-          <div class="mdui-panel-item-body">
-            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                href="/bg/acfunlive-bridge.html" target="_blank">进入设置页面</a></button>
           </div>
         </div>
 
@@ -633,7 +680,7 @@
                   <tr>
                     <td id="personal-switch-l">
                       <p style="color: rgb(204, 204, 204);">
-                        开启之后，在页面顶栏个人中心的入口处显示你的听众、香蕉、金香蕉、UID等信息
+                        开启之后，在页面顶栏个人中心的入口处显示你的听众、香蕉、金香蕉、UID等信息（需要登录）
                       </p>
                     </td>
                     <td id="personal-switch-r">
@@ -780,6 +827,139 @@
               </div>
             </div>
 
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>隐藏播放器推荐宫格</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>隐藏播放器播放完成之后的推荐宫格</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="playerRecommendHide" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>文章区图片拖动支持</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>使文章区的漫画模式的图片能够被拖动</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="picDrag" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>文章区图片旋转支持</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>使文章区的漫画模式的图片能通过右上角的旋转按钮旋转</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="picRotate" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>评论区快捷翻页</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>在页面右下角工具栏添加快捷按钮进行翻页</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="commentPageEasyTrans" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>个人中心排版优化</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>优化个人中心排版</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="userCenterBeautify" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>个人中心宽式视频列表</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>在个人中心显示较宽的视频列表以便看全稿件标题</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="widenUCVideoList" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>个人中心和分区视频详细列表快捷键翻页</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>在个人中心和各个分区的<a href="https://www.acfun.cn/v/list190/index.htm?sortField=rankScore&duration=all&date=default&page=1" title="例如动画区其中一个版块" target="_blank">视频详细列表</a>使用Shift+PageUp/PageDown来翻页</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="pageTransKeyBind" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -804,7 +984,8 @@
                         <label class="mdui-switch">
                           <input id="liveHideAd" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
-                        </label></div>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -834,6 +1015,27 @@
               <div class="mdui-row">
                 <div class="mdui-row">
                   <div class="mdui-col-xs-9">
+                    <h3>阻止自动播放时并自动静音</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>不打扰（但是会影响到之后打开的页面都自动静音）</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6">
+                        <label class="mdui-switch">
+                          <input id="liveHideAdMute" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
                     <h3>直播页宽屏和弹幕屏蔽</h3>
                     <div class="mdui-row">
                       <div class="mdui-col-xs-8 mdui-col-sm-6">
@@ -841,6 +1043,25 @@
                       </div>
                       <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
                           <input id="livePlayerEnhc" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>直播站列表数量标号</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>为直播站主页的各个直播列表加入数量标记，以便于统计之类的工作</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="liveIndexRankNum" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
                         </label></div>
                     </div>
@@ -881,6 +1102,26 @@
                           <input id="LiveUserFocus" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
                         </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>Windows MediaSession支持</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>对于支持MediaSession的浏览器，通过此API提供给操作系统更多的信息</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="liveMediaSession" type="checkbox">开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                      <p style="display: none;">你的浏览器可能不支持此功能</p>
                     </div>
                   </div>
                 </div>
@@ -987,7 +1228,7 @@
                 <h2>播放器播放画质策略</h2><br>
               </div>
               <div class="mdui-row">
-                <div class="mdui-col-xs-8 mdui-col-sm-6">选择播放器画质策略</div>
+                <div class="mdui-col-xs-8 mdui-col-sm-6">选择播放器画质策略（除了默认最低，720p以上画质可能需要登录）</div>
                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                   <select id="videoQualityStrategy" class="mdui-select" mdui-select="{position: 'top'}">
                     <option value="0">0 - 自动</option>
@@ -1098,6 +1339,22 @@
 
             <div class="mdui-container-fluid">
               <div class="mdui-col-xs-9">
+                <h2>视频播放器 MediaSession支持</h2>
+              </div>
+              <div class="mdui-row">
+                <div class="mdui-col-xs-8 mdui-col-sm-6">给视频投稿增加MediaSession支持</div>
+                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                  <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="videoMediaSession" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-col-xs-9">
                 <h2>播放结束自动续播“大家都在看”播放器开关</h2>
               </div>
               <div class="mdui-row">
@@ -1137,6 +1394,22 @@
                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                   <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                       <input id="endedAutoExitFullscreensw" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid" id="endedAutoToCommentAreasw">
+              <div class="mdui-col-xs-9">
+                <h2>播放结束自动退出全屏然后滚动到评论区</h2>
+              </div>
+              <div class="mdui-row">
+                <div class="mdui-col-xs-8 mdui-col-sm-6">视频结束时退出全屏模式然后滚动到评论区</div>
+                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                  <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="endedAutoToCommentArea" type="checkbox" />
                       <i class="mdui-switch-icon"></i>
                     </label>
                   </div>
@@ -1195,6 +1468,52 @@
                     </label>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div class="mdui-panel-item-actions">
+              <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+              <button class="mdui-btn mdui-ripple">保存</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdui-panel-item mdui-panel-item-open">
+          <div class="mdui-panel-item-header">
+            <div class="mdui-panel-item-title">音乐播放器</div>
+            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+          </div>
+          <div class="mdui-panel-item-body">
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+
+                <div class="mdui-col-xs-12">
+                  <h3>播放器操作</h3>
+                  <div class="mdui-row">
+                    <div class="mdui-col-xs-4 mdui-col-sm-6">
+                      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
+                          href="/bg/musicPlayerMang.html" target="_blank">播放列表管理</a></button>
+                    </div>
+
+                    <div class="mdui-col-xs-4 mdui-col-sm-6">
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                          <input id="MusicPlayList_onLoadAutoPlay" type="checkbox" />
+                          <i class="mdui-switch-icon"></i>
+                        </label>
+                        -稿件加载完之后强制自动播放-
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mdui-col-xs-4 mdui-col-sm-6">播放器模式：
+                  <select id="MusicPlayList_playerMode" class="mdui-select" mdui-select="{position: 'top'}">
+                    <option value="0">0 - 完全模式（耗内存）</option>
+                    <option value="1">1 - 简单模式（仅适用1P视频）</option>
+                  </select>
+                </div>
+
               </div>
             </div>
 
@@ -1334,7 +1653,8 @@
                         <label class="mdui-switch">
                           <input id="timer4Unread_daemonsw" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
-                        </label></div>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1354,7 +1674,8 @@
                         <label class="mdui-switch">
                           <input id="krnl_globalTimer" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
-                        </label></div>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1374,7 +1695,8 @@
                         <label class="mdui-switch">
                           <input id="krnl_videossEarly" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
-                        </label></div>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1409,7 +1731,8 @@
                         <label class="mdui-switch">
                           <input id="LiveWatchTimeRec_popup" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
-                        </label></div>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1556,7 +1879,8 @@
           </div>
           <div class="mdui-card-media">
             <div class="mdui-card-primary">
-              <div class="mdui-card-primary-title"><a href="https://github.com/goplayegg/AcfunQml" target="_blank">AcfunQml</a></div>
+              <div class="mdui-card-primary-title"><a href="https://github.com/goplayegg/AcfunQml"
+                  target="_blank">AcfunQml</a></div>
               <div class="mdui-card-primary-subtitle">Qt Qml based Acfun desktop app</div>
             </div>
             <div class="mdui-card-content">AcfunQML是A站第三方客户端</div>
@@ -1573,13 +1897,44 @@
           </div>
           <div class="mdui-card-media">
             <div class="mdui-card-primary">
-              <div class="mdui-card-primary-title"><a href="https://github.com/wpscott/AcFunDanmaku" target="_blank">AcFunDanmaku</a></div>
+              <div class="mdui-card-primary-title"><a href="https://github.com/wpscott/AcFunDanmaku"
+                  target="_blank">AcFunDanmaku</a></div>
               <div class="mdui-card-primary-subtitle">AcFun直播弹幕及评论工具</div>
             </div>
             <div class="mdui-card-content">AcFunDanmaku是用C# 和 .Net Core 3.1编写的AcFun直播弹幕工具。 该项目分为13个子项目。</div>
           </div>
+          <div class="mdui-card-media">
+            <div class="mdui-card-primary">
+              <div class="mdui-card-primary-title"><a href="https://github.com/wpscott/AVUP.Fun"
+                  target="_blank">AVUP.Fun</a></div>
+              <div class="mdui-card-primary-subtitle">AVUP.Fun</div>
+            </div>
+            <div class="mdui-card-content">基于Confluent Kafka与ClickHouse的数据仓库搭建</div>
+          </div>
         </div>
 
+        <br>
+
+        <div class="mdui-card">
+          <div class="mdui-card-header">
+            <img class="mdui-card-header-avatar"
+              src="https://tx-free-imgs.acfun.cn/content/2020_10_10/1.602323687477298E9.png?imageMogr2/format/webp/quality/75!/ignore-error/1" />
+            <div class="mdui-card-header-title"><a href="https://www.acfun.cn/u/165288" target="_blank">星雨漂流</a>
+            </div>
+            <div class="mdui-card-header-subtitle">开发者</div>
+          </div>
+          <div class="mdui-card-media">
+            <div class="mdui-card-primary">
+              <div class="mdui-card-primary-title"><a
+                  href="https://greasyfork.org/zh-CN/scripts/408421-acfun%E7%9B%B4%E6%92%AD%E7%9B%91%E6%8E%A7"
+                  target="_blank">Acfun直播监控-脚本</a></div>
+              <div class="mdui-card-primary-subtitle">我只制作DD的工具，但我并不是DD</div>
+            </div>
+            <div class="mdui-card-content">帮助dd提高直播观看体验</div>
+          </div>
+        </div>
+
+        <br>
       </div>
 
     </div>

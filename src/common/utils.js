@@ -3,11 +3,14 @@ const defaults = {
   auto_throw: false,
   LikeHeart: false,
   LikeHeartClass: "0",
+  LikeHeartNotif: true,
   to_attention: true,
   to_attention_num: 5,
   to_special_items: [],
   broadcastingUIDlistFollowing: {},
+  MarkedComment: { setting: { enabled: true, storeLocation: "ExtensionStore", storePlugin: ["ExtensionStore", "IndexedDB", "Nextcloud", "UserdefinedServer"] }, datasets: {} },
   WatchPlanList: [],
+  MusicPlayList: { "windowSetting": { "left": 139, "top": 32, "width": 980, "height": 590 }, "onLoadAutoPlay": true, "playerMode": 1, "multiPartContinue": true, "List": {} },
   activeTabKey: 'activeTabId',
   extendsName: 'AcFun助手',
   upUrlTemplate: 'https://www.acfun.cn/u/{uid}',
@@ -18,6 +21,7 @@ const defaults = {
   timer4Unread_daemonsw: true,
   krnl_videossEarly: false,
   krnl_globalTimer: true,
+  logSetting: { "consoleOutput": true, "logLevel": 4 },
   mark: false,//评论用户标记
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
@@ -31,6 +35,7 @@ const defaults = {
   custom_easy_jump_keyCode: [65], //shift A 评论时间跳转快捷键
   player_mode: 'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
   liveFloowNotif: false,
+  liveFollowOpenNow: false,
   videoQualityStrategy: '0',
   livePlayerEnhc: false,
   autoJumpLastWatchSw: false,
@@ -38,11 +43,13 @@ const defaults = {
   liveHideAd: true,
   liveHideAdType: 1,
   liveBansw: false,
+  playerRecommendHide: true,
   PlayerDamakuSearchSw: false,
   PlayerTimeCommentEasyJump: true,
   PlaybackRateKeysw: false,
   FilmModeExclusionsw: true,
   endedAutoExitFullscreensw: true,
+  endedAutoToCommentArea: false,
   easySearchScanForPlayerTimesw: false,
   Dev_indexBlurSW: false,
   userHomeMoment: true,
@@ -66,17 +73,28 @@ const defaults = {
   articlePartIndexDarken: false,
   BangumiNotif: true,
   BangumiPlan: true,
-  audioGain: true,
+  audioGain: false,
   uddPopUp: true,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
-  articleReadMode:false,
-  audioAfterBanana:false,
+  articleReadMode: false,
+  articleBanana: false,
+  audioAfterBanana: false,
+  picDrag: true,
+  picRotate: true,
+  commentPageEasyTrans: true,
+  liveMediaSession: false,
+  videoMediaSession: false,
+  userCenterBeautify: true,
+  pageTransKeyBind: true,
+  widenUCVideoList: false,
+  liveIndexRankNum: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
 const REG = {
   index: new RegExp('http(s)?://www.acfun.cn/$'),
   video: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+'),//视频
+  player: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/player\\/ac\\d+'),//视频
   bangumi: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*'),//番剧
   videoAndBangumi: new RegExp('((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))'),//视频与番剧
   article: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac\\d+'),//文章
@@ -86,8 +104,10 @@ const REG = {
   liveIndex: new RegExp("https://live.acfun.cn"),//直播主页
   userHome: new RegExp("http(s)?://www.acfun.cn/u/\\d+"),//用户中心
   partIndex: new RegExp("/v/list"),//分区主页
-  articleDetail: new RegExp("/v/as")//文章分区详细页
-
+  articleDetail: new RegExp("/v/as"),//文章分区详细页
+  acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
+  acAid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac(\\d+)'),
+  liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)")
 }
 
 /**
@@ -185,7 +205,7 @@ async function getResult() {
 
 /**
  * 获取插件存储值内容
- * @param {*} key 
+ * @param {string} key 
  */
 async function getStorage(key) {
   return new Promise((resolve, reject) => {
@@ -197,7 +217,7 @@ async function getStorage(key) {
 
 /**
  * 删除插件存储值内容
- * @param {*} key 
+ * @param {string} key 
  */
 function delStorage(key) {
   return new Promise((resolve, reject) => {
@@ -241,34 +261,6 @@ function localizeHtmlPage() {
     // el.htmlContent( DOMPurify.sanitize(chrome.i18n.getMessage(el.getAttribute("data-i18n"))));
 
   }
-}
-
-/**
- * 助手更新状态处理
- * @param 数据从插件存储中取
- */
-function updateVersionIcon() {
-  chrome.storage.local.get(["Upgradeable"], (data) => {
-    if (data.Upgradeable === 1) {
-      $('#update-box').css('display', 'inline-block')
-      $('.update-letter').html('助手有轻量更新，点击查看')
-      $('.head').addClass('lightUpdate')
-      $('#update-box').click(() => {
-        window.open('https://www.acfun.cn/u/7054138')
-      })
-      return
-    }
-    if (data.Upgradeable === 2) {
-      $('#update-box').css('display', 'inline-block')
-      $('.update-letter').html('助手有重大更新，点击查看')
-      $('.update-icon').css('background', 'red')
-      $('#update-box').click(() => {
-        window.open('https://www.acfun.cn/u/7054138')
-      })
-      $('.head').addClass('heavyUpdate')
-      return
-    }
-  });
 }
 
 async function updateStorage(progress, id, tabId) {
@@ -401,8 +393,8 @@ function mysleep(ms) {
 
 /**
  * 通知封装
- * @param {*} title 
- * @param {*} message 
+ * @param {string} title 
+ * @param {string} message 
  */
 function notice(title, message) {
   chrome.notifications.create(null, {
@@ -436,7 +428,7 @@ function uuidBuild() {
 /**
  * 时间戳到日期
  * @tutorial 2020-10-15 19:22:13 的类似格式
- * @param {*} now 一个时间对象new Date()
+ * @param {Date} now 一个时间对象new Date()
  */
 function formatDate(now, highAccuracy = false) {
   let year = now.getFullYear();
@@ -454,10 +446,10 @@ function formatDate(now, highAccuracy = false) {
 
 /**
  * 将时间转为最近发布时间
- * @param {*} date 毫秒时间戳
- * @param {*} newFormat 美观样式（去掉为0部分，优化年表示部分）
- * @param {*} highAccuracy 提高显示精度比如不只是显示一个小时，需要将显示的内容具体到一个小时3分20秒）
- * @param {*} accuracy 高精度模式下的显示模式（s m h秒分时）
+ * @param {string} date 毫秒时间戳
+ * @param {boolean} newFormat 美观样式（去掉为0部分，优化年表示部分）
+ * @param {boolean} highAccuracy 提高显示精度比如不只是显示一个小时，需要将显示的内容具体到一个小时3分20秒）
+ * @param {string} accuracy 高精度模式下的显示模式（s m h秒分时）
  */
 function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy = 's') {
   let currentDate = new Date();
@@ -508,8 +500,8 @@ function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy
 
 /**
  * 检查今天周几
- * @param ifToday 是否是检查今天
- * @param dateObj 传入时间对象 new Date()的返回
+ * @param {boolean} ifToday 是否是检查今天
+ * @param {Date} dateObj 传入时间对象 new Date()的返回
  */
 function checkDay(ifToday = true, dateObj) {
   if (ifToday) {
@@ -522,7 +514,7 @@ function checkDay(ifToday = true, dateObj) {
 
 /**
  * 获取cookies中key的信息
- * @param {*} keys 
+ * @param {string} keys 
  */
 function getcookie(keys) {
   var arr = document.cookie.split(";");
@@ -574,7 +566,7 @@ function adjustArticleUp() {
 
 /**
  * 将DOM转化为文本
- * @param {*} node
+ * @param {HTMLElement} node
  * @returns str 
  */
 function domToString(node) {
@@ -585,13 +577,13 @@ function domToString(node) {
   return str;
 }
 
-
 /**
  * 监听DOM对象
- * @param {*} target DOM对象
- * @param {*} fn 
- * @param {*} time 定时器周期
- * @param {*} isDev 是否显示详细的监听文本
+ * @param {HTMLElement} target DOM对象
+ * @param {function} fn 
+ * @param {number} time 定时器周期 2500
+ * @param {boolean} isDev 是否显示详细的监听文本 false
+ * @todo 有时候，虽然DOM加载完了，但是因为页面不在前台，所以某些模块的函数没有得到执行，如果可以的话可以考虑加上使用document.visibilityState == "hidden"(万一插件根本没法获取到页面状态呢？)来判断，当页面切换到前台之后再执行那些函数。
  */
 async function getAsyncDom(target, fn, time = 2500, isDev = false) {
   let i = 0;
@@ -611,7 +603,7 @@ async function getAsyncDom(target, fn, time = 2500, isDev = false) {
         };
         i++;
         setTimeout(() => {
-          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听${target} - 第${i}次`);
+          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听 ${target} - 第${i}次`);
           resolve(re(fn));
         }, time);
       }
@@ -622,8 +614,9 @@ async function getAsyncDom(target, fn, time = 2500, isDev = false) {
 
 /**
  * 从Up名称解析为UID
- * @param {*} upName 
+ * @param {string} upName 
  * @returns upUrl 返回Up主的主页地址
+ * @callMethod let uid =await toUpInfo('qyqx')
  */
 async function toUpInfo(upName) {
   let upUrl = fetch('https://www.acfun.cn/u/' + upName.toString()).then((response) => {
@@ -632,9 +625,6 @@ async function toUpInfo(upName) {
   })
   return upUrl
 }
-
-// let uil =await toUpInfo('qyqx')
-//   console.log(uil)
 
 /**
  * 页面位置计算
@@ -672,15 +662,42 @@ function getScrollHeight() {
   scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight; return scrollHeight;
 }
 
+function getEsClassName(esClass) {
+  return esClass.constructor.toString().match(/class\s+([^ \(]+)\s*\{/i)[1]
+}
+
+function getEsFuncName(esFunc) {
+  let result = arguments[0].name;
+  if (!result) {
+    result = esFunc.toString().toString().match(/\s+([^ \(]+)\s*\(/i)[1]
+  }
+  return result
+}
+
 /**
  * fetch信息，同步返回
- * @param {*} url 
+ * @param {string} url 
  * @returns 返回结果的文本内容
  */
-async function fetchResult(url) {
-  let result = fetch(url).then((response) => {
-    return response.text();
-  })
+async function fetchResult(url, method, data, withCredentials) {
+  var result;
+  if (method == "POST" && withCredentials) {
+    result = fetch(url, {
+      method: "POST", credentials: 'include', headers: {
+        'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
+      }, body: data
+    }).then((res => { return res.text() }))
+  } else if (method == "POST" && withCredentials == false) {
+    result = fetch(url, {
+      method: "POST", headers: {
+        'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
+      }, body: data
+    }).then((res => { return res.text() }))
+  } else {
+    result = fetch(url).then((response) => {
+      return response.text();
+    })
+  }
   return result
 }
 
@@ -714,22 +731,30 @@ throttle = (func, delay) => {
   }
 }
 
-addElement = (options) => {
-  let { tag = 'div', id = '', css = '', target = document.body, classes= '',createMode="append",thisHTML="" } = options
+/**
+ * 插入DOM对象
+ * @param {Object} options { tag = 'div', id = '', css = '', target = document.body, classes = '', createMode = "append", thisHTML = "" }
+ * @innerParam {String} createMode append,after,headAppend
+ */
+function addElement(options) {
+  let { tag = 'div', id = '', css = '', target = document.body, classes = '', createMode = "append", thisHTML = "" } = options
   let x = document.createElement(tag);
   x.id = id;
   x.className = classes;
   x.innerHTML = thisHTML;
   x.style.cssText = css;
-  if(createMode=="append"){
+  if (createMode == "append") {
     target.append(x);
-  }else if(createMode=="after"){
+  } else if (createMode == "after") {
     target.after(x);
+  } else if (createMode == "headAppnd") {
+    let tempTarget = target.firstChild;
+    target.insertBefore(x, tempTarget);
   }
   return x
 }
 
-removeAPrefix = (_$targetDom) => {
+function removeAPrefix(_$targetDom) {
   let acid = _$targetDom.text().trim();
   let regAcid = new RegExp("ac(.*)");
   if (acid == '') { return }
@@ -738,15 +763,33 @@ removeAPrefix = (_$targetDom) => {
   return acid
 }
 
+/**
+ * 使用UI对象来判断用户是否登录
+ * @param {boolean} mode 默认为true，表示可以直接由UI判断出，而不需要使用jquery递归查询的办法去找出对象元素的css属性，以判断是否登录，false时是性能的下策，但是结果肯定没错。
+ * @returns {boolean} 状态
+ */
+function isLoginByUi(mode = true) {
+  if (mode) {
+    if (document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0) {
+      return false;
+    }
+    return true;
+  } else {
+    if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden")) {
+      return true;
+    }
+    return false;
+  }
+}
 
 /**
  * 在某个地方（默认为head下）增加一个css的style标签
- * @param cssText CSS样式文本
- * @param targetDom 添加于
- * @param id css标签的ID
+ * @param {string} cssText CSS样式文本
+ * @param {HTMLElement} targetDom 添加于，默认是document.head
+ * @param {string} id css标签的ID
  */
-createElementStyle = (cssText, targetDom = document.head, id = null) => {
-  let target = targetDom
+function createElementStyle(cssText, targetDom = document.head, id = null) {
+  let target = targetDom;
   let nod = document.createElement("style");
   let str = cssText;
   nod.type = "text/css";
@@ -763,30 +806,32 @@ createElementStyle = (cssText, targetDom = document.head, id = null) => {
 
 /**
  * 投蕉
- * @param {*} params == {key:稿件Id}
- * @param {*} banana_num  投蕉数
+ * @param {object} params == {key:稿件Id}
+ * @param {number} banana_num  投蕉数
+ * @param {string} dougaType String 投稿类型 "video" or "article"
+ * @tutorial 此接口下的resourceType参数，2为视频投稿，3为文章投稿
  */
-async function bananaThrow(params, banana_num) {
+async function bananaThrow(params, banana_num, dougaType = "video") {
   //投蕉操作
   let { key, callback } = params;
   let header = new Map();
+  let resType = 2;
+  if (dougaType == "article") {
+    resType = 3;
+  }
   header.set("Content-Type", "application/x-www-form-urlencoded");
-  let data = "resourceId=" + key + "&count=" + banana_num + "&resourceType=2";
+  let data = "resourceId=" + key + "&count=" + banana_num + "&resourceType=" + resType;
   let result = await ajax('POST', "https://www.acfun.cn/rest/pc-direct/banana/throwBanana", data, header);
   let res_obj = JSON.parse(result);
   if (res_obj == undefined || res_obj.extData == undefined || res_obj.extData.bananaRealCount == undefined) {
     return false;
   }
-  //改变页面上的投蕉状态和数量
-  $('.right-area .banana').addClass('active');
-  document.querySelector(".bananaCount").innerText = Number(document.querySelector(".bananaCount").innerText) + Number(banana_num);
   return true;
 }
 
-
 /**
  * 从秒钟转化为分钟
- * @param {*} second 传入的秒钟数
+ * @param {number} second 传入的秒钟数
  * @returns 分钟
  */
 function timeToMinute(second) {
@@ -802,117 +847,35 @@ function timeToMinute(second) {
 }
 
 /**
- * 播放器浮动通知气泡
- * @param {*} text 通知文本
- * @param {*} importantText 带有红色的重要通知文本
+ * 文件下载 For Front
+ * @param {*} element 文件内容
+ * @param {*} fileName 文件名
  */
-function leftBottomTip(text, importantText = "") {
-  $(".left-bottom-tip")
-    .eq(0)
-    .append(
-      `<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`
-    );
-  let _timer = setTimeout(() => {
-    $(".left-bottom-tip").eq(0).children().eq(0).remove(); //这样写 并不能自定义持续时间
-    clearInterval(_timer);
-  }, 2500);
+function downloadThings(element, fileName) {
+  var blob = new Blob([element], { type: 'application/octet-stream' });
+  var url = window.URL.createObjectURL(blob);
+  var saveas = document.createElement('a');
+  saveas.href = url;
+  saveas.style.display = 'none';
+  document.body.appendChild(saveas);
+  saveas.download = fileName;
+  saveas.click();
+  setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
+  document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
 }
 
 /**
- * 排序一个数组
- * @param x 需要排序的数组
+ * 输出一个在此范围的随机数
+ * @param {Number} minNum 起始
+ * @param {Number} maxNum 结束
  */
-function bubbleSort(x) {
-  // let x = [1, 4, 2, 7, 88, 54, 65]
-  let temp
-  for (let i = x.length; i > 1; --i) {
-    for (let j = 1; j < i; ++j) {
-      if (x[j] > x[j + 1]) {
-        temp = x[j]
-        x[j] = x[j + 1]
-        x[j + 1] = temp
-      }
-    }
+function randomNum(minNum, maxNum) {
+  switch (arguments.length) {
+    case 1:
+      return parseInt(Math.random() * minNum + 1, 10);
+    case 2:
+      return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+    default:
+      return 0;
   }
-  return x
-}
-
-/**
- * 队列
- * @todo 之前想到了一个绝好的解决标签页面在后台执行失效的问题写下了这个队列的实现，但是过了几天就忘了，我现在先放在这儿，有好点子再来写完吧。
- */
-class Queue {
-  constructor() {
-    this.dataField = [];
-    this.enter = this.enter;
-    this.exit = this.exit;
-    this.getFirst = this.getFirst;
-    this.getTail = this.getTail;
-    this.clearQueue = this.clear;
-    this.isEmpty = this.isEmpty;
-  }
-
-  /**
-   * 入队，并返回状态和其值
-   * @param 入队对象
-   * @returns bool 成功与否
-   */
-  enter(obj) {
-    let x = this.dataField.length;
-    this.dataField.push(obj);
-    if (x != this.dataField.length) {
-      return true
-    } else {
-      return false
-    }
-  }
-  /**
-   * 出队，并返回状态和其值
-   * @param none
-   * @returns {stat:bool,data}
-   */
-  exit() {
-    if (this.isEmpty()) {
-      return { stat: false, data: '' };
-    } else {
-      return { stat: true, data: this.dataField.shift() };
-    }
-  }
-  /**
-   * 获取对首元素
-   * @returns stat->是否存在:bool,data
-   */
-  getHead() {
-    if (this.dataField.length != 0) {
-      return { stat: true, data: this.dataField[0] };
-    }
-    return { stat: false, data: '' };
-  }
-  /**
-   * 获取队尾元素
-   * @returns stat->是否存在:bool,data
-   */
-  getTail() {
-    if (this.dataField.length != 0) {
-      return { stat: true, data: this.dataField[length - 1] };
-    }
-    return { stat: false, data: '' };
-  }
-  /**
-   * 队列是否为空
-   * @returns bool
-   */
-  isEmpty() {
-    if (this.dataField.length == 0) {
-      return true
-    }
-    return false
-  }
-  /**
-   * 清除队列
-   */
-  clear() {
-    delete this.dataField
-  }
-}
-
+} 
