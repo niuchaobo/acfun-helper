@@ -1082,6 +1082,24 @@ $(document).ready(function () {
         });
     });
 
+    chrome.storage.local.get(['Dev_thinScrollbar'],function(items){
+        var Dev_thinScrollbar= items.Dev_thinScrollbar;
+        if(Dev_thinScrollbar){
+            document.getElementById('Dev_thinScrollbar').checked='true';
+        }else{
+            document.getElementById('Dev_thinScrollbar').checked=false;
+        }
+        $('#Dev_thinScrollbar').on('click', function () {
+            if(!document.getElementById('Dev_thinScrollbar').checked){
+                document.getElementById('Dev_thinScrollbar').checked=false;
+                chrome.storage.local.set({'Dev_thinScrollbar':false});
+            }else{
+                document.getElementById('Dev_thinScrollbar').checked=true;
+                chrome.storage.local.set({'Dev_thinScrollbar':true});
+            }
+        });
+    });
+
     //=====================文章区子分区夜间模式============================
     chrome.storage.local.get(['articlePartIndexDarken'],function(items){
         var articlePartIndexDarken= items.articlePartIndexDarken;
@@ -1300,6 +1318,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('pageTransKeyBind').checked=true;
                 chrome.storage.local.set({'pageTransKeyBind':true});
+            }
+        });
+    });
+
+    //=====================快捷键发送评论============================
+    chrome.storage.local.get(['quickCommentSubmit'],function(items){
+        var quickCommentSubmit= items.quickCommentSubmit;
+        if(quickCommentSubmit){
+            document.getElementById('quickCommentSubmit').checked='true';
+        }else{
+            document.getElementById('quickCommentSubmit').checked=false;
+        }
+        $('#quickCommentSubmit').on('click', function () {
+            if(!document.getElementById('quickCommentSubmit').checked){
+                document.getElementById('quickCommentSubmit').checked=false;
+                chrome.storage.local.set({'quickCommentSubmit':false});
+            }else{
+                document.getElementById('quickCommentSubmit').checked=true;
+                chrome.storage.local.set({'quickCommentSubmit':true});
             }
         });
     });

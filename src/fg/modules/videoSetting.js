@@ -657,6 +657,7 @@ class VideoSetting {
     window.addEventListener('message', (e) => {
       let videoInfo = {};
       if (e.data.to == 'videoInfo') {
+        fgConsole(this, this.videoMediaSession, "Attach MediaSessionActionHandler.", 1, false);
         try {
           videoInfo = JSON.parse(e.data.msg);
           if (videoInfo.ksPlayJson && JSON.parse(videoInfo.ksPlayJson).businessType == "1") {

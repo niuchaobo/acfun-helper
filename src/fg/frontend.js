@@ -137,6 +137,7 @@ class ODHFront {
 		let href = this.href;
 		//添加自定义样式
 		this.addStyle();
+		this.options.Dev_thinScrollbar && this.pageBeautify.thinScrollBar();
 		//屏蔽功能
 		this.options.filter && this.block.injectScript();
 		//夜间模式
@@ -258,6 +259,7 @@ class ODHFront {
 			this.options.articleBanana && this.banana.articleBanana({ key: REG.acAid.exec(href)[2] });
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
+			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
 		}
 		//直播
 		if (REG.live.test(href)) {
@@ -267,6 +269,7 @@ class ODHFront {
 			this.options.liveMediaSession && this.live.liveMediaSession(href);
 			//直播画中画模式
 			this.livePageBeautify.callPicktureInPictureModeForLive()
+			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit("live");
 		}
 		//直播首页
 		if (REG.liveIndex.test(href) && !REG.live.test(href)) {
@@ -288,6 +291,11 @@ class ODHFront {
 			})
 			//倍率扩大音量
 			this.options.audioGain && this.videoSetting.audioNodeGain();
+			//快捷键评论发送
+			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
+			//MediaSession
+			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
+
 		}
 		this.authInfo.cookInfo();
 	}

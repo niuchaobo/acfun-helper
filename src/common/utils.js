@@ -86,7 +86,9 @@ const defaults = {
   videoMediaSession: false,
   userCenterBeautify: true,
   pageTransKeyBind: true,
+  quickCommentSubmit: false,
   widenUCVideoList: false,
+  Dev_thinScrollbar: false,
   liveIndexRankNum: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
