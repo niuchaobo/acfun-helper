@@ -41,7 +41,7 @@ function PharseGroupPushData(res) {
 		xmlData +=
 			data.aid +
 			'" data-type="' + data.isArticle + '">' +
-            '<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
+            '<label title="加入批量打开队列" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
 			'<div class="l"><a target="_blank" href="';
 		xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
 		xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
@@ -161,7 +161,7 @@ export async function renderPushInnerHtml() {
 				xmlData +=
 					data.aid +
 					'" data-type="' + data.isArticle + '">' +
-                    '<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
+                    '<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
 					'<div class="l"><a target="_blank" href="'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
 				xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
 				xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
@@ -262,7 +262,7 @@ export function renderLives() {
 						livexmlData +=
 							livedata.user.id +
 							'">' +
-                            '<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
+                            '<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
 							'<div class="l"><a target="_blank" href="';
 						livexmlData +=
 							"https://live.acfun.cn/live/" + livedata.user.id + '"';
@@ -306,7 +306,7 @@ export function renderLives() {
 						livexmlData +=
 							livedata.user.id +
 							'">' +
-                            '<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
+                            '<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
 							'<div class="l"><a target="_blank" href="';
 						livexmlData +=
 							"https://live.acfun.cn/live/" + livedata.user.id + '"';
@@ -369,4 +369,16 @@ export async function renderLiveWatchTimeLst() {
 			})
 		}
 	})
+}
+
+export async function customCss(){
+    let x = await getStorage("custom_css");
+    if(!x.custom_css){return}
+    chrome.storage.local.get(['custom_css_style'],function(i){
+        try {
+            createElementStyle(i.custom_css_style);
+        } catch (error) {
+            console.log(error);
+        }
+    })
 }
