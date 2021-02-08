@@ -543,7 +543,7 @@ class VideoSetting {
     videoRate <= 0 ? (videoRate = 0.25) : videoRate >= 2 ? (videoRate = 2) : "";
     return videoRate;
   }
-
+//TODO:部分情况失效问题
   danmuSearchListToUser() {
     $(".danmaku-items").bind(
       "DOMNodeInserted",
@@ -567,6 +567,7 @@ class VideoSetting {
           $(e.target).children(".searchListUser").eq(0).unbind("click");
           $(e.target)
             .children(".searchListUser")
+            .attr('title',`ID:${userId}`)
             .eq(0)
             .bind("click", () => {
               e.stopPropagation();
