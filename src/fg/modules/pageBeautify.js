@@ -72,6 +72,9 @@ class PageBeautify {
                             <div onclick="scrollToTop(event);" data-id="pagelet_live" >
                                 直播
                             </div>
+                            <div onclick="scrollToTop(event);" data-id="pagelet_spring_festival">
+                                春节
+                            </div>
                             <div onclick="scrollToTop(event);" data-id="pagelet_list_banana">
                                 香蕉榜
                             </div>
