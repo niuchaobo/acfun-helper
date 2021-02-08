@@ -46,7 +46,8 @@ function PharseGroupPushData(res) {
 		xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
 		xmlData +=
 			data.aid +
-			'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"><label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i><p style="color:whitesmoke">等下就看</p></label> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
+            //<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>
+			'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
 			data.cid +
 			'" class="title">';
 		xmlData +=
@@ -163,8 +164,9 @@ export async function renderPushInnerHtml() {
 				xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
 				xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
 				xmlData +=
+                //<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>
 					data.aid +
-					'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"><label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i><p style="color:whitesmoke">等下就看</p></label> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
+					'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
 					data.cid +
 					'" class="title">';
 				xmlData +=
