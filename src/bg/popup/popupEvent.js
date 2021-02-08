@@ -403,7 +403,7 @@ export function renderAcDaily() {
 			let data = JSON.parse(res);
 			let Data = "";
 			for (let i = 0; i < data.acDailyData.contentList.length; i++) {
-                let popupLaterHtml = `<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>`
+                let popupLaterHtml = `<label title="加入批量打开队列" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>`
                 let lHtml = `<div class="l">
                                 <a target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="thumb thumb-preview">
                                     <img class="preview" data-aid="${data.acDailyData.contentList[i].contentId}" src="${data.acDailyData.contentList[i].cover}"> 
