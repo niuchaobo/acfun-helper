@@ -228,10 +228,9 @@ class MsgNotifs {
                             let data = rawdata.feedList[i];
                             let dougaType = data.isArticle ? "article" : "video";
                             let xmlData = "<div class=\"inner " + dougaType + "\" id=\"";
-                            xmlData += data.aid + " \"data-type=\"" + data.isArticle + "\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
+                            xmlData += data.aid + " \"data-type=\"" + data.isArticle + "\">" + "<label title=\"等下就打开\" class=\"mdui-checkbox popupLater\"><input type=\"checkbox\"><i class=\"mdui-checkbox-icon\"></i></label>" + "<div class=\"l\"><a target=\"_blank\" href=\"";
                             xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + "\"";
                             xmlData += " class=\"thumb thumb-preview\"><img class=\"lazyload preview\" data-aid=\"";
-                            //<label title=\"等下就打开\" class=\"mdui-checkbox popupLater\"><input type=\"checkbox\"><i class=\"mdui-checkbox-icon\"></i></label>
                             xmlData += data.aid + "\" src=\"./images/prpr.jpg\" data-src=\"" + data.titleImg + "\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\">  <a data-aid=\"" + data.aid + " \"target=\"_blank\" href=\"" + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + "\" class=\"title\">";
                             xmlData += data.title + "</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
                             xmlData += data.aid + "\" href=\"https://www.acfun.cn/u/" + data.userId + "\" class=\"name\">";
