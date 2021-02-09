@@ -438,12 +438,13 @@ span.go-live {
 }
 
 .PushListMode {
+    bottom: 55px !important;
     right: 16px;
 }
 
 .PushListMode.active {
     right: calc(50% - 25px);
-    bottom: 50px;
+    bottom: 55px;
     animation: pp 4.5s 0s infinite cubic-bezier(1, 1, 1, 1);
     -webkit-animation: pp 4.5s 0s infinite cubic-bezier(1, 1, 1, 1);
 }

@@ -73,11 +73,11 @@ export function titleToHome() {
 export function hideToTopButton() {
 	let top = $(".toTop").offset().top;
 	if (top < 2000) {
-		$(".toTop").css({ opacity: "0", bottom: '16px' });
-		$(".PushListMode").css({ right: '16px' })
+		$(".toTop").css({ opacity: "0"});
+		//$(".PushListMode").css({ right: '16px' })
 	} else {
-		$(".toTop").css({ opacity: "1", bottom: '41px' });
-		$(".PushListMode").css({ right: '60px' })
+		$(".toTop").css({ opacity: "1"});
+		//$(".PushListMode").css({ right: '60px' })
 	}
 }
 
