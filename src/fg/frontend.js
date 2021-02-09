@@ -124,8 +124,6 @@ class ODHFront {
 				this.videoSetting.videoQuality(isLogin);
 				//自动点赞
 				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
-				//MediaSession
-				this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 			}, 200)
 		}
 	}
@@ -245,8 +243,9 @@ class ODHFront {
 			if (this.options[curKeyName]) {
 				this.ce.immedComt();
 			}
-			// this.danmaku.sanitizeJsonDanmakuToAss();
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
+			//MediaSession
+			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 		}
 		//文章
 		if (REG.article.test(href)) {
@@ -295,7 +294,6 @@ class ODHFront {
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
 			//MediaSession
 			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
-
 		}
 		this.authInfo.cookInfo();
 	}

@@ -654,10 +654,10 @@ class VideoSetting {
    * @ideaRefer https://github.com/Yzi/AcFun-TheaterMode
    */
   videoMediaSession() {
+    fgConsole(this, this.videoMediaSession, "Init MediaSessionModule.", 1, false);
     window.addEventListener('message', (e) => {
       let videoInfo = {};
       if (e.data.to == 'videoInfo') {
-        fgConsole(this, this.videoMediaSession, "Attach MediaSessionActionHandler.", 1, false);
         try {
           videoInfo = JSON.parse(e.data.msg);
           if (videoInfo.ksPlayJson && JSON.parse(videoInfo.ksPlayJson).businessType == "1") {
@@ -691,11 +691,20 @@ class VideoSetting {
           }
           //分P
           let videoList = [];
-          if (videoList = document.querySelector(".scroll-div.over-parts").children) {
+          try {
+            videoList = document.querySelector(".scroll-div.over-parts").children;
+          } catch (error) {
+            try {
+              document.querySelector(".scroll-div").children;
+            } catch (error) {
+              fgConsole(this, this.videoMediaSession, "Normal Video.", 1, false);
+            }
+          }
+          if (videoList) {
             videoInfo["videoList"] = videoList;
           }
         }
-
+        fgConsole(this, this.videoMediaSession, "Attach MediaSession ActionHandler.", 1, false);
         // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
 
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -705,6 +714,16 @@ class VideoSetting {
             { src: videoInfo.coverUrl, sizes: '284x166', type: 'image/jpeg' },
           ]
         });
+
+        //MediaSession进度条处理 绝了，现在Windows还不支持
+        // let videoElem = document.getElementsByTagName("video")[0];
+        // videoElem.addEventListener('timeupdate', (e) => {
+        //   navigator.mediaSession.setPositionState({
+        //     duration: videoElem.duration,
+        //     playbackRate: videoElem.playbackRate,
+        //     position: videoElem.currentTime
+        //   });
+        // }, false);
 
         navigator.mediaSession.setActionHandler('seekbackward', function () {
           document.querySelector("video").currentTime -= 5
@@ -716,6 +735,8 @@ class VideoSetting {
         navigator.mediaSession.setActionHandler("seekto", function (details) {
           document.querySelector("video").currentTime = Number(details.seekTime);
         });
+
+        fgConsole(this, this.videoMediaSession, "Video MediaSession Attach Success.", 1, false);
 
         if (videoInfo.videoList.length > 1) {
           this.mediaSessionNowPlayingIndex = 0;
@@ -742,6 +763,7 @@ class VideoSetting {
             }
             document.querySelector("video").play()
           });
+          fgConsole(this, this.videoMediaSession, "Video MediaSession MultiPart Attach Success.", 1, false);
         }
       }
     })
