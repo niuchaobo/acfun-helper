@@ -98,23 +98,8 @@ export async function renderGroupPush(gid) {
 		}
 	};
 	$(".popupLater").click(e => {
-		if (e.target.checked == true && e.target.checked != undefined) {
-			if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
-				popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
-			} else {
-				popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
-			}
-		} else if (e.target.checked == false && e.target.checked != undefined) {
-			if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
-				delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
-			} else {
-				delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
-			}
-		}
-		if (Object.length != 0) {
-			document.querySelector(".MultOpen2").style.display = "block";
-		}
-	});
+        popupLaterHandler(e,".MultOpen2")
+    });
 
 }
 
@@ -210,26 +195,19 @@ export async function renderPushInnerHtml() {
 			}
 			$("img.lazyload").lazyload({ threshold: 0.2 });
 			$(".popupLater").click(e => {
-				if (e.target.checked == true && e.target.checked != undefined) {
-					// console.log(e.target.offsetParent.offsetParent.offsetParent);
-					if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
-						popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
-					} else {
-						popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
-					}
-				} else if (e.target.checked == false && e.target.checked != undefined) {
-					if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
-						delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
-					} else {
-						delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
-					}
-				}
-				// console.log(popupLater);
-				if (Object.length != 0) {
-					document.querySelector(".MultOpen").style.display = "block";
-				}
+                popupLaterHandler(e)
 			});
 		});
+}
+
+function popupLaterHandler(e,buttonClassName = ".MultOpen"){
+    if(e.target.type != 'checkbox'){
+        return
+    }
+    let targetID = e.target.offsetParent.offsetParent.id;
+    let targetUrl = e.target.offsetParent.offsetParent.children[1].children[0].href;
+    e.target.checked ? popupLater[targetID] = targetUrl: delete popupLater[targetID];
+    Object.keys(popupLater).length ? $(buttonClassName).show() : $(buttonClassName).hide();
 }
 
 /**
