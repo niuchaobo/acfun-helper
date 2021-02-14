@@ -411,6 +411,29 @@ export function renderAcDaily() {
 		})
 }
 
+export function unreadNum() {
+	let x = JSON.parse(localStorage.getItem("UnreadNum"));
+	if (x == null) {
+		return;
+	}
+	if (x.comment != 0) {
+		document.querySelector("#msg-comment").style.display = 'block'
+		document.querySelector("#notification-msg-comment").innerText = x.comment;
+	}
+	if (x.content_notify != 0) {
+		document.querySelector("#msg-sysnotif").style.display = 'block'
+		document.querySelector("#notification-msg-sysnotif").innerText = x.content_notify;
+	}
+	if (x.like != 0) {
+		document.querySelector("#msg-likecount").style.display = 'block'
+		document.querySelector("#notification-msg-likecount").innerText = x.like;
+	}
+	if (x.system_notify != 0) {
+		document.querySelector("#msg-announce").style.display = 'block'
+		document.querySelector("#notification-msg-announce").innerText = x.system_notify;
+	}
+}
+
 /**
  * 主站标签列队前台调用
  */

@@ -33,6 +33,7 @@ class VideoSetting {
     this.abPlayFirst = undefined;
     this.abPlaySecond = undefined;
     this.abPlayFlag = 0;
+    this.timelineDotsTextCache = "";
   }
 
   onLoad() {
@@ -424,6 +425,7 @@ class VideoSetting {
                   this.fullScreenStyle(true);
                 });
               }
+              this.timelineDotsMain(this.timelineDotsTextCache);
             } else {
               document.getElementById("acfun-popup-helper").style.display = "";
               document.getElementById("acfun-helper-div").style.display = "";
@@ -431,6 +433,7 @@ class VideoSetting {
               if (FilmModeExclusionsw.FilmModeExclusionsw) {
                 this.fullScreenStyle(false);
               }
+              this.timelineDotsMain(this.timelineDotsTextCache);
             }
           });
         });
@@ -455,11 +458,13 @@ class VideoSetting {
             if (fullscreenFlag) {
               popupHelper ? (popupHelper.style.display = "none") : "";
               helperDiv ? (helperDiv.style.display = "none") : "";
+              this.timelineDotsMain(this.timelineDotsTextCache);
             } else {
               if (fileModelFlag)
                 return;
               popupHelper ? (popupHelper.style.display = "") : "";
               helperDiv ? (helperDiv.style.display = "") : "";
+              this.timelineDotsMain(this.timelineDotsTextCache);
             }
           });
         });
@@ -767,6 +772,86 @@ class VideoSetting {
         }
       }
     })
+  }
+
+  /**
+   * 时间轴章节标记主函数
+   * @param {string} massText
+   * @todo 优化一下第二次及之后执行的资源占用问题，可以缓存一下位置，而不是原始文本
+   */
+  timelineDotsMain(massText) {
+    if (massText) {
+      //清除原来的章节标记
+      document.querySelectorAll(".pro-chapterDots").forEach((e) => { e.remove() })
+      this.timelineDotsTextCache = massText;
+      let reg_for_time = new RegExp('[0-9]{1,3}[:分][0-9]{1,2}秒?');
+      let if_matchTime = reg_for_time.exec(massText);
+      //文本内存在时间标记
+      if (if_matchTime) {
+        var chapterDic = this.timelineDotsTextProcess(massText);
+        // console.log(chapterDic)
+        Object.keys(chapterDic).forEach((timeTag) => {
+          // console.log(timeTag, chapterDic[timeTag])
+          this.timelineDotsAdd(timeTag, chapterDic[timeTag]);
+        })
+      } else {
+        alert("选取的文段可能不符时间轴章节标记格式，请确认它类似“01:12 01:12 2021-2-11 正片”。");
+      }
+    } else {
+      fgConsole(this, this.timelineMain, "No content.", 3, false)
+    }
+  }
+
+  /**
+   * 时间标记和描述提取
+   * @param {string} massText 输入文本
+   * @returns {object} {"00:00":"新年这一刻",....}
+   */
+  timelineDotsTextProcess(massText) {
+    let resultArr = [];
+    let resultDic = {};
+    let reg_for_time = new RegExp("[0-9]{1,3}[:][0-9]{1,2}");
+    let srcArr = massText.split(" ");
+    let lastDicKey = "";
+    srcArr.forEach((e) => {
+      if (resultArr.indexOf(e) == -1) {
+        resultArr.push(e);
+      }
+    })
+    resultArr.forEach((e) => {
+      if (reg_for_time.test(e)) {
+        resultDic[e] = "";
+        lastDicKey = e;
+      } else {
+        resultDic[lastDicKey] += (" " + e);
+      }
+    })
+    return resultDic;
+  }
+
+  /**
+   * 处理单个章节标记点
+   * @param {string} time 时间 "01:02"
+   * @param {string} desc 描述 "《【年在一起】年年黏黏年》"
+   * @method 算出时间百分比 -> 获取时间轴长度 -> 计算出章节标记点所在位置 -> 填入DOM对象的css属性中 -> 增加DOM元素
+   */
+  timelineDotsAdd(time, desc = "") {
+    var _timer = setInterval(() => {
+      var processBarLen = document.querySelector(".progress").offsetWidth;
+      if (processBarLen != 0) {
+        //获取视频的时间长度在1%的单位时间 (秒)
+        let single = Number(document.querySelector("video").duration) / 1e2;
+        //此时间Tag的百分比 100%=1.0
+        let percent = Number((Duration2Seconds(time) / single).toFixed(2) / 1e2);
+        //此时间标记在时间轴上的位置
+        let progressLen = Number((processBarLen * percent).toFixed(1));
+        // console.log("processBarLen: ", processBarLen)
+        // console.log("length: ", processBarLen * percent.toFixed(1))
+        // console.log(percent, progressLen)
+        addElement({ tag: 'div', css: `left: ${progressLen}px;position: absolute;-moz-box-sizing: border-box;box-sizing: border-box;top: 50%;background-color: #F44C5D;border: 2px solid white;width: 14px;height: 14px;margin-left: -14px;top: 50%;margin-top: -7px;opacity: 0.5;-webkit-transition: opacity 0.3s, height 0.3s, width 0.3s, margin-top 0.3s, margin-left 0.3s;transition: opacity 0.3s, height 0.3s, width 0.3s, margin-top 0.3s, margin-left 0.3s;z-index: 98;`, target: document.querySelector(".container-pro-handle"), classes: 'pro-chapterDots', createMode: 'append', title: desc });
+        clearInterval(_timer);
+      }
+    }, 1000);
   }
 
 }

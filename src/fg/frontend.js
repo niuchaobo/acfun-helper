@@ -344,7 +344,7 @@ class ODHFront {
 	 * 刷新部分前台模块
 	 * @description 用于在切换分P或者点击大家都在看、推荐视频之后的模块数据刷新。
 	 */
-	reattachFrontMods(){
+	reattachFrontMods() {
 
 	}
 
@@ -408,6 +408,10 @@ class ODHFront {
 		} else {
 			this.ce.clearMark();
 		}
+	}
+	api_timelineDotsMain(params) {
+		let { massText, url } = params;
+		this.options.timelineDots && this.videoSetting.timelineDotsMain(massText);
 	}
 	api_scan(params) {
 		let { value } = params;

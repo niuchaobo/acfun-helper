@@ -1637,6 +1637,25 @@ $(document).ready(function () {
         });
     });
 
+    //=====================选中时间文本给时间轴增加章节标记================
+    chrome.storage.local.get(['timelineDots'],function(items){
+        var timelineDots= items.timelineDots;
+        if(timelineDots){
+            document.getElementById('timelineDots').checked='true';
+        }else{
+            document.getElementById('timelineDots').checked=false;
+        }
+        $('#timelineDots').on('click', function () {
+            if(!document.getElementById('timelineDots').checked){
+                document.getElementById('timelineDots').checked=false;
+                chrome.storage.local.set({'timelineDots':false});
+            }else{
+                document.getElementById('timelineDots').checked=true;
+                chrome.storage.local.set({'timelineDots':true});
+            }
+        });
+    });
+
     //====================配置播放器自动跳转到上次观看时间===============
     chrome.storage.local.get(['autoJumpLastWatchSw'],function(items){
         var autoJumpLastWatchSw_status= items.autoJumpLastWatchSw;

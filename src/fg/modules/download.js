@@ -30,7 +30,7 @@ class Download {
         let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/');
         let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/');
         var prefix = "";
-        // fgConsole(this,this.downloadVideo,`M3u8 address is: ${m3u8}`,1,false)
+        fgConsole(this,this.downloadVideo,`M3u8 address is: ${m3u8}`,1,false)
         if (reg.test(m3u8)) {
             prefix = m3u8.match(reg)[0];
         } else if (reg_new.test(m3u8)) {
