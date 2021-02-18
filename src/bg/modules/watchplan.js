@@ -316,15 +316,13 @@ class WatchPlan {
      */
     async connectAcFunQmlByUrlScheme(url) {
         var msg = "";
-        if (url && (REG.article.test(url) || REG.video.test(url))) {
+        if (url && REG.videoAndBangumi.test(url)) {
             let acid = "";
             let commandObj = {};
-            acid = REG.acVid.exec(url)
-            if (acid == null) {
-                acid = REG.acAid.test(url)
-                // commandObj = {"v":1,"acId":"16184205","type":"video"};
-            } else {
+            if (acid = REG.acVid.exec(url)) {
                 commandObj = { "v": 1, "acId": String(acid[2]), "type": "video" };
+            } else if (acid = REG.acBangumid.exec(url)) {
+                commandObj = { "v": 1, "acId": String(acid[2]), "type": "bangumi" };
             }
             if (acid != null) {
                 chrome.tabs.create({ url: "AcfunQml://" + encodeURI(JSON.stringify(commandObj)) }, (e) => { });

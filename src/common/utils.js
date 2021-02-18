@@ -110,6 +110,7 @@ const REG = {
   articleDetail: new RegExp("/v/as"),//文章分区详细页
   acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
   acAid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac(\\d+)'),
+  acBangumid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi/aa(\\d+)'),
   liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)"),
   videoPlayerSrc: new RegExp("blob:https://www.acfun.cn/"),
 }
