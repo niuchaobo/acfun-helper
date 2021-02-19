@@ -33,7 +33,7 @@ class VideoSetting {
     this.abPlayFirst = undefined;
     this.abPlaySecond = undefined;
     this.abPlayFlag = 0;
-    this.timelineDotsTextCache = "";
+    this.timelineDotsResultCache = "";
   }
 
   onLoad() {
@@ -425,7 +425,7 @@ class VideoSetting {
                   this.fullScreenStyle(true);
                 });
               }
-              this.timelineDotsMain(this.timelineDotsTextCache);
+              this.timelineDotsRender(this.timelineDotsResultCache);
             } else {
               document.getElementById("acfun-popup-helper").style.display = "";
               document.getElementById("acfun-helper-div").style.display = "";
@@ -433,7 +433,7 @@ class VideoSetting {
               if (FilmModeExclusionsw.FilmModeExclusionsw) {
                 this.fullScreenStyle(false);
               }
-              this.timelineDotsMain(this.timelineDotsTextCache);
+              this.timelineDotsRender(this.timelineDotsResultCache);
             }
           });
         });
@@ -458,13 +458,13 @@ class VideoSetting {
             if (fullscreenFlag) {
               popupHelper ? (popupHelper.style.display = "none") : "";
               helperDiv ? (helperDiv.style.display = "none") : "";
-              this.timelineDotsMain(this.timelineDotsTextCache);
+              this.timelineDotsRender(this.timelineDotsResultCache);
             } else {
               if (fileModelFlag)
                 return;
               popupHelper ? (popupHelper.style.display = "") : "";
               helperDiv ? (helperDiv.style.display = "") : "";
-              this.timelineDotsMain(this.timelineDotsTextCache);
+              this.timelineDotsRender(this.timelineDotsResultCache);
             }
           });
         });
@@ -777,7 +777,6 @@ class VideoSetting {
   /**
    * 时间轴章节标记主函数
    * @param {string} massText
-   * @todo 优化一下第二次及之后执行的资源占用问题，可以缓存一下位置，而不是原始文本
    */
   timelineDotsMain(massText) {
     if (massText) {
@@ -790,16 +789,21 @@ class VideoSetting {
       if (if_matchTime) {
         var chapterDic = this.timelineDotsTextProcess(massText);
         // console.log(chapterDic)
-        Object.keys(chapterDic).forEach((timeTag) => {
-          // console.log(timeTag, chapterDic[timeTag])
-          this.timelineDotsAdd(timeTag, chapterDic[timeTag]);
-        })
+        this.timelineDotsResultCache = chapterDic;
+        this.timelineDotsRender(chapterDic);
       } else {
         alert("选取的文段可能不符时间轴章节标记格式，请确认它类似“01:12 01:12 2021-2-11 正片”。");
       }
     } else {
       fgConsole(this, this.timelineMain, "No content.", 3, false)
     }
+  }
+
+  timelineDotsRender(chapterDic) {
+    document.querySelectorAll(".pro-chapterDots").forEach((e) => { e.remove() })
+    Object.keys(chapterDic).forEach((timeTag) => {
+      this.timelineDotsAdd(timeTag, chapterDic[timeTag]);
+    })
   }
 
   /**
