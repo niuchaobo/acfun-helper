@@ -21,6 +21,8 @@ const defaults = {
   timer4Unread_daemonsw: true,
   krnl_videossEarly: false,
   krnl_globalTimer: true,
+  custom_css:false,
+  custom_css_style:``,
   logSetting: { "consoleOutput": true, "logLevel": 4 },
   mark: false,//评论用户标记
   scan: false,//评论用户扫描

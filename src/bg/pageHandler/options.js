@@ -2442,6 +2442,7 @@ $(document).ready(function () {
     });
 
     //====================插件前台-提前加载前台视频播放器模块===================
+    //FIXME:这可能是 【直播观看计时】 功能的开关
     chrome.storage.local.get(['LiveWatchTimeRec_popup'],function(items){
         var LiveWatchTimeRec_popup= items.LiveWatchTimeRec_popup;
         if(LiveWatchTimeRec_popup){
@@ -2461,6 +2462,7 @@ $(document).ready(function () {
     });
 
     //====================直播观看计时表===================
+    //FIXME:这可能是 【提前加在前台视频播放器模块】 功能的开关
     chrome.storage.local.get(['krnl_videossEarly'],function(items){
         var krnl_videossEarly= items.krnl_videossEarly;
         if(krnl_videossEarly){
@@ -2478,6 +2480,34 @@ $(document).ready(function () {
             }
         });
     });
+
+    //====================自定义样式===================
+    //FIXME:这可能是 【提前加在前台视频播放器模块】 功能的开关
+    chrome.storage.local.get(['custom_css'],function(items){
+        var custom_css= items.custom_css;
+        $('#custom-css').on('keyup',function(){
+            chrome.storage.local.set({'custom_css_style':$('#custom-css').val()})
+        })
+        if(custom_css){
+            document.getElementById('custom-css-checkbox').checked='true';
+        }else{
+            document.getElementById('custom-css-checkbox').checked=false;
+        }
+        
+        $('#custom-css-checkbox').on('click', function () {
+            if(!document.getElementById('custom-css-checkbox').checked){
+                document.getElementById('custom-css-checkbox').checked=false;
+                chrome.storage.local.set({'custom_css':false});
+            }else{
+                document.getElementById('custom-css-checkbox').checked=true;
+                chrome.storage.local.set({'custom_css':true});
+            }
+        });
+    });
+    chrome.storage.local.get(['custom_css_style'],function(items){
+        var custom_css_style= items.custom_css_style;
+        $('#custom-css').val(custom_css_style)
+    })
 
     //===================Up主文章屏蔽=======================
     $('#filter-add').on('click', function () {

@@ -3,6 +3,7 @@ import {
 	renderPushInnerHtml,
 	renderLives,
 	renderLiveWatchTimeLst,
+    customCss,
 	renderFollowGroup,
 	renderGroupPush,
 	PopupLater,
@@ -46,6 +47,7 @@ async function onReady() {
 	renderLives(); //生放送列表加载
 	renderLiveWatchTimeLst();
 	unreadNum();
+    customCss();//自定义popup样式
 	$("#extends-enbaled").prop("checked", options.enabled);
 	$("#extends-enbaled").change(onOptionChanged);
 	$("#pop-update-log").click(openUpdateLog);
