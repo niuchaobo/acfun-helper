@@ -387,6 +387,10 @@ class PageBeautify {
 		}
 	}
 
+	thinScrollBar(){
+		createElementStyle("::-webkit-scrollbar { width: 8px; background-color: #fff;  }  ::-webkit-scrollbar-thumb { background-color: #fd4c5d; border-radius: 5px;  }");
+	}
+
 	darkenArticlePartIndex() {
 		document.getElementsByClassName("main")[0].style.setProperty("background", "#303030", "important");
 		document.getElementsByTagName("html")[0].style.cssText = "background:#303030";
@@ -441,6 +445,17 @@ class PageBeautify {
 		document.getElementsByClassName("tab")[0].children[0].children[3].innerText = `动态 ${z}`;
 		//可以在动态最下面增加一个按钮，点击就增加新的30条动态信息。
 		// document.getElementsByClassName("tab-list")[0].children[3].classList[0] == "active"
+	}
+
+	quickCommentSubmit(page = "index") {
+		document.onkeydown = (event) => {
+			var e = event || window.e;
+			var keyCode = e.keyCode || e.which || e.charCode;
+			var shiftKey = e.shiftKey || e.metaKey;
+			if (shiftKey && keyCode == 13) {
+				page == "index" ? document.querySelector(".btn-send-comment").click() : document.querySelector(".send-btn.enable").click();
+			}
+		}
 	}
 
 	/**

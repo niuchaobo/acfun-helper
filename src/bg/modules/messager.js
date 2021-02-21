@@ -198,6 +198,7 @@ class MsgNotifs {
                         let a4 = b.unReadCount.new_system_notify;//站内公告
                         var pushNum = a0 + a1 + a2 + a3 + a4;
                         chrome.browserAction.setTitle({ title: `AcFun助手，Ac在爱一直在；\n通知\n评论未读：${a0}\n点赞：${a1}\n系统通知：${a3}\n站内公告：${a4}` })
+                        localStorage.setItem('UnreadNum', `{"comment":${a0},"like":${a1},"content_notify":${a3},"system_notify":${a4}}`);
                         if (pushNum > 0) {
                             chrome.browserAction.setBadgeText({ text: pushNum.toString() });
                         } else {

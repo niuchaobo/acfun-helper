@@ -97,6 +97,10 @@ class ODHFront {
 			this.onDomContentLoaded(e);
 			this.options.krnl_videossEarly && this.onACPlayerLoaded(e);
 		});
+		//整个页面URL改变之后的方法
+		// window.addEventListener("popstate", function(e){
+		// 	this.onPagechanged();
+		// });
 	}
 
 	onACPlayerLoaded(e) {
@@ -124,9 +128,8 @@ class ODHFront {
 				this.videoSetting.videoQuality(isLogin);
 				//自动点赞
 				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
-				//MediaSession
-				this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 			}, 200)
+			// this.onPlayerUrlChange();
 		}
 	}
 
@@ -137,6 +140,7 @@ class ODHFront {
 		let href = this.href;
 		//添加自定义样式
 		this.addStyle();
+		this.options.Dev_thinScrollbar && this.pageBeautify.thinScrollBar();
 		//屏蔽功能
 		this.options.filter && this.block.injectScript();
 		//夜间模式
@@ -244,8 +248,9 @@ class ODHFront {
 			if (this.options[curKeyName]) {
 				this.ce.immedComt();
 			}
-			// this.danmaku.sanitizeJsonDanmakuToAss();
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
+			//MediaSession
+			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 		}
 		//文章
 		if (REG.article.test(href)) {
@@ -258,6 +263,7 @@ class ODHFront {
 			this.options.articleBanana && this.banana.articleBanana({ key: REG.acAid.exec(href)[2] });
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
+			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
 		}
 		//直播
 		if (REG.live.test(href)) {
@@ -267,6 +273,7 @@ class ODHFront {
 			this.options.liveMediaSession && this.live.liveMediaSession(href);
 			//直播画中画模式
 			this.livePageBeautify.callPicktureInPictureModeForLive()
+			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit("live");
 		}
 		//直播首页
 		if (REG.liveIndex.test(href) && !REG.live.test(href)) {
@@ -288,6 +295,10 @@ class ODHFront {
 			})
 			//倍率扩大音量
 			this.options.audioGain && this.videoSetting.audioNodeGain();
+			//快捷键评论发送
+			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
+			//MediaSession
+			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 		}
 		this.authInfo.cookInfo();
 	}
@@ -296,6 +307,45 @@ class ODHFront {
 		getAsyncDom(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
 		}, 3000)
+	}
+	/**
+	 * 播放器地址切换监听
+	 * @description 换分P、点击推荐等等会让播放器地址会被切换。
+	 * @todo 我觉得还是使用URL监听使用的开销少。
+	 * @config childList：子节点的变动（指新增，删除或者更改）。
+		attributes：属性的变动。
+		characterData：节点内容或节点文本的变动。
+		subtree：布尔值，表示是否将该观察器应用于该节点的所有后代节点。
+		attributeOldValue ：布尔值，表示观察attributes变动时，是否需要记录变动前的属性值。
+		characterDataOldValue：布尔值，表示观察characterData变动时，是否需要记录变动前的值。
+		attributeFilter：数组，表示需要观察的特定属性（比如['class','src']）。
+	 */
+	onPlayerUrlChange() {
+		//观察器的配置
+		var config = { attributes: true, attributeOldValue: true };
+		//观察对象
+		var playerUrlChangeObserver = document.querySelector("video");
+		//观察器
+		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+		//观察器回调
+		var obsrvcall = (mutations) => {
+			console.log(mutations)
+			if (mutations[0].oldValue != null && REG.videoPlayerSrc.test(mutations[0].oldValue)) {
+				this.reattachFrontMods();
+			}
+		}
+		//给观察器绑定回调
+		var observer = new MutationObserver(obsrvcall);
+		//开始观察
+		observer.observe(playerUrlChangeObserver, config);
+	}
+
+	/**
+	 * 刷新部分前台模块
+	 * @description 用于在切换分P或者点击大家都在看、推荐视频之后的模块数据刷新。
+	 */
+	reattachFrontMods() {
+
 	}
 
 	//抽奖
@@ -358,6 +408,10 @@ class ODHFront {
 		} else {
 			this.ce.clearMark();
 		}
+	}
+	api_timelineDotsMain(params) {
+		let { massText, url } = params;
+		this.options.timelineDots && this.videoSetting.timelineDotsMain(massText);
 	}
 	api_scan(params) {
 		let { value } = params;

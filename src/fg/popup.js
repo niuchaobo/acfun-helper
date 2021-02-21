@@ -231,6 +231,7 @@ class Popup {
         return `
         <html lang="en">
             <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title></title>
+                <style>::-webkit-scrollbar { width: 8px; background-color: #fff;}  ::-webkit-scrollbar-thumb { background-color: #c4c4c4; border-radius: 5px;}</style>
                 <link rel="stylesheet" href="${root + 'fg/css/checkbox.css'}">
                 <link rel="stylesheet" href="${root + 'fg/css/frame.css'}">
                 <link rel="stylesheet" href="${root + 'fg/css/lucy.css'}">

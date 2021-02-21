@@ -64,6 +64,77 @@
             <a href="#tab6" class="mdui-ripple">关于 & 注意</a>
         </div>
     </div>
+    <div class="mdui-tab mdui-tab-centered" mdui-tab>
+      <a href="#tab0" class="mdui-ripple">主页</a>
+      <a href="#tab1" class="mdui-ripple">主站配置</a>
+      <a href="#tab2" class="mdui-ripple">内容设置</a>
+      <a href="#tab3" class="mdui-ripple">界面设置</a>
+      <a href="#tab4" class="mdui-ripple">播放器设置</a>
+      <a href="#tab5" class="mdui-ripple">插件设置</a>
+      <a href="#tab6" class="mdui-ripple">关于 & 注意</a>
+    </div>
+  </div>
+
+  <div class="mdui-container doc-container">
+
+    <div id="tab0" class="mdui-p-a-2">
+      <div class="mdui-container mdui-center">
+        <img class="mdui-center" src="../img/icon128.png">
+        <h1 style="text-align: center;" class="mdui-center">AcFun助手</h1>
+        <p style="text-align: center;">🎁🎁AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。</p>
+
+        <div>
+          <div class="mdui-collapse" mdui-collapse>
+
+            <div class="mdui-collapse-item">
+              <div class="mdui-collapse-item-header"><button
+                  class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                  style="cursor: default;">小工具</button></div>
+              <div class="mdui-collapse-item-body">
+                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;"><a
+                    href="./upupup.html">最近活动情况</a></p>
+                  <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;"><a
+                      href="./square.html" target="_blank">广场</a></p>
+                  <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;"><a
+                      href="./topic.html" target="_blank">话题</a></p>
+                  <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;"><a
+                      href="./bangumi.html" target="_blank">番剧</a></p>
+                  <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple" style="cursor: default;"><a
+                      href="./guide.html" target="_blank">指导</a></p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="tab1" class="mdui-p-a-2">
+
+      <div class="mdui-panel" mdui-panel>
+
+        <div class="mdui-panel-item mdui-panel-item-open">
+          <div class="mdui-panel-item-header">
+            <div class="mdui-panel-item-title">自动投蕉</div>
+            <div class="mdui-panel-item-summary">在选定的Up投稿中自动给Up投蕉</div>
+            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+          </div>
+          <div class="mdui-panel-item-body">
+            <div class="autoTranslate-switch">
+              <h3>自动投蕉<img src="images/on.png" class="switch-close" id="switch"></h3>
+              <div id="auto_options" style="color: rgb(204, 204, 204);">
+                <div class="huaci_selections">
+                  <img id="attention_switch" src="images/unselected.png">
+                  <span> 给已关注Up主投蕉</span>
+                </div>
+                <hr style="border-bottom: 1px solid rgb(211,211,211)">
+                <div class="huaci_selections">
+                  <img id="specific_switch" src="images/selected.png">
+                  <span> 给指定Up主投蕉</span>
+                </div>
+              </div>
+            </div>
 
     <div class="mdui-container doc-container">
 
@@ -711,22 +782,41 @@
                           <input id="Dev_indexBlurSW" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
                         </label></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                        <div class="mdui-container-fluid devFeature">
-                            <div class="mdui-row">
-                                <div class="mdui-row">
-                                    <div class="mdui-col-xs-9">
-                                        <h3>文章区子分区夜间模式</h3>
-                                        <div class="mdui-row">
-                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
-                                                <p>关灯了</p>
-                                            </div>
-                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+            <div class="mdui-container-fluid devFeature chromeOnly">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>小型滚动条</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>在主站的界面中，使用类似于此设置页面的‘瘦’版滚动条</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="Dev_thinScrollbar" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdui-container-fluid devFeature">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>文章区子分区夜间模式</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>关灯了</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
                           <input id="articlePartIndexDarken" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
                         </label></div>
@@ -949,25 +1039,47 @@
                     </div>
                 </div>
 
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                        <div class="mdui-panel-item-title">直播站优化</div>
-                        <div class="mdui-panel-item-summary">直播站页面优化</div>
-                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>文章区和视频使用快捷键发送评论</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>在个章区和视频的评论区使用Shift+Enter来发送评论</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                          <input id="quickCommentSubmit" type="checkbox" />开关
+                          <i class="mdui-switch-icon"></i>
+                        </label></div>
                     </div>
-                    <div class="mdui-panel-item-body">
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                        <div class="mdui-container-fluid">
-                            <div class="mdui-row">
-                                <div class="mdui-row">
-                                    <div class="mdui-col-xs-9">
-                                        <h3>阻止自动播放 或 删除 直播页播放器</h3>
-                                        <div class="mdui-row">
-                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
-                                                <p>清静</p>
-                                            </div>
-                                            <div class="mdui-col-xs-4 mdui-col-sm-6">
-                                                <label class="mdui-switch">
+          </div>
+        </div>
+
+        <div class="mdui-panel-item mdui-panel-item-open">
+          <div class="mdui-panel-item-header">
+            <div class="mdui-panel-item-title">直播站优化</div>
+            <div class="mdui-panel-item-summary">直播站页面优化</div>
+            <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+          </div>
+          <div class="mdui-panel-item-body">
+
+            <div class="mdui-container-fluid">
+              <div class="mdui-row">
+                <div class="mdui-row">
+                  <div class="mdui-col-xs-9">
+                    <h3>阻止自动播放 或 删除 直播页播放器</h3>
+                    <div class="mdui-row">
+                      <div class="mdui-col-xs-8 mdui-col-sm-6">
+                        <p>清静</p>
+                      </div>
+                      <div class="mdui-col-xs-4 mdui-col-sm-6">
+                        <label class="mdui-switch">
                           <input id="liveHideAd" type="checkbox" />开关
                           <i class="mdui-switch-icon"></i>
                         </label>
@@ -1459,15 +1571,30 @@
                     </div>
                 </div>
 
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                        <div class="mdui-panel-item-title">音乐播放器</div>
-                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
+            <div class="mdui-container-fluid">
+              <div class="mdui-col-xs-9">
+                <h2>选中时间文本给时间轴增加章节标记</h2>
+              </div>
+              <div class="mdui-row">
+                <div class="mdui-col-xs-8 mdui-col-sm-6">
+                  选中评论中的带有时间标记和内容文本右键执行“在时间轴上添加这些章节标记”之后，将会在时间轴上添加对应的点（将鼠标指针移动其上可查看其描述），以标记其对应的内容。<br>测试地址：<a
+                    href="https://www.acfun.cn/v/ac24325439_2" target="blank">[2021年Ac春晚]</a></div>
+                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                  <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                      <input id="timelineDots" type="checkbox" />
+                      <i class="mdui-switch-icon"></i>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                        <div class="mdui-container-fluid">
-                            <div class="mdui-row">
+            <div class="mdui-panel-item-actions">
+              <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+              <button class="mdui-btn mdui-ripple">保存</button>
+            </div>
+          </div>
+        </div>
 
                                 <div class="mdui-col-xs-12">
                                     <h3>播放器操作</h3>

@@ -164,7 +164,7 @@ let videoFunction = (function () {
     //     },'*');
     // }
   } catch (error) {
-    console.log("[LOG]Frontend-videoSettingInject: Douga Info Sent Faild.");
+    console.log("[LOG]Frontend-videoSettingInject: Warning postMessage.");
   }
 
   /**

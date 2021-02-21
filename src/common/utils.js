@@ -88,8 +88,11 @@ const defaults = {
   videoMediaSession: false,
   userCenterBeautify: true,
   pageTransKeyBind: true,
+  quickCommentSubmit: false,
   widenUCVideoList: false,
+  Dev_thinScrollbar: false,
   liveIndexRankNum: true,
+  timelineDots: false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -109,7 +112,9 @@ const REG = {
   articleDetail: new RegExp("/v/as"),//文章分区详细页
   acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
   acAid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac(\\d+)'),
-  liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)")
+  acBangumid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi/aa(\\d+)'),
+  liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)"),
+  videoPlayerSrc: new RegExp("blob:https://www.acfun.cn/"),
 }
 
 /**
@@ -501,6 +506,28 @@ function getTimeSinceNow(date, newFormat = false, highAccuracy = false, accuracy
 }
 
 /**
+ * 时间描述转换为秒数
+ * @param {string} time string eg:"00:01"or "00:00:10" 时间
+ * @returns int seconds
+ */
+function Duration2Seconds(time) {
+  let str = time;
+  let arr = str.split(":");
+  if (arr.length == 2) {
+    let Tm = Number(arr[0]) * 60;
+    let Ts = Number(arr[1]);
+    let seconds = Tm + Ts;
+    return seconds;
+  } else if (arr.length == 3) {
+    let Ts = Number(arr[2]);
+    let Tm = Number(arr[1]) * 60;
+    let Th = Number(arr[0]) * 60 * 60;
+    let seconds = Th + Tm + Ts;
+    return seconds;
+  }
+}
+
+/**
  * 检查今天周几
  * @param {boolean} ifToday 是否是检查今天
  * @param {Date} dateObj 传入时间对象 new Date()的返回
@@ -669,8 +696,10 @@ function getEsClassName(esClass) {
 }
 
 function getEsFuncName(esFunc) {
-  let result = arguments[0].name;
-  if (!result) {
+  let result;
+  try {
+    result = arguments[0].name;
+  } catch (error) {
     result = esFunc.toString().toString().match(/\s+([^ \(]+)\s*\(/i)[1]
   }
   return result
@@ -739,12 +768,15 @@ throttle = (func, delay) => {
  * @innerParam {String} createMode append,after,headAppend
  */
 function addElement(options) {
-  let { tag = 'div', id = '', css = '', target = document.body, classes = '', createMode = "append", thisHTML = "" } = options
+  let { tag = 'div', id = '', css = '', target = document.body, classes = '', createMode = "append", thisHTML = "", title = "" } = options
   let x = document.createElement(tag);
   x.id = id;
   x.className = classes;
   x.innerHTML = thisHTML;
   x.style.cssText = css;
+  if (title) {
+    x.title = title;
+  };
   if (createMode == "append") {
     target.append(x);
   } else if (createMode == "after") {
@@ -804,6 +836,19 @@ function createElementStyle(cssText, targetDom = document.head, id = null) {
     target.removeChild(document.getElementById(id));
   }
 
+}
+
+/**
+ * 判断现在视频稿件所播放的分P编号
+ * @returns {Number} PartNumber
+ */
+function judgeActivePart() {
+  let x = document.querySelector("#main-content > div.right-column > div.part > div.fl.part-wrap > ul").children;
+  for (let i = 0; i < x.length; i++) {
+    if (x[i].classList[1] == "active") {
+      return x + 1;
+    }
+  }
 }
 
 /**

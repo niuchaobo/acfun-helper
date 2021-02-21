@@ -161,14 +161,23 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
-            title: '从AcFunQml桌面客户端打开', 
-            contexts: ['link'], 
-            id:'3',
-            onclick: (params) =>{
+            title: '从AcFunQml桌面客户端打开',
+            contexts: ['link'],
+            id: '3',
+            onclick: (params) => {
                 let link_url = params.linkUrl;
-                this.WatchPlan.connectAcFunQmlByUrlScheme(link_url).then(()=>{
+                this.WatchPlan.connectAcFunQmlByUrlScheme(link_url).then(() => {
                 });
             }
+        });
+
+        chrome.contextMenus.create({
+            documentUrlPatterns: ['https://*.acfun.cn/v/*'],
+            title: '在时间轴上添加这些章节标记',
+            contexts: ['selection'],
+            onclick: function (params, tab) {
+                this.tabInvoke(tab.id, 'timelineDotsMain', { massText: params.selectionText, url: params.pageUrl });
+            }.bind(this)
         });
 
         //当激活某个tab页时
