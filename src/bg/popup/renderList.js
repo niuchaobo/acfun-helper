@@ -41,13 +41,13 @@ function PharseGroupPushData(res) {
 		xmlData +=
 			data.aid +
 			'" data-type="' + data.isArticle + '">' +
-            '<label title="加入批量打开队列" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
+			'<label title="加入批量打开队列" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>' +
 			'<div class="l"><a target="_blank" href="';
 		xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
 		xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
 		xmlData +=
 			data.aid +
-            //<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>
+			//<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>
 			'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
 			data.cid +
 			'" class="title">';
@@ -98,8 +98,8 @@ export async function renderGroupPush(gid) {
 		}
 	};
 	$(".popupLater").click(e => {
-        popupLaterHandler(e,".MultOpen2")
-    });
+		popupLaterHandler(e, ".MultOpen2")
+	});
 
 }
 
@@ -146,12 +146,12 @@ export async function renderPushInnerHtml() {
 				// xmlData +=
 				// 	data.aid +
 				// 	'" data-type="' + data.isArticle + '">' +
-                //     '<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
+				//     '<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
 				// 	'<div class="l"><a target="_blank" href="'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
 				// xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
 				// xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
 				// xmlData +=
-                // //<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>
+				// //<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>
 				// 	data.aid +
 				// 	'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
 				// 	data.cid +
@@ -169,13 +169,13 @@ export async function renderPushInnerHtml() {
 				// 	' </a><span class="time">' +
 				// 	getTimeSinceNow(data.releaseDate, true, false) +
 				// 	"发布</span> </div> </div> </div> ";
-                let xmlDataTemplateString = `<div class="inner ${data.isArticle ? "article" : "video"}" id="${data.aid}" data-type="${data.isArticle}" >
+				let xmlDataTemplateString = `<div class="inner ${data.isArticle ? "article" : "video"}" id="${data.aid}" data-type="${data.isArticle}" >
                     <label title="稍后打开" class="mdui-checkbox popupLater">
                         <input type="checkbox">
                         <i class="mdui-checkbox-icon"></i>
                     </label> 
                     <div class="l">
-                        <a target="_blank" "href=https://www.acfun.cn${data.isArticle? '/a/ac':'/v/ac'}${data.cid}" class="thumb thumb-preview">
+                        <a target="_blank" href="https://www.acfun.cn${data.isArticle ? '/a/ac' : '/v/ac'}${data.cid}" class="thumb thumb-preview">
                             <img class="lazyload preview" data-aid=${data.aid} src = './images/prpr.jpg' data-src = ${data.titleImg} style='width:100%'>
                             <div class="cover"></div> 
                         </a> 
@@ -189,7 +189,7 @@ export async function renderPushInnerHtml() {
                                 ${data.username}
                             </a>
                             <span class="time">
-                                ${getTimeSinceNow(data.releaseDate,true,false)}发布
+                                ${getTimeSinceNow(data.releaseDate, true, false)}发布
                             </span>
                         </div>
                     </div>          
@@ -220,19 +220,20 @@ export async function renderPushInnerHtml() {
 			}
 			$("img.lazyload").lazyload({ threshold: 0.2 });
 			$(".popupLater").click(e => {
-                popupLaterHandler(e)
+				popupLaterHandler(e)
 			});
 		});
 }
 
-function popupLaterHandler(e,buttonClassName = ".MultOpen"){
-    if(e.target.type != 'checkbox'){
-        return
-    }
-    let targetID = e.target.offsetParent.offsetParent.id;
-    let targetUrl = e.target.offsetParent.offsetParent.children[1].children[0].href;
-    e.target.checked ? popupLater[targetID] = targetUrl: delete popupLater[targetID];
-    Object.keys(popupLater).length ? $(buttonClassName).show() : $(buttonClassName).hide();
+function popupLaterHandler(e, buttonClassName = ".MultOpen") {
+	if (e.target.type != 'checkbox') {
+		return
+	}
+	let targetID, targetUrl;
+	targetID = e.target.offsetParent.offsetParent.id;
+	targetUrl = e.target.offsetParent.offsetParent.children[1].children[0].href;
+	e.target.checked ? popupLater[targetID] = targetUrl : delete popupLater[targetID];
+	Object.keys(popupLater).length ? $(buttonClassName).show() : $(buttonClassName).hide();
 }
 
 /**
@@ -265,7 +266,7 @@ export function renderLives() {
 						livexmlData +=
 							livedata.user.id +
 							'">' +
-                            '<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
+							'<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>' +
 							'<div class="l"><a target="_blank" href="';
 						livexmlData +=
 							"https://live.acfun.cn/live/" + livedata.user.id + '"';
@@ -309,7 +310,6 @@ export function renderLives() {
 						livexmlData +=
 							livedata.user.id +
 							'">' +
-                            '<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
 							'<div class="l"><a target="_blank" href="';
 						livexmlData +=
 							"https://live.acfun.cn/live/" + livedata.user.id + '"';
@@ -374,14 +374,14 @@ export async function renderLiveWatchTimeLst() {
 	})
 }
 
-export async function customCss(){
-    let x = await getStorage("custom_css");
-    if(!x.custom_css){return}
-    chrome.storage.local.get(['custom_css_style'],function(i){
-        try {
-            createElementStyle(i.custom_css_style);
-        } catch (error) {
-            console.log(error);
-        }
-    })
+export async function customCss() {
+	let x = await getStorage("custom_css");
+	if (!x.custom_css) { return }
+	chrome.storage.local.get(['custom_css_style'], function (i) {
+		try {
+			createElementStyle(i.custom_css_style);
+		} catch (error) {
+			console.log(error);
+		}
+	})
 }

@@ -27,7 +27,6 @@ import {
 	PushListDougaMode,
 	indexJump,
 	userInfoFetch,
-	renderAcDaily,
 	attentionTabs,
 	openMusicPlayerSetting,
 	musicPlayerPopupStart,
@@ -68,7 +67,6 @@ async function onReady() {
 	$("#attentionTabsFg").click(attentionTabs);
 	$("#MomentSquareFpop").click(MomentSquareFpop);
 	$("#MyBangumiFpop").click(MyBangumiFpop);
-	$("#AcDailyFetch").click(renderAcDaily);
 	$("#musicPlayerPopupStart").click(musicPlayerPopupStart);
 	$("#musicPlayerPopupStop").click(musicPlayerPopupStop);
 	$("#musicPlayerPopupShow").click(musicPlayerPopupShow);
