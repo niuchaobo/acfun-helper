@@ -3,6 +3,7 @@ import {
 	renderPushInnerHtml,
 	renderLives,
 	renderLiveWatchTimeLst,
+    customCss,
 	renderFollowGroup,
 	renderGroupPush,
 	PopupLater,
@@ -26,12 +27,12 @@ import {
 	PushListDougaMode,
 	indexJump,
 	userInfoFetch,
-	renderAcDaily,
 	attentionTabs,
 	openMusicPlayerSetting,
 	musicPlayerPopupStart,
 	musicPlayerPopupStop,
-	musicPlayerPopupShow
+	musicPlayerPopupShow,
+	unreadNum
 } from "./popupEvent.js";
 
 async function onReady() {
@@ -44,6 +45,8 @@ async function onReady() {
 	renderPushInnerHtml(); //稿件动态列表加载
 	renderLives(); //生放送列表加载
 	renderLiveWatchTimeLst();
+	unreadNum();
+    customCss();//自定义popup样式
 	$("#extends-enbaled").prop("checked", options.enabled);
 	$("#extends-enbaled").change(onOptionChanged);
 	$("#pop-update-log").click(openUpdateLog);
@@ -64,7 +67,6 @@ async function onReady() {
 	$("#attentionTabsFg").click(attentionTabs);
 	$("#MomentSquareFpop").click(MomentSquareFpop);
 	$("#MyBangumiFpop").click(MyBangumiFpop);
-	$("#AcDailyFetch").click(renderAcDaily);
 	$("#musicPlayerPopupStart").click(musicPlayerPopupStart);
 	$("#musicPlayerPopupStop").click(musicPlayerPopupStop);
 	$("#musicPlayerPopupShow").click(musicPlayerPopupShow);

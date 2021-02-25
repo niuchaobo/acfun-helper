@@ -73,11 +73,11 @@ export function titleToHome() {
 export function hideToTopButton() {
 	let top = $(".toTop").offset().top;
 	if (top < 2000) {
-		$(".toTop").css({ opacity: "0", bottom: '16px' });
-		$(".PushListMode").css({ right: '16px' })
+		$(".toTop").css({ opacity: "0"});
+		//$(".PushListMode").css({ right: '16px' })
 	} else {
-		$(".toTop").css({ opacity: "1", bottom: '41px' });
-		$(".PushListMode").css({ right: '60px' })
+		$(".toTop").css({ opacity: "1"});
+		//$(".PushListMode").css({ right: '60px' })
 	}
 }
 
@@ -393,22 +393,27 @@ export function PushListDougaMode() {
 	}
 }
 
-/**
- * AC日刊渲染
- */
-export function renderAcDaily() {
-	fetch("https://api-new.app.acfun.cn/rest/app/acDailyMagazine")
-		.then((res) => { return res.text() })
-		.then((res) => {
-			let data = JSON.parse(res);
-			let Data = "";
-			for (let i = 0; i < data.acDailyData.contentList.length; i++) {
-				let xmlData = `
-      <div class="inner video" id="${data.acDailyData.contentList[i].contentId}"><div class="l"><a target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="thumb thumb-preview"><img class="preview" data-aid="${data.acDailyData.contentList[i].contentId}" src="${data.acDailyData.contentList[i].cover}"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="${data.acDailyData.contentList[i].contentId}" target="_blank" href="https://www.acfun.cn/v/ac${data.acDailyData.contentList[i].contentId}" class="title">${data.acDailyData.contentList[i].title}</a> <p></p> <div class="info"><a target="_blank" data-uid="${data.acDailyData.contentList[i].contentId}" href="https://www.acfun.cn/u/${data.acDailyData.contentList[i].userId}" class="name" style="color: black;">${data.acDailyData.contentList[i].userName}</a><span class="time"></span> </div> </div> </div>`;
-				Data += xmlData;
-			}
-			$("#pop-acDaily").append(Data);
-		})
+export function unreadNum() {
+	let x = JSON.parse(localStorage.getItem("UnreadNum"));
+	if (x == null) {
+		return;
+	}
+	if (x.comment != 0) {
+		document.querySelector("#msg-comment").style.display = 'block'
+		document.querySelector("#notification-msg-comment").innerText = x.comment;
+	}
+	if (x.content_notify != 0) {
+		document.querySelector("#msg-sysnotif").style.display = 'block'
+		document.querySelector("#notification-msg-sysnotif").innerText = x.content_notify;
+	}
+	if (x.like != 0) {
+		document.querySelector("#msg-likecount").style.display = 'block'
+		document.querySelector("#notification-msg-likecount").innerText = x.like;
+	}
+	if (x.system_notify != 0) {
+		document.querySelector("#msg-announce").style.display = 'block'
+		document.querySelector("#notification-msg-announce").innerText = x.system_notify;
+	}
 }
 
 /**

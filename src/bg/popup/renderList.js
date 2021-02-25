@@ -41,12 +41,14 @@ function PharseGroupPushData(res) {
 		xmlData +=
 			data.aid +
 			'" data-type="' + data.isArticle + '">' +
+			'<label title="加入批量打开队列" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>' +
 			'<div class="l"><a target="_blank" href="';
 		xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
 		xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
 		xmlData +=
 			data.aid +
-			'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"><label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i><p style="color:whitesmoke">等下就看</p></label> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
+			//<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>
+			'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
 			data.cid +
 			'" class="title">';
 		xmlData +=
@@ -96,22 +98,7 @@ export async function renderGroupPush(gid) {
 		}
 	};
 	$(".popupLater").click(e => {
-		if (e.target.checked == true && e.target.checked != undefined) {
-			if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
-				popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
-			} else {
-				popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
-			}
-		} else if (e.target.checked == false && e.target.checked != undefined) {
-			if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
-				delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
-			} else {
-				delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
-			}
-		}
-		if (Object.length != 0) {
-			document.querySelector(".MultOpen2").style.display = "block";
-		}
+		popupLaterHandler(e, ".MultOpen2")
 	});
 
 }
@@ -154,33 +141,60 @@ export async function renderPushInnerHtml() {
 			pushListData.innerText = "";
 			for (let i = 0; i < rawdata.feedList.length; i++) {
 				let data = rawdata.feedList[i];
-				let dougaType = data.isArticle ? "article" : "video";
-				let xmlData = '<div class="inner ' + dougaType + '" id="';
-				xmlData +=
-					data.aid +
-					'" data-type="' + data.isArticle + '">' +
-					'<div class="l"><a target="_blank" href="'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
-				xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
-				xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
-				xmlData +=
-					data.aid +
-					'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"><label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i><p style="color:whitesmoke">等下就看</p></label> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
-					data.cid +
-					'" class="title">';
-				xmlData +=
-					data.title +
-					'</a> </p> <div class="info"><a target="_blank" data-uid="';
-				xmlData +=
-					data.aid +
-					'" href="https://www.acfun.cn/u/' +
-					data.userId +
-					'" class="name"> ';
-				xmlData +=
-					data.username +
-					' </a><span class="time">' +
-					getTimeSinceNow(data.releaseDate, true, false) +
-					"发布</span> </div> </div> </div> ";
-				pushListData.innerText += xmlData;
+				//let dougaType = data.isArticle ? "article" : "video";
+				// let xmlData = '<div class="inner ' + dougaType + '" id="';
+				// xmlData +=
+				// 	data.aid +
+				// 	'" data-type="' + data.isArticle + '">' +
+				//     '<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>'+
+				// 	'<div class="l"><a target="_blank" href="'; //ctrl加左键打开页面后 仍保留在当前页面(但插件页面仍然消失)
+				// xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + '"';
+				// xmlData += ' class="thumb thumb-preview"><img class="lazyload preview" data-aid="';
+				// xmlData +=
+				// //<label title="等下就打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>
+				// 	data.aid +
+				// 	'" src="' + './images/prpr.jpg' + '" data-src="' + data.titleImg + '" style="width:100%"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' + data.aid + ' "target="_blank" href="' + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` +
+				// 	data.cid +
+				// 	'" class="title">';
+				// xmlData +=
+				// 	data.title +
+				// 	'</a> </p> <div class="info"><a target="_blank" data-uid="';
+				// xmlData +=
+				// 	data.aid +
+				// 	'" href="https://www.acfun.cn/u/' +
+				// 	data.userId +
+				// 	'" class="name"> ';
+				// xmlData +=
+				// 	data.username +
+				// 	' </a><span class="time">' +
+				// 	getTimeSinceNow(data.releaseDate, true, false) +
+				// 	"发布</span> </div> </div> </div> ";
+				let xmlDataTemplateString = `<div class="inner ${data.isArticle ? "article" : "video"}" id="${data.aid}" data-type="${data.isArticle}" >
+                    <label title="稍后打开" class="mdui-checkbox popupLater">
+                        <input type="checkbox">
+                        <i class="mdui-checkbox-icon"></i>
+                    </label> 
+                    <div class="l">
+                        <a target="_blank" href="https://www.acfun.cn${data.isArticle ? '/a/ac' : '/v/ac'}${data.cid}" class="thumb thumb-preview">
+                            <img class="lazyload preview" data-aid=${data.aid} src = './images/prpr.jpg' data-src = ${data.titleImg} style='width:100%'>
+                            <div class="cover"></div> 
+                        </a> 
+                    </div> 
+                    <div class="r"> 
+                        <a data-aid=${data.aid} target="_blank" href="https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}${data.cid}" class="title">
+                            ${data.title}$
+                        </a> 
+                        <div class="info">
+                            <a target="_blank" data-uid=${data.aid} href="https://www.acfun.cn/u/${data.userId}" class="name">
+                                ${data.username}
+                            </a>
+                            <span class="time">
+                                ${getTimeSinceNow(data.releaseDate, true, false)}发布
+                            </span>
+                        </div>
+                    </div>          
+                </div>`
+				pushListData.innerText += xmlDataTemplateString;
 			}
 			$("#pop-push").append(pushListData.innerText);
 			pushListData.index++
@@ -206,26 +220,20 @@ export async function renderPushInnerHtml() {
 			}
 			$("img.lazyload").lazyload({ threshold: 0.2 });
 			$(".popupLater").click(e => {
-				if (e.target.checked == true && e.target.checked != undefined) {
-					// console.log(e.target.offsetParent.offsetParent.offsetParent);
-					if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
-						popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
-					} else {
-						popupLater[e.target.offsetParent.offsetParent.offsetParent.id] = e.target.offsetParent.offsetParent.offsetParent.children[0].children[0].href;
-					}
-				} else if (e.target.checked == false && e.target.checked != undefined) {
-					if (e.target.offsetParent.offsetParent.offsetParent.dataset.type == true) {
-						delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
-					} else {
-						delete popupLater[e.target.offsetParent.offsetParent.offsetParent.id];
-					}
-				}
-				// console.log(popupLater);
-				if (Object.length != 0) {
-					document.querySelector(".MultOpen").style.display = "block";
-				}
+				popupLaterHandler(e)
 			});
 		});
+}
+
+function popupLaterHandler(e, buttonClassName = ".MultOpen") {
+	if (e.target.type != 'checkbox') {
+		return
+	}
+	let targetID, targetUrl;
+	targetID = e.target.offsetParent.offsetParent.id;
+	targetUrl = e.target.offsetParent.offsetParent.children[1].children[0].href;
+	e.target.checked ? popupLater[targetID] = targetUrl : delete popupLater[targetID];
+	Object.keys(popupLater).length ? $(buttonClassName).show() : $(buttonClassName).hide();
 }
 
 /**
@@ -258,6 +266,7 @@ export function renderLives() {
 						livexmlData +=
 							livedata.user.id +
 							'">' +
+							'<label title="稍后打开" class="mdui-checkbox popupLater"><input type="checkbox"><i class="mdui-checkbox-icon"></i></label>' +
 							'<div class="l"><a target="_blank" href="';
 						livexmlData +=
 							"https://live.acfun.cn/live/" + livedata.user.id + '"';
@@ -361,6 +370,18 @@ export async function renderLiveWatchTimeLst() {
 				}
 				$("#livePageWatchTimeRecList").append(raw_data);
 			})
+		}
+	})
+}
+
+export async function customCss() {
+	let x = await getStorage("custom_css");
+	if (!x.custom_css) { return }
+	chrome.storage.local.get(['custom_css_style'], function (i) {
+		try {
+			createElementStyle(i.custom_css_style);
+		} catch (error) {
+			console.log(error);
 		}
 	})
 }

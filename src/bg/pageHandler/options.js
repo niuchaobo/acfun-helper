@@ -1082,6 +1082,24 @@ $(document).ready(function () {
         });
     });
 
+    chrome.storage.local.get(['Dev_thinScrollbar'],function(items){
+        var Dev_thinScrollbar= items.Dev_thinScrollbar;
+        if(Dev_thinScrollbar){
+            document.getElementById('Dev_thinScrollbar').checked='true';
+        }else{
+            document.getElementById('Dev_thinScrollbar').checked=false;
+        }
+        $('#Dev_thinScrollbar').on('click', function () {
+            if(!document.getElementById('Dev_thinScrollbar').checked){
+                document.getElementById('Dev_thinScrollbar').checked=false;
+                chrome.storage.local.set({'Dev_thinScrollbar':false});
+            }else{
+                document.getElementById('Dev_thinScrollbar').checked=true;
+                chrome.storage.local.set({'Dev_thinScrollbar':true});
+            }
+        });
+    });
+
     //=====================文章区子分区夜间模式============================
     chrome.storage.local.get(['articlePartIndexDarken'],function(items){
         var articlePartIndexDarken= items.articlePartIndexDarken;
@@ -1300,6 +1318,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('pageTransKeyBind').checked=true;
                 chrome.storage.local.set({'pageTransKeyBind':true});
+            }
+        });
+    });
+
+    //=====================快捷键发送评论============================
+    chrome.storage.local.get(['quickCommentSubmit'],function(items){
+        var quickCommentSubmit= items.quickCommentSubmit;
+        if(quickCommentSubmit){
+            document.getElementById('quickCommentSubmit').checked='true';
+        }else{
+            document.getElementById('quickCommentSubmit').checked=false;
+        }
+        $('#quickCommentSubmit').on('click', function () {
+            if(!document.getElementById('quickCommentSubmit').checked){
+                document.getElementById('quickCommentSubmit').checked=false;
+                chrome.storage.local.set({'quickCommentSubmit':false});
+            }else{
+                document.getElementById('quickCommentSubmit').checked=true;
+                chrome.storage.local.set({'quickCommentSubmit':true});
             }
         });
     });
@@ -1596,6 +1633,25 @@ $(document).ready(function () {
             }else{
                 document.getElementById('easySearchScanForPlayerTimesw').checked=true;
                 chrome.storage.local.set({'easySearchScanForPlayerTimesw':true});
+            }
+        });
+    });
+
+    //=====================选中时间文本给时间轴增加章节标记================
+    chrome.storage.local.get(['timelineDots'],function(items){
+        var timelineDots= items.timelineDots;
+        if(timelineDots){
+            document.getElementById('timelineDots').checked='true';
+        }else{
+            document.getElementById('timelineDots').checked=false;
+        }
+        $('#timelineDots').on('click', function () {
+            if(!document.getElementById('timelineDots').checked){
+                document.getElementById('timelineDots').checked=false;
+                chrome.storage.local.set({'timelineDots':false});
+            }else{
+                document.getElementById('timelineDots').checked=true;
+                chrome.storage.local.set({'timelineDots':true});
             }
         });
     });
@@ -2386,6 +2442,7 @@ $(document).ready(function () {
     });
 
     //====================插件前台-提前加载前台视频播放器模块===================
+    //FIXME:这可能是 【直播观看计时】 功能的开关
     chrome.storage.local.get(['LiveWatchTimeRec_popup'],function(items){
         var LiveWatchTimeRec_popup= items.LiveWatchTimeRec_popup;
         if(LiveWatchTimeRec_popup){
@@ -2405,6 +2462,7 @@ $(document).ready(function () {
     });
 
     //====================直播观看计时表===================
+    //FIXME:这可能是 【提前加在前台视频播放器模块】 功能的开关
     chrome.storage.local.get(['krnl_videossEarly'],function(items){
         var krnl_videossEarly= items.krnl_videossEarly;
         if(krnl_videossEarly){
@@ -2422,6 +2480,34 @@ $(document).ready(function () {
             }
         });
     });
+
+    //====================自定义样式===================
+    //FIXME:这可能是 【提前加在前台视频播放器模块】 功能的开关
+    chrome.storage.local.get(['custom_css'],function(items){
+        var custom_css= items.custom_css;
+        $('#custom-css').on('keyup',function(){
+            chrome.storage.local.set({'custom_css_style':$('#custom-css').val()})
+        })
+        if(custom_css){
+            document.getElementById('custom-css-checkbox').checked='true';
+        }else{
+            document.getElementById('custom-css-checkbox').checked=false;
+        }
+        
+        $('#custom-css-checkbox').on('click', function () {
+            if(!document.getElementById('custom-css-checkbox').checked){
+                document.getElementById('custom-css-checkbox').checked=false;
+                chrome.storage.local.set({'custom_css':false});
+            }else{
+                document.getElementById('custom-css-checkbox').checked=true;
+                chrome.storage.local.set({'custom_css':true});
+            }
+        });
+    });
+    chrome.storage.local.get(['custom_css_style'],function(items){
+        var custom_css_style= items.custom_css_style;
+        $('#custom-css').val(custom_css_style)
+    })
 
     //===================Up主文章屏蔽=======================
     $('#filter-add').on('click', function () {

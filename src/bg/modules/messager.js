@@ -198,6 +198,7 @@ class MsgNotifs {
                         let a4 = b.unReadCount.new_system_notify;//站内公告
                         var pushNum = a0 + a1 + a2 + a3 + a4;
                         chrome.browserAction.setTitle({ title: `AcFun助手，Ac在爱一直在；\n通知\n评论未读：${a0}\n点赞：${a1}\n系统通知：${a3}\n站内公告：${a4}` })
+                        localStorage.setItem('UnreadNum', `{"comment":${a0},"like":${a1},"content_notify":${a3},"system_notify":${a4}}`);
                         if (pushNum > 0) {
                             chrome.browserAction.setBadgeText({ text: pushNum.toString() });
                         } else {
@@ -226,15 +227,31 @@ class MsgNotifs {
                         let out_data = '';
                         for (let i = 0; i <= 29; i++) {
                             let data = rawdata.feedList[i];
-                            let dougaType = data.isArticle ? "article" : "video";
-                            let xmlData = "<div class=\"inner " + dougaType + "\" id=\"";
-                            xmlData += data.aid + " \"data-type=\"" + data.isArticle + "\">" + "<div class=\"l\"><a target=\"_blank\" href=\"";
-                            xmlData += `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + "\"";
-                            xmlData += " class=\"thumb thumb-preview\"><img class=\"lazyload preview\" data-aid=\"";
-                            xmlData += data.aid + "\" src=\"./images/prpr.jpg\" data-src=\"" + data.titleImg + "\"> <div class=\"cover\"></div> </a> </div> <div class=\"r\"> <label title=\"等下就打开\" class=\"mdui-checkbox popupLater\"><input type=\"checkbox\"><i class=\"mdui-checkbox-icon\"></i><p style=\"color:whitesmoke\">等下就看</p></label> <a data-aid=\"" + data.aid + " \"target=\"_blank\" href=\"" + `https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}` + data.cid + "\" class=\"title\">";
-                            xmlData += data.title + "</a> </p> <div class=\"info\"><a target=\"_blank\" data-uid=\"";
-                            xmlData += data.aid + "\" href=\"https://www.acfun.cn/u/" + data.userId + "\" class=\"name\">";
-                            xmlData += data.username + " </a><span class=\"time\">" + getTimeSinceNow(data.releaseDate) + "发布</span> </div> </div> </div> ";
+                            let xmlData = `<div class="inner ${data.isArticle ? "article" : "video"}" id="${data.aid}" data-type="${data.isArticle}" >
+                            <label title="稍后打开" class="mdui-checkbox popupLater">
+                                <input type="checkbox">
+                                <i class="mdui-checkbox-icon"></i>
+                            </label> 
+                            <div class="l">
+                                <a target="_blank" href="https://www.acfun.cn${data.isArticle ? '/a/ac' : '/v/ac'}${data.cid}" class="thumb thumb-preview">
+                                    <img class="lazyload preview" data-aid=${data.aid} src = './images/prpr.jpg' data-src = ${data.titleImg} style='width:100%'>
+                                    <div class="cover"></div> 
+                                </a> 
+                            </div> 
+                            <div class="r"> 
+                                <a data-aid=${data.aid} target="_blank" href="https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}${data.cid}" class="title">
+                                    ${data.title}$
+                                </a> 
+                                <div class="info">
+                                    <a target="_blank" data-uid=${data.aid} href="https://www.acfun.cn/u/${data.userId}" class="name">
+                                        ${data.username}
+                                    </a>
+                                    <span class="time">
+                                        ${getTimeSinceNow(data.releaseDate, true, false)}发布
+                                    </span>
+                                </div>
+                            </div>          
+                        </div>`;
                             out_data += xmlData;
                         }
                         // chrome.storage.local.set({'AcpushList1': out_data});

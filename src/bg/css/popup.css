@@ -419,8 +419,7 @@ span.go-live {
     margin-top: 100px;
 }
 
-
-.dispLimit{
+.dispLimit {
     max-width: 110px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -439,12 +438,13 @@ span.go-live {
 }
 
 .PushListMode {
+    bottom: 55px !important;
     right: 16px;
 }
 
 .PushListMode.active {
     right: calc(50% - 25px);
-    bottom: 50px;
+    bottom: 55px;
     animation: pp 4.5s 0s infinite cubic-bezier(1, 1, 1, 1);
     -webkit-animation: pp 4.5s 0s infinite cubic-bezier(1, 1, 1, 1);
 }
@@ -469,6 +469,30 @@ span.go-live {
     -webkit-box-orient: vertical;
     color: #7b68ee;
     padding-left: 1px;
+}
+
+.mdui-checkbox.popupLater {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    z-index: 2;
+    background-color: #ffffffa6;
+    width: 18px;
+    height: 18px;
+    padding: 0px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+}
+
+#SubLive .popupLater {
+    display: none;
+}
+
+.popupLater>.mdui-checkbox-icon {
+    top: 0;
 }
 
 .l {
@@ -591,4 +615,3 @@ span.go-live {
     animation: ff 1s 1s cubic-bezier(1, 0, 1, 1);
     -webkit-animation: ff 1s 1s cubic-bezier(1, 0, 1, 1);
 }
-

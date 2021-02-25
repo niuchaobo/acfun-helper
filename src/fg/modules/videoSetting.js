@@ -33,6 +33,7 @@ class VideoSetting {
     this.abPlayFirst = undefined;
     this.abPlaySecond = undefined;
     this.abPlayFlag = 0;
+    this.timelineDotsResultCache = "";
   }
 
   onLoad() {
@@ -424,6 +425,7 @@ class VideoSetting {
                   this.fullScreenStyle(true);
                 });
               }
+              this.timelineDotsRender(this.timelineDotsResultCache);
             } else {
               document.getElementById("acfun-popup-helper").style.display = "";
               document.getElementById("acfun-helper-div").style.display = "";
@@ -431,6 +433,7 @@ class VideoSetting {
               if (FilmModeExclusionsw.FilmModeExclusionsw) {
                 this.fullScreenStyle(false);
               }
+              this.timelineDotsRender(this.timelineDotsResultCache);
             }
           });
         });
@@ -455,11 +458,13 @@ class VideoSetting {
             if (fullscreenFlag) {
               popupHelper ? (popupHelper.style.display = "none") : "";
               helperDiv ? (helperDiv.style.display = "none") : "";
+              this.timelineDotsRender(this.timelineDotsResultCache);
             } else {
               if (fileModelFlag)
                 return;
               popupHelper ? (popupHelper.style.display = "") : "";
               helperDiv ? (helperDiv.style.display = "") : "";
+              this.timelineDotsRender(this.timelineDotsResultCache);
             }
           });
         });
@@ -543,7 +548,7 @@ class VideoSetting {
     videoRate <= 0 ? (videoRate = 0.25) : videoRate >= 2 ? (videoRate = 2) : "";
     return videoRate;
   }
-
+//TODO:部分情况失效问题
   danmuSearchListToUser() {
     $(".danmaku-items").bind(
       "DOMNodeInserted",
@@ -567,6 +572,7 @@ class VideoSetting {
           $(e.target).children(".searchListUser").eq(0).unbind("click");
           $(e.target)
             .children(".searchListUser")
+            .attr('title',`ID:${userId}`)
             .eq(0)
             .bind("click", () => {
               e.stopPropagation();
@@ -654,11 +660,16 @@ class VideoSetting {
    * @ideaRefer https://github.com/Yzi/AcFun-TheaterMode
    */
   videoMediaSession() {
+    fgConsole(this, this.videoMediaSession, "Init MediaSessionModule.", 1, false);
     window.addEventListener('message', (e) => {
       let videoInfo = {};
       if (e.data.to == 'videoInfo') {
         try {
-          videoInfo = JSON.parse(e.data.msg)
+          videoInfo = JSON.parse(e.data.msg);
+          if (videoInfo.ksPlayJson && JSON.parse(videoInfo.ksPlayJson).businessType == "1") {
+            //番剧的videoInfo对象内容不一样，从dom下手
+            throw TypeError;
+          }
         } catch (error) {
           videoInfo = {
             "title": document.querySelectorAll("meta")[5].content.split(",")[0] || document.querySelector(".video-description.clearfix>.title").innerText,
@@ -669,13 +680,38 @@ class VideoSetting {
             "user": {
               "name": document.querySelectorAll("meta")[5].content.split(",")[3],
             },
-            coverUrl: document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src
+            coverUrl: ""
           }
+          //封面
+          try {
+            //Up主头像
+            videoInfo.coverUrl = document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src;
+          } catch (error) {
+            try {
+              //直接拿番剧推荐视频封面
+              videoInfo.coverUrl = document.querySelector("#main-content > div.right-column > div.highlights > div.clearfix.area.highlights-list > figure:nth-child(1) > a > img").src;
+            } catch (error) {
+              //没有番剧推荐视频那就拿大家都在看的封面得了
+              videoInfo.coverUrl = document.querySelector("#pagelet_newrecommend > div > div > figure:nth-child(1) > a > img").src;
+            }
+          }
+          //分P
           let videoList = [];
-          if (videoList = document.querySelector(".scroll-div.over-parts").children) {
+          try {
+            videoList = document.querySelector(".scroll-div.over-parts").children;
+          } catch (error) {
+            try {
+              document.querySelector(".scroll-div").children;
+            } catch (error) {
+              fgConsole(this, this.videoMediaSession, "Normal Video.", 1, false);
+            }
+          }
+          if (videoList) {
             videoInfo["videoList"] = videoList;
           }
         }
+        fgConsole(this, this.videoMediaSession, "Attach MediaSession ActionHandler.", 1, false);
+        // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
 
         navigator.mediaSession.metadata = new MediaMetadata({
           title: `${videoInfo.title} - ${videoInfo.channel.parentName} > ${videoInfo.channel.name}`,
@@ -684,6 +720,16 @@ class VideoSetting {
             { src: videoInfo.coverUrl, sizes: '284x166', type: 'image/jpeg' },
           ]
         });
+
+        //MediaSession进度条处理 绝了，现在Windows还不支持
+        // let videoElem = document.getElementsByTagName("video")[0];
+        // videoElem.addEventListener('timeupdate', (e) => {
+        //   navigator.mediaSession.setPositionState({
+        //     duration: videoElem.duration,
+        //     playbackRate: videoElem.playbackRate,
+        //     position: videoElem.currentTime
+        //   });
+        // }, false);
 
         navigator.mediaSession.setActionHandler('seekbackward', function () {
           document.querySelector("video").currentTime -= 5
@@ -696,6 +742,7 @@ class VideoSetting {
           document.querySelector("video").currentTime = Number(details.seekTime);
         });
 
+        fgConsole(this, this.videoMediaSession, "Video MediaSession Attach Success.", 1, false);
 
         if (videoInfo.videoList.length > 1) {
           this.mediaSessionNowPlayingIndex = 0;
@@ -722,9 +769,94 @@ class VideoSetting {
             }
             document.querySelector("video").play()
           });
+          fgConsole(this, this.videoMediaSession, "Video MediaSession MultiPart Attach Success.", 1, false);
         }
       }
     })
+  }
+
+  /**
+   * 时间轴章节标记主函数
+   * @param {string} massText
+   */
+  timelineDotsMain(massText) {
+    if (massText) {
+      //清除原来的章节标记
+      document.querySelectorAll(".pro-chapterDots").forEach((e) => { e.remove() })
+      this.timelineDotsTextCache = massText;
+      let reg_for_time = new RegExp('[0-9]{1,3}[:分][0-9]{1,2}秒?');
+      let if_matchTime = reg_for_time.exec(massText);
+      //文本内存在时间标记
+      if (if_matchTime) {
+        var chapterDic = this.timelineDotsTextProcess(massText);
+        // console.log(chapterDic)
+        this.timelineDotsResultCache = chapterDic;
+        this.timelineDotsRender(chapterDic);
+      } else {
+        alert("选取的文段可能不符时间轴章节标记格式，请确认它类似“01:12 01:12 2021-2-11 正片”。");
+      }
+    } else {
+      fgConsole(this, this.timelineMain, "No content.", 3, false)
+    }
+  }
+
+  timelineDotsRender(chapterDic) {
+    document.querySelectorAll(".pro-chapterDots").forEach((e) => { e.remove() })
+    Object.keys(chapterDic).forEach((timeTag) => {
+      this.timelineDotsAdd(timeTag, chapterDic[timeTag]);
+    })
+  }
+
+  /**
+   * 时间标记和描述提取
+   * @param {string} massText 输入文本
+   * @returns {object} {"00:00":"新年这一刻",....}
+   */
+  timelineDotsTextProcess(massText) {
+    let resultArr = [];
+    let resultDic = {};
+    let reg_for_time = new RegExp("[0-9]{1,3}[:][0-9]{1,2}");
+    let srcArr = massText.split(" ");
+    let lastDicKey = "";
+    srcArr.forEach((e) => {
+      if (resultArr.indexOf(e) == -1) {
+        resultArr.push(e);
+      }
+    })
+    resultArr.forEach((e) => {
+      if (reg_for_time.test(e)) {
+        resultDic[e] = "";
+        lastDicKey = e;
+      } else {
+        resultDic[lastDicKey] += (" " + e);
+      }
+    })
+    return resultDic;
+  }
+
+  /**
+   * 处理单个章节标记点
+   * @param {string} time 时间 "01:02"
+   * @param {string} desc 描述 "《【年在一起】年年黏黏年》"
+   * @method 算出时间百分比 -> 获取时间轴长度 -> 计算出章节标记点所在位置 -> 填入DOM对象的css属性中 -> 增加DOM元素
+   */
+  timelineDotsAdd(time, desc = "") {
+    var _timer = setInterval(() => {
+      var processBarLen = document.querySelector(".progress").offsetWidth;
+      if (processBarLen != 0) {
+        //获取视频的时间长度在1%的单位时间 (秒)
+        let single = Number(document.querySelector("video").duration) / 1e2;
+        //此时间Tag的百分比 100%=1.0
+        let percent = Number((Duration2Seconds(time) / single).toFixed(2) / 1e2);
+        //此时间标记在时间轴上的位置
+        let progressLen = Number((processBarLen * percent).toFixed(1));
+        // console.log("processBarLen: ", processBarLen)
+        // console.log("length: ", processBarLen * percent.toFixed(1))
+        // console.log(percent, progressLen)
+        addElement({ tag: 'div', css: `left: ${progressLen}px;position: absolute;-moz-box-sizing: border-box;box-sizing: border-box;top: 50%;background-color: #F44C5D;border: 2px solid white;width: 14px;height: 14px;margin-left: -14px;top: 50%;margin-top: -7px;opacity: 0.5;-webkit-transition: opacity 0.3s, height 0.3s, width 0.3s, margin-top 0.3s, margin-left 0.3s;transition: opacity 0.3s, height 0.3s, width 0.3s, margin-top 0.3s, margin-left 0.3s;z-index: 98;`, target: document.querySelector(".container-pro-handle"), classes: 'pro-chapterDots', createMode: 'append', title: desc });
+        clearInterval(_timer);
+      }
+    }, 1000);
   }
 
 }
