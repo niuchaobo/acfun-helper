@@ -487,6 +487,10 @@ span.go-live {
     -o-border-radius: 3px;
 }
 
+#SubLive .popupLater {
+    display: none;
+}
+
 .popupLater>.mdui-checkbox-icon {
     top: 0;
 }

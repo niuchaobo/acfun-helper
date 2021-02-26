@@ -147,8 +147,10 @@ class ODHFront {
 		this.options.night && this.addNightStyle();
 		//首页
 		if (REG.index.test(href)) {
-			//开启右侧导航
-			this.options.beautify_nav && this.pageBeautify.navBeautify();
+            window.onload = () => {
+                //开启右侧导航
+                this.options.beautify_nav && this.pageBeautify.navBeautify();
+            }
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
 			//首页nav高斯模糊
