@@ -3,13 +3,20 @@
  */
 class Ohminibox{
     constructor(){
+        this.omnibox = chrome.omnibox;
+        this.initMod();
+    }
 
+    initMod(){
+        if(myBrowser()=="FF"){
+            this.omnibox = browser.omnibox;
+        }
     }
     
     registerOmnibox(){
         console.log("Registered Omnibox Mod.")
-        chrome.omnibox.onInputStarted.addListener(() => {});
-        chrome.omnibox.onInputChanged.addListener((text, suggest) => {
+        this.omnibox.onInputStarted.addListener(() => {});
+        this.omnibox.onInputChanged.addListener((text, suggest) => {
             let x0 = RegExp('-ac(.*)');
             let y0 = x0.exec(text);
             if(y0==null){
@@ -46,17 +53,18 @@ class Ohminibox{
             }
         });
         
-        chrome.omnibox.onInputEntered.addListener((text) => {
+        this.omnibox.onInputEntered.addListener((text) => {
             let x0 = RegExp('-ac(.*)');
             let y0 = x0.exec(text);
             if(y0==null){
-                window.open('https://www.acfun.cn/search?keyword='+String(encodeURI(text)));
+                let url = 'https://www.acfun.cn/search?keyword='+String(encodeURI(text));
+                window.open(url)||browser.tabs.create({url});
             }else{
                 window.open('https://www.acfun.cn/v/ac'+String(encodeURI(y0[1])));
             }
         });
         
-        chrome.omnibox.setDefaultSuggestion({
+        this.omnibox.setDefaultSuggestion({
             "description": "进入主站"
         });
     }
