@@ -2441,8 +2441,7 @@ $(document).ready(function () {
         });
     });
 
-    //====================插件前台-提前加载前台视频播放器模块===================
-    //FIXME:这可能是 【直播观看计时】 功能的开关
+    //====================直播观看计时板===================
     chrome.storage.local.get(['LiveWatchTimeRec_popup'],function(items){
         var LiveWatchTimeRec_popup= items.LiveWatchTimeRec_popup;
         if(LiveWatchTimeRec_popup){
@@ -2482,7 +2481,6 @@ $(document).ready(function () {
     });
 
     //====================自定义样式===================
-    //FIXME:这可能是 【提前加在前台视频播放器模块】 功能的开关
     chrome.storage.local.get(['custom_css'],function(items){
         var custom_css= items.custom_css;
         $('#custom-css').on('keyup',function(){

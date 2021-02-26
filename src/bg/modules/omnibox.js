@@ -56,12 +56,13 @@ class Ohminibox{
         this.omnibox.onInputEntered.addListener((text) => {
             let x0 = RegExp('-ac(.*)');
             let y0 = x0.exec(text);
+            let url;
             if(y0==null){
-                let url = 'https://www.acfun.cn/search?keyword='+String(encodeURI(text));
-                window.open(url)||browser.tabs.create({url});
+                url = 'https://www.acfun.cn/search?keyword='+String(encodeURI(text));
             }else{
-                window.open('https://www.acfun.cn/v/ac'+String(encodeURI(y0[1])));
+                url='https://www.acfun.cn/v/ac'+String(encodeURI(y0[1]));
             }
+            window.open(url)||browser.tabs.create({url});
         });
         
         this.omnibox.setDefaultSuggestion({

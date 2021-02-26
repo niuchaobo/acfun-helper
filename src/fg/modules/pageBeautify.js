@@ -658,4 +658,11 @@ class PageBeautify {
       });
     }
   }
+
+  multiPartListSpread(){
+		createElementStyle(`
+			.part-wrap{max-height: fit-content;}
+		`)
+	}
+
 }
