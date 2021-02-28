@@ -147,10 +147,10 @@ class ODHFront {
 		this.options.night && this.addNightStyle();
 		//首页
 		if (REG.index.test(href)) {
-            window.onload = () => {
-                //开启右侧导航
-                this.options.beautify_nav && this.pageBeautify.navBeautify();
-            }
+			window.onload = () => {
+				//开启右侧导航
+				this.options.beautify_nav && this.pageBeautify.navBeautify();
+			}
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
 			//首页nav高斯模糊
@@ -294,6 +294,9 @@ class ODHFront {
 				this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
 				//弹幕列表前往Acer个人主页
 				this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
+				//分P列表扩展
+				this.options.multiPartListSpread && this.pageBeautify.multiPartListSpread()
+
 			})
 			//倍率扩大音量
 			this.options.audioGain && this.videoSetting.audioNodeGain();
