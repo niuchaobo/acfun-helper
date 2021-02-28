@@ -16,9 +16,12 @@ let liveFunction = (function () {
             e.target.classList[0] == "user-enter"
           ) {
             let x = new Date();
-            let w = e.target.children[0].innerHTML;
-            e.target.children[0].innerHTML =
-              `<span>[${x.getHours().toString().length == 1 ? "0" + x.getHours().toString() : x.getHours()}:${x.getMinutes().toString().length == 1 ? "0" + x.getMinutes().toString() : x.getMinutes()}] </span>` + w;
+            let f_c=e.target.children[0].firstChild;
+            let span = document.createElement('span');
+            let time_hour = x.getHours().toString().length == 1 ? "0" + x.getHours().toString() : x.getHours();
+            let time_min = x.getMinutes().toString().length == 1 ? "0" + x.getMinutes().toString() : x.getMinutes();
+            span.innerHTML = `[${time_hour}:${time_min}]`;
+            e.target.children[0].insertBefore(span, f_c);
           }
         });
       clearInterval(_timer);
