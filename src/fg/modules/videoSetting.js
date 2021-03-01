@@ -236,17 +236,17 @@ class VideoSetting {
       });
     });
   }
-  updateAbPlayFirst(){
+  updateAbPlayFirst() {
     if (this.abPlayFlag === 1) {
       leftBottomTip("请先", "停止");
       return;
     }
-    let fistTime = document.getElementsByTagName("video")[0].currentTime;
-    if (this.abPlaySecond && fistTime >= this.abPlaySecond) {
+    let firstTime = document.getElementsByTagName("video")[0].currentTime;
+    if (this.abPlaySecond && firstTime >= this.abPlaySecond) {
       leftBottomTip("A要在B之前", "---鲁迅");
       return;
     }
-    this.abPlayFirst = fistTime;
+    this.abPlayFirst = firstTime;
     leftBottomTip(`标记点A :`, `${timeToMinute(this.abPlayFirst)}`);
     $(".abplay-panel>ul>.updateAbPlayFirst").text(
       `A : ${timeToMinute(this.abPlayFirst)}`
@@ -257,7 +257,7 @@ class VideoSetting {
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
   }
-    updateAbPlaySecond(){
+  updateAbPlaySecond() {
     if (this.abPlayFlag === 1) {
       leftBottomTip("请先", "停止");
       return;
@@ -278,7 +278,7 @@ class VideoSetting {
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
   }
-  stopAbPlay(){
+  stopAbPlay() {
     this.abPlayFirst = this.abPlaySecond = undefined;
     $(".abplay-panel>ul>.updateAbPlayFirst").text("标记点A");
     $(".abplay-panel>ul>.updateAbPlaySecond").text("标记点B");
@@ -291,13 +291,13 @@ class VideoSetting {
       this.abPlayFlag = 0;
       document
         .getElementsByTagName("video")[0]
-        .removeEventListener("timeupdate", this.abPlayMain, false);
+        .removeEventListener("timeupdate", this.abPlayMain.bind(this), false);
       $(".abplay-panel>ul>.abPlayHandler").text("开始");
       leftBottomTip("标记已清除,AB回放已", "退出");
       return;
     }
   }
-  abPlayMain(){
+  abPlayMain() {
     if (this.abPlayFlag == 0) {
       return;
     }
@@ -305,7 +305,7 @@ class VideoSetting {
       document.getElementsByTagName("video")[0].currentTime = this.abPlayFirst;
     }
   }
-  abPlayHandler(){
+  abPlayHandler() {
     let targetVideo = document.getElementsByTagName("video")[0];
     if (this.abPlayFirst === undefined || this.abPlaySecond === undefined) {
       leftBottomTip("请先设置", "标记点");
@@ -316,14 +316,14 @@ class VideoSetting {
       $(".abplay-panel>ul>.abPlayHandler").text("停止");
       $(".abplay-panel>ul>.stopAbPlay").text("清除&停止");
       targetVideo.paused && targetVideo.play();
-      targetVideo.removeEventListener("timeupdate", this.abPlayMain, false);
+      targetVideo.removeEventListener("timeupdate", this.abPlayMain.bind(this), false);
       targetVideo.currentTime = this.abPlayFirst;
-      targetVideo.addEventListener("timeupdate", this.abPlayMain, false);
+      targetVideo.addEventListener("timeupdate", this.abPlayMain.bind(this), false);
       this.abPlayFlag = 1;
       return;
     }
     if (this.abPlayFlag === 1) {
-      targetVideo.removeEventListener("timeupdate", this.abPlayMain, false);
+      targetVideo.removeEventListener("timeupdate", this.abPlayMain.bind(this), false);
       targetVideo.pause();
       $(".abplay-panel>ul>.abPlayHandler").text("开始");
       this.abPlayFlag = 0;
@@ -548,7 +548,7 @@ class VideoSetting {
     videoRate <= 0 ? (videoRate = 0.25) : videoRate >= 2 ? (videoRate = 2) : "";
     return videoRate;
   }
-//TODO:部分情况失效问题
+  //TODO:部分情况失效问题
   danmuSearchListToUser() {
     $(".danmaku-items").bind(
       "DOMNodeInserted",
@@ -572,7 +572,7 @@ class VideoSetting {
           $(e.target).children(".searchListUser").eq(0).unbind("click");
           $(e.target)
             .children(".searchListUser")
-            .attr('title',`ID:${userId}`)
+            .attr('title', `ID:${userId}`)
             .eq(0)
             .bind("click", () => {
               e.stopPropagation();
