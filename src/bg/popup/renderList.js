@@ -182,7 +182,7 @@ export async function renderPushInnerHtml() {
                     </div> 
                     <div class="r"> 
                         <a data-aid=${data.aid} target="_blank" href="https://www.acfun.cn${data.isArticle ? "/a/ac" : "/v/ac"}${data.cid}" class="title">
-                            ${data.title}$
+                            ${data.title}
                         </a> 
                         <div class="info">
                             <a target="_blank" data-uid=${data.aid} href="https://www.acfun.cn/u/${data.userId}" class="name">
