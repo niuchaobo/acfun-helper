@@ -30,6 +30,7 @@ class PageBeautify {
       }
       for (let i = 0; i < length; i++) {
         if (scrop < a[0]) {
+            console.log(targetDiv)
           targetDiv.removeClass("isSelected").eq(i).addClass("isSelected");
           break;
         }
@@ -63,6 +64,9 @@ class PageBeautify {
     Array.prototype.slice
       .call(document.getElementsByClassName("home-main-content")[0].children)
       .forEach((item, index) => {
+        if(!item.children.length){
+            return
+        }
         Array.prototype.slice
           .call(item.getElementsByClassName("header-title"))
           .forEach(
