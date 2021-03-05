@@ -26,11 +26,13 @@ class PageBeautify {
       let scrop = $(document).scrollTop(); //获取页面滚动条离顶部的距离
       let a = [];
       for (let i = 0; i < length; i++) {
+          if(!homeDiv.eq(i).children().length){
+              continue
+          }
         a.push(homeDiv.eq(i).offset().top);
       }
       for (let i = 0; i < length; i++) {
         if (scrop < a[0]) {
-            console.log(targetDiv)
           targetDiv.removeClass("isSelected").eq(i).addClass("isSelected");
           break;
         }
