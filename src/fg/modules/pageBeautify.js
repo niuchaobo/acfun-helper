@@ -26,6 +26,9 @@ class PageBeautify {
       let scrop = $(document).scrollTop(); //获取页面滚动条离顶部的距离
       let a = [];
       for (let i = 0; i < length; i++) {
+          if(!homeDiv.eq(i).children().length){
+              continue
+          }
         a.push(homeDiv.eq(i).offset().top);
       }
       for (let i = 0; i < length; i++) {
@@ -63,6 +66,9 @@ class PageBeautify {
     Array.prototype.slice
       .call(document.getElementsByClassName("home-main-content")[0].children)
       .forEach((item, index) => {
+        if(!item.children.length){
+            return
+        }
         Array.prototype.slice
           .call(item.getElementsByClassName("header-title"))
           .forEach(
