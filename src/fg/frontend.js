@@ -101,6 +101,14 @@ class ODHFront {
 		// window.addEventListener("popstate", function(e){
 		// 	this.onPagechanged();
 		// });
+
+		//Uid获取
+		try {
+            var UidInCookies = document.cookie.match("auth_key=(.*); ac_username")[1];
+        } catch (TypeError) {
+            var UidInCookies = 0;
+        }
+        chrome.storage.local.set({ LocalUserId: `${UidInCookies}` });
 	}
 
 	onACPlayerLoaded(e) {
