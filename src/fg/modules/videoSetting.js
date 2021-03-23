@@ -8,7 +8,8 @@ class VideoSetting {
     this.audioNodeGainFlag = false;
     this.audioOriginVolume = 0;
     this.mediaSessionNowPlayingIndex = 0;
-    this.devMode = false;
+    this.acNum = 0;
+    this.devMode = true;
     this.progressBarOptions = {
       id: "achlp-proBar",
       css:
@@ -131,7 +132,6 @@ class VideoSetting {
             case 1:
               qualitys[0].click();
               // console.log(qualitys[0].dataset.qualityType);
-              // console.log('ok');
               break;
             case 2:
               for (let i = 0; i <= qualitys.length; i++) {
@@ -663,6 +663,7 @@ class VideoSetting {
     fgConsole(this, this.videoMediaSession, "Init MediaSessionModule.", 1, false);
     window.addEventListener('message', (e) => {
       let videoInfo = {};
+      this.acNum = REG.acVid.exec(location.href)[2];
       if (e.data.to == 'videoInfo') {
         try {
           videoInfo = JSON.parse(e.data.msg);
@@ -680,7 +681,8 @@ class VideoSetting {
             "user": {
               "name": document.querySelectorAll("meta")[5].content.split(",")[3],
             },
-            coverUrl: ""
+            coverUrl: "",
+            videoList: [],
           }
           //封面
           try {
@@ -696,83 +698,129 @@ class VideoSetting {
             }
           }
           //分P
-          let videoList = [];
-          try {
-            videoList = document.querySelector(".scroll-div.over-parts").children;
-          } catch (error) {
-            try {
-              document.querySelector(".scroll-div").children;
-            } catch (error) {
-              fgConsole(this, this.videoMediaSession, "Normal Video.", 1, false);
-            }
-          }
-          if (videoList) {
-            videoInfo["videoList"] = videoList;
-          }
+          this.mediaSessionGatherMultiPartInfo(videoInfo);
         }
         fgConsole(this, this.videoMediaSession, "Attach MediaSession ActionHandler.", 1, false);
         // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
-
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: `${videoInfo.title} - ${videoInfo.channel.parentName} > ${videoInfo.channel.name}`,
-          artist: "AcFun: " + videoInfo.user.name,
-          artwork: [
-            { src: videoInfo.coverUrl, sizes: '284x166', type: 'image/jpeg' },
-          ]
-        });
-
-        //MediaSession进度条处理 绝了，现在Windows还不支持
-        // let videoElem = document.getElementsByTagName("video")[0];
-        // videoElem.addEventListener('timeupdate', (e) => {
-        //   navigator.mediaSession.setPositionState({
-        //     duration: videoElem.duration,
-        //     playbackRate: videoElem.playbackRate,
-        //     position: videoElem.currentTime
-        //   });
-        // }, false);
-
-        navigator.mediaSession.setActionHandler('seekbackward', function () {
-          document.querySelector("video").currentTime -= 5
-        })
-        navigator.mediaSession.setActionHandler('seekforward', function () {
-          document.querySelector("video").currentTime += 5
-        });
-        //鸡肋的时间设定
-        navigator.mediaSession.setActionHandler("seekto", function (details) {
-          document.querySelector("video").currentTime = Number(details.seekTime);
-        });
-
-        fgConsole(this, this.videoMediaSession, "Video MediaSession Attach Success.", 1, false);
-
-        if (videoInfo.videoList.length > 1) {
-          this.mediaSessionNowPlayingIndex = 0;
-
-          navigator.mediaSession.setActionHandler('previoustrack', () => {
-            if (this.mediaSessionNowPlayingIndex <= 0) {
-              //do nothing
-            } else {
-              this.mediaSessionNowPlayingIndex--;
-              this.devMode && console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`)
-              document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
-            }
-            document.querySelector("video").play()
-          });
-
-          navigator.mediaSession.setActionHandler('nexttrack', () => {
-            if (this.mediaSessionNowPlayingIndex == videoInfo.videoList.length - 1) {
-              //do nothing
-            } else {
-              this.mediaSessionNowPlayingIndex++;
-              this.devMode && console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`)
-              document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
-              document.querySelector(".btn-play.control-btn").click();
-            }
-            document.querySelector("video").play()
-          });
-          fgConsole(this, this.videoMediaSession, "Video MediaSession MultiPart Attach Success.", 1, false);
-        }
+        this.mediaSessionCore(videoInfo);
       }
     })
+  }
+
+  mediaSessionCore(videoInfo) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: `${videoInfo.title} - ${videoInfo.channel.parentName} > ${videoInfo.channel.name}`,
+      artist: "AcFun: " + videoInfo.user.name,
+      artwork: [
+        { src: videoInfo.coverUrl, sizes: '284x166', type: 'image/jpeg' },
+      ]
+    });
+
+    //MediaSession进度条处理 绝了，现在Windows还不支持
+    // let videoElem = document.getElementsByTagName("video")[0];
+    // videoElem.addEventListener('timeupdate', (e) => {
+    //   navigator.mediaSession.setPositionState({
+    //     duration: videoElem.duration,
+    //     playbackRate: videoElem.playbackRate,
+    //     position: videoElem.currentTime
+    //   });
+    // }, false);
+
+    navigator.mediaSession.setActionHandler('seekbackward', function () {
+      document.querySelector("video").currentTime -= 5
+    })
+    navigator.mediaSession.setActionHandler('seekforward', function () {
+      document.querySelector("video").currentTime += 5
+    });
+    //鸡肋的时间设定
+    navigator.mediaSession.setActionHandler("seekto", function (details) {
+      document.querySelector("video").currentTime = Number(details.seekTime);
+    });
+
+    fgConsole(this, this.videoMediaSession, "Video MediaSession Attach Success.", 1, false);
+
+    if (videoInfo.videoList.length > 1) {
+      this.mediaSessionNowPlayingIndex = REG.videoPartNumByURL.exec(location.href)[1] || 0;
+      this.partNum = videoInfo.videoList.length;
+
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        this.mediaSessionPlayer("previous", videoInfo);
+      });
+
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        this.mediaSessionPlayer("next", videoInfo);
+
+      });
+      fgConsole(this, this.videoMediaSession, "Video MediaSession MultiPart Attach Success.", 1, false);
+    }
+
+  }
+
+  mediaSessionPlayer(action, videoInfo) {
+    switch (action) {
+      case "previous":
+        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex - 1) % (videoInfo.videoList.length - 1);
+        break;
+      case "next":
+        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex + 1) % (videoInfo.videoList.length - 1);
+        break;
+      default:
+        break;
+    }
+    document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
+    document.querySelector("video").play();
+  }
+
+  /**
+   * 重载MediaSession
+   */
+  mediaSessionReset() {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: "",
+      artist: "AcFun",
+      artwork: []
+    });
+    navigator.mediaSession.setActionHandler('previoustrack', () => { });
+    navigator.mediaSession.setActionHandler('nexttrack', () => { });
+  }
+  mediaSessionReAttach() {
+    let videoInfo = {};
+    setTimeout(() => {
+      videoInfo = {
+        "title": document.querySelector(".video-description.clearfix>.title").innerText,
+        "channel": {
+          "parentName": document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second").innerText,
+          "name": document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third").innerText
+        },
+        "user": {
+          "name": document.querySelector("a.up-name").innerText,
+        },
+        coverUrl: document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src,
+        videoList: [],
+      }
+      this.mediaSessionGatherMultiPartInfo(videoInfo);
+      if (this.mediaSessionJudgeChangeVideo()) {
+        this.mediaSessionNowPlayingIndex = 0;
+        this.mediaSessionReset();
+        this.mediaSessionCore(videoInfo);
+      }
+    }, 312);
+  }
+
+  mediaSessionGatherMultiPartInfo(videoInfo) {
+    try {
+      videoInfo["videoList"] = document.querySelector(".scroll-div.over-parts").children;
+    } catch (error) {
+      try {
+        videoInfo["videoList"] = document.querySelector(".scroll-div").children;
+      } catch (error) {
+        fgConsole(this, this.videoMediaSession, "Normal Video.", 1, false);
+      }
+    }
+  }
+
+  mediaSessionJudgeChangeVideo() {
+    return this.acNum != REG.acVid.exec(location.href)[2];
   }
 
   /**

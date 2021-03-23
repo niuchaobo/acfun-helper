@@ -104,11 +104,11 @@ class ODHFront {
 
 		//Uid获取
 		try {
-            var UidInCookies = document.cookie.match("auth_key=(.*); ac_username")[1];
-        } catch (TypeError) {
-            var UidInCookies = 0;
-        }
-        chrome.storage.local.set({ LocalUserId: `${UidInCookies}` });
+			var UidInCookies = document.cookie.match("auth_key=(.*); ac_username")[1];
+		} catch (TypeError) {
+			var UidInCookies = 0;
+		}
+		chrome.storage.local.set({ LocalUserId: `${UidInCookies}` });
 	}
 
 	onACPlayerLoaded(e) {
@@ -137,7 +137,7 @@ class ODHFront {
 				//自动点赞
 				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
 			}, 200)
-			// this.onPlayerUrlChange();
+			this.onPlayerUrlChange();
 		}
 	}
 
@@ -311,7 +311,7 @@ class ODHFront {
 			//快捷键评论发送
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
 			//MediaSession
-			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
+			// this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 		}
 		this.authInfo.cookInfo();
 	}
@@ -342,8 +342,8 @@ class ODHFront {
 		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
 		//观察器回调
 		var obsrvcall = (mutations) => {
-			console.log(mutations)
 			if (mutations[0].oldValue != null && REG.videoPlayerSrc.test(mutations[0].oldValue)) {
+				// console.log(mutations)
 				this.reattachFrontMods();
 			}
 		}
@@ -358,7 +358,18 @@ class ODHFront {
 	 * @description 用于在切换分P或者点击大家都在看、推荐视频之后的模块数据刷新。
 	 */
 	reattachFrontMods() {
-
+		if (this.videoSetting.mediaSessionJudgeChangeVideo()) {
+			let isLogin = false;
+			if (isLoginByUi(false)) {
+				isLogin = true;
+			}
+			this.videoSetting.mediaSessionReAttach();
+			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
+			this.videoSetting.videoQuality(isLogin);
+			this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
+			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
+		}
+		this.danmaku.cacheStore();
 	}
 
 	//抽奖
