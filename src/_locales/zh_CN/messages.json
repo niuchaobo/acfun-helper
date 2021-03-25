@@ -1,6 +1,14 @@
 {
     "appName": { "message": "AcFun助手" },
     "appDesc": { "message": "AcFun助手" },
-    "optTitle": { "message": "AcFun助手" }
-
+    "optTitle": { "message": "AcFun助手" },
+    "omniboxDefaultSuggestion":{"message": "进入主站"},
+    "omniboxInputSuggestion":{"message": "查看 $KEYWORD$ 在主站的有关内容",
+        "placeholders": {
+            "keyword" : {
+              "content" : "$1",
+              "example" : "AcFun助手"
+            }
+        }
+    }
 }

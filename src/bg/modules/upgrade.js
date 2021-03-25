@@ -29,19 +29,19 @@ class UpgradeAgent {
     checkUpdate() {
         if (this.ifRightDay()) {
             //POST版本号至服务器，服务器对比最新的版本之后返回一个int值，0：不需要更新，1：小版本更新-弱提醒，2：重要功能更新-强提醒(session and cache please)
-            var version = null
-            $.get(chrome.extension.getURL("manifest.json"), function (content) {
-                chrome.storage.local.set({ Version: content.version });
-                version = content.version;
-                fetch('https://mini.pocketword.cn/api/acfun-helper/newversion/', { method: "POST", headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*" }, body: version })
-                    .then((res) => { return res.text(); })
-                    .then((res) => {
-                        chrome.storage.local.remove("Upgradeable");
-                        let x = JSON.parse(res);
-                        let key = x.result;
-                        chrome.storage.local.set({ Upgradeable: key });
-                    });
-            }, 'json');
+            const version = chrome.runtime.getManifest().version;
+            fetch('https://mini.pocketword.cn/api/acfun-helper/newversion/', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*" },
+                body: version
+            }
+            )
+                .then((res) => { return res.json(); })
+                .then((res) => {
+                    chrome.storage.local.remove("Upgradeable");
+                    let key = res.result;
+                    chrome.storage.local.set({ Upgradeable: key });
+                })
         }
     }
 
