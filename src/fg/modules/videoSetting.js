@@ -9,7 +9,7 @@ class VideoSetting {
     this.audioOriginVolume = 0;
     this.mediaSessionNowPlayingIndex = 0;
     this.acNum = 0;
-    this.devMode = true;
+    this.devMode = false;
     this.progressBarOptions = {
       id: "achlp-proBar",
       css:
@@ -663,7 +663,11 @@ class VideoSetting {
     fgConsole(this, this.videoMediaSession, "Init MediaSessionModule.", 1, false);
     window.addEventListener('message', (e) => {
       let videoInfo = {};
-      this.acNum = REG.acVid.exec(location.href)[2];
+      try {
+        this.acNum = REG.acVid.exec(location.href)[2];
+      } catch (error) {
+        this.acNum = REG.acBangumid.exec(location.href)[2];
+      }
       if (e.data.to == 'videoInfo') {
         try {
           videoInfo = JSON.parse(e.data.msg);
@@ -820,7 +824,11 @@ class VideoSetting {
   }
 
   mediaSessionJudgeChangeVideo() {
-    return this.acNum != REG.acVid.exec(location.href)[2];
+    try {
+      return this.acNum != REG.acVid.exec(location.href)[2];
+    } catch (error) {
+      return this.acNum != REG.acBangumid.exec(location.href)[2];
+    }
   }
 
   /**

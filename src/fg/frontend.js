@@ -204,7 +204,6 @@ class ODHFront {
 				}
 			}, 3000)
 		}
-		//直播首页及页面优化
 		if (!REG.live.test(href) && !REG.liveIndex.test(href)) {
 			//首页个人资料弹框 (未完成)
 			this.options.beautify_personal && getAsyncDom('#header .header-guide .guide-item', () => {
@@ -259,8 +258,6 @@ class ODHFront {
 				this.ce.immedComt();
 			}
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
-			//MediaSession
-			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 		}
 		//文章
 		if (REG.article.test(href)) {
@@ -311,9 +308,11 @@ class ODHFront {
 			//快捷键评论发送
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
 			//MediaSession
-			// this.options.videoMediaSession && this.videoSetting.videoMediaSession();
+			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 		}
 		this.authInfo.cookInfo();
+		//<a>标签动画
+		createElementStyle(`a {transition: color .2s ease, background-color .2s ease;}`);
 	}
 
 	onCommentAreaLoaded(e) {
