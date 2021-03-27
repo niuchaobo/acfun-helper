@@ -142,15 +142,6 @@ let videoFunction = (function () {
 
     window.parent.postMessage(
       {
-        to: "frame_danmaku",
-        acId: `${window.player.acId}`,
-        msg: `${JSON.stringify(window.player._danmaku.list)}`,
-      },
-      "*"
-    );
-
-    window.parent.postMessage(
-      {
         to: "vs_videoInfo",
         msg: `${JSON.stringify(window.player.videoInfo.videoList)}`,
       },

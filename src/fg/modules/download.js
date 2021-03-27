@@ -30,7 +30,7 @@ class Download {
         let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/');
         let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/');
         var prefix = "";
-        fgConsole(this,this.downloadVideo,`M3u8 address is: ${m3u8}`,1,false)
+        fgConsole(this, this.downloadVideo, `M3u8 address is: ${m3u8}`, 1, false)
         if (reg.test(m3u8)) {
             prefix = m3u8.match(reg)[0];
         } else if (reg_new.test(m3u8)) {
@@ -159,55 +159,13 @@ class Download {
     async downloadDanmaku() {
         let acid = REG.acVid.exec(window.location.href)[2];
         let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + acid));
-        // console.log(videoInfo)
-        // try {
-            let e = {};
-            e = JSON.parse(sessionStorage.getItem("danmakuCache"));
-            if (JSON.parse(e.msg).length == 0 || e.msg == undefined) {
-                // let danmus = [];
-                // let danmakuNum = videoInfo.danmakuCount;
-                // console.log("danmakuNum: " + danmakuNum);
-                // let remainNum = danmakuNum % 200;
-                // console.log("remainNum: " + remainNum);
-
-                let rawRes = await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=1&count=` + 2000 + "&sortType=1&asc=false", true);
-                let res = JSON.parse(rawRes)
-
-                e.msg = JSON.stringify(res.danmakus);
-
-                // let rawRes = await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=1&count=` + remainNum + "&sortType=1&asc=false", true);
-                // let res = JSON.parse(rawRes)
-                // danmus = danmus.concat(res.danmakus)
-
-                // danmakuNum = danmakuNum - remainNum;
-                // let tryNum = danmakuNum / 200;
-                // let nowCount = remainNum;
-                // console.log("tryNum: " + tryNum);
-
-                // for (let i = 0; i <= tryNum; i++) {
-                //     console.log("nowCount: " + nowCount);
-                //     let rawRes = await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=` + nowCount + "&count=" + 200 + "&sortType=1&asc=false", true);
-                //     let res = JSON.parse(rawRes)
-                //     console.log(i)
-                //     console.log(res)
-                //     danmus = danmus.concat(res.danmakus)
-                //     nowCount += 200;
-
-                // }
-            }
-            var blob = new Blob([e.msg], { type: 'application/octet-stream' });
-            var url = window.URL.createObjectURL(blob);
-            var saveas = document.createElement('a');
-            saveas.href = url;
-            saveas.style.display = 'none';
-            document.body.appendChild(saveas);
-            saveas.download = `${e.acId}.json`;
-            saveas.click();
-            setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
-            document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
-        // } catch (error) {
-        //     alert("可能遇到了某些错误，请刷新一下页面。")
-        // }
+        let pageCount = Math.round(videoInfo.danmakuCount / 200);
+        let result = [];
+        for (let i = 1; i <= pageCount; i++) {
+            let rawRes = JSON.parse(await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=${i}&count=200&sortType=1&asc=false`, true));
+            result = result.concat(rawRes.danmakus);
+        }
+        downloadThings(JSON.stringify(result), acid+"-danmaku.json");
     }
 
 }

@@ -14,36 +14,21 @@ class Danmaku {
     }
 
     /**
-     * 将弹幕信息转存到sessionStorage
-     */
-    cacheStore() {
-        window.addEventListener('message', function (e) {
-            if (e.data.to == 'frame_danmaku') {
-                sessionStorage.setItem("danmakuCache", `${JSON.stringify(e.data)}`);
-            }
-        })
-    }
-
-    /**
      * 获取弹幕信息格式化为Ass格式的弹幕（待完善）
      * @todo 没有解决好弹幕重叠问题
      */
     async sanitizeJsonDanmakuToAss() {
         this.devMode&&console.log("loaded")
 
-        this.acid = REG.acVid.exec(window.location.href)[2];
-        let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + this.acid));
-        fetch('https://www.acfun.cn/rest/pc-direct/new-danmaku/list', {
-            method: "POST", credentials: 'include', headers: {
-                'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
-            }, body: `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=1&count=2000&sortType=1&asc=false`
-        })
-            .then((res => { return res.text() }))
-            .then((res) => {
-                let x = JSON.parse(res);
-                this.devMode&&console.log(x)
-                this.assDanmakuProcess(x.danmakus, x.danmakus.length, false, videoInfo);
-            })
+        let acid = REG.acVid.exec(window.location.href)[2];
+        let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + acid));
+        let pageCount = Math.round(videoInfo.danmakuCount / 200);
+        let result = [];
+        for (let i = 1; i <= pageCount; i++) {
+            let rawRes = JSON.parse(await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=${i}&count=200&sortType=1&asc=false`, true));
+            result = result.concat(rawRes.danmakus);
+        }
+        this.assDanmakuProcess(result, result.length, false, videoInfo);
     }
 
     /**
