@@ -25,10 +25,10 @@ class ODHFront {
 		this.loading()
 
 		//监听storage变化,可用于数据云同步
-		chrome.storage.onChanged.addListener(function (changes, areaName) {
-			// console.log('11111111111111111')
-			// console.log(document.cookie);
-		});
+		// chrome.storage.onChanged.addListener(function (changes, areaName) {
+		// 	console.log('11111111111111111')
+		// 	console.log(document.cookie);
+		// });
 	}
 
 	onBgMessage(request, sender, callback) {
@@ -63,20 +63,10 @@ class ODHFront {
 			"span.pos.up {background-color: #66ccff !important;}" +
 			"p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
 			"p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
+			//<a>标签柔和动画
+			"a {transition: color .2s ease, background-color .2s ease;}" +
 			"";
-		let headDom = document.getElementsByTagName("head")[0]
-		createElementStyle(str, headDom)
-	}
-
-
-	addNightStyle() {
-		let div = document.createElement("div");
-		div.id = "acfun_night_conver";
-		div.style =
-			"width: 100%; height: 100%; transition: -webkit-transform 10s ease-in-out 0s; z-index: 2147483647; opacity: 0.25; position: fixed !important; left: 0px !important; bottom: 0px !important; overflow: hidden !important; background: rgb(0, 0, 0) !important; pointer-events: none !important;";
-		//let cover = '<div id="__nightingale_view_cover" ' +
-		//  'style="width: 100%; height: 100%; transition: -webkit-transform 10s ease-in-out 0s; z-index: 2147483647; opacity: 0.25; position: fixed !important; left: 0px !important; bottom: 0px !important; overflow: hidden !important; background: rgb(0, 0, 0) !important; pointer-events: none !important;"></div>';
-		document.body.appendChild(div);
+		createElementStyle(str);
 	}
 
 	async loading() {
@@ -151,8 +141,6 @@ class ODHFront {
 		this.options.Dev_thinScrollbar && this.pageBeautify.thinScrollBar();
 		//屏蔽功能
 		this.options.filter && this.block.injectScript();
-		//夜间模式
-		this.options.night && this.addNightStyle();
 		//首页
 		if (REG.index.test(href)) {
 			window.onload = () => {
@@ -310,8 +298,6 @@ class ODHFront {
 			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 		}
 		this.authInfo.cookInfo();
-		//<a>标签动画
-		createElementStyle(`a {transition: color .2s ease, background-color .2s ease;}`);
 	}
 
 	onCommentAreaLoaded(e) {
@@ -319,6 +305,7 @@ class ODHFront {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
 		}, 3000)
 	}
+	
 	/**
 	 * 播放器地址切换监听
 	 * @description 换分P、点击推荐等等会让播放器地址会被切换。

@@ -244,18 +244,8 @@ class Popup {
 
     popupFooter(type) {
         let root = chrome.runtime.getURL('/');
-        let fn = () => {
-            /*if(type=='live'){
-                return `<script charset="UTF-8" src="${root+'lib/video.js'}"></script>
-                        <script charset="UTF-8" src="${root+'lib/videojs-contrib-hls.min.js'}"></script>
-                        <script charset="UTF-8" src="${root+'fg/js/live.js'}"></script>
-                        `;
-            }*/
-            return '';
-        };
         return `
             </div>
-            ${fn()}
             <script charset="UTF-8" src="${root + 'lib/jquery-3.5.1.min.js'}"></script>
             <script charset="UTF-8" src="${root + 'bg/lib/jqueryExtend.js'}"></script>
             <script charset="UTF-8" src="${root + 'fg/frame.js'}"></script>

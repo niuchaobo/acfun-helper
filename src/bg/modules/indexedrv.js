@@ -4,8 +4,6 @@
 const db = new Dexie("acfunhelper");
 const db2 = new Dexie("acfunhelper-square");
 const db3 = new Dexie("acfunhelper-bangumi");
-const Pushlist_struct = "goldBanana,userId,title,channelId,author,isSignedUpCollege,isArticle,views,vid,allowDanmaku,stows,titleImg,shareUrl,releaseDate,danmakuSize,avatar,errorlog,score,contentClass,cid,userImg,verifiedType,verifiedText,aid,time,url,comments,sign,tags,description,success,username"
-const Pushlist_Commonstruct = "aid,userId"
 const Bangumi_struct = "coverUrls,showPlayCount,shareCount,commentCount,showStowCount,showSerialStatus,isOver,updateDayOfWeek,updateDayTime,bangumiId,lastVideoName,caption,description,paymentType,recoReason,acfunOnly,likeCount,stowCount,shareUrl,playCount,areaShow,firstPlayDate,lastUpdateItemTimeStr,updateDayTimeStr"
 
 function test() {

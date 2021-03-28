@@ -1,4 +1,3 @@
-// import dayjs from "../lib/day.min.js";
 /**
  * 控制台消息代理
  * @param {string} department "fg" "bg"

@@ -38,7 +38,6 @@ class Live {
     async liveMediaSession(href) {
         let roomId = REG.liveRoomID.exec(href)[2];
         let liveData = JSON.parse(await fetchResult(acfunApis.liveInfo + roomId));
-        console.log(liveData)
         if (liveData.streamName == undefined) {
             this.devMode && console.log("offline")
             return;

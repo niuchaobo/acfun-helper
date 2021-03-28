@@ -1,4 +1,3 @@
-/* global spell */
 function getImageSource(id) {
     return document.querySelector(`#${id}`).src;
 }

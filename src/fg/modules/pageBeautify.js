@@ -157,9 +157,9 @@ class PageBeautify {
             "</p>"
           );
           node.after(
-            '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=following" target="_blank">关注 ' +
+            '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds?tab=following" target="_blank">关注 ' +
             a.info.following +
-            '</a> - <a href="https://www.acfun.cn/member/#area=followers" target="_blank">听众: ' +
+            '</a> - <a href="https://www.acfun.cn/member/feeds?tab=fans" target="_blank">听众: ' +
             a.info.followed +
             "</a></p>"
           );

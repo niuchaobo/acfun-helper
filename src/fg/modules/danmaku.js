@@ -1,7 +1,6 @@
 /**
  * 弹幕处理
  */
-
 class Danmaku {
     constructor() {
         this.devMode = false;

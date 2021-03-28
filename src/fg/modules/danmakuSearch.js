@@ -1,4 +1,3 @@
-/* global rangeFromPoint */
 /**
  * 视频播放页弹幕列表搜索模块
  */
