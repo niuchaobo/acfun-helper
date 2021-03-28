@@ -200,6 +200,21 @@ function onDomContentLoaded() {
     $("#comment-receive").change(receiveChange);
     $("#readmode").change(readmodeChange);
     $("#copy-link-super").bind('click', { "id": '#live-url-super' }, copyLink);
+    document.querySelector("span.addressCopySrc").addEventListener("click",function(e){
+        var aux = document.createElement("input");
+        aux.setAttribute("value", e.target.dataset.url);
+        document.body.appendChild(aux);
+        aux.select();
+        document.execCommand("copy");
+        document.body.removeChild(aux);
+        window.parent.postMessage({
+            action: 'notice',
+            params: {
+                title: 'AcFun助手',
+                msg: '下载地址复制到剪贴板。',
+            }
+        }, '*');
+    })
     //抽奖
     $("#lucy-chou").bind('click', lottery);
     $("#lucy-chouAgain").bind('click', lotteryAgain);

@@ -104,7 +104,8 @@ class Popup {
                 content += `<div class="odh-definition">
                             <ul class="ec">
                                 <li class="ec">
-                                    <span id="{id}" data-id="${id}" data-quality="${qualityLabel}" data-title="${title}" data-url="${vedioUrl}" class="pos simple">${qualityLabel}</span>
+                                    <span id="{id}" data-id="${id}" data-quality="${qualityLabel}" data-title="${title}" data-url="${vedioUrl}" class="pos simple">下载${qualityLabel}视频</span>
+                                    <span class="addressCopySrc" style="background-color: #fd4c5c !important;cursor: pointer;color:white;border-radius:3px;font-size:0.9em; margin-right:5px; padding:2px 4px;" data-id="${id}" data-quality="${qualityLabel}" data-title="${title}" data-url="${vedioUrl}">复制${qualityLabel}地址</span>
                                     <span id="${progressText}" class="ec_chn"></span>
                                 </li>
                             </ul>
