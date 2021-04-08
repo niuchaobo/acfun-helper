@@ -354,7 +354,6 @@ class ODHFront {
 			this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
 			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
 		}
-		this.danmaku.cacheStore();
 	}
 
 	//抽奖

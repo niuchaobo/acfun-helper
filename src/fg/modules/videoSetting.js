@@ -744,7 +744,11 @@ class VideoSetting {
     fgConsole(this, this.videoMediaSession, "Video MediaSession Attach Success.", 1, false);
 
     if (videoInfo.videoList.length > 1) {
-      this.mediaSessionNowPlayingIndex = REG.videoPartNumByURL.exec(location.href)[1] || 0;
+      try {
+        this.mediaSessionNowPlayingIndex = REG.videoPartNumByURL.exec(location.href)[1] || 0;
+      } catch (error) {
+        this.mediaSessionNowPlayingIndex = 0;
+      }
       this.partNum = videoInfo.videoList.length;
 
       navigator.mediaSession.setActionHandler('previoustrack', () => {
