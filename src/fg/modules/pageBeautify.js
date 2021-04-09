@@ -26,9 +26,9 @@ class PageBeautify {
       let scrop = $(document).scrollTop(); //获取页面滚动条离顶部的距离
       let a = [];
       for (let i = 0; i < length; i++) {
-          if(!homeDiv.eq(i).children().length){
-              continue
-          }
+        if (!homeDiv.eq(i).children().length) {
+          continue
+        }
         a.push(homeDiv.eq(i).offset().top);
       }
       for (let i = 0; i < length; i++) {
@@ -66,8 +66,8 @@ class PageBeautify {
     Array.prototype.slice
       .call(document.getElementsByClassName("home-main-content")[0].children)
       .forEach((item, index) => {
-        if(!item.children.length){
-            return
+        if (!item.children.length) {
+          return
         }
         Array.prototype.slice
           .call(item.getElementsByClassName("header-title"))
@@ -232,7 +232,7 @@ class PageBeautify {
       ? (cssStr += `.search-box input,[data-c-w-header] .search-box .form input,[data-c-w-header] .search-box .form input{border: none;background: 0 0;border-bottom: 1px solid;color: black;border-radius: 0px!important;} .search-box .search-btn{background: ##ff4b4b70;border-radius: 0px;}`)
       : "";
     //<a>标签动画
-    cssStr+=`a {transition: color .2s ease, background-color .2s ease;}`;
+    cssStr += `a {transition: color .2s ease, background-color .2s ease;}`;
     createElementStyle(cssStr);
   }
 
@@ -409,8 +409,6 @@ class PageBeautify {
     );
   }
 
-  darkenArticle() { }
-
   userMoment(href) {
     let x = document.createElement("li");
     x.dataset.index = "moment";
@@ -522,14 +520,11 @@ class PageBeautify {
   }
 
   pageUp4depList() {
-    this.devMode && console.log("up");
     let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
     if (targetElem.length == 0) {
       return;
     }
     if (targetElem[0].className == "pager__btn pager__btn__prev") {
-      this.devMode && console.log(targetElem[0]);
-      this.devMode && console.log("我点了，你呢");
       targetElem[0].click();
     }
   }
@@ -540,28 +535,22 @@ class PageBeautify {
       return;
     }
     if (targetElem[0].className == "pager__btn pager__btn__next") {
-      this.devMode && console.log(targetElem[0]);
-      this.devMode && console.log("我点了，你呢");
       targetElem[0].click();
     }
   }
 
   pageUp4UC() {
-    this.devMode && console.log("down");
     let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
     for (let i = 0; i < targetElem.length; i++) {
-      this.devMode && console.log(targetElem[i]);
-      this.devMode &&
-        console.log(
-          targetElem[i].parentElement.parentElement.parentElement.classList
-        );
-      this.devMode &&
-        console.log(
-          targetElem[i].parentElement.parentElement.parentElement
-            .classList[1] == "active" ||
-          targetElem[i].parentElement.parentElement.parentElement
-            .parentElement.classList[1] == "active"
-        );
+      // console.log(
+      //   targetElem[i].parentElement.parentElement.parentElement.classList
+      // );
+      // console.log(
+      //   targetElem[i].parentElement.parentElement.parentElement
+      //     .classList[1] == "active" ||
+      //   targetElem[i].parentElement.parentElement.parentElement
+      //     .parentElement.classList[1] == "active"
+      // );
       if (
         targetElem[i].className == "pager__btn pager__btn__prev" &&
         (targetElem[i].parentElement.parentElement.parentElement.classList[1] ==
@@ -569,30 +558,23 @@ class PageBeautify {
           targetElem[i].parentElement.parentElement.parentElement.parentElement
             .classList[1] == "active")
       ) {
-        this.devMode && console.log(targetElem[i]);
-        this.devMode && console.log("我点了，你呢");
         targetElem[i].click();
       }
     }
   }
 
   pageDown4UC() {
-    this.devMode && console.log("down");
     let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next");
     for (let i = 0; i < targetElem.length; i++) {
-      this.devMode && console.log(targetElem[i]);
-      this.devMode &&
-        console.log(
-          targetElem[i].parentElement.parentElement.parentElement.classList
-        );
-      this.devMode &&
-        console.log(
-          targetElem[i].parentElement.parentElement.parentElement
-            .classList[1] == "active" ||
-          targetElem[i].parentElement.parentElement.parentElement
-            .parentElement.classList[1] == "active"
-        );
-
+      // console.log(
+      //   targetElem[i].parentElement.parentElement.parentElement.classList
+      // );
+      // console.log(
+      //   targetElem[i].parentElement.parentElement.parentElement
+      //     .classList[1] == "active" ||
+      //   targetElem[i].parentElement.parentElement.parentElement
+      //     .parentElement.classList[1] == "active"
+      // );
       if (
         targetElem[i].className == "pager__btn pager__btn__next" &&
         (targetElem[i].parentElement.parentElement.parentElement.classList[1] ==
@@ -600,8 +582,6 @@ class PageBeautify {
           targetElem[i].parentElement.parentElement.parentElement.parentElement
             .classList[1] == "active")
       ) {
-        this.devMode && console.log(targetElem[i]);
-        this.devMode && console.log("我点了，你呢");
         targetElem[i].click();
       }
     }
