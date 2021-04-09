@@ -15,6 +15,12 @@ class AuthInfo {
         }
         chrome.storage.local.set({ AcCookies: `${AcCookies}` });
         // chrome.storage.local.get(['AcCookies'],function(a){console.log(a)});
+        window.addEventListener("message", (e) => {
+            if (e.data.to == "authinfo_mkey") {
+                chrome.storage.local.set({ Mkey: `${e.data.msg}` });
+            }
+        }, false)
+
     }
 
     // historyView() {
