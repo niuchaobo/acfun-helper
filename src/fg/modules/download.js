@@ -160,12 +160,15 @@ class Download {
         let acid = REG.acVid.exec(window.location.href)[2];
         let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + acid));
         let pageCount = Math.round(videoInfo.danmakuCount / 200);
+        if (pageCount == 0) {
+            pageCount = 1;
+        }
         let result = [];
         for (let i = 1; i <= pageCount; i++) {
             let rawRes = JSON.parse(await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=${i}&count=200&sortType=1&asc=false`, true));
             result = result.concat(rawRes.danmakus);
         }
-        downloadThings(JSON.stringify(result), acid+"-danmaku.json");
+        downloadThings(JSON.stringify(result), acid + "-danmaku.json");
     }
 
 }

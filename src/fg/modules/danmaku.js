@@ -17,11 +17,12 @@ class Danmaku {
      * @todo 没有解决好弹幕重叠问题
      */
     async sanitizeJsonDanmakuToAss() {
-        this.devMode&&console.log("loaded")
-
         let acid = REG.acVid.exec(window.location.href)[2];
         let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + acid));
         let pageCount = Math.round(videoInfo.danmakuCount / 200);
+        if (pageCount == 0) {
+            pageCount = 1;
+        }
         let result = [];
         for (let i = 1; i <= pageCount; i++) {
             let rawRes = JSON.parse(await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=${i}&count=200&sortType=1&asc=false`, true));
@@ -47,8 +48,6 @@ class Danmaku {
         // let fontsize = 65;
 
         // ass文件的Script Info
-        this.devMode&&console.log(thisVideoQuality)
-        this.devMode&&console.log(this.videoQualitiesRefer[thisVideoQuality])
         let scriptInfo = `[Script Info]
 ; AcVid: ${this.acid}
 ; StreamName: ${videoInfo.title}
@@ -71,8 +70,6 @@ Style: Danmu,Microsoft YaHei,${fontsize},&H00FFFFFF,&H00FFFFFF,&H00000000,&H0000
         let events = `
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n`
-
-        this.devMode&&console.log("process danmaku")
 
         var startTime, fontTailX, toLeftTime, toLeftVelocity
         //先构建对象运动表
@@ -109,11 +106,9 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
             }
         }
 
-        this.devMode&&console.log(this.danmuMotionList)
         //内容整合
         let result = scriptInfo + sytles + events;
 
-        this.devMode&&console.log("download danmaku")
         //下载的时候，文件编码需要转化为UTF8-BOM
         var blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), result], { type: "text/plain;charset=utf-8" })
         var url = window.URL.createObjectURL(blob);
@@ -144,7 +139,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
      * @param {number} num 时间-小数
      * @param {*} len 预留位数
      */
-    paddingNum (num, len) {
+    paddingNum(num, len) {
         if (num - Number(num).toFixed() != 0) {
             let remain = String(num - Number(num).toFixed()).split(".");
             remain = remain[1];

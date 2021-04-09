@@ -94,6 +94,7 @@ const defaults = {
   Dev_thinScrollbar: false,
   liveIndexRankNum: true,
   timelineDots: false,
+  frameStepSetting: { enabled: false, controlUI: false, }
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

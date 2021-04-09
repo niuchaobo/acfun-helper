@@ -919,4 +919,71 @@ class VideoSetting {
     }, 1000);
   }
 
+  /**
+   * 调整视频时间以平均标准帧步进
+   * @param {int} frameRate 每一千秒所播放的帧数
+   * @param {string} mode 前进或者后退 f or b
+   * @QA 为什么不能去获取实时的帧率：different time means different frame. In the example, Chrome is trying to match the 24Hz of the movie on my 60Hz computer by trying to get 45 Hz ( = 60 / 2 + 60 / 4), the nearest from 48 = 2*24. For the 21 created frames i don't know if it interpolates or merely duplicates the frames. It surely changes depending on browser/device (Gpu especially).Anyway given the high cost of checking with the imageData。<=插件去实时获取的开销很大。
+   * @refer https://stackoverflow.com/questions/28420724/how-to-determine-the-intended-frame-rate-on-an-html-video-element
+   * @origin github@RadND
+   */
+  frameStepFwd(mode = 'f', frameRate) {
+    // console.log(mode,frameRate,document.getElementsByTagName("video")[0].currentTime)
+    if (frameRate) {
+      document.getElementsByTagName("video")[0].pause();
+      switch (mode) {
+        case 'f':
+          document.getElementsByTagName("video")[0].currentTime += 1000 / frameRate;
+          break;
+        case 'b':
+          document.getElementsByTagName("video")[0].currentTime -= 1000 / frameRate;
+          break;
+      }
+    }
+  }
+
+  getVideoFrameRate(){
+    let vQuality = document.querySelector("div.control-btn.quality").children[0].innerText;
+    let frameRateExp = new RegExp("[0-9].*p([0-9].*)");
+    let vFrameRate = "";
+    //假如是自动画质选项，那么稳定之后的画质应该是当前稿件可选画质的最高选项，我们获取到最高选项之后在画质参考选项中获取名称，然后获取标准帧率。
+    if(vQuality=="自动"){
+      vFrameRate =  frameRateExp.exec(videoQualitiesRefer[document.querySelector("div.control-btn.quality").children[1].children[0].children[0].dataset.qualityType].qualityType)
+    }
+    //如果选定了画质，那么直接在画质参考中获取标准帧率。
+    if(vFrameRate){
+      return standardFrameRate[vFrameRate[1]]
+    }else{
+      //如果是不固定的帧率，那么就以24帧为标准。
+      return standardFrameRate["24"]
+    }
+  }
+
+  /**
+   * 帧步进-入口
+   * @description 包括了帧步进快捷键和UI入口
+   * @todo 焦点在播放器上时，快捷键失效
+   */
+  frameStepFwdMain(UIneed) {
+    if(UIneed){
+      // let contentElem = ``;
+      // addElement()
+      // document.querySelector("#frameStepFwd").addEventListener('click', () => {
+  
+      // })
+      // document.querySelector("#frameStepBwd").addEventListener('click', () => {
+  
+      // })
+    }
+
+    //快捷键绑定
+    document.onkeypress = (e) => {
+      if (e.shiftKey && e.key === "A") {
+        this.frameStepFwd('b',this.getVideoFrameRate());
+      }else if(e.shiftKey && e.key==="D"){
+        this.frameStepFwd('f',this.getVideoFrameRate());
+      }
+    }
+  }
+
 }

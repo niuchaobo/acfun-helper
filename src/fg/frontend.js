@@ -288,7 +288,8 @@ class ODHFront {
 				this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
 				//分P列表扩展
 				this.options.multiPartListSpread && this.pageBeautify.multiPartListSpread()
-
+				//播放器帧步进
+				// this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 			})
 			//倍率扩大音量
 			this.options.audioGain && this.videoSetting.audioNodeGain();
