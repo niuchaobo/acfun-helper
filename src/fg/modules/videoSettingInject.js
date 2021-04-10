@@ -10,9 +10,8 @@ let videoFunction = (function () {
 
   var lastdropedFrame = 0;
   var nowDropFrame = 0;
-  // var option_authinfo_mkey = false;
-
   var hiddenDiv = document.getElementById("myCustomEventDiv");
+
   if (!hiddenDiv) {
     hiddenDiv = document.createElement("div");
     hiddenDiv.style.display = "none";
@@ -131,40 +130,17 @@ let videoFunction = (function () {
   });
 
   try {
-    // 从Player获取douga & danmaku 信息，传递给父级
-    window.parent.postMessage(
-      {
-        to: "videoInfo",
-        msg: `${JSON.stringify(window.player.videoInfo)}`,
-      },
-      "*"
-    );
-
-    window.parent.postMessage(
-      {
-        to: "frame_danmaku",
-        acId: `${window.player.acId}`,
-        msg: `${JSON.stringify(window.player._danmaku.list)}`,
-      },
-      "*"
-    );
-
-    window.parent.postMessage(
-      {
+    window.parent.postMessage({
         to: "vs_videoInfo",
         msg: `${JSON.stringify(window.player.videoInfo.videoList)}`,
-      },
-      "*"
-    );
+      },"*");
 
-    // if(option_authinfo_mkey){
-    //     window.parent.postMessage({
-    //         to:'authinfo_mkey',
-    //         msg:`${JSON.stringify(window.player.mkey)}`
-    //     },'*');
-    // }
+    window.parent.postMessage({
+      to: 'authinfo_mkey',
+      msg: `${JSON.stringify(window.player.mkey)}`
+    }, '*');
   } catch (error) {
-    console.log("[LOG]Frontend-videoSettingInject: Warning postMessage.");
+    console.log("[LOG]Frontend-videoSettingInject: Warning postMessage.",error);
   }
 
   /**

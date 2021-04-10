@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.9.301",
+    "version": "1.2.9.328",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -34,7 +34,6 @@
                 "common/encyclopedia.js",
                 "common/uiReact.js",
                 "common/dataStructs.js",
-                "fg/api.js",
                 "fg/popup.js",
                 "fg/div.js",
                 "fg/modules/danmakuSearch.js",
@@ -48,7 +47,6 @@
                 "fg/modules/danmaku.js",
                 "fg/modules/authInfo.js",
                 "fg/modules/banana.js",
-                "fg/modules/playerConfig.js",
                 "fg/modules/luckyTurntab.js",
                 "fg/modules/videoSetting.js",
                 "fg/modules/readMode.js",

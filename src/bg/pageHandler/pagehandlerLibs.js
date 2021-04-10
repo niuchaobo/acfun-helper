@@ -1,6 +1,10 @@
 export async function getUid(){
     let Uid = await getStorage('LocalUserId');
-    return Uid.LocalUserId
+    if(Uid!=0){
+        return Uid.LocalUserId
+    }else{
+        throw new UserException("Unexpected Uid,Please Navigate to www.acfun.cn First");
+    }
 }
 
 export async function getResult(url) {

@@ -2504,7 +2504,25 @@ $(document).ready(function () {
     });
     chrome.storage.local.get(['custom_css_style'],function(items){
         var custom_css_style= items.custom_css_style;
-        $('#custom-css').val(custom_css_style)
+        $('#custom-css').val(custom_css_style);
+    })
+
+    //====================自定义ProgressBar样式=============
+    $('#proBarConfSave').on('click', function () {
+        chrome.storage.local.get(['ProgressBarStyle'],function(items){
+            items.ProgressBarStyle.barColor = $('#barColor').val();
+            items.ProgressBarStyle.barHeight = $('#barHeight').val();
+            items.ProgressBarStyle.loadedColor = $('#loadedColor').val();
+            items.ProgressBarStyle.loadedHeight = $('#loadedHeight').val();
+            chrome.storage.local.set({'ProgressBarStyle':items.ProgressBarStyle});
+        });
+        mdui.snackbar({message: "已保存。",position: 'right-bottom'});
+    });
+    chrome.storage.local.get(['ProgressBarStyle'],function(items){
+        $('#barColor').val(items.ProgressBarStyle.barColor);
+        $('#barHeight').val(items.ProgressBarStyle.barHeight);
+        $('#loadedColor').val(items.ProgressBarStyle.loadedColor);
+        $('#loadedHeight').val(items.ProgressBarStyle.loadedHeight);
     })
 
     //===================Up主文章屏蔽=======================

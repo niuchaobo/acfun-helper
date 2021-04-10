@@ -94,6 +94,7 @@ const defaults = {
   Dev_thinScrollbar: false,
   liveIndexRankNum: true,
   timelineDots: false,
+  frameStepSetting: { enabled: false, controlUI: false, }
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -116,6 +117,7 @@ const REG = {
   acBangumid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi/aa(\\d+)'),
   liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)"),
   videoPlayerSrc: new RegExp("blob:https://www.acfun.cn/"),
+  videoPartNumByURL: new RegExp("_([0-9].?)"),
 }
 
 /**
@@ -926,4 +928,4 @@ function randomNum(minNum, maxNum) {
     default:
       return 0;
   }
-} 
+}

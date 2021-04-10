@@ -13,19 +13,31 @@ const videoQualitiesRefer =
     "360p": { "qualityType": "360p", "qualityLabel": "360P", "width": 640, "height": 360 }
 }
 
+/**
+ * 每一千秒所播放的帧数
+ * @refer @伯翎飞云[2021年4月8日21:31:47]："电影23.976;60帧如果是NTSC的话是59.94;感知不强方向错了"
+ */
+const standardFrameRate = {
+    "24": 23976,
+    "25": 25000,
+    "30": 29970,
+    "60": 59940,
+    "120": 120000
+}
+
 const acfunApis = {
     /**
      * 用户信息 接UID
      */
-    userInfoApi : `https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=`,
+    userInfo: `https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=`,
     /**
      * 视频稿件 接AcVid
      */
-    videoInfo : `https://mini.pocketword.cn/api/acfun/info?dougaId=`,
+    videoInfo: `https://mini.pocketword.cn/api/acfun/info?dougaId=`,
     /**
      * 用户投稿列表 接Uid
      */
-    videoContributeList : `https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&resourceType=2&sortType=3&authorId=`,
-    acDaily : `https://api-new.app.acfun.cn/rest/app/acDailyMagazine`,
-    liveInfo : `https://live.acfun.cn/api/live/info?authorId=`,
+    videoContributeList: `https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&resourceType=2&sortType=3&authorId=`,
+    acDaily: `https://api-new.app.acfun.cn/rest/app/acDailyMagazine`,
+    liveInfo: `https://live.acfun.cn/api/live/info?authorId=`,
 }

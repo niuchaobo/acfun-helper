@@ -26,9 +26,9 @@ class PageBeautify {
       let scrop = $(document).scrollTop(); //获取页面滚动条离顶部的距离
       let a = [];
       for (let i = 0; i < length; i++) {
-          if(!homeDiv.eq(i).children().length){
-              continue
-          }
+        if (!homeDiv.eq(i).children().length) {
+          continue
+        }
         a.push(homeDiv.eq(i).offset().top);
       }
       for (let i = 0; i < length; i++) {
@@ -66,8 +66,8 @@ class PageBeautify {
     Array.prototype.slice
       .call(document.getElementsByClassName("home-main-content")[0].children)
       .forEach((item, index) => {
-        if(!item.children.length){
-            return
+        if (!item.children.length) {
+          return
         }
         Array.prototype.slice
           .call(item.getElementsByClassName("header-title"))
@@ -96,9 +96,8 @@ class PageBeautify {
       navArr.forEach((item, index) => {
         let navButtonWord = this.changeWord(item[1]);
         item &&
-          (navContent += `<div onclick="scrollToTop(event);" data-id='${
-            item[0]
-          }' ${index ? "" : "class='isSelected'"}> ${navButtonWord} </div>`);
+          (navContent += `<div onclick="scrollToTop(event);" data-id='${item[0]
+            }' ${index ? "" : "class='isSelected'"}> ${navButtonWord} </div>`);
       });
       return navContent;
     };
@@ -139,102 +138,84 @@ class PageBeautify {
           this_page = 1;
         } else {
         }
-        let node = $("#header-guide .guide-item-con").find("p").eq(0);
+        let node = $("div.guide-item-con").find("p").eq(0);
         if (node) {
           node.after(
             '<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
-              a.info.userId +
-              '">我的直播间</a></p>'
+            a.info.userId +
+            '">我的直播间</a></p>'
           );
           node.after('<p class="crx-guid-p">UID: ' + a.info.userId + "</p>");
           node.after(
             '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=banana" target="_blank">香蕉: ' +
-              a.info.banana +
-              "</a></p>"
+            a.info.banana +
+            "</a></p>"
           );
           node.after(
             '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=golden-banana" target="_blank">金香蕉: ' +
-              a.info.goldBanana +
-              "</p>"
+            a.info.goldBanana +
+            "</p>"
           );
           node.after(
-            '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=following" target="_blank">关注 ' +
-              a.info.following +
-              '</a> - <a href="https://www.acfun.cn/member/#area=followers" target="_blank">听众: ' +
-              a.info.followed +
-              "</a></p>"
+            '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds?tab=following" target="_blank">关注 ' +
+            a.info.following +
+            '</a> - <a href="https://www.acfun.cn/member/feeds?tab=fans" target="_blank">听众: ' +
+            a.info.followed +
+            "</a></p>"
           );
           node.after(
             '<p class="crx-guid-p">注册时间: ' +
-              formatDate(new Date(a.info.registerTime)) +
-              "</p>"
+            formatDate(new Date(a.info.registerTime)) +
+            "</p>"
           );
         }
         let cssStr = `
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con{
-					${this_page ? "width: 114px;" : ""}
-					padding:0px 0px 0px 0px;
-				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li{
-					${this_page ? "text-align: center;" : ""}
-					font-size:14px;
-				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover{
-					background-color:#ececec;
-				}
-				ul#guide-msg-list{
-					padding:0px 0px 0px 0px;
-				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li,
-				.header .guide-msg .guide-item-con .msg-item a{
-					padding:10px 5px 10px 5px;
-				}
-				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li{
-					font-size: 14px;
-					line-height: 22px;
-					margin: 12px 0px 12px 0px;
-					height: 18px;
-				}
-				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a .item-title{
-					height: 20px;
-					line-height: 16px;
-				}
-				[data-c-w-header] .header-guide .guide-item.guide-history .guide-item-con li a i.device{
-					height: 20px;
-					line-height: 16px;
-				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li a .badget{
-					top: 18px;
-				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li.followed-users .followed-live-title{
-					line-height: 14px;
-					height: 14px;
-				}
-
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li.dynamics{
-					padding-top: 10px;
-				}
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:last-child{
-					padding-bottom: 10px;
-				}
-
-				.header .guide-msg .guide-item-con .msg-item{
-					font-size: 14px;
-					line-height: 1.5;
-					padding: 0 0 0 0;
-				}
-				#guide-msg-list > li:hover{
-					background-color:#ececec;
-				}
-				.header .guide-item li a:hover,
-				[data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover a,
-				#header #nav .guide-msg .guide-item-con a:hover
-				{
-					color: #000;
-				}
-				.header .guide-msg .guide-item-con .msg-item:last-child{
-					padding-bottom: 0;
-				}
+        .header .guide-msg .guide-item-con .msg-item{
+          font-size: 14px;
+          line-height: 1.5;
+          padding: 0 0 0 0;
+        }
+        #guide-msg-list > li:hover{
+            background-color:#ececec;
+        }
+        .header .guide-item li a:hover,
+        [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover a,
+        #header #nav .guide-msg .guide-item-con a:hover
+        {
+            color: #000;
+        }
+        ul#guide-msg-list{
+          padding:0px 0px 0px 0px;
+          border-radius: 3px;
+        }
+        [data-c-w-header] .header-guide .guide-msg .guide-item-con{
+          ${this_page ? "width: 114px;" : ""}
+          padding:0px 0px 0px 0px;
+        }
+        [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li{
+            ${this_page ? "text-align: center;" : ""}
+            font-size:14px;
+        }
+        [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li,
+        .header .guide-msg .guide-item-con .msg-item a{
+            padding:10px 5px 10px 5px;
+            text-align: center;
+        }
+        [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:last-child{
+          padding-bottom: 10px;
+        }
+        .header .guide-msg .guide-item-con .msg-item:last-child{
+            padding-bottom: 0;
+        }
+        
+        #header-guide > li.guide-item.guide-history > div > ul > div:hover, 
+        #header-guide > li.guide-item.guide-feed > div > ul > li:hover {
+          background-color:#ececec;
+        }
+        #header-guide > li.guide-item.guide-history > div > ul > div > div > a:hover,
+        [data-c-w-header] .header-guide .guide-item li a:hover{
+          color: #000000;
+        }
 				`;
         createElementStyle(cssStr);
       });
@@ -243,18 +224,15 @@ class PageBeautify {
   indexBeautify(opt, shadowSw = false, searchBox = true) {
     let cssStr;
     //模糊
-    opt
-      ? (cssStr =
-          ".header-top{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896 !important;} .header .nav{border-bottom: 1px solid #ffffff00 !important} .header.fixed .nav{backdrop-filter: blur(2.25926vw);background-color: #f8f8f896;}")
-      : (cssStr = `.nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(1.2vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(1.2vw);${
-          shadowSw ? "box-shadow: 0 2px 4px rgb(0 0 0 / 26%)" : ""
-        };}`);
+    cssStr = `.nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(1.2vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(1.2vw);} ${shadowSw ? "box-shadow: 0 2px 4px rgb(0 0 0 / 26%);}" : ""} ${opt ? "div.header-nav,div.header-nav>ul{background: #f8f8f800 !important;} .channel-header.fixed .wrap{backdrop-filter: blur(1.2vw);border-bottom:0px}" : ""}`
     //banner定位修正
-    cssStr += `.header .header-banner{margin-top: -47px;}`;
+    cssStr += ` .header .header-banner{margin-top: -47px;}`;
     //搜索栏 - 分区主页 - 主页 - 个人展示中心
     searchBox
       ? (cssStr += `.search-box input,[data-c-w-header] .search-box .form input,[data-c-w-header] .search-box .form input{border: none;background: 0 0;border-bottom: 1px solid;color: black;border-radius: 0px!important;} .search-box .search-btn{background: ##ff4b4b70;border-radius: 0px;}`)
       : "";
+    //<a>标签动画
+    cssStr += `a {transition: color .2s ease, background-color .2s ease;}`;
     createElementStyle(cssStr);
   }
 
@@ -364,13 +342,13 @@ class PageBeautify {
           createElementStyle(cssStr);
           document.querySelector(".shareCount").remove();
           document.querySelector(".usemobile").remove();
-        } catch (error) {}
+        } catch (error) { }
         try {
           document.querySelector(".download-app").remove();
-        } catch (error) {}
+        } catch (error) { }
         try {
           document.querySelector(".pause-display-container").remove();
-        } catch (error) {}
+        } catch (error) { }
         clearInterval(timer);
       }
     }, 500);
@@ -383,7 +361,7 @@ class PageBeautify {
     let imgObj = document.querySelector(
       "[data-c-w-header] .header-guide .guide-user .user-avatar img"
     );
-    const before_style = document.createElement("style");
+    let before_style = document.createElement("style");
     before_style.style = "text/css";
     before_style.innerHTML =
       "[data-c-w-header] .header-guide .guide-user .user-avatar img:before{animaition: avatar-wave cubic-bezier(0.22, 0.58, 0.12, 0.98) 0.6s forwards}";
@@ -398,7 +376,7 @@ class PageBeautify {
         imgObj.style.transform = "scale(1)";
         imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
       });
-    } catch (error) {}
+    } catch (error) { }
   }
 
   thinScrollBar() {
@@ -430,8 +408,6 @@ class PageBeautify {
       document.getElementsByTagName("head")[0]
     );
   }
-
-  darkenArticle() {}
 
   userMoment(href) {
     let x = document.createElement("li");
@@ -467,10 +443,8 @@ class PageBeautify {
           <div class="moment-info" style="font-size:15px;">发布于 ${getTimeSinceNow(
             x.feedList[i].createTime,
             true
-          )} - ${x.feedList[i].bananaCount}根香蕉 - ${
-            x.feedList[i].commentCount
-          }个评论 - <a href="${
-            x.feedList[i].shareUrl
+          )} - ${x.feedList[i].bananaCount}根香蕉 - ${x.feedList[i].commentCount
+          }个评论 - <a href="${x.feedList[i].shareUrl
           }" target="_blank">原文</a></div>
           <hr style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="50%"color=#987cb9 SIZE=3>
         </li>
@@ -546,14 +520,11 @@ class PageBeautify {
   }
 
   pageUp4depList() {
-    this.devMode && console.log("up");
     let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
     if (targetElem.length == 0) {
       return;
     }
     if (targetElem[0].className == "pager__btn pager__btn__prev") {
-      this.devMode && console.log(targetElem[0]);
-      this.devMode && console.log("我点了，你呢");
       targetElem[0].click();
     }
   }
@@ -564,28 +535,22 @@ class PageBeautify {
       return;
     }
     if (targetElem[0].className == "pager__btn pager__btn__next") {
-      this.devMode && console.log(targetElem[0]);
-      this.devMode && console.log("我点了，你呢");
       targetElem[0].click();
     }
   }
 
   pageUp4UC() {
-    this.devMode && console.log("down");
     let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
     for (let i = 0; i < targetElem.length; i++) {
-      this.devMode && console.log(targetElem[i]);
-      this.devMode &&
-        console.log(
-          targetElem[i].parentElement.parentElement.parentElement.classList
-        );
-      this.devMode &&
-        console.log(
-          targetElem[i].parentElement.parentElement.parentElement
-            .classList[1] == "active" ||
-            targetElem[i].parentElement.parentElement.parentElement
-              .parentElement.classList[1] == "active"
-        );
+      // console.log(
+      //   targetElem[i].parentElement.parentElement.parentElement.classList
+      // );
+      // console.log(
+      //   targetElem[i].parentElement.parentElement.parentElement
+      //     .classList[1] == "active" ||
+      //   targetElem[i].parentElement.parentElement.parentElement
+      //     .parentElement.classList[1] == "active"
+      // );
       if (
         targetElem[i].className == "pager__btn pager__btn__prev" &&
         (targetElem[i].parentElement.parentElement.parentElement.classList[1] ==
@@ -593,30 +558,23 @@ class PageBeautify {
           targetElem[i].parentElement.parentElement.parentElement.parentElement
             .classList[1] == "active")
       ) {
-        this.devMode && console.log(targetElem[i]);
-        this.devMode && console.log("我点了，你呢");
         targetElem[i].click();
       }
     }
   }
 
   pageDown4UC() {
-    this.devMode && console.log("down");
     let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next");
     for (let i = 0; i < targetElem.length; i++) {
-      this.devMode && console.log(targetElem[i]);
-      this.devMode &&
-        console.log(
-          targetElem[i].parentElement.parentElement.parentElement.classList
-        );
-      this.devMode &&
-        console.log(
-          targetElem[i].parentElement.parentElement.parentElement
-            .classList[1] == "active" ||
-            targetElem[i].parentElement.parentElement.parentElement
-              .parentElement.classList[1] == "active"
-        );
-
+      // console.log(
+      //   targetElem[i].parentElement.parentElement.parentElement.classList
+      // );
+      // console.log(
+      //   targetElem[i].parentElement.parentElement.parentElement
+      //     .classList[1] == "active" ||
+      //   targetElem[i].parentElement.parentElement.parentElement
+      //     .parentElement.classList[1] == "active"
+      // );
       if (
         targetElem[i].className == "pager__btn pager__btn__next" &&
         (targetElem[i].parentElement.parentElement.parentElement.classList[1] ==
@@ -624,8 +582,6 @@ class PageBeautify {
           targetElem[i].parentElement.parentElement.parentElement.parentElement
             .classList[1] == "active")
       ) {
-        this.devMode && console.log(targetElem[i]);
-        this.devMode && console.log("我点了，你呢");
         targetElem[i].click();
       }
     }
@@ -665,10 +621,10 @@ class PageBeautify {
     }
   }
 
-  multiPartListSpread(){
-		createElementStyle(`
+  multiPartListSpread() {
+    createElementStyle(`
 			.part-wrap{max-height: fit-content;}
 		`)
-	}
+  }
 
 }

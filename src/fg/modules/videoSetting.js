@@ -8,6 +8,7 @@ class VideoSetting {
     this.audioNodeGainFlag = false;
     this.audioOriginVolume = 0;
     this.mediaSessionNowPlayingIndex = 0;
+    this.acNum = 0;
     this.devMode = false;
     this.progressBarOptions = {
       id: "achlp-proBar",
@@ -131,7 +132,6 @@ class VideoSetting {
             case 1:
               qualitys[0].click();
               // console.log(qualitys[0].dataset.qualityType);
-              // console.log('ok');
               break;
             case 2:
               for (let i = 0; i <= qualitys.length; i++) {
@@ -663,6 +663,11 @@ class VideoSetting {
     fgConsole(this, this.videoMediaSession, "Init MediaSessionModule.", 1, false);
     window.addEventListener('message', (e) => {
       let videoInfo = {};
+      try {
+        this.acNum = REG.acVid.exec(location.href)[2];
+      } catch (error) {
+        this.acNum = REG.acBangumid.exec(location.href)[2];
+      }
       if (e.data.to == 'videoInfo') {
         try {
           videoInfo = JSON.parse(e.data.msg);
@@ -680,7 +685,8 @@ class VideoSetting {
             "user": {
               "name": document.querySelectorAll("meta")[5].content.split(",")[3],
             },
-            coverUrl: ""
+            coverUrl: "",
+            videoList: [],
           }
           //封面
           try {
@@ -696,83 +702,137 @@ class VideoSetting {
             }
           }
           //分P
-          let videoList = [];
-          try {
-            videoList = document.querySelector(".scroll-div.over-parts").children;
-          } catch (error) {
-            try {
-              document.querySelector(".scroll-div").children;
-            } catch (error) {
-              fgConsole(this, this.videoMediaSession, "Normal Video.", 1, false);
-            }
-          }
-          if (videoList) {
-            videoInfo["videoList"] = videoList;
-          }
+          this.mediaSessionGatherMultiPartInfo(videoInfo);
         }
         fgConsole(this, this.videoMediaSession, "Attach MediaSession ActionHandler.", 1, false);
         // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
-
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: `${videoInfo.title} - ${videoInfo.channel.parentName} > ${videoInfo.channel.name}`,
-          artist: "AcFun: " + videoInfo.user.name,
-          artwork: [
-            { src: videoInfo.coverUrl, sizes: '284x166', type: 'image/jpeg' },
-          ]
-        });
-
-        //MediaSession进度条处理 绝了，现在Windows还不支持
-        // let videoElem = document.getElementsByTagName("video")[0];
-        // videoElem.addEventListener('timeupdate', (e) => {
-        //   navigator.mediaSession.setPositionState({
-        //     duration: videoElem.duration,
-        //     playbackRate: videoElem.playbackRate,
-        //     position: videoElem.currentTime
-        //   });
-        // }, false);
-
-        navigator.mediaSession.setActionHandler('seekbackward', function () {
-          document.querySelector("video").currentTime -= 5
-        })
-        navigator.mediaSession.setActionHandler('seekforward', function () {
-          document.querySelector("video").currentTime += 5
-        });
-        //鸡肋的时间设定
-        navigator.mediaSession.setActionHandler("seekto", function (details) {
-          document.querySelector("video").currentTime = Number(details.seekTime);
-        });
-
-        fgConsole(this, this.videoMediaSession, "Video MediaSession Attach Success.", 1, false);
-
-        if (videoInfo.videoList.length > 1) {
-          this.mediaSessionNowPlayingIndex = 0;
-
-          navigator.mediaSession.setActionHandler('previoustrack', () => {
-            if (this.mediaSessionNowPlayingIndex <= 0) {
-              //do nothing
-            } else {
-              this.mediaSessionNowPlayingIndex--;
-              this.devMode && console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`)
-              document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
-            }
-            document.querySelector("video").play()
-          });
-
-          navigator.mediaSession.setActionHandler('nexttrack', () => {
-            if (this.mediaSessionNowPlayingIndex == videoInfo.videoList.length - 1) {
-              //do nothing
-            } else {
-              this.mediaSessionNowPlayingIndex++;
-              this.devMode && console.log(`document.querySelector(".scroll-div.over-parts").children[${this.mediaSessionNowPlayingIndex}].click();`)
-              document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
-              document.querySelector(".btn-play.control-btn").click();
-            }
-            document.querySelector("video").play()
-          });
-          fgConsole(this, this.videoMediaSession, "Video MediaSession MultiPart Attach Success.", 1, false);
-        }
+        this.mediaSessionCore(videoInfo);
       }
     })
+  }
+
+  mediaSessionCore(videoInfo) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: `${videoInfo.title} - ${videoInfo.channel.parentName} > ${videoInfo.channel.name}`,
+      artist: "AcFun: " + videoInfo.user.name,
+      artwork: [
+        { src: videoInfo.coverUrl, sizes: '284x166', type: 'image/jpeg' },
+      ]
+    });
+
+    //MediaSession进度条处理 绝了，现在Windows还不支持
+    // let videoElem = document.getElementsByTagName("video")[0];
+    // videoElem.addEventListener('timeupdate', (e) => {
+    //   navigator.mediaSession.setPositionState({
+    //     duration: videoElem.duration,
+    //     playbackRate: videoElem.playbackRate,
+    //     position: videoElem.currentTime
+    //   });
+    // }, false);
+
+    navigator.mediaSession.setActionHandler('seekbackward', function () {
+      document.querySelector("video").currentTime -= 5
+    })
+    navigator.mediaSession.setActionHandler('seekforward', function () {
+      document.querySelector("video").currentTime += 5
+    });
+    //鸡肋的时间设定
+    navigator.mediaSession.setActionHandler("seekto", function (details) {
+      document.querySelector("video").currentTime = Number(details.seekTime);
+    });
+
+    fgConsole(this, this.videoMediaSession, "Video MediaSession Attach Success.", 1, false);
+
+    if (videoInfo.videoList.length > 1) {
+      try {
+        this.mediaSessionNowPlayingIndex = REG.videoPartNumByURL.exec(location.href)[1] || 0;
+      } catch (error) {
+        this.mediaSessionNowPlayingIndex = 0;
+      }
+      this.partNum = videoInfo.videoList.length;
+
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        this.mediaSessionPlayer("previous", videoInfo);
+      });
+
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        this.mediaSessionPlayer("next", videoInfo);
+
+      });
+      fgConsole(this, this.videoMediaSession, "Video MediaSession MultiPart Attach Success.", 1, false);
+    }
+
+  }
+
+  mediaSessionPlayer(action, videoInfo) {
+    switch (action) {
+      case "previous":
+        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex - 1) % (videoInfo.videoList.length - 1);
+        break;
+      case "next":
+        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex + 1) % (videoInfo.videoList.length - 1);
+        break;
+      default:
+        break;
+    }
+    document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
+    document.querySelector("video").play();
+  }
+
+  /**
+   * 重载MediaSession
+   */
+  mediaSessionReset() {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: "",
+      artist: "AcFun",
+      artwork: []
+    });
+    navigator.mediaSession.setActionHandler('previoustrack', () => { });
+    navigator.mediaSession.setActionHandler('nexttrack', () => { });
+  }
+  mediaSessionReAttach() {
+    let videoInfo = {};
+    setTimeout(() => {
+      videoInfo = {
+        "title": document.querySelector(".video-description.clearfix>.title").innerText,
+        "channel": {
+          "parentName": document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second").innerText,
+          "name": document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third").innerText
+        },
+        "user": {
+          "name": document.querySelector("a.up-name").innerText,
+        },
+        coverUrl: document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src,
+        videoList: [],
+      }
+      this.mediaSessionGatherMultiPartInfo(videoInfo);
+      if (this.mediaSessionJudgeChangeVideo()) {
+        this.mediaSessionNowPlayingIndex = 0;
+        this.mediaSessionReset();
+        this.mediaSessionCore(videoInfo);
+      }
+    }, 312);
+  }
+
+  mediaSessionGatherMultiPartInfo(videoInfo) {
+    try {
+      videoInfo["videoList"] = document.querySelector(".scroll-div.over-parts").children;
+    } catch (error) {
+      try {
+        videoInfo["videoList"] = document.querySelector(".scroll-div").children;
+      } catch (error) {
+        fgConsole(this, this.videoMediaSession, "Normal Video.", 1, false);
+      }
+    }
+  }
+
+  mediaSessionJudgeChangeVideo() {
+    try {
+      return this.acNum != REG.acVid.exec(location.href)[2];
+    } catch (error) {
+      return this.acNum != REG.acBangumid.exec(location.href)[2];
+    }
   }
 
   /**
@@ -857,6 +917,73 @@ class VideoSetting {
         clearInterval(_timer);
       }
     }, 1000);
+  }
+
+  /**
+   * 调整视频时间以平均标准帧步进
+   * @param {int} frameRate 每一千秒所播放的帧数
+   * @param {string} mode 前进或者后退 f or b
+   * @QA 为什么不能去获取实时的帧率：different time means different frame. In the example, Chrome is trying to match the 24Hz of the movie on my 60Hz computer by trying to get 45 Hz ( = 60 / 2 + 60 / 4), the nearest from 48 = 2*24. For the 21 created frames i don't know if it interpolates or merely duplicates the frames. It surely changes depending on browser/device (Gpu especially).Anyway given the high cost of checking with the imageData。<=插件去实时获取的开销很大。
+   * @refer https://stackoverflow.com/questions/28420724/how-to-determine-the-intended-frame-rate-on-an-html-video-element
+   * @origin github@RadND
+   */
+  frameStepFwd(mode = 'f', frameRate) {
+    // console.log(mode,frameRate,document.getElementsByTagName("video")[0].currentTime)
+    if (frameRate) {
+      document.getElementsByTagName("video")[0].pause();
+      switch (mode) {
+        case 'f':
+          document.getElementsByTagName("video")[0].currentTime += 1000 / frameRate;
+          break;
+        case 'b':
+          document.getElementsByTagName("video")[0].currentTime -= 1000 / frameRate;
+          break;
+      }
+    }
+  }
+
+  getVideoFrameRate(){
+    let vQuality = document.querySelector("div.control-btn.quality").children[0].innerText;
+    let frameRateExp = new RegExp("[0-9].*p([0-9].*)");
+    let vFrameRate = "";
+    //假如是自动画质选项，那么稳定之后的画质应该是当前稿件可选画质的最高选项，我们获取到最高选项之后在画质参考选项中获取名称，然后获取标准帧率。
+    if(vQuality=="自动"){
+      vFrameRate =  frameRateExp.exec(videoQualitiesRefer[document.querySelector("div.control-btn.quality").children[1].children[0].children[0].dataset.qualityType].qualityType)
+    }
+    //如果选定了画质，那么直接在画质参考中获取标准帧率。
+    if(vFrameRate){
+      return standardFrameRate[vFrameRate[1]]
+    }else{
+      //如果是不固定的帧率，那么就以24帧为标准。
+      return standardFrameRate["24"]
+    }
+  }
+
+  /**
+   * 帧步进-入口
+   * @description 包括了帧步进快捷键和UI入口
+   * @todo 焦点在播放器上时，快捷键失效
+   */
+  frameStepFwdMain(UIneed) {
+    if(UIneed){
+      // let contentElem = ``;
+      // addElement()
+      // document.querySelector("#frameStepFwd").addEventListener('click', () => {
+  
+      // })
+      // document.querySelector("#frameStepBwd").addEventListener('click', () => {
+  
+      // })
+    }
+
+    //快捷键绑定
+    document.onkeypress = (e) => {
+      if (e.shiftKey && e.key === "A") {
+        this.frameStepFwd('b',this.getVideoFrameRate());
+      }else if(e.shiftKey && e.key==="D"){
+        this.frameStepFwd('f',this.getVideoFrameRate());
+      }
+    }
   }
 
 }

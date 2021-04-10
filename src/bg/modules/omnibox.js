@@ -21,20 +21,20 @@ class Ohminibox {
                 fetch(`https://www.acfun.cn/rest/pc-direct/search/suggest?count=6&keyword=${text}&callback=jQuery35104624576750465499_1592378440178&_=1592378440180`).then((res) => { return res.text(); })
                     .then((res) => {
                         try {
-                            let result = RegExp("jQuery35104624576750465499_1592378440178(.*)").exec(res)[1].replace('(', '').replace(')', '');
-                            var x = JSON.parse(result);
+                            var x = JSON.parse(RegExp("jQuery35104624576750465499_1592378440178(.*)").exec(res)[1].replace('(', '').replace(')', ''));
                         } catch (error) {
                             console.log(`    [LOG]Backend-Omnibox>registerOmnibox: [${formatDate(new Date(), true)}] 没有找到准确的关键字`);
                         }
-                        let suggestions = x.suggestKeywords.map((val) => {
-                            return {
-                                "content": val,
-                                "description": chrome.i18n.getMessage("omniboxInputSuggestion", val)
-                            }
-                        });
-                        try {
+                        let suggestions;
+                        if (x.suggestKeywords.length != 0) {
+                            suggestions = x.suggestKeywords.map((val) => {
+                                return {
+                                    "content": val,
+                                    "description": chrome.i18n.getMessage("omniboxInputSuggestion", val)
+                                }
+                            });
                             suggest(suggestions);
-                        } catch (error) { }
+                        }
                     })
             }
         });
@@ -49,14 +49,16 @@ class Ohminibox {
             }
             switch (disposition) {
                 case "currentTab":
-                    browser.tabs.update({ url });
+                    window.open(url) || browser.tabs.update({ url });
                     break;
                 case "newForegroundTab":
-                default:
                     window.open(url) || browser.tabs.create({ url });
                     break;
                 case "newBackgroundTab":
                     browser.tabs.create({ url, active: false });
+                    break;
+                default:
+                    window.open(url) || browser.tabs.create({ url });
                     break;
             }
         });

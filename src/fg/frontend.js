@@ -25,10 +25,10 @@ class ODHFront {
 		this.loading()
 
 		//监听storage变化,可用于数据云同步
-		chrome.storage.onChanged.addListener(function (changes, areaName) {
-			// console.log('11111111111111111')
-			// console.log(document.cookie);
-		});
+		// chrome.storage.onChanged.addListener(function (changes, areaName) {
+		// 	console.log('11111111111111111')
+		// 	console.log(document.cookie);
+		// });
 	}
 
 	onBgMessage(request, sender, callback) {
@@ -63,20 +63,10 @@ class ODHFront {
 			"span.pos.up {background-color: #66ccff !important;}" +
 			"p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
 			"p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
+			//<a>标签柔和动画
+			"a {transition: color .2s ease, background-color .2s ease;}" +
 			"";
-		let headDom = document.getElementsByTagName("head")[0]
-		createElementStyle(str, headDom)
-	}
-
-
-	addNightStyle() {
-		let div = document.createElement("div");
-		div.id = "acfun_night_conver";
-		div.style =
-			"width: 100%; height: 100%; transition: -webkit-transform 10s ease-in-out 0s; z-index: 2147483647; opacity: 0.25; position: fixed !important; left: 0px !important; bottom: 0px !important; overflow: hidden !important; background: rgb(0, 0, 0) !important; pointer-events: none !important;";
-		//let cover = '<div id="__nightingale_view_cover" ' +
-		//  'style="width: 100%; height: 100%; transition: -webkit-transform 10s ease-in-out 0s; z-index: 2147483647; opacity: 0.25; position: fixed !important; left: 0px !important; bottom: 0px !important; overflow: hidden !important; background: rgb(0, 0, 0) !important; pointer-events: none !important;"></div>';
-		document.body.appendChild(div);
+		createElementStyle(str);
 	}
 
 	async loading() {
@@ -101,6 +91,14 @@ class ODHFront {
 		// window.addEventListener("popstate", function(e){
 		// 	this.onPagechanged();
 		// });
+
+		//Uid获取
+		try {
+			var UidInCookies = document.cookie.match("auth_key=(.*); ac_username")[1];
+		} catch (TypeError) {
+			var UidInCookies = 0;
+		}
+		chrome.storage.local.set({ LocalUserId: `${UidInCookies}` });
 	}
 
 	onACPlayerLoaded(e) {
@@ -129,7 +127,7 @@ class ODHFront {
 				//自动点赞
 				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
 			}, 200)
-			// this.onPlayerUrlChange();
+			this.onPlayerUrlChange();
 		}
 	}
 
@@ -143,8 +141,6 @@ class ODHFront {
 		this.options.Dev_thinScrollbar && this.pageBeautify.thinScrollBar();
 		//屏蔽功能
 		this.options.filter && this.block.injectScript();
-		//夜间模式
-		this.options.night && this.addNightStyle();
 		//首页
 		if (REG.index.test(href)) {
 			window.onload = () => {
@@ -170,7 +166,6 @@ class ODHFront {
 		if (REG.video.test(href)) {
 			//播放器和弹幕功能
 			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
-			this.danmaku.cacheStore();
 			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
 			//音乐播放器监听
 			this.musicPlayerFront.main();
@@ -196,7 +191,6 @@ class ODHFront {
 				}
 			}, 3000)
 		}
-		//直播首页及页面优化
 		if (!REG.live.test(href) && !REG.liveIndex.test(href)) {
 			//首页个人资料弹框 (未完成)
 			this.options.beautify_personal && getAsyncDom('#header .header-guide .guide-item', () => {
@@ -251,8 +245,6 @@ class ODHFront {
 				this.ce.immedComt();
 			}
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
-			//MediaSession
-			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 		}
 		//文章
 		if (REG.article.test(href)) {
@@ -296,7 +288,8 @@ class ODHFront {
 				this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
 				//分P列表扩展
 				this.options.multiPartListSpread && this.pageBeautify.multiPartListSpread()
-
+				//播放器帧步进
+				// this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 			})
 			//倍率扩大音量
 			this.options.audioGain && this.videoSetting.audioNodeGain();
@@ -313,6 +306,7 @@ class ODHFront {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
 		}, 3000)
 	}
+	
 	/**
 	 * 播放器地址切换监听
 	 * @description 换分P、点击推荐等等会让播放器地址会被切换。
@@ -334,8 +328,8 @@ class ODHFront {
 		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
 		//观察器回调
 		var obsrvcall = (mutations) => {
-			console.log(mutations)
 			if (mutations[0].oldValue != null && REG.videoPlayerSrc.test(mutations[0].oldValue)) {
+				// console.log(mutations)
 				this.reattachFrontMods();
 			}
 		}
@@ -350,7 +344,17 @@ class ODHFront {
 	 * @description 用于在切换分P或者点击大家都在看、推荐视频之后的模块数据刷新。
 	 */
 	reattachFrontMods() {
-
+		if (this.videoSetting.mediaSessionJudgeChangeVideo()) {
+			let isLogin = false;
+			if (isLoginByUi(false)) {
+				isLogin = true;
+			}
+			this.videoSetting.mediaSessionReAttach();
+			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
+			this.videoSetting.videoQuality(isLogin);
+			this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
+			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
+		}
 	}
 
 	//抽奖

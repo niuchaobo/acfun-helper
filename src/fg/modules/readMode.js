@@ -48,10 +48,6 @@ class Reader {
 
     }
 
-    complexReadModeMain() {
-
-    }
-
     /**
      * 文章区漫画模式图片拖动支持
      * @param rotateSup 启用旋转支持

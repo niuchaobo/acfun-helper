@@ -3,7 +3,7 @@
  */
 class Banana {
     constructor() {
-        this.reqBananaNum = 0;
+        
     }
 
     /**
@@ -206,35 +206,6 @@ class Banana {
             options.banana_notice && chrome.runtime.sendMessage({ action: "notice", params: { title: title, msg: msg, } }, function (response) { });
             options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
         }
-    }
-
-    /**
-     * 渐进式投蕉主函数
-     * @param {*} banana 
-     * @param {*} heart 
-     * @param {*} allowShortVideo 
-     * @example frontend 调用：this.banana.ProgressiveBanana([100,200,300,400,500],[150]);
-     * @todo 有一说一，挺难实现的好吧。
-     */
-    async ProgressiveBanana(banana, heart, allowShortVideo = false) {
-        let targetVideo = document.getElementsByTagName("video")[0];
-        let data = { bananaPercent: banana, heartPercent: heart }
-        let state = { bananaThis: 0, heartThis: false }
-        targetVideo.addEventListener('timeupdate', this.ProgressiveBananaMain.bind(null, data, state), false);
-        targetVideo.addEventListener('ended', this.ProgressiveBananaDone.bind(null), false);
-    }
-    async ProgressiveBananaDone() {
-        chrome.runtime.sendMessage({ action: "progressiveBananaCall", params: { action: 5, url: document.URL, responseRequire: true, asyncWarp: false } }, function (resp0) { })
-    }
-    async ProgressiveBananaMain(data, state) {
-        // let videoDuration = document.getElementsByTagName("video")[0].duration;
-        // let nowPlayTime = document.getElementsByTagName("video")[0].currentTime;
-        // let percent = Math.floor((nowPlayTime / videoDuration) * 1000)
-        // console.log(percent)
-        /**
-         * 视频观看百分比，[]
-         */
-        let percent = Number(document.querySelector(".pro-current").style.width.toString().replace("%", ""));
     }
 
 }
