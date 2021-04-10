@@ -21,34 +21,33 @@ class BangumiPlan {
 
     async todayUpdate() {
         let x = await db_getMybangumi(0, '', 'isOver', 'false');
-        let result = [];
         let day = checkDay();
-        for (let i = 0; i < x.length; i++) {
-            let singleBangumiInfo = x[i];
-            if (singleBangumiInfo.updateDayOfWeek == day) {
-                result.push(singleBangumiInfo);
-            }
-        }
-        return result
+        return x.filter(bangumiInfo => bangumiInfo.updateDayOfWeek == day);
     }
 
     async notifyBangumiUpdate() {
         let updates = await this.todayUpdate();
-        let items = [{ title: '概览', message: `今天有${updates.length}个番剧更新。` },]
-
         if (updates.length > 0) {
-            for (let i = 0; i < updates.length; i++) {
-                items.push({ title: updates[i].caption, message: `上次更新到${updates[i].lastVideoName}` })
-            }
+            let items = updates.map((val) => {
+                return {
+                    title: val.caption,
+                    message: chrome.i18n.getMessage("bangumiUpdateNotifyItemDetailMessage", val.lastVideoName)
+                }
+            });
+            items.unshift({
+                title: chrome.i18n.getMessage("bangumiUpdateNotifyItemOverviewTitle"),
+                message: chrome.i18n.getMessage("bangumiUpdateNotifyItemOverviewMessage", updates.length)
+            });
+
             chrome.notifications.create(null, {
                 type: 'list',
                 iconUrl: 'images/notice.png',
-                title: 'AcFun 助手 - 番剧更新提示',
-                message: `今天大概有${updates.length}个番剧更新。`,
+                title: chrome.i18n.getMessage("bangumiUpdateNotifyTitle"),
+                message: chrome.i18n.getMessage("bangumiUpdateNotifyMessage", updates.length),
                 items: items,
                 buttons: [
-                    { title: '助手-我的番剧' },
-                    { title: '主站-番剧' },
+                    { title: chrome.i18n.getMessage("bangumiUpdateNotifyBtn0") },
+                    { title: chrome.i18n.getMessage("bangumiUpdateNotifyBtn1") },
                 ],
             }, (e) => {
                 chrome.notifications.onButtonClicked.addListener((e, index) => {

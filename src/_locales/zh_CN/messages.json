@@ -10,5 +10,31 @@
               "example" : "AcFun助手"
             }
         }
-    }
+    },
+    "bangumiUpdateNotifyItemDetailMessage":{"message": "上次更新到 $LASTVIDEO$",
+        "placeholders": {
+            "lastvideo" : {
+              "content" : "$1",
+              "example" : "第10话 坐电梯去吃烤肉的方法"
+            }
+        }
+    },
+    "bangumiUpdateNotifyItemOverviewTitle":{"message": "概览"},
+    "bangumiUpdateNotifyItemOverviewMessage":{"message": "今天有 $LEN$ 个番剧更新。",
+        "placeholders": {
+            "len" : {
+              "content" : "$1"
+            }
+        }
+    },
+    "bangumiUpdateNotifyTitle":{"message": "AcFun 助手 - 番剧更新提示"},
+    "bangumiUpdateNotifyMessage":{"message": "今天大概有 $LEN$ 个番剧更新。",
+        "placeholders": {
+            "len" : {
+                "content" : "$1"
+            }
+        }
+    },
+    "bangumiUpdateNotifyBtn0":{"message": "助手-我的番剧"},
+    "bangumiUpdateNotifyBtn1":{"message": "主站-番剧"}
 }
