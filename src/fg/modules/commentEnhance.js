@@ -52,11 +52,12 @@ class CommentEnhance {
             let loading = $('.ac-comment-loading').html();
             if (nodes.length > 0 && loading == '') {
                 nodes.each(async function () {
+                    let UserMarks = await getStorage("UserMarks");
                     let exists = $(this).parent().find('.pos.simple');
                     if (exists.length == 0) {
                         let userId = $(this).data('userid');
                         let userName = $(this).text();
-                        let tagInfo = await getStorage("AC_" + userId).then(res => { return res["AC_" + userId] });
+                        let tagInfo = UserMarks.UserMarks[userId];
                         if (tagInfo != undefined && tagInfo.tag != '' && tagInfo.tag != undefined) {
                             if (userName != tagInfo.name) {
                                 $(this).after('<span title="' + tagInfo.name + '" class="pos simple">' + tagInfo.tag + '</span>');
@@ -245,7 +246,7 @@ class CommentEnhance {
                             setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
                             document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
                         });
-                        $(this).on('click', '.comment-mark', function () {
+                        $(this).on('click', '.comment-mark', async function () {
                             let userNode = $(this).parent().parent().parent().find('.name').eq(0);
                             let username = userNode.text();
                             let userId = userNode.data("userid");
@@ -254,15 +255,13 @@ class CommentEnhance {
                             let x = new RegExp("(.*)#.*");
                             let y = x.exec(window.location.href)
                             let dougaAddr = y ? y[1] : window.location.href;
-                            let title = '为『' + username + '』添加标记，最多10个字符';
-                            let tag = prompt(title, "");
-                            let title2 = '为『' + username + '』添加更多描述（可选）';
-                            let describe = prompt(title2, "");
+                            let tag = prompt('为『' + username + '』添加标记，最多10个字符', "");
+                            let describe = prompt('为『' + username + '』添加更多描述（可选）', "");
                             let tag_trim = tag.trim();
                             if (tag_trim != '' && tag_trim != null && tag_trim.length <= 10) {
-                                let key = "AC_" + userId;
-                                let value = { name: username, tag: tag, refer: dougaAddr, commentId: markCommentId, evidence: userComment, desc: describe ? describe : "" };
-                                chrome.storage.local.set({ [key]: value }, function () {
+                                let raw = await getStorage("UserMarks");
+                                raw.UserMarks[userId] = { name: username, tag: tag, refer: dougaAddr, commentId: markCommentId, evidence: userComment, desc: describe ? describe : "" };
+                                chrome.storage.local.set({ "UserMarks": raw.UserMarks }, function () {
                                     userNode.parent().find('.pos.simple').remove();
                                     userNode.after('<span class="pos simple">' + tag + '</span>');
                                 });
@@ -313,10 +312,11 @@ class CommentEnhance {
             if (nodes.length > 0) {
                 nodes.each(async function () {
                     let exists = $(this).parent().find('.pos.simple');
+                    let UserMarks = await getStorage("UserMarks");
                     if (exists.length == 0) {
                         let userId = $(this).data('userid');
                         let userName = $(this).text();
-                        let tagInfo = await getStorage("AC_" + userId).then(res => { return res["AC_" + userId] });
+                        let tagInfo = UserMarks.UserMarks[userId];
                         if (tagInfo != undefined && tagInfo.tag != '' && tagInfo.tag != undefined) {
                             if (userName != tagInfo.name) {
                                 $(this).after('<span title="' + tagInfo.name + '" class="pos simple">' + tagInfo.tag + '</span>');
@@ -368,23 +368,27 @@ class CommentEnhance {
         var timer = setInterval(function () {
             let nodes = $("div[data-commentid='" + rootCommentId + "']").find('.area-comm-more');
             if (nodes.length > 0) {
-
                 nodes.each(function () {
                     let text = $(this).text();
                     if (text.indexOf('标记') == -1) {
                         $(this).addClass('comment-mark-parent');
                         $(this).append('<span class="comment-mark">标记</span>');
-                        $(this).on('click', '.comment-mark', function () {
+                        $(this).on('click', '.comment-mark', async function () {
                             let userNode = $(this).parent().parent().parent().find('.name').eq(0);
                             let username = userNode.text();
                             let userId = userNode.data("userid");
-                            let title = '为『' + username + '』添加标记，最多10个字符';
-                            let tag = prompt(title, "");
+                            let tag = prompt('为『' + username + '』添加标记，最多10个字符', "");
                             let tag_trim = tag.trim();
+                            let markCommentId = $(this).parent().parent().parent().parent().parent().data("commentid");
+                            let userComment = $(this).parent().parent().parent().find('.area-comment-des-content')[0].innerHTML;
+                            let x = new RegExp("(.*)#.*");
+                            let y = x.exec(window.location.href)
+                            let dougaAddr = y ? y[1] : window.location.href;
+                            let describe = prompt('为『' + username + '』添加更多描述（可选）', "");
                             if (tag_trim != '' && tag_trim != null && tag_trim.length <= 10) {
-                                let key = "AC_" + userId;
-                                let value = { name: username, tag: tag };
-                                chrome.storage.local.set({ [key]: value }, function () {
+                                let raw = await getStorage("UserMarks");
+                                raw.UserMarks[userId] = { name: username, tag: tag_trim, refer: dougaAddr, commentId: markCommentId, evidence: userComment, desc: describe ? describe : "" };
+                                chrome.storage.local.set({ "UserMarks": raw.UserMarks }, function () {
                                     userNode.parent().find('.pos.simple').remove();
                                     userNode.after('<span class="pos simple">' + tag + '</span>');
                                 });

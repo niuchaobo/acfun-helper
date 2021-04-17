@@ -128,7 +128,7 @@ class Banana {
     async articleBanana(params) {
         var isLogin = false;
         try {
-            isLogin = isLoginByUi(false);
+            isLogin = isLoginByUi();
         } catch (error) {
             console.log("[LOG]Front-Banana>articleBanana: 没找到登录判断依据。");
         }
