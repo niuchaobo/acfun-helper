@@ -85,6 +85,7 @@ class CommentEnhance {
                     if (text.indexOf('标记') == -1) {
                         $(this).addClass('comment-mark-parent');
                         $(this).append('<span class="comment-mark">标记PO</span>');
+                        $(this).append('<span class="comment-jumpLink">复制楼层链接</span>');
                         $(this).append('<span class="commentContent-mark">标记评论</span>');
                         $(this).append('<span class="comment-cap">保存为HTML</span>');
                         $(this).on('click', '.commentContent-mark', async function (e) {
@@ -246,6 +247,15 @@ class CommentEnhance {
                             setTimeout(function () { saveas.parentNode.removeChild(saveas); }, 0)
                             document.addEventListener('unload', function () { window.URL.revokeObjectURL(url); });
                         });
+                        $(this).on('click', '.comment-jumpLink', async function (e) {
+                            var aux = document.createElement("input");
+                            aux.setAttribute("value", window.location.href + "#ncid=" + e.target.parentElement.parentElement.parentElement.parentElement.parentElement.dataset.commentid);
+                            document.body.appendChild(aux);
+                            aux.select();
+                            document.execCommand("copy");
+                            document.body.removeChild(aux);
+                            LeftBottomNotif("AcFun助手：评论楼层分析的跳转连接已经复制！", "info", 1500);
+                        })
                         $(this).on('click', '.comment-mark', async function () {
                             let userNode = $(this).parent().parent().parent().find('.name').eq(0);
                             let username = userNode.text();
