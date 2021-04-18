@@ -457,7 +457,7 @@ class ODHFront {
 		}
 		if (this.options.PlayerTimeCommentEasyJump) {
 			//评论空降
-			this.ce.searchScanForPlayerTime();
+			REG.videoAndBangumi.test(this.href) && this.ce.searchScanForPlayerTime();
 		}
 	}
 	//评论区整体部分的标记渲染入口 ()
@@ -473,12 +473,11 @@ class ODHFront {
 			this.ce.renderScanForUp();
 		}
 		if (this.options.PlayerTimeCommentEasyJump) {
-			this.ce.searchScanForPlayerTime();
+			REG.videoAndBangumi.test(this.href) && this.ce.searchScanForPlayerTime();
 		}
 		//跳转链接弹框
 		this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
-		let href = this.href;
-		if (REG.videoAndBangumi.test(href)) {
+		if (REG.videoAndBangumi.test(this.href)) {
 			//快捷键空降 TODO:全功能快捷键！
 			if (this.options.easySearchScanForPlayerTimesw) {
 				getAsyncDom('.ac-pc-comment', () => {
