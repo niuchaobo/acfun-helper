@@ -902,7 +902,7 @@ class VideoSetting {
    */
   timelineDotsAdd(time, desc = "") {
     var _timer = setInterval(() => {
-      var processBarLen = document.querySelector(".progress").offsetWidth;
+      var processBarLen = document.querySelector(".wrap-progress").offsetWidth;
       if (processBarLen != 0) {
         //获取视频的时间长度在1%的单位时间 (秒)
         let single = Number(document.querySelector("video").duration) / 1e2;
