@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.9.328",
+    "version": "1.2.9.417",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
