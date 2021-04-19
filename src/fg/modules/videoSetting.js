@@ -902,7 +902,7 @@ class VideoSetting {
    */
   timelineDotsAdd(time, desc = "") {
     var _timer = setInterval(() => {
-      var processBarLen = document.querySelector(".progress").offsetWidth;
+      var processBarLen = document.querySelector(".wrap-progress").offsetWidth;
       if (processBarLen != 0) {
         //获取视频的时间长度在1%的单位时间 (秒)
         let single = Number(document.querySelector("video").duration) / 1e2;
@@ -942,18 +942,18 @@ class VideoSetting {
     }
   }
 
-  getVideoFrameRate(){
+  getVideoFrameRate() {
     let vQuality = document.querySelector("div.control-btn.quality").children[0].innerText;
     let frameRateExp = new RegExp("[0-9].*p([0-9].*)");
     let vFrameRate = "";
     //假如是自动画质选项，那么稳定之后的画质应该是当前稿件可选画质的最高选项，我们获取到最高选项之后在画质参考选项中获取名称，然后获取标准帧率。
-    if(vQuality=="自动"){
-      vFrameRate =  frameRateExp.exec(videoQualitiesRefer[document.querySelector("div.control-btn.quality").children[1].children[0].children[0].dataset.qualityType].qualityType)
+    if (vQuality == "自动") {
+      vFrameRate = frameRateExp.exec(videoQualitiesRefer[document.querySelector("div.control-btn.quality").children[1].children[0].children[0].dataset.qualityType].qualityType)
     }
     //如果选定了画质，那么直接在画质参考中获取标准帧率。
-    if(vFrameRate){
+    if (vFrameRate) {
       return standardFrameRate[vFrameRate[1]]
-    }else{
+    } else {
       //如果是不固定的帧率，那么就以24帧为标准。
       return standardFrameRate["24"]
     }
@@ -965,23 +965,23 @@ class VideoSetting {
    * @todo 焦点在播放器上时，快捷键失效
    */
   frameStepFwdMain(UIneed) {
-    if(UIneed){
+    if (UIneed) {
       // let contentElem = ``;
       // addElement()
       // document.querySelector("#frameStepFwd").addEventListener('click', () => {
-  
+
       // })
       // document.querySelector("#frameStepBwd").addEventListener('click', () => {
-  
+
       // })
     }
 
     //快捷键绑定
     document.onkeypress = (e) => {
       if (e.shiftKey && e.key === "A") {
-        this.frameStepFwd('b',this.getVideoFrameRate());
-      }else if(e.shiftKey && e.key==="D"){
-        this.frameStepFwd('f',this.getVideoFrameRate());
+        this.frameStepFwd('b', this.getVideoFrameRate());
+      } else if (e.shiftKey && e.key === "D") {
+        this.frameStepFwd('f', this.getVideoFrameRate());
       }
     }
   }

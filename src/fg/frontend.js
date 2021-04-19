@@ -49,7 +49,6 @@ class ODHFront {
 		}
 	}
 
-
 	/**
 	 * 全局样式
 	 */
@@ -209,7 +208,6 @@ class ODHFront {
 	}
 
 	onLoad(e) {
-		//tab页创建时会从bg发消息过来写入options数据,但可能存在延迟
 		//根据cookie判断当前登录用户是不是up
 		//let is_up = this.adjuatUp();
 		let href = this.href;
@@ -254,7 +252,11 @@ class ODHFront {
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype), true);
 			this.options.articleReadMode && this.reader.lightReadMode();
-			this.options.articleBanana && this.banana.articleBanana({ key: REG.acAid.exec(href)[2] });
+			if (this.options.articleBanana) {
+				setTimeout(() => {
+					this.banana.articleBanana({ key: REG.acAid.exec(href)[2] })
+				}, 1000);
+			}
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
@@ -289,7 +291,7 @@ class ODHFront {
 				//分P列表扩展
 				this.options.multiPartListSpread && this.pageBeautify.multiPartListSpread()
 				//播放器帧步进
-				// this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
+				this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 			})
 			//倍率扩大音量
 			this.options.audioGain && this.videoSetting.audioNodeGain();
@@ -306,7 +308,7 @@ class ODHFront {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
 		}, 3000)
 	}
-	
+
 	/**
 	 * 播放器地址切换监听
 	 * @description 换分P、点击推荐等等会让播放器地址会被切换。
@@ -396,16 +398,8 @@ class ODHFront {
 			response
 		) { });
 	}
-	api_setFrontendOptions(params) {
-		let { options, callback } = params;
-		this.options = options;
-		callback();
-	}
 	//视频下载
 	async api_download(params) {
-		if (this.options == null) {
-			this.options = await optionsLoad();
-		}
 		this.download.downloadVideo(params);
 	}
 	api_mark(params) {
@@ -463,7 +457,7 @@ class ODHFront {
 		}
 		if (this.options.PlayerTimeCommentEasyJump) {
 			//评论空降
-			this.ce.searchScanForPlayerTime();
+			REG.videoAndBangumi.test(this.href) && this.ce.searchScanForPlayerTime();
 		}
 	}
 	//评论区整体部分的标记渲染入口 ()
@@ -479,12 +473,11 @@ class ODHFront {
 			this.ce.renderScanForUp();
 		}
 		if (this.options.PlayerTimeCommentEasyJump) {
-			this.ce.searchScanForPlayerTime();
+			REG.videoAndBangumi.test(this.href) && this.ce.searchScanForPlayerTime();
 		}
 		//跳转链接弹框
 		this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
-		let href = this.href;
-		if (REG.videoAndBangumi.test(href)) {
+		if (REG.videoAndBangumi.test(this.href)) {
 			//快捷键空降 TODO:全功能快捷键！
 			if (this.options.easySearchScanForPlayerTimesw) {
 				getAsyncDom('.ac-pc-comment', () => {

@@ -109,7 +109,7 @@ const REG = {
   mlive: new RegExp("https://m.acfun.cn/live/detail/*"),//移动版直播
   live: new RegExp("https://live.acfun.cn/live/*"),//直播
   liveIndex: new RegExp("https://live.acfun.cn"),//直播主页
-  userHome: new RegExp("http(s)?://www.acfun.cn/u/\\d+"),//用户中心
+  userHome: new RegExp("http(s)?://www.acfun.cn/u/(\\d+)"),//用户中心
   partIndex: new RegExp("/v/list"),//分区主页
   articleDetail: new RegExp("/v/as"),//文章分区详细页
   acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
@@ -152,33 +152,27 @@ function transOptions(options) {
 //================配置存储转换处理==============
 function userMap(options) {
   let map = new Map();
-  for (const key in options) {
-    if (key.indexOf("AC_") != -1) {
-      map.set(key, options[key]);
-    }
+  let raw = Object.keys(options.UserMarks);
+  for (let i = 0; i < raw.length; i++) {
+    map.set(raw[i], options.UserMarks[raw[i]])
   }
   return map;
 }
 
 function upMap(options) {
   let map = new Map();
-  for (const key in options) {
-    if (key.indexOf("FILTER_") != -1) {
-      map.set(key, options[key]);
-    }
+  let raw = Object.keys(options.UserFilter);
+  for (let i = 0; i < raw.length; i++) {
+    map.set(raw[i], options.UserFilter[raw[i]])
   }
   return map;
 }
 
 function upMapReverse(options) {
   let map = new Map();
-  for (const key in options) {
-    if (key.indexOf("FILTER_") != -1) {
-      let v = options[key].name;
-      if (v != null && v != undefined) {
-        map.set(v, key);
-      }
-    }
+  let raw = Object.keys(options.UserFilter);
+  for (let i = 0; i < raw.length; i++) {
+    map.set(options.UserFilter[raw[i]].name, raw[i])
   }
   return map;
 }

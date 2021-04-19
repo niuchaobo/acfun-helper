@@ -183,24 +183,23 @@
                             </table>
                         </div>
 
-
-                        <div class="div-lang-detect" style="background: rgb(237, 237, 237);margin-top: 0px">
-                            <h3>自动投蕉、点赞后提醒</h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td id="detect-switch-l">
-                                            <p style="color: rgb(204, 204, 204);">
-                                                当插件帮您自动投蕉后，在右下角弹出提醒消息
-                                            </p>
-                                        </td>
-                                        <td id="detect-switch-r">
-                                            <img src="images/off.png" class="switch-open switch-close"
-                                                id="detect-switch">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>自动投蕉、点赞后提醒</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>当插件帮您自动投蕉后，在右下角弹出提醒消息</p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="bananaNotice" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mdui-container-fluid">
@@ -309,61 +308,67 @@
                         <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                     <div class="mdui-panel-item-body">
-                        <div class="div-common-up" style="background: rgb(237, 237, 237);">
-                            <h3>开启Up主标记</h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td id="up-switch-l">
-                                            <p style="color: rgb(204, 204, 204);">
-                                                开启之后，Up主的评论将会这样显示<img style="vertical-align: top" height="20px"
-                                                    src="images/upname.png">
-                                            </p>
-                                        </td>
-                                        <td id="up-switch-r">
-                                            <img src="images/off.png" class="switch-open switch-close" id="up-switch">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>Up主标记</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>开启之后，Up主的评论将会这样显示<img style="vertical-align: top" height="20px"
+                                                        src="images/upname.png">
+                                                </p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="UpMark" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="div-common-scan" style="background: rgb(237, 237, 237);">
-                            <h3>开启人物扫描</h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td id="scan-switch-l">
-                                            <p style="color: rgb(204, 204, 204);">
-                                                开启之后，会在其名字后面显示你做的标记
-                                            </p>
-                                        </td>
-                                        <td id="scan-switch-r">
-                                            <img src="images/off.png" class="switch-open switch-close" id="scan-switch">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="div-common-mark" style="background: rgb(237, 237, 237);margin-top: 0px">
-                            <h3>开启人物标记</h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td id="mark-switch-l">
-                                            <p style="color: rgb(204, 204, 204);">
-                                                开启之后，会在举报按钮下增加标记按钮
-                                            </p>
-                                        </td>
-                                        <td id="mark-switch-r">
-                                            <img src="images/off.png" class="switch-open switch-close" id="mark-switch">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>人物扫描</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>开启之后，会在对应的用户名字后面显示你做的标记</p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="UserScan" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="div-user-list" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>人物标记按钮</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>开启之后，会在评论的菜单里面增加标记按钮</p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="UserScanUI" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="div-user-list" style="margin-top: 0px">
                             <table class="table custom-head">
                                 <tbody>
                                     <tr>
@@ -482,14 +487,14 @@
 
             <div class="mdui-panel" mdui-panel>
 
-                <div class="mdui-panel-item mdui-panel-item-open">
+                <div class="mdui-panel-item mdui-panel-item-open devFeature">
                     <div class="mdui-panel-item-header">
                         <div class="mdui-panel-item-title">屏蔽指定Up的内容</div>
                         <div class="mdui-panel-item-summary">我不喜欢你说的</div>
                         <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                     <div class="mdui-panel-item-body">
-                        <div class="div-filter-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <div class="div-filter-switch" style="margin-top: 0px">
                             <h3>开启Up主屏蔽</h3>
                             <table>
                                 <tbody>
@@ -509,7 +514,7 @@
                         </div>
 
 
-                        <div class="div-filter-list" style="background: rgb(237, 237, 237);margin-top: 0px">
+                        <div class="div-filter-list" style="margin-top: 0px">
                             <table class="table custom-head">
                                 <tbody>
                                     <tr>
@@ -702,41 +707,42 @@
                         <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                     <div class="mdui-panel-item-body">
-                        <div class="div-nav-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                            <h3>首页右侧导航</h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td id="nav-switch-l">
-                                            <p style="color: rgb(204, 204, 204);">
-                                                开启之后，在A站首页的右侧会出现导航条
-                                            </p>
-                                        </td>
-                                        <td id="nav-switch-r">
-                                            <img src="images/off.png" class="switch-open switch-close" id="nav-switch">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>首页右侧导航</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>开启之后，在A站首页的右侧会出现导航条</p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="beautify_nav" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="div-personal-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                            <h3>个人中心优化</h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td id="personal-switch-l">
-                                            <p style="color: rgb(204, 204, 204);">
-                                                开启之后，在页面顶栏个人中心的入口处显示你的听众、香蕉、金香蕉、UID等信息（需要登录）
-                                            </p>
-                                        </td>
-                                        <td id="personal-switch-r">
-                                            <img src="images/off.png" class="switch-open switch-close"
-                                                id="personal-switch">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>首页顶栏个人中心修改</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>开启之后，在页面顶栏个人中心的入口处显示你的听众、香蕉、金香蕉、UID等信息（需要登录)</p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="beautify_personal" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mdui-container-fluid">
@@ -1253,22 +1259,23 @@
                         <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                     <div class="mdui-panel-item-body">
-                        <div class="div-rate-switch" style="background: rgb(237, 237, 237);margin-top: 0px">
-                            <h3>自定义倍速</h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td id="rate-switch-l">
-                                            <p style="color: rgb(204, 204, 204);">
-                                                开启之后，在视频倍速栏增加自定义倍速功能
-                                            </p>
-                                        </td>
-                                        <td id="rate-switch-r">
-                                            <img src="images/off.png" class="switch-open switch-close" id="rate-switch">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>自定义倍速</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>开启之后，在视频倍速栏增加自定义倍速功能</p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="customRate" type="checkbox">开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div id="player_mode" style="background: rgb(250, 250, 250);margin-top: 0px;padding: 20px">
@@ -1281,7 +1288,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-
 
                             <div id="mode_options">
                                 <div class="mode_selections" style="color: rgb(51, 51, 51);">
@@ -1389,10 +1395,27 @@
                                 <h2>倍速切换快捷键</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器具有焦点的时候可以按shift+↑↓键调整播放速率</div>
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器具有焦点的时候可以按Shift+↑↓键调整播放速率</div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="PlaybackRateKeysw" type="checkbox" />
+                                            <i class="mdui-switch-icon"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-col-xs-9">
+                                <h2>视频帧步进</h2>
+                            </div>
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在视频页面，非播放器焦点获得的情况下（点击页面空白处），使用Shift+A or
+                                    Shift+D来一帧一帧地调整视频进度。</div>
+                                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                                            <input id="frameStepSetting" type="checkbox" />
                                             <i class="mdui-switch-icon"></i>
                                         </label>
                                     </div>
@@ -1428,7 +1451,8 @@
                                         <input id="barColor" class="mdui-textfield-input" type="text" pattern="^#.*"
                                             maxlength="9" />
                                         <div class="mdui-textfield-error">输入十六进制颜色值：#fd4c5d</div>
-                                        <div class="mdui-textfield-helper">请输入十六进制颜色值 <a href="http://www.whx.me/color/index.html" target="_blank">取色器</a></div>
+                                        <div class="mdui-textfield-helper">请输入十六进制颜色值 <a
+                                                href="http://www.whx.me/color/index.html" target="_blank">取色器</a></div>
                                     </div>
                                 </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
@@ -1446,7 +1470,9 @@
                                         <input id="loadedColor" class="mdui-textfield-input" type="text" pattern="^#.*"
                                             maxlength="9" />
                                         <div class="mdui-textfield-error">输入十六进制颜色值：#ffffffb3</div>
-                                        <div class="mdui-textfield-helper">请输入十六进制颜色值 <a href="https://www.materialpalette.com/colors" target="_blank">取色器</a></div>
+                                        <div class="mdui-textfield-helper">请输入十六进制颜色值 <a
+                                                href="https://www.materialpalette.com/colors" target="_blank">取色器</a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
@@ -1737,13 +1763,21 @@
                         <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                     <div class="mdui-panel-item-body">
-                        <div class="div-export-settings" style="background: rgb(237, 237, 237);margin-top: 0px">
-                            <h3>导入导出插件配置</h3><br>
-                            <a style="cursor: pointer" class='configExport' id='configExport'>点击此处下载插件的配置文件</a><br><br>
-                            <br><br>
-                            <div id="div_emlwX3V0aWxz_input"><span id="span_emlwX3V0aWxz_s1">导入插件配置文件: </span><input
-                                    id="input_emlwX3V0aWxz_file" type="file"></div><br><br>
-                            <a style="cursor: pointer" class='configClean' id='configClean'>点击此处清除插件的所有配置</a>
+                        <div class="div-export-settings" style="margin-top: 0px">
+                            <h3>导入导出配置</h3>
+                            <br>
+                            <button
+                                class="mdui-btn mdui-color-green-400 mdui-color-theme-accent mdui-ripple mdui-btn-block"
+                                id='configExport'>导出助手配置文件</button>
+                            <br>
+                            <div id="div_emlwX3V0aWxz_input">
+                                <span id="span_emlwX3V0aWxz_s1">导入插件配置文件: </span>
+                                <input id="input_emlwX3V0aWxz_file" type="file">
+                            </div>
+                            <br>
+                            <button
+                                class="mdui-btn mdui-color-red-900 mdui-color-theme-accent mdui-ripple mdui-btn-block"
+                                id='configClean'>重置助手配置</button>
                         </div>
                     </div>
                 </div>

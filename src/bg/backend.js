@@ -28,9 +28,9 @@ class ODHBack {
         chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
 
         //监听storage变化,可用于数据云同步
-        chrome.storage.onChanged.addListener(function (changes, areaName) {
+        // chrome.storage.onChanged.addListener(function (changes, areaName) {
 
-        });
+        // });
 
         chrome.webRequest.onBeforeRequest.addListener(
             this.onCommentRequest.bind(this),
@@ -238,19 +238,15 @@ class ODHBack {
                 title: 'AcFun助手',
                 message: '更新了！'
             });
-            return;
+            this.onUpdated();
         }
         return;
     }
 
     async onTabReady(tab) {
-        this.options = await optionsLoad();
-        let tabId = tab.id;
-        this.tabInvoke(tabId, 'setFrontendOptions', { options: this.options });
     }
 
     async onTabUpdate(tabId, changeInfo, tab) {
-        this.options = await optionsLoad();
         if (changeInfo.status == 'complete') {
             let url = tab.url;
             if (REG.acVid.test(url)) {
@@ -264,7 +260,40 @@ class ODHBack {
                 //this.callback();
             }
         }
-        this.tabInvoke(tabId, 'setFrontendOptions', { options: this.options });
+    }
+
+    async onUpdated() {
+        let rawOpts = await optionsLoad();
+        //更改用户标记、文章区用户内容屏蔽数据的结构
+        if (rawOpts.UserMarks == null && rawOpts.UserFilter == null) {
+            let rawOptsKey = Object.keys(rawOpts);
+            let markExp = new RegExp("^AC_(.*)");
+            let filterExp = new RegExp("^FILTER_(.*)");
+            let UserMarks = {};
+            let UserFilter = {};
+            for (let i = 0; i < rawOptsKey.length; i++) {
+                if (markExp.test(rawOptsKey[i])) {
+                    UserMarks[markExp.exec(rawOptsKey[i])[1]] = rawOpts[markExp.exec(rawOptsKey[i])[0]];
+                    delete rawOpts[markExp.exec(rawOptsKey[i])[0]]
+                } else if (filterExp.test(rawOptsKey[i])) {
+                    UserFilter[filterExp.exec(rawOptsKey[i])[1]] = rawOpts[filterExp.exec(rawOptsKey[i])[0]];
+                    delete rawOpts[filterExp.exec(rawOptsKey[i])[0]]
+                }
+            }
+            let x = Object.keys(rawOpts);
+            let y = new RegExp("AC_.*");
+            x.forEach((e) => {
+                if (y.test(e)) {
+                    chrome.storage.local.remove(e, function () { });
+                }
+            })
+            chrome.storage.local.set({ "UserMarks": UserMarks }, function () { })
+            chrome.storage.local.set({ "UserFilter": UserFilter }, function () { })
+        }
+        //关闭文章区用户内容评论
+        if (rawOpts['filter']) {
+            chrome.storage.local.set({ "filter": false }, function () { });
+        }
     }
 
     //================Message Hub and Handler================//
@@ -328,15 +357,15 @@ class ODHBack {
     setFrontendOptions(options) {
         switch (options.enabled) {
             case false:
-                chrome.browserAction.setBadgeText({ text: 'off' });
+                chrome.browserAction.setBadgeText({ text: 'Off' });
                 break;
             case true:
                 chrome.browserAction.setBadgeText({ text: '' });
                 break;
         }
-        this.tabInvokeAll('setFrontendOptions', {
-            options
-        });
+        // this.tabInvokeAll('setFrontendOptions', {
+        //     options
+        // });
     }
 
     //================Inner Api==================//
