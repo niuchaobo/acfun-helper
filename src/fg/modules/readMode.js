@@ -62,8 +62,11 @@ class Reader {
         //监听是否点击图片进入了漫画模式
         var mangaObserver = new MutationObserver(() => {
             if (document.querySelector('#box-image-manga')) {
+                document.querySelector("#header").style.display = "none";
                 this.drag();
                 rotateSup && this.picRotate();
+            }else{
+                document.querySelector("#header").style.display = "block";
             }
         });
         mangaObserver.observe(mangaNode, mangaOptions);
@@ -113,6 +116,7 @@ class Reader {
         }
         //鼠标抬起事件
         window.onmouseup = function () {
+            document.querySelector("#header").style.display = "block";
             //开关关闭
             isDown = false;
             dv.style.cursor = 'default';
