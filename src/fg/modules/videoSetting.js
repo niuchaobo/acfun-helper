@@ -589,6 +589,7 @@ class VideoSetting {
         });
       }, 500)
     );
+    LeftBottomNotif("弹幕列表没有显示用户跳转⌂？就发一条弹幕~万一好了呢？", "info", 8500);
   }
 
   /**

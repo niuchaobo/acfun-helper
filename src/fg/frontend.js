@@ -288,11 +288,11 @@ class ODHFront {
 				this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
 				//弹幕列表前往Acer个人主页
 				this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
-				//分P列表扩展
-				this.options.multiPartListSpread && this.pageBeautify.multiPartListSpread()
-				//播放器帧步进
-				this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 			})
+			//分P列表扩展
+			this.options.multiPartListSpread && this.pageBeautify.multiPartListSpread()
+			//播放器帧步进
+			this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 			//倍率扩大音量
 			this.options.audioGain && this.videoSetting.audioNodeGain();
 			//快捷键评论发送
