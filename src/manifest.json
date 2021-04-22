@@ -73,6 +73,7 @@
         "http://*/*",
         "storage",
         "unlimitedStorage",
+        "alarms",
         "cookies"
     ],
     "sandbox": {
