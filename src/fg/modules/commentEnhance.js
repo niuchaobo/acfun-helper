@@ -610,7 +610,7 @@ class CommentEnhance {
      */
     searchScanForPlayerTime() {
         var timer = setInterval(() => {
-            let nodes = $('.area-comment-des-content');
+            let nodes = $('.area-comment-des-content:not(:has(.quickJump))');
             let loading = $('.ac-comment-loading').html();
             let reg_for_time = this.reg_for_time;
             let reg_for_3partime = this.reg_for_time3part;
@@ -637,13 +637,13 @@ class CommentEnhance {
                                     partTarrgetNum = partTarrget[0].replace(/[^1-9]/ig, "")
                                 }
                                 timeTarget3p ? timeTarget3p = timeTarget3p[0].replace(/分/, ':').replace(/秒/, '') : ''
-                                after_html = after_html + `<a id='quickJump' onclick="quickJump('${timeTarget3p}',${partTarrgetNum && partTarrgetNum})">${partTarrget ? partTarrget[0] + ' ' : ' '} ${timeTarget3p}</a>`;
+                                after_html = after_html + `<a class='quickJump' onclick="quickJump('${timeTarget3p}',${partTarrgetNum && partTarrgetNum})">${partTarrget ? partTarrget[0] + ' ' : ' '} ${timeTarget3p}</a>`;
                             } else if (timeTarget) {
                                 if (partTarrget) {
                                     partTarrgetNum = partTarrget[0].replace(/[^1-9]/ig, "")
                                 }
                                 timeTarget ? timeTarget = timeTarget[0].replace(/分/, ':').replace(/秒/, '') : ''
-                                after_html = after_html + `<a id='quickJump' onclick="quickJump('${timeTarget}',${partTarrgetNum && partTarrgetNum})">${partTarrget ? partTarrget[0] + ' ' : ' '} ${timeTarget}</a>`;
+                                after_html = after_html + `<a class='quickJump' onclick="quickJump('${timeTarget}',${partTarrgetNum && partTarrgetNum})">${partTarrget ? partTarrget[0] + ' ' : ' '} ${timeTarget}</a>`;
                             }
                             after_html = after_html + ' ' + a[i] + "<br>";
                         }
