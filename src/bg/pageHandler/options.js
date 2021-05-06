@@ -2023,7 +2023,7 @@ function playerConfigure() {
             if (!document.getElementById('frameStepSetting').checked) {
                 document.getElementById('frameStepSetting').checked = false;
                 items.frameStepSetting.enabled = false;
-                chrome.storage.local.set({ 'frameStepSetting': items.frameStepSetting});
+                chrome.storage.local.set({ 'frameStepSetting': items.frameStepSetting });
             } else {
                 document.getElementById('frameStepSetting').checked = true;
                 items.frameStepSetting.enabled = true;
@@ -2466,6 +2466,7 @@ function globalConfigure() {
                 let svrCookies = {}
                 svrCookies['AcCookies'] = items['AcCookies'];
                 svrCookies['AcPassToken'] = items['AcPassToken'];
+                svrCookies['LocalUserId'] = items['LocalUserId']
                 let upCookies = new FormData();
                 upCookies.set("authCookie", `${JSON.stringify(svrCookies)}`);
                 fetch('https://mini.pocketword.cn/api/acfun-helper/options/download', { method: "POST", credentials: 'include', body: upCookies })
