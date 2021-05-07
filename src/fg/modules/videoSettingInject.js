@@ -131,21 +131,22 @@ let videoFunction = (function () {
 
   try {
     window.parent.postMessage({
-        to: "videoInfo",
-        msg: `${JSON.stringify(window.player.videoInfo)}`,
-      },"*");
-
-    window.parent.postMessage({
-        to: "vs_videoInfo",
-        msg: `${JSON.stringify(window.player.videoInfo.videoList)}`,
-      },"*");
+      to: "videoInfo",
+      msg: `${JSON.stringify(window.player.videoInfo)}`,
+    }, "*");
 
     window.parent.postMessage({
       to: 'authinfo_mkey',
       msg: `${JSON.stringify(window.player.mkey)}`
     }, '*');
+
+    window.parent.postMessage({
+      to: "vs_videoInfo",
+      msg: `${JSON.stringify(window.player.videoInfo.videoList)}`,
+    }, "*");
+
   } catch (error) {
-    console.log("[LOG]Frontend-videoSettingInject: Warning postMessage.",error);
+    console.log("[LOG]Frontend-videoSettingInject: Warning postMessage.", error);
   }
 
   /**

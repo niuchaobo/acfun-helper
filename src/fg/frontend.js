@@ -101,8 +101,7 @@ class ODHFront {
 	}
 
 	onACPlayerLoaded(e) {
-		let href = this.href;
-		if (REG.videoAndBangumi.test(href)) {
+		if (REG.videoAndBangumi.test(this.href)) {
 			let isLogin = false;
 			getAsyncDom('#ACPlayer .control-bar-top .box-right', () => {
 				if (isLoginByUi(false)) {
@@ -150,6 +149,7 @@ class ODHFront {
 			this.options.hideAd && this.pageBeautify.hideAds();
 			//首页nav高斯模糊
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false);
+			return
 		}
 		//分区首页
 		if (REG.partIndex.test(href) || REG.articleDetail.test(href)) {
@@ -160,6 +160,7 @@ class ODHFront {
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(true);
 			//快捷键翻页
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
+			return
 		}
 		//视频
 		if (REG.video.test(href)) {
@@ -171,10 +172,12 @@ class ODHFront {
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
 			this.options.playerRecommendHide && this.pageBeautify.simplifiyPlayerRecm();
+			return
 		}
 		//直播
 		if (REG.live.test(href)) {
 			this.options.liveCommentTimeTag && this.livePageBeautify.commentTimeTag();
+			return
 		}
 		//直播站功能
 		if (REG.live.test(href) && this.options.livePlayerEnhc) {
@@ -211,6 +214,7 @@ class ODHFront {
 		//根据cookie判断当前登录用户是不是up
 		//let is_up = this.adjuatUp();
 		let href = this.href;
+		this.authInfo.cookInfo();
 		//音乐播放器
 		if (REG.player.test(href)) {
 			this.musicPlayerFront.hookListener();
@@ -260,6 +264,7 @@ class ODHFront {
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
+			return
 		}
 		//直播
 		if (REG.live.test(href)) {
@@ -270,6 +275,7 @@ class ODHFront {
 			//直播画中画模式
 			this.livePageBeautify.callPicktureInPictureModeForLive()
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit("live");
+			return
 		}
 		//直播首页
 		if (REG.liveIndex.test(href) && !REG.live.test(href)) {
@@ -279,6 +285,7 @@ class ODHFront {
 			this.options.liveBansw && this.block.liveUserBlock();
 			//直播站主页数量标号
 			this.options.liveIndexRankNum && this.livePageBeautify.listCountFront();
+			return
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {
@@ -300,7 +307,6 @@ class ODHFront {
 			//MediaSession
 			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
 		}
-		this.authInfo.cookInfo();
 	}
 
 	onCommentAreaLoaded(e) {
