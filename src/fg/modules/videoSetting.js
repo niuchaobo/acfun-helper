@@ -548,7 +548,6 @@ class VideoSetting {
     videoRate <= 0 ? (videoRate = 0.25) : videoRate >= 2 ? (videoRate = 2) : "";
     return videoRate;
   }
-  //TODO:部分情况失效问题
   danmuSearchListToUser() {
     this.danmuSearchListToUserExec();
     $(".danmaku-items").bind(
