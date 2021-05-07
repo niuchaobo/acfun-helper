@@ -116,7 +116,7 @@ class Reader {
         }
         //鼠标抬起事件
         window.onmouseup = function () {
-            document.querySelector("#header").style.display = "block";
+            // document.querySelector("#header").style.display = "block";
             //开关关闭
             isDown = false;
             dv.style.cursor = 'default';
