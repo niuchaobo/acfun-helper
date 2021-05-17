@@ -68,7 +68,7 @@ class UpgradeAgent {
 
         //调用
         this.checkUpdate();
-        BangumiNotifsw && this.bangumiPlan.fetchBangumiInfo();
-        BangumiPlansw && this.bangumiPlan.notifyBangumiUpdate();
+        BangumiPlansw && this.bangumiPlan.fetchBangumiInfo();
+        BangumiNotifsw && this.bangumiPlan.notifyBangumiUpdate();
     }
 }
