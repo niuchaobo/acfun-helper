@@ -152,27 +152,28 @@ class MsgNotifs {
             // 上次直播列表中的，假如某个上次正在直播UID列表中的用户在正在直播信息字典中的状态(a.broadcastingUIDlistFollowing[b[k]]) 不等于 此次获取的正在直播信息字典中的状态(y[b[k]]) 而且他的状态等于 true 则为正在直播
             for (k in b) {
                 // console.log(b.indexOf(b[k])==-1)
-                if (a.broadcastingUIDlistFollowing[b[k]] != y[b[k]] && y[b[k]] == true) {
-                    let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${b[k]}`)
-                    // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
-                    chrome.notifications.create(b[k], {
-                        type: 'basic',
-                        iconUrl: 'images/notice.png',
-                        title: 'AcFun助手',
-                        buttons: [{ title: "前往直播间" }],
-                        message: `${JSON.parse(uInfo).profile.name}  正在直播了！`
-                    });
-                } else {
-                    chrome.storage.local.get(['liveCloseLiveNotif'], async function (a) {
+                if (a.broadcastingUIDlistFollowing[b[k]] != y[b[k]]) {
+                    if (y[b[k]] == true) {
                         let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${b[k]}`)
-                        a.liveCloseLiveNotif && chrome.notifications.create(b[k], {
+                        // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
+                        chrome.notifications.create(b[k], {
                             type: 'basic',
                             iconUrl: 'images/notice.png',
                             title: 'AcFun助手',
                             buttons: [{ title: "前往直播间" }],
-                            message: `${JSON.parse(uInfo).profile.name}  下播了！`
+                            message: `${JSON.parse(uInfo).profile.name}  正在直播了！`
                         });
-                    })
+                    } else {
+                        chrome.storage.local.get(['liveCloseLiveNotif'], async function (a) {
+                            let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${b[k]}`)
+                            a.liveCloseLiveNotif && chrome.notifications.create(b[k], {
+                                type: 'basic',
+                                iconUrl: 'images/notice.png',
+                                title: 'AcFun助手',
+                                message: `${JSON.parse(uInfo).profile.name}  下播了！`
+                            });
+                        })
+                    }
                 }
             }
             // 将此次直播状态信息字典写入存储
