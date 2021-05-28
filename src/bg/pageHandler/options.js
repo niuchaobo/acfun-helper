@@ -1100,8 +1100,26 @@ function indexSiteConfigure() {
             }
         });
     });
-
 }
+
+//========================下播提醒==========================//
+chrome.storage.local.get(['liveCloseNotif'], function (items) {
+    var liveCloseNotif = items.liveCloseNotif;
+    if (liveCloseNotif) {
+        document.getElementById('liveCloseNotif').checked = 'true';
+    } else {
+        document.getElementById('liveCloseNotif').checked = false;
+    }
+    $('#liveCloseNotif').on('click', function () {
+        if (!document.getElementById('liveCloseNotif').checked) {
+            document.getElementById('liveCloseNotif').checked = false;
+            chrome.storage.local.set({ 'liveCloseNotif': false });
+        } else {
+            document.getElementById('liveCloseNotif').checked = true;
+            chrome.storage.local.set({ 'liveCloseNotif': true });
+        }
+    });
+});
 
 function contentConfigure() {
     //========================稍后再看==========================//
