@@ -177,6 +177,8 @@ class ODHFront {
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
 			this.options.playerRecommendHide && this.pageBeautify.simplifiyPlayerRecm();
+			//历史排行榜成就
+			this.options.videoAchievement && this.ce.historocalAchieve();
 			return
 		}
 		//直播

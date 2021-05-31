@@ -88,6 +88,7 @@ const defaults = {
   commentPageEasyTrans: true,
   liveMediaSession: false,
   videoMediaSession: false,
+  videoAchievement: true,
   userCenterBeautify: true,
   pageTransKeyBind: true,
   quickCommentSubmit: false,

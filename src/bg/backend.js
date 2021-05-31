@@ -461,6 +461,15 @@ class ODHBack {
         this.MusicPlayer.addItem(e.linkUrl);
     }
 
+    async api_achievementEvent(e) {
+        if(e.data.action=="get"){
+            return await db_getHistoricalAchievs(REG.acVid.exec(e.data.url)[2]);
+        }else if(e.data.action=="put"){
+            db_insertHistoricalAchievs(REG.acVid.exec(e.data.url)[2],e.data.tagData);
+            return true;
+        }
+    }
+
     async api_initBackend(params) {
         let options = await optionsLoad();
         //this.ankiweb.initConnection(options);

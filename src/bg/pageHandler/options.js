@@ -2341,6 +2341,25 @@ function playerConfigure() {
         });
     });
 
+    //====================排行榜历史成就提示==================
+    chrome.storage.local.get(['videoAchievement'], function (items) {
+        var videoAchievement = items.videoAchievement;
+        if (videoAchievement) {
+            document.getElementById('videoAchievement').checked = true;
+        } else {
+            document.getElementById('videoAchievement').checked = false;
+        }
+        $('#videoAchievement').on('click', function () {
+            if (!document.getElementById('videoAchievement').checked) {
+                document.getElementById('videoAchievement').checked = false;
+                chrome.storage.local.set({ 'videoAchievement': false });
+            } else {
+                document.getElementById('videoAchievement').checked = true;
+                chrome.storage.local.set({ 'videoAchievement': true });
+            }
+        });
+    });
+
     //====================弹幕列表增加发送用户跳转===================
     chrome.storage.local.get(['danmuSearchListToUsersw'], function (items) {
         var danmuSearchListToUsersw = items.danmuSearchListToUsersw;

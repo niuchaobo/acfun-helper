@@ -4,6 +4,7 @@
 const db = new Dexie("acfunhelper");
 const db2 = new Dexie("acfunhelper-square");
 const db3 = new Dexie("acfunhelper-bangumi");
+const db4 = new Dexie("acfunhelper-historicalAchieve");
 const Bangumi_struct = "coverUrls,showPlayCount,shareCount,commentCount,showStowCount,showSerialStatus,isOver,updateDayOfWeek,updateDayTime,bangumiId,lastVideoName,caption,description,paymentType,recoReason,acfunOnly,likeCount,stowCount,shareUrl,playCount,areaShow,firstPlayDate,lastUpdateItemTimeStr,updateDayTimeStr"
 
 function test() {
@@ -26,6 +27,7 @@ function initializeDBTable() {
     initHistoryViews();
     initPushListHtml();
     initSquareList();
+    inithistoricalAchieve();
 }
 
 async function judgeDbExist(dbName) {
@@ -123,6 +125,22 @@ function initMyBangumi() {
             MyBangumi: Bangumi_struct,
         });
         console.log("    [WARN]Background-IndexedDbDrv > initHistoryViews:Table initializing.")
+    }
+}
+
+function inithistoricalAchieve() {
+    try {
+        db4.historical.count(function (e) {
+            // console.log(e)
+        })
+    } catch (error) {
+        db4.version(5).stores({
+            historical: 'acid,date,tag',
+        });
+        db4.historical.put({
+            "acid": 1, "date": new Date, "tag": "233"
+        })    
+        console.log("    [WARN]Background-IndexedDbDrv > inithistoricalAchieve:Table initializing.")
     }
 }
 
@@ -248,6 +266,14 @@ function db_putMyBangumi_Full(Data) {
     }
 }
 
+function db_insertHistoricalAchievs(acid, tag) {
+    inithistoricalAchieve();
+    db4.open();
+    db4.historical.put({
+        "acid": acid, "date": new Date, "tag": tag
+    })
+}
+
 //----------------------Get-Obj-----------------
 async function db_getSquareList(limitNum) {
     //获取推送列表前多少个条目
@@ -345,6 +371,15 @@ async function db_getMybangumi(mode, orderType = '', limitKey = '', limitValue =
 async function db_getBangumiNum() {
     initMyBangumi();
     return await db3.MyBangumi.count((e) => { return e });
+}
+
+async function db_getHistoricalAchievs(acid) {
+    inithistoricalAchieve();
+    var result;
+    db4.open();
+    result = await db4.historical.where("acid").equals(acid).toArray();
+    db4.close();
+    return result;
 }
 
 //----------------------Clear-DB-----------------
