@@ -1100,8 +1100,26 @@ function indexSiteConfigure() {
             }
         });
     });
-
 }
+
+//========================下播提醒==========================//
+chrome.storage.local.get(['liveCloseNotif'], function (items) {
+    var liveCloseNotif = items.liveCloseNotif;
+    if (liveCloseNotif) {
+        document.getElementById('liveCloseNotif').checked = 'true';
+    } else {
+        document.getElementById('liveCloseNotif').checked = false;
+    }
+    $('#liveCloseNotif').on('click', function () {
+        if (!document.getElementById('liveCloseNotif').checked) {
+            document.getElementById('liveCloseNotif').checked = false;
+            chrome.storage.local.set({ 'liveCloseNotif': false });
+        } else {
+            document.getElementById('liveCloseNotif').checked = true;
+            chrome.storage.local.set({ 'liveCloseNotif': true });
+        }
+    });
+});
 
 function contentConfigure() {
     //========================稍后再看==========================//
@@ -2023,7 +2041,7 @@ function playerConfigure() {
             if (!document.getElementById('frameStepSetting').checked) {
                 document.getElementById('frameStepSetting').checked = false;
                 items.frameStepSetting.enabled = false;
-                chrome.storage.local.set({ 'frameStepSetting': items.frameStepSetting});
+                chrome.storage.local.set({ 'frameStepSetting': items.frameStepSetting });
             } else {
                 document.getElementById('frameStepSetting').checked = true;
                 items.frameStepSetting.enabled = true;
@@ -2323,6 +2341,25 @@ function playerConfigure() {
         });
     });
 
+    //====================排行榜历史成就提示==================
+    chrome.storage.local.get(['videoAchievement'], function (items) {
+        var videoAchievement = items.videoAchievement;
+        if (videoAchievement) {
+            document.getElementById('videoAchievement').checked = true;
+        } else {
+            document.getElementById('videoAchievement').checked = false;
+        }
+        $('#videoAchievement').on('click', function () {
+            if (!document.getElementById('videoAchievement').checked) {
+                document.getElementById('videoAchievement').checked = false;
+                chrome.storage.local.set({ 'videoAchievement': false });
+            } else {
+                document.getElementById('videoAchievement').checked = true;
+                chrome.storage.local.set({ 'videoAchievement': true });
+            }
+        });
+    });
+
     //====================弹幕列表增加发送用户跳转===================
     chrome.storage.local.get(['danmuSearchListToUsersw'], function (items) {
         var danmuSearchListToUsersw = items.danmuSearchListToUsersw;
@@ -2466,6 +2503,7 @@ function globalConfigure() {
                 let svrCookies = {}
                 svrCookies['AcCookies'] = items['AcCookies'];
                 svrCookies['AcPassToken'] = items['AcPassToken'];
+                svrCookies['LocalUserId'] = items['LocalUserId']
                 let upCookies = new FormData();
                 upCookies.set("authCookie", `${JSON.stringify(svrCookies)}`);
                 fetch('https://mini.pocketword.cn/api/acfun-helper/options/download', { method: "POST", credentials: 'include', body: upCookies })

@@ -31,7 +31,7 @@ class Banana {
             if (!followed || followed.length <= 0) {
                 return { state: false }
             }
-            up_name = document.getElementsByClassName('up-name')[0].innerText
+            up_name = document.getElementsByClassName('up-name')[0].children[0].innerText
             banana_num = options.to_attention_num;
             return { state: true, name: up_name, num: banana_num };
         } else {
@@ -54,11 +54,11 @@ class Banana {
         }
     }
 
-    LikeHeartFront(Mode = "video", isLogin) {
-        if (!isLogin && Mode == "video") {
+    LikeHeartFront(Mode = "video", isLogined) {
+        if (!isLogined && Mode == "video") {
             return;
         } else if (Mode == "article") {
-            if (!isLoginByUi()) {
+            if (!isLogin("article")) {
                 return;
             }
         }
@@ -126,9 +126,9 @@ class Banana {
      * @param {*} params 
      */
     async articleBanana(params) {
-        var isLogin = false;
+        var isLogined = false;
         try {
-            isLogin = isLoginByUi();
+            isLogined = isLogin("video");
         } catch (error) {
             console.log("[LOG]Front-Banana>articleBanana: 没找到登录判断依据。");
         }
@@ -161,7 +161,7 @@ class Banana {
     }
 
     async throwBanana(params) {
-        if (!isLoginByUi(false)) {
+        if (!isLogin()) {
             return;
         }
         let options = window.odhfront.options;

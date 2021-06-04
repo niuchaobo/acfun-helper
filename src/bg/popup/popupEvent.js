@@ -1,17 +1,5 @@
 /* global odhback, optionsLoad, optionsSave*/
 
-export function openUpdateLog() {
-	window.open("https://github.com/niuchaobo/acfun-helper/commits/master");
-}
-
-export function openIntroduce() {
-	//window.open("guide.html","_blank");
-	var a = $("<a href='guide.html' target='_blank'></a>").get(0);
-	var e = document.createEvent("MouseEvents");
-	e.initEvent("click", true, true);
-	a.dispatchEvent(e);
-}
-
 export function openSetting() {
 	//window.open("options.html","_blank");
 	var a = $("<a href='options.html' target='_blank'></a>").get(0);
@@ -29,12 +17,6 @@ export function openMusicPlayerSetting() {
 
 export function indexJump() {
 	switch (this.id) {
-		case 'pop-toUcenter':
-			var a = $("<a href='https://www.acfun.cn/member/#area=splash' target='_blank'></a>").get(0);
-			var e = document.createEvent("MouseEvents");
-			e.initEvent("click", true, true);
-			a.dispatchEvent(e);
-			break;
 		case 'pop-toLiveIndex':
 			var a = $("<a href='https://live.acfun.cn/' target='_blank'></a>").get(0);
 			var e = document.createEvent("MouseEvents");
@@ -52,22 +34,12 @@ export function indexJump() {
 	}
 }
 
-export function watchLive() {
-	let uid = $("#live-id").val();
-	//不输入uid时，跳转到直播首页（以前是404）
-	let reg = /^\d{1,}$/;
-	let pattern = new RegExp(reg);
-	let url = pattern.test(uid)
-		? `http://live.acfun.cn/live/${uid}`
-		: `https://live.acfun.cn/`;
-	var a = $("<a href='" + url + "' target='_blank'></a>").get(0);
-	var e = document.createEvent("MouseEvents");
-	e.initEvent("click", true, true);
-	a.dispatchEvent(e);
-}
-
 export function titleToHome() {
 	window.open("https://www.acfun.cn/");
+}
+
+export function toUcenter() {
+	window.open("https://www.acfun.cn/member/");
 }
 
 export function hideToTopButton() {

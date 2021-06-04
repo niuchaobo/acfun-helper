@@ -109,6 +109,13 @@ function fgMod() {
         .pipe(dest('./final/fg/modules/'))
 }
 
+function zipFiles() {
+    const zip = require('gulp-zip');
+    return gulp.src('final/**')
+        .pipe(zip('archive.zip'))
+        .pipe(gulp.dest('./'))
+}
+
 gulp.task("default", (e) => {
     console.log("Compressing...")
     backend()
@@ -146,3 +153,9 @@ gulp.task('betaSlim', function (e) {
     ], e);
     e();
 });
+
+gulp.task('zip',function(e){
+    console.log("Compress files to a zip file.");
+    zipFiles();
+    e();
+})

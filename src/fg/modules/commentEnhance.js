@@ -704,6 +704,33 @@ class CommentEnhance {
         return seconds;
     }
 
-}
+    /**
+     * 历史成就
+     */
+    historocalAchieve() {
+        chrome.runtime.sendMessage({ action: "achievementEvent", params: { responseRequire: true, asyncWarp: true, data: { action: "get", url: window.location.href } } }, function (response) {
+            var tag;
+            try {
+                tag = document.querySelector(".reco-tag").innerText;
+            } catch (error) {
+                tag = null;
+            }
+            if (response.data.length != 0) {
+                //数据库有数据
+                if (tag) {
+                    return
+                } else {
+                    //要加上Tag
+                    addElement({ tag: 'a', target: document.querySelector(".video-description .title"), classes: 'reco-tag', createMode: "headAppnd", thisHTML: `${new Date(response.data[0].date).getFullYear()}-${new Date(response.data[0].date).getMonth() + 1}-${new Date(response.data[0].date).getDate()} ${response.data[0].tag}` })
+                }
+            } else {
+                if (tag) {
+                    //数据库没数据，并且存在榜单数据，那就写数据进数据库
+                    chrome.runtime.sendMessage({ action: "achievementEvent", params: { responseRequire: true, asyncWarp: true, data: { action: "put", url: window.location.href, tagData: tag } } }, function (response) { })
+                }
+            }
+        })
+    }
 
+}
 

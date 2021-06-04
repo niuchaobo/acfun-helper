@@ -18,6 +18,7 @@ class Danmaku {
      */
     async sanitizeJsonDanmakuToAss() {
         let acid = REG.acVid.exec(window.location.href)[2];
+        this.acid = acid;
         let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + acid));
         let pageCount = Math.round(videoInfo.danmakuCount / 200);
         if (pageCount == 0) {
@@ -91,7 +92,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
             this.danmuMotionList[i] = { "startTime": startTime, "fontTailX": fontTailX, "toLeftTime": toLeftTime, "toLeftVelocity": toLeftVelocity, "type": 0 }
         }
 
-        let channelNum = Math.floor(1080 / 65);
+        let channelNum = Math.floor(this.videoQualitiesRefer[thisVideoQuality].width / fontsize);
         // console.log(this.danmuMotionList)
         //逐个击破
         for (let i = 0; i < danmakuLength; i++) {

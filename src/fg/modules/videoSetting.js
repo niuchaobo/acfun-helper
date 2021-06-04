@@ -562,60 +562,54 @@ class VideoSetting {
     return videoRate;
   }
 
-  addHomeIcon() {
-    $(".danmaku-items>li>.danmaku-content").after(
-      `<div class = 'searchListUser' style = "margin-right:6px;font-size:20px;line-height:20px">⌂</div>`
-    );
-    $(".danmaku-items>li").bind("mouseenter", (e) => {
-      let userId = $(e.target).attr("data-user");
-      $(e.target).children(".searchListUser").eq(0).unbind("click");
-      $(e.target)
-        .children(".searchListUser")
-        .attr("title", `打开ID:${userId}用户主页`)
-        .eq(0)
-        .bind("click", () => {
-          e.stopPropagation();
-          window.open(`https://www.acfun.cn/u/${userId}`);
-        });
-    });
-
-    let houseIconHiddenTimer;
-    $(".danmaku-items>li").mouseleave(function (e) {
-        houseIconHiddenTimer = setTimeout(function () {
-            $(e.target).children(".searchListUser").eq(0).unbind("click");
-      });
-    });
-    $(".danmaku-items>li").mouseover(function () {
-      window.clearTimeout(houseIconHiddenTimer);
-    });
-    // ⬇️ 太占资源了8
-    //   $(".danmaku-items>li>.danmaku-content").after(function(){
-    //     const urlID = $(this).parent().attr("data-user")
-    //   return `<a href='https://www.acfun.cn/u/${urlID}' target="_blank" class = 'searchListUser' style = "margin-right:6px;font-size:20px;line-height:20px">⌂</a>`
-    // }
-    // );
-  }
-
   danmuSearchListToUser() {
-    const listToUserCss = `
-    .danmaku-items>li>.searchListUser{
-        display:none;
-    }
-    .danmaku-items>li:hover>.searchListUser{
-        display:inline-block;
-    }
-    `;
-    createElementStyle(listToUserCss);
-    this.addHomeIcon();
+    this.danmuSearchListToUserExec();
+
     $(".danmaku-items").bind(
       "DOMNodeInserted",
       debounce((e) => {
         if (e.target.className === "searchListUser") {
           return;
         }
-        this.addHomeIcon();
-      }, 1000)
+
+        this.danmuSearchListToUserExec();
+      }, 500)
     );
+  }
+
+  danmuSearchListToUserExec(){
+    $(".danmaku-items>li>.danmaku-content").after(
+      `<div class = 'searchListUser' style = "display:none;margin-right:6px;font-size:20px;">⌂</div>`
+    );
+    $(".danmaku-items>li").bind("mouseenter", (e) => {
+      let userId = $(e.target).attr("data-user");
+      $(e.target)
+        .children(".searchListUser")
+        .eq(0)
+        .css("display", "inline-block")
+        .siblings()
+        .children(".searchListUser")
+        .eq(0)
+        .css("display", "none");
+      $(e.target).children(".searchListUser").eq(0).unbind("click");
+      $(e.target)
+        .children(".searchListUser")
+        .attr('title', `ID:${userId}`)
+        .eq(0)
+        .bind("click", () => {
+          e.stopPropagation();
+          window.open(`https://www.acfun.cn/u/${userId}`);
+          $(e.target)
+            .children(".searchListUser")
+            .eq(0)
+            .css("display", "none");
+        });
+    });
+    $(".danmaku-items>li").bind("mouseleave", (e) => {
+      $(e.target).children(".searchListUser").eq(0).unbind("click");
+      $(e.target).children(".searchListUser").eq(0).css("display", "none");
+    });
+
   }
 
   /**

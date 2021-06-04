@@ -3,16 +3,13 @@ import {
 	renderPushInnerHtml,
 	renderLives,
 	renderLiveWatchTimeLst,
-    customCss,
+	customCss,
 	renderFollowGroup,
 	renderGroupPush,
 	PopupLater,
 } from "./renderList.js";
 import {
-	openUpdateLog,
-	openIntroduce,
 	openSetting,
-	watchLive,
 	onOptionChanged,
 	titleToHome,
 	clickToTop,
@@ -32,7 +29,8 @@ import {
 	musicPlayerPopupStart,
 	musicPlayerPopupStop,
 	musicPlayerPopupShow,
-	unreadNum
+	unreadNum,
+	toUcenter,
 } from "./popupEvent.js";
 
 async function onReady() {
@@ -41,22 +39,18 @@ async function onReady() {
 	localizeHtmlPage(); //global function
 	updateVersionIcon(); //更新提醒
 	let options = await optionsLoad(); //global function
-	//fetchPushContent();
 	renderPushInnerHtml(); //稿件动态列表加载
 	renderLives(); //生放送列表加载
 	renderLiveWatchTimeLst();
 	unreadNum();
-    customCss();//自定义popup样式
+	customCss();//自定义popup样式
 	$("#extends-enbaled").prop("checked", options.enabled);
 	$("#extends-enbaled").change(onOptionChanged);
-	$("#pop-update-log").click(openUpdateLog);
-	$("#pop-introduce").click(openIntroduce);
 	$("#pop-toArticlePart").click(indexJump);
-	$("#pop-toUcenter").click(indexJump);
 	$("#pop-toLiveIndex").click(indexJump);
 	$("#pop-setting").click(openSetting);
-	$("#go-live").click(watchLive);
 	$("#pop-title .letter").click(titleToHome);
+	options.LocalUserId != "0" && $("#pop-title .Ucenter").show();$("#pop-title .Ucenter").click(toUcenter);
 	$(document).scroll(hideToTopButton);
 	$(".toTop").click(clickToTop);
 	$("#dougaInfoAcidbtn").click(fetchDougaInfo);

@@ -77,25 +77,32 @@
 
                 <div>
                     <div class="mdui-collapse" mdui-collapse>
-
                         <div class="mdui-collapse-item">
-                            <div class="mdui-collapse-item-header"><button
-                                    class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
-                                    style="cursor: default;">小工具</button></div>
+                            <div class="mdui-collapse-item-header">
+                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                                    style="cursor: default;">小工具</button>
+                            </div>
                             <div class="mdui-collapse-item-body">
                                 <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
                                     style="cursor: default;"><a href="./upupup.html" target="_blank">最近活动情况</a></p>
-                                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
-                                        style="cursor: default;"><a href="./square.html" target="_blank">广场</a></p>
-                                        <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
-                                            style="cursor: default;"><a href="./topic.html" target="_blank">话题</a></p>
-                                            <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
-                                                style="cursor: default;"><a href="./bangumi.html" target="_blank">番剧</a>
-                                                </p>
-                                                <button
-                                                    class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
-                                                    style="cursor: default;"><a href="./guide.html"
-                                                        target="_blank">指导</a></p>
+                                </button>
+                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                                    style="cursor: default;"><a href="./square.html" target="_blank">广场</a></p>
+                                </button>
+                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                                    style="cursor: default;"><a href="./topic.html" target="_blank">话题</a></p>
+                                </button>
+                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                                    style="cursor: default;"><a href="./bangumi.html" target="_blank">番剧</a></p>
+                                </button>
+                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                                    style="cursor: default;"><a href="./guide.html" target="_blank">指导</a></p>
+                                </button>
+                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                                    style="cursor: default;"><a
+                                        href="https://github.com/niuchaobo/acfun-helper/commits/master"
+                                        target="_blank">助手更新日志</a></p>
+                                </button>
                             </div>
                         </div>
 
@@ -132,7 +139,6 @@
                             </div>
                         </div>
 
-
                         <div id="attention" style="display: none" class="table-container">
                             <table class="table custom-head">
                                 <tbody>
@@ -143,7 +149,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-
 
                             <div id="huaci_options">
                                 <div class="huaci_selections">
@@ -420,6 +425,12 @@
                                                 <label class="mdui-switch">
                                                     <input id="liveFollowOpenNow" type="checkbox" />
                                                     <i class="mdui-switch-icon"></i>--立即打开页面--
+                                                </label>
+                                            </div>
+                                            <div class="mdui-col-xs-3 mdui-col-sm-2" title="只要自定义Up开播弹出通知就立刻打开Up直播页面">
+                                                <label class="mdui-switch">
+                                                    <input id="liveCloseNotif" type="checkbox" />
+                                                    <i class="mdui-switch-icon"></i>--下播提醒--
                                                 </label>
                                             </div>
                                             <div class="mdui-col-xs-3 mdui-col-sm-2">
@@ -1362,7 +1373,7 @@
                                 <h2>弹幕列表发送用户跳转</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">可以在弹幕列表中的弹幕条目的操作菜单按钮旁加入一个(⌂ 像房子一样)按钮快速跳转至发送用户页面
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">可以在弹幕列表中的弹幕条目的操作菜单按钮旁加入一个(⌂ 像房子一样)按钮快速跳转至发送用户页面<button class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '你可能会在弹幕列表中发现没有⌂房子按钮，这是因为我们没法有效地与主站页面加载完全协同（网络？或者性能？），导致的问题；你可以通过发送一条弹幕，试试看能不能解决。'}"><i class="mdui-icon material-icons">announcement</i></button>
                                 </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
@@ -1545,6 +1556,22 @@
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="autoOpenVideoDescsw" type="checkbox" />
+                                            <i class="mdui-switch-icon"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-col-xs-9">
+                                <h2>排行榜历史成就提示</h2>
+                            </div>
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">记录打开过的视频稿件排行榜（日榜排名）信息，并在以后打开的页面中提示。</div>
+                                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                                            <input id="videoAchievement" type="checkbox" />
                                             <i class="mdui-switch-icon"></i>
                                         </label>
                                     </div>

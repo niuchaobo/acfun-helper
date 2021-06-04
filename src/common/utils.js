@@ -38,6 +38,7 @@ const defaults = {
   player_mode: 'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
   liveFloowNotif: false,
   liveFollowOpenNow: false,
+  liveCloseNotif: false,
   videoQualityStrategy: '0',
   livePlayerEnhc: false,
   autoJumpLastWatchSw: false,
@@ -87,6 +88,7 @@ const defaults = {
   commentPageEasyTrans: true,
   liveMediaSession: false,
   videoMediaSession: false,
+  videoAchievement: true,
   userCenterBeautify: true,
   pageTransKeyBind: true,
   quickCommentSubmit: false,
@@ -795,21 +797,26 @@ function removeAPrefix(_$targetDom) {
 }
 
 /**
- * 使用UI对象来判断用户是否登录
- * @param {boolean} mode 默认为true，表示可以直接由UI判断出，而不需要使用jquery递归查询的办法去找出对象元素的css属性，以判断是否登录，false时是性能的下策，但是结果肯定没错。
+ * 判断用户是否登录
+ * @param {string} dept "video" or "article"
  * @returns {boolean} 状态
  */
-function isLoginByUi(mode = true) {
-  if (mode) {
-    if (document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0) {
-      return false;
-    }
-    return true;
-  } else {
-    if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden")) {
-      return true;
-    }
-    return false;
+function isLogin(dept = "video") {
+  switch (dept) {
+    case "video":
+      if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden") && getcookie("ac_username")) {
+        return true;
+      } else {
+        return false;
+      }
+    case "article":
+      let isLogined = false;
+      try {
+        isLogined = document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0;
+      } catch (error) {
+        isLogined = getcookie("ac_username") != false ? true : false;
+      }
+      return isLogined;
   }
 }
 
@@ -843,7 +850,7 @@ function judgeActivePart() {
   let x = document.querySelector("#main-content > div.right-column > div.part > div.fl.part-wrap > ul").children;
   for (let i = 0; i < x.length; i++) {
     if (x[i].classList[1] == "active") {
-      return x + 1;
+      return i + 1;
     }
   }
 }

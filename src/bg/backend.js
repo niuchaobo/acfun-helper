@@ -26,6 +26,8 @@ class ODHBack {
         chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
         chrome.tabs.onCreated.addListener((tab) => this.onTabReady(tab));
         chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
+        chrome.alarms.onAlarm.addListener((e) => this.onAlarmsEvent(e));
+        chrome.commands.onCommand.addListener((command) => { this.onCommands(command) });
 
         //监听storage变化,可用于数据云同步
         // chrome.storage.onChanged.addListener(function (changes, areaName) {
@@ -51,6 +53,213 @@ class ODHBack {
             delStorage(tabId + "");
         });
 
+        //当激活某个tab页时
+        chrome.tabs.onActivated.addListener(function (tab) {
+            let tabId = tab.tabId;
+            chrome.storage.local.set({ activeTabId: tabId }, function () {
+                if (chrome.runtime.lastError) {
+                    notice('发生错误', chrome.runtime.lastError.message);
+                }
+            });
+        });
+
+        //注册右键菜单
+        this.registerContextMenus()
+
+        if (myBrowser() == "Chrome") {
+            this.scheduler = chrome.alarms;
+        } else {
+            this.scheduler = browser.alarms;
+        }
+
+    }
+
+    onCommentRequest(req) {
+        if (!this.options.enabled) {
+            return;
+        }
+        let url = req.url;
+        let tabId = req.tabId;
+        let commentListReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/list\\?.*");
+        let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");
+
+        // let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.hlspull.etoote.com/.*m3u8");
+        let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.pull.etoote.com/livecloud/.*");
+
+        if (commentListReg.test(url)) {
+            this.tabInvoke(tabId, 'renderList', { url: url });
+        } else if (commentSubReg.test(url)) {
+            let rootCommentId = url.match(commentSubReg)[1];
+            this.tabInvoke(tabId, 'renderSub', { rootCommentId: rootCommentId, url: url });
+        } else if (liveReg.test(url)) {
+            // console.log("url1",url);
+            this.tabInvoke(tabId, 'renderLive', { url: url });
+        }
+        this.authInfo.fetchPasstoken();
+        this.authInfo.getAccessToken();
+    }
+
+    onInstalled(details) {
+        initializeDBTable();
+        if (details.reason === 'install') {
+            chrome.tabs.create({ url: chrome.extension.getURL('bg/options.html') });
+        }
+        if (details.reason === 'update') {
+            chrome.notifications.create(null, {
+                type: 'basic',
+                iconUrl: 'images/notice.png',
+                title: 'AcFun助手',
+                message: '更新了！'
+            });
+            this.onUpdated();
+        }
+        return;
+    }
+
+    async onTabReady(tab) {
+    }
+
+    async onTabUpdate(tabId, changeInfo, tab) {
+        if (changeInfo.status == 'complete') {
+            let url = tab.url;
+            if (REG.acVid.test(url)) {
+                let ac = REG.acVid.exec(url);
+                let ac_num = ac[2];
+                //autoThrowBanana();
+                let action = 'throwBanana';
+                let params = { "key": ac_num };
+                chrome.tabs.sendMessage(tabId, { action, params }, function (response) {
+                });
+                //this.callback();
+            }
+        }
+    }
+
+    async onUpdated() {
+        let rawOpts = await optionsLoad();
+        //更改用户标记、文章区用户内容屏蔽数据的结构
+        if (rawOpts.UserMarks == null && rawOpts.UserFilter == null) {
+            let rawOptsKey = Object.keys(rawOpts);
+            let markExp = new RegExp("^AC_(.*)");
+            let filterExp = new RegExp("^FILTER_(.*)");
+            let UserMarks = {};
+            let UserFilter = {};
+            for (let i = 0; i < rawOptsKey.length; i++) {
+                if (markExp.test(rawOptsKey[i])) {
+                    UserMarks[markExp.exec(rawOptsKey[i])[1]] = rawOpts[markExp.exec(rawOptsKey[i])[0]];
+                    delete rawOpts[markExp.exec(rawOptsKey[i])[0]]
+                } else if (filterExp.test(rawOptsKey[i])) {
+                    UserFilter[filterExp.exec(rawOptsKey[i])[1]] = rawOpts[filterExp.exec(rawOptsKey[i])[0]];
+                    delete rawOpts[filterExp.exec(rawOptsKey[i])[0]]
+                }
+            }
+            let x = Object.keys(rawOpts);
+            let y = new RegExp("AC_.*");
+            x.forEach((e) => {
+                if (y.test(e)) {
+                    chrome.storage.local.remove(e, function () { });
+                }
+            })
+            chrome.storage.local.set({ "UserMarks": UserMarks }, function () { })
+            chrome.storage.local.set({ "UserFilter": UserFilter }, function () { })
+        }
+        //关闭文章区用户内容评论
+        if (rawOpts['filter']) {
+            chrome.storage.local.set({ "filter": false }, function () { });
+        }
+    }
+
+    onCommands(command) {
+        if (command === "toggle") {
+            window.open("https://www.acfun.cn/")
+        } else if (command == "watchLater") {
+            this.WatchPlan.execWatch();
+        }
+    }
+
+    //================Message Hub and Handler================//
+    tabInvokeAll(action, params) {
+        chrome.tabs.query({}, (tabs) => {
+            for (let tab of tabs) {
+                this.tabInvoke(tab.id, action, params);
+            }
+        });
+    }
+
+    tabInvoke(tabId, action, params) {
+        // console.log(tabId,action,params)
+        chrome.tabs.sendMessage(tabId, { action, params }, () => null);
+    }
+
+    onMessage(request, sender, callback) {
+        const { action, params } = request;
+        const method = this['api_' + action];
+
+        /*
+        调用示例
+        chrome.runtime.sendMessage({action:"`调用的函数名`",params:{receipt: `这里选择是否告知被调用函数前台调用函数所在页面的tabid`,responseRequire:`此处选择是否需要返回函数运行结果`,asyncWarp:`此处选择是否需要进行结果返回的异步封装`,...其他参数}},function(resp){//process code})
+        */
+        if (typeof (method) === 'function') {
+            if (params["receipt"]) {
+                //信源程序是否需要通过tabid来获取回执<-我也忘记这个注释是什么意思了，好像是说这个参数置true可以告知被调用函数前台调用函数所在页面的tabid以便重新利用。
+                params.tabid = sender.tab;
+                params.callback = callback;
+                method.call(this, params);
+            } else if (params["responseRequire"] && params["asyncWarp"] == false) {
+                //调用函数需要得到被调用函数的结果，并且被调用函数是同步的，结果不需要进行异步封装。
+                params.callback = callback;
+                let x = method.call(this, params);
+                callback({ data: x });
+            } else if (params["responseRequire"] && params["asyncWarp"]) {
+                //调用异步函数且返回结果
+                params.callback = callback;
+                method.call(this, params).then(resp => {
+                    callback({ data: resp });
+                })
+            } else {
+                //仅调用
+                params.callback = callback;
+                method.call(this, params);
+            }
+        }
+        return true;
+    }
+
+    onSandboxMessage(e) {
+        const {
+            action,
+            params
+        } = e.data;
+        const method = this['api_' + action];
+        if (typeof (method) === 'function')
+            method.call(this, params);
+    }
+
+    onAlarmsEvent(e) {
+        const method = this['event_' + e.name];
+        if (typeof (method) === 'function') {
+            method.call(this);
+        } else {
+            console.log(`[LOG]Backend-AlarmEvent: [${formatDate(new Date(), true)}] : ${e.name}`);
+        }
+    }
+
+    //================Utils==================//
+    setFrontendOptions(options) {
+        switch (options.enabled) {
+            case false:
+                chrome.browserAction.setBadgeText({ text: 'Off' });
+                break;
+            case true:
+                chrome.browserAction.setBadgeText({ text: '' });
+                break;
+        }
+        // this.tabInvokeAll('setFrontendOptions', {
+        //     options
+        // });
+    }
+
+    registerContextMenus() {
         chrome.contextMenus.create({
             title: '将此链接添加到App稍后再看',
             id: 'immediateAddLinkWatchLaterToApp',
@@ -180,192 +389,6 @@ class ODHBack {
             }.bind(this)
         });
 
-        //当激活某个tab页时
-        chrome.tabs.onActivated.addListener(function (tab) {
-            let tabId = tab.tabId;
-            chrome.storage.local.set({ activeTabId: tabId }, function () {
-                if (chrome.runtime.lastError) {
-                    notice('发生错误', chrome.runtime.lastError.message);
-                }
-            });
-        });
-
-        chrome.commands.onCommand.addListener((command) => {
-            if (command === "toggle") {
-                window.open("https://www.acfun.cn/")
-            } else if (command == "watchLater") {
-                this.WatchPlan.execWatch();
-            }
-        });
-
-    }
-
-    onCommentRequest(req) {
-        if (!this.options.enabled) {
-            return;
-        }
-        let url = req.url;
-        let tabId = req.tabId;
-        let commentListReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/list\\?.*");
-        let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");
-
-        // let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.hlspull.etoote.com/.*m3u8");
-        let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.pull.etoote.com/livecloud/.*");
-
-        if (commentListReg.test(url)) {
-            this.tabInvoke(tabId, 'renderList', { url: url });
-        } else if (commentSubReg.test(url)) {
-            let rootCommentId = url.match(commentSubReg)[1];
-            this.tabInvoke(tabId, 'renderSub', { rootCommentId: rootCommentId, url: url });
-        } else if (liveReg.test(url)) {
-            // console.log("url1",url);
-            this.tabInvoke(tabId, 'renderLive', { url: url });
-        }
-        this.authInfo.fetchPasstoken();
-        this.authInfo.getAccessToken();
-    }
-
-    onInstalled(details) {
-        initializeDBTable();
-        if (details.reason === 'install') {
-            chrome.tabs.create({ url: chrome.extension.getURL('bg/guide.html') });
-            return;
-        }
-        if (details.reason === 'update') {
-            chrome.notifications.create(null, {
-                type: 'basic',
-                iconUrl: 'images/notice.png',
-                title: 'AcFun助手',
-                message: '更新了！'
-            });
-            this.onUpdated();
-        }
-        return;
-    }
-
-    async onTabReady(tab) {
-    }
-
-    async onTabUpdate(tabId, changeInfo, tab) {
-        if (changeInfo.status == 'complete') {
-            let url = tab.url;
-            if (REG.acVid.test(url)) {
-                let ac = REG.acVid.exec(url);
-                let ac_num = ac[2];
-                //autoThrowBanana();
-                let action = 'throwBanana';
-                let params = { "key": ac_num };
-                chrome.tabs.sendMessage(tabId, { action, params }, function (response) {
-                });
-                //this.callback();
-            }
-        }
-    }
-
-    async onUpdated() {
-        let rawOpts = await optionsLoad();
-        //更改用户标记、文章区用户内容屏蔽数据的结构
-        if (rawOpts.UserMarks == null && rawOpts.UserFilter == null) {
-            let rawOptsKey = Object.keys(rawOpts);
-            let markExp = new RegExp("^AC_(.*)");
-            let filterExp = new RegExp("^FILTER_(.*)");
-            let UserMarks = {};
-            let UserFilter = {};
-            for (let i = 0; i < rawOptsKey.length; i++) {
-                if (markExp.test(rawOptsKey[i])) {
-                    UserMarks[markExp.exec(rawOptsKey[i])[1]] = rawOpts[markExp.exec(rawOptsKey[i])[0]];
-                    delete rawOpts[markExp.exec(rawOptsKey[i])[0]]
-                } else if (filterExp.test(rawOptsKey[i])) {
-                    UserFilter[filterExp.exec(rawOptsKey[i])[1]] = rawOpts[filterExp.exec(rawOptsKey[i])[0]];
-                    delete rawOpts[filterExp.exec(rawOptsKey[i])[0]]
-                }
-            }
-            let x = Object.keys(rawOpts);
-            let y = new RegExp("AC_.*");
-            x.forEach((e) => {
-                if (y.test(e)) {
-                    chrome.storage.local.remove(e, function () { });
-                }
-            })
-            chrome.storage.local.set({ "UserMarks": UserMarks }, function () { })
-            chrome.storage.local.set({ "UserFilter": UserFilter }, function () { })
-        }
-        //关闭文章区用户内容评论
-        if (rawOpts['filter']) {
-            chrome.storage.local.set({ "filter": false }, function () { });
-        }
-    }
-
-    //================Message Hub and Handler================//
-    tabInvokeAll(action, params) {
-        chrome.tabs.query({}, (tabs) => {
-            for (let tab of tabs) {
-                this.tabInvoke(tab.id, action, params);
-            }
-        });
-    }
-
-    tabInvoke(tabId, action, params) {
-        chrome.tabs.sendMessage(tabId, { action, params }, () => null);
-    }
-
-    onMessage(request, sender, callback) {
-        const { action, params } = request;
-        const method = this['api_' + action];
-
-        /*
-        调用示例
-        chrome.runtime.sendMessage({action:"`调用的函数名`",params:{receipt: `这里选择是否告知被调用函数前台调用函数所在页面的tabid`,responseRequire:`此处选择是否需要返回函数运行结果`,asyncWarp:`此处选择是否需要进行结果返回的异步封装`,...其他参数}},function(resp){//process code})
-        */
-        if (typeof (method) === 'function') {
-            if (params["receipt"]) {
-                //信源程序是否需要通过tabid来获取回执<-我也忘记这个注释是什么意思了，好像是说这个参数置true可以告知被调用函数前台调用函数所在页面的tabid以便重新利用。
-                params.tabid = sender.tab;
-                params.callback = callback;
-                method.call(this, params);
-            } else if (params["responseRequire"] && params["asyncWarp"] == false) {
-                //调用函数需要得到被调用函数的结果，并且被调用函数是同步的，结果不需要进行异步封装。
-                params.callback = callback;
-                let x = method.call(this, params);
-                callback({ data: x });
-            } else if (params["responseRequire"] && params["asyncWarp"]) {
-                //调用异步函数且返回结果
-                params.callback = callback;
-                method.call(this, params).then(resp => {
-                    callback({ data: resp });
-                })
-            } else {
-                //仅调用
-                params.callback = callback;
-                method.call(this, params);
-            }
-        }
-        return true;
-    }
-
-    onSandboxMessage(e) {
-        const {
-            action,
-            params
-        } = e.data;
-        const method = this['api_' + action];
-        if (typeof (method) === 'function')
-            method.call(this, params);
-    }
-
-    //================Utils==================//
-    setFrontendOptions(options) {
-        switch (options.enabled) {
-            case false:
-                chrome.browserAction.setBadgeText({ text: 'Off' });
-                break;
-            case true:
-                chrome.browserAction.setBadgeText({ text: '' });
-                break;
-        }
-        // this.tabInvokeAll('setFrontendOptions', {
-        //     options
-        // });
     }
 
     //================Inner Api==================//
@@ -438,6 +461,15 @@ class ODHBack {
         this.MusicPlayer.addItem(e.linkUrl);
     }
 
+    async api_achievementEvent(e) {
+        if(e.data.action=="get"){
+            return await db_getHistoricalAchievs(REG.acVid.exec(e.data.url)[2]);
+        }else if(e.data.action=="put"){
+            db_insertHistoricalAchievs(REG.acVid.exec(e.data.url)[2],e.data.tagData);
+            return true;
+        }
+    }
+
     async api_initBackend(params) {
         let options = await optionsLoad();
         //this.ankiweb.initConnection(options);
@@ -459,6 +491,11 @@ class ODHBack {
             success: (data, status) => this.callback(data, callbackId)
         };
         $.ajax(request);
+    }
+
+    //================Inner Events==================//
+    async event_scheduleTasks() {
+        this.Upgrade.scheduleTasks();
     }
 
     // Option page and Brower Action page requests handlers.
