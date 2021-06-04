@@ -100,10 +100,10 @@ class ODHFront {
 
 	onACPlayerLoaded(e) {
 		if (REG.videoAndBangumi.test(this.href)) {
-			let isLogin = false;
+			let isLogined = false;
 			getAsyncDom('#ACPlayer .control-bar-top .box-right', () => {
-				if (isLoginByUi(false)) {
-					isLogin = true;
+				if (isLogin("video")) {
+					isLogined = true;
 				}
 				//在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
 				//FIXME:页面onload执行前打开全屏，导致助手按钮首次显示不会被隐藏
@@ -119,9 +119,9 @@ class ODHFront {
 				//全局进度条
 				this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle);
 				//画质策略
-				this.videoSetting.videoQuality(isLogin);
+				this.videoSetting.videoQuality(isLogined);
 				//自动点赞
-				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
+				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 			}, 200)
 			this.onPlayerUrlChange();
 		}
@@ -354,14 +354,14 @@ class ODHFront {
 	 */
 	reattachFrontMods() {
 		if (this.videoSetting.mediaSessionJudgeChangeVideo()) {
-			let isLogin = false;
-			if (isLoginByUi(false)) {
-				isLogin = true;
+			let isLogined = false;
+			if (isLogin("video")) {
+				isLogined = true;
 			}
 			this.videoSetting.mediaSessionReAttach();
 			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
-			this.videoSetting.videoQuality(isLogin);
-			this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogin);
+			this.videoSetting.videoQuality(isLogined);
+			this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
 		}
 	}
