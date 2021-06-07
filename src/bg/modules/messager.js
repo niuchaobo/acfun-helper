@@ -76,8 +76,8 @@ class MsgNotifs {
                                                     }
                                                 });
                                             } else {
-                                                chrome.storage.local.get(['liveCloseLiveNotif'], function (a) {
-                                                    a.liveCloseLiveNotif && chrome.notifications.create(null, {
+                                                chrome.storage.local.get(['liveCloseNotif'], function (a) {
+                                                    a.liveCloseNotif && chrome.notifications.create(null, {
                                                         type: 'basic',
                                                         iconUrl: 'images/notice.png',
                                                         title: 'AcFun助手',
@@ -164,9 +164,9 @@ class MsgNotifs {
                             message: `${JSON.parse(uInfo).profile.name}  正在直播了！`
                         });
                     } else {
-                        chrome.storage.local.get(['liveCloseLiveNotif'], async function (a) {
+                        chrome.storage.local.get(['liveCloseNotif'], async function (a) {
                             let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${b[k]}`)
-                            a.liveCloseLiveNotif && chrome.notifications.create(b[k], {
+                            a.liveCloseNotif && chrome.notifications.create(b[k], {
                                 type: 'basic',
                                 iconUrl: 'images/notice.png',
                                 title: 'AcFun助手',
