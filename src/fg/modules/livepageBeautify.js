@@ -80,8 +80,10 @@ class LivePageButfy {
     }
 
     helperDivHide(i) {
-        document.getElementById("acfun-popup-helper").style.display = i;
-        document.getElementById("acfun-helper-div").style.display = i;
+        getAsyncDom("#acfun-popup-helper", () => {
+            document.getElementById("acfun-popup-helper").style.display = i;
+            document.getElementById("acfun-helper-div").style.display = i;
+        }, 1000);
     }
 
     enterWidePlayerModel() {
@@ -185,7 +187,7 @@ class LivePageButfy {
             e.innerHTML = `第${listCount}`;
         })
     }
-    
+
     /**
      * 使用Observe来监测直播站列表页面变化更新列表标号
      */

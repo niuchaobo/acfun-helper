@@ -136,39 +136,40 @@ class PageBeautify {
         var url = window.location.toString();
         if (REG.userHome.test(url)) {
           this_page = 1;
-        } else {
         }
         let node = $("div.guide-item-con").find("p").eq(0);
-        if (node) {
-          node.after(
-            '<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
-            a.info.userId +
-            '">我的直播间</a></p>'
-          );
-          node.after('<p class="crx-guid-p">UID: ' + a.info.userId + "</p>");
-          node.after(
-            '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=banana" target="_blank">香蕉: ' +
-            a.info.banana +
-            "</a></p>"
-          );
-          node.after(
-            '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=golden-banana" target="_blank">金香蕉: ' +
-            a.info.goldBanana +
-            "</p>"
-          );
-          node.after(
-            '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds?tab=following" target="_blank">关注 ' +
-            a.info.following +
-            '</a> - <a href="https://www.acfun.cn/member/feeds?tab=fans" target="_blank">听众: ' +
-            a.info.followed +
-            "</a></p>"
-          );
-          node.after(
-            '<p class="crx-guid-p">注册时间: ' +
-            formatDate(new Date(a.info.registerTime)) +
-            "</p>"
-          );
-        }
+        getAsyncDom(".guide-item.guide-user.user-logined", () => {
+          if (node) {
+            node.after(
+              '<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
+              a.info.userId +
+              '">我的直播间</a></p>'
+            );
+            node.after('<p class="crx-guid-p">UID: ' + a.info.userId + "</p>");
+            node.after(
+              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=banana" target="_blank">香蕉: ' +
+              a.info.banana +
+              "</a></p>"
+            );
+            node.after(
+              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=golden-banana" target="_blank">金香蕉: ' +
+              a.info.goldBanana +
+              "</p>"
+            );
+            node.after(
+              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds?tab=following" target="_blank">关注 ' +
+              a.info.following +
+              '</a> - <a href="https://www.acfun.cn/member/feeds?tab=fans" target="_blank">听众: ' +
+              a.info.followed +
+              "</a></p>"
+            );
+            node.after(
+              '<p class="crx-guid-p">注册时间: ' +
+              formatDate(new Date(a.info.registerTime)) +
+              "</p>"
+            );
+          }
+        }, 1000)
         let cssStr = `
         .header .guide-msg .guide-item-con .msg-item{
           font-size: 14px;
