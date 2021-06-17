@@ -158,7 +158,6 @@ class ODHFront {
 		}
 		//分区首页
 		if (REG.partIndex.test(href) || REG.articleDetail.test(href)) {
-			this.options.articlePartIndexDarken && this.pageBeautify.darkenArticlePartIndex();
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
 			//分区首页nav高斯模糊

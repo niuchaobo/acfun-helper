@@ -73,7 +73,6 @@ const defaults = {
   liveCommentTimeTag: true,
   LiveUserFocus: false,
   LiveWatchTimeRec_popup: false,
-  articlePartIndexDarken: false,
   multiPartListSpread: true,
   BangumiNotif: true,
   BangumiPlan: true,
