@@ -31,7 +31,7 @@ class Banana {
             if (!followed || followed.length <= 0) {
                 return { state: false }
             }
-            up_name = document.getElementsByClassName('up-name')[0].children[0].innerText
+            up_name = document.getElementsByClassName('up-name')[0].innerText;
             banana_num = options.to_attention_num;
             return { state: true, name: up_name, num: banana_num };
         } else {

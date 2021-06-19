@@ -246,6 +246,8 @@ class ODHFront {
 				this.ce.immedComt();
 			}
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
+			//自动投蕉
+			this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {
@@ -390,13 +392,6 @@ class ODHFront {
 	}
 	api_assDanmaku() {
 		this.danmaku.sanitizeJsonDanmakuToAss();
-	}
-	//自动投蕉
-	async api_throwBanana(params) {
-		if (!this.options.enabled) {
-			return;
-		}
-		this.banana.throwBanana(params);
 	}
 	api_notice(params) {
 		let action = "notice";
