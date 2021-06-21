@@ -3,7 +3,8 @@
  */
 class MsgNotifs {
     constructor() {
-        this.initMod()
+        this.initMod();
+        this.browserType = "";
     }
 
     async initMod() {
@@ -17,6 +18,31 @@ class MsgNotifs {
         liveNoifSwitch && chrome.notifications.onButtonClicked.addListener((e) => {
             chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e })
         });
+        this.browserType = myBrowser();
+    }
+
+    /**
+     * 开播通知创建
+     * @param {*} liveUserId 
+     * @param {*} userName 
+     */
+    createLiveNotif(liveUserId, userName) {
+        if (this.browserType == "Chrome") {
+            chrome.notifications.create(liveUserId, {
+                type: 'basic',
+                iconUrl: 'images/notice.png',
+                title: 'AcFun助手',
+                buttons: [{ title: "前往直播间" }],
+                message: `${userName}  正在直播了！`
+            });
+        } else {
+            chrome.notifications.create(liveUserId, {
+                type: 'basic',
+                iconUrl: 'images/notice.png',
+                title: 'AcFun助手',
+                message: `${userName}  正在直播了！`
+            });
+        }
     }
 
     /**
@@ -24,13 +50,13 @@ class MsgNotifs {
      */
     liveOnlineNotif() {
         console.log('    Start LiveUpNotificationFetching Routine.')
-        window.setInterval(function () {
-            chrome.storage.local.get(['liveFloowNotif'], function (Ifswitch) {
+        window.setInterval(() => {
+            chrome.storage.local.get(['liveFloowNotif'], (Ifswitch) => {
                 if (Ifswitch.liveFloowNotif) {
                     // 获取自定义直播用户关注字典
-                    chrome.storage.local.get(['liveFloowings'], function (items) {
+                    chrome.storage.local.get(['liveFloowings'], (items) => {
                         //获取上次直播状态字典
-                        chrome.storage.local.get(['broadcastingUIDlist'], function (broadcastingUIDlist) {
+                        chrome.storage.local.get(['broadcastingUIDlist'], (broadcastingUIDlist) => {
                             // console.log(broadcastingUIDlist);
                             // 构造本次直播状态信息字典
                             let y = {}
@@ -63,13 +89,7 @@ class MsgNotifs {
                                             let lastState = broadcastingUIDlist.broadcastingUIDlist[i]
                                             //假如上次直播状态为 否,并且上次直播状态与本次直播状态不一致（意思是现在为 是）
                                             if (lastState == false) {
-                                                chrome.notifications.create(i, {
-                                                    type: 'basic',
-                                                    iconUrl: 'images/notice.png',
-                                                    title: 'AcFun助手',
-                                                    buttons: [{ title: "前往直播间" }],
-                                                    message: `${x.profile.name}  正在直播了！`
-                                                });
+                                                this.createLiveNotif(i, x.profile.name);
                                                 chrome.storage.local.get(['liveFollowOpenNow'], function (a) {
                                                     if (a.liveFollowOpenNow) {
                                                         chrome.tabs.create({ url: `https://live.acfun.cn/live/${i}` });
@@ -139,13 +159,7 @@ class MsgNotifs {
                     if (b.indexOf(c[l]) == -1) {
                         let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${c[l]}`)
                         // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
-                        chrome.notifications.create(c[l], {
-                            type: 'basic',
-                            iconUrl: 'images/notice.png',
-                            title: 'AcFun助手',
-                            buttons: [{ title: "前往直播间" }],
-                            message: `${JSON.parse(uInfo).profile.name}  正在直播了！`
-                        });
+                        this.createLiveNotif(c[l], JSON.parse(uInfo).profile.name);
                     }
                 }
             }
@@ -156,13 +170,7 @@ class MsgNotifs {
                     if (y[b[k]] == true) {
                         let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${b[k]}`)
                         // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
-                        chrome.notifications.create(b[k], {
-                            type: 'basic',
-                            iconUrl: 'images/notice.png',
-                            title: 'AcFun助手',
-                            buttons: [{ title: "前往直播间" }],
-                            message: `${JSON.parse(uInfo).profile.name}  正在直播了！`
-                        });
+                        this.createLiveNotif(b[k], JSON.parse(uInfo).profile.name);
                     } else {
                         chrome.storage.local.get(['liveCloseNotif'], async function (a) {
                             let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${b[k]}`)
