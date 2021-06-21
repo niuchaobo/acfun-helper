@@ -234,17 +234,11 @@ class ODHFront {
 			pageInfo = JSON.parse(document.getElementById(uuid).innerText);
 			document.body.removeChild(div);
 			let currentVideoInfo = pageInfo.currentVideoInfo;
-			let title = pageInfo.title;
 			if (currentVideoInfo == undefined || currentVideoInfo == "" || currentVideoInfo == null) {
 				return;
 			}
 			let isUp = adjustVideoUp();
 			this.div.show(pageInfo, this.options, 'video', isUp);
-			let ConfKey = 'wsyeKfnoCtnemmoCeQ'
-			var curKeyName = ConfKey.split("").reverse().join("");
-			if (this.options[curKeyName]) {
-				this.ce.immedComt();
-			}
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			//自动投蕉
 			this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
