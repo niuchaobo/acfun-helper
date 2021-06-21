@@ -798,13 +798,13 @@ function removeAPrefix(_$targetDom) {
 /**
  * 判断用户是否登录
  * @param {string} dept "video" or "article"
- * @param {string} evident "cookies" or "ui"
+ * @param {string} evidence "cookies" or "ui"
  * @returns {boolean} 状态
  */
-function isLogin(dept = "video", evident = "cookies") {
-  if (evident == "cookies") {
+function isLogin(dept = "video", evidence = "cookies") {
+  if (evidence == "cookies") {
     return Boolean(getcookie("ac_username"));
-  } else if (evident == "ui") {
+  } else if (evidence == "ui") {
     switch (dept) {
       case "video":
         if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden")) {
