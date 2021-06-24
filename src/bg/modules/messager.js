@@ -23,7 +23,7 @@ class MsgNotifs {
         let liveNotifIdRex = new RegExp("live");
         let commentDetailIdRex = new RegExp("ncid");
         if (liveNotifIdRex.exec(e)) {
-            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e.replace(/live([0-9])+6/,"") });
+            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e.replace(/live([0-9])+6/, "") });
             return
         } else if (commentDetailIdRex.exec(e)) {
             switch (index) {
@@ -35,8 +35,6 @@ class MsgNotifs {
                     break;
             }
             return
-        } else if (e == 'like') {
-            chrome.tabs.create({ url: 'https://message.acfun.cn/like' });
         }
     }
 
@@ -94,22 +92,12 @@ class MsgNotifs {
         if (avt) {
             img = avt;
         }
-        if (this.browserType == "Chrome") {
-            chrome.notifications.create(null, {
-                type: 'basic',
-                iconUrl: img,
-                title: 'AcFun助手',
-                buttons: [{ title: "消息中心" }],
-                message: `${from}: ${msg}`
-            });
-        } else {
-            chrome.notifications.create(null, {
-                type: 'basic',
-                iconUrl: img,
-                title: 'AcFun助手',
-                message: `${from}: ${msg}`
-            });
-        }
+        chrome.notifications.create(null, {
+            type: 'basic',
+            iconUrl: img,
+            title: 'AcFun助手',
+            message: `${from}: ${msg}`
+        });
     }
 
     /**

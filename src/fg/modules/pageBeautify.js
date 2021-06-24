@@ -225,7 +225,10 @@ class PageBeautify {
   indexBeautify(opt, shadowSw = false, searchBox = true) {
     let cssStr;
     //模糊
-    cssStr = `.nav-fixed{background-color:#f8f8f896;border-bottom:0px;backdrop-filter:blur(1.2vw)} #header{background-color:#f8f8f896;backdrop-filter:blur(1.2vw);} ${shadowSw ? "box-shadow: 0 2px 4px rgb(0 0 0 / 26%);}" : ""} ${opt ? "div.header-nav,div.header-nav>ul{background: #ffffff00 !important;} .channel-header.fixed .wrap{backdrop-filter: blur(1.2vw);border-bottom:0px;background: #f8f8f896;}" : ""}`
+    cssStr = `.nav-fixed{background-color:#f8f8f896 !important;border-bottom:0px;backdrop-filter:blur(1.2vw)!important} #header{background-color:#f8f8f896;backdrop-filter:blur(1.2vw); ${shadowSw ? "box-shadow: 0 2px 4px rgb(0 0 0 / 26%);}" : ""}}${opt ? "div.header-nav,div.header-nav>ul{background: #ffffff00 !important;} .channel-header.fixed .wrap{backdrop-filter: blur(1.2vw);border-bottom:0px;background: #f8f8f896;!important}" : ""} 
+    .top-nav .first-container .first-item .first-link{color:#333 !important} 
+    #header .header-guide .item .guide-item-title{color:#333 !important}
+    #header .search-box .form input{color: black;border:0px;background:#0000001a}`
     //banner定位修正
     cssStr += ` .header .header-banner{margin-top: -47px;}`;
     //搜索栏 - 分区主页 - 主页 - 个人展示中心
