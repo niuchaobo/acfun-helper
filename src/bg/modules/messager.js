@@ -23,7 +23,7 @@ class MsgNotifs {
         let liveNotifIdRex = new RegExp("live");
         let commentDetailIdRex = new RegExp("ncid");
         if (liveNotifIdRex.exec(e)) {
-            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e.replace("live", "") });
+            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e.replace(/live([0-9])+6/,"") });
             return
         } else if (commentDetailIdRex.exec(e)) {
             switch (index) {
@@ -46,8 +46,10 @@ class MsgNotifs {
      * @param {*} userName 
      */
     createLiveNotif(liveUserId, userName) {
+        let date = new Date();
+        let notId = liveUserId + "live" + (date.getMonth() + 1) + date.getDate() + date.getHours() + date.getMinutes();
         if (this.browserType == "Chrome") {
-            chrome.notifications.create(liveUserId + "live", {
+            chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
                 title: 'AcFun助手',
@@ -55,7 +57,7 @@ class MsgNotifs {
                 message: `${userName}  正在直播了！`
             });
         } else {
-            chrome.notifications.create(liveUserId + "live", {
+            chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
                 title: 'AcFun助手',
