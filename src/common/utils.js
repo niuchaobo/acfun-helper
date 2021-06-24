@@ -73,7 +73,6 @@ const defaults = {
   liveCommentTimeTag: true,
   LiveUserFocus: false,
   LiveWatchTimeRec_popup: false,
-  articlePartIndexDarken: false,
   multiPartListSpread: true,
   BangumiNotif: true,
   BangumiPlan: true,
@@ -799,24 +798,29 @@ function removeAPrefix(_$targetDom) {
 /**
  * 判断用户是否登录
  * @param {string} dept "video" or "article"
+ * @param {string} evidence "cookies" or "ui"
  * @returns {boolean} 状态
  */
-function isLogin(dept = "video") {
-  switch (dept) {
-    case "video":
-      if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden") && getcookie("ac_username")) {
-        return true;
-      } else {
-        return false;
-      }
-    case "article":
-      let isLogined = false;
-      try {
-        isLogined = document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0;
-      } catch (error) {
-        isLogined = getcookie("ac_username") != false ? true : false;
-      }
-      return isLogined;
+function isLogin(dept = "video", evidence = "cookies") {
+  if (evidence == "cookies") {
+    return Boolean(getcookie("ac_username"));
+  } else if (evidence == "ui") {
+    switch (dept) {
+      case "video":
+        if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden")) {
+          return true;
+        } else {
+          return false;
+        }
+      case "article":
+        let isLogined = false;
+        try {
+          isLogined = document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0;
+        } catch (error) {
+          isLogined = getcookie("ac_username") != false ? true : false;
+        }
+        return isLogined;
+    }
   }
 }
 

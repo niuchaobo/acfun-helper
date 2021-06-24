@@ -158,7 +158,6 @@ class ODHFront {
 		}
 		//分区首页
 		if (REG.partIndex.test(href) || REG.articleDetail.test(href)) {
-			this.options.articlePartIndexDarken && this.pageBeautify.darkenArticlePartIndex();
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
 			//分区首页nav高斯模糊
@@ -235,18 +234,14 @@ class ODHFront {
 			pageInfo = JSON.parse(document.getElementById(uuid).innerText);
 			document.body.removeChild(div);
 			let currentVideoInfo = pageInfo.currentVideoInfo;
-			let title = pageInfo.title;
 			if (currentVideoInfo == undefined || currentVideoInfo == "" || currentVideoInfo == null) {
 				return;
 			}
 			let isUp = adjustVideoUp();
 			this.div.show(pageInfo, this.options, 'video', isUp);
-			let ConfKey = 'wsyeKfnoCtnemmoCeQ'
-			var curKeyName = ConfKey.split("").reverse().join("");
-			if (this.options[curKeyName]) {
-				this.ce.immedComt();
-			}
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
+			//自动投蕉
+			this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {
@@ -391,13 +386,6 @@ class ODHFront {
 	}
 	api_assDanmaku() {
 		this.danmaku.sanitizeJsonDanmakuToAss();
-	}
-	//自动投蕉
-	async api_throwBanana(params) {
-		if (!this.options.enabled) {
-			return;
-		}
-		this.banana.throwBanana(params);
 	}
 	api_notice(params) {
 		let action = "notice";

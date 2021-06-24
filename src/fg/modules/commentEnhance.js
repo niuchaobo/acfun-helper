@@ -658,35 +658,11 @@ class CommentEnhance {
 
     }
 
-    immedComt() {
-        let ConfKey = 'yeKfnoCtnemmoCeQ'
-        var curKeyName = ConfKey.split("").reverse().join("");
-        console.log(curKeyName)
-        chrome.storage.local.get([curKeyName], function (data) {
-            for (let z in data) {
-                console.log(data[z]);
-                var P0st = data[z];
-            };
-            let url = window.location.toString();
-            let videoPage = new RegExp("http(s)?://www.acfun.cn/v/ac(.*)");
-            let acVid = videoPage.exec(url)[2];
-            let commt = encodeURI(`sourceId=${acVid}&sourceType=3&content=${P0st}&replyToCommentId=`)
-            fetch('https://www.acfun.cn/rest/pc-direct/comment/add', { method: "POST", headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*" }, credentials: 'include', body: commt })
-                .then((res) => { return res.text(); })
-                .then((res) => {
-                });
-            // console.log(`sourceId=${acVid}&sourceType=3&content=${P0st}&replyToCommentId=`)
-            // console.log(commt);
-        });
-    }
-
-
     /**
      * 选中时间 按shift+A 跳转 开关依赖评论区空降功能
      * @todo 与倍速快捷键一样都绑定到了document上 正则未做严格匹配(你甚至能让iphone8跳转到8s)
      * @param {Int16Array} settingKeyCode 
      */
-
     easySearchScanForPlayerTime(settingKeyCode) {
         document.onkeypress = (e) => {
             if (e.shiftKey && e.keyCode === settingKeyCode[0]) {

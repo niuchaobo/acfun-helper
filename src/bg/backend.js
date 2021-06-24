@@ -121,17 +121,6 @@ class ODHBack {
 
     async onTabUpdate(tabId, changeInfo, tab) {
         if (changeInfo.status == 'complete') {
-            let url = tab.url;
-            if (REG.acVid.test(url)) {
-                let ac = REG.acVid.exec(url);
-                let ac_num = ac[2];
-                //autoThrowBanana();
-                let action = 'throwBanana';
-                let params = { "key": ac_num };
-                chrome.tabs.sendMessage(tabId, { action, params }, function (response) {
-                });
-                //this.callback();
-            }
         }
     }
 

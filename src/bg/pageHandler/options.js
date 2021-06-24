@@ -1524,25 +1524,6 @@ function pageEnhance() {
         });
     });
 
-    //=====================文章区子分区夜间模式============================
-    chrome.storage.local.get(['articlePartIndexDarken'], function (items) {
-        var articlePartIndexDarken = items.articlePartIndexDarken;
-        if (articlePartIndexDarken) {
-            document.getElementById('articlePartIndexDarken').checked = 'true';
-        } else {
-            document.getElementById('articlePartIndexDarken').checked = false;
-        }
-        $('#articlePartIndexDarken').on('click', function () {
-            if (!document.getElementById('articlePartIndexDarken').checked) {
-                document.getElementById('articlePartIndexDarken').checked = false;
-                chrome.storage.local.set({ 'articlePartIndexDarken': false });
-            } else {
-                document.getElementById('articlePartIndexDarken').checked = true;
-                chrome.storage.local.set({ 'articlePartIndexDarken': true });
-            }
-        });
-    });
-
     //=====================视频稿件评论区ac号信息弹框==========================
     chrome.storage.local.get(['uddPopUp'], function (items) {
         var uddPopUp = items.uddPopUp;
