@@ -15,10 +15,29 @@ class MsgNotifs {
          * @notice 但是这玩意儿绝对不应该放到循环里面去。
          */
         let liveNoifSwitch = await getStorage("liveFloowNotif").then(e => { return e.liveFloowNotif }) || await getStorage("followLiveNotif").then(e => { return e.followLiveNotif });
-        liveNoifSwitch && chrome.notifications.onButtonClicked.addListener((e) => {
-            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e })
-        });
+        liveNoifSwitch && chrome.notifications.onButtonClicked.addListener((e, index) => this.notifBuTrigger(e, index));
         this.browserType = myBrowser();
+    }
+
+    notifBuTrigger(e, index) {
+        let liveNotifIdRex = new RegExp("live");
+        let commentDetailIdRex = new RegExp("ncid");
+        if (liveNotifIdRex.exec(e)) {
+            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e.replace(/live([0-9])+6/,"") });
+            return
+        } else if (commentDetailIdRex.exec(e)) {
+            switch (index) {
+                case 0:
+                    chrome.tabs.create({ url: 'https://www.acfun.cn' + e });
+                    break;
+                case 1:
+                    chrome.tabs.create({ url: 'https://message.acfun.cn/' });
+                    break;
+            }
+            return
+        } else if (e == 'like') {
+            chrome.tabs.create({ url: 'https://message.acfun.cn/like' });
+        }
     }
 
     /**
@@ -27,8 +46,10 @@ class MsgNotifs {
      * @param {*} userName 
      */
     createLiveNotif(liveUserId, userName) {
+        let date = new Date();
+        let notId = liveUserId + "live" + (date.getMonth() + 1) + date.getDate() + date.getHours() + date.getMinutes();
         if (this.browserType == "Chrome") {
-            chrome.notifications.create(liveUserId, {
+            chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
                 title: 'AcFun助手',
@@ -36,11 +57,57 @@ class MsgNotifs {
                 message: `${userName}  正在直播了！`
             });
         } else {
-            chrome.notifications.create(liveUserId, {
+            chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
                 title: 'AcFun助手',
                 message: `${userName}  正在直播了！`
+            });
+        }
+    }
+
+    createDetailNotif(commentId, from, msg, avt = "") {
+        let img = 'images/notice.png';
+        if (avt) {
+            img = avt;
+        }
+        if (this.browserType == "Chrome") {
+            chrome.notifications.create(commentId, {
+                type: 'basic',
+                iconUrl: img,
+                title: 'AcFun助手',
+                buttons: [{ title: "回复" }, { title: "消息中心" }],
+                message: `${from}: ${msg}`
+            });
+        } else {
+            chrome.notifications.create(commentId, {
+                type: 'basic',
+                iconUrl: img,
+                title: 'AcFun助手',
+                message: `${from}: ${msg}`
+            });
+        }
+    }
+
+    createLikeDetailNotif(from, msg, avt = "") {
+        let img = 'images/notice.png';
+        if (avt) {
+            img = avt;
+        }
+        if (this.browserType == "Chrome") {
+            chrome.notifications.create(null, {
+                type: 'basic',
+                iconUrl: img,
+                title: 'AcFun助手',
+                buttons: [{ title: "消息中心" }],
+                message: `${from}: ${msg}`
+            });
+        } else {
+            chrome.notifications.create(null, {
+                type: 'basic',
+                iconUrl: img,
+                title: 'AcFun助手',
+                message: `${from}: ${msg}`
             });
         }
     }
@@ -215,7 +282,7 @@ class MsgNotifs {
         var _thread = window.setInterval(async () => {
             let sw = await getStorage("timer4Unread_daemonsw")
             if (sw.timer4Unread_daemonsw == false) { chrome.browserAction.setTitle({ title: `AcFun助手，Ac在爱一直在` }); chrome.browserAction.setBadgeText({ text: "" }); return }
-            chrome.storage.local.get(['LocalUserId'], function (Uid) {
+            chrome.storage.local.get(['LocalUserId'], (Uid) => {
                 if (Uid.LocalUserId == "0") { clearInterval(_thread) }
                 fetch('https://member.acfun.cn/common/api/getUnreadMess', {
                     method: "POST", credentials: 'include', headers: {
@@ -223,7 +290,7 @@ class MsgNotifs {
                     }, body: ""
                 })
                     .then((res => { return res.text() }))
-                    .then((res) => {
+                    .then(async (res) => {
                         let b = JSON.parse(res);
                         if (b.unReadCount == undefined || b.unReadCount.new_system_notify == undefined) {
                             return;
@@ -233,8 +300,13 @@ class MsgNotifs {
                         let a2 = b.unReadFollowFeedCount;//动态
                         let a3 = b.unReadCount.new_content_notify;//系统通知
                         let a4 = b.unReadCount.new_system_notify;//站内公告
-                        var pushNum = a0 + a1 + a2 + a3 + a4;
-                        chrome.browserAction.setTitle({ title: `AcFun助手，Ac在爱一直在；\n通知\n评论未读：${a0}\n点赞：${a1}\n系统通知：${a3}\n站内公告：${a4}` })
+                        let a5 = b.unReadCount.new_gift;//礼物
+                        let notifs = await getStorage("notificationContent");
+                        (a0 && notifs.notificationContent.commentNotif) && this.commentDetailNotif(a0);
+                        (a1 && notifs.notificationContent.likeNotif) && this.likeDetailNotif(a1);
+                        (a5 && notifs.notificationContent.giftNotif) && this.giftDetailNotif(a5);
+                        var pushNum = a0 + a1 + a2 + a3 + a4 + a5;
+                        chrome.browserAction.setTitle({ title: `AcFun助手，Ac在爱一直在；\n通知\n评论未读：${a0}\n点赞：${a1}\n系统通知：${a3}\n公告：${a4}\n礼物：${a5}` })
                         localStorage.setItem('UnreadNum', `{"comment":${a0},"like":${a1},"content_notify":${a3},"system_notify":${a4}}`);
                         if (pushNum > 0) {
                             chrome.browserAction.setBadgeText({ text: pushNum.toString() });
@@ -312,6 +384,57 @@ class MsgNotifs {
 
         audioElement.load;
         audioElement.play();
+    }
+
+    async commentDetailNotif(num = 1) {
+        let raw = await fetch('https://message.acfun.cn/?quickViewId=upCollageMain&reqID=1&ajaxpipe=1', {
+            method: "GET", credentials: 'include', headers: { 'origin': "https://message.acfun.cn/" }
+        }).then((res => { return res.text() }))
+        raw = raw.replace("/*<!-- fetch-stream -->*/", "");
+        let result = JSON.parse(raw)['html'];
+        let instantDom = stringToDOM(result);
+        for (let i = 0; i < num; i++) {
+            let avt = instantDom[0].children[i].children[0].children[0].children[0].src;
+            let uname = instantDom[0].children[i].children[1].children[0].children[0].innerText;
+            let msg = instantDom[0].children[i].children[1].children[2].children[0].children[0].innerText.replace("&nbsp;", " ").replace(/[\r\n]/g, "").trim();
+            let msgFrom = instantDom[0].children[i].children[1].children[1].textContent.trim().replace("评论了你的视频", "");
+            let commentAddress = instantDom[0].children[0].children[1].children[2].href.replace("chrome-extension://www.acfun.cn", "")
+            this.createDetailNotif(commentAddress, uname, msg + " " + msgFrom, avt);
+        }
+    }
+
+    async likeDetailNotif(num = 1) {
+        let raw = await fetch('https://message.acfun.cn/like?quickViewId=upCollageMain&reqID=1&ajaxpipe=1', {
+            method: "GET", credentials: 'include', headers: { 'origin': "https://message.acfun.cn/" }
+        }).then((res => { return res.text() }))
+        raw = raw.replace("/*<!-- fetch-stream -->*/", "");
+        let result = JSON.parse(raw)['html'];
+        let instantDom = stringToDOM(result);
+        for (let i = 0; i < num; i++) {
+            let avt = instantDom[0].children[i].children[0].children[0].children[0].src;
+            let uname = instantDom[0].children[i].children[1].children[0].children[0].innerText.replace(/[\r\n]/g, "").trim();
+            let msg = instantDom[0].children[i].children[1].children[0].children[1].innerText.replace(/[\r\n]/g, "").trim();
+            let yourMsg = instantDom[0].children[i].children[1].children[1].children[0].children[0].innerText.replace(/[\r\n]/g, "").trim();
+            this.createLikeDetailNotif(uname, msg + " " + yourMsg, avt);
+        }
+    }
+
+    async giftDetailNotif(num = 1) {
+        let raw = await fetch('https://message.acfun.cn/gift?quickViewId=upCollageMain&reqID=2&ajaxpipe=1', {
+            method: "GET", credentials: 'include', headers: { 'origin': "https://message.acfun.cn/" }
+        }).then((res => { return res.text() }))
+        raw = raw.replace("/*<!-- fetch-stream -->*/", "");
+        let result = JSON.parse(raw)['html'];
+        let instantDom = stringToDOM(result);
+        for (let i = 0; i < num; i++) {
+            let msg = instantDom[0].children[i].children[0].innerText.replace(/[\r\n\t\s]/g, "");
+            chrome.notifications.create(null, {
+                type: 'basic',
+                iconUrl: 'images/notice.png',
+                title: 'AcFun助手',
+                message: msg
+            });
+        }
     }
 
 }

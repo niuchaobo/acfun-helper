@@ -95,6 +95,7 @@ const defaults = {
   Dev_thinScrollbar: false,
   liveIndexRankNum: true,
   timelineDots: false,
+  notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, }
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
@@ -793,6 +794,19 @@ function removeAPrefix(_$targetDom) {
   let x = regAcid.exec(acid);
   x == null ? acid = acid : acid = x[1];
   return acid
+}
+
+/**
+ * 从string中的HTML内容创建DOM
+ * @param {*} str 
+ * @returns HTMLElement
+ */
+function stringToDOM(str) {
+  let div = document.createElement("div");
+  if (typeof str == "string") {
+    div.innerHTML = str;
+  }
+  return div.childNodes;
 }
 
 /**

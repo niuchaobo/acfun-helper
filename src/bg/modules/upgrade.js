@@ -9,6 +9,7 @@ class UpgradeAgent {
         this.bangumiPlan = new BangumiPlan();
         this.option = '';
         this.scheduler = myBrowser() == "Chrome" ? chrome.alarms : browser.alarms;
+        this.notificationListPurgeCount = 0;
     }
 
     /**
@@ -46,6 +47,22 @@ class UpgradeAgent {
     }
 
     /**
+     * 每隔三天清除助手本体的通知响应列表
+     * @description 对于常年不关浏览器的同志来说相比是很需要的
+     */
+    purgeNotificationList() {
+        if (this.notificationListPurgeCount > 2) {
+            chrome.notifications.getAll((e) => {
+                //e={"549491live624122": true}
+                for(let i in e){
+                    chrome.notifications.clear(i,function(){});
+                }
+            })
+            this.notificationListPurgeCount = 0;
+        }
+    }
+
+    /**
      * 总
      */
     async upgradeMain() {
@@ -70,5 +87,6 @@ class UpgradeAgent {
         this.checkUpdate();
         BangumiPlansw && this.bangumiPlan.fetchBangumiInfo();
         BangumiNotifsw && this.bangumiPlan.notifyBangumiUpdate();
+        this.purgeNotificationList();
     }
 }
