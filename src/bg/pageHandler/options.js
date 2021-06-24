@@ -803,7 +803,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['banana_notice'], function (items) {
         var bananaNotice = items.banana_notice;
         if (bananaNotice) {
-            document.getElementById('bananaNotice').checked = 'true';
+            document.getElementById('bananaNotice').checked = true;
         } else {
             document.getElementById('bananaNotice').checked = false;
         }
@@ -822,7 +822,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['articleBanana'], function (items) {
         var articleBanana = items.articleBanana;
         if (articleBanana) {
-            document.getElementById('articleBanana').checked = 'true';
+            document.getElementById('articleBanana').checked = true;
         } else {
             document.getElementById('articleBanana').checked = false;
         }
@@ -841,7 +841,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['audioAfterBanana'], function (items) {
         var audioAfterBanana = items.audioAfterBanana;
         if (audioAfterBanana) {
-            document.getElementById('audioAfterBanana').checked = 'true';
+            document.getElementById('audioAfterBanana').checked = true;
         } else {
             document.getElementById('audioAfterBanana').checked = false;
         }
@@ -860,7 +860,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['LikeHeartNotif'], function (items) {
         var LikeHeartNotif = items.LikeHeartNotif;
         if (LikeHeartNotif) {
-            document.getElementById('LikeHeartNotif').checked = 'true';
+            document.getElementById('LikeHeartNotif').checked = true;
         } else {
             document.getElementById('LikeHeartNotif').checked = false;
         }
@@ -909,7 +909,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['upHighlight'], function (items) {
         var UpMark = items.upHighlight;
         if (UpMark) {
-            document.getElementById('UpMark').checked = 'true';
+            document.getElementById('UpMark').checked = true;
         } else {
             document.getElementById('UpMark').checked = false;
         }
@@ -928,7 +928,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['scan'], function (items) {
         var UserScan = items.scan;
         if (UserScan) {
-            document.getElementById('UserScan').checked = 'true';
+            document.getElementById('UserScan').checked = true;
         } else {
             document.getElementById('UserScan').checked = false;
         }
@@ -947,7 +947,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['mark'], function (items) {
         var UserScanUI = items.mark;
         if (UserScanUI) {
-            document.getElementById('UserScanUI').checked = 'true';
+            document.getElementById('UserScanUI').checked = true;
         } else {
             document.getElementById('UserScanUI').checked = false;
         }
@@ -966,7 +966,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['followLiveNotif'], function (items) {
         var followLiveNotif = items.followLiveNotif;
         if (followLiveNotif) {
-            document.getElementById('followLiveNotif').checked = 'true';
+            document.getElementById('followLiveNotif').checked = true;
         } else {
             document.getElementById('followLiveNotif').checked = false;
         }
@@ -985,7 +985,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['liveFloowNotif'], function (items) {
         var liveFloowingsw_status = items.liveFloowNotif;
         if (liveFloowingsw_status) {
-            document.getElementById('liveFollowNotifsw').checked = 'true';
+            document.getElementById('liveFollowNotifsw').checked = true;
         } else {
             document.getElementById('liveFollowNotifsw').checked = false;
         }
@@ -1086,7 +1086,7 @@ function indexSiteConfigure() {
     chrome.storage.local.get(['liveFollowOpenNow'], function (items) {
         var liveFollowOpenNow = items.liveFollowOpenNow;
         if (liveFollowOpenNow) {
-            document.getElementById('liveFollowOpenNow').checked = 'true';
+            document.getElementById('liveFollowOpenNow').checked = true;
         } else {
             document.getElementById('liveFollowOpenNow').checked = false;
         }
@@ -1106,7 +1106,7 @@ function indexSiteConfigure() {
 chrome.storage.local.get(['liveCloseNotif'], function (items) {
     var liveCloseNotif = items.liveCloseNotif;
     if (liveCloseNotif) {
-        document.getElementById('liveCloseNotif').checked = 'true';
+        document.getElementById('liveCloseNotif').checked = true;
     } else {
         document.getElementById('liveCloseNotif').checked = false;
     }
@@ -1126,7 +1126,7 @@ function contentConfigure() {
     chrome.storage.local.get(['watchLater'], function (items) {
         var watchLater = items.watchLater;
         if (watchLater) {
-            document.getElementById('watchLater').checked = 'true';
+            document.getElementById('watchLater').checked = true;
         } else {
             document.getElementById('watchLater').checked = false;
         }
@@ -1252,7 +1252,7 @@ function contentConfigure() {
     chrome.storage.local.get(['BangumiPlan'], function (items) {
         var BangumiPlan = items.BangumiPlan;
         if (BangumiPlan) {
-            document.getElementById('BangumiPlan').checked = 'true';
+            document.getElementById('BangumiPlan').checked = true;
         } else {
             document.getElementById('BangumiPlan').checked = false;
         }
@@ -1271,7 +1271,7 @@ function contentConfigure() {
     chrome.storage.local.get(['BangumiNotif'], function (items) {
         var BangumiNotif = items.BangumiNotif;
         if (BangumiNotif) {
-            document.getElementById('BangumiNotif').checked = 'true';
+            document.getElementById('BangumiNotif').checked = true;
         } else {
             document.getElementById('BangumiNotif').checked = false;
         }
@@ -1290,7 +1290,7 @@ function contentConfigure() {
     chrome.storage.local.get(['liveBansw'], function (items) {
         var liveBans_status = items.liveBansw;
         if (liveBans_status) {
-            document.getElementById('liveBansw').checked = 'true';
+            document.getElementById('liveBansw').checked = true;
         } else {
             document.getElementById('liveBansw').checked = false;
         }
@@ -1380,6 +1380,55 @@ function contentConfigure() {
                 );
             })
         }
+    });
+
+    //====================通知===============
+    chrome.storage.local.get(['notificationContent'], function (items) {
+        var commentNotif = items.notificationContent.commentNotif;
+        var likeNotif = items.notificationContent.likeNotif;
+        var giftNotif = items.notificationContent.giftNotif;
+        if (commentNotif) {
+            document.getElementById('commentNotif').checked = true;
+        } else {
+            document.getElementById('commentNotif').checked = false;
+        }
+        if (likeNotif) {
+            document.getElementById('likeNotif').checked = true;
+        } else {
+            document.getElementById('likeNotif').checked = false;
+        }
+        if (giftNotif) {
+            document.getElementById('giftNotif').checked = true;
+        } else {
+            document.getElementById('giftNotif').checked = false;
+        }
+        $('#commentNotif').on('click', function () {
+            if (!document.getElementById('commentNotif').checked) {
+                document.getElementById('commentNotif').checked = false;
+                chrome.storage.local.set({ 'commentNotif': false });
+            } else {
+                document.getElementById('commentNotif').checked = true;
+                chrome.storage.local.set({ 'commentNotif': true });
+            }
+        });
+        $('#likeNotif').on('click', function () {
+            if (!document.getElementById('likeNotif').checked) {
+                document.getElementById('likeNotif').checked = false;
+                chrome.storage.local.set({ 'likeNotif': false });
+            } else {
+                document.getElementById('likeNotif').checked = true;
+                chrome.storage.local.set({ 'likeNotif': true });
+            }
+        });
+        $('#giftNotif').on('click', function () {
+            if (!document.getElementById('giftNotif').checked) {
+                document.getElementById('giftNotif').checked = false;
+                chrome.storage.local.set({ 'giftNotif': false });
+            } else {
+                document.getElementById('giftNotif').checked = true;
+                chrome.storage.local.set({ 'giftNotif': true });
+            }
+        });
     });
 
     //===================Up主文章屏蔽=======================
@@ -1491,7 +1540,7 @@ function pageEnhance() {
     chrome.storage.local.get(['Dev_indexBlurSW'], function (items) {
         var Dev_indexBlurSW = items.Dev_indexBlurSW;
         if (Dev_indexBlurSW) {
-            document.getElementById('Dev_indexBlurSW').checked = 'true';
+            document.getElementById('Dev_indexBlurSW').checked = true;
         } else {
             document.getElementById('Dev_indexBlurSW').checked = false;
         }
@@ -1509,7 +1558,7 @@ function pageEnhance() {
     chrome.storage.local.get(['Dev_thinScrollbar'], function (items) {
         var Dev_thinScrollbar = items.Dev_thinScrollbar;
         if (Dev_thinScrollbar) {
-            document.getElementById('Dev_thinScrollbar').checked = 'true';
+            document.getElementById('Dev_thinScrollbar').checked = true;
         } else {
             document.getElementById('Dev_thinScrollbar').checked = false;
         }
@@ -1528,7 +1577,7 @@ function pageEnhance() {
     chrome.storage.local.get(['uddPopUp'], function (items) {
         var uddPopUp = items.uddPopUp;
         if (uddPopUp) {
-            document.getElementById('uddPopUp').checked = 'true';
+            document.getElementById('uddPopUp').checked = true;
             document.getElementsByClassName("uddPopUptypesw")[0].hidden = false;
         } else {
             document.getElementById('uddPopUp').checked = false;
@@ -1560,7 +1609,7 @@ function pageEnhance() {
     chrome.storage.local.get(['articleReadMode'], function (items) {
         var articleReadMode = items.articleReadMode;
         if (articleReadMode) {
-            document.getElementById('articleReadMode').checked = 'true';
+            document.getElementById('articleReadMode').checked = true;
         } else {
             document.getElementById('articleReadMode').checked = false;
         }
@@ -1579,7 +1628,7 @@ function pageEnhance() {
     chrome.storage.local.get(['userHomeMoment'], function (items) {
         var userHomeMoment = items.userHomeMoment;
         if (userHomeMoment) {
-            document.getElementById('userHomeMoment').checked = 'true';
+            document.getElementById('userHomeMoment').checked = true;
         } else {
             document.getElementById('userHomeMoment').checked = false;
         }
@@ -1598,7 +1647,7 @@ function pageEnhance() {
     chrome.storage.local.get(['playerRecommendHide'], function (items) {
         var playerRecommendHide = items.playerRecommendHide;
         if (playerRecommendHide) {
-            document.getElementById('playerRecommendHide').checked = 'true';
+            document.getElementById('playerRecommendHide').checked = true;
         } else {
             document.getElementById('playerRecommendHide').checked = false;
         }
@@ -1617,7 +1666,7 @@ function pageEnhance() {
     chrome.storage.local.get(['picDrag'], function (items) {
         var picDrag = items.picDrag;
         if (picDrag) {
-            document.getElementById('picDrag').checked = 'true';
+            document.getElementById('picDrag').checked = true;
         } else {
             document.getElementById('picDrag').checked = false;
         }
@@ -1636,7 +1685,7 @@ function pageEnhance() {
     chrome.storage.local.get(['picRotate'], function (items) {
         var picRotate = items.picRotate;
         if (picRotate) {
-            document.getElementById('picRotate').checked = 'true';
+            document.getElementById('picRotate').checked = true;
         } else {
             document.getElementById('picRotate').checked = false;
         }
@@ -1655,7 +1704,7 @@ function pageEnhance() {
     chrome.storage.local.get(['commentPageEasyTrans'], function (items) {
         var commentPageEasyTrans = items.commentPageEasyTrans;
         if (commentPageEasyTrans) {
-            document.getElementById('commentPageEasyTrans').checked = 'true';
+            document.getElementById('commentPageEasyTrans').checked = true;
         } else {
             document.getElementById('commentPageEasyTrans').checked = false;
         }
@@ -1674,7 +1723,7 @@ function pageEnhance() {
     chrome.storage.local.get(['userCenterBeautify'], function (items) {
         var userCenterBeautify = items.userCenterBeautify;
         if (userCenterBeautify) {
-            document.getElementById('userCenterBeautify').checked = 'true';
+            document.getElementById('userCenterBeautify').checked = true;
         } else {
             document.getElementById('userCenterBeautify').checked = false;
         }
@@ -1693,7 +1742,7 @@ function pageEnhance() {
     chrome.storage.local.get(['widenUCVideoList'], function (items) {
         var widenUCVideoList = items.widenUCVideoList;
         if (widenUCVideoList) {
-            document.getElementById('widenUCVideoList').checked = 'true';
+            document.getElementById('widenUCVideoList').checked = true;
         } else {
             document.getElementById('widenUCVideoList').checked = false;
         }
@@ -1712,7 +1761,7 @@ function pageEnhance() {
     chrome.storage.local.get(['pageTransKeyBind'], function (items) {
         var pageTransKeyBind = items.pageTransKeyBind;
         if (pageTransKeyBind) {
-            document.getElementById('pageTransKeyBind').checked = 'true';
+            document.getElementById('pageTransKeyBind').checked = true;
         } else {
             document.getElementById('pageTransKeyBind').checked = false;
         }
@@ -1731,7 +1780,7 @@ function pageEnhance() {
     chrome.storage.local.get(['quickCommentSubmit'], function (items) {
         var quickCommentSubmit = items.quickCommentSubmit;
         if (quickCommentSubmit) {
-            document.getElementById('quickCommentSubmit').checked = 'true';
+            document.getElementById('quickCommentSubmit').checked = true;
         } else {
             document.getElementById('quickCommentSubmit').checked = false;
         }
@@ -1750,7 +1799,7 @@ function pageEnhance() {
     chrome.storage.local.get(['liveCommentTimeTag'], function (items) {
         var liveCommentTimeTag = items.liveCommentTimeTag;
         if (liveCommentTimeTag) {
-            document.getElementById('liveCommentTimeTag').checked = 'true';
+            document.getElementById('liveCommentTimeTag').checked = true;
         } else {
             document.getElementById('liveCommentTimeTag').checked = false;
         }
@@ -1769,7 +1818,7 @@ function pageEnhance() {
     chrome.storage.local.get(['LiveUserFocus'], function (items) {
         var LiveUserFocus = items.LiveUserFocus;
         if (LiveUserFocus) {
-            document.getElementById('LiveUserFocus').checked = 'true';
+            document.getElementById('LiveUserFocus').checked = true;
         } else {
             document.getElementById('LiveUserFocus').checked = false;
         }
@@ -1789,7 +1838,7 @@ function pageEnhance() {
         if ("mediaSession" in navigator) {
             var liveMediaSession = items.liveMediaSession;
             if (liveMediaSession) {
-                document.getElementById('liveMediaSession').checked = 'true';
+                document.getElementById('liveMediaSession').checked = true;
             } else {
                 document.getElementById('liveMediaSession').checked = false;
             }
@@ -1813,7 +1862,7 @@ function pageEnhance() {
     chrome.storage.local.get(['beautify_nav'], function (items) {
         var ifbeautify_nav = items.beautify_nav;
         if (ifbeautify_nav) {
-            document.getElementById('beautify_nav').checked = 'true';
+            document.getElementById('beautify_nav').checked = true;
         } else {
             document.getElementById('beautify_nav').checked = false;
         }
@@ -1832,7 +1881,7 @@ function pageEnhance() {
     chrome.storage.local.get(['beautify_personal'], function (items) {
         var ifbeautify_personal = items.beautify_personal;
         if (ifbeautify_personal) {
-            document.getElementById('beautify_personal').checked = 'true';
+            document.getElementById('beautify_personal').checked = true;
         } else {
             document.getElementById('beautify_personal').checked = false;
         }
@@ -1851,7 +1900,7 @@ function pageEnhance() {
     chrome.storage.local.get(['hideAd'], function (items) {
         var ifHideAd = items.hideAd;
         if (ifHideAd) {
-            document.getElementById('hideAd').checked = 'true';
+            document.getElementById('hideAd').checked = true;
         } else {
             document.getElementById('hideAd').checked = false;
         }
@@ -1869,7 +1918,7 @@ function pageEnhance() {
     chrome.storage.local.get(['liveHideAd'], function (items) {
         var liveHideAd = items.liveHideAd;
         if (liveHideAd) {
-            document.getElementById('liveHideAd').checked = 'true';
+            document.getElementById('liveHideAd').checked = true;
             document.getElementsByClassName("liveHideAdsw")[0].hidden = false;
         } else {
             document.getElementById('liveHideAd').checked = false;
@@ -1899,7 +1948,7 @@ function pageEnhance() {
     chrome.storage.local.get(['liveHideAdMute'], function (items) {
         var liveHideAdMute = items.liveHideAdMute;
         if (liveHideAdMute) {
-            document.getElementById('liveHideAdMute').checked = 'true';
+            document.getElementById('liveHideAdMute').checked = true;
         } else {
             document.getElementById('liveHideAdMute').checked = false;
         }
@@ -1917,7 +1966,7 @@ function pageEnhance() {
     chrome.storage.local.get(['livePlayerEnhc'], function (items) {
         var livePlayerEnhc = items.livePlayerEnhc;
         if (livePlayerEnhc) {
-            document.getElementById('livePlayerEnhc').checked = 'true';
+            document.getElementById('livePlayerEnhc').checked = true;
         } else {
             document.getElementById('livePlayerEnhc').checked = false;
         }
@@ -1935,7 +1984,7 @@ function pageEnhance() {
     chrome.storage.local.get(['liveIndexRankNum'], function (items) {
         var liveIndexRankNum = items.liveIndexRankNum;
         if (liveIndexRankNum) {
-            document.getElementById('liveIndexRankNum').checked = 'true';
+            document.getElementById('liveIndexRankNum').checked = true;
         } else {
             document.getElementById('liveIndexRankNum').checked = false;
         }
@@ -1957,7 +2006,7 @@ function playerConfigure() {
     chrome.storage.local.get(['PlayerDamakuSearchSw'], function (items) {
         var PlayerDamakuSearchSw = items.PlayerDamakuSearchSw;
         if (PlayerDamakuSearchSw) {
-            document.getElementById('PlayerDamakuSearchSw').checked = 'true';
+            document.getElementById('PlayerDamakuSearchSw').checked = true;
         } else {
             document.getElementById('PlayerDamakuSearchSw').checked = false;
         }
@@ -1976,7 +2025,7 @@ function playerConfigure() {
     chrome.storage.local.get(['ABPlaysw'], function (items) {
         var ABPlaysw = items.ABPlaysw;
         if (ABPlaysw) {
-            document.getElementById('ABPlaysw').checked = 'true';
+            document.getElementById('ABPlaysw').checked = true;
         } else {
             document.getElementById('ABPlaysw').checked = false;
         }
@@ -1995,7 +2044,7 @@ function playerConfigure() {
     chrome.storage.local.get(['PlaybackRateKeysw'], function (items) {
         var PlaybackRateKeysw = items.PlaybackRateKeysw;
         if (PlaybackRateKeysw) {
-            document.getElementById('PlaybackRateKeysw').checked = 'true';
+            document.getElementById('PlaybackRateKeysw').checked = true;
         } else {
             document.getElementById('PlaybackRateKeysw').checked = false;
         }
@@ -2014,7 +2063,7 @@ function playerConfigure() {
     chrome.storage.local.get(['frameStepSetting'], function (items) {
         var frameStepSetting = items.frameStepSetting.enabled;
         if (frameStepSetting) {
-            document.getElementById('frameStepSetting').checked = 'true';
+            document.getElementById('frameStepSetting').checked = true;
         } else {
             document.getElementById('frameStepSetting').checked = false;
         }
@@ -2035,7 +2084,7 @@ function playerConfigure() {
     chrome.storage.local.get(['PlayerTimeCommentEasyJump'], function (items) {
         var PlayerTimeCommentEasyJumpsw = items.PlayerTimeCommentEasyJump;
         if (PlayerTimeCommentEasyJumpsw) {
-            document.getElementById('PlayerTimeCommentEasyJump').checked = 'true';
+            document.getElementById('PlayerTimeCommentEasyJump').checked = true;
         } else {
             document.getElementById('PlayerTimeCommentEasyJump').checked = false;
         }
@@ -2054,7 +2103,7 @@ function playerConfigure() {
     chrome.storage.local.get(['MusicPlayList'], function (items) {
         var MusicPlayList_onLoadAutoPlaysw = items.MusicPlayList.onLoadAutoPlay;
         if (MusicPlayList_onLoadAutoPlaysw) {
-            document.getElementById('MusicPlayList_onLoadAutoPlay').checked = 'true';
+            document.getElementById('MusicPlayList_onLoadAutoPlay').checked = true;
         } else {
             document.getElementById('MusicPlayList_onLoadAutoPlay').checked = false;
         }
@@ -2089,7 +2138,7 @@ function playerConfigure() {
     chrome.storage.local.get(['easySearchScanForPlayerTimesw'], function (items) {
         var easySearchScanForPlayerTimesw = items.easySearchScanForPlayerTimesw;
         if (easySearchScanForPlayerTimesw) {
-            document.getElementById('easySearchScanForPlayerTimesw').checked = 'true';
+            document.getElementById('easySearchScanForPlayerTimesw').checked = true;
         } else {
             document.getElementById('easySearchScanForPlayerTimesw').checked = false;
         }
@@ -2108,7 +2157,7 @@ function playerConfigure() {
     chrome.storage.local.get(['timelineDots'], function (items) {
         var timelineDots = items.timelineDots;
         if (timelineDots) {
-            document.getElementById('timelineDots').checked = 'true';
+            document.getElementById('timelineDots').checked = true;
         } else {
             document.getElementById('timelineDots').checked = false;
         }
@@ -2127,7 +2176,7 @@ function playerConfigure() {
     chrome.storage.local.get(['custom_rate'], function (items) {
         var customRate_status = items.custom_rate;
         if (customRate_status) {
-            document.getElementById('customRate').checked = 'true';
+            document.getElementById('customRate').checked = true;
         } else {
             document.getElementById('customRate').checked = false;
         }
@@ -2146,7 +2195,7 @@ function playerConfigure() {
     chrome.storage.local.get(['autoJumpLastWatchSw'], function (items) {
         var autoJumpLastWatchSw_status = items.autoJumpLastWatchSw;
         if (autoJumpLastWatchSw_status) {
-            document.getElementById('autoJumpLastWatchSw').checked = 'true';
+            document.getElementById('autoJumpLastWatchSw').checked = true;
         } else {
             document.getElementById('autoJumpLastWatchSw').checked = false;
         }
@@ -2165,7 +2214,7 @@ function playerConfigure() {
     chrome.storage.local.get(['endedAutoExitFullscreensw'], function (items) {
         var endedAutoExitFullscreensw = items.endedAutoExitFullscreensw;
         if (endedAutoExitFullscreensw) {
-            document.getElementById('endedAutoExitFullscreensw').checked = 'true';
+            document.getElementById('endedAutoExitFullscreensw').checked = true;
         } else {
             document.getElementById('endedAutoExitFullscreensw').checked = false;
             document.querySelector("#endedAutoToCommentAreasw").style.display = "none";
@@ -2187,7 +2236,7 @@ function playerConfigure() {
     chrome.storage.local.get(['endedAutoToCommentArea'], function (items) {
         var endedAutoToCommentArea = items.endedAutoToCommentArea;
         if (endedAutoToCommentArea) {
-            document.getElementById('endedAutoToCommentArea').checked = 'true';
+            document.getElementById('endedAutoToCommentArea').checked = true;
         } else {
             document.getElementById('endedAutoToCommentArea').checked = false;
         }
@@ -2206,7 +2255,7 @@ function playerConfigure() {
     chrome.storage.local.get(['FilmModeExclusionsw'], function (items) {
         var FilmModeExclusionsw = items.FilmModeExclusionsw;
         if (FilmModeExclusionsw) {
-            document.getElementById('FilmModeExclusionsw').checked = 'true';
+            document.getElementById('FilmModeExclusionsw').checked = true;
         } else {
             document.getElementById('FilmModeExclusionsw').checked = false;
         }
@@ -2225,7 +2274,7 @@ function playerConfigure() {
     chrome.storage.local.get(['ProgressBarsw'], function (items) {
         var ProgressBarsw = items.ProgressBarsw;
         if (ProgressBarsw) {
-            document.getElementById('ProgressBarsw').checked = 'true';
+            document.getElementById('ProgressBarsw').checked = true;
         } else {
             document.getElementById('ProgressBarsw').checked = false;
         }
@@ -2244,7 +2293,7 @@ function playerConfigure() {
     chrome.storage.local.get(['audioGain'], function (items) {
         var audioGain = items.audioGain;
         if (audioGain) {
-            document.getElementById('audioGain').checked = 'true';
+            document.getElementById('audioGain').checked = true;
         } else {
             document.getElementById('audioGain').checked = false;
         }
@@ -2269,7 +2318,7 @@ function playerConfigure() {
         }
         var videoMediaSession = items.videoMediaSession;
         if (videoMediaSession) {
-            document.getElementById('videoMediaSession').checked = 'true';
+            document.getElementById('videoMediaSession').checked = true;
         } else {
             document.getElementById('videoMediaSession').checked = false;
         }
@@ -2288,7 +2337,7 @@ function playerConfigure() {
     chrome.storage.local.get(['endedAutoJumpRecommandFirstDougasw'], function (items) {
         var endedAutoJumpRecommandFirstDougasw = items.endedAutoJumpRecommandFirstDougasw;
         if (endedAutoJumpRecommandFirstDougasw) {
-            document.getElementById('endedAutoJumpRecommandFirstDougasw').checked = 'true';
+            document.getElementById('endedAutoJumpRecommandFirstDougasw').checked = true;
         } else {
             document.getElementById('endedAutoJumpRecommandFirstDougasw').checked = false;
         }
@@ -2345,7 +2394,7 @@ function playerConfigure() {
     chrome.storage.local.get(['danmuSearchListToUsersw'], function (items) {
         var danmuSearchListToUsersw = items.danmuSearchListToUsersw;
         if (danmuSearchListToUsersw) {
-            document.getElementById('danmuSearchListToUsersw').checked = 'true';
+            document.getElementById('danmuSearchListToUsersw').checked = true;
         } else {
             document.getElementById('danmuSearchListToUsersw').checked = false;
         }
@@ -2510,7 +2559,7 @@ function globalConfigure() {
     chrome.storage.local.get(['fetchPushList_daemonsw'], function (items) {
         var fetchPushList_daemonsw = items.fetchPushList_daemonsw;
         if (fetchPushList_daemonsw) {
-            document.getElementById('fetchPushList_daemonsw').checked = 'true';
+            document.getElementById('fetchPushList_daemonsw').checked = true;
         } else {
             document.getElementById('fetchPushList_daemonsw').checked = false;
         }
@@ -2529,7 +2578,7 @@ function globalConfigure() {
     chrome.storage.local.get(['krnl_globalTimer'], function (items) {
         var krnl_globalTimer = items.krnl_globalTimer;
         if (krnl_globalTimer) {
-            document.getElementById('krnl_globalTimer').checked = 'true';
+            document.getElementById('krnl_globalTimer').checked = true;
         } else {
             document.getElementById('krnl_globalTimer').checked = false;
         }
@@ -2548,7 +2597,7 @@ function globalConfigure() {
     chrome.storage.local.get(['timer4Unread_daemonsw'], function (items) {
         var timer4Unread_daemonsw = items.timer4Unread_daemonsw;
         if (timer4Unread_daemonsw) {
-            document.getElementById('timer4Unread_daemonsw').checked = 'true';
+            document.getElementById('timer4Unread_daemonsw').checked = true;
         } else {
             document.getElementById('timer4Unread_daemonsw').checked = false;
         }
@@ -2567,7 +2616,7 @@ function globalConfigure() {
     chrome.storage.local.get(['LiveWatchTimeRec_popup'], function (items) {
         var LiveWatchTimeRec_popup = items.LiveWatchTimeRec_popup;
         if (LiveWatchTimeRec_popup) {
-            document.getElementById('LiveWatchTimeRec_popup').checked = 'true';
+            document.getElementById('LiveWatchTimeRec_popup').checked = true;
         } else {
             document.getElementById('LiveWatchTimeRec_popup').checked = false;
         }
@@ -2587,7 +2636,7 @@ function globalConfigure() {
     chrome.storage.local.get(['krnl_videossEarly'], function (items) {
         var krnl_videossEarly = items.krnl_videossEarly;
         if (krnl_videossEarly) {
-            document.getElementById('krnl_videossEarly').checked = 'true';
+            document.getElementById('krnl_videossEarly').checked = true;
         } else {
             document.getElementById('krnl_videossEarly').checked = false;
         }
@@ -2609,7 +2658,7 @@ function globalConfigure() {
             chrome.storage.local.set({ 'custom_css_style': $('#custom-css').val() })
         })
         if (custom_css) {
-            document.getElementById('custom-css-checkbox').checked = 'true';
+            document.getElementById('custom-css-checkbox').checked = true;
         } else {
             document.getElementById('custom-css-checkbox').checked = false;
         }
