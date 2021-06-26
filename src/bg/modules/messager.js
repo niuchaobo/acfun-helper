@@ -23,7 +23,7 @@ class MsgNotifs {
         let liveNotifIdRex = new RegExp("live");
         let commentDetailIdRex = new RegExp("ncid");
         if (liveNotifIdRex.exec(e)) {
-            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e.replace(/live([0-9])+6/, "") });
+            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e.replace(/live([0-9]).*/, "") });
             return
         } else if (commentDetailIdRex.exec(e)) {
             switch (index) {
@@ -40,8 +40,8 @@ class MsgNotifs {
 
     /**
      * 开播通知创建
-     * @param {*} liveUserId 
-     * @param {*} userName 
+     * @param {*} liveUserId
+     * @param {*} userName
      */
     createLiveNotif(liveUserId, userName) {
         let date = new Date();

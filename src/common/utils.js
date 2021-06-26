@@ -25,6 +25,8 @@ const defaults = {
   custom_css_style: ``,
   logSetting: { "consoleOutput": true, "logLevel": 4 },
   mark: false,//评论用户标记
+  UserMarks:{},
+  UserFilter:{},
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
   receive: false,//接收用户情报

@@ -2480,6 +2480,7 @@ function globalConfigure() {
                     }
                 }
                 notice("AcFun助手", "导入配置成功~");
+                afterReconfigure();
             };
         }
     };
@@ -2489,19 +2490,18 @@ function globalConfigure() {
         let notice_this = prompt("确认清除小助手的所有配置吗？请考虑清楚哦。Y/N", '');
         if (notice_this == 'Y') {
             chrome.storage.local.clear(function () {
-                mdui.alert("清除完成，请刷新页面或重启助手。");
+                //重置设置选项
+                let x = sanitizeOptions({});
+                optionsSave(x);
+                afterReconfigure();
             });
-            //重置设置选项
-            let x = sanitizeOptions({});
-            optionsSave(x);
         }
     });
 
     $('.Pushresult_act').on('click', function () {
         chrome.storage.local.get(['AcCookies'], function (datao) {
             let UidReg, Uid;
-            let prob = $('.SyncWait1');
-            prob.show();
+            $('.SyncWait1').show();
             let x = $('p.read_result')[0];
             try {
                 UidReg = new RegExp('auth_key=(.*); ac_username');
@@ -2519,11 +2519,10 @@ function globalConfigure() {
                     uploadData.append("options_data", `${options_data}`);
                     fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload', { method: "POST", credentials: 'include', body: uploadData })
                         .then((res => { return res.text() }))
-                        .then((res) => {
-                        })
+                        .then((res) => { })
                 });
             }
-            prob.hide();
+            $('.SyncWait1').hide();
         });
     });
 
@@ -2533,6 +2532,7 @@ function globalConfigure() {
         var dialog = document.getElementById('dialog');
         dialog.addEventListener('confirm.mdui.dialog', function () {
             chrome.storage.local.get(null, function (items) {
+                $('.SyncWait1').show();
                 let svrCookies = {}
                 svrCookies['AcCookies'] = items['AcCookies'];
                 svrCookies['AcPassToken'] = items['AcPassToken'];
@@ -2546,13 +2546,14 @@ function globalConfigure() {
                         try {
                             jsonfy_config = JSON.parse(x);
                         } catch (e) {
-                            mdui.alert("格式不正确");
+                            mdui.alert("认证信息格式不正确，请至少在主站登录并进入主站的稿件一次，或者说请不要伪造Cookie信息。");
                             return;
                         }
                         for (i in jsonfy_config) {
                             chrome.storage.local.set({ [i]: jsonfy_config[i] });
                         }
                         notice("AcFun助手", "配置同步成功~");
+                        afterReconfigure();
                     });
             });
         });
@@ -2635,7 +2636,6 @@ function globalConfigure() {
     });
 
     //====================直播观看计时表===================
-    //FIXME:这可能是 【提前加在前台视频播放器模块】 功能的开关
     chrome.storage.local.get(['krnl_videossEarly'], function (items) {
         var krnl_videossEarly = items.krnl_videossEarly;
         if (krnl_videossEarly) {
@@ -2681,6 +2681,20 @@ function globalConfigure() {
         $('#custom-css').val(custom_css_style);
     })
 
+    function afterReconfigure() {
+        mdui.snackbar({
+            message: '配置完成，正在等待刷新。',
+            position: 'right-top',
+            timeout: 1000,
+        });
+        setTimeout(() => {
+            $('.SyncWait1').hide();
+            if (mention['devMode']) {
+                location.reload();
+            }
+        }, 1500);
+    }
+
 }
 
 function Final() {
@@ -2697,12 +2711,14 @@ function Final() {
                 message: `已进入特殊模式。`,
                 position: 'right-bottom',
             });
+            mention['devMode'] = true;
         }
         devSwitchClick++;
     })
 }
 
 window.addEventListener('load', function () {
+    var mention = {};
     OldUIHandler()
     indexSiteConfigure()
     contentConfigure()
