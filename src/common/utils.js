@@ -788,11 +788,8 @@ function addElement(options) {
 }
 
 function removeAPrefix(_$targetDom) {
-  let acid = _$targetDom.text().trim();
-  let regAcid = new RegExp("ac(.*)");
+  let acid = _$targetDom[0].getAttribute("data-aid");
   if (acid == '') { return }
-  let x = regAcid.exec(acid);
-  x == null ? acid = acid : acid = x[1];
   return acid
 }
 
