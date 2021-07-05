@@ -11,11 +11,9 @@ class MsgNotifs {
         console.log('Register MsgNotifs Mod.')
         /**
          * @description 挂载直播通知气泡按钮动作监听器
-         * @drawback 模块在初始化时，如果两个直播通知模块的开关是有一个开着的，那么将会挂接 系统通知上按钮的监听器，但是麻烦的是，你如果在初始化时开关都是关的，那么在模块初始化之后，再打开开关，它是不会响应你的。
-         * @notice 但是这玩意儿绝对不应该放到循环里面去。
+         * @notice 应不应该有开关我不知道，我先放个监听在这。而且这玩意儿绝对不应该放到循环里面去。
          */
-        let liveNoifSwitch = await getStorage("liveFloowNotif").then(e => { return e.liveFloowNotif }) || await getStorage("followLiveNotif").then(e => { return e.followLiveNotif });
-        liveNoifSwitch && chrome.notifications.onButtonClicked.addListener((e, index) => this.notifBuTrigger(e, index));
+        chrome.notifications.onButtonClicked.addListener((e, index) => this.notifBuTrigger(e, index));
         this.browserType = myBrowser();
     }
 

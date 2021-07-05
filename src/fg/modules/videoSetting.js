@@ -32,6 +32,8 @@ class VideoSetting {
     this.abPlaySecond = undefined;
     this.abPlayFlag = 0;
     this.timelineDotsResultCache = "";
+    this.hideDanmakuOperaterStyleAdded = false;
+    this.hideDanmakuOperaterdanmakuOprFlag = false;
   }
 
   onLoad() {
@@ -143,7 +145,7 @@ class VideoSetting {
               qualitys[Lowest].click();
               break;
             case 4:
-              for (let x = 0; x <= qualitys.length - 1; ) {
+              for (let x = 0; x <= qualitys.length - 1;) {
                 if (vqreg2exp.test(qualitys[x].dataset.qualityType)) {
                   x++;
                 } else {
@@ -556,8 +558,8 @@ class VideoSetting {
     code === addRate
       ? (videoRate += 0.25)
       : code === reduceRate
-      ? (videoRate -= 0.25)
-      : "";
+        ? (videoRate -= 0.25)
+        : "";
     videoRate <= 0 ? (videoRate = 0.25) : videoRate >= 2 ? (videoRate = 2) : "";
     return videoRate;
   }
@@ -577,7 +579,7 @@ class VideoSetting {
     );
   }
 
-  danmuSearchListToUserExec(){
+  danmuSearchListToUserExec() {
     $(".danmaku-items>li>.danmaku-content").after(
       `<div class = 'searchListUser' style = "display:none;margin-right:6px;font-size:20px;">⌂</div>`
     );
@@ -870,8 +872,8 @@ class VideoSetting {
       artist: "AcFun",
       artwork: [],
     });
-    navigator.mediaSession.setActionHandler("previoustrack", () => {});
-    navigator.mediaSession.setActionHandler("nexttrack", () => {});
+    navigator.mediaSession.setActionHandler("previoustrack", () => { });
+    navigator.mediaSession.setActionHandler("nexttrack", () => { });
   }
   mediaSessionReAttach() {
     let videoInfo = {};
@@ -1097,4 +1099,46 @@ class VideoSetting {
       }
     };
   }
+
+  /**
+   * 播放器弹幕操作菜单显-显示状态
+   * @param {bool} sw 
+   */
+  hideDanmakuOperater(sw) {
+    this.hideDanmakuOperaterdanmakuOprFlag = sw;
+    switch (sw) {
+      case true:
+        if (this.hideDanmakuOperaterStyleAdded) {
+          document.querySelector("#hideDanmakuOperaterBarStyle").disabled = false;
+          document.querySelector(".danmakuOpr").dataset.bindAttr = false;
+        } else {
+          createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "hideDanmakuOperaterBarStyle");
+          document.querySelector(".danmakuOpr").dataset.bindAttr = false;
+          this.hideDanmakuOperaterStyleAdded = true;
+        }
+        break;
+      case false:
+        document.querySelector("#hideDanmakuOperaterBarStyle").disabled = true;
+        document.querySelector(".danmakuOpr").dataset.bindAttr = true;
+        break;
+    }
+  }
+
+  hideDanmakuOperaterUI() {
+    let htmlUi = `
+    <div>
+      <label>弹幕操作</label>
+      <div class="control-checkbox danmakuOpr" data-bind-key="danmakuOpr" data-bind-attr="${!this.hideDanmakuOperaterdanmakuOprFlag}"></div>
+    </div>
+    `;
+    $(".setting-panel>.setting-panel-content").append(htmlUi);
+    $(".setting-panel-content").click((e) => {
+      if (e.target.dataset.bindKey == "danmakuOpr" && e.target.dataset.bindAttr == "false") {
+        this.hideDanmakuOperater(false);
+      } else if (e.target.dataset.bindKey == "danmakuOpr" && e.target.dataset.bindAttr == "true") {
+        this.hideDanmakuOperater(true);
+      }
+    })
+  }
+
 }

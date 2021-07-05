@@ -2235,6 +2235,39 @@ function playerConfigure() {
         });
     });
 
+    chrome.storage.local.get(['hideDanmakuOperater'], function (items) {
+        if (items.hideDanmakuOperater.defaultMode) {
+            document.getElementById('hideDanmakuOperater').checked = true;
+        } else {
+            document.getElementById('hideDanmakuOperater').checked = false;
+        }
+        if (items.hideDanmakuOperater.UI) {
+            document.getElementById('hideDanmakuOperaterUI').checked = true;
+        } else {
+            document.getElementById('hideDanmakuOperaterUI').checked = false;
+        }
+        $('#hideDanmakuOperater').on('click', function () {
+            if (!document.getElementById('hideDanmakuOperater').checked) {
+                document.getElementById('hideDanmakuOperater').checked = false;
+                items.hideDanmakuOperater.defaultMode=false;
+            } else {
+                document.getElementById('hideDanmakuOperater').checked = true;
+                items.hideDanmakuOperater.defaultMode=true;
+            }
+            chrome.storage.local.set({ 'hideDanmakuOperater': items.hideDanmakuOperater });
+        });
+        $('#hideDanmakuOperaterUI').on('click', function () {
+            if (!document.getElementById('hideDanmakuOperaterUI').checked) {
+                document.getElementById('hideDanmakuOperaterUI').checked = false;
+                items.hideDanmakuOperater.UI=false;
+            } else {
+                document.getElementById('hideDanmakuOperaterUI').checked = true;
+                items.hideDanmakuOperater.UI=true;
+            }
+            chrome.storage.local.set({ 'hideDanmakuOperater': items.hideDanmakuOperater });
+        })
+    });
+
     //====================配置播放结束自动退出全屏然后滚动到评论区===============
     chrome.storage.local.get(['endedAutoToCommentArea'], function (items) {
         var endedAutoToCommentArea = items.endedAutoToCommentArea;
