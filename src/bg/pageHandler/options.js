@@ -2249,20 +2249,20 @@ function playerConfigure() {
         $('#hideDanmakuOperater').on('click', function () {
             if (!document.getElementById('hideDanmakuOperater').checked) {
                 document.getElementById('hideDanmakuOperater').checked = false;
-                items.hideDanmakuOperater.defaultMode=false;
+                items.hideDanmakuOperater.defaultMode = false;
             } else {
                 document.getElementById('hideDanmakuOperater').checked = true;
-                items.hideDanmakuOperater.defaultMode=true;
+                items.hideDanmakuOperater.defaultMode = true;
             }
             chrome.storage.local.set({ 'hideDanmakuOperater': items.hideDanmakuOperater });
         });
         $('#hideDanmakuOperaterUI').on('click', function () {
             if (!document.getElementById('hideDanmakuOperaterUI').checked) {
                 document.getElementById('hideDanmakuOperaterUI').checked = false;
-                items.hideDanmakuOperater.UI=false;
+                items.hideDanmakuOperater.UI = false;
             } else {
                 document.getElementById('hideDanmakuOperaterUI').checked = true;
-                items.hideDanmakuOperater.UI=true;
+                items.hideDanmakuOperater.UI = true;
             }
             chrome.storage.local.set({ 'hideDanmakuOperater': items.hideDanmakuOperater });
         })

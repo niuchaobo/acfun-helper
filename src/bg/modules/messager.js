@@ -4,7 +4,7 @@
 class MsgNotifs {
     constructor() {
         this.initMod();
-        this.browserType = "";
+        this.browserType = myBrowser();
     }
 
     async initMod() {
@@ -14,7 +14,6 @@ class MsgNotifs {
          * @notice 应不应该有开关我不知道，我先放个监听在这。而且这玩意儿绝对不应该放到循环里面去。
          */
         chrome.notifications.onButtonClicked.addListener((e, index) => this.notifBuTrigger(e, index));
-        this.browserType = myBrowser();
     }
 
     notifBuTrigger(e, index) {
@@ -44,7 +43,9 @@ class MsgNotifs {
     createLiveNotif(liveUserId, userName) {
         let date = new Date();
         let notId = liveUserId + "live" + (date.getMonth() + 1) + date.getDate() + date.getHours() + date.getMinutes();
+        console.log(this.browserType)
         if (this.browserType == "Chrome") {
+            console.log("chrome")
             chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
@@ -53,6 +54,7 @@ class MsgNotifs {
                 message: `${userName}  正在直播了！`
             });
         } else {
+            console.log("fire")
             chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
