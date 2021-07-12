@@ -156,6 +156,10 @@ class ODHBack {
         if (rawOpts['filter']) {
             chrome.storage.local.set({ "filter": false }, function () { });
         }
+        //关闭用户动态渲染（2021-7-5失效：接口改动）
+        if(rawOpts['userHomeMoment']){
+            chrome.storage.local.set({ "userHomeMoment": false }, function () { });
+        }
     }
 
     onCommands(command) {

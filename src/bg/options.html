@@ -62,7 +62,7 @@
             <a href="#tab2" class="mdui-ripple">内容设置</a>
             <a href="#tab3" class="mdui-ripple">界面设置</a>
             <a href="#tab4" class="mdui-ripple">播放器设置</a>
-            <a href="#tab5" class="mdui-ripple">插件设置</a>
+            <a href="#tab5" class="mdui-ripple">高级设置</a>
             <a href="#tab6" class="mdui-ripple">关于 & 注意</a>
         </div>
     </div>
@@ -86,11 +86,8 @@
                                 <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
                                     style="cursor: default;"><a href="./upupup.html" target="_blank">最近活动情况</a></p>
                                 </button>
-                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple devFeature"
                                     style="cursor: default;"><a href="./square.html" target="_blank">广场</a></p>
-                                </button>
-                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
-                                    style="cursor: default;"><a href="./topic.html" target="_blank">话题</a></p>
                                 </button>
                                 <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
                                     style="cursor: default;"><a href="./bangumi.html" target="_blank">番剧</a></p>
@@ -424,7 +421,7 @@
                                                     <i class="mdui-switch-icon"></i>--立即打开页面--
                                                 </label>
                                             </div>
-                                            <div class="mdui-col-xs-3 mdui-col-sm-2" title="只要自定义Up开播弹出通知就立刻打开Up直播页面">
+                                            <div class="mdui-col-xs-3 mdui-col-sm-2">
                                                 <label class="mdui-switch">
                                                     <input id="liveCloseNotif" type="checkbox" />
                                                     <i class="mdui-switch-icon"></i>--下播提醒--
@@ -435,12 +432,6 @@
                                                     <input id="followLiveNotif" type="checkbox" />
                                                     <i class="mdui-switch-icon"></i>--关注Up开播提醒--
                                                 </label>
-                                            </div>
-                                            <div class="mdui-col-xs-3 mdui-col-sm-2">
-                                                <button
-                                                    class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                                                        href="/bg/liveFollow-bridge.html"
-                                                        target="_blank">关注选单</a></button>
                                             </div>
                                         </div>
                                     </div>
@@ -457,7 +448,7 @@
                     </div>
                 </div>
 
-                <div class="mdui-panel-item mdui-panel-item-open">
+                <div class="mdui-panel-item mdui-panel-item-open devFeature">
                     <div class="mdui-panel-item-header">
                         <div class="mdui-panel-item-title">广场</div>
                         <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
@@ -644,6 +635,10 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="mdui-chip">
+                            <span class="mdui-chip-title">这些功能，均需要开启 助手设置-高级设置-插件核心配置-推送消息轮询 开关。</span>
+                          </div>
 
                     </div>
                 </div>
@@ -909,7 +904,7 @@
                             </div>
                         </div>
 
-                        <div class="mdui-container-fluid">
+                        <div class="mdui-container-fluid devFeature">
                             <div class="mdui-row">
                                 <div class="mdui-row">
                                     <div class="mdui-col-xs-9">
@@ -1628,6 +1623,38 @@
 
                         <div class="mdui-container-fluid">
                             <div class="mdui-col-xs-9">
+                                <h2>隐藏弹幕快捷操作菜单-默认模式</h2>
+                            </div>
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">自动隐藏快捷弹幕的快捷操作菜单</div>
+                                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                                            <input id="hideDanmakuOperater" type="checkbox" />
+                                            <i class="mdui-switch-icon"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-col-xs-9">
+                                <h2>隐藏弹幕快捷操作菜单UI</h2>
+                            </div>
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器设置菜单中增加切换开关</div>
+                                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                                            <input id="hideDanmakuOperaterUI" type="checkbox" />
+                                            <i class="mdui-switch-icon"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-col-xs-9">
                                 <h2>观影模式关灯适配暗色</h2>
                             </div>
                             <div class="mdui-row">
@@ -1863,7 +1890,6 @@
                                                 <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>确定</button>
                                             </div>
                                         </div>
-
                                     </div>
 
                                 </div>

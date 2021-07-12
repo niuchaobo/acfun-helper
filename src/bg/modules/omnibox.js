@@ -26,7 +26,7 @@ class Ohminibox {
                             console.log(`    [LOG]Backend-Omnibox>registerOmnibox: [${formatDate(new Date(), true)}] 没有找到准确的关键字`);
                         }
                         let suggestions;
-                        if (x.suggestKeywords.length != 0) {
+                        if (x.suggestKeywords && x.suggestKeywords.length != 0) {
                             suggestions = x.suggestKeywords.map((val) => {
                                 return {
                                     "content": val,

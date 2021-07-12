@@ -139,7 +139,7 @@ function inithistoricalAchieve() {
         });
         db4.historical.put({
             "acid": 1, "date": new Date, "tag": "233"
-        })    
+        })
         console.log("    [WARN]Background-IndexedDbDrv > inithistoricalAchieve:Table initializing.")
     }
 }

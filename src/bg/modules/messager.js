@@ -4,26 +4,23 @@
 class MsgNotifs {
     constructor() {
         this.initMod();
-        this.browserType = "";
+        this.browserType = myBrowser();
     }
 
     async initMod() {
         console.log('Register MsgNotifs Mod.')
         /**
          * @description 挂载直播通知气泡按钮动作监听器
-         * @drawback 模块在初始化时，如果两个直播通知模块的开关是有一个开着的，那么将会挂接 系统通知上按钮的监听器，但是麻烦的是，你如果在初始化时开关都是关的，那么在模块初始化之后，再打开开关，它是不会响应你的。
-         * @notice 但是这玩意儿绝对不应该放到循环里面去。
+         * @notice 应不应该有开关我不知道，我先放个监听在这。而且这玩意儿绝对不应该放到循环里面去。
          */
-        let liveNoifSwitch = await getStorage("liveFloowNotif").then(e => { return e.liveFloowNotif }) || await getStorage("followLiveNotif").then(e => { return e.followLiveNotif });
-        liveNoifSwitch && chrome.notifications.onButtonClicked.addListener((e, index) => this.notifBuTrigger(e, index));
-        this.browserType = myBrowser();
+        chrome.notifications.onButtonClicked.addListener((e, index) => this.notifBuTrigger(e, index));
     }
 
     notifBuTrigger(e, index) {
         let liveNotifIdRex = new RegExp("live");
         let commentDetailIdRex = new RegExp("ncid");
         if (liveNotifIdRex.exec(e)) {
-            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e.replace(/live([0-9])+6/, "") });
+            chrome.tabs.create({ url: 'https://live.acfun.cn/live/' + e.replace(/live([0-9]).*/, "") });
             return
         } else if (commentDetailIdRex.exec(e)) {
             switch (index) {
@@ -40,13 +37,15 @@ class MsgNotifs {
 
     /**
      * 开播通知创建
-     * @param {*} liveUserId 
-     * @param {*} userName 
+     * @param {*} liveUserId
+     * @param {*} userName
      */
     createLiveNotif(liveUserId, userName) {
         let date = new Date();
         let notId = liveUserId + "live" + (date.getMonth() + 1) + date.getDate() + date.getHours() + date.getMinutes();
+        console.log(this.browserType)
         if (this.browserType == "Chrome") {
+            console.log("chrome")
             chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
@@ -55,6 +54,7 @@ class MsgNotifs {
                 message: `${userName}  正在直播了！`
             });
         } else {
+            console.log("fire")
             chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',

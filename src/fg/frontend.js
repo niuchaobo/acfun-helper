@@ -101,28 +101,35 @@ class ODHFront {
 	onACPlayerLoaded(e) {
 		if (REG.videoAndBangumi.test(this.href)) {
 			let isLogined = false;
-			getAsyncDom('#ACPlayer .control-bar-top .box-right', () => {
-				if (isLogin("video")) {
-					isLogined = true;
+			var playerChecker = setInterval(() => {
+				let elem = document.querySelector("#ACPlayer .control-bar-top .box-right")
+				if (elem != null) {
+					if (isLogin("video")) {
+						isLogined = true;
+					}
+					//在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
+					//FIXME:页面onload执行前打开全屏，导致助手按钮首次显示不会被隐藏
+					this.videoSetting.monitorFullScreen();
+					//自定义倍速
+					this.options.custom_rate && this.videoSetting.customPlaybackRate();
+					//倍速切换的快捷键
+					this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
+					//AB回放
+					this.options.ABPlaysw && this.videoSetting.addABPlayUI();
+					//画中画
+					this.videoSetting.callPicktureInPictureMode();
+					//全局进度条
+					this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle);
+					//画质策略
+					this.videoSetting.videoQuality(isLogined);
+					//自动点赞
+					this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
+					//弹幕操作栏状态
+					this.options.hideDanmakuOperater.UI && this.videoSetting.hideDanmakuOperaterUI();
+					this.videoSetting.hideDanmakuOperater(this.options.hideDanmakuOperater.defaultMode);
+					clearInterval(playerChecker);
 				}
-				//在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
-				//FIXME:页面onload执行前打开全屏，导致助手按钮首次显示不会被隐藏
-				this.videoSetting.monitorFullScreen();
-				//自定义倍速
-				this.options.custom_rate && this.videoSetting.customPlaybackRate();
-				//倍速切换的快捷键
-				this.options.PlaybackRateKeysw && this.videoSetting.PlaybackRateKeyCode(this.options.custom_rate_keyCode)
-				//AB回放
-				this.options.ABPlaysw && this.videoSetting.addABPlayUI();
-				//画中画
-				this.videoSetting.callPicktureInPictureMode();
-				//全局进度条
-				this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle);
-				//画质策略
-				this.videoSetting.videoQuality(isLogined);
-				//自动点赞
-				this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
-			}, 200)
+			}, 1000);
 			this.onPlayerUrlChange();
 		}
 	}

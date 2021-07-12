@@ -25,6 +25,8 @@ const defaults = {
   custom_css_style: ``,
   logSetting: { "consoleOutput": true, "logLevel": 4 },
   mark: false,//评论用户标记
+  UserMarks: {},
+  UserFilter: {},
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
   receive: false,//接收用户情报
@@ -95,6 +97,7 @@ const defaults = {
   Dev_thinScrollbar: false,
   liveIndexRankNum: true,
   timelineDots: false,
+  hideDanmakuOperater: { defaultMode: false, UI: true },
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, }
 };
@@ -621,12 +624,12 @@ async function getAsyncDom(target, fn, time = 2500, isDev = false) {
       targetDom = document.getElementById(target) || document.getElementsByClassName(target).length || $(`${target}`).length || undefined
       if (targetDom) {
         i = 0;
-        isDev && console.log("[LOG]Common-Utils>getAsyncDom: DOM加载");
+        isDev && console.log(`[LOG]Common-Utils>getAsyncDom: ${target}加载`);
         resolve(fn())
       } else {
         if (i >= 9000 / time) {
           i = 0;
-          isDev && resolve(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`)
+          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`);
           return
         };
         i++;
@@ -913,6 +916,37 @@ function timeToMinute(second) {
   minute = minute.length == 1 ? "0" + minute : minute;
   second = second.length == 1 ? "0" + second : second;
   return minute + ":" + second;
+}
+
+/**
+ * 监控对象中值变化
+ * @param {object} src 监控对象
+ * @param {function} hook 执行操作
+ * @param {Array} keyList 监听的键列表，默认为空(空则为全监听)
+ */
+function addRefTypeValueListener(src, hook, keyList = []) {
+  if (!keyList.length) {
+    Object.keys(src).forEach(key => {
+      defineItsProperty(src, key, src[key], hook);
+    });
+  } else {
+    keyList.forEach(e => {
+      defineItsProperty(src, e, src[e], hook);
+    })
+  }
+  function defineItsProperty(src, key, value, hook) {
+    Object.defineProperty(src, key, {
+      enumerable: true,
+      configurable: false,
+      get() {
+        return value;
+      },
+      set(newVal) {
+        value = newVal;
+        hook(value);
+      }
+    })
+  }
 }
 
 /**
