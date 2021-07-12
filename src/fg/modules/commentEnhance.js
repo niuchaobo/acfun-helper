@@ -427,9 +427,9 @@ class CommentEnhance {
      * @param {number} type 
      * @param {boolean} isArticle 
      */
-    uddPopUp(type = 0, isArticle) {
+    uddPopUp(type = 0) {
         let _fthis = this;
-        let target = isArticle ? 'a.ac.btn' : 'a.ubb-ac'
+        let target = 'a.ubb-ac';
         _fthis.addUddPopUpStyle(target)
         getAsyncDom(target, () => {
             let ubbBox = $(target);
