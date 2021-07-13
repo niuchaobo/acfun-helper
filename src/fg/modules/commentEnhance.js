@@ -86,30 +86,7 @@ class CommentEnhance {
                         $(this).addClass('comment-mark-parent');
                         $(this).append('<span class="comment-mark">标记PO</span>');
                         $(this).append('<span class="comment-jumpLink">复制楼层链接</span>');
-                        $(this).append('<span class="commentContent-mark">标记评论</span>');
                         $(this).append('<span class="comment-cap">保存为HTML</span>');
-                        $(this).on('click', '.commentContent-mark', async function (e) {
-                            let describe = prompt("如何评论该评论？(字数和文体不限)", "");
-                            // console.log(e)
-                            // console.log(e.target.parentElement.parentElement.parentElement.parentElement.parentElement)
-                            // console.log(e.target.parentElement.parentElement.parentElement.parentElement.parentElement.dataset)
-                            //反正是主楼层的NCID
-                            let commentId = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.dataset.commentid
-                            let url = e.target.baseURI;
-                            // let commentUrlandNcid = url + "#ncid=" + commentId;
-                            // let acid;
-                            // if (acid = REG.acAid.exec(url)[2]) {
-                            // } else {
-                            //     acid = REG.acVid.exec(url)[2];
-                            // }
-                            let POuid = e.target.parentElement.parentElement.parentElement.children[0].children[0].dataset.userid
-                            let POname = e.target.parentElement.parentElement.parentElement.children[0].children[0].innerText
-                            let contentHtml = e.target.parentElement.parentElement.parentElement.children[1].innerHTML
-                            let rawStore = await getStorage("MarkedComment");
-                            rawStore.MarkedComment.datasets[commentId] = { "POuid": POuid, "POname": POname, "contentHtml": contentHtml, "commentId": commentId, "url": url, "describe": describe };
-                            // console.log(rawStore.MarkedComment)
-                            chrome.storage.local.set({ "MarkedComment": rawStore.MarkedComment });
-                        })
                         $(this).on('click', '.comment-cap', function () {
                             let data = `<style>
                             html {

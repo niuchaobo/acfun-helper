@@ -76,10 +76,8 @@ const defaults = {
   LiveUserFocus: false,
   LiveWatchTimeRec_popup: false,
   multiPartListSpread: true,
-  BangumiNotif: true,
-  BangumiPlan: true,
   audioGain: false,
-  uddPopUp: true,
+  uddPopUp: false,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
   articleReadMode: false,
   articleBanana: false,
@@ -97,7 +95,7 @@ const defaults = {
   Dev_thinScrollbar: false,
   liveIndexRankNum: true,
   timelineDots: false,
-  hideDanmakuOperater: { defaultMode: false, UI: true },
+  hideDanmakuOperator: { defaultMode: false, UI: true },
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, }
 };

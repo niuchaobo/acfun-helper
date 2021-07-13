@@ -15,13 +15,4 @@ class AuthInfo {
         })
     }
 
-    getAccessToken() {
-        chrome.cookies.get({ url: "https://www.acfun.cn/", name: "JSESSIONID" }, function (e) {
-            if (e == undefined) {
-                return;
-            }
-            chrome.storage.local.set({ AccessToken: `${e.value}` });
-        })
-    }
-
 }

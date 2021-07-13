@@ -1,7 +1,6 @@
 class ODHBack {
     constructor() {
         this.options = null;
-
         this.target = null;
 
         this.agent = new Agent(document.getElementById('sandbox').contentWindow);
@@ -11,7 +10,6 @@ class ODHBack {
         this.Upgrade = new UpgradeAgent();
         // this.ReqOpDrv = new ReqOperationDrv();
         this.WatchPlan = new WatchPlan();
-        this.MusicPlayer = new MusicPlayer();
 
         this.Ominibox.registerOmnibox();
         this.MsgNotfs.timer4Unread();
@@ -96,7 +94,6 @@ class ODHBack {
             this.tabInvoke(tabId, 'renderLive', { url: url });
         }
         this.authInfo.fetchPasstoken();
-        this.authInfo.getAccessToken();
     }
 
     onInstalled(details) {
@@ -159,6 +156,9 @@ class ODHBack {
         //关闭用户动态渲染（2021-7-5失效：接口改动）
         if(rawOpts['userHomeMoment']){
             chrome.storage.local.set({ "userHomeMoment": false }, function () { });
+        }
+        if(rawOpts['uddPopUp']){
+            chrome.storage.local.set({ "uddPopUp": false }, function () { });
         }
     }
 
@@ -253,24 +253,6 @@ class ODHBack {
     }
 
     registerContextMenus() {
-        chrome.contextMenus.create({
-            title: '将此链接添加到App稍后再看',
-            id: 'immediateAddLinkWatchLaterToApp',
-            contexts: ['link'],
-            onclick: (params) => {
-                this.WatchPlan.immediateAddWatchLaterToApp(params.linkUrl);
-            }
-        });
-
-        chrome.contextMenus.create({
-            title: '将此页面添加到App稍后再看',
-            id: 'immediateAddPageWatchLaterToApp',
-            contexts: ['link'],
-            onclick: (params) => {
-                this.WatchPlan.immediateAddWatchLaterToApp(params.pageUrl);
-            }
-        });
-
         //右键菜单
         chrome.contextMenus.create({
             documentUrlPatterns: ['https://*.acfun.cn/*'],
@@ -311,7 +293,7 @@ class ODHBack {
         });
 
         chrome.contextMenus.create({
-            title: '加入到稍后再看',
+            title: '加入到助手的稍后再看',
             contexts: ['link'],
             id: '2',
             onclick: (params) => {
@@ -327,38 +309,6 @@ class ODHBack {
                         message: `${sw}`
                     });
                 });
-            }
-        });
-
-        chrome.contextMenus.create({
-            title: '添加到音乐播放器列表',
-            id: 'addToMusicPlayerlist',
-            contexts: ['link'],
-            onclick: (params) => {
-                this.MusicPlayer.addItem(params.linkUrl);
-            }
-        });
-
-        chrome.contextMenus.create({
-            title: '启动音乐播放器',
-            id: 'startMusicPlayer',
-            contexts: ['link'],
-            onclick: () => {
-                this.MusicPlayer.setSign("firstPlay");
-                this.MusicPlayer.main();
-            }
-        });
-
-        chrome.contextMenus.create({
-            title: '停止音乐播放器',
-            id: 'stopMusicPlayer',
-            contexts: ['link'],
-            onclick: (params) => {
-                console.log("backend stop");
-                if (this.MusicPlayer.playInfo.Status) {
-                    this.MusicPlayer.setSign("stop");
-                    // this.MusicPlayer.main();
-                }
             }
         });
 
@@ -435,23 +385,6 @@ class ODHBack {
 
     api_bananAudio() {
         this.MsgNotfs.bananAudio();
-    }
-
-    api_musicPlayerStart(e) {
-        this.MusicPlayer.setSign("firstPlay");
-        this.MusicPlayer.main(e.index);
-    }
-
-    api_musicPlayerSign(e) {
-        this.MusicPlayer.setSign(e.sign);
-    }
-
-    api_musicPlayerfocusPlayer() {
-        this.MusicPlayer.focusPlayer();
-    }
-
-    api_musicPlayerAdd(e) {
-        this.MusicPlayer.addItem(e.linkUrl);
     }
 
     async api_achievementEvent(e) {

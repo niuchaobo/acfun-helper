@@ -14,12 +14,9 @@ import {
 	titleToHome,
 	clickToTop,
 	hideToTopButton,
-	fetchDougaInfo,
 	viewHistory,
 	WatchLaterFpopup,
 	StopWatchLaterFpopup,
-	MomentSquareFpop,
-	MyBangumiFpop,
 	LiveWatchTimeLstReact,
 	PushListDougaMode,
 	indexJump,
@@ -53,14 +50,11 @@ async function onReady() {
 	options.LocalUserId != "0" && $("#pop-title .Ucenter").show();$("#pop-title .Ucenter").click(toUcenter);
 	$(document).scroll(hideToTopButton);
 	$(".toTop").click(clickToTop);
-	$("#dougaInfoAcidbtn").click(fetchDougaInfo);
 	$("#UserInfoActionBtn").click(userInfoFetch);
 	$("#ViewHistoryAction").click(viewHistory);
 	$("#WatchLaterFpopup").click(WatchLaterFpopup);
 	$("#StopWatchLaterFpopup").click(StopWatchLaterFpopup);
 	$("#attentionTabsFg").click(attentionTabs);
-	$("#MomentSquareFpop").click(MomentSquareFpop);
-	$("#MyBangumiFpop").click(MyBangumiFpop);
 	$("#musicPlayerPopupStart").click(musicPlayerPopupStart);
 	$("#musicPlayerPopupStop").click(musicPlayerPopupStop);
 	$("#musicPlayerPopupShow").click(musicPlayerPopupShow);

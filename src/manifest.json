@@ -50,7 +50,6 @@
                 "fg/modules/luckyTurntab.js",
                 "fg/modules/videoSetting.js",
                 "fg/modules/readMode.js",
-                "fg/modules/musicPlayerFront.js",
                 "fg/frontend.js"
             ],
             "css": [

@@ -65,14 +65,6 @@ export async function onOptionChanged(e) {
 	optionsSave(newOptions);
 }
 
-export async function MomentSquareFpop() {
-	chrome.tabs.create({ url: chrome.extension.getURL('bg/square.html') });
-}
-
-export async function MyBangumiFpop() {
-	chrome.tabs.create({ url: chrome.extension.getURL('bg/bangumi.html') });
-}
-
 export async function StopWatchLaterFpopup() {
 	mdui.snackbar({
 		message: `已撤销本次 稍后再看 排程。`,
@@ -131,85 +123,6 @@ export async function viewHistory() {
 			}
 			$("#ViewHistory").append(raw_data);
 			$("#ViewHistoryAction").hide();
-		})
-}
-
-/**
- * 稿件信息查询
- */
-export async function fetchDougaInfo() {
-	let acid = $("#dougaInfoAcid").val();
-	let regAcid = new RegExp("ac(.*)");
-	if (acid == '') { return }
-	let x = regAcid.exec(acid);
-	x == null ? acid = acid : acid = x[1]
-	fetch("https://mini.pocketword.cn/api/acfun/info?dougaId=" + acid).then((res) => {
-		if (res.status == 503) {
-			chrome.runtime.sendMessage({ action: 'notice', params: { title: "AcFun助手", msg: "请不要过于频繁地请求。" } }, function (response) { });
-		}
-		return res.text()
-	})
-		.then((res) => {
-			let x = JSON.parse(res);
-			if (x.result != 0) {
-				chrome.runtime.sendMessage({ action: 'notice', params: { title: "AcFun助手", msg: "这可能不是一个视频稿件的AcID。" } }, function (response) { });
-				return
-			}
-			let raw_data = `
-    <div class="mdui-table-fluid">
-        <table class="mdui-table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Data</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>标题</td>
-                <td><a href="${x.shareUrl}" target="blank">${x.title}</a></td>
-            </tr>
-            <tr>
-                <td>播放</td>
-                <td>${x.viewCount}</td>
-            </tr>
-            <tr>
-                <td>香蕉</td>
-                <td>${x.bananaCount}</td>
-            </tr>
-            <tr>
-                <td>发布</td>
-                <td>于 ${getTimeSinceNow(x.createTimeMillis, true)} 过审；于 ${getTimeSinceNow(x.currentVideoInfo.uploadTime, true)} 上传</td>
-            </tr>
-            <tr>
-                <td>弹幕</td>
-                <td>${x.danmakuCount}</td>
-            </tr>
-            <tr>
-                <td>收藏</td>
-                <td>${x.stowCount}</td>
-            </tr>
-            <tr>
-                <td>简介</td>
-                <td>${x.description}</td>
-            </tr>
-            <tr>
-                <td>点赞</td>
-                <td>${x.likeCount}</td>
-            </tr>
-            <tr>
-                <td>分享</td>
-                <td>${x.shareCount}</td>
-            </tr>
-            <tr>
-                <td>其他属性</td>
-                <td>持续时长：${Math.floor(x.currentVideoInfo.durationMillis / 1000)}秒 - 原创：${x.originalDeclare ? 'Y' : 'N'} - 可见性：${x.currentVideoInfo.visibleType == 1 ? 'Y' : 'N'} - 学院奖励：${x.isRewardSupportted ? 'Y' : 'N'} - 文件名：${x.currentVideoInfo.fileName} - 投稿类型：<a href="https://www.acfun.cn/v/list${x.channel.id}/index.htm" target="blank">${x.channel.name}</a></td>
-            </tr>
-            </tbody>
-        </table>
-        </div>
-    `;
-			$("#dougaInfoPrint").append(raw_data);
 		})
 }
 

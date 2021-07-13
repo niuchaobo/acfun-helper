@@ -43,9 +43,7 @@ class MsgNotifs {
     createLiveNotif(liveUserId, userName) {
         let date = new Date();
         let notId = liveUserId + "live" + (date.getMonth() + 1) + date.getDate() + date.getHours() + date.getMinutes();
-        console.log(this.browserType)
         if (this.browserType == "Chrome") {
-            console.log("chrome")
             chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
@@ -54,7 +52,6 @@ class MsgNotifs {
                 message: `${userName}  正在直播了！`
             });
         } else {
-            console.log("fire")
             chrome.notifications.create(notId, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
@@ -105,71 +102,65 @@ class MsgNotifs {
      */
     liveOnlineNotif() {
         console.log('    Start LiveUpNotificationFetching Routine.')
-        window.setInterval(() => {
-            chrome.storage.local.get(['liveFloowNotif'], (Ifswitch) => {
-                if (Ifswitch.liveFloowNotif) {
-                    // 获取自定义直播用户关注字典
-                    chrome.storage.local.get(['liveFloowings'], (items) => {
-                        //获取上次直播状态字典
-                        chrome.storage.local.get(['broadcastingUIDlist'], (broadcastingUIDlist) => {
-                            // console.log(broadcastingUIDlist);
-                            // 构造本次直播状态信息字典
-                            let y = {}
-                            // 判空直播状态字典，空则使自定义主播用户填充
-                            if (JSON.stringify(broadcastingUIDlist) == '{}') {
-                                chrome.storage.local.get(['liveFloowings'], function (a) { for (let j in items.liveFloowings) { y[j] = false } });
-                                chrome.storage.local.set({ 'broadcastingUIDlist': y });
-                                console.log('BroadcastingUIDlist Is Blank. Filling...')
-                                return;
-                            }
-                            // 遍历自定义直播用户关注
-                            for (let i in items.liveFloowings) {
-                                //i就是UID
-                                let ApiUrl = 'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='
-                                fetch(ApiUrl + i).then((res) => { return res.text() })
-                                    .then((res) => {
-                                        //判断直播状态
-                                        let x = JSON.parse(res);
-                                        if (x.profile.liveId != undefined) {
-                                            var state = true;
-                                        } else {
-                                            var state = false;
-                                        }
-                                        //将状态写入本次直播状态信息字典
-                                        y[i] = state;
-                                        //如果上次直播状态就是现在的直播状态就不提示，否则
-                                        if (state == broadcastingUIDlist.broadcastingUIDlist[i]) {
-                                            // console.log('same!');
-                                        } else {
-                                            let lastState = broadcastingUIDlist.broadcastingUIDlist[i]
-                                            //假如上次直播状态为 否,并且上次直播状态与本次直播状态不一致（意思是现在为 是）
-                                            if (lastState == false) {
-                                                this.createLiveNotif(i, x.profile.name);
-                                                chrome.storage.local.get(['liveFollowOpenNow'], function (a) {
-                                                    if (a.liveFollowOpenNow) {
-                                                        chrome.tabs.create({ url: `https://live.acfun.cn/live/${i}` });
-                                                    }
-                                                });
-                                            } else {
-                                                chrome.storage.local.get(['liveCloseNotif'], function (a) {
-                                                    a.liveCloseNotif && chrome.notifications.create(null, {
-                                                        type: 'basic',
-                                                        iconUrl: 'images/notice.png',
-                                                        title: 'AcFun助手',
-                                                        message: `${x.profile.name}  下播了！`
-                                                    });
-                                                })
-                                            }
-                                        }
-                                        // 状态写入存储
-                                        chrome.storage.local.set({ 'broadcastingUIDlist': y });
-                                        // chrome.storage.local.get(['broadcastingUIDlist'],function(e){console.log(e)});
-                                    });
-                            }
-                        });
-                    });
+        window.setInterval(async () => {
+            let Ifswitch = await getStorage("liveFloowNotif");
+            if (Ifswitch.liveFloowNotif) {
+                //获取自定义直播用户关注字典
+                let items = await getStorage("liveFloowings");
+                //获取上次直播状态字典
+                let broadcastingUIDlist = await getStorage("broadcastingUIDlist");
+                // console.log(broadcastingUIDlist);
+                // 构造本次直播状态信息字典
+                let liveStateWorkDic = {}
+                // 判空直播状态字典，空则使自定义主播用户填充
+                if (JSON.stringify(broadcastingUIDlist) == '{}') {
+                    chrome.storage.local.get(['liveFloowings'], function () { for (let j in items.liveFloowings) { liveStateWorkDic[j] = false } });
+                    chrome.storage.local.set({ 'broadcastingUIDlist': liveStateWorkDic });
+                    console.log('BroadcastingUIDlist Is Blank. Filling...')
+                    return;
                 }
-            });
+                // 遍历自定义直播用户关注
+                for (let i in items.liveFloowings) {
+                    //i就是UID
+                    let ApiUrl = 'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='
+                    fetch(ApiUrl + i).then((res) => { return res.text() })
+                        .then(async (res) => {
+                            //判断直播状态
+                            let x = JSON.parse(res);
+                            if (x.profile.liveId != undefined) {
+                                var state = true;
+                            } else {
+                                var state = false;
+                            }
+                            //将状态写入本次直播状态信息字典
+                            liveStateWorkDic[i] = state;
+                            //如果上次直播状态就是现在的直播状态就不提示
+                            if (state == broadcastingUIDlist.broadcastingUIDlist[i]) {
+                                // console.log('same!');
+                            } else {
+                                let lastState = broadcastingUIDlist.broadcastingUIDlist[i]
+                                //假如上次直播状态为 否,并且上次直播状态与本次直播状态不一致（意思是现在为 是）
+                                if (lastState == false) {
+                                    this.createLiveNotif(i, x.profile.name);
+                                    let OpenNow = await getStorage("liveFollowOpenNow");
+                                    if (OpenNow.liveFollowOpenNow) {
+                                        chrome.tabs.create({ url: `https://live.acfun.cn/live/${i}` });
+                                    }
+                                } else {
+                                    let CloseNotif = await getStorage("liveCloseNotif");
+                                    CloseNotif.liveCloseNotif && chrome.notifications.create(null, {
+                                        type: 'basic',
+                                        iconUrl: 'images/notice.png',
+                                        title: 'AcFun助手',
+                                        message: `${x.profile.name}  下播了！`
+                                    })
+                                }
+                            }
+                            // 状态写入存储
+                            chrome.storage.local.set({ 'broadcastingUIDlist': liveStateWorkDic });
+                        });
+                }
+            }
         }, 60000);
     }
 
@@ -181,10 +172,10 @@ class MsgNotifs {
             // 用户没有登录就不去获取信息了
             if (Uid.LocalUserId == "0") { return }
             let broadcastingUIDlistFollowing = await getResult('broadcastingUIDlistFollowing');
-            let y = {}
+            let fliveStateWorkDic = {}
             // 假如信息为空字典就填充一下
             if (JSON.stringify(broadcastingUIDlistFollowing) == '{}') {
-                chrome.storage.local.set({ 'broadcastingUIDlistFollowing': y });
+                chrome.storage.local.set({ 'broadcastingUIDlistFollowing': fliveStateWorkDic });
                 console.log('[Log]Backend-Messager>followLiveNotifEx: BroadcastingUIDlistFollowing Is Blank. Filling...')
                 return;
             }
@@ -192,44 +183,44 @@ class MsgNotifs {
             let result = JSON.parse(rawResult);
             //处理直播状态，将直播状态信息写入 此次直播状态字典
             for (let i = 0; i < result.liveList.length; i++) {
-                y[result.liveList[i].authorId] = true;
+                fliveStateWorkDic[result.liveList[i].authorId] = true;
             }
             // 获取关注的UP上次的正在直播UID字典
-            let a = await getStorage('broadcastingUIDlistFollowing');
+            let lastLiveStateDic = await getStorage('broadcastingUIDlistFollowing');
             // 获取关注的UP上次的正在直播UID列表
-            let b = Object.keys(a.broadcastingUIDlistFollowing);
+            let lastStateUIDList = Object.keys(lastLiveStateDic.broadcastingUIDlistFollowing);
             // 获取本次从API获取的正在直播的Up的UID列表
-            let c = Object.keys(y);
+            let liveUIDList = Object.keys(fliveStateWorkDic);
             let j, k
             // 假如上次直播的Up现在不在本次获取的直播列表中则状态置false
-            for (j in b) {
-                if (c.indexOf(b[j]) != -1) {
+            for (j in lastStateUIDList) {
+                if (liveUIDList.indexOf(lastStateUIDList[j]) != -1) {
                 } else {
-                    y[b[j]] = false;
+                    fliveStateWorkDic[lastStateUIDList[j]] = false;
                 }
             }
-            // 假如上次正在直播UID列表(b)长小于此次获取的正在直播列表(c)长，则不在上次正在直播UID列表中的用户一定是在直播的
-            if (b.length < c.length) {
-                for (let l = 0; l < c.length; l++) {
-                    if (b.indexOf(c[l]) == -1) {
-                        let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${c[l]}`)
+            // 假如上次正在直播UID列表(b)长小于此次获取的正在直播列表(liveUIDList)长，则不在上次正在直播UID列表中的用户一定是在直播的
+            if (lastStateUIDList.length < liveUIDList.length) {
+                for (let l = 0; l < liveUIDList.length; l++) {
+                    if (lastStateUIDList.indexOf(liveUIDList[l]) == -1) {
+                        let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${liveUIDList[l]}`)
                         // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
-                        this.createLiveNotif(c[l], JSON.parse(uInfo).profile.name);
+                        this.createLiveNotif(liveUIDList[l], JSON.parse(uInfo).profile.name);
                     }
                 }
             }
-            // 上次直播列表中的，假如某个上次正在直播UID列表中的用户在正在直播信息字典中的状态(a.broadcastingUIDlistFollowing[b[k]]) 不等于 此次获取的正在直播信息字典中的状态(y[b[k]]) 而且他的状态等于 true 则为正在直播
-            for (k in b) {
+            // 上次直播列表中的，假如某个上次正在直播UID列表中的用户在正在直播信息字典中的状态(lastLiveStateDic.broadcastingUIDlistFollowing[lastStateUIDList[k]]) 不等于 此次获取的正在直播信息字典中的状态(fliveStateWorkDic[lastStateUIDList[k]]) 而且他的状态等于 true 则为正在直播
+            for (k in lastStateUIDList) {
                 // console.log(b.indexOf(b[k])==-1)
-                if (a.broadcastingUIDlistFollowing[b[k]] != y[b[k]]) {
-                    if (y[b[k]] == true) {
-                        let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${b[k]}`)
+                if (lastLiveStateDic.broadcastingUIDlistFollowing[lastStateUIDList[k]] != fliveStateWorkDic[lastStateUIDList[k]]) {
+                    if (fliveStateWorkDic[lastStateUIDList[k]] == true) {
+                        let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${lastStateUIDList[k]}`)
                         // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
-                        this.createLiveNotif(b[k], JSON.parse(uInfo).profile.name);
+                        this.createLiveNotif(lastStateUIDList[k], JSON.parse(uInfo).profile.name);
                     } else {
-                        chrome.storage.local.get(['liveCloseNotif'], async function (a) {
-                            let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${b[k]}`)
-                            a.liveCloseNotif && chrome.notifications.create(b[k], {
+                        chrome.storage.local.get(['liveCloseNotif'], async function (CloseSw) {
+                            let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${lastStateUIDList[k]}`)
+                            CloseSw.liveCloseNotif && chrome.notifications.create(lastStateUIDList[k], {
                                 type: 'basic',
                                 iconUrl: 'images/notice.png',
                                 title: 'AcFun助手',
@@ -240,7 +231,7 @@ class MsgNotifs {
                 }
             }
             // 将此次直播状态信息字典写入存储
-            chrome.storage.local.set({ 'broadcastingUIDlistFollowing': y });
+            chrome.storage.local.set({ 'broadcastingUIDlistFollowing': fliveStateWorkDic });
         })
     }
 
@@ -264,9 +255,6 @@ class MsgNotifs {
      */
     async timer4Unread() {
         console.log("    Start timer4Unread Routine");
-        var startAgent = window.setInterval(async function () {
-            clearInterval(startAgent);
-        }, 1000)
         var _thread = window.setInterval(async () => {
             let sw = await getStorage("timer4Unread_daemonsw")
             if (sw.timer4Unread_daemonsw == false) { chrome.browserAction.setTitle({ title: `AcFun助手，Ac在爱一直在` }); chrome.browserAction.setBadgeText({ text: "" }); return }
