@@ -1118,7 +1118,10 @@ class VideoSetting {
         }
         break;
       case false:
-        document.querySelector("#hideDanmakuOperatorBarStyle").disabled = true;
+        const mainProcElem = document.querySelector("#hideDanmakuOperatorBarStyle");
+        if (mainProcElem) {
+          mainProcElem.disabled = true;
+        }
         document.querySelector(".danmakuOpr").dataset.bindAttr = true;
         break;
     }
