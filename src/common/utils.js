@@ -40,7 +40,6 @@ const defaults = {
   player_mode: 'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
   liveFloowNotif: false,
   liveFollowOpenNow: false,
-  liveCloseNotif: false,
   videoQualityStrategy: '0',
   livePlayerEnhc: false,
   autoJumpLastWatchSw: false,

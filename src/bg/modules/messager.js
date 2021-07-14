@@ -146,14 +146,6 @@ class MsgNotifs {
                                     if (OpenNow.liveFollowOpenNow) {
                                         chrome.tabs.create({ url: `https://live.acfun.cn/live/${i}` });
                                     }
-                                } else {
-                                    let CloseNotif = await getStorage("liveCloseNotif");
-                                    CloseNotif.liveCloseNotif && chrome.notifications.create(null, {
-                                        type: 'basic',
-                                        iconUrl: 'images/notice.png',
-                                        title: 'AcFun助手',
-                                        message: `${x.profile.name}  下播了！`
-                                    })
                                 }
                             }
                             // 状态写入存储
@@ -217,16 +209,6 @@ class MsgNotifs {
                         let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${lastStateUIDList[k]}`)
                         // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
                         this.createLiveNotif(lastStateUIDList[k], JSON.parse(uInfo).profile.name);
-                    } else {
-                        chrome.storage.local.get(['liveCloseNotif'], async function (CloseSw) {
-                            let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${lastStateUIDList[k]}`)
-                            CloseSw.liveCloseNotif && chrome.notifications.create(lastStateUIDList[k], {
-                                type: 'basic',
-                                iconUrl: 'images/notice.png',
-                                title: 'AcFun助手',
-                                message: `${JSON.parse(uInfo).profile.name}  下播了！`
-                            });
-                        })
                     }
                 }
             }
