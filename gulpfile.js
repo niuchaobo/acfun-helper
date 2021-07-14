@@ -1,6 +1,7 @@
 const { src, dest } = require('gulp')
 const gulpEsbuild = require('gulp-esbuild')
 const gulpHtmlmin = require('gulp-htmlmin')
+var strip = require('gulp-strip-comments');
 const gulp = require("gulp");
 const del = require('del');
 
@@ -11,7 +12,7 @@ var options = {
     removeEmptyAttributes: true,
     removeScriptTypeAttributes: true,
     removeStyleLinkTypeAttributes: true,
-    minifyJS: true,
+    minifyJS: false,
     minifyCSS: true
 };
 
@@ -109,6 +110,53 @@ function fgMod() {
         .pipe(dest('./final/fg/modules/'))
 }
 
+function backendRComment() {
+    return src('./src/bg/*.js')
+        .pipe(strip())
+        .pipe(dest('./final/bg/'))
+}
+
+function backendHtmlRComment() {
+    return src('./src/bg/*.html')
+        .pipe(strip())
+        .pipe(gulp.dest('./final/bg/'));
+}
+
+function backModsRComment() {
+    return src('./src/bg/modules/*.js')
+        .pipe(strip()).pipe(dest('./final/bg/modules/'))
+}
+
+function backPopupRComment() {
+    return src('./src/bg/popup/*.js')
+        .pipe(strip()).pipe(dest('./final/bg/popup/'))
+}
+
+function bangumiAppRComment() {
+    return src('./src/bg/bangumiApp/*.js')
+        .pipe(strip()).pipe(dest('./final/bg/bangumiApp/'))
+}
+
+function pageHandlerRComment() {
+    return src('./src/bg/pageHandler/*.js')
+        .pipe(strip()).pipe(dest('./final/bg/pageHandler/'))
+}
+
+function commonRComment() {
+    return src('./src/common/*.js')
+        .pipe(strip()).pipe(dest('./final/common/'))
+}
+
+function fgRComment() {
+    return src('./src/fg/*.js')
+        .pipe(strip()).pipe(dest('./final/fg/'))
+}
+
+function fgModRComment() {
+    return src('./src/fg/modules/*.js')
+        .pipe(strip()).pipe(dest('./final/fg/modules/'))
+}
+
 function zipFiles() {
     const zip = require('gulp-zip');
     return gulp.src('final/**')
@@ -127,6 +175,21 @@ gulp.task("default", (e) => {
     fgMod()
     common()
     backendHtml()
+    e()
+    console.log("Done.")
+})
+
+gulp.task("clean", (e) => {
+    console.log("Cleaning...")
+    backendRComment()
+    bangumiAppRComment()
+    backModsRComment()
+    backPopupRComment()
+    pageHandlerRComment()
+    fgRComment()
+    fgModRComment()
+    commonRComment()
+    backendHtmlRComment()
     e()
     console.log("Done.")
 })
@@ -154,7 +217,7 @@ gulp.task('betaSlim', function (e) {
     e();
 });
 
-gulp.task('zip',function(e){
+gulp.task('zip', function (e) {
     console.log("Compress files to a zip file.");
     zipFiles();
     e();
