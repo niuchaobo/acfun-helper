@@ -1,9 +1,10 @@
 ---
-name: '功能需求'
+name: 功能需求
 about: 告诉我们你所想要助手添加的功能
 title: "[功能]"
-label: enhancement
+labels: ''
 assignees: ''
+
 ---
 
 - 其他的就当开玩笑(`ε´ )，但是摘要就请务必描述一下
