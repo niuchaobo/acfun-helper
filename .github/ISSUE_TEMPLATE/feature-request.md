@@ -2,7 +2,7 @@
 name: 功能需求
 about: 告诉我们你所想要助手添加的功能
 title: "[功能]"
-labels: ''
+labels: enhancement
 assignees: ''
 
 ---
