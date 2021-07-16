@@ -17,7 +17,6 @@ class ODHFront {
 		this.danmusearch = new Search();//弹幕列表搜索
 		this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
 		this.reader = new Reader(); //文章区阅读模式
-		this.musicPlayerFront = new musicPlayerFront();
 
 		chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
 		window.addEventListener("message", (e) => this.onFrameMessage(e)); //接收来自iframe的消息
@@ -125,8 +124,8 @@ class ODHFront {
 					//自动点赞
 					this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 					//弹幕操作栏状态
-					this.options.hideDanmakuOperater.UI && this.videoSetting.hideDanmakuOperaterUI();
-					this.videoSetting.hideDanmakuOperater(this.options.hideDanmakuOperater.defaultMode);
+					this.options.hideDanmakuOperator.UI && this.videoSetting.hideDanmakuOperatorUI();
+					this.videoSetting.hideDanmakuOperator(this.options.hideDanmakuOperator.defaultMode);
 					clearInterval(playerChecker);
 				}
 			}, 1000);
@@ -178,8 +177,6 @@ class ODHFront {
 			//播放器和弹幕功能
 			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
 			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
-			//音乐播放器监听
-			this.musicPlayerFront.main();
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
 			this.options.playerRecommendHide && this.pageBeautify.simplifiyPlayerRecm();
@@ -208,7 +205,6 @@ class ODHFront {
 		}
 		//个人中心首页
 		if (REG.userHome.test(href)) {
-			this.options.userHomeMoment && this.pageBeautify.userMoment(href);
 			this.options.userCenterBeautify && this.pageBeautify.userCenterBeautify();
 			this.options.widenUCVideoList && this.pageBeautify.widenUCVideoList();
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false, true);
@@ -221,11 +217,6 @@ class ODHFront {
 		//let is_up = this.adjuatUp();
 		let href = this.href;
 		this.authInfo.cookInfo();
-		//音乐播放器
-		if (REG.player.test(href)) {
-			this.musicPlayerFront.hookListener();
-			return;
-		}
 		//开启屏蔽功能
 		this.options.filter && this.block.block();
 		var pageInfo = null;

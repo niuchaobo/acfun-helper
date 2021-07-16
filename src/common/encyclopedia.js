@@ -26,18 +26,5 @@ const standardFrameRate = {
 }
 
 const acfunApis = {
-    /**
-     * 用户信息 接UID
-     */
-    userInfo: `https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=`,
-    /**
-     * 视频稿件 接AcVid
-     */
-    videoInfo: `https://mini.pocketword.cn/api/acfun/info?dougaId=`,
-    /**
-     * 用户投稿列表 接Uid
-     */
-    videoContributeList: `https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&resourceType=2&sortType=3&authorId=`,
-    acDaily: `https://api-new.app.acfun.cn/rest/app/acDailyMagazine`,
     liveInfo: `https://live.acfun.cn/api/live/info?authorId=`,
 }

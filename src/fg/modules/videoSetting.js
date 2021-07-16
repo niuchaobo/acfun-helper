@@ -32,8 +32,8 @@ class VideoSetting {
     this.abPlaySecond = undefined;
     this.abPlayFlag = 0;
     this.timelineDotsResultCache = "";
-    this.hideDanmakuOperaterStyleAdded = false;
-    this.hideDanmakuOperaterdanmakuOprFlag = false;
+    this.hideDanmakuOperatorStyleAdded = false;
+    this.hideDanmakuOperatordanmakuOprFlag = false;
   }
 
   onLoad() {
@@ -1104,39 +1104,42 @@ class VideoSetting {
    * 播放器弹幕操作菜单显-显示状态
    * @param {bool} sw 
    */
-  hideDanmakuOperater(sw) {
-    this.hideDanmakuOperaterdanmakuOprFlag = sw;
+  hideDanmakuOperator(sw) {
+    this.hideDanmakuOperatordanmakuOprFlag = sw;
     switch (sw) {
       case true:
-        if (this.hideDanmakuOperaterStyleAdded) {
-          document.querySelector("#hideDanmakuOperaterBarStyle").disabled = false;
+        if (this.hideDanmakuOperatorStyleAdded) {
+          document.querySelector("#hideDanmakuOperatorBarStyle").disabled = false;
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
         } else {
-          createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "hideDanmakuOperaterBarStyle");
+          createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "hideDanmakuOperatorBarStyle");
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
-          this.hideDanmakuOperaterStyleAdded = true;
+          this.hideDanmakuOperatorStyleAdded = true;
         }
         break;
       case false:
-        document.querySelector("#hideDanmakuOperaterBarStyle").disabled = true;
+        const mainProcElem = document.querySelector("#hideDanmakuOperatorBarStyle");
+        if (mainProcElem) {
+          mainProcElem.disabled = true;
+        }
         document.querySelector(".danmakuOpr").dataset.bindAttr = true;
         break;
     }
   }
 
-  hideDanmakuOperaterUI() {
+  hideDanmakuOperatorUI() {
     let htmlUi = `
     <div>
       <label>弹幕操作</label>
-      <div class="control-checkbox danmakuOpr" data-bind-key="danmakuOpr" data-bind-attr="${!this.hideDanmakuOperaterdanmakuOprFlag}"></div>
+      <div class="control-checkbox danmakuOpr" data-bind-key="danmakuOpr" data-bind-attr="${!this.hideDanmakuOperatordanmakuOprFlag}"></div>
     </div>
     `;
     $(".setting-panel>.setting-panel-content").append(htmlUi);
     $(".setting-panel-content").click((e) => {
       if (e.target.dataset.bindKey == "danmakuOpr" && e.target.dataset.bindAttr == "false") {
-        this.hideDanmakuOperater(false);
+        this.hideDanmakuOperator(false);
       } else if (e.target.dataset.bindKey == "danmakuOpr" && e.target.dataset.bindAttr == "true") {
-        this.hideDanmakuOperater(true);
+        this.hideDanmakuOperator(true);
       }
     })
   }

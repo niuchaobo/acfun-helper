@@ -6,7 +6,6 @@ class UpgradeAgent {
     constructor() {
         this.ModuleName = 'UpgradeAgent';
         this.checkConfigDay = [3, 7]
-        this.bangumiPlan = new BangumiPlan();
         this.option = '';
         this.scheduler = myBrowser() == "Chrome" ? chrome.alarms : browser.alarms;
         this.notificationListPurgeCount = 0;
@@ -80,13 +79,10 @@ class UpgradeAgent {
 
     async scheduleTasks() {
         //配置
-        let BangumiNotifsw = await getStorage("BangumiNotif").then(function (e) { return e.BangumiNotif });
-        let BangumiPlansw = await getStorage("BangumiPlan").then(function (e) { return e.BangumiPlan });
+        // let BangumiPlansw = await getStorage("BangumiPlan").then(function (e) { return e.BangumiPlan });
 
         //调用
         this.checkUpdate();
-        BangumiPlansw && this.bangumiPlan.fetchBangumiInfo();
-        BangumiNotifsw && this.bangumiPlan.notifyBangumiUpdate();
         this.purgeNotificationList();
     }
 }

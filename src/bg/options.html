@@ -84,15 +84,6 @@
                             </div>
                             <div class="mdui-collapse-item-body">
                                 <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
-                                    style="cursor: default;"><a href="./upupup.html" target="_blank">最近活动情况</a></p>
-                                </button>
-                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple devFeature"
-                                    style="cursor: default;"><a href="./square.html" target="_blank">广场</a></p>
-                                </button>
-                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
-                                    style="cursor: default;"><a href="./bangumi.html" target="_blank">番剧</a></p>
-                                </button>
-                                <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
                                     style="cursor: default;"><a
                                         href="https://github.com/niuchaobo/acfun-helper/commits/master"
                                         target="_blank">助手更新日志</a></p>
@@ -423,12 +414,6 @@
                                             </div>
                                             <div class="mdui-col-xs-3 mdui-col-sm-2">
                                                 <label class="mdui-switch">
-                                                    <input id="liveCloseNotif" type="checkbox" />
-                                                    <i class="mdui-switch-icon"></i>--下播提醒--
-                                                </label>
-                                            </div>
-                                            <div class="mdui-col-xs-3 mdui-col-sm-2">
-                                                <label class="mdui-switch">
                                                     <input id="followLiveNotif" type="checkbox" />
                                                     <i class="mdui-switch-icon"></i>--关注Up开播提醒--
                                                 </label>
@@ -639,6 +624,9 @@
                         <div class="mdui-chip">
                             <span class="mdui-chip-title">这些功能，均需要开启 助手设置-高级设置-插件核心配置-推送消息轮询 开关。</span>
                           </div>
+                        <div class="mdui-chip">
+                            <span class="mdui-chip-title">此功能会自动去收取未读信息箱中的内容，会导致通知计数的改变。</span>
+                          </div>
 
                     </div>
                 </div>
@@ -661,14 +649,6 @@
                                     class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>加载列表</a></button>
                             </div>
                             <div class="mdui-col-xs-3 mdui-col-sm-2">
-                                <button id="syncwatchLaterList"
-                                    class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>与App同步</a></button>
-                            </div>
-                            <div class="mdui-col-xs-3 mdui-col-sm-2">
-                                <button id="removeDiffWatchLaterList"
-                                    class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a>删除与App差异</a></button>
-                            </div>
-                            <div class="mdui-col-xs-3 mdui-col-sm-2">
                                 <label class="mdui-switch">
                                     <input id="watchLater" type="checkbox" />
                                     <i class="mdui-switch-icon"></i>--稍后再看--
@@ -681,35 +661,6 @@
                         </div>
                         <ul id="watchLaterList" class="mdui-list">
                         </ul>
-                        <div class="mdui-panel-item-actions">
-                            <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                            <button class="mdui-btn mdui-ripple">保存</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                        <div class="mdui-panel-item-title">番组计划</div>
-                        <div class="mdui-panel-item-summary">番剧的数据和通知</div>
-                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-                        <h3>番组计划</h3>
-                        <div class="mdui-row">
-                            <div class="mdui-col-xs-3 mdui-col-sm-3">
-                                <label class="mdui-switch">
-                                    <input id="BangumiPlan" type="checkbox" />
-                                    <i class="mdui-switch-icon"></i>--番剧信息获取--
-                                </label>
-                            </div>
-                            <div class="mdui-col-xs-3 mdui-col-sm-3">
-                                <label class="mdui-switch">
-                                    <input id="BangumiNotif" type="checkbox" />
-                                    <i class="mdui-switch-icon"></i>--番剧更新通知--
-                                </label>
-                            </div>
-                        </div>
                         <div class="mdui-panel-item-actions">
                             <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
                             <button class="mdui-btn mdui-ripple">保存</button>
@@ -842,7 +793,7 @@
                             </div>
                         </div>
 
-                        <div class="mdui-container-fluid">
+                        <div class="mdui-container-fluid devFeature">
                             <div class="mdui-row">
                                 <div class="mdui-row">
                                     <div class="mdui-col-xs-9">
@@ -1629,7 +1580,7 @@
                                 <div class="mdui-col-xs-8 mdui-col-sm-6">自动隐藏快捷弹幕的快捷操作菜单</div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                                            <input id="hideDanmakuOperater" type="checkbox" />
+                                            <input id="hideDanmakuOperator" type="checkbox" />
                                             <i class="mdui-switch-icon"></i>
                                         </label>
                                     </div>
@@ -1645,7 +1596,7 @@
                                 <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器设置菜单中增加切换开关</div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                                            <input id="hideDanmakuOperaterUI" type="checkbox" />
+                                            <input id="hideDanmakuOperatorUI" type="checkbox" />
                                             <i class="mdui-switch-icon"></i>
                                         </label>
                                     </div>
@@ -1754,54 +1705,6 @@
 
                 <div class="mdui-panel-item mdui-panel-item-open">
                     <div class="mdui-panel-item-header">
-                        <div class="mdui-panel-item-title">音乐播放器</div>
-                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body">
-
-                        <div class="mdui-container-fluid">
-                            <div class="mdui-row">
-
-                                <div class="mdui-col-xs-12">
-                                    <h3>播放器操作</h3>
-                                    <div class="mdui-row">
-                                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                                            <button
-                                                class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"><a
-                                                    href="/bg/musicPlayerMang.html" target="_blank">播放列表管理</a></button>
-                                        </div>
-
-                                        <div class="mdui-col-xs-4 mdui-col-sm-6">
-                                            <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
-                                                    <input id="MusicPlayList_onLoadAutoPlay" type="checkbox" />
-                                                    <i class="mdui-switch-icon"></i>
-                                                </label>
-                                                -稿件加载完之后强制自动播放-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mdui-col-xs-4 mdui-col-sm-6">播放器模式：
-                                    <select id="MusicPlayList_playerMode" class="mdui-select"
-                                        mdui-select="{position: 'top'}">
-                                        <option value="0">0 - 完全模式（耗内存）</option>
-                                        <option value="1">1 - 简单模式（仅适用1P视频）</option>
-                                    </select>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="mdui-panel-item-actions">
-                            <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
-                            <button class="mdui-btn mdui-ripple">保存</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
                         <div class="mdui-panel-item-title">更新预留</div>
                         <div class="mdui-panel-item-summary">A</div>
                         <div class="mdui-panel-item-summary">B</div>
@@ -1852,7 +1755,7 @@
                 </div>
 
 
-                <div class="mdui-panel-item mdui-panel-item-open">
+                <div class="mdui-panel-item mdui-panel-item-open devFeature">
                     <div class="mdui-panel-item-header">
                         <div class="mdui-panel-item-title">插件&主站 配置 网络同步</div>
                         <div class="mdui-panel-item-summary">将配置同步到服务器端</div>

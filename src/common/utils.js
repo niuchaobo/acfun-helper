@@ -40,7 +40,6 @@ const defaults = {
   player_mode: 'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
   liveFloowNotif: false,
   liveFollowOpenNow: false,
-  liveCloseNotif: false,
   videoQualityStrategy: '0',
   livePlayerEnhc: false,
   autoJumpLastWatchSw: false,
@@ -76,10 +75,8 @@ const defaults = {
   LiveUserFocus: false,
   LiveWatchTimeRec_popup: false,
   multiPartListSpread: true,
-  BangumiNotif: true,
-  BangumiPlan: true,
   audioGain: false,
-  uddPopUp: true,
+  uddPopUp: false,
   uddPopUptype: 0,//紧凑样式评论区稿件信息弹框,0为完全，1为紧凑模式
   articleReadMode: false,
   articleBanana: false,
@@ -97,7 +94,7 @@ const defaults = {
   Dev_thinScrollbar: false,
   liveIndexRankNum: true,
   timelineDots: false,
-  hideDanmakuOperater: { defaultMode: false, UI: true },
+  hideDanmakuOperator: { defaultMode: false, UI: true },
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, }
 };

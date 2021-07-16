@@ -1102,25 +1102,6 @@ function indexSiteConfigure() {
     });
 }
 
-//========================下播提醒==========================//
-chrome.storage.local.get(['liveCloseNotif'], function (items) {
-    var liveCloseNotif = items.liveCloseNotif;
-    if (liveCloseNotif) {
-        document.getElementById('liveCloseNotif').checked = true;
-    } else {
-        document.getElementById('liveCloseNotif').checked = false;
-    }
-    $('#liveCloseNotif').on('click', function () {
-        if (!document.getElementById('liveCloseNotif').checked) {
-            document.getElementById('liveCloseNotif').checked = false;
-            chrome.storage.local.set({ 'liveCloseNotif': false });
-        } else {
-            document.getElementById('liveCloseNotif').checked = true;
-            chrome.storage.local.set({ 'liveCloseNotif': true });
-        }
-    });
-});
-
 function contentConfigure() {
     //========================稍后再看==========================//
     chrome.storage.local.get(['watchLater'], function (items) {
@@ -1246,44 +1227,6 @@ function contentConfigure() {
                 }
             }
         })
-    });
-
-    //====================番剧计划===============
-    chrome.storage.local.get(['BangumiPlan'], function (items) {
-        var BangumiPlan = items.BangumiPlan;
-        if (BangumiPlan) {
-            document.getElementById('BangumiPlan').checked = true;
-        } else {
-            document.getElementById('BangumiPlan').checked = false;
-        }
-        $('#BangumiPlan').on('click', function () {
-            if (!document.getElementById('BangumiPlan').checked) {
-                document.getElementById('BangumiPlan').checked = false;
-                chrome.storage.local.set({ 'BangumiPlan': false });
-            } else {
-                document.getElementById('BangumiPlan').checked = true;
-                chrome.storage.local.set({ 'BangumiPlan': true });
-            }
-        });
-    });
-
-    //====================番剧更新提醒===============
-    chrome.storage.local.get(['BangumiNotif'], function (items) {
-        var BangumiNotif = items.BangumiNotif;
-        if (BangumiNotif) {
-            document.getElementById('BangumiNotif').checked = true;
-        } else {
-            document.getElementById('BangumiNotif').checked = false;
-        }
-        $('#BangumiNotif').on('click', function () {
-            if (!document.getElementById('BangumiNotif').checked) {
-                document.getElementById('BangumiNotif').checked = false;
-                chrome.storage.local.set({ 'BangumiNotif': false });
-            } else {
-                document.getElementById('BangumiNotif').checked = true;
-                chrome.storage.local.set({ 'BangumiNotif': true });
-            }
-        });
     });
 
     //===================直播屏蔽配置相关==========================//
@@ -1623,25 +1566,6 @@ function pageEnhance() {
             } else {
                 document.getElementById('articleReadMode').checked = true;
                 chrome.storage.local.set({ 'articleReadMode': true });
-            }
-        });
-    });
-
-    //=====================Up主个人页面渲染动态============================
-    chrome.storage.local.get(['userHomeMoment'], function (items) {
-        var userHomeMoment = items.userHomeMoment;
-        if (userHomeMoment) {
-            document.getElementById('userHomeMoment').checked = true;
-        } else {
-            document.getElementById('userHomeMoment').checked = false;
-        }
-        $('#userHomeMoment').on('click', function () {
-            if (!document.getElementById('userHomeMoment').checked) {
-                document.getElementById('userHomeMoment').checked = false;
-                chrome.storage.local.set({ 'userHomeMoment': false });
-            } else {
-                document.getElementById('userHomeMoment').checked = true;
-                chrome.storage.local.set({ 'userHomeMoment': true });
             }
         });
     });
@@ -2102,41 +2026,6 @@ function playerConfigure() {
         });
     });
 
-    //=====================音乐播放器-自动播放================
-    chrome.storage.local.get(['MusicPlayList'], function (items) {
-        var MusicPlayList_onLoadAutoPlaysw = items.MusicPlayList.onLoadAutoPlay;
-        if (MusicPlayList_onLoadAutoPlaysw) {
-            document.getElementById('MusicPlayList_onLoadAutoPlay').checked = true;
-        } else {
-            document.getElementById('MusicPlayList_onLoadAutoPlay').checked = false;
-        }
-        $('#MusicPlayList_onLoadAutoPlay').on('click', function () {
-            if (!document.getElementById('MusicPlayList_onLoadAutoPlay').checked) {
-                document.getElementById('MusicPlayList_onLoadAutoPlay').checked = false;
-                items.MusicPlayList.onLoadAutoPlay = false;
-            } else {
-                document.getElementById('MusicPlayList_onLoadAutoPlay').checked = true;
-                items.MusicPlayList.onLoadAutoPlay = true;
-            }
-            chrome.storage.local.set({ 'MusicPlayList': items.MusicPlayList });
-        });
-    });
-
-    //=====================音乐播放器-页面模式================
-    chrome.storage.local.get(['MusicPlayList'], function (items) {
-        var MusicPlayList_playerMode = items.MusicPlayList;
-        if (MusicPlayList_playerMode.playerMode == undefined) {
-            MusicPlayList_playerMode.playerMode = 1;
-        }
-        document.querySelector("#MusicPlayList_playerMode").parentElement.children[1].children[1].children[Number(MusicPlayList_playerMode.playerMode)].click()
-        var inst = new mdui.Select('#MusicPlayList_playerMode');
-
-        $('#MusicPlayList_playerMode').on('close.mdui.select', function () {
-            items.MusicPlayList.playerMode = Number(inst.value);
-            chrome.storage.local.set({ 'MusicPlayList': items.MusicPlayList });
-        });
-    });
-
     //=====================评论区时间选中播放器快速跳转================
     chrome.storage.local.get(['easySearchScanForPlayerTimesw'], function (items) {
         var easySearchScanForPlayerTimesw = items.easySearchScanForPlayerTimesw;
@@ -2235,36 +2124,36 @@ function playerConfigure() {
         });
     });
 
-    chrome.storage.local.get(['hideDanmakuOperater'], function (items) {
-        if (items.hideDanmakuOperater.defaultMode) {
-            document.getElementById('hideDanmakuOperater').checked = true;
+    chrome.storage.local.get(['hideDanmakuOperator'], function (items) {
+        if (items.hideDanmakuOperator.defaultMode) {
+            document.getElementById('hideDanmakuOperator').checked = true;
         } else {
-            document.getElementById('hideDanmakuOperater').checked = false;
+            document.getElementById('hideDanmakuOperator').checked = false;
         }
-        if (items.hideDanmakuOperater.UI) {
-            document.getElementById('hideDanmakuOperaterUI').checked = true;
+        if (items.hideDanmakuOperator.UI) {
+            document.getElementById('hideDanmakuOperatorUI').checked = true;
         } else {
-            document.getElementById('hideDanmakuOperaterUI').checked = false;
+            document.getElementById('hideDanmakuOperatorUI').checked = false;
         }
-        $('#hideDanmakuOperater').on('click', function () {
-            if (!document.getElementById('hideDanmakuOperater').checked) {
-                document.getElementById('hideDanmakuOperater').checked = false;
-                items.hideDanmakuOperater.defaultMode = false;
+        $('#hideDanmakuOperator').on('click', function () {
+            if (!document.getElementById('hideDanmakuOperator').checked) {
+                document.getElementById('hideDanmakuOperator').checked = false;
+                items.hideDanmakuOperator.defaultMode = false;
             } else {
-                document.getElementById('hideDanmakuOperater').checked = true;
-                items.hideDanmakuOperater.defaultMode = true;
+                document.getElementById('hideDanmakuOperator').checked = true;
+                items.hideDanmakuOperator.defaultMode = true;
             }
-            chrome.storage.local.set({ 'hideDanmakuOperater': items.hideDanmakuOperater });
+            chrome.storage.local.set({ 'hideDanmakuOperator': items.hideDanmakuOperator });
         });
-        $('#hideDanmakuOperaterUI').on('click', function () {
-            if (!document.getElementById('hideDanmakuOperaterUI').checked) {
-                document.getElementById('hideDanmakuOperaterUI').checked = false;
-                items.hideDanmakuOperater.UI = false;
+        $('#hideDanmakuOperatorUI').on('click', function () {
+            if (!document.getElementById('hideDanmakuOperatorUI').checked) {
+                document.getElementById('hideDanmakuOperatorUI').checked = false;
+                items.hideDanmakuOperator.UI = false;
             } else {
-                document.getElementById('hideDanmakuOperaterUI').checked = true;
-                items.hideDanmakuOperater.UI = true;
+                document.getElementById('hideDanmakuOperatorUI').checked = true;
+                items.hideDanmakuOperator.UI = true;
             }
-            chrome.storage.local.set({ 'hideDanmakuOperater': items.hideDanmakuOperater });
+            chrome.storage.local.set({ 'hideDanmakuOperator': items.hideDanmakuOperator });
         })
     });
 

@@ -388,59 +388,6 @@ class PageBeautify {
     );
   }
 
-  userMoment(href) {
-    let x = document.createElement("li");
-    x.dataset.index = "moment";
-    x.textContent = "动态";
-    document.getElementsByClassName("tab")[0].children[0].appendChild(x);
-    let y = RegExp("http(s)?://www.acfun.cn/u/(.*)");
-    let uid = y.exec(href);
-    this.renderMoment(uid[2]);
-  }
-
-  async renderMoment(uid) {
-    let Api = `https://mini.pocketword.cn/api/acfun/user/moment?pcursor=0&userId=${uid}&count=30`;
-    let data = await fetchResult(Api);
-    let x = JSON.parse(data);
-    let y = `<div class="tab-content" tab-index="moment"><div id="ac-space-moment" style="text-align:center"><ul>`;
-    let z = 0;
-    for (let i = 0; i < x.feedList.length; i++) {
-      if (x.feedList[i].resourceType == 10) {
-        z++;
-        y =
-          y +
-          `
-        <li>
-          <div class="moment-title" style="text-align:left;padding-left:280px;padding-right: 230px;padding-top:20px;font-size: 18px;">
-              ${x.feedList[i].moment.text}
-          </div>
-          <div class="moment-sub">
-            <a href="${x.feedList[i].shareUrl}" target="_blank" class="douga">
-              <img src="${x.feedList[i].coverUrl}" style="width:calc(50%)">
-            </a>
-          </div>
-          <div class="moment-info" style="font-size:15px;">发布于 ${getTimeSinceNow(
-            x.feedList[i].createTime,
-            true
-          )} - ${x.feedList[i].bananaCount}根香蕉 - ${x.feedList[i].commentCount
-          }个评论 - <a href="${x.feedList[i].shareUrl
-          }" target="_blank">原文</a></div>
-          <hr style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="50%"color=#987cb9 SIZE=3>
-        </li>
-        `;
-      }
-    }
-    y += `</ul>
-      </div>
-      </div>`;
-    $("#ac-space>.wp").eq(0).append(y);
-    document.getElementsByClassName(
-      "tab"
-    )[0].children[0].children[3].innerText = `动态 ${z}`;
-    //可以在动态最下面增加一个按钮，点击就增加新的30条动态信息。
-    // document.getElementsByClassName("tab-list")[0].children[3].classList[0] == "active"
-  }
-
   quickCommentSubmit(page = "index") {
     document.onkeydown = (event) => {
       var e = event || window.e;
@@ -545,15 +492,6 @@ class PageBeautify {
   pageDown4UC() {
     let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next");
     for (let i = 0; i < targetElem.length; i++) {
-      // console.log(
-      //   targetElem[i].parentElement.parentElement.parentElement.classList
-      // );
-      // console.log(
-      //   targetElem[i].parentElement.parentElement.parentElement
-      //     .classList[1] == "active" ||
-      //   targetElem[i].parentElement.parentElement.parentElement
-      //     .parentElement.classList[1] == "active"
-      // );
       if (
         targetElem[i].className == "pager__btn pager__btn__next" &&
         (targetElem[i].parentElement.parentElement.parentElement.classList[1] ==
@@ -602,7 +540,7 @@ class PageBeautify {
 
   multiPartListSpread() {
     createElementStyle(`
-			.part-wrap{max-height: fit-content;}
+			.part-wrap{max-height: fit-content !important;}
 		`)
   }
 
