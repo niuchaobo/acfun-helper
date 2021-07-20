@@ -37,10 +37,10 @@ class VideoSetting {
   }
 
   onLoad() {
-    var hiddenDiv = document.getElementById("myCustomEventDiv");
+    var hiddenDiv = document.getElementById("AcFunHelperDataDiv");
     if (!hiddenDiv) {
       hiddenDiv = document.createElement("div");
-      hiddenDiv.id = "myCustomEventDiv";
+      hiddenDiv.id = "AcFunHelperDataDiv";
       hiddenDiv.style.display = "none";
       document.body.appendChild(hiddenDiv);
     }
@@ -52,7 +52,7 @@ class VideoSetting {
     //给inject js 传递数据
     sc.onload = function () {
       var customEvent = document.createEvent("Event");
-      customEvent.initEvent("myCustomEvent", true, true);
+      customEvent.initEvent("AcFunHelperDataDivEvent", true, true);
       hiddenDiv.innerText = JSON.stringify(window.odhfront.options);
       hiddenDiv.dispatchEvent(customEvent);
     };

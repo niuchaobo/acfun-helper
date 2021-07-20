@@ -86,7 +86,6 @@ class LuckyTtab {
             //循环获取分页下的评论
             for (let i = 1; i <= totalPageNum; i++) {
                 let jsonfy_comment = JSON.parse(await this.getResult(acCommentApi + i).then((res) => { return res }));
-                console.log(jsonfy_comment)
                 for (let j = 0; j < jsonfy_comment.rootComments.length; j++) {
                     let obj = jsonfy_comment.rootComments[j];
                     //跳过up主自己
@@ -96,7 +95,6 @@ class LuckyTtab {
                     //是否需要关注up主
                     if (follow) {
                         let isFollow = await this.isFollowed(obj.userId);
-                        console.log(isFollow,obj.userId)
                         if (!isFollow) {
                             continue;
                         }
@@ -115,11 +113,13 @@ class LuckyTtab {
     }
 
     async isFollowed(QueryUserId) {
-        let checkResult = JSON.parse(await fetchResult("https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=" + String(QueryUserId)));
-        if (checkResult.profile.isFollowed) {
-            return true;
+        let checkResult
+        try {
+            checkResult = JSON.parse(await fetchResult("https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=" + String(QueryUserId)));
+        } catch (error) {
+            throw TypeError();
         }
-        return false;
+        return checkResult.profile.isFollowed;
     }
 
     liveRoll(num) {

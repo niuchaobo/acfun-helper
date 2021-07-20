@@ -5,7 +5,6 @@ class Danmaku {
     constructor() {
         this.devMode = false;
         this.acid = 0;
-        this.videoInfo = {};
         this.duration = 10;
         this.danmuMotionList = [];
         this.videoQualitiesRefer = videoQualitiesRefer;
@@ -16,10 +15,9 @@ class Danmaku {
      * 获取弹幕信息格式化为Ass格式的弹幕（待完善）
      * @todo 没有解决好弹幕重叠问题
      */
-    async sanitizeJsonDanmakuToAss() {
+    async sanitizeJsonDanmakuToAss(videoInfo) {
         let acid = REG.acVid.exec(window.location.href)[2];
         this.acid = acid;
-        let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + acid));
         let pageCount = Math.round(videoInfo.danmakuCount / 200);
         if (pageCount == 0) {
             pageCount = 1;

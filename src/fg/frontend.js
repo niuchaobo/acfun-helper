@@ -18,6 +18,10 @@ class ODHFront {
 		this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
 		this.reader = new Reader(); //文章区阅读模式
 
+		this.dataset = {
+			dougaInfo: {}, sessionuuid: "",
+		}
+
 		chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
 		window.addEventListener("message", (e) => this.onFrameMessage(e)); //接收来自iframe的消息
 
@@ -213,14 +217,10 @@ class ODHFront {
 	}
 
 	onLoad(e) {
-		//根据cookie判断当前登录用户是不是up
-		//let is_up = this.adjuatUp();
 		let href = this.href;
 		this.authInfo.cookInfo();
 		//开启屏蔽功能
 		this.options.filter && this.block.block();
-		var pageInfo = null;
-		//视频 TODO:这玩意儿到底是个啥！？
 		if (REG.video.test(href)) {
 			var div = document.createElement('div');
 			div.style.display = "none";
@@ -229,14 +229,15 @@ class ODHFront {
 			document.body.appendChild(div);
 			div.setAttribute('onclick', "document.getElementById('" + uuid + "').innerText=JSON.stringify(window.pageInfo)");
 			div.click();
-			pageInfo = JSON.parse(document.getElementById(uuid).innerText);
+			this.dataset.dougaInfo = JSON.parse(document.getElementById(uuid).innerText);
+			this.dataset.sessionuuid = uuid;
 			document.body.removeChild(div);
-			let currentVideoInfo = pageInfo.currentVideoInfo;
+			let currentVideoInfo = this.dataset.dougaInfo.currentVideoInfo;
 			if (currentVideoInfo == undefined || currentVideoInfo == "" || currentVideoInfo == null) {
 				return;
 			}
 			let isUp = adjustVideoUp();
-			this.div.show(pageInfo, this.options, 'video', isUp);
+			this.div.show(this.dataset.dougaInfo, this.options, 'video', isUp);
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			//自动投蕉
 			this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
@@ -265,7 +266,7 @@ class ODHFront {
 		//文章
 		if (REG.article.test(href)) {
 			let isUp = adjustArticleUp();
-			this.div.show(pageInfo, this.options, 'article', isUp);
+			this.div.show(this.dataset.dougaInfo, this.options, 'article', isUp);
 			this.options.picDrag && this.reader.picDrag(this.options.picRotate);
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
@@ -283,7 +284,7 @@ class ODHFront {
 		//直播
 		if (REG.live.test(href)) {
 			$(".open-app-confirm").hide();
-			this.div.show(pageInfo, this.options, 'live', '');
+			this.div.show(this.dataset.dougaInfo, this.options, 'live', '');
 			this.options.LiveUserFocus && this.livePageBeautify.followMe();
 			this.options.liveMediaSession && this.live.liveMediaSession(href);
 			//直播画中画模式
@@ -347,6 +348,8 @@ class ODHFront {
 	 */
 	reattachFrontMods() {
 		if (this.videoSetting.mediaSessionJudgeChangeVideo()) {
+			//清除原来的稿件信息
+			this.dataset.dougaInfo = {};
 			let isLogined = false;
 			if (isLogin("video")) {
 				isLogined = true;
@@ -380,10 +383,10 @@ class ODHFront {
 	}
 	//下载弹幕
 	api_downloadDanmaku(params) {
-		this.download.downloadDanmaku(params);
+		this.download.downloadDanmaku(this.dataset.dougaInfo);
 	}
 	api_assDanmaku() {
-		this.danmaku.sanitizeJsonDanmakuToAss();
+		this.danmaku.sanitizeJsonDanmakuToAss(this.dataset.dougaInfo);
 	}
 	api_notice(params) {
 		let action = "notice";

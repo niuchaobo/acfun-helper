@@ -10,7 +10,7 @@ let videoFunction = (function () {
 
   var lastdropedFrame = 0;
   var nowDropFrame = 0;
-  var hiddenDiv = document.getElementById("myCustomEventDiv");
+  var hiddenDiv = document.getElementById("AcFunHelperDataDiv");
 
   if (!hiddenDiv) {
     hiddenDiv = document.createElement("div");
@@ -24,9 +24,9 @@ let videoFunction = (function () {
     }
   }
 
-  hiddenDiv.addEventListener("myCustomEvent", function () {
+  hiddenDiv.addEventListener("AcFunHelperDataDivEvent", function () {
     // console.log(window.player);
-    var eventData = document.getElementById("myCustomEventDiv").innerText;
+    var eventData = document.getElementById("AcFunHelperDataDiv").innerText;
     let options = JSON.parse(eventData);
     switch (options.player_mode) {
       case "default":
@@ -38,11 +38,9 @@ let videoFunction = (function () {
           let _vd = document.querySelector(".video-description");
           let _toolbar = document.getElementById("toolbar");
           let _rc = document.querySelector(".right-column");
-          let _retry = 10;
           //如果不判断直接调用会报错，toolbar节点可能还没加载
           if (_header && _main && _vd && _toolbar && _rc) {
             window.player.emit("filmModeChanged", true);
-            let w2 = document.getElementsByTagName("video")[0].offsetWidth;
             clearInterval(_timer);
           }
         }, 1000);
@@ -102,18 +100,6 @@ let videoFunction = (function () {
       } catch (error) {
         console.log("[LOG]Frontend-videoSettingInject: May not in douga Page.");
       }
-    }
-
-    if (window.name == "AcFunMusicPlayer") {
-      // console.log(Object.getOwnPropertyDescriptor(window.player.videoInfo, "videoList").value)
-      window.parent.postMessage(
-        {
-          to: "MpFront",
-          msg: `${window.name}`,
-        },
-        "*"
-      );
-      localStorage.setItem("AcFun-Helper", `{"isMultiPart":true}`)
     }
 
     if (options.endedAutoJumpRecommandFirstDougasw) {

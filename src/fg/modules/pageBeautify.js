@@ -132,7 +132,14 @@ class PageBeautify {
         return res.text();
       })
       .then((res) => {
-        let a = JSON.parse(res);
+        let a = "";
+        try {
+          a = JSON.parse(res);
+          if (!a.info.userId) { return }
+        } catch (error) {
+          fgConsole(this, this.personBeautify, "fetch userInfo Failed.", 1, false);
+          return;
+        }
         var url = window.location.toString();
         if (REG.userHome.test(url)) {
           this_page = 1;
