@@ -835,6 +835,17 @@ function isLogin(dept = "video", evidence = "cookies") {
 }
 
 /**
+ * 判断番剧购买情况（普通视频也会有.hide）
+ * @returns Bool
+ */
+function isBoughtBangumi() {
+  if (document.querySelector(".container-player .pay_bangumi.hide")) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * 在某个地方（默认为head下）增加一个css的style标签
  * @param {string} cssText CSS样式文本
  * @param {HTMLElement} targetDom 添加于，默认是document.head

@@ -707,13 +707,8 @@ class VideoSetting {
    * @ideaRefer https://github.com/Yzi/AcFun-TheaterMode
    */
   videoMediaSession() {
-    fgConsole(
-      this,
-      this.videoMediaSession,
-      "Init MediaSessionModule.",
-      1,
-      false
-    );
+    fgConsole(this, this.videoMediaSession, "Init MediaSessionModule.", 1, false);
+    if (!isBoughtBangumi()) { return }
     window.addEventListener("message", (e) => {
       let videoInfo = {};
       try {

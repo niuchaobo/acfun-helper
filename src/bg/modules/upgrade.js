@@ -34,8 +34,7 @@ class UpgradeAgent {
                 method: "POST",
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*" },
                 body: version
-            }
-            )
+            })
                 .then((res) => { return res.json(); })
                 .then((res) => {
                     chrome.storage.local.remove("Upgradeable");
@@ -52,9 +51,8 @@ class UpgradeAgent {
     purgeNotificationList() {
         if (this.notificationListPurgeCount > 2) {
             chrome.notifications.getAll((e) => {
-                //e={"549491live624122": true}
-                for(let i in e){
-                    chrome.notifications.clear(i,function(){});
+                for (let i in e) {
+                    chrome.notifications.clear(i, function () { });
                 }
             })
             this.notificationListPurgeCount = 0;
