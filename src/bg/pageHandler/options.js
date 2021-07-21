@@ -1948,6 +1948,25 @@ function playerConfigure() {
         });
     });
 
+    //=====================弹幕搜索================
+    chrome.storage.local.get(['PictureInPictureModeUI'], function (items) {
+        var PictureInPictureModeUI = items.PictureInPictureModeUI;
+        if (PictureInPictureModeUI) {
+            document.getElementById('PictureInPictureModeUI').checked = true;
+        } else {
+            document.getElementById('PictureInPictureModeUI').checked = false;
+        }
+        $('#PictureInPictureModeUI').on('click', function () {
+            if (!document.getElementById('PictureInPictureModeUI').checked) {
+                document.getElementById('PictureInPictureModeUI').checked = false;
+                chrome.storage.local.set({ 'PictureInPictureModeUI': false });
+            } else {
+                document.getElementById('PictureInPictureModeUI').checked = true;
+                chrome.storage.local.set({ 'PictureInPictureModeUI': true });
+            }
+        });
+    });
+
     //=====================AB回放================
     chrome.storage.local.get(['ABPlaysw'], function (items) {
         var ABPlaysw = items.ABPlaysw;
@@ -2229,7 +2248,7 @@ function playerConfigure() {
             } else {
                 document.getElementById('audioGain').checked = true;
                 chrome.storage.local.set({ 'audioGain': true });
-                mdui.alert("启用此功能会导致与主站的“高级音效”冲突，确定要启用吗");
+                mdui.alert("启用此功能会导致与主站的“高级音效”和“JoySound”冲突，确定要启用吗");
             }
         });
     });

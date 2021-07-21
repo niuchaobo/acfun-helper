@@ -146,10 +146,9 @@ class Popup {
     }
 
     popComment(type) {
-        let { mark, scan, receive, articleReadMode } = this.options;
+        let { mark, scan, articleReadMode } = this.options;
         let m = mark ? "checked" : "";
         let s = scan ? "checked" : "";
-        let r = receive ? "checked" : "";
         let t = articleReadMode ? "checked" : "";
 
         let domString = `<div class="odh-headsection">
@@ -179,13 +178,6 @@ class Popup {
                         <label for="readmode"></label>
                     </div>
                 </div>
-                <!--<div class="odh-definition">
-                    <label class="comment-label">是否接收情报</label>
-                    <div class="enabled">
-                        <input type="checkbox" ${r} id="comment-receive">
-                        <label for="comment-receive"></label>
-                    </div>
-                </div>-->
                 `;
         }
         return domString;

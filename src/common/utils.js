@@ -10,7 +10,7 @@ const defaults = {
   broadcastingUIDlistFollowing: {},
   MarkedComment: { setting: { enabled: true, storeLocation: "ExtensionStore", storePlugin: ["ExtensionStore", "IndexedDB", "Nextcloud", "UserdefinedServer"] }, datasets: {} },
   WatchPlanList: [],
-  MusicPlayList: { "windowSetting": { "left": 139, "top": 32, "width": 980, "height": 590 }, "onLoadAutoPlay": true, "playerMode": 1, "multiPartContinue": true, "List": {} },
+  PictureInPictureModeUI: true,
   activeTabKey: 'activeTabId',
   extendsName: 'AcFun助手',
   upUrlTemplate: 'https://www.acfun.cn/u/{uid}',
@@ -29,7 +29,6 @@ const defaults = {
   UserFilter: {},
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
-  receive: false,//接收用户情报
   filter: false,//up文章区屏蔽
   beautify_nav: true,//首页右侧导航
   beautify_personal: true,//顶栏个人中心优化

@@ -34,6 +34,7 @@ class VideoSetting {
     this.timelineDotsResultCache = "";
     this.hideDanmakuOperatorStyleAdded = false;
     this.hideDanmakuOperatordanmakuOprFlag = false;
+    this.PIPStatus = false;
   }
 
   onLoad() {
@@ -77,8 +78,8 @@ class VideoSetting {
 
   //画中画模式
   callPicktureInPictureMode() {
-    const isChrome = navigator.userAgent.indexOf("Chrome") === -1;
-    if (isChrome) {
+    const notChrome = navigator.userAgent.indexOf("Chrome") === -1;
+    if (notChrome) {
       return;
     }
     let cPIP_div = this.cPIP_div;
@@ -94,8 +95,15 @@ class VideoSetting {
       });
       $(".box-right>div").click((e) => {
         if (e.target.className === "btn-span setPictureInPictureMode") {
-          leftBottomTip("启动", "画中画模式");
-          this.setPictureInPictureMode();
+          if (!this.PIPStatus) {
+            leftBottomTip("启动", "画中画模式");
+            this.setPictureInPictureMode(true);
+            this.PIPStatus = true;
+          } else {
+            leftBottomTip("关闭", "画中画模式");
+            this.setPictureInPictureMode(false);
+            this.PIPStatus = false;
+          }
         } else {
           return;
         }
@@ -103,10 +111,14 @@ class VideoSetting {
     });
   }
   //调用画中画模式
-  setPictureInPictureMode() {
-    let v = document.getElementsByTagName("video")[0];
-    v.requestPictureInPicture();
-    console.log("[LOG]Frontend-videoSetting: Calling PictureInPicture Mode.");
+  setPictureInPictureMode(sw) {
+    if (sw) {
+      document.getElementsByTagName("video")[0].requestPictureInPicture();
+      console.log("[LOG]Frontend-videoSetting: Calling PictureInPicture Mode.");
+    } else {
+      document.exitPictureInPicture();
+      console.log("[LOG]Frontend-videoSetting: Exit PictureInPicture Mode.");
+    }
   }
 
   //画质策略

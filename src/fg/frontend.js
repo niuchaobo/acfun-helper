@@ -120,7 +120,7 @@ class ODHFront {
 					//AB回放
 					this.options.ABPlaysw && this.videoSetting.addABPlayUI();
 					//画中画
-					this.videoSetting.callPicktureInPictureMode();
+					this.options.PictureInPictureModeUI && this.videoSetting.callPicktureInPictureMode();
 					//全局进度条
 					this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle);
 					//画质策略
