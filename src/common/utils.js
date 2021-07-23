@@ -94,6 +94,7 @@ const defaults = {
   liveIndexRankNum: true,
   timelineDots: false,
   hideDanmakuOperator: { defaultMode: false, UI: true },
+  sleepPause: { defaultMode: false, UI: true },
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, }
 };

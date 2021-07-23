@@ -371,11 +371,6 @@ class PageBeautify {
     let imgObj = document.querySelector(
       "[data-c-w-header] .header-guide .guide-user .user-avatar img"
     );
-    let before_style = document.createElement("style");
-    before_style.style = "text/css";
-    before_style.innerHTML =
-      "[data-c-w-header] .header-guide .guide-user .user-avatar img:before{animaition: avatar-wave cubic-bezier(0.22, 0.58, 0.12, 0.98) 0.6s forwards}";
-    document.getElementsByTagName("head")[0].appendChild(before_style);
     try {
       obj.addEventListener("mouseenter", function () {
         imgObj.style.transform = "scale(1.6)";

@@ -34,7 +34,8 @@ class VideoSetting {
     this.timelineDotsResultCache = "";
     this.hideDanmakuOperatorStyleAdded = false;
     this.hideDanmakuOperatordanmakuOprFlag = false;
-    this.PIPStatus = false;
+    this.beforeChangeTabPlayStatus = false;
+    this.sleepPauseSw = false;
   }
 
   onLoad() {
@@ -95,14 +96,12 @@ class VideoSetting {
       });
       $(".box-right>div").click((e) => {
         if (e.target.className === "btn-span setPictureInPictureMode") {
-          if (!this.PIPStatus) {
+          if (!document.pictureInPictureElement) {
             leftBottomTip("启动", "画中画模式");
             this.setPictureInPictureMode(true);
-            this.PIPStatus = true;
           } else {
             leftBottomTip("关闭", "画中画模式");
             this.setPictureInPictureMode(false);
-            this.PIPStatus = false;
           }
         } else {
           return;
@@ -1149,6 +1148,79 @@ class VideoSetting {
         this.hideDanmakuOperator(true);
       }
     })
+  }
+
+  /**
+   * 后台自动暂停视频
+   */
+  getSomeSleep() {
+    let originVolumeNumber = 0;
+    document.addEventListener("visibilitychange", () => {
+      if (this.sleepPauseSw) {
+        originVolumeNumber = Number(document.querySelector(".volume-panel-content").children[0].innerText) / 1e2;
+        let videoElemt = document.querySelector("video");
+        switch (document.visibilityState) {
+          case "hidden":
+            this.beforeChangeTabPlayStatus = !videoElemt.paused;
+            //开启画中画则不暂停
+            if (!document.pictureInPictureElement) {
+              videoElemt.pause();
+            }
+            break;
+          case "visible":
+            if (this.beforeChangeTabPlayStatus) {
+              videoElemt.volume = 0;
+              videoElemt.play();
+              var _voluemUpper = setInterval(() => {
+                //慢慢提大音量
+                let lastVolume = 0;
+                if (Number(videoElemt.volume) != Number(originVolumeNumber) && Number(videoElemt.volume) <= 1) {
+                  lastVolume = Number((videoElemt.volume).toFixed(2));
+                  videoElemt.volume = Number(lastVolume) + 0.01;
+                  if (Number(videoElemt.volume) == 1) {
+                    clearTimeout(_voluemUpper);
+                  }
+                  lastVolume = Number((videoElemt.volume).toFixed(2));
+                } else {
+                  clearTimeout(_voluemUpper);
+                }
+              }, 10);
+            }
+            break;
+        }
+      }
+    })
+  }
+  sleepPauseSwSetter(sw) {
+    this.sleepPauseSw = sw;
+  }
+  getSomeSleepUI(sw = false) {
+    this.sleepPauseSwSetter(sw);
+    let htmlUi = `
+    <div>
+      <label>后台暂停</label>
+      <div class="control-checkbox getSomeSleep" data-bind-key="getSomeSleep" data-bind-attr="${sw}"></div>
+    </div>
+    `;
+    $(".setting-panel>.setting-panel-content").append(htmlUi);
+    $(".setting-panel-content").click((e) => {
+      if (e.target.dataset.bindKey == "getSomeSleep" && e.target.dataset.bindAttr == "false") {
+        this.sleepPauseSwSetter(true);
+        document.querySelector(".getSomeSleep").dataset.bindAttr = true;
+      } else if (e.target.dataset.bindKey == "getSomeSleep" && e.target.dataset.bindAttr == "true") {
+        this.sleepPauseSwSetter(false);
+        document.querySelector(".getSomeSleep").dataset.bindAttr = false;
+      }
+    })
+  }
+  getSomeSleepFront(defaultMode, ui) {
+    if (ui) {
+      this.getSomeSleepUI(defaultMode);
+    }
+    if(defaultMode){
+      this.sleepPauseSw(defaultMode);
+    }
+    this.getSomeSleep();
   }
 
 }

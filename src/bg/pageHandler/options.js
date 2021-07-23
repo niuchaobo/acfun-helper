@@ -2176,6 +2176,39 @@ function playerConfigure() {
         })
     });
 
+    chrome.storage.local.get(['sleepPause'], function (items) {
+        if (items.sleepPause.defaultMode) {
+            document.getElementById('sleepPause').checked = true;
+        } else {
+            document.getElementById('sleepPause').checked = false;
+        }
+        if (items.sleepPause.UI) {
+            document.getElementById('sleepPauseUI').checked = true;
+        } else {
+            document.getElementById('sleepPauseUI').checked = false;
+        }
+        $('#sleepPause').on('click', function () {
+            if (!document.getElementById('sleepPause').checked) {
+                document.getElementById('sleepPause').checked = false;
+                items.sleepPause.defaultMode = false;
+            } else {
+                document.getElementById('sleepPause').checked = true;
+                items.sleepPause.defaultMode = true;
+            }
+            chrome.storage.local.set({ 'sleepPause': items.sleepPause });
+        });
+        $('#sleepPauseUI').on('click', function () {
+            if (!document.getElementById('sleepPauseUI').checked) {
+                document.getElementById('sleepPauseUI').checked = false;
+                items.sleepPause.UI = false;
+            } else {
+                document.getElementById('sleepPauseUI').checked = true;
+                items.sleepPause.UI = true;
+            }
+            chrome.storage.local.set({ 'sleepPause': items.sleepPause });
+        })
+    });
+
     //====================配置播放结束自动退出全屏然后滚动到评论区===============
     chrome.storage.local.get(['endedAutoToCommentArea'], function (items) {
         var endedAutoToCommentArea = items.endedAutoToCommentArea;
@@ -2353,6 +2386,25 @@ function playerConfigure() {
         });
     });
 
+    //====================展开多分P列表===================
+    chrome.storage.local.get(['multiPartListSpread'], function (items) {
+        var multiPartListSpread = items.multiPartListSpread;
+        if (multiPartListSpread) {
+            document.getElementById('multiPartListSpread').checked = true;
+        } else {
+            document.getElementById('multiPartListSpread').checked = false;
+        }
+        $('#multiPartListSpread').on('click', function () {
+            if (!document.getElementById('multiPartListSpread').checked) {
+                document.getElementById('multiPartListSpread').checked = false;
+                chrome.storage.local.set({ 'multiPartListSpread': false });
+            } else {
+                document.getElementById('multiPartListSpread').checked = true;
+                chrome.storage.local.set({ 'multiPartListSpread': true });
+            }
+        });
+    });
+
     //====================配置播放器画质策略===============
     chrome.storage.local.get(['videoQualityStrategy'], function (items) {
         document.querySelector("#videoQualityStrategy").parentElement.children[1].children[1].children[items.videoQualityStrategy].click()
@@ -2458,9 +2510,18 @@ function globalConfigure() {
                     var options_data = JSON.stringify(sanitizeOptions(items));
                     let uploadData = new FormData();
                     uploadData.append("options_data", `${options_data}`);
+                    // fetch('http://localhost/api/v1/acfun-helper/options/upload', { method: "POST", credentials: 'include', body: uploadData })
                     fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload', { method: "POST", credentials: 'include', body: uploadData })
                         .then((res => { return res.text() }))
-                        .then((res) => { })
+                        .then((res) => {
+                            if (res) {
+                                mdui.snackbar({
+                                    message: '同步完成。',
+                                    position: 'right-top',
+                                    timeout: 1000,
+                                });
+                            }
+                        })
                 });
             }
             $('.SyncWait1').hide();
@@ -2480,10 +2541,10 @@ function globalConfigure() {
                 svrCookies['LocalUserId'] = items['LocalUserId']
                 let upCookies = new FormData();
                 upCookies.set("authCookie", `${JSON.stringify(svrCookies)}`);
+                // fetch('http://localhost/api/v1/acfun-helper/options/download', { method: "POST", credentials: 'include', body: upCookies })
                 fetch('https://mini.pocketword.cn/api/acfun-helper/options/download', { method: "POST", credentials: 'include', body: upCookies })
                     .then((res => { return res.text() }))
-                    .then((res) => {
-                        let x = unescape(res.replace(/\\u/g, "%u"));
+                    .then((x) => {
                         try {
                             jsonfy_config = JSON.parse(x);
                         } catch (e) {
@@ -2630,7 +2691,7 @@ function globalConfigure() {
         });
         setTimeout(() => {
             $('.SyncWait1').hide();
-            if (mention['devMode']) {
+            if (mention['devMode'] === false) {
                 location.reload();
             }
         }, 1500);
@@ -2658,8 +2719,8 @@ function Final() {
     })
 }
 
+var mention = { devMode: false };
 window.addEventListener('load', function () {
-    var mention = {};
     OldUIHandler()
     indexSiteConfigure()
     contentConfigure()

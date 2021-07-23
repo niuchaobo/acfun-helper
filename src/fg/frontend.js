@@ -130,6 +130,8 @@ class ODHFront {
 					//弹幕操作栏状态
 					this.options.hideDanmakuOperator.UI && this.videoSetting.hideDanmakuOperatorUI();
 					this.videoSetting.hideDanmakuOperator(this.options.hideDanmakuOperator.defaultMode);
+					//后台自动暂停
+					this.videoSetting.getSomeSleepFront(this.options.sleepPause.defaultMode,this.options.sleepPause.UI)
 					clearInterval(playerChecker);
 				}
 			}, 1000);
