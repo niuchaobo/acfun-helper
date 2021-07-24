@@ -262,7 +262,7 @@ class ODHFront {
 			//快捷键评论发送
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
 			//MediaSession
-			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
+			this.options.videoMediaSession && this.videoSetting.videoMediaSession(this.dataset.dougaInfo);
 			return
 		}
 		//文章

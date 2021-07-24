@@ -705,83 +705,63 @@ class VideoSetting {
    * @refer https://www.cnblogs.com/ajanuw/p/8422176.html https://w3c.github.io/mediasession/#the-mediasession-interface https://developer.mozilla.org/zh-CN/docs/Web/API/MediaSession#%E4%BE%8B%E5%AD%90
    * @ideaRefer https://github.com/Yzi/AcFun-TheaterMode
    */
-  videoMediaSession() {
+  videoMediaSession(dougaInfo) {
     fgConsole(this, this.videoMediaSession, "Init MediaSessionModule.", 1, false);
     if (!isBoughtBangumi()) { return }
-    window.addEventListener("message", (e) => {
-      let videoInfo = {};
+    let videoInfo = {};
+    try {
+      if (dougaInfo) {
+        videoInfo = dougaInfo;
+      } else {
+        throw TypeError;
+      }
       try {
         this.acNum = REG.acVid.exec(location.href)[2];
       } catch (error) {
         this.acNum = REG.acBangumid.exec(location.href)[2];
       }
-      if (e.data.to == "videoInfo") {
-        try {
-          videoInfo = JSON.parse(e.data.msg);
-          if (
-            videoInfo.ksPlayJson &&
-            JSON.parse(videoInfo.ksPlayJson).businessType == "1"
-          ) {
-            //番剧的videoInfo对象内容不一样，从dom下手
-            throw TypeError;
-          }
-        } catch (error) {
-          videoInfo = {
-            title:
-              document.querySelectorAll("meta")[5].content.split(",")[0] ||
-              document.querySelector(".video-description.clearfix>.title")
-                .innerText,
-            channel: {
-              parentName:
-                document.querySelectorAll("meta")[5].content.split(",")[1] ||
-                document.querySelector(
-                  "#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second"
-                ).innerText,
-              name:
-                document.querySelectorAll("meta")[5].content.split(",")[2] ||
-                document.querySelector(
-                  "#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third"
-                ).innerText,
-            },
-            user: {
-              name: document.querySelectorAll("meta")[5].content.split(",")[3],
-            },
-            coverUrl: "",
-            videoList: [],
-          };
-          //封面
-          try {
-            //Up主头像
-            videoInfo.coverUrl = document.querySelector(
-              "#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img"
-            ).src;
-          } catch (error) {
-            try {
-              //直接拿番剧推荐视频封面
-              videoInfo.coverUrl = document.querySelector(
-                "#main-content > div.right-column > div.highlights > div.clearfix.area.highlights-list > figure:nth-child(1) > a > img"
-              ).src;
-            } catch (error) {
-              //没有番剧推荐视频那就拿大家都在看的封面得了
-              videoInfo.coverUrl = document.querySelector(
-                "#pagelet_newrecommend > div > div > figure:nth-child(1) > a > img"
-              ).src;
-            }
-          }
-          //分P
-          this.mediaSessionGatherMultiPartInfo(videoInfo);
-        }
-        fgConsole(
-          this,
-          this.videoMediaSession,
-          "Attach MediaSession ActionHandler.",
-          1,
-          false
-        );
-        // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
-        this.mediaSessionCore(videoInfo);
+      if (videoInfo.ksPlayJson && JSON.parse(videoInfo.ksPlayJson).businessType == "1") {
+        //番剧的videoInfo对象内容不一样，从dom下手
+        throw TypeError;
       }
-    });
+    } catch (error) {
+      videoInfo = {
+        title:
+          document.querySelectorAll("meta")[5].content.split(",")[0] ||
+          document.querySelector(".video-description.clearfix>.title").innerText,
+        channel: {
+          parentName:
+            document.querySelectorAll("meta")[5].content.split(",")[1] ||
+            document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second").innerText,
+          name:
+            document.querySelectorAll("meta")[5].content.split(",")[2] ||
+            document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third").innerText,
+        },
+        user: {
+          name: document.querySelectorAll("meta")[5].content.split(",")[3],
+        },
+        coverUrl: "",
+        videoList: [],
+      };
+      //封面
+      try {
+        //Up主头像
+        videoInfo.coverUrl = document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src;
+      } catch (error) {
+        try {
+          //直接拿番剧推荐视频封面
+          videoInfo.coverUrl = document.querySelector("#main-content > div.right-column > div.highlights > div.clearfix.area.highlights-list > figure:nth-child(1) > a > img").src;
+        } catch (error) {
+          //没有番剧推荐视频那就拿大家都在看的封面得了
+          videoInfo.coverUrl = document.querySelector("#pagelet_newrecommend > div > div > figure:nth-child(1) > a > img").src;
+        }
+      }
+      //分P
+      this.mediaSessionGatherMultiPartInfo(videoInfo);
+    }
+    fgConsole(this, this.videoMediaSession, "Attach MediaSession ActionHandler.", 1, false);
+    // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
+    this.mediaSessionCore(videoInfo);
   }
 
   mediaSessionCore(videoInfo) {
@@ -851,21 +831,15 @@ class VideoSetting {
   mediaSessionPlayer(action, videoInfo) {
     switch (action) {
       case "previous":
-        this.mediaSessionNowPlayingIndex =
-          (this.mediaSessionNowPlayingIndex - 1) %
-          (videoInfo.videoList.length - 1);
+        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex - 1) % (videoInfo.videoList.length - 1);
         break;
       case "next":
-        this.mediaSessionNowPlayingIndex =
-          (this.mediaSessionNowPlayingIndex + 1) %
-          (videoInfo.videoList.length - 1);
+        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex + 1) % (videoInfo.videoList.length - 1);
         break;
       default:
         break;
     }
-    document
-      .querySelector(".scroll-div.over-parts")
-      .children[this.mediaSessionNowPlayingIndex].click();
+    document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
     document.querySelector("video").play();
   }
 
@@ -885,22 +859,15 @@ class VideoSetting {
     let videoInfo = {};
     setTimeout(() => {
       videoInfo = {
-        title: document.querySelector(".video-description.clearfix>.title")
-          .innerText,
+        title: document.querySelector(".video-description.clearfix>.title").innerText,
         channel: {
-          parentName: document.querySelector(
-            "#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second"
-          ).innerText,
-          name: document.querySelector(
-            "#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third"
-          ).innerText,
+          parentName: document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second").innerText,
+          name: document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third").innerText,
         },
         user: {
           name: document.querySelector("a.up-name").innerText,
         },
-        coverUrl: document.querySelector(
-          "#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img"
-        ).src,
+        coverUrl: document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src,
         videoList: [],
       };
       this.mediaSessionGatherMultiPartInfo(videoInfo);
@@ -914,9 +881,7 @@ class VideoSetting {
 
   mediaSessionGatherMultiPartInfo(videoInfo) {
     try {
-      videoInfo["videoList"] = document.querySelector(
-        ".scroll-div.over-parts"
-      ).children;
+      videoInfo["videoList"] = document.querySelector(".scroll-div.over-parts").children;
     } catch (error) {
       try {
         videoInfo["videoList"] = document.querySelector(".scroll-div").children;

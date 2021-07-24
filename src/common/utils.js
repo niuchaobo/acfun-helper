@@ -854,11 +854,13 @@ function isLogin(dept = "video", evidence = "cookies") {
  * 判断番剧购买情况（普通视频也会有.hide）
  * @returns Bool
  */
-function isBoughtBangumi() {
-  if (document.querySelector(".container-player .pay_bangumi.hide")) {
-    return true;
-  }
-  return false;
+async function isBoughtBangumi() {
+  return await getAsyncDom(".setting-panel-content", () => {
+    if (document.querySelector(".container-player .pay_bangumi.hide")) {
+      return true;
+    }
+    return false;
+  })
 }
 
 /**
