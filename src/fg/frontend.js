@@ -224,18 +224,7 @@ class ODHFront {
 		//开启屏蔽功能
 		this.options.filter && this.block.block();
 		if (REG.video.test(href)) {
-			var div = document.createElement('div');
-			div.style.display = "none";
-			let uuid = uuidBuild();
-			div.id = uuid;
-			document.body.appendChild(div);
-			div.setAttribute('onclick', "document.getElementById('" + uuid + "').innerText=JSON.stringify(window.pageInfo)");
-			div.click();
-			this.dataset.dougaInfo = JSON.parse(document.getElementById(uuid).innerText);
-			this.dataset.sessionuuid = uuid;
-			document.body.removeChild(div);
-			let currentVideoInfo = this.dataset.dougaInfo.currentVideoInfo;
-			if (currentVideoInfo == undefined || currentVideoInfo == "" || currentVideoInfo == null) {
+			if (!this.fetchPageInfo()) {
 				return;
 			}
 			let isUp = adjustVideoUp();
@@ -246,6 +235,9 @@ class ODHFront {
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {
+			if (!this.fetchPageInfo()) {
+				return;
+			}
 			//弹幕列表
 			getAsyncDom('.list-title', () => {
 				//弹幕列表搜索
@@ -362,6 +354,24 @@ class ODHFront {
 			this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
 		}
+	}
+
+	fetchPageInfo() {
+		var div = document.createElement('div');
+		div.style.display = "none";
+		let uuid = uuidBuild();
+		div.id = uuid;
+		document.body.appendChild(div);
+		div.setAttribute('onclick', "document.getElementById('" + uuid + "').innerText=JSON.stringify(window.pageInfo)");
+		div.click();
+		this.dataset.dougaInfo = JSON.parse(document.getElementById(uuid).innerText);
+		this.dataset.sessionuuid = uuid;
+		document.body.removeChild(div);
+		let currentVideoInfo = this.dataset.dougaInfo.currentVideoInfo;
+		if (currentVideoInfo == undefined || currentVideoInfo == "" || currentVideoInfo == null) {
+			return false;
+		}
+		return true;
 	}
 
 	//抽奖

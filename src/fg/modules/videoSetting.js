@@ -720,10 +720,21 @@ class VideoSetting {
       } catch (error) {
         this.acNum = REG.acBangumid.exec(location.href)[2];
       }
-      if (videoInfo.ksPlayJson && JSON.parse(videoInfo.ksPlayJson).businessType == "1") {
-        //番剧的videoInfo对象内容不一样，从dom下手
-        throw TypeError;
+      if (videoInfo.bangumiId) {
+        videoInfo = {
+          title: videoInfo.showTitle,
+          channel: {
+            parentName: "番剧",
+            name: videoInfo.acfunOnly ? "独家" : "普通"
+          },
+          user: {
+            name: "AcFun"
+          },
+          coverUrl: videoInfo.image,
+          videoList: [],
+        };
       }
+      throw TypeError;
     } catch (error) {
       videoInfo = {
         title:
