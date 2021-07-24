@@ -354,10 +354,10 @@ class MsgNotifs {
         for (let i = 0; i < num; i++) {
             let avt = instantDom[0].children[i].children[0].children[0].children[0].src;
             let uname = instantDom[0].children[i].children[1].children[0].children[0].innerText;
-            let msg = instantDom[0].children[i].children[1].children[2].children[0].children[0].innerText.replace("&nbsp;", " ").replace(/[\r\n]/g, "").trim();
+            let msg = instantDom[0].children[i].children[1].children[2].children[0].children[0].innerText.replace("&nbsp;", " ").replace(/[\r\n]/g, "").trim().replace("[表情]","");
             let msgFrom = instantDom[0].children[i].children[1].children[1].textContent.trim().replace("评论了你的视频", "");
             let commentAddress = instantDom[0].children[0].children[1].children[2].href.replace("chrome-extension://www.acfun.cn", "")
-            this.createDetailNotif(commentAddress, uname, msg + " " + msgFrom, avt);
+            this.createDetailNotif(commentAddress, uname, msg + " | From:" + msgFrom, avt);
         }
     }
 
@@ -385,7 +385,7 @@ class MsgNotifs {
         let result = JSON.parse(raw)['html'];
         let instantDom = stringToDOM(result);
         for (let i = 0; i < num; i++) {
-            let msg = instantDom[0].children[i].children[0].innerText.replace(/[\r\n\t\s]/g, "");
+            let msg = instantDom[0].children[i].children[0].innerText.replace(/[\r\n\t\s]/g, "").replace("，能在香蕉商城兑换哦", "").replace("，可在客户端我的钱包查看收益", "");
             chrome.notifications.create(null, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',

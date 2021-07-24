@@ -1371,7 +1371,7 @@ function contentConfigure() {
                 items.notificationContent.giftNotif = false;
             } else {
                 document.getElementById('giftNotif').checked = true;
-                items.notificationContent.giftNotif = false;
+                items.notificationContent.giftNotif = true;
             }
             chrome.storage.local.set({ 'notificationContent': items.notificationContent });
         });
@@ -2154,6 +2154,11 @@ function playerConfigure() {
         } else {
             document.getElementById('hideDanmakuOperatorUI').checked = false;
         }
+        if (items.hideDanmakuOperator.maskSw) {
+            document.getElementById('hideDanmakuOperatorMaskSw').checked = true;
+        } else {
+            document.getElementById('hideDanmakuOperatorMaskSw').checked = false;
+        }
         $('#hideDanmakuOperator').on('click', function () {
             if (!document.getElementById('hideDanmakuOperator').checked) {
                 document.getElementById('hideDanmakuOperator').checked = false;
@@ -2171,6 +2176,16 @@ function playerConfigure() {
             } else {
                 document.getElementById('hideDanmakuOperatorUI').checked = true;
                 items.hideDanmakuOperator.UI = true;
+            }
+            chrome.storage.local.set({ 'hideDanmakuOperator': items.hideDanmakuOperator });
+        })
+        $('#hideDanmakuOperatorMaskSw').on('click', function () {
+            if (!document.getElementById('hideDanmakuOperatorMaskSw').checked) {
+                document.getElementById('hideDanmakuOperatorMaskSw').checked = false;
+                items.hideDanmakuOperator.maskSw = false;
+            } else {
+                document.getElementById('hideDanmakuOperatorMaskSw').checked = true;
+                items.hideDanmakuOperator.maskSw = true;
             }
             chrome.storage.local.set({ 'hideDanmakuOperator': items.hideDanmakuOperator });
         })

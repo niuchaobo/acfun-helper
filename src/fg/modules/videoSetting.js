@@ -1110,15 +1110,21 @@ class VideoSetting {
    * 播放器弹幕操作菜单显-显示状态
    * @param {bool} sw 
    */
-  hideDanmakuOperator(sw) {
+  hideDanmakuOperator(sw, maskSw) {
     this.hideDanmakuOperatordanmakuOprFlag = sw;
     switch (sw) {
       case true:
         if (this.hideDanmakuOperatorStyleAdded) {
           document.querySelector("#hideDanmakuOperatorBarStyle").disabled = false;
+          if (maskSw) {
+            document.querySelector(".divMask") ? document.querySelector(".divMask").style.display = 'block' : "";
+          }
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
         } else {
           createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "hideDanmakuOperatorBarStyle");
+          if (maskSw) {
+            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0");
+          }
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
           this.hideDanmakuOperatorStyleAdded = true;
         }
@@ -1127,6 +1133,9 @@ class VideoSetting {
         const mainProcElem = document.querySelector("#hideDanmakuOperatorBarStyle");
         if (mainProcElem) {
           mainProcElem.disabled = true;
+          if (maskSw) {
+            document.querySelector(".divMask") ? document.querySelector(".divMask").style.display = 'none' : "";
+          }
         }
         document.querySelector(".danmakuOpr").dataset.bindAttr = true;
         break;
@@ -1169,22 +1178,24 @@ class VideoSetting {
             break;
           case "visible":
             if (this.beforeChangeTabPlayStatus) {
-              videoElemt.volume = 0;
+              if (!document.pictureInPictureElement) { videoElemt.volume = 0 };
               videoElemt.play();
-              var _voluemUpper = setInterval(() => {
-                //慢慢提大音量
-                let lastVolume = 0;
-                if (Number(videoElemt.volume) != Number(originVolumeNumber) && Number(videoElemt.volume) <= 1) {
-                  lastVolume = Number((videoElemt.volume).toFixed(2));
-                  videoElemt.volume = Number(lastVolume) + 0.01;
-                  if (Number(videoElemt.volume) == 1) {
+              if (!document.pictureInPictureElement) {
+                var _voluemUpper = setInterval(() => {
+                  //慢慢提大音量
+                  let lastVolume = 0;
+                  if (Number(videoElemt.volume) != Number(originVolumeNumber) && Number(videoElemt.volume) <= 1) {
+                    lastVolume = Number((videoElemt.volume).toFixed(2));
+                    videoElemt.volume = Number(lastVolume) + 0.01;
+                    if (Number(videoElemt.volume) == 1) {
+                      clearTimeout(_voluemUpper);
+                    }
+                    lastVolume = Number((videoElemt.volume).toFixed(2));
+                  } else {
                     clearTimeout(_voluemUpper);
                   }
-                  lastVolume = Number((videoElemt.volume).toFixed(2));
-                } else {
-                  clearTimeout(_voluemUpper);
-                }
-              }, 10);
+                }, 10);
+              }
             }
             break;
         }
@@ -1217,7 +1228,7 @@ class VideoSetting {
     if (ui) {
       this.getSomeSleepUI(defaultMode);
     }
-    if(defaultMode){
+    if (defaultMode) {
       this.sleepPauseSw(defaultMode);
     }
     this.getSomeSleep();

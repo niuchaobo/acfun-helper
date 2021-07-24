@@ -129,9 +129,9 @@ class ODHFront {
 					this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 					//弹幕操作栏状态
 					this.options.hideDanmakuOperator.UI && this.videoSetting.hideDanmakuOperatorUI();
-					this.videoSetting.hideDanmakuOperator(this.options.hideDanmakuOperator.defaultMode);
+					this.videoSetting.hideDanmakuOperator(this.options.hideDanmakuOperator.defaultMode, this.options.hideDanmakuOperator.maskSw);
 					//后台自动暂停
-					this.videoSetting.getSomeSleepFront(this.options.sleepPause.defaultMode,this.options.sleepPause.UI)
+					this.videoSetting.getSomeSleepFront(this.options.sleepPause.defaultMode, this.options.sleepPause.UI);
 					clearInterval(playerChecker);
 				}
 			}, 1000);

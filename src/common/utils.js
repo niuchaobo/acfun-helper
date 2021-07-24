@@ -93,7 +93,7 @@ const defaults = {
   Dev_thinScrollbar: false,
   liveIndexRankNum: true,
   timelineDots: false,
-  hideDanmakuOperator: { defaultMode: false, UI: true },
+  hideDanmakuOperator: { defaultMode: false, UI: true, maskSw: false },
   sleepPause: { defaultMode: false, UI: true },
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, }
@@ -785,6 +785,21 @@ function addElement(options) {
     target.insertBefore(x, tempTarget);
   }
   return x
+}
+
+/**
+ * 添加一层遮罩
+ * @param {Element} obj 
+ * @elementID divMask
+ */
+function MaskElement(obj, styleText = "") {
+  if (!styleText) {
+    styleText = `position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0;`
+  }
+  var hoverdiv = `<div class="divMask" style="${styleText}"></div>`;
+  $(obj).wrap('<div class="position:relative;"></div>');
+  $(obj).before(hoverdiv);
+  $(obj).data("mask", true);
 }
 
 function removeAPrefix(_$targetDom) {
