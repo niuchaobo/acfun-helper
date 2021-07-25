@@ -1092,14 +1092,12 @@ class VideoSetting {
       case true:
         if (this.hideDanmakuOperatorStyleAdded) {
           document.querySelector("#hideDanmakuOperatorBarStyle").disabled = false;
-          if (maskSw) {
-            document.querySelector(".divMask") ? document.querySelector(".divMask").style.display = 'block' : "";
-          }
+          document.querySelector("#danmakuLayerMask") ? document.querySelector("#danmakuLayerMask").style.display = 'block' : "";
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
         } else {
           createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "hideDanmakuOperatorBarStyle");
           if (maskSw) {
-            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0");
+            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0","danmakuLayerMask");
           }
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
           this.hideDanmakuOperatorStyleAdded = true;
@@ -1109,9 +1107,7 @@ class VideoSetting {
         const mainProcElem = document.querySelector("#hideDanmakuOperatorBarStyle");
         if (mainProcElem) {
           mainProcElem.disabled = true;
-          if (maskSw) {
-            document.querySelector(".divMask") ? document.querySelector(".divMask").style.display = 'none' : "";
-          }
+          document.querySelector("#danmakuLayerMask") ? document.querySelector("#danmakuLayerMask").style.display = 'none' : "";
         }
         document.querySelector(".danmakuOpr").dataset.bindAttr = true;
         break;
@@ -1205,7 +1201,7 @@ class VideoSetting {
       this.getSomeSleepUI(defaultMode);
     }
     if (defaultMode) {
-      this.sleepPauseSw(defaultMode);
+      this.sleepPauseSwSetter(defaultMode);
     }
     this.getSomeSleep();
   }
