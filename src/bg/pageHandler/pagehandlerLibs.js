@@ -36,16 +36,3 @@ export async function computePageNum() {
     let multip = (comple / 100) + 1 //页数
     return multip
 }
-
-export async function getFollowings() {
-    let Uid = await getUid();
-    let Page = await computePageNum();
-    let result = []
-    for(let i=1;i<Page+1;i++){
-        let x = JSON.parse(await getResult(`https://api-new.acfunchina.com/rest/app/relation/getFollows?toUserId=${Uid}&pcursor=&count=100&page=${i}&groupId=0&action=7`));
-        result.push(x.friendList);
-    }
-    return new Promise((resolve, reject) => {
-        resolve(result);
-    })
-}

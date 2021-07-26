@@ -34,13 +34,15 @@ class VideoSetting {
     this.timelineDotsResultCache = "";
     this.hideDanmakuOperatorStyleAdded = false;
     this.hideDanmakuOperatordanmakuOprFlag = false;
+    this.beforeChangeTabPlayStatus = false;
+    this.sleepPauseSw = false;
   }
 
   onLoad() {
-    var hiddenDiv = document.getElementById("myCustomEventDiv");
+    var hiddenDiv = document.getElementById("AcFunHelperDataDiv");
     if (!hiddenDiv) {
       hiddenDiv = document.createElement("div");
-      hiddenDiv.id = "myCustomEventDiv";
+      hiddenDiv.id = "AcFunHelperDataDiv";
       hiddenDiv.style.display = "none";
       document.body.appendChild(hiddenDiv);
     }
@@ -52,7 +54,7 @@ class VideoSetting {
     //给inject js 传递数据
     sc.onload = function () {
       var customEvent = document.createEvent("Event");
-      customEvent.initEvent("myCustomEvent", true, true);
+      customEvent.initEvent("AcFunHelperDataDivEvent", true, true);
       hiddenDiv.innerText = JSON.stringify(window.odhfront.options);
       hiddenDiv.dispatchEvent(customEvent);
     };
@@ -77,8 +79,8 @@ class VideoSetting {
 
   //画中画模式
   callPicktureInPictureMode() {
-    const isChrome = navigator.userAgent.indexOf("Chrome") === -1;
-    if (isChrome) {
+    const notChrome = navigator.userAgent.indexOf("Chrome") === -1;
+    if (notChrome) {
       return;
     }
     let cPIP_div = this.cPIP_div;
@@ -94,8 +96,13 @@ class VideoSetting {
       });
       $(".box-right>div").click((e) => {
         if (e.target.className === "btn-span setPictureInPictureMode") {
-          leftBottomTip("启动", "画中画模式");
-          this.setPictureInPictureMode();
+          if (!document.pictureInPictureElement) {
+            leftBottomTip("启动", "画中画模式");
+            this.setPictureInPictureMode(true);
+          } else {
+            leftBottomTip("关闭", "画中画模式");
+            this.setPictureInPictureMode(false);
+          }
         } else {
           return;
         }
@@ -103,10 +110,14 @@ class VideoSetting {
     });
   }
   //调用画中画模式
-  setPictureInPictureMode() {
-    let v = document.getElementsByTagName("video")[0];
-    v.requestPictureInPicture();
-    console.log("[LOG]Frontend-videoSetting: Calling PictureInPicture Mode.");
+  setPictureInPictureMode(sw) {
+    if (sw) {
+      document.getElementsByTagName("video")[0].requestPictureInPicture();
+      console.log("[LOG]Frontend-videoSetting: Calling PictureInPicture Mode.");
+    } else {
+      document.exitPictureInPicture();
+      console.log("[LOG]Frontend-videoSetting: Exit PictureInPicture Mode.");
+    }
   }
 
   //画质策略
@@ -694,88 +705,74 @@ class VideoSetting {
    * @refer https://www.cnblogs.com/ajanuw/p/8422176.html https://w3c.github.io/mediasession/#the-mediasession-interface https://developer.mozilla.org/zh-CN/docs/Web/API/MediaSession#%E4%BE%8B%E5%AD%90
    * @ideaRefer https://github.com/Yzi/AcFun-TheaterMode
    */
-  videoMediaSession() {
-    fgConsole(
-      this,
-      this.videoMediaSession,
-      "Init MediaSessionModule.",
-      1,
-      false
-    );
-    window.addEventListener("message", (e) => {
-      let videoInfo = {};
+  videoMediaSession(dougaInfo) {
+    fgConsole(this, this.videoMediaSession, "Init MediaSessionModule.", 1, false);
+    if (!isBoughtBangumi()) { return }
+    let videoInfo = {};
+    try {
+      if (dougaInfo) {
+        videoInfo = dougaInfo;
+      } else {
+        throw TypeError;
+      }
       try {
         this.acNum = REG.acVid.exec(location.href)[2];
       } catch (error) {
         this.acNum = REG.acBangumid.exec(location.href)[2];
       }
-      if (e.data.to == "videoInfo") {
-        try {
-          videoInfo = JSON.parse(e.data.msg);
-          if (
-            videoInfo.ksPlayJson &&
-            JSON.parse(videoInfo.ksPlayJson).businessType == "1"
-          ) {
-            //番剧的videoInfo对象内容不一样，从dom下手
-            throw TypeError;
-          }
-        } catch (error) {
-          videoInfo = {
-            title:
-              document.querySelectorAll("meta")[5].content.split(",")[0] ||
-              document.querySelector(".video-description.clearfix>.title")
-                .innerText,
-            channel: {
-              parentName:
-                document.querySelectorAll("meta")[5].content.split(",")[1] ||
-                document.querySelector(
-                  "#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second"
-                ).innerText,
-              name:
-                document.querySelectorAll("meta")[5].content.split(",")[2] ||
-                document.querySelector(
-                  "#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third"
-                ).innerText,
-            },
-            user: {
-              name: document.querySelectorAll("meta")[5].content.split(",")[3],
-            },
-            coverUrl: "",
-            videoList: [],
-          };
-          //封面
-          try {
-            //Up主头像
-            videoInfo.coverUrl = document.querySelector(
-              "#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img"
-            ).src;
-          } catch (error) {
-            try {
-              //直接拿番剧推荐视频封面
-              videoInfo.coverUrl = document.querySelector(
-                "#main-content > div.right-column > div.highlights > div.clearfix.area.highlights-list > figure:nth-child(1) > a > img"
-              ).src;
-            } catch (error) {
-              //没有番剧推荐视频那就拿大家都在看的封面得了
-              videoInfo.coverUrl = document.querySelector(
-                "#pagelet_newrecommend > div > div > figure:nth-child(1) > a > img"
-              ).src;
-            }
-          }
-          //分P
-          this.mediaSessionGatherMultiPartInfo(videoInfo);
-        }
-        fgConsole(
-          this,
-          this.videoMediaSession,
-          "Attach MediaSession ActionHandler.",
-          1,
-          false
-        );
-        // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
-        this.mediaSessionCore(videoInfo);
+      if (videoInfo.bangumiId) {
+        videoInfo = {
+          title: videoInfo.showTitle,
+          channel: {
+            parentName: "番剧",
+            name: videoInfo.acfunOnly ? "独家" : "普通"
+          },
+          user: {
+            name: "AcFun"
+          },
+          coverUrl: videoInfo.image,
+          videoList: [],
+        };
       }
-    });
+      throw TypeError;
+    } catch (error) {
+      videoInfo = {
+        title:
+          document.querySelectorAll("meta")[5].content.split(",")[0] ||
+          document.querySelector(".video-description.clearfix>.title").innerText,
+        channel: {
+          parentName:
+            document.querySelectorAll("meta")[5].content.split(",")[1] ||
+            document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second").innerText,
+          name:
+            document.querySelectorAll("meta")[5].content.split(",")[2] ||
+            document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third").innerText,
+        },
+        user: {
+          name: document.querySelectorAll("meta")[5].content.split(",")[3],
+        },
+        coverUrl: "",
+        videoList: [],
+      };
+      //封面
+      try {
+        //Up主头像
+        videoInfo.coverUrl = document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src;
+      } catch (error) {
+        try {
+          //直接拿番剧推荐视频封面
+          videoInfo.coverUrl = document.querySelector("#main-content > div.right-column > div.highlights > div.clearfix.area.highlights-list > figure:nth-child(1) > a > img").src;
+        } catch (error) {
+          //没有番剧推荐视频那就拿大家都在看的封面得了
+          videoInfo.coverUrl = document.querySelector("#pagelet_newrecommend > div > div > figure:nth-child(1) > a > img").src;
+        }
+      }
+      //分P
+      this.mediaSessionGatherMultiPartInfo(videoInfo);
+    }
+    fgConsole(this, this.videoMediaSession, "Attach MediaSession ActionHandler.", 1, false);
+    // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
+    this.mediaSessionCore(videoInfo);
   }
 
   mediaSessionCore(videoInfo) {
@@ -845,21 +842,15 @@ class VideoSetting {
   mediaSessionPlayer(action, videoInfo) {
     switch (action) {
       case "previous":
-        this.mediaSessionNowPlayingIndex =
-          (this.mediaSessionNowPlayingIndex - 1) %
-          (videoInfo.videoList.length - 1);
+        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex - 1) % (videoInfo.videoList.length - 1);
         break;
       case "next":
-        this.mediaSessionNowPlayingIndex =
-          (this.mediaSessionNowPlayingIndex + 1) %
-          (videoInfo.videoList.length - 1);
+        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex + 1) % (videoInfo.videoList.length - 1);
         break;
       default:
         break;
     }
-    document
-      .querySelector(".scroll-div.over-parts")
-      .children[this.mediaSessionNowPlayingIndex].click();
+    document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
     document.querySelector("video").play();
   }
 
@@ -879,22 +870,15 @@ class VideoSetting {
     let videoInfo = {};
     setTimeout(() => {
       videoInfo = {
-        title: document.querySelector(".video-description.clearfix>.title")
-          .innerText,
+        title: document.querySelector(".video-description.clearfix>.title").innerText,
         channel: {
-          parentName: document.querySelector(
-            "#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second"
-          ).innerText,
-          name: document.querySelector(
-            "#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third"
-          ).innerText,
+          parentName: document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-second").innerText,
+          name: document.querySelector("#nav > div.clearfix.wp.nav-parent > div.nav-left > div.channel-bread > a.channel-third").innerText,
         },
         user: {
           name: document.querySelector("a.up-name").innerText,
         },
-        coverUrl: document.querySelector(
-          "#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img"
-        ).src,
+        coverUrl: document.querySelector("#main-content > div.left-column > div.introduction > div.up-area > div.up-details > a > img").src,
         videoList: [],
       };
       this.mediaSessionGatherMultiPartInfo(videoInfo);
@@ -908,9 +892,7 @@ class VideoSetting {
 
   mediaSessionGatherMultiPartInfo(videoInfo) {
     try {
-      videoInfo["videoList"] = document.querySelector(
-        ".scroll-div.over-parts"
-      ).children;
+      videoInfo["videoList"] = document.querySelector(".scroll-div.over-parts").children;
     } catch (error) {
       try {
         videoInfo["videoList"] = document.querySelector(".scroll-div").children;
@@ -1104,15 +1086,19 @@ class VideoSetting {
    * 播放器弹幕操作菜单显-显示状态
    * @param {bool} sw 
    */
-  hideDanmakuOperator(sw) {
+  hideDanmakuOperator(sw, maskSw) {
     this.hideDanmakuOperatordanmakuOprFlag = sw;
     switch (sw) {
       case true:
         if (this.hideDanmakuOperatorStyleAdded) {
           document.querySelector("#hideDanmakuOperatorBarStyle").disabled = false;
+          document.querySelector("#danmakuLayerMask") ? document.querySelector("#danmakuLayerMask").style.display = 'block' : "";
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
         } else {
           createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "hideDanmakuOperatorBarStyle");
+          if (maskSw) {
+            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0","danmakuLayerMask");
+          }
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
           this.hideDanmakuOperatorStyleAdded = true;
         }
@@ -1121,6 +1107,7 @@ class VideoSetting {
         const mainProcElem = document.querySelector("#hideDanmakuOperatorBarStyle");
         if (mainProcElem) {
           mainProcElem.disabled = true;
+          document.querySelector("#danmakuLayerMask") ? document.querySelector("#danmakuLayerMask").style.display = 'none' : "";
         }
         document.querySelector(".danmakuOpr").dataset.bindAttr = true;
         break;
@@ -1142,6 +1129,81 @@ class VideoSetting {
         this.hideDanmakuOperator(true);
       }
     })
+  }
+
+  /**
+   * 后台自动暂停视频
+   */
+  getSomeSleep() {
+    let originVolumeNumber = 0;
+    document.addEventListener("visibilitychange", () => {
+      if (this.sleepPauseSw) {
+        originVolumeNumber = Number(document.querySelector(".volume-panel-content").children[0].innerText) / 1e2;
+        let videoElemt = document.querySelector("video");
+        switch (document.visibilityState) {
+          case "hidden":
+            this.beforeChangeTabPlayStatus = !videoElemt.paused;
+            //开启画中画则不暂停
+            if (!document.pictureInPictureElement) {
+              videoElemt.pause();
+            }
+            break;
+          case "visible":
+            if (this.beforeChangeTabPlayStatus) {
+              if (!document.pictureInPictureElement) { videoElemt.volume = 0 };
+              videoElemt.play();
+              if (!document.pictureInPictureElement) {
+                var _voluemUpper = setInterval(() => {
+                  //慢慢提大音量
+                  let lastVolume = 0;
+                  if (Number(videoElemt.volume) != Number(originVolumeNumber) && Number(videoElemt.volume) <= 1) {
+                    lastVolume = Number((videoElemt.volume).toFixed(2));
+                    videoElemt.volume = Number(lastVolume) + 0.01;
+                    if (Number(videoElemt.volume) == 1) {
+                      clearTimeout(_voluemUpper);
+                    }
+                    lastVolume = Number((videoElemt.volume).toFixed(2));
+                  } else {
+                    clearTimeout(_voluemUpper);
+                  }
+                }, 10);
+              }
+            }
+            break;
+        }
+      }
+    })
+  }
+  sleepPauseSwSetter(sw) {
+    this.sleepPauseSw = sw;
+  }
+  getSomeSleepUI(sw = false) {
+    this.sleepPauseSwSetter(sw);
+    let htmlUi = `
+    <div>
+      <label>后台暂停</label>
+      <div class="control-checkbox getSomeSleep" data-bind-key="getSomeSleep" data-bind-attr="${sw}"></div>
+    </div>
+    `;
+    $(".setting-panel>.setting-panel-content").append(htmlUi);
+    $(".setting-panel-content").click((e) => {
+      if (e.target.dataset.bindKey == "getSomeSleep" && e.target.dataset.bindAttr == "false") {
+        this.sleepPauseSwSetter(true);
+        document.querySelector(".getSomeSleep").dataset.bindAttr = true;
+      } else if (e.target.dataset.bindKey == "getSomeSleep" && e.target.dataset.bindAttr == "true") {
+        this.sleepPauseSwSetter(false);
+        document.querySelector(".getSomeSleep").dataset.bindAttr = false;
+      }
+    })
+  }
+  getSomeSleepFront(defaultMode, ui) {
+    if (ui) {
+      this.getSomeSleepUI(defaultMode);
+    }
+    if (defaultMode) {
+      this.sleepPauseSwSetter(defaultMode);
+    }
+    this.getSomeSleep();
   }
 
 }

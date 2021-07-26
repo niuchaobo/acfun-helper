@@ -18,6 +18,10 @@ class ODHFront {
 		this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
 		this.reader = new Reader(); //文章区阅读模式
 
+		this.dataset = {
+			dougaInfo: {}, sessionuuid: "",
+		}
+
 		chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
 		window.addEventListener("message", (e) => this.onFrameMessage(e)); //接收来自iframe的消息
 
@@ -116,7 +120,7 @@ class ODHFront {
 					//AB回放
 					this.options.ABPlaysw && this.videoSetting.addABPlayUI();
 					//画中画
-					this.videoSetting.callPicktureInPictureMode();
+					this.options.PictureInPictureModeUI && this.videoSetting.callPicktureInPictureMode();
 					//全局进度条
 					this.options.ProgressBarsw && this.videoSetting.flexProgressBar(this.options.ProgressBarStyle);
 					//画质策略
@@ -125,7 +129,9 @@ class ODHFront {
 					this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 					//弹幕操作栏状态
 					this.options.hideDanmakuOperator.UI && this.videoSetting.hideDanmakuOperatorUI();
-					this.videoSetting.hideDanmakuOperator(this.options.hideDanmakuOperator.defaultMode);
+					this.videoSetting.hideDanmakuOperator(this.options.hideDanmakuOperator.defaultMode, this.options.hideDanmakuOperator.maskSw);
+					//后台自动暂停
+					this.videoSetting.getSomeSleepFront(this.options.sleepPause.defaultMode, this.options.sleepPause.UI);
 					clearInterval(playerChecker);
 				}
 			}, 1000);
@@ -213,36 +219,25 @@ class ODHFront {
 	}
 
 	onLoad(e) {
-		//根据cookie判断当前登录用户是不是up
-		//let is_up = this.adjuatUp();
 		let href = this.href;
 		this.authInfo.cookInfo();
 		//开启屏蔽功能
 		this.options.filter && this.block.block();
-		var pageInfo = null;
-		//视频 TODO:这玩意儿到底是个啥！？
 		if (REG.video.test(href)) {
-			var div = document.createElement('div');
-			div.style.display = "none";
-			let uuid = uuidBuild();
-			div.id = uuid;
-			document.body.appendChild(div);
-			div.setAttribute('onclick', "document.getElementById('" + uuid + "').innerText=JSON.stringify(window.pageInfo)");
-			div.click();
-			pageInfo = JSON.parse(document.getElementById(uuid).innerText);
-			document.body.removeChild(div);
-			let currentVideoInfo = pageInfo.currentVideoInfo;
-			if (currentVideoInfo == undefined || currentVideoInfo == "" || currentVideoInfo == null) {
+			if (!this.fetchPageInfo()) {
 				return;
 			}
 			let isUp = adjustVideoUp();
-			this.div.show(pageInfo, this.options, 'video', isUp);
+			this.div.show(this.dataset.dougaInfo, this.options, 'video', isUp);
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			//自动投蕉
 			this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {
+			if (!this.fetchPageInfo()) {
+				return;
+			}
 			//弹幕列表
 			getAsyncDom('.list-title', () => {
 				//弹幕列表搜索
@@ -259,13 +254,13 @@ class ODHFront {
 			//快捷键评论发送
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
 			//MediaSession
-			this.options.videoMediaSession && this.videoSetting.videoMediaSession();
+			this.options.videoMediaSession && this.videoSetting.videoMediaSession(this.dataset.dougaInfo);
 			return
 		}
 		//文章
 		if (REG.article.test(href)) {
 			let isUp = adjustArticleUp();
-			this.div.show(pageInfo, this.options, 'article', isUp);
+			this.div.show(this.dataset.dougaInfo, this.options, 'article', isUp);
 			this.options.picDrag && this.reader.picDrag(this.options.picRotate);
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
@@ -283,7 +278,7 @@ class ODHFront {
 		//直播
 		if (REG.live.test(href)) {
 			$(".open-app-confirm").hide();
-			this.div.show(pageInfo, this.options, 'live', '');
+			this.div.show(this.dataset.dougaInfo, this.options, 'live', '');
 			this.options.LiveUserFocus && this.livePageBeautify.followMe();
 			this.options.liveMediaSession && this.live.liveMediaSession(href);
 			//直播画中画模式
@@ -347,6 +342,8 @@ class ODHFront {
 	 */
 	reattachFrontMods() {
 		if (this.videoSetting.mediaSessionJudgeChangeVideo()) {
+			//清除原来的稿件信息
+			this.dataset.dougaInfo = {};
 			let isLogined = false;
 			if (isLogin("video")) {
 				isLogined = true;
@@ -357,6 +354,24 @@ class ODHFront {
 			this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
 		}
+	}
+
+	fetchPageInfo() {
+		var div = document.createElement('div');
+		div.style.display = "none";
+		let uuid = uuidBuild();
+		div.id = uuid;
+		document.body.appendChild(div);
+		div.setAttribute('onclick', "document.getElementById('" + uuid + "').innerText=JSON.stringify(window.pageInfo)");
+		div.click();
+		this.dataset.dougaInfo = JSON.parse(document.getElementById(uuid).innerText);
+		this.dataset.sessionuuid = uuid;
+		document.body.removeChild(div);
+		let currentVideoInfo = this.dataset.dougaInfo.currentVideoInfo;
+		if (currentVideoInfo == undefined || currentVideoInfo == "" || currentVideoInfo == null) {
+			return false;
+		}
+		return true;
 	}
 
 	//抽奖
@@ -380,10 +395,10 @@ class ODHFront {
 	}
 	//下载弹幕
 	api_downloadDanmaku(params) {
-		this.download.downloadDanmaku(params);
+		this.download.downloadDanmaku(this.dataset.dougaInfo);
 	}
 	api_assDanmaku() {
-		this.danmaku.sanitizeJsonDanmakuToAss();
+		this.danmaku.sanitizeJsonDanmakuToAss(this.dataset.dougaInfo);
 	}
 	api_notice(params) {
 		let action = "notice";

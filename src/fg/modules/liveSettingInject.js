@@ -11,17 +11,22 @@ let liveFunction = (function () {
       document
         .getElementsByClassName("live-feed-messages")[0]
         .addEventListener("DOMNodeInserted", (e) => {
-          if (
-            e.target.classList[0] == "comment" ||
-            e.target.classList[0] == "user-enter"
-          ) {
-            let x = new Date();
-            let f_c=e.target.children[0].firstChild;
-            let span = document.createElement('span');
-            let time_hour = x.getHours().toString().length == 1 ? "0" + x.getHours().toString() : x.getHours();
-            let time_min = x.getMinutes().toString().length == 1 ? "0" + x.getMinutes().toString() : x.getMinutes();
-            span.innerHTML = `[${time_hour}:${time_min}]`;
-            e.target.children[0].insertBefore(span, f_c);
+          try {
+            if (
+              e.target.classList[0] == "comment" ||
+              e.target.classList[0] == "user-enter"
+            ) {
+              let x = new Date();
+              let f_c = e.target.children[0].firstChild;
+              let span = document.createElement('span');
+              let time_hour = x.getHours().toString().length == 1 ? "0" + x.getHours().toString() : x.getHours();
+              let time_min = x.getMinutes().toString().length == 1 ? "0" + x.getMinutes().toString() : x.getMinutes();
+              span.innerHTML = `[${time_hour}:${time_min}]`;
+              e.target.children[0].insertBefore(span, f_c);
+            }
+          } catch (error) {
+            console.log("[LOG]Frontend-videoSettingInject: recheck live-feed-messages items.")
+            return;
           }
         });
       clearInterval(_timer);

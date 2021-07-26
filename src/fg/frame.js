@@ -76,16 +76,6 @@ function scanChange(e) {
     }, '*');
 }
 
-function receiveChange(e) {
-    let value = $(this).prop('checked');
-    window.parent.postMessage({
-        action: 'receive',
-        params: {
-            value: value,
-        }
-    }, '*');
-}
-
 function readmodeChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
@@ -196,7 +186,6 @@ function onDomContentLoaded() {
     $("#assDanmaku").bind('click', assDanmaku);
     $("#comment-scan").change(scanChange);
     $("#comment-mark").change(markChange);
-    $("#comment-receive").change(receiveChange);
     $("#readmode").change(readmodeChange);
     $("#copy-link-super").bind('click', { "id": '#live-url-super' }, copyLink);
     document.querySelectorAll("span.addressCopySrc").forEach((e) => {

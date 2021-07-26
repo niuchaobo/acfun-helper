@@ -156,9 +156,8 @@ class Download {
 
     }
 
-    async downloadDanmaku() {
+    async downloadDanmaku(videoInfo) {
         let acid = REG.acVid.exec(window.location.href)[2];
-        let videoInfo = JSON.parse(await fetchResult(acfunApis.videoInfo + acid));
         let pageCount = Math.round(videoInfo.danmakuCount / 200);
         if (pageCount == 0) {
             pageCount = 1;

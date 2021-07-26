@@ -10,7 +10,7 @@ const defaults = {
   broadcastingUIDlistFollowing: {},
   MarkedComment: { setting: { enabled: true, storeLocation: "ExtensionStore", storePlugin: ["ExtensionStore", "IndexedDB", "Nextcloud", "UserdefinedServer"] }, datasets: {} },
   WatchPlanList: [],
-  MusicPlayList: { "windowSetting": { "left": 139, "top": 32, "width": 980, "height": 590 }, "onLoadAutoPlay": true, "playerMode": 1, "multiPartContinue": true, "List": {} },
+  PictureInPictureModeUI: true,
   activeTabKey: 'activeTabId',
   extendsName: 'AcFun助手',
   upUrlTemplate: 'https://www.acfun.cn/u/{uid}',
@@ -29,7 +29,6 @@ const defaults = {
   UserFilter: {},
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
-  receive: false,//接收用户情报
   filter: false,//up文章区屏蔽
   beautify_nav: true,//首页右侧导航
   beautify_personal: true,//顶栏个人中心优化
@@ -94,7 +93,8 @@ const defaults = {
   Dev_thinScrollbar: false,
   liveIndexRankNum: true,
   timelineDots: false,
-  hideDanmakuOperator: { defaultMode: false, UI: true },
+  hideDanmakuOperator: { defaultMode: false, UI: true, maskSw: false },
+  sleepPause: { defaultMode: false, UI: true },
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, }
 };
@@ -787,6 +787,21 @@ function addElement(options) {
   return x
 }
 
+/**
+ * 添加一层遮罩
+ * @param {Element} obj 
+ * @elementID divMask
+ */
+function MaskElement(obj, styleText = "", divName = "") {
+  if (!styleText) {
+    styleText = `position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0;`
+  }
+  var hoverdiv = `<div id="${divName}" class="divMask" style="${styleText}"></div>`;
+  $(obj).wrap('<div class="position:relative;"></div>');
+  $(obj).before(hoverdiv);
+  $(obj).data("mask", true);
+}
+
 function removeAPrefix(_$targetDom) {
   let acid = _$targetDom[0].getAttribute("data-aid");
   if (acid == '') { return }
@@ -833,6 +848,19 @@ function isLogin(dept = "video", evidence = "cookies") {
         return isLogined;
     }
   }
+}
+
+/**
+ * 判断番剧购买情况（普通视频也会有.hide）
+ * @returns Bool
+ */
+async function isBoughtBangumi() {
+  return await getAsyncDom(".setting-panel-content", () => {
+    if (document.querySelector(".container-player .pay_bangumi.hide")) {
+      return true;
+    }
+    return false;
+  })
 }
 
 /**
