@@ -75,7 +75,7 @@ function fgConsole(cls, clsFunc, msg, logLevel = 0, timesw) {
     if (typeof (cls) != 'string') {
         cls = getEsClassName(cls);
     }
-    if (typeof (clsFunc) === 'string') {
+    if (typeof (clsFunc) != 'string') {
         clsFunc = getEsFuncName(clsFunc);
     }
     devConsole("fg", cls, clsFunc, msg, logLevel, timesw)
