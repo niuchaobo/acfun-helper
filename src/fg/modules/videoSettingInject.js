@@ -12,6 +12,22 @@ let videoFunction = (function () {
   var nowDropFrame = 0;
   var hiddenDiv = document.getElementById("AcFunHelperDataDiv");
 
+  //=======MessageHub=======//
+  window.addEventListener("message", (e) => {
+    if (e.data.to == "AcFunHelper_vsInject") {
+      if (typeof (e.data.msg.subMod) === 'function') {
+        (e.data.msg.subMod).call({}, e.data.msg.msg);
+      }
+    }
+  })
+
+  function MessagePush(modName = "", msg = "") {
+    window.parent.postMessage({
+      to: "AcFunHelperFrontend",
+      msg: { modName: modName, msg: msg },
+    }, "*");
+  }
+
   if (!hiddenDiv) {
     hiddenDiv = document.createElement("div");
     hiddenDiv.style.display = "none";
@@ -68,10 +84,8 @@ let videoFunction = (function () {
           .getElementsByTagName("video")[0]
           .addEventListener("ended", function () {
             let nowMode =
-              document.querySelector("div.btn-film-model").children[0].dataset
-                .bindAttr == "true" ||
-              document.querySelector("div.btn-fullscreen").children[0].dataset
-                .bindAttr == "web";
+              document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" ||
+              document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web";
             let isMultiPart = document.querySelector("#main-content > div.right-column > div.part") != null;
             if (!window.player._loop && nowMode) {
               if (isMultiPart) {
@@ -104,13 +118,20 @@ let videoFunction = (function () {
 
     if (options.endedAutoJumpRecommandFirstDougasw) {
       //自动观看“大家都在看”栏目第一个稿件
-      document
-        .getElementsByTagName("video")[0]
-        .addEventListener("ended", function () {
-          document
-            .getElementsByClassName("recommendation")[0]
-            .children[0].children[0].click();
-        });
+      document.getElementsByTagName("video")[0].addEventListener("ended", function () {
+        document.getElementsByClassName("recommendation")[0].children[0].children[0].click();
+      });
+    }
+
+    if (options.frameStepSetting.enabled) {
+      //快捷键绑定
+      document.body.addEventListener('keydown', (e) => {
+        if (e.shiftKey && e.key === "A") {
+          MessagePush("frameStep", "b")
+        } else if (e.shiftKey && e.key === "D") {
+          MessagePush("frameStep", "f")
+        }
+      })
     }
 
   });
@@ -202,9 +223,11 @@ let videoFunction = (function () {
   return {
     quickJump,
     dropFrameIncrementAlz,
+    MessagePush,
   };
 })();
 let {
   quickJump,
   dropFrameIncrementAlz,
+  MessagePush,
 } = { ...videoFunction };

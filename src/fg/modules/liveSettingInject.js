@@ -33,10 +33,10 @@ let liveFunction = (function () {
     }
   }, 2000);
 
-  //调用画中画模式(其实跟video是一个函数)
+  //调用画中画模式
   function l_setPictureInPictureMode() {
     let v = document.getElementsByTagName("video")[0];
-    v.requestPictureInPicture();
+    document.pictureInPictureElement ? document.exitPictureInPicture() : v.requestPictureInPicture();
     console.log(
       "[LOG]Frontend-videoSettingInject: Calling PictureInPicture Mode."
     );

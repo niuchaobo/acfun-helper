@@ -1703,6 +1703,25 @@ function pageEnhance() {
         });
     });
 
+    //=====================个人中心时间流稿件============================
+    chrome.storage.local.get(['userPageTimeline'], function (items) {
+        var userPageTimeline = items.userPageTimeline;
+        if (userPageTimeline) {
+            document.getElementById('userPageTimeline').checked = true;
+        } else {
+            document.getElementById('userPageTimeline').checked = false;
+        }
+        $('#userPageTimeline').on('click', function () {
+            if (!document.getElementById('userPageTimeline').checked) {
+                document.getElementById('userPageTimeline').checked = false;
+                chrome.storage.local.set({ 'userPageTimeline': false });
+            } else {
+                document.getElementById('userPageTimeline').checked = true;
+                chrome.storage.local.set({ 'userPageTimeline': true });
+            }
+        });
+    });
+
     //=====================快捷键发送评论============================
     chrome.storage.local.get(['quickCommentSubmit'], function (items) {
         var quickCommentSubmit = items.quickCommentSubmit;
@@ -2720,6 +2739,15 @@ function Final() {
             e.style.display = "block"
         })
     }
+    chrome.notifications.getPermissionLevel(e => {
+        if (e != "granted") {
+            mdui.snackbar({
+                message: `您没有允许助手的通知权限，有些功能可能不会生效。`,
+                position: 'right-top',
+                timeout: 5000,
+            });
+        }
+    })
     var devSwitchClick = 0
     document.querySelector("#devSwitch").addEventListener('click', function devMode() {
         if (devSwitchClick == 5) {

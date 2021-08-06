@@ -62,12 +62,16 @@ class VideoSetting {
 
   //跳转到上次观看(只支持1p投稿的跳转)
   jumpLastWatchTime() {
-    window.addEventListener("message", function (e) {
+    window.addEventListener("message", (e) => {
       if (e.data.to == "vs_videoInfo") {
         let videoInfo_data = JSON.parse(e.data.msg);
-        let lastTime = videoInfo_data[0].userPlayedSeconds;
+        let lastAcVpid = Number(videoInfo_data[judgeActivePart() - 1].id);
         try {
-          document.getElementsByTagName("video")[0].currentTime = lastTime;
+          if (JSON.parse(localStorage.playHistory)[lastAcVpid]) {
+            document.getElementsByTagName("video")[0].currentTime = JSON.parse(localStorage.playHistory)[lastAcVpid];
+          } else {
+            throw TypeError;
+          }
         } catch (error) {
           console.log(
             "[LOG]Frontend-videoSetting>jumpLastWatchTime: 没有上次观看的进度。"
@@ -1018,17 +1022,15 @@ class VideoSetting {
    * @origin github@RadND
    */
   frameStepFwd(mode = "f", frameRate) {
-    // console.log(mode,frameRate,document.getElementsByTagName("video")[0].currentTime)
+    // console.log(mode, frameRate, document.getElementsByTagName("video")[0].currentTime)
     if (frameRate) {
       document.getElementsByTagName("video")[0].pause();
       switch (mode) {
         case "f":
-          document.getElementsByTagName("video")[0].currentTime +=
-            1000 / frameRate;
+          document.getElementsByTagName("video")[0].currentTime += 1000 / frameRate;
           break;
         case "b":
-          document.getElementsByTagName("video")[0].currentTime -=
-            1000 / frameRate;
+          document.getElementsByTagName("video")[0].currentTime -= 1000 / frameRate;
           break;
       }
     }
@@ -1060,26 +1062,30 @@ class VideoSetting {
   /**
    * 帧步进-入口
    * @description 包括了帧步进快捷键和UI入口
-   * @todo 焦点在播放器上时，快捷键失效
    */
   frameStepFwdMain(UIneed) {
     if (UIneed) {
-      // let contentElem = ``;
-      // addElement()
-      // document.querySelector("#frameStepFwd").addEventListener('click', () => {
-      // })
-      // document.querySelector("#frameStepBwd").addEventListener('click', () => {
-      // })
+      let fwdUIIcon = `<svg t="1628246559047" style="transform: scale(0.3);" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3172" width="200" height="200"><path d="M475.542857 961.142857c-9.371429 0-18.742857-3.542857-25.942857-10.742857-14.285714-14.285714-14.285714-37.485714 0-51.885714L836.228571 512 449.6 125.485714c-14.285714-14.285714-14.285714-37.485714 0-51.885714 14.285714-14.285714 37.485714-14.285714 51.885714 0l412.457143 412.457143c14.285714 14.285714 14.285714 37.485714 0 51.885714L501.485714 950.4c-7.2 7.2-16.571429 10.742857-25.942857 10.742857z" fill="#ffffff" p-id="3173"></path><path d="M169.257143 961.142857c-9.371429 0-18.742857-3.542857-25.942857-10.742857-14.285714-14.285714-14.285714-37.485714 0-51.885714L529.942857 512 143.314286 125.485714c-14.285714-14.285714-14.285714-37.485714 0-51.885714 14.285714-14.285714 37.485714-14.285714 51.885714 0l412.457143 412.457143c14.285714 14.285714 14.285714 37.485714 0 51.885714L195.2 950.4c-7.2 7.2-16.571429 10.742857-25.942857 10.742857z" fill="#ffffff" p-id="3174"></path></svg>`
+      let contentElem = `<div class="control-btn speed" type='frameStep'>
+      <div class="speed-panel frameStep-panel">
+        <ul>
+          <li data-mode="f" onclick="MessagePush('frameStep', 'f')">下一帧</li>
+          <li data-mode="b" onclick="MessagePush('frameStep', 'b')">上一帧</li>
+        </ul>
+            <div class="transparent-placeholder"></div>
+      </div>${fwdUIIcon}
+    `;
+      $(" .box-right ").prepend(contentElem);
     }
 
-    //快捷键绑定
-    document.onkeypress = (e) => {
-      if (e.shiftKey && e.key === "A") {
-        this.frameStepFwd("b", this.getVideoFrameRate());
-      } else if (e.shiftKey && e.key === "D") {
-        this.frameStepFwd("f", this.getVideoFrameRate());
+    window.addEventListener("message", (e) => {
+      if (e.data.to == "AcFunHelperFrontend") {
+        if (e.data.msg.modName === "frameStep" && judgeEditorActiveState() === false) {
+          this.frameStepFwd(e.data.msg.msg, this.getVideoFrameRate());
+        }
       }
-    };
+    })
+
   }
 
   /**
@@ -1097,7 +1103,7 @@ class VideoSetting {
         } else {
           createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "hideDanmakuOperatorBarStyle");
           if (maskSw) {
-            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0","danmakuLayerMask");
+            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0", "danmakuLayerMask");
           }
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
           this.hideDanmakuOperatorStyleAdded = true;
@@ -1127,6 +1133,34 @@ class VideoSetting {
         this.hideDanmakuOperator(false);
       } else if (e.target.dataset.bindKey == "danmakuOpr" && e.target.dataset.bindAttr == "true") {
         this.hideDanmakuOperator(true);
+      }
+    })
+  }
+
+  /**
+   * 历史成就
+  */
+  historocalAchieve() {
+    chrome.runtime.sendMessage({ action: "achievementEvent", params: { responseRequire: true, asyncWarp: true, data: { action: "get", url: window.location.href } } }, function (response) {
+      var tag;
+      try {
+        tag = document.querySelector(".reco-tag").innerText;
+      } catch (error) {
+        tag = null;
+      }
+      if (response.data.length != 0) {
+        //数据库有数据
+        if (tag) {
+          return
+        } else {
+          //要加上Tag
+          addElement({ tag: 'a', target: document.querySelector(".video-description .title"), classes: 'reco-tag', createMode: "headAppnd", thisHTML: `${new Date(response.data[0].date).getFullYear()}-${new Date(response.data[0].date).getMonth() + 1}-${new Date(response.data[0].date).getDate()} ${response.data[0].tag}` })
+        }
+      } else {
+        if (tag) {
+          //数据库没数据，并且存在榜单数据，那就写数据进数据库
+          chrome.runtime.sendMessage({ action: "achievementEvent", params: { responseRequire: true, asyncWarp: true, data: { action: "put", url: window.location.href, tagData: tag } } }, function (response) { })
+        }
       }
     })
   }

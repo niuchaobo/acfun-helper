@@ -22,10 +22,6 @@ import {
 	indexJump,
 	userInfoFetch,
 	attentionTabs,
-	openMusicPlayerSetting,
-	musicPlayerPopupStart,
-	musicPlayerPopupStop,
-	musicPlayerPopupShow,
 	unreadNum,
 	toUcenter,
 } from "./popupEvent.js";
@@ -55,10 +51,6 @@ async function onReady() {
 	$("#WatchLaterFpopup").click(WatchLaterFpopup);
 	$("#StopWatchLaterFpopup").click(StopWatchLaterFpopup);
 	$("#attentionTabsFg").click(attentionTabs);
-	$("#musicPlayerPopupStart").click(musicPlayerPopupStart);
-	$("#musicPlayerPopupStop").click(musicPlayerPopupStop);
-	$("#musicPlayerPopupShow").click(musicPlayerPopupShow);
-	$("#musicPlayerPopupOpenList").click(openMusicPlayerSetting);
 	$("#livePageWatchTimeRecList").click(e => { e.target.className === 'liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key, e.target.href) });
 	$(".PushListMode").click(PushListDougaMode);
 	$(".MultOpen").click(PopupLater);

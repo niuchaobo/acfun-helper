@@ -108,7 +108,8 @@ export async function renderGroupPush(gid) {
  */
 export async function renderPushInnerHtml() {
 	pushListData.busy = true;
-	if (pushListData.index == 1) {
+	let bkFetchPushLst = await getStorage("fetchPushList_daemonsw").then(e => { return e.fetchPushList_daemonsw })
+	if (pushListData.index == 1 && bkFetchPushLst) {
 		try {
 			var p1data = await db_getPushListHtml();
 		} catch (error) {

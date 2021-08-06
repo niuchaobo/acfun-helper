@@ -135,8 +135,17 @@ class LivePageButfy {
     simplifyDanmu() {
         let noticeIcon = this.noticeIcon;
         $('.live-feed .face-text').append(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`)
-        $('#app').append('<div class="hide_popup"><ul style="width:120px"><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="container-live-anim">屏蔽礼物气泡</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="rich-text">屏蔽红包</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li><li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="join-club">屏蔽守护团消息</input></li></ul></div>')
-        document.getElementsByClassName('hide_popup')[0].style.cssText = 'position: absolute; z-index: 100;display: none;position: absolute; z-index: 100;display: none;background-color: rgba(255, 255, 255, 0.92);margin: 10px;padding: 5px;box-shadow: rgb(197, 197, 197) 5px 5px 5px 1px;';
+        $('#app').append(`<div class="hide_popup"><ul style="width:120px">
+        <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="container-live-anim">屏蔽礼物气泡</input></li>
+        <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li>
+        <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li>
+        <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="like">屏蔽点赞</input></li>
+        <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="rich-text">屏蔽红包</input></li>
+        <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li>
+        <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="join-club">屏蔽守护团消息</input></li>
+        <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="medal-wrapper">屏蔽牌子</input></li>
+        </ul></div>`)
+        document.getElementsByClassName('hide_popup')[0].style.cssText = 'position: absolute; z-index: 100;display: none;position: absolute; z-index: 100;display: none;background-color: rgba(255, 255, 255, 0.92);margin: 10px;padding: 5px;box-shadow: rgb(0 0 0 / 30%) 0px 0px 5px 0px;';
         document.getElementsByClassName('notice_icon')[0].style.cssText = 'position: absolute; width: 18px; heigth: auto; left: 35px; top: 0px; cursor: pointer;';
         document.getElementsByClassName('notice_icon')[0].children[0].style.cssText = 'width: 100%; height: auto';
         $(".left").on('mouseenter', () => {
@@ -146,7 +155,7 @@ class LivePageButfy {
             e.preventDefault();
             e.stopPropagation();
             $('.hide_popup').css('display') === "none" ?
-                $('.hide_popup').css({ left: e.pageX - 50 + 'px', top: e.pageY - 285 + 'px' }).show() :
+                $('.hide_popup').css({ left: e.pageX - 50 + 'px', top: e.pageY - 325 + 'px' }).show() :
                 $('.hide_popup').hide()
         })
         this.addBanStyle()
@@ -172,7 +181,15 @@ class LivePageButfy {
     }
 
     addBanStyle() {
-        let cssStr = ".hide_popup{position: absolute; z-index: 100;display: none;} .ban_gift .gift{display:none;} .ban_user-enter .user-enter{display:none;}.ban_like .like{display:none;} .ban_follow .follow{display:none;} .container-live-slot .ban_container-live-anim{display:none !important;} .ban_rich-text .rich-text{display:none !important;} .ban_join-club .join-club{display:none !important;}"
+        let cssStr = `.hide_popup{position: absolute; z-index: 100;display: none;} 
+        .ban_gift .gift,
+        .ban_user-enter .user-enter,
+        .ban_like .like,
+        .ban_follow .follow,
+        .container-live-slot .ban_container-live-anim,
+        .ban_rich-text .rich-text,
+        .ban_join-club .join-club,
+        .ban_medal-wrapper .medal-wrapper{display:none !important;}`
         createElementStyle(cssStr)
     }
 

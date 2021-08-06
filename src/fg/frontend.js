@@ -130,6 +130,8 @@ class ODHFront {
 					//弹幕操作栏状态
 					this.options.hideDanmakuOperator.UI && this.videoSetting.hideDanmakuOperatorUI();
 					this.videoSetting.hideDanmakuOperator(this.options.hideDanmakuOperator.defaultMode, this.options.hideDanmakuOperator.maskSw);
+					//播放器帧步进
+					this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 					//后台自动暂停
 					this.videoSetting.getSomeSleepFront(this.options.sleepPause.defaultMode, this.options.sleepPause.UI);
 					clearInterval(playerChecker);
@@ -187,7 +189,7 @@ class ODHFront {
 			this.options.hideAd && this.pageBeautify.hideAds();
 			this.options.playerRecommendHide && this.pageBeautify.simplifiyPlayerRecm();
 			//历史排行榜成就
-			this.options.videoAchievement && this.ce.historocalAchieve();
+			this.options.videoAchievement && this.videoSetting.historocalAchieve();
 			return
 		}
 		//直播
@@ -215,6 +217,8 @@ class ODHFront {
 			this.options.widenUCVideoList && this.pageBeautify.widenUCVideoList();
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false, true);
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("uc");
+			// this.pageBeautify.userRelatedTopic()
+			this.options.userPageTimeline && this.pageBeautify.userPageTimeline();
 		}
 	}
 
@@ -247,8 +251,6 @@ class ODHFront {
 			})
 			//分P列表扩展
 			this.options.multiPartListSpread && this.pageBeautify.multiPartListSpread()
-			//播放器帧步进
-			this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 			//倍率扩大音量
 			this.options.audioGain && this.videoSetting.audioNodeGain();
 			//快捷键评论发送
@@ -301,6 +303,7 @@ class ODHFront {
 	onCommentAreaLoaded(e) {
 		getAsyncDom(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
+			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
 		}, 3000)
 	}
 
