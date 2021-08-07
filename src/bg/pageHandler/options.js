@@ -2044,6 +2044,26 @@ function playerConfigure() {
             }
         });
     });
+    //=====================视频帧步进UI================
+    chrome.storage.local.get(['frameStepSetting'], function (items) {
+        var frameStepUI = items.frameStepSetting.controlUI;
+        if (frameStepUI) {
+            document.getElementById('frameStepUI').checked = true;
+        } else {
+            document.getElementById('frameStepUI').checked = false;
+        }
+        $('#frameStepUI').on('click', function () {
+            if (!document.getElementById('frameStepUI').checked) {
+                document.getElementById('frameStepUI').checked = false;
+                items.frameStepSetting.controlUI = false;
+                chrome.storage.local.set({ 'frameStepSetting': items.frameStepSetting });
+            } else {
+                document.getElementById('frameStepUI').checked = true;
+                items.frameStepSetting.controlUI = true;
+                chrome.storage.local.set({ 'frameStepSetting': items.frameStepSetting });
+            }
+        });
+    });
 
     //=====================评论区时间播放器快速跳转================
     chrome.storage.local.get(['PlayerTimeCommentEasyJump'], function (items) {
