@@ -632,7 +632,25 @@ class CommentEnhance {
                 clearInterval(timer);
             }
         }, 1000);
-
+        /**
+         * ref:https://cssanimation.rocks/animating-links/
+         */
+        createElementStyle(`
+        .ac-comment-list .area-comment-des a.quickJump:hover:after {
+            right: 0;
+            transition: right .4s cubic-bezier(0, .5, 0, 1);
+        }
+        .ac-comment-list .area-comment-des a.quickJump:after {
+            border-radius: 1em;
+            border-top: 1px solid #409BEF;
+            content: "";
+            position: absolute;
+            right: 100%;
+            bottom: -1px;
+            left: 0;
+            transition: right .4s cubic-bezier(0, .5, 0, 1);
+        }
+        `, document.head, "AcFunHelper_searchScanForPlayerTimeSty")
     }
 
     /**

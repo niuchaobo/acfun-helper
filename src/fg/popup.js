@@ -184,8 +184,6 @@ class Popup {
     }
 
     popLottery() {
-        let src = chrome.runtime.getURL('/') + "bg/images/copy_link.png";
-        let str = "[img=图片]https://imgs.aixifan.com/content/2020_05_25/1.5904184183999112E9.jpg[/img]"
         return `<div class="odh-headsection">
                     <span class="odh-expression">评论区抽奖</span>
                 </div>
@@ -211,14 +209,8 @@ class Popup {
                 `;
     }
 
-    popupHeader(type) {
+    popupHeader() {
         let root = chrome.runtime.getURL('/');
-        let fn = () => {
-            /*if(type=='live'){
-                return `<link rel="stylesheet" href="${root+'lib/video-js.css'}">`;
-            }*/
-            return '';
-        }
         return `
         <html lang="en">
             <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title></title>
@@ -226,13 +218,12 @@ class Popup {
                 <link rel="stylesheet" href="${root + 'fg/css/checkbox.css'}">
                 <link rel="stylesheet" href="${root + 'fg/css/frame.css'}">
                 <link rel="stylesheet" href="${root + 'fg/css/lucy.css'}">
-                ${fn()}
             </head>
             <body style="margin:0px;">
             <div class="odh-notes" id="ncb-notes">`;
     }
 
-    popupFooter(type) {
+    popupFooter() {
         let root = chrome.runtime.getURL('/');
         return `
             </div>
@@ -247,18 +238,12 @@ class Popup {
         this.options = options;
         if (this.popup !== null) {
             return;
-
-            //document.getElementById("ncb-wapper").innerHTML="";
         }
-        //this.wapper = document.createElement("div");
-        //this.wapper.id="ncb-wapper";
 
         this.popup = document.createElement('iframe');
         this.popup.id = 'acfun-popup-helper';
         this.popup.addEventListener('mousedown', (e) => e.stopPropagation());
         this.popup.addEventListener('scroll', (e) => e.stopPropagation(), false);
-
-        //this.wapper.appendChild(this.popup);
 
         window.addEventListener('scroll', (e) => e.stopPropagation(), { passive: true });
         let root = document.body;

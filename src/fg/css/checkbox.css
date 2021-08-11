@@ -10,6 +10,12 @@
     border-radius: 25px;
     position: relative;
     float: right;
+    transition: all .4s ease;
+}
+
+.enabled:hover {
+    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+    transition: all .4s ease;
 }
 
 .enabled:before {

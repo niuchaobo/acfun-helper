@@ -193,7 +193,7 @@ let videoFunction = (function () {
         nowDropFrame = player.$video.getVideoPlaybackQuality()
           .droppedVideoFrames;
         dropFrameIncrement = nowDropFrame - lastdropedFrame;
-        // console.log(dropFrameIncrement)
+        console.log(dropFrameIncrement)
       });
   }
 

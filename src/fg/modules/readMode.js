@@ -4,7 +4,7 @@ class Reader {
         this.hasEnabledLightMode = false;
         this.curRotAngle = 0;
     }
-    
+
     /**
      * 文章区阅读模式
      * @description 假如做直接操作原结构的方法够难的话，那就到时候做一个直接用新的结构去覆盖在原文章结构的上面算了，而且容易调整一点，这样甚至可以考虑动态地在助手前台页面去调整字号啊或者字距行距等属性，这种方法更加灵活一点，但是感觉一个人做挺难实现的
@@ -37,7 +37,7 @@ class Reader {
             }
         `
         if (!this.hasEnabledLightMode) {
-            createElementStyle(thisStyle, document.head, "readMode");
+            createElementStyle(thisStyle, document.head, "AcFunHelper_readMode");
             this.hasEnabledLightMode = true;
         }
         if (sw && this.hasEnabledLightMode == true) {
@@ -65,7 +65,7 @@ class Reader {
                 document.querySelector("#header").style.display = "none";
                 this.drag();
                 rotateSup && this.picRotate();
-            }else{
+            } else {
                 document.querySelector("#header").style.display = "block";
             }
         });

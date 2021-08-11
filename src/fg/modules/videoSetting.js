@@ -534,7 +534,7 @@ class VideoSetting {
         ".player-box,.nav-parent,.video-description{border-bottom-color:white}" +
         ".ac-comment-list .area-comment-title .name,{color: #bbbbbb;}" +
         ".share,.mobile,#pagelet_bottomrecommend,#footer{display:none !important}";
-      this.underWorld = createElementStyle(cssText, undefined, "underWorld");
+      this.underWorld = createElementStyle(cssText, undefined, "AcFunHelper_underWorld");
     } else {
       this.underWorld && this.underWorld();
       this.underWorld = null;
@@ -1101,9 +1101,9 @@ class VideoSetting {
           document.querySelector("#danmakuLayerMask") ? document.querySelector("#danmakuLayerMask").style.display = 'block' : "";
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
         } else {
-          createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "hideDanmakuOperatorBarStyle");
+          createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "AcFunHelper_hideDanmakuOperatorBarStyle");
           if (maskSw) {
-            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0", "danmakuLayerMask");
+            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0", "AcFunHelper_danmakuLayerMask");
           }
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
           this.hideDanmakuOperatorStyleAdded = true;

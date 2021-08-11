@@ -23,10 +23,10 @@ class Ohminibox {
                         try {
                             var x = JSON.parse(RegExp("jQuery35104624576750465499_1592378440178(.*)").exec(res)[1].replace('(', '').replace(')', ''));
                         } catch (error) {
-                            console.log(`    [LOG]Backend-Omnibox>registerOmnibox: [${formatDate(new Date(), true)}] 没有找到准确的关键字`);
+                            console.log(`    [LOG]Backend-Omnibox > registerOmnibox: [${formatDate(new Date(), true)}] 没有找到准确的关键字`);
                         }
                         let suggestions;
-                        if (x.suggestKeywords && x.suggestKeywords.length != 0) {
+                        if (x && x?.suggestKeywords.length != 0) {
                             suggestions = x.suggestKeywords.map((val) => {
                                 return {
                                     "content": val,

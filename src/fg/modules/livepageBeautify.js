@@ -45,7 +45,7 @@ class LivePageButfy {
         //这里是宽屏模式的样式，第一行包含了因为弹幕时间Tag功能加入导致用户名颜色变为黑色的纠正样式
         let cssStr = `.container-live-feed-messages .live-feed-messages>div.comment>div span:nth-child(2){color: #409bef;}.main{transiton: all 0.5s;padding:0 !important;} .live-player-container{padding-bottom: 54.25% !important;}.main_wide{width: 100%!important; margin:0!important;padding:0!important ; max-width:100% !important;height:100vh;} .control-btn svg{width: 20px; height: auto;} .wide_app{width:100%;}.main_wide .live-info{display:none;} .main_wide .container-gift-bar{display:none;} .wide_app #header{display: none!important;} .main_wide>.container-live-feed{margin:0 !important;position:relative;transition-duration: .15s;}.main_wide>.width_hidden{width:0!important;}#wide-player-right{  position: absolute;  top: calc(50% - 50px);  background: #ccc;  left: -15px;  z-index: 1000;  height: 100px;  width: 15px;  line-height: 100px;  border-radius: 15px 0px 0 15px;  opacity:0.2;  text-align: center;  cursor: pointer; } #wide-player-right:hover{opacity:1 }`;
         let mainDom = document.getElementsByClassName('main')[0]
-        createElementStyle(cssStr, mainDom)
+        createElementStyle(cssStr, mainDom, "AcFunHelper_widePlayerStyle")
     }
 
     judgeIsFullScreen(target) {
@@ -190,7 +190,7 @@ class LivePageButfy {
         .ban_rich-text .rich-text,
         .ban_join-club .join-club,
         .ban_medal-wrapper .medal-wrapper{display:none !important;}`
-        createElementStyle(cssStr)
+        createElementStyle(cssStr, document.head, "AcFunHelper_danmakuBanStyle")
     }
 
     /**
@@ -243,7 +243,7 @@ class LivePageButfy {
                 // flag == 'play' ? document.getElementsByClassName("container-video")[0].children[0].pause() : ""
                 if (flag == 'pause') {
                     if (hideType == 0) {
-                        createElementStyle('.tv-wrapper{display:none};')
+                        createElementStyle('.tv-wrapper{display:none};', document.head, "AcFunHelper_LivehideAds")
                         document.querySelector(".tv-wrapper").remove()
                     }
                     // clearInterval(timer)

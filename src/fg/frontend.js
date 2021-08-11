@@ -35,11 +35,18 @@ class ODHFront {
 	onBgMessage(request, sender, callback) {
 		const { action, params } = request;
 		const method = this["api_" + action];
+		let response;
 		if (typeof method === "function") {
 			params.callback = callback;
-			method.call(this, params);
+			if (params["asyncWarp"]) {
+				method.call(this, params).then(resp => {
+					callback(resp);
+				});
+				return;
+			}
+			response = method.call(this, params);
+			callback(response);
 		}
-		callback();
 	}
 
 	onFrameMessage(e) {
@@ -62,11 +69,12 @@ class ODHFront {
 			".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
 			"span.pos.up {background-color: #66ccff !important;}" +
 			"p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
-			"p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
 			//<a>标签柔和动画
 			"a {transition: color .2s ease, background-color .2s ease;}" +
-			"";
-		createElementStyle(str);
+			//AcFun助手-前台Popup按钮样式
+			"#acfun-helper-div { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; box-shadow: 0px 0px 5px #949494; border-radius: 5px 0px 0px 5px; right: -10px !important; transition: all .2s ease; }" +
+			"#acfun-helper-div:hover { transition: all .2s ease; right: 0px !important; }";
+		createElementStyle(str, document.head, "AcFunHelper_Frontend");
 	}
 
 	async loading() {
@@ -345,12 +353,13 @@ class ODHFront {
 	 */
 	reattachFrontMods() {
 		if (this.videoSetting.mediaSessionJudgeChangeVideo()) {
-			//清除原来的稿件信息
-			this.dataset.dougaInfo = {};
+			this.href = window.location.href;
+			this.fetchPageInfo();
 			let isLogined = false;
 			if (isLogin("video")) {
 				isLogined = true;
 			}
+
 			this.videoSetting.mediaSessionReAttach();
 			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
 			this.videoSetting.videoQuality(isLogined);

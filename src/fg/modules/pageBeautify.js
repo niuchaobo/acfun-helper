@@ -116,7 +116,7 @@ class PageBeautify {
     str += /macintosh|mac os x/i.test(navigator.userAgent)
       ? "margin-Left: 624px;}}"
       : "}}";
-    createElementStyle(str, window.document.head);
+    createElementStyle(str, window.document.head, "AcFunHelper_macNavStyle");
   }
 
   //------------------------个人中心------------------------------
@@ -338,7 +338,7 @@ class PageBeautify {
     cssStr = `#ACPlayer > div > div.container-video > div > div.recommend-container > div{
 			display:none
 		}`;
-    createElementStyle(cssStr, document.head, "simplifiyPlayerRecommend");
+    createElementStyle(cssStr, document.head, "AcFunHelper_simplifiyPlayerRecommend");
   }
 
   hideAds() {
@@ -349,7 +349,7 @@ class PageBeautify {
         try {
           let cssStr =
             ".usemobile,.shareCount,.app-guide,.pause-display-container {display:none !important}";
-          createElementStyle(cssStr);
+          createElementStyle(cssStr, document.head, "AcFunHelper_hideAds");
           document.querySelector(".shareCount").remove();
           document.querySelector(".usemobile").remove();
         } catch (error) { }
@@ -387,7 +387,7 @@ class PageBeautify {
   thinScrollBar() {
     createElementStyle(
       "::-webkit-scrollbar { width: 8px; background-color: #fff;  }  ::-webkit-scrollbar-thumb { background-color: #fd4c5d; border-radius: 5px;  }"
-    );
+      , document.head, "AcFunHelper_thinScrollBar");
   }
 
   quickCommentSubmit(page = "index") {
@@ -543,7 +543,7 @@ class PageBeautify {
   multiPartListSpread() {
     createElementStyle(`
 			.part-wrap{max-height: fit-content !important;}
-		`)
+		`, document.head, "AcFunHelper_MultiPartListSpread")
   }
 
   /**
@@ -583,7 +583,7 @@ class PageBeautify {
       //隐藏原来的block
       document.querySelector("#ac-space-video-list").style.display = 'none';
       //修复消除ID之后排版出现的问题
-      createElementStyle(`.ac-space-video{float: left;}`, document.head, "userPageTimelineStyle");
+      createElementStyle(`.ac-space-video{float: left;}`, document.head, "AcFunHelper_userPageTimelineStyle");
       //渲染一下第一页
       userPageTimelineRender(1, bundleBlk(1, document.querySelector("#ac-space-video-list").cloneNode(true)));
       //翻页就要处理新的版块
