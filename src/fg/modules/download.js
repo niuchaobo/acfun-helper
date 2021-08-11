@@ -27,7 +27,7 @@ class Download {
             }
             return this.blob;
         };
-        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/');
+        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|https:\\/\\/.*\\.acfun\\.cn\\/.*/acfun_video/');
         let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/');
         var prefix = "";
         fgConsole("Download", "downloadVideo", `M3u8 address is: ${m3u8}`, 1, false)
