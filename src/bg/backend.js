@@ -98,11 +98,21 @@ class ODHBack {
     }
 
     onInstalled(details) {
+        const versionNum = chrome.runtime.getManifest().version;
         initializeDBTable();
         if (details.reason === 'install') {
             chrome.tabs.create({ url: chrome.extension.getURL('bg/options.html') });
         }
         if (details.reason === 'update') {
+            if(versionNum == details.previousVersion){
+                chrome.notifications.create(null, {
+                    type: 'basic',
+                    iconUrl: 'images/notice.png',
+                    title: 'AcFun助手',
+                    message: '重启了！'
+                });
+                return;
+            }
             chrome.notifications.create(null, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
@@ -111,7 +121,6 @@ class ODHBack {
             });
             this.onUpdated();
         }
-        return;
     }
 
     async onTabReady(tab) {

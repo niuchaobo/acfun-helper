@@ -3,10 +3,11 @@
  */
 class Download {
     constructor() {
-
+        this.devMode = false;
     }
 
     async downloadVideo(params) {
+        this.devMode && console.log(params);
         let activeKey = window.odhfront.options.activeTabKey;
         let { url, title, id, qualityLabel } = params;
         let m3u8 = url;
@@ -27,8 +28,8 @@ class Download {
             }
             return this.blob;
         };
-        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|https:\\/\\/.*\\.acfun\\.cn\\/.*/acfun_video/');
-        let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/');
+        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/');
+        let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|https:\\/\\/.*\\.acfun\\.cn\\/.*/acfun_video/(.*/){1,}');
         var prefix = "";
         fgConsole("Download", "downloadVideo", `M3u8 address is: ${m3u8}`, 1, false)
         if (reg.test(m3u8)) {
@@ -36,6 +37,7 @@ class Download {
         } else if (reg_new.test(m3u8)) {
             prefix = m3u8.match(reg_new)[0];
         }
+        this.devMode && console.log(prefix);
         let res = await parseM3u8(m3u8);
         let segments = res.segments;
         let seArr = new Array();
@@ -45,7 +47,7 @@ class Download {
                     title: "警告",
                     msg: "视频信息已过期，请刷新当前页面",
                 }
-            }, function (response) {});
+            }, function (response) { });
             return;
         } else {
             for (let seg of segments) {
