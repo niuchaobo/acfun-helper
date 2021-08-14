@@ -3,7 +3,7 @@
  */
 class Download {
     constructor() {
-        this.devMode = true;
+        this.devMode = false;
     }
 
     async downloadVideo(params) {
@@ -28,8 +28,8 @@ class Download {
             }
             return this.blob;
         };
-        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/acfun_video\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/acfun_video\\/');
-        let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|https:\\/\\/.*\\.acfun\\.cn\\/.*/acfun_video/(.*/){1,}');
+        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/');
+        let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/acfun_video\\/|https:\\/\\/.*\\.acfun\\.cn\\/.*/acfun_video/(.*/){1,}');
         var prefix = "";
         fgConsole("Download", "downloadVideo", `M3u8 address is: ${m3u8}`, 1, false)
         if (reg.test(m3u8)) {

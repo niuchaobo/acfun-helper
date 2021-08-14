@@ -33,7 +33,7 @@
                 "common/consoleProxy.js",
                 "common/encyclopedia.js",
                 "common/uiReact.js",
-                "common/dataStructs.js",
+                "common/utilsBundle.js",
                 "fg/popup.js",
                 "fg/div.js",
                 "fg/modules/danmakuSearch.js",

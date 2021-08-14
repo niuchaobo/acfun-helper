@@ -161,6 +161,8 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
     * jquery 3.6.0
     * mdui 0.4.3
     * dexie 3.0.1
+    * markd 2.1.3
+    * m3u8-parser 4.3.0
 
     * esbuild 0.11.23     
     * gulp 4.0.2    

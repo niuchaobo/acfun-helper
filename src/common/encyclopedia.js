@@ -27,4 +27,23 @@ const standardFrameRate = {
 
 const acfunApis = {
     liveInfo: `https://live.acfun.cn/api/live/info?authorId=`,
+    /**
+     * @Example:?sourceId=30637780&sourceType=3&page=1&pivotCommentId=0&newPivotCommentId=&t=1628913287304&supportZtEmot=true 
+     * sourceId ->acid
+     */
+    comment: `https://www.acfun.cn/rest/pc-direct/comment/list`,
+    /**
+     * @example ?sourceId=30637780&sourceType=3&page=1&pivotCommentId=0&newPivotCommentId=0&t=1628913415510&supportZtEmot=true
+     */
+    floorComment: `https://www.acfun.cn/rest/pc-direct/comment/listByFloor`,
+    /**
+     * @method POST 
+     * @example kpn=ACFUN_APP&kpf=PC_WEB&subBiz=mainApp&interactType=1&objectType=2&objectId=30637780&acfun.midground.api_st=xxxxxxx&extParams%5BisPlaying%5D=false&extParams%5BshowCount%5D=3&extParams%5BotherBtnClickedCount%5D=20&extParams%5BplayBtnClickedCount%5D=0
+     */
+    like: `https://kuaishouzt.com/rest/zt/interact/add`,
+    unlike: `https://kuaishouzt.com/rest/zt/interact/delete`,
+    extensionIconImg: `https://i.loli.net/2020/05/28/2k8dPLiGEZNHjny.png`,
+    liveReward: `https://m.acfun.cn/rest/apph5-direct/pay/reward/giveRecords?pcursor=`,
+    personalBasicInfo: `https://www.acfun.cn/rest/pc-direct/user/personalBasicInfo`,
+
 }
