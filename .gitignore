@@ -7,6 +7,9 @@
 # dependencies
 /node_modules
 
+# experimentalFeature
+/src/common/experimental/*
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json

@@ -35,11 +35,18 @@ class ODHFront {
 	onBgMessage(request, sender, callback) {
 		const { action, params } = request;
 		const method = this["api_" + action];
+		let response;
 		if (typeof method === "function") {
 			params.callback = callback;
-			method.call(this, params);
+			if (params["asyncWarp"]) {
+				method.call(this, params).then(resp => {
+					callback(resp);
+				});
+				return;
+			}
+			response = method.call(this, params);
+			callback(response);
 		}
-		callback();
 	}
 
 	onFrameMessage(e) {
@@ -62,11 +69,12 @@ class ODHFront {
 			".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
 			"span.pos.up {background-color: #66ccff !important;}" +
 			"p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
-			"p.crx-member-p{height: 20px !important;line-height: 20px !important;}" +
 			//<a>标签柔和动画
 			"a {transition: color .2s ease, background-color .2s ease;}" +
-			"";
-		createElementStyle(str);
+			//AcFun助手-前台Popup按钮样式
+			"#acfun-helper-div { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; box-shadow: 0px 0px 5px #949494; border-radius: 5px 0px 0px 5px; right: -10px !important; transition: all .2s ease; }" +
+			"#acfun-helper-div:hover { transition: all .2s ease; right: 0px !important; }";
+		createElementStyle(str, document.head, "AcFunHelper_Frontend");
 	}
 
 	async loading() {
@@ -130,6 +138,8 @@ class ODHFront {
 					//弹幕操作栏状态
 					this.options.hideDanmakuOperator.UI && this.videoSetting.hideDanmakuOperatorUI();
 					this.videoSetting.hideDanmakuOperator(this.options.hideDanmakuOperator.defaultMode, this.options.hideDanmakuOperator.maskSw);
+					//播放器帧步进
+					this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 					//后台自动暂停
 					this.videoSetting.getSomeSleepFront(this.options.sleepPause.defaultMode, this.options.sleepPause.UI);
 					clearInterval(playerChecker);
@@ -187,7 +197,7 @@ class ODHFront {
 			this.options.hideAd && this.pageBeautify.hideAds();
 			this.options.playerRecommendHide && this.pageBeautify.simplifiyPlayerRecm();
 			//历史排行榜成就
-			this.options.videoAchievement && this.ce.historocalAchieve();
+			this.options.videoAchievement && this.videoSetting.historocalAchieve();
 			return
 		}
 		//直播
@@ -215,6 +225,8 @@ class ODHFront {
 			this.options.widenUCVideoList && this.pageBeautify.widenUCVideoList();
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false, true);
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("uc");
+			// this.pageBeautify.userRelatedTopic()
+			this.options.userPageTimeline && this.pageBeautify.userPageTimeline();
 		}
 	}
 
@@ -247,8 +259,6 @@ class ODHFront {
 			})
 			//分P列表扩展
 			this.options.multiPartListSpread && this.pageBeautify.multiPartListSpread()
-			//播放器帧步进
-			this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 			//倍率扩大音量
 			this.options.audioGain && this.videoSetting.audioNodeGain();
 			//快捷键评论发送
@@ -301,6 +311,7 @@ class ODHFront {
 	onCommentAreaLoaded(e) {
 		getAsyncDom(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
+			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
 		}, 3000)
 	}
 
@@ -342,12 +353,13 @@ class ODHFront {
 	 */
 	reattachFrontMods() {
 		if (this.videoSetting.mediaSessionJudgeChangeVideo()) {
-			//清除原来的稿件信息
-			this.dataset.dougaInfo = {};
+			this.href = window.location.href;
+			this.fetchPageInfo();
 			let isLogined = false;
 			if (isLogin("video")) {
 				isLogined = true;
 			}
+
 			this.videoSetting.mediaSessionReAttach();
 			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
 			this.videoSetting.videoQuality(isLogined);

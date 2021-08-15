@@ -995,13 +995,32 @@
                                         <h3>个人中心和分区视频详细列表快捷键翻页</h3>
                                         <div class="mdui-row">
                                             <div class="mdui-col-xs-8 mdui-col-sm-6">
-                                                <p>在个人中心和各个分区的<a
+                                                <p>在个人中心、视频稿件页和各个分区的<a
                                                         href="https://www.acfun.cn/v/list190/index.htm?sortField=rankScore&duration=all&date=default&page=1"
                                                         title="例如动画区其中一个版块"
                                                         target="_blank">视频详细列表</a>使用Shift+PageUp/PageDown来翻页</p>
                                             </div>
                                             <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
                                                     <input id="pageTransKeyBind" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid devFeature">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>个人页面稿件时间卷</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>在个人页面的视频稿件，记录每页的时间</p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="userPageTimeline" type="checkbox" />开关
                                                     <i class="mdui-switch-icon"></i>
                                                 </label></div>
                                         </div>
@@ -1284,7 +1303,7 @@
                                 <h2>播放器播放前配置</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">自动跳转到上次观看的时间（只支持1P的视频）</div>
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">自动跳转到上次观看的时间</div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <label class="mdui-switch">
                                         <input id="autoJumpLastWatchSw" type="checkbox" />启用
@@ -1399,11 +1418,26 @@
                                 <h2>视频帧步进</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">在视频页面，非播放器焦点获得的情况下（点击页面空白处），使用Shift+A or
-                                    Shift+D来一帧一帧地调整视频进度。</div>
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在视频页面，使用Shift+A or Shift+D来一帧一帧地调整视频进度。</div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="frameStepSetting" type="checkbox" />
+                                            <i class="mdui-switch-icon"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-col-xs-9">
+                                <h2>播放器视频帧步进菜单</h2>
+                            </div>
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器中添加一个菜单，用以控制视频以一帧一帧前进后退。（首先要打开视频帧步进开关）</div>
+                                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                                            <input id="frameStepUI" type="checkbox" />
                                             <i class="mdui-switch-icon"></i>
                                         </label>
                                     </div>
@@ -1880,7 +1914,7 @@
                                         <h3>插件后台-推送消息轮询</h3>
                                         <div class="mdui-row">
                                             <div class="mdui-col-xs-8 mdui-col-sm-6">
-                                                <p>推送消息轮询</p>
+                                                <p>推送消息轮询 并在Popup使用拉取的消息加速</p>
                                             </div>
                                             <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
                                                     <input id="fetchPushList_daemonsw" type="checkbox" />开关

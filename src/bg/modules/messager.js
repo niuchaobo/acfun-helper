@@ -40,23 +40,23 @@ class MsgNotifs {
      * @param {*} liveUserId
      * @param {*} userName
      */
-    createLiveNotif(liveUserId, userName) {
+    createLiveNotif(liveUserId, userName, liveTitle = "", userHeadImg = "") {
         let date = new Date();
         let notId = liveUserId + "live" + (date.getMonth() + 1) + date.getDate() + date.getHours() + date.getMinutes();
         if (this.browserType == "Chrome") {
             chrome.notifications.create(notId, {
                 type: 'basic',
-                iconUrl: 'images/notice.png',
+                iconUrl: `${userHeadImg ? userHeadImg : "images/notice.png"}`,
                 title: 'AcFun助手',
                 buttons: [{ title: "前往直播间" }],
-                message: `${userName}  正在直播了！`
+                message: `${userName} ${liveTitle ? "直播：《" + liveTitle + "》" : "正在直播了！"}`
             });
         } else {
             chrome.notifications.create(notId, {
                 type: 'basic',
-                iconUrl: 'images/notice.png',
+                iconUrl: `${userHeadImg ? userHeadImg : "images/notice.png"}`,
                 title: 'AcFun助手',
-                message: `${userName}  正在直播了！`
+                message: `${userName} ${liveTitle ? liveTitle : "正在直播了！"}`
             });
         }
     }
@@ -71,6 +71,7 @@ class MsgNotifs {
                 type: 'basic',
                 iconUrl: img,
                 title: 'AcFun助手',
+                priority: 1,
                 buttons: [{ title: "回复" }, { title: "消息中心" }],
                 message: `${from}: ${msg}`
             });
@@ -79,6 +80,7 @@ class MsgNotifs {
                 type: 'basic',
                 iconUrl: img,
                 title: 'AcFun助手',
+                priority: 1,
                 message: `${from}: ${msg}`
             });
         }
@@ -122,12 +124,11 @@ class MsgNotifs {
                 // 遍历自定义直播用户关注
                 for (let i in items.liveFloowings) {
                     //i就是UID
-                    let ApiUrl = 'https://www.acfun.cn/rest/pc-direct/user/userInfo?userId='
-                    fetch(ApiUrl + i).then((res) => { return res.text() })
+                    fetch(acfunApis.liveInfo + i).then((res) => { return res.text() })
                         .then(async (res) => {
                             //判断直播状态
                             let x = JSON.parse(res);
-                            if (x.profile.liveId != undefined) {
+                            if (x.liveId != undefined) {
                                 var state = true;
                             } else {
                                 var state = false;
@@ -141,7 +142,7 @@ class MsgNotifs {
                                 let lastState = broadcastingUIDlist.broadcastingUIDlist[i]
                                 //假如上次直播状态为 否,并且上次直播状态与本次直播状态不一致（意思是现在为 是）
                                 if (lastState == false) {
-                                    this.createLiveNotif(i, x.profile.name);
+                                    this.createLiveNotif(i, x.user.name, x.title, x.user.headUrl);
                                     let OpenNow = await getStorage("liveFollowOpenNow");
                                     if (OpenNow.liveFollowOpenNow) {
                                         chrome.tabs.create({ url: `https://live.acfun.cn/live/${i}` });
@@ -164,7 +165,7 @@ class MsgNotifs {
             // 用户没有登录就不去获取信息了
             if (Uid.LocalUserId == "0") { return }
             let broadcastingUIDlistFollowing = await getResult('broadcastingUIDlistFollowing');
-            let fliveStateWorkDic = {}
+            let fliveStateWorkDic = {}, fetchLivesInfoDic = {};
             // 假如信息为空字典就填充一下
             if (JSON.stringify(broadcastingUIDlistFollowing) == '{}') {
                 chrome.storage.local.set({ 'broadcastingUIDlistFollowing': fliveStateWorkDic });
@@ -176,6 +177,7 @@ class MsgNotifs {
             //处理直播状态，将直播状态信息写入 此次直播状态字典
             for (let i = 0; i < result.liveList.length; i++) {
                 fliveStateWorkDic[result.liveList[i].authorId] = true;
+                fetchLivesInfoDic[result.liveList[i].authorId] = { title: result.liveList[i].title, userAvatar: result.liveList[i].user.headUrl.replace("40/h/40", "100/h/100") }
             }
             // 获取关注的UP上次的正在直播UID字典
             let lastLiveStateDic = await getStorage('broadcastingUIDlistFollowing');
@@ -197,7 +199,7 @@ class MsgNotifs {
                     if (lastStateUIDList.indexOf(liveUIDList[l]) == -1) {
                         let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${liveUIDList[l]}`)
                         // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
-                        this.createLiveNotif(liveUIDList[l], JSON.parse(uInfo).profile.name);
+                        this.createLiveNotif(liveUIDList[l], JSON.parse(uInfo).profile.name, fetchLivesInfoDic[liveUIDList[l]].title, fetchLivesInfoDic[liveUIDList[l]].userAvatar);
                     }
                 }
             }
@@ -208,7 +210,7 @@ class MsgNotifs {
                     if (fliveStateWorkDic[lastStateUIDList[k]] == true) {
                         let uInfo = await fetchResult(`https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=${lastStateUIDList[k]}`)
                         // console.log(`${JSON.parse(uInfo).profile.name}  正在直播了！`)
-                        this.createLiveNotif(lastStateUIDList[k], JSON.parse(uInfo).profile.name);
+                        this.createLiveNotif(lastStateUIDList[k], JSON.parse(uInfo).profile.name, fetchLivesInfoDic[lastStateUIDList[k]].title, fetchLivesInfoDic[lastStateUIDList[k]].userAvatar);
                     }
                 }
             }
@@ -354,7 +356,7 @@ class MsgNotifs {
         for (let i = 0; i < num; i++) {
             let avt = instantDom[0].children[i].children[0].children[0].children[0].src;
             let uname = instantDom[0].children[i].children[1].children[0].children[0].innerText;
-            let msg = instantDom[0].children[i].children[1].children[2].children[0].children[0].innerText.replace("&nbsp;", " ").replace(/[\r\n]/g, "").trim().replace("[表情]","");
+            let msg = instantDom[0].children[i].children[1].children[2].children[0].children[0].innerText.replace("&nbsp;", " ").replace(/[\r\n]/g, "").trim().replace("[表情]", "");
             let msgFrom = instantDom[0].children[i].children[1].children[1].textContent.trim().replace("评论了你的视频", "");
             let commentAddress = instantDom[0].children[0].children[1].children[2].href.replace("chrome-extension://www.acfun.cn", "")
             this.createDetailNotif(commentAddress, uname, msg + " | From:" + msgFrom, avt);

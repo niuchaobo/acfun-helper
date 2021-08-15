@@ -1,5 +1,5 @@
 .odh-notes {
-  font-family: 'Open Sans', Helvetica, Arial, 'Microsoft Yahei', Sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, "Microsoft Yahei", Sans-serif;
   /*font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, 'Microsoft Yahei', sans-serif;*/
   font-size: 13px;
   text-align: left;
@@ -10,7 +10,6 @@
   margin: 2px;
   border-radius: 3px;
   box-sizing: border-box;
-  ;
 }
 
 .odh-note {
@@ -74,42 +73,19 @@
   padding: 2px;
   margin-top: 1px;
   word-wrap: break-word;
-
 }
-#odh-context{
-  font-family: 'Open Sans', Helvetica, Arial, 'Microsoft Yahei', Sans-serif;
-  background:#fffff4;
-  margin:0;
+
+#odh-context {
+  font-family: "Open Sans", Helvetica, Arial, "Microsoft Yahei", Sans-serif;
+  background: #fffff4;
+  margin: 0;
   width: 96%;
   height: 100px;
 }
+
 .odh-sentence {
   border: 2px dashed #d0d1d5;
-  padding:0;
-}
-
-.odh-audios {
-  margin: 3px;
-  position: relative;
-  float: right;
-}
-
-.odh-likes {
-  /*margin: 3px;*/
-  position: relative;
-  float: right;
-  cursor:pointer;
-}
-
-.odh-playaudio {
-  cursor: pointer;
-  margin: 0 3px;
-  vertical-align: -3px;
-}
-
-.odh-playsound {
-  vertical-align: text-bottom;
-  margin: 0 3px;
+  padding: 0;
 }
 
 hr {
@@ -132,6 +108,7 @@ hr {
   text-decoration: none;
   text-align: center;
 }
+
 .detail {
   font-size: 0.8em;
   list-style: square inside;
@@ -141,8 +118,9 @@ hr {
   border-radius: 5px;
   cursor: pointer;
 }
+
 .message {
-  font-size: 1.0em;
+  font-size: 1em;
   list-style: square inside;
   margin: 3px 0;
   padding: 3px;
@@ -151,42 +129,69 @@ hr {
   cursor: pointer;
 }
 
-span.pos  {font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;}
-span.simple {
+span.pos {
+  font-size: 0.9em;
+  margin-right: 5px;
+  padding: 2px 4px;
+  color: white;
+  background-color: #0d47a1;
+  border-radius: 3px;
+  transition: all .4s ease;
+}
+
+span.simple:hover,
+span.addressCopySrc:hover,
+span.pos:hover {
+  box-shadow: 0px 0px 5px #949494;
+  transition: all .4s ease;
+}
+
+span.simple,
+span.addressCopySrc {
+  transition: all .4s ease;
   background-color: #fd4c5c !important;
   cursor: pointer;
 }
+
 span.livesimple {
   background-color: #d69acc !important;
   cursor: pointer;
 }
-ul.ec, li.ec {margin:0; padding:0;}
 
-.progress-bar{
+ul.ec,
+li.ec {
+  margin: 0;
+  padding: 0;
+}
+
+.progress-bar {
   background-color: #3dae4a;
 }
-.progress-warp{
+
+.progress-warp {
   position: relative;
   bottom: 1px;
   width: 100%;
-  height: 2px
+  height: 2px;
 }
-.progress-bar{
+
+.progress-bar {
   height: 2px;
   width: 0%;
 }
-.comment-label{
-  line-height: 26px
+
+.comment-label {
+  line-height: 26px;
 }
 
-.lucy-seq{
+.lucy-seq {
   width: 5px;
   height: 5px;
   margin-right: 10px;
   background-color: #d69acc;
   border-radius: 20%;
-  color:black;
+  color: black;
   font-weight: lighter;
   padding: 2px;
-  font-family: 'Open Sans', Helvetica, Arial, 'Microsoft Yahei', Sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, "Microsoft Yahei", Sans-serif;
 }

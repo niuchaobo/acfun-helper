@@ -20,6 +20,7 @@ class ODHBack {
         this.WatchPlan.onLoad();
 
         chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
+        // chrome.runtime.onMessageExternal.addListener(this.onExternalMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));
         chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
         chrome.tabs.onCreated.addListener((tab) => this.onTabReady(tab));
@@ -97,11 +98,21 @@ class ODHBack {
     }
 
     onInstalled(details) {
+        const versionNum = chrome.runtime.getManifest().version;
         initializeDBTable();
         if (details.reason === 'install') {
             chrome.tabs.create({ url: chrome.extension.getURL('bg/options.html') });
         }
         if (details.reason === 'update') {
+            if(versionNum == details.previousVersion){
+                chrome.notifications.create(null, {
+                    type: 'basic',
+                    iconUrl: 'images/notice.png',
+                    title: 'AcFun助手',
+                    message: '重启了！'
+                });
+                return;
+            }
             chrome.notifications.create(null, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',
@@ -110,7 +121,6 @@ class ODHBack {
             });
             this.onUpdated();
         }
-        return;
     }
 
     async onTabReady(tab) {
@@ -154,10 +164,10 @@ class ODHBack {
             chrome.storage.local.set({ "filter": false }, function () { });
         }
         //关闭用户动态渲染（2021-7-5失效：接口改动）
-        if(rawOpts['userHomeMoment']){
+        if (rawOpts['userHomeMoment']) {
             chrome.storage.local.set({ "userHomeMoment": false }, function () { });
         }
-        if(rawOpts['uddPopUp']){
+        if (rawOpts['uddPopUp']) {
             chrome.storage.local.set({ "uddPopUp": false }, function () { });
         }
     }
@@ -216,6 +226,23 @@ class ODHBack {
             }
         }
         return true;
+    }
+
+    onExternalMessage(e, sender, callback) {
+        const { apiName, params } = e;
+        // console.log(e, sender);
+        let outerApiInst = new HelperApi();
+        if (outerApiInst[apiName] === 'function') {
+            if (params["asyncRequire"]) {
+                outerApiInst[apiName].call({}, params).then(resp => {
+                    callback(resp);
+                })
+                return;
+            }
+            outerApiInst[apiName].call({}, params);
+            return;
+        }
+        callback({ greeting: "[AcFun-Helper]:What are you calling for?" })
     }
 
     onSandboxMessage(e) {
@@ -388,10 +415,10 @@ class ODHBack {
     }
 
     async api_achievementEvent(e) {
-        if(e.data.action=="get"){
+        if (e.data.action == "get") {
             return await db_getHistoricalAchievs(REG.acVid.exec(e.data.url)[2]);
-        }else if(e.data.action=="put"){
-            db_insertHistoricalAchievs(REG.acVid.exec(e.data.url)[2],e.data.tagData);
+        } else if (e.data.action == "put") {
+            db_insertHistoricalAchievs(REG.acVid.exec(e.data.url)[2], e.data.tagData);
             return true;
         }
     }
@@ -417,6 +444,11 @@ class ODHBack {
             success: (data, status) => this.callback(data, callbackId)
         };
         $.ajax(request);
+    }
+
+    async api_BkFetch(params) {
+        let { url, method, data, withCredentials, callback } = params;
+        return await fetchResult(url, method, data, withCredentials);
     }
 
     //================Inner Events==================//

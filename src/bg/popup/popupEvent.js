@@ -1,15 +1,6 @@
-/* global odhback, optionsLoad, optionsSave*/
-
 export function openSetting() {
 	//window.open("options.html","_blank");
 	var a = $("<a href='options.html' target='_blank'></a>").get(0);
-	var e = document.createEvent("MouseEvents");
-	e.initEvent("click", true, true);
-	a.dispatchEvent(e);
-}
-
-export function openMusicPlayerSetting() {
-	var a = $("<a href='musicPlayerMang.html' target='_blank'></a>").get(0);
 	var e = document.createEvent("MouseEvents");
 	e.initEvent("click", true, true);
 	a.dispatchEvent(e);
@@ -45,10 +36,10 @@ export function toUcenter() {
 export function hideToTopButton() {
 	let top = $(".toTop").offset().top;
 	if (top < 2000) {
-		$(".toTop").css({ opacity: "0"});
+		$(".toTop").css({ opacity: "0" });
 		//$(".PushListMode").css({ right: '16px' })
 	} else {
-		$(".toTop").css({ opacity: "1"});
+		$(".toTop").css({ opacity: "1" });
 		//$(".PushListMode").css({ right: '60px' })
 	}
 }
@@ -86,24 +77,6 @@ export async function WatchLaterFpopup() {
 	})
 }
 
-export async function musicPlayerPopupStart() {
-	mdui.snackbar({
-		message: `已经启动播放器了！`,
-	});
-	chrome.runtime.sendMessage({ action: "musicPlayerStart", params: {} }, function (response) { });
-}
-
-export async function musicPlayerPopupStop() {
-	mdui.snackbar({
-		message: `已经在关闭播放器啦。`,
-	});
-	chrome.runtime.sendMessage({ action: "musicPlayerSign", params: { sign: "stop" } }, function (response) { });
-}
-
-export async function musicPlayerPopupShow() {
-	chrome.runtime.sendMessage({ action: "musicPlayerfocusPlayer", params: {} }, function (response) { });
-}
-
 export async function viewHistory() {
 	fetch('https://www.acfun.cn/rest/pc-direct/browse/history/list', { method: "POST", credentials: 'include', body: 'pageSize=20&pageNo=1&resourceTypes=', headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }) })
 		.then((res => { return res.text() }))
@@ -131,7 +104,6 @@ export async function viewHistory() {
  */
 export async function userInfoFetch() {
 	let uid = $("#userInfoUid").val();
-	let dougaCountFlag = 0;
 	if (uid == '') { return }
 	fetch("https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=" + Number(uid)).then((res) => {
 		if (res.status == 503) {
@@ -141,7 +113,6 @@ export async function userInfoFetch() {
 		.then((res) => {
 			let x = JSON.parse(res);
 			if (x.result != 0) { chrome.runtime.sendMessage({ action: 'notice', params: { title: "AcFun助手", msg: "UID可能存在着某些问题。" } }, function (response) { }); return }
-			if (x.profile.contentCount != 0) { dougaCountFlag = 1 }
 			let raw_data = `
 		<div class="mdui-table-fluid">
 			<table class="mdui-table">
@@ -186,49 +157,9 @@ export async function userInfoFetch() {
 				</tr>
 				</tbody>
 			</table>
-			</div>
+		</div>
 			`;
 			$("#UserInfoPrint").append(raw_data);
-			if (dougaCountFlag != 1) { return }
-			fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=2&sortType=3`).then((res) => { return res.text() })
-				.then((res) => {
-					let x = JSON.parse(res);
-					let raw_data = `
-				<div class="mdui-table-fluid">
-					<table class="mdui-table">
-						<thead>
-						</thead>
-						<tbody>
-						<tr>
-							<td>上次视频投于</td>
-							<td>${getTimeSinceNow(x.feed[0].createTimeMillis, true)}</td>
-						</tr>
-						</tbody>
-					</table>
-					</div>
-				`;
-					$("#UserInfoPrint").append(raw_data);
-				})
-			fetch(`https://api-new.app.acfun.cn/rest/app/user/resource/query?count=1&authorId=${Number(uid)}&resourceType=3&sortType=3`).then((res) => { return res.text() })
-				.then((res) => {
-					let x = JSON.parse(res);
-					if (x.feed[0].contributeTime == undefined) { return }
-					let raw_data = `
-			<div class="mdui-table-fluid">
-				<table class="mdui-table">
-					<thead>
-					</thead>
-					<tbody>
-					<tr>
-						<td>上次文章投于</td>
-						<td>${getTimeSinceNow(x.feed[0].contributeTime, true)}</td>
-					</tr>
-					</tbody>
-				</table>
-				</div>
-			`;
-					$("#UserInfoPrint").append(raw_data);
-				})
 		})
 
 }
@@ -249,8 +180,8 @@ export function PushListDougaMode() {
 			$(".PushListMode")[0].dataset.type = "video";
 			document.getElementById("PushListDougaModeStyle").remove();
 			e.textContent = `
-      .article{display:none}
-        `;
+			.article{display:none}
+			`;
 			$(".PushListMode")[0].title = "仅查看视频"
 			document.head.appendChild(e);
 			mdui.snackbar({

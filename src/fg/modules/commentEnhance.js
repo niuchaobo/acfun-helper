@@ -632,7 +632,25 @@ class CommentEnhance {
                 clearInterval(timer);
             }
         }, 1000);
-
+        /**
+         * ref:https://cssanimation.rocks/animating-links/
+         */
+        createElementStyle(`
+        .ac-comment-list .area-comment-des a.quickJump:hover:after {
+            right: 0;
+            transition: right .4s cubic-bezier(0, .5, 0, 1);
+        }
+        .ac-comment-list .area-comment-des a.quickJump:after {
+            border-radius: 1em;
+            border-top: 1px solid #409BEF;
+            content: "";
+            position: absolute;
+            right: 100%;
+            bottom: -1px;
+            left: 0;
+            transition: right .4s cubic-bezier(0, .5, 0, 1);
+        }
+        `, document.head, "AcFunHelper_searchScanForPlayerTimeSty")
     }
 
     /**
@@ -655,34 +673,6 @@ class CommentEnhance {
         let seconds = str.search("分") === -1 ? str.split('秒')[0] : str.split('分')[0] * 60
         // console.log(`[LOG]Frontend-CommentEnhance>easySearchScanForPlayerTime: 跳转到[${seconds}]秒！！ gogogo！`)
         return seconds;
-    }
-
-    /**
-     * 历史成就
-     */
-    historocalAchieve() {
-        chrome.runtime.sendMessage({ action: "achievementEvent", params: { responseRequire: true, asyncWarp: true, data: { action: "get", url: window.location.href } } }, function (response) {
-            var tag;
-            try {
-                tag = document.querySelector(".reco-tag").innerText;
-            } catch (error) {
-                tag = null;
-            }
-            if (response.data.length != 0) {
-                //数据库有数据
-                if (tag) {
-                    return
-                } else {
-                    //要加上Tag
-                    addElement({ tag: 'a', target: document.querySelector(".video-description .title"), classes: 'reco-tag', createMode: "headAppnd", thisHTML: `${new Date(response.data[0].date).getFullYear()}-${new Date(response.data[0].date).getMonth() + 1}-${new Date(response.data[0].date).getDate()} ${response.data[0].tag}` })
-                }
-            } else {
-                if (tag) {
-                    //数据库没数据，并且存在榜单数据，那就写数据进数据库
-                    chrome.runtime.sendMessage({ action: "achievementEvent", params: { responseRequire: true, asyncWarp: true, data: { action: "put", url: window.location.href, tagData: tag } } }, function (response) { })
-                }
-            }
-        })
     }
 
 }

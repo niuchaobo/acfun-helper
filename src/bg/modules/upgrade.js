@@ -28,7 +28,7 @@ class UpgradeAgent {
      */
     checkUpdate() {
         if (this.ifRightDay()) {
-            //POST版本号至服务器，服务器对比最新的版本之后返回一个int值，0：不需要更新，1：小版本更新-弱提醒，2：重要功能更新-强提醒(session and cache please)
+            //POST版本号至服务器，服务器对比最新的版本之后返回一个数字，0：不需要更新，1：小版本更新-弱提醒，2：重要功能更新-强提醒
             const version = chrome.runtime.getManifest().version;
             fetch('https://mini.pocketword.cn/api/acfun-helper/newversion/', {
                 method: "POST",
@@ -77,7 +77,6 @@ class UpgradeAgent {
 
     async scheduleTasks() {
         //配置
-        // let BangumiPlansw = await getStorage("BangumiPlan").then(function (e) { return e.BangumiPlan });
 
         //调用
         this.checkUpdate();

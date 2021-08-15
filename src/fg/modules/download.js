@@ -3,10 +3,11 @@
  */
 class Download {
     constructor() {
-
+        this.devMode = true;
     }
 
     async downloadVideo(params) {
+        this.devMode && console.log(params);
         let activeKey = window.odhfront.options.activeTabKey;
         let { url, title, id, qualityLabel } = params;
         let m3u8 = url;
@@ -27,36 +28,33 @@ class Download {
             }
             return this.blob;
         };
-        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/');
-        let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/');
+        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/acfun_video\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/acfun_video\\/');
+        let reg_new = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/hls\\/|https:\\/\\/.*\\.acfun\\.cn\\/.*/acfun_video/(.*/){1,}');
         var prefix = "";
-        fgConsole(this, this.downloadVideo, `M3u8 address is: ${m3u8}`, 1, false)
+        fgConsole("Download", "downloadVideo", `M3u8 address is: ${m3u8}`, 1, false)
         if (reg.test(m3u8)) {
             prefix = m3u8.match(reg)[0];
         } else if (reg_new.test(m3u8)) {
             prefix = m3u8.match(reg_new)[0];
         }
+        this.devMode && console.log(prefix);
         let res = await parseM3u8(m3u8);
         let segments = res.segments;
         let seArr = new Array();
         if (segments.length == 0) {
-            let action = 'notice';
-            let p = {
-                title: "警告",
-                msg: "视频信息已过期，请刷新当前页面",
-            }
-            chrome.runtime.sendMessage({ action: action, params: p }, function (response) {
-
-            });
+            chrome.runtime.sendMessage({
+                action: 'notice', params: {
+                    title: "警告",
+                    msg: "视频信息已过期，请刷新当前页面",
+                }
+            }, function (response) { });
             return;
         } else {
-            let arr = new Array();
             for (let seg of segments) {
                 let uri = prefix + seg.uri;
                 //acfun的视频片段路径是不完整的,缺少http:// ,需要补全
                 // eg:"EKT8PxpARFg1bzNoUldlcTQ2MU5POWFpVms5cWVDOFl1anVNMzgxV3p3d2pqSkxvMVdhMDBXejJnZ3NGTC1aUE1CbjlkRw.ts?safety_id=AALXcXOtLbPnEichVENCciwF&pkey=AAPvrDb0ntD0obeNv1goe2Rn2rC1sdIAik9UsCzQq_yxTY3W9WNrUlN1eGpSjV-EjVmxl3z99SlX5TCzpithT_DZBDZJL5mAj1f41Be5oIKqNr_qiZ2Xv1OwUCkEyborQJqcBylYF4EpLvIeYh2EWlkfo_ONzw51ohvTuV1bx_9XQcb8nHDciQGrbRNOkym05eDAKVb9_7zd3I4fK5RbscRXsJBO8NLJe4ER9XTyf32L0dSuPhNFzn5ik58aF4Lp1zzOw9sGyCps8tsI10NDewh_K5_Jw5aJclpKhYOjHLnO6A"
                 seArr.push(uri);
-
             }
         }
         let index = 0;

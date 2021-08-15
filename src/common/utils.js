@@ -43,12 +43,13 @@ const defaults = {
   livePlayerEnhc: false,
   autoJumpLastWatchSw: false,
   hideAd: true,
+  userPageTimeline: false,
   liveHideAd: true,
   liveHideAdType: 1,
   liveBansw: false,
   playerRecommendHide: true,
   PlayerDamakuSearchSw: false,
-  PlayerTimeCommentEasyJump: true,
+  PlayerTimeCommentEasyJump: false,
   PlaybackRateKeysw: false,
   FilmModeExclusionsw: true,
   endedAutoExitFullscreensw: true,
@@ -606,6 +607,19 @@ function domToString(node) {
 }
 
 /**
+ * 从string中的HTML内容创建DOM
+ * @param {*} str 
+ * @returns HTMLElement
+ */
+function stringToDOM(str) {
+  let div = document.createElement("div");
+  if (typeof str == "string") {
+    div.innerHTML = str;
+  }
+  return div.childNodes;
+}
+
+/**
  * 监听DOM对象
  * @param {HTMLElement} target DOM对象
  * @param {function} fn 
@@ -809,19 +823,6 @@ function removeAPrefix(_$targetDom) {
 }
 
 /**
- * 从string中的HTML内容创建DOM
- * @param {*} str 
- * @returns HTMLElement
- */
-function stringToDOM(str) {
-  let div = document.createElement("div");
-  if (typeof str == "string") {
-    div.innerHTML = str;
-  }
-  return div.childNodes;
-}
-
-/**
  * 判断用户是否登录
  * @param {string} dept "video" or "article"
  * @param {string} evidence "cookies" or "ui"
@@ -890,12 +891,20 @@ function createElementStyle(cssText, targetDom = document.head, id = null) {
  * @returns {Number} PartNumber
  */
 function judgeActivePart() {
-  let x = document.querySelector("#main-content > div.right-column > div.part > div.fl.part-wrap > ul").children;
-  for (let i = 0; i < x.length; i++) {
-    if (x[i].classList[1] == "active") {
-      return i + 1;
+  try {
+    let x = document.querySelector("#main-content > div.right-column > div.part > div.fl.part-wrap > ul").children;
+    for (let i = 0; i < x.length; i++) {
+      if (x[i].classList[1] == "active") {
+        return i + 1;
+      }
     }
+  } catch (error) {
+    return REG.videoPartNumByURL.test(window.location.href) ? Number(REG.videoPartNumByURL.exec(window.location.href)[1]) : 1;
   }
+}
+
+function judgeEditorActiveState() {
+  return document.activeElement.hasAttribute("contentEditable");
 }
 
 /**

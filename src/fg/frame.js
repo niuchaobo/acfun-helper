@@ -11,7 +11,7 @@ function downloadDanmaku() {
 
 function assDanmaku() {
     if (window.parent.document.querySelector(".control-btn.quality").children[0].innerText.toLowerCase() == "自动") {
-        alert("请先选择一个确定的分辨率，以便助手确认字幕的宽高。");
+        alert("请先选择一个确定的画质(1080P...)，以便助手确认字幕的宽高。");
     } else {
         alert("因为Api接口限制，可能弹幕下载不全。");
         try {
@@ -258,7 +258,6 @@ function fadeIn(id, speed) {
     var opacityt = setInterval(opacityAdd, speed);
 }
 
-
 function fadeOut(id, speed) {
     var ele = document.getElementById(id);
     var opacitynum = ele.style.opacity || 1;
@@ -273,7 +272,6 @@ function fadeOut(id, speed) {
     }
     var opacityt = setInterval(opacityOff, speed);
 }
-
 
 function onMouseWheel(e) {
     document.querySelector('html').scrollTop -= e.wheelDeltaY / 3;

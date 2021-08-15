@@ -116,7 +116,7 @@ class PageBeautify {
     str += /macintosh|mac os x/i.test(navigator.userAgent)
       ? "margin-Left: 624px;}}"
       : "}}";
-    createElementStyle(str, window.document.head);
+    createElementStyle(str, window.document.head, "AcFunHelper_macNavStyle");
   }
 
   //------------------------个人中心------------------------------
@@ -338,7 +338,7 @@ class PageBeautify {
     cssStr = `#ACPlayer > div > div.container-video > div > div.recommend-container > div{
 			display:none
 		}`;
-    createElementStyle(cssStr, document.head, "simplifiyPlayerRecommend");
+    createElementStyle(cssStr, document.head, "AcFunHelper_simplifiyPlayerRecommend");
   }
 
   hideAds() {
@@ -349,7 +349,7 @@ class PageBeautify {
         try {
           let cssStr =
             ".usemobile,.shareCount,.app-guide,.pause-display-container {display:none !important}";
-          createElementStyle(cssStr);
+          createElementStyle(cssStr, document.head, "AcFunHelper_hideAds");
           document.querySelector(".shareCount").remove();
           document.querySelector(".usemobile").remove();
         } catch (error) { }
@@ -387,7 +387,7 @@ class PageBeautify {
   thinScrollBar() {
     createElementStyle(
       "::-webkit-scrollbar { width: 8px; background-color: #fff;  }  ::-webkit-scrollbar-thumb { background-color: #fd4c5d; border-radius: 5px;  }"
-    );
+      , document.head, "AcFunHelper_thinScrollBar");
   }
 
   quickCommentSubmit(page = "index") {
@@ -543,7 +543,122 @@ class PageBeautify {
   multiPartListSpread() {
     createElementStyle(`
 			.part-wrap{max-height: fit-content !important;}
-		`)
+		`, document.head, "AcFunHelper_MultiPartListSpread")
+  }
+
+  /**
+   * 百度搜索相关的话题
+   */
+  async userRelatedTopic() {
+    let uid = REG.userHome.exec(window.location.href)[2];
+    let raw = await fetchResult("https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=" + uid);
+    let userInfo = JSON.parse(raw);
+    renderRelatedTopic(userInfo.profile.name);
+    async function renderRelatedTopic(userName) {
+      let queryText = encodeURI(`Acfun【${userName}】话题,快来参与`);
+      chrome.runtime.sendMessage({ action: "BkFetch", params: { receipt: false, responseRequire: true, asyncWarp: true, url: `https://www.baidu.com/s?wd=${queryText}&pn=0&rn=2&tn=json` } }, function (resp) {
+        let x = JSON.parse(resp.data);
+        if (new RegExp(userName).test(x.feed.entry[0].title)) {
+          // if (x.feed.entry[0].title == `Acfun【${userName}】话题,快来参与`) {
+          let elem = document.createElement("span");
+          elem.innerHTML = `<span class="common-info"><a target="_blank" href="${x.feed.entry[0].url}">相关话题</a></span>`;
+          document.querySelector("span.common-info").after(elem);
+          return 0;
+        }
+      })
+    }
+  }
+
+  /**
+   * 用户页面稿件
+   */
+  userPageTimeline() {
+    var pageList = []
+    userPageChangeListen();
+
+    /**
+     * 观测翻页,挂接翻页后处理
+     */
+    function userPageChangeListen() {
+      //隐藏原来的block
+      document.querySelector("#ac-space-video-list").style.display = 'none';
+      //修复消除ID之后排版出现的问题
+      createElementStyle(`.ac-space-video{float: left;}`, document.head, "AcFunHelper_userPageTimelineStyle");
+      //渲染一下第一页
+      userPageTimelineRender(1, bundleBlk(1, document.querySelector("#ac-space-video-list").cloneNode(true)));
+      //翻页就要处理新的版块
+      var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+      var observer = new MutationObserver((mutations) => {
+        mutations[0].addedNodes.forEach((e) => {
+          //e => new state
+          if (e.className === "pager__btn pager__btn__selected") {
+            mutations[0].removedNodes.forEach((f) => {
+              //f => original state
+              //活跃页变化
+              if (f.className === "pager__btn pager__btn__selected" && f.innerText != e.innerText) {
+                //添加上隐藏的现在所在的页，并表明其页数和起止时间
+                setTimeout(() => {
+                  userPageTimelineRender(Number(e.innerText), bundleBlk(e.innerText, document.querySelector("#ac-space-video-list").cloneNode(true)));
+                }, 2000);
+              }
+            })
+          }
+        })
+      });
+      //监听翻页组件
+      observer.observe(document.querySelector(".pager__wrapper"), { attributes: true, childList: true });
+    }
+    /**
+     * 翻页渲染区块响应
+     * @param {Number} pageNum 
+     * @param {Document} PageElem 
+     * @returns 
+     */
+    function userPageTimelineRender(pageNum, PageElem) {
+      // console.log(PageElem)
+      if (pageNum === 1 && pageList.indexOf(1) === -1) {
+        document.querySelector("div.tag-content.active > div.pagination").before(PageElem);
+        pageList.push(1);
+        return;
+      }
+      //假设现在的列表为[1,3],[1,2,10]+5
+      if (pageList.indexOf(pageNum) == -1) {
+        pageList.sort();
+        pageList.push(Number(pageNum));
+        if (pageNum > pageList[pageList.length - 1]) {
+          document.querySelector("#videoPage_" + pageList.length - 1).after(PageElem);
+          return;
+        }
+        let lastIndex = 0, lastArrEle = 0;
+        while (pageNum > lastArrEle && lastIndex <= pageList.length) {
+          lastIndex++;
+          lastArrEle = pageList[lastIndex];
+        }
+        document.querySelector("#videoPage_" + pageList[lastIndex - 1]).after(PageElem);
+      }
+    }
+    /**
+     * 区块加工
+     * @param {*} pageNum 
+     * @param {*} PageElem 
+     * @description 用于在原始区块外层将Tag描述信息和视频集信息包围，并使用自定的ID用于区分、查询
+     * @returns warp 包裹、处理好了的成品
+     */
+    function bundleBlk(pageNum, PageElem) {
+      //消除ID并设置为显示
+      PageElem.id = "";
+      PageElem.children[0].id = "";
+      PageElem.style.display = 'block';
+      //加上页数和起止时间标识
+      let startTagTemplate = `<div class="videoPageTag" style="border-bottom: 2px solid;text-align: center;color: black;margin: 5px;width: 20%;">第${pageNum}页 ${PageElem.querySelector("p.date").innerText} | ${PageElem.querySelectorAll("p.date")[PageElem.querySelectorAll(".ac-space-video").length - 1].innerText}<a id="#videoPageAnchor-${pageNum}" href="#videoPageAnchor-${pageNum}"></a></div>`;
+      //包围一层
+      let warp = document.createElement("div");
+      warp.className = "videopages";
+      warp.id = "videoPage_" + pageNum;
+      warp.appendChild(stringToDOM(startTagTemplate)[0]);
+      warp.appendChild(PageElem)
+      return warp;
+    }
   }
 
 }

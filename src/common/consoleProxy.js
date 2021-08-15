@@ -72,5 +72,11 @@ function devConsole(department, module, funcName, message, logLevel, timeSw) {
  * @example fgConsole(this,this.loadOption,"loaded Configuration.",1,false)
  */
 function fgConsole(cls, clsFunc, msg, logLevel = 0, timesw) {
-    devConsole("fg", getEsClassName(cls), getEsFuncName(clsFunc), msg, logLevel, timesw)
+    if (typeof (cls) != 'string') {
+        cls = getEsClassName(cls);
+    }
+    if (typeof (clsFunc) != 'string') {
+        clsFunc = getEsFuncName(clsFunc);
+    }
+    devConsole("fg", cls, clsFunc, msg, logLevel, timesw)
 }
