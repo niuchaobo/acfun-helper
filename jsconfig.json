@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "allowUmdGlobalAccess": true,
+        "target": "es6",
+        "declaration": true,
+    },
+    "exclude": ["node_modules"],
+    "include": [
+        "src/**/*", 
+        "global.d.ts",
+        "node_modules/@types/chrome/index.d.ts",
+    ],
+    "typeAcquisition": {},
+}
