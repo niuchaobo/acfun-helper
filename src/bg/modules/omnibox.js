@@ -3,6 +3,7 @@
  */
 class Ohminibox {
     constructor() {
+        this.devMode = false;
         this.omnibox = chrome.omnibox;
         this.initMod();
     }

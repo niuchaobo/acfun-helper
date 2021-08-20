@@ -27,20 +27,19 @@ class Danmaku {
             let rawRes = JSON.parse(await fetchResult("https://www.acfun.cn/rest/pc-direct/new-danmaku/list", "POST", `resourceId=${videoInfo.videoList[0].id}&resourceType=9&enableAdvanced=true&pcursor=${i}&count=200&sortType=1&asc=false`, true));
             result = result.concat(rawRes.danmakus);
         }
-        this.assDanmakuProcess(result, result.length, false, videoInfo);
+        this.assDanmakuProcess(result, result.length, videoInfo);
     }
 
     /**
      * Json2Ass弹幕处理核心逻辑
-     * @param {*} danmakuRes JSON格式弹幕
-     * @param {*} danmakuLength 弹幕数据长度
-     * @param {*} mode 模式（废弃，原本是有备用方案使用本地的window.player.danmaku的内容，但是常常获取不到）
-     * @param {*} videoInfo 视频信息
+     * @param {object} danmakuRes JSON格式弹幕
+     * @param {number} danmakuLength 弹幕数据长度
+     * @param {AcFunPageInfo} videoInfo 视频信息
      * @todo 多分P、弹幕重叠问题
      * @refer 处理逻辑参考：https://github.com/orzogc/acfundanmu
      * @refer UTF8 to UTF8-BOM参考：https://www.itranslater.com/qa/details/2583765774754120704
      */
-    async assDanmakuProcess(danmakuRes, danmakuLength, mode, videoInfo) {
+    async assDanmakuProcess(danmakuRes, danmakuLength, videoInfo) {
         let thisVideoQuality = document.querySelector(".control-btn.quality").children[0].innerText.toLowerCase();
         this.thisVideoQuality = thisVideoQuality;
         let fontsize = Number(danmakuRes[0].size) + 15;

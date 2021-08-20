@@ -28,7 +28,7 @@ function OldUIHandler() {
             to_special_items: items
         }, function () {
             options.to_special_items = items;
-            //odhback().opt_optionUpdate(options);
+            //getBackendInst().opt_optionUpdate(options);
             //location.reload();
         });
     }
@@ -257,7 +257,7 @@ function OldUIHandler() {
                 // location.reload();
                 auto_throw = false;
                 updateUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -268,7 +268,7 @@ function OldUIHandler() {
                 // location.reload();
                 auto_throw = true;
                 updateUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -282,7 +282,7 @@ function OldUIHandler() {
                 // location.reload();
                 banana_notice = false;
                 detectUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -293,7 +293,7 @@ function OldUIHandler() {
                 // location.reload();
                 banana_notice = true;
                 detectUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -308,7 +308,7 @@ function OldUIHandler() {
                     /* globals huaci_button */
                     to_attention = true;
                     attentionUi();
-                    odhback().opt_optionUpdate(options);
+                    getBackendInst().opt_optionUpdate(options);
                 });
             }
         }
@@ -324,7 +324,7 @@ function OldUIHandler() {
                     /* globals huaci_button */
                     to_attention = false;
                     attentionUi();
-                    odhback().opt_optionUpdate(options);
+                    getBackendInst().opt_optionUpdate(options);
                 });
             }
         }
@@ -346,7 +346,7 @@ function OldUIHandler() {
                 'to_attention_num': attention_num
             }, function () {
                 to_attention_num = attention_num;
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -360,7 +360,7 @@ function OldUIHandler() {
                 // location.reload();
                 upHighlight = false;
                 commentUi()
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -371,7 +371,7 @@ function OldUIHandler() {
                 // location.reload();
                 upHighlight = true;
                 commentUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -385,7 +385,7 @@ function OldUIHandler() {
                 // location.reload();
                 scan = false;
                 commentUi()
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -396,7 +396,7 @@ function OldUIHandler() {
                 // location.reload();
                 scan = true;
                 commentUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -410,7 +410,7 @@ function OldUIHandler() {
                 // location.reload();
                 mark = false;
                 commentUi()
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -421,7 +421,7 @@ function OldUIHandler() {
                 // location.reload();
                 mark = true;
                 commentUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -435,7 +435,7 @@ function OldUIHandler() {
                 // location.reload();
                 filter = false;
                 filterUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -446,7 +446,7 @@ function OldUIHandler() {
                 // location.reload();
                 filter = true;
                 filterUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -460,7 +460,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_nav = false;
                 beautifyUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -471,7 +471,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_nav = true;
                 beautifyUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -485,7 +485,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_personal = false;
                 beautifyUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -496,7 +496,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_personal = true;
                 beautifyUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -510,7 +510,7 @@ function OldUIHandler() {
                 // location.reload();
                 custom_rate = false;
                 customVideoUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -521,7 +521,7 @@ function OldUIHandler() {
                 // location.reload();
                 custom_rate = true;
                 customVideoUi();
-                odhback().opt_optionUpdate(options);
+                getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -542,7 +542,7 @@ function OldUIHandler() {
             'player_mode': mode
         }, function () {
             player_mode = mode;
-            odhback().opt_optionUpdate(options);
+            getBackendInst().opt_optionUpdate(options);
         });
     });
 
@@ -1125,51 +1125,13 @@ function contentConfigure() {
                 mdui.snackbar({
                     message: `已经启动 稍后再看 排程。`,
                 });
-                chrome.runtime.sendMessage({ action: "watchLater", params: {} }, function (response) { });
+                MessageSwitch.sendMessage('fg', { target: "watchLater", params: {}, InvkSetting: { type: "function" } })
             } else {
                 mdui.snackbar({
                     message: `稍后再看列表没有项目或者没有打开开关，助手不知道从何而起，巧妇难为无米之炊；请先添加或打开开关。`,
                 });
             }
         });
-        $('#syncwatchLaterList').click(() => {
-            if (document.getElementById('watchLater').checked) {
-                mdui.snackbar({
-                    message: `已经启动 稍后再看 App同步任务。`,
-                });
-                document.querySelector("#syncwatchLaterListProcessBar").style.display = "block";
-                chrome.runtime.sendMessage({ action: "syncWatchLaterList", params: { responseRequire: true, asyncWarp: true } }, function (response) {
-                    console.log(response);
-                    if (response) {
-                        mdui.snackbar({
-                            message: `成功完成 稍后再看 App同步任务。`,
-                        });
-                    } else {
-                        mdui.snackbar({
-                            message: `稍后再看 App同步任务 失败`,
-                        });
-                    }
-                    mysleep(2630).then(() => {
-                        document.querySelector("#syncwatchLaterListProcessBar").style.display = "none";
-                    })
-                });
-            } else {
-                mdui.snackbar({
-                    message: `稍后再看没有打开。`,
-                });
-            }
-        });
-        $('#removeDiffWatchLaterList').click(() => {
-            document.querySelector("#syncwatchLaterListProcessBar").style.display = "block";
-            mdui.snackbar({
-                message: `进行 稍后再看 删除本端与App的差异任务。`,
-            });
-            chrome.runtime.sendMessage({ action: "removeDiffWatchLaterList", params: {} }, function (response) { });
-            mysleep(2630).then(() => {
-                document.querySelector("#syncwatchLaterListProcessBar").style.display = "none";
-                window.location.reload();
-            })
-        })
         let eventObj = document.getElementById('watchLaterList');
         eventObj.onclick = async (ev) => {
             var ev = ev || window.event;

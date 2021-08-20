@@ -3,7 +3,7 @@
  */
 class videoPageBeautify {
   constructor() {
-
+    this.devMode = false;
   }
 
   openVideoDesc() {

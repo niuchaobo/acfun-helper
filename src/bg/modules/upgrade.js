@@ -9,6 +9,7 @@ class UpgradeAgent {
         this.option = '';
         this.scheduler = myBrowser() == "Chrome" ? chrome.alarms : browser.alarms;
         this.notificationListPurgeCount = 0;
+        this.devMode = false;
     }
 
     /**

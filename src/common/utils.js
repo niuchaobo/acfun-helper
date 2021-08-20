@@ -240,8 +240,8 @@ function utilAsync(func) {
   };
 }
 
-function odhback() {
-  return chrome.extension.getBackgroundPage().odhback;
+function getBackendInst() {
+  return chrome.extension.getBackgroundPage().AcFunHelperBackend;
 }
 
 function localizeHtmlPage() {

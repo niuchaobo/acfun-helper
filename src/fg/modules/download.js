@@ -3,12 +3,12 @@
  */
 class Download {
     constructor() {
-        this.devMode = false;
+        this.devMode = true;
     }
 
     async downloadVideo(params) {
         this.devMode && console.log(params);
-        let activeKey = window.odhfront.options.activeTabKey;
+        let activeKey = window.AcFunHelperFrontend.options.activeTabKey;
         let { url, title, id, qualityLabel } = params;
         let m3u8 = url;
         let tabId = await getStorage(activeKey).then(result => { return result[activeKey] });
@@ -42,12 +42,12 @@ class Download {
         let segments = res.segments;
         let seArr = new Array();
         if (segments.length == 0) {
-            chrome.runtime.sendMessage({
-                action: 'notice', params: {
+            MessageSwitch.sendMessage('fg', {
+                target: "notice", params: {
                     title: "警告",
                     msg: "视频信息已过期，请刷新当前页面",
-                }
-            }, function (response) { });
+                }, InvkSetting: { type: "function" }
+            })
             return;
         } else {
             for (let seg of segments) {
@@ -65,18 +65,14 @@ class Download {
             try {
                 a = await getVideo(url);
             } catch (e) {
-                let action = 'notice';
-                let p = {
-                    title: "警告",
-                    msg: "视频下载失败，请刷新后重试",
-                }
-                /*chrome.runtime.sendMessage({action:action,params:p}, function(response) {
-
-                });*/
+                MessageSwitch.sendMessage('fg', {
+                    target: "notice", params: {
+                        title: "警告",
+                        msg: "视频下载失败，请刷新后重试",
+                    }, InvkSetting: { type: "function" }
+                })
             }
-
             myBlobBuilder.append(a);
-
             //计算当前进度
             let progress = parseInt(index / seArr.length * 100);
             //更新storage数据

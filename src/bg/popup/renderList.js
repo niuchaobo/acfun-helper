@@ -287,7 +287,7 @@ export function renderLives() {
 						livexmlData +=
 							livedata.user.id +
 							'" src="' +
-							livedata.coverUrls[0] +
+							livedata?.coverUrls[0] +
 							'" class="preview"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' +
 							livedata.user.id +
 							' "target="_blank" href="' +
@@ -324,16 +324,17 @@ export function PopupLater() {
 export async function renderLiveWatchTimeLst() {
 	let x = await getStorage("LiveWatchTimeRec_popup");
 	if (!x.LiveWatchTimeRec_popup) { return }
-	chrome.runtime.sendMessage({ action: "updateLiveWatchTimeListItem", params: { responseRequire: true, asyncWarp: true } }, function (resp0) {
-		if (resp0.data == true) {
-			chrome.runtime.sendMessage({ action: "getLiveWatchTimeList", params: { responseRequire: true, asyncWarp: false } }, function (resp) {
+	MessageSwitch.sendMessage('fg', { target: "updateLiveWatchTimeListItem", params: {}, InvkSetting: { type: "function", responseRequire: true, asyncWarp: true } }, function (resp0) {
+		if (resp0 == true) {
+			MessageSwitch.sendMessage('fg', { target: "getLiveWatchTimeList", InvkSetting: { responseRequire: true, asyncWarp: false,type:"function" } }, function (resp) {
+				console.log(resp0,resp)
 				var raw_data = "";
-				let lwList = Object.keys(resp.data)
+				let lwList = Object.keys(resp)
 				for (let i in lwList) {
 					var raw_data = raw_data + `
             <tr>
-                <td><a class="liveWatchListItem" data-key="${[lwList[i]]}" title="切换到标签页"  href="${resp.data[lwList[i]].url}">[切换]</a> ${resp.data[lwList[i]].title}</td>
-                <td>${getTimeSinceNow(resp.data[lwList[i]].startTime, true, true, 'h')}</td>
+                <td><a class="liveWatchListItem" data-key="${[lwList[i]]}" title="切换到标签页"  href="${resp[lwList[i]].url}">[切换]</a> ${resp[lwList[i]].title}</td>
+                <td>${getTimeSinceNow(resp[lwList[i]].startTime, true, true, 'h')}</td>
             </tr>
           `;
 				}

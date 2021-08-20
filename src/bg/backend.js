@@ -1,8 +1,10 @@
-class ODHBack {
+class AcFunHelperBackend {
     constructor() {
         this.options = null;
         this.target = null;
+        this.devMode = false;
 
+        this.MessageRouter = new MessageSwitch("bg");
         this.agent = new Agent(document.getElementById('sandbox').contentWindow);
         this.MsgNotfs = new MsgNotifs();
         this.authInfo = new AuthInfo();
@@ -10,6 +12,10 @@ class ODHBack {
         this.Upgrade = new UpgradeAgent();
         // this.ReqOpDrv = new ReqOperationDrv();
         this.WatchPlan = new WatchPlan();
+
+        this.dataset = {
+
+        }
 
         this.Ominibox.registerOmnibox();
         this.MsgNotfs.timer4Unread();
@@ -19,7 +25,7 @@ class ODHBack {
         this.Upgrade.upgradeMain();
         this.WatchPlan.onLoad();
 
-        chrome.runtime.onMessage.addListener(this.onMessage.bind(this));
+        chrome.runtime.onMessage.addListener(this.MessageRouter.BackgroundMessageSwitch.bind(this));
         // chrome.runtime.onMessageExternal.addListener(this.onExternalMessage.bind(this));
         window.addEventListener('message', e => this.onSandboxMessage(e));
         chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
@@ -27,6 +33,7 @@ class ODHBack {
         chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
         chrome.alarms.onAlarm.addListener((e) => this.onAlarmsEvent(e));
         chrome.commands.onCommand.addListener((command) => { this.onCommands(command) });
+
 
         //监听storage变化,可用于数据云同步
         // chrome.storage.onChanged.addListener(function (changes, areaName) {
@@ -101,10 +108,10 @@ class ODHBack {
         const versionNum = chrome.runtime.getManifest().version;
         initializeDBTable();
         if (details.reason === 'install') {
-            chrome.tabs.create({ url: chrome.extension.getURL('bg/options.html') });
+            chrome.tabs.create({ url: chrome.runtime.getURL('bg/options.html') });
         }
         if (details.reason === 'update') {
-            if(versionNum == details.previousVersion){
+            if (versionNum == details.previousVersion) {
                 chrome.notifications.create(null, {
                     type: 'basic',
                     iconUrl: 'images/notice.png',
@@ -181,51 +188,8 @@ class ODHBack {
     }
 
     //================Message Hub and Handler================//
-    tabInvokeAll(action, params) {
-        chrome.tabs.query({}, (tabs) => {
-            for (let tab of tabs) {
-                this.tabInvoke(tab.id, action, params);
-            }
-        });
-    }
-
     tabInvoke(tabId, action, params) {
-        // console.log(tabId,action,params)
-        chrome.tabs.sendMessage(tabId, { action, params }, () => null);
-    }
-
-    onMessage(request, sender, callback) {
-        const { action, params } = request;
-        const method = this['api_' + action];
-
-        /*
-        调用示例
-        chrome.runtime.sendMessage({action:"`调用的函数名`",params:{receipt: `这里选择是否告知被调用函数前台调用函数所在页面的tabid`,responseRequire:`此处选择是否需要返回函数运行结果`,asyncWarp:`此处选择是否需要进行结果返回的异步封装`,...其他参数}},function(resp){//process code})
-        */
-        if (typeof (method) === 'function') {
-            if (params["receipt"]) {
-                //信源程序是否需要通过tabid来获取回执<-我也忘记这个注释是什么意思了，好像是说这个参数置true可以告知被调用函数前台调用函数所在页面的tabid以便重新利用。
-                params.tabid = sender.tab;
-                params.callback = callback;
-                method.call(this, params);
-            } else if (params["responseRequire"] && params["asyncWarp"] == false) {
-                //调用函数需要得到被调用函数的结果，并且被调用函数是同步的，结果不需要进行异步封装。
-                params.callback = callback;
-                let x = method.call(this, params);
-                callback({ data: x });
-            } else if (params["responseRequire"] && params["asyncWarp"]) {
-                //调用异步函数且返回结果
-                params.callback = callback;
-                method.call(this, params).then(resp => {
-                    callback({ data: resp });
-                })
-            } else {
-                //仅调用
-                params.callback = callback;
-                method.call(this, params);
-            }
-        }
-        return true;
+        MessageSwitch.sendMessage('bg', { target: action, InvkSetting: { tabId: tabId, type: "function" }, params: params },)
     }
 
     onExternalMessage(e, sender, callback) {
@@ -296,7 +260,6 @@ class ODHBack {
             onclick: function (params, tab) {
                 let link_url = params.linkUrl;
                 this.tabInvoke(tab.id, 'downloadCover', { link_url: link_url, type: 'normal' });
-
             }.bind(this)
         });
 
@@ -415,10 +378,10 @@ class ODHBack {
     }
 
     async api_achievementEvent(e) {
-        if (e.data.action == "get") {
-            return await db_getHistoricalAchievs(REG.acVid.exec(e.data.url)[2]);
-        } else if (e.data.action == "put") {
-            db_insertHistoricalAchievs(REG.acVid.exec(e.data.url)[2], e.data.tagData);
+        if (e.action == "get") {
+            return await db_getHistoricalAchievs(REG.acVid.exec(e.url)[2]);
+        } else if (e.action == "put") {
+            db_insertHistoricalAchievs(REG.acVid.exec(e.url)[2], e.tagData);
             return true;
         }
     }
@@ -748,10 +711,10 @@ class ODHBack {
 
 
 function getInstance() {
-    return new ODHBack();
+    return new AcFunHelperBackend();
 }
 //getInstance();
-window.odhback = new ODHBack();
+window.AcFunHelperBackend = new AcFunHelperBackend();
 
 /*var ffmpeg = require("ffmpeg");
 window.ffmpeg = ffmpeg;

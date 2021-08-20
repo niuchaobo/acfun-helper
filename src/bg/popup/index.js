@@ -1,4 +1,3 @@
-/* global odhback, localizeHtmlPage, utilAsync, optionsLoad, optionsSave updateVersionIcon*/
 import {
 	renderPushInnerHtml,
 	renderLives,

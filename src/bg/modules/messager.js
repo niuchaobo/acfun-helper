@@ -3,6 +3,7 @@
  */
 class MsgNotifs {
     constructor() {
+        this.devMode = false;
         this.initMod();
         this.browserType = myBrowser();
     }

@@ -1,6 +1,6 @@
 //----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
-let videoFunction = (function () {
+let AcFunHelperVideoFunction = (function () {
   let testVideo = new RegExp(
     "((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))"
   ).test(window.location.href);
@@ -15,17 +15,36 @@ let videoFunction = (function () {
   //=======MessageHub=======//
   window.addEventListener("message", (e) => {
     if (e.data.to == "AcFunHelper_vsInject") {
-      if (typeof (e.data.msg.subMod) === 'function') {
-        (e.data.msg.subMod).call({}, e.data.msg.msg);
-      }
+      MessageCommonInvoker(e);
     }
   })
 
-  function MessagePush(modName = "", msg = "") {
+  /**
+   * 消息发送器
+   * @param {string} modName videoSetting父模块接收函数/模块
+   * @param {MessageSwitchWindowMsgPayload} msg 消息内容 {source:string,target:string,InvkSetting: {type:"function"},params:{}|[]}
+   */
+  function MessagePush(payload = {}) {
     window.parent.postMessage({
       to: "AcFunHelperFrontend",
-      msg: { modName: modName, msg: msg },
+      msg: payload,
     }, "*");
+  }
+
+  /**
+   * 通用调用处理器
+   * @param {MessageSwitchWindowMsgRespnse} e constraint:{ data: { to: "AcFunHelper_vsInject", msg: {source:string,target:string,InvkSetting: {type:"function"},params:{}|[]} } }
+   */
+  function MessageCommonInvoker(e) {
+    if (e.data.msg.InvkSetting.type === "function" && typeof (AcFunHelperVideoFunction[e.data.msg.target]) === 'function') {
+      let paramList;
+      if (Array.isArray(e.data.msg.params) == false) {
+        paramList = Object.values(e.data.msg.params)
+      }
+      AcFunHelperVideoFunction[e.data.msg.target].apply({}, paramList);
+    } else {
+      console.log(e.data.msg);
+    }
   }
 
   if (!hiddenDiv) {
@@ -73,7 +92,13 @@ let videoFunction = (function () {
         //break;
 
         //换另外一种方法
-        document.querySelector(".fullscreen-screen>.btn-fullscreen").click();
+        let _timer2 = setInterval(function () {
+          const fullscreenBtn = document.querySelector(".fullscreen-screen>.btn-fullscreen");
+          if (fullscreenBtn) {
+            fullscreenBtn.click();
+            clearTimeout(_timer2);
+          }
+        }, 300)
         break;
     }
 
@@ -230,4 +255,4 @@ let {
   quickJump,
   dropFrameIncrementAlz,
   MessagePush,
-} = { ...videoFunction };
+} = { ...AcFunHelperVideoFunction };

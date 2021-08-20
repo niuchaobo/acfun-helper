@@ -55,7 +55,7 @@ class VideoSetting {
     sc.onload = function () {
       var customEvent = document.createEvent("Event");
       customEvent.initEvent("AcFunHelperDataDivEvent", true, true);
-      hiddenDiv.innerText = JSON.stringify(window.odhfront.options);
+      hiddenDiv.innerText = JSON.stringify(window.AcFunHelperFrontend.options);
       hiddenDiv.dispatchEvent(customEvent);
     };
   }
@@ -768,7 +768,7 @@ class VideoSetting {
           videoInfo.coverUrl = document.querySelector("#main-content > div.right-column > div.highlights > div.clearfix.area.highlights-list > figure:nth-child(1) > a > img").src;
         } catch (error) {
           //没有番剧推荐视频那就拿大家都在看的封面得了
-          videoInfo.coverUrl = document.querySelector("#pagelet_newrecommend > div > div > figure:nth-child(1) > a > img").src;
+          videoInfo.coverUrl = document.querySelector("#pagelet_newrecommend > div > div > figure > a > img").src;
         }
       }
       //分P
@@ -1097,8 +1097,8 @@ class VideoSetting {
     switch (sw) {
       case true:
         if (this.hideDanmakuOperatorStyleAdded) {
-          document.querySelector("#hideDanmakuOperatorBarStyle").disabled = false;
-          document.querySelector("#danmakuLayerMask") ? document.querySelector("#danmakuLayerMask").style.display = 'block' : "";
+          document.querySelector("#AcFunHelper_hideDanmakuOperatorBarStyle").disabled = false;
+          document.querySelector("#AcFunHelper_danmakuLayerMask") ? document.querySelector("#AcFunHelper_danmakuLayerMask").style.display = 'block' : "";
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
         } else {
           createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "AcFunHelper_hideDanmakuOperatorBarStyle");
@@ -1110,10 +1110,10 @@ class VideoSetting {
         }
         break;
       case false:
-        const mainProcElem = document.querySelector("#hideDanmakuOperatorBarStyle");
+        const mainProcElem = document.querySelector("#AcFunHelper_hideDanmakuOperatorBarStyle");
         if (mainProcElem) {
           mainProcElem.disabled = true;
-          document.querySelector("#danmakuLayerMask") ? document.querySelector("#danmakuLayerMask").style.display = 'none' : "";
+          document.querySelector("#AcFunHelper_danmakuLayerMask") ? document.querySelector("#AcFunHelper_danmakuLayerMask").style.display = 'none' : "";
         }
         document.querySelector(".danmakuOpr").dataset.bindAttr = true;
         break;
@@ -1141,25 +1141,25 @@ class VideoSetting {
    * 历史成就
   */
   historocalAchieve() {
-    chrome.runtime.sendMessage({ action: "achievementEvent", params: { responseRequire: true, asyncWarp: true, data: { action: "get", url: window.location.href } } }, function (response) {
+    MessageSwitch.sendMessage('fg', { target: "achievementEvent", InvkSetting: { responseRequire: true, asyncWarp: true, type: "function" }, params: { action: "get", url: window.location.href } }, function (response) {
       var tag;
       try {
         tag = document.querySelector(".reco-tag").innerText;
       } catch (error) {
         tag = null;
       }
-      if (response.data.length != 0) {
+      if (!!response?.length != 0) {
         //数据库有数据
         if (tag) {
           return
         } else {
           //要加上Tag
-          addElement({ tag: 'a', target: document.querySelector(".video-description .title"), classes: 'reco-tag', createMode: "headAppnd", thisHTML: `${new Date(response.data[0].date).getFullYear()}-${new Date(response.data[0].date).getMonth() + 1}-${new Date(response.data[0].date).getDate()} ${response.data[0].tag}` })
+          addElement({ tag: 'a', target: document.querySelector(".video-description .title"), classes: 'reco-tag', createMode: "headAppnd", thisHTML: `${new Date(response[0].date).getFullYear()}-${new Date(response[0].date).getMonth() + 1}-${new Date(response[0].date).getDate()} ${response[0].tag}` })
         }
       } else {
         if (tag) {
           //数据库没数据，并且存在榜单数据，那就写数据进数据库
-          chrome.runtime.sendMessage({ action: "achievementEvent", params: { responseRequire: true, asyncWarp: true, data: { action: "put", url: window.location.href, tagData: tag } } }, function (response) { })
+          MessageSwitch.sendMessage('fg',{target:"achievementEvent",InvkSetting:{ responseRequire: true, asyncWarp: true, type: "function" }, params: { action: "put", url: window.location.href, tagData: tag } })
         }
       }
     })

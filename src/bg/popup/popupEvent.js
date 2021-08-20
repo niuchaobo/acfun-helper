@@ -52,7 +52,7 @@ export async function onOptionChanged(e) {
 	if (!e.originalEvent) return;
 	let options = await optionsLoad();
 	options.enabled = $("#extends-enbaled").prop("checked");
-	let newOptions = await odhback().opt_optionsChanged(options);
+	let newOptions = await getBackendInst().opt_optionsChanged(options);
 	optionsSave(newOptions);
 }
 
@@ -60,7 +60,7 @@ export async function StopWatchLaterFpopup() {
 	mdui.snackbar({
 		message: `已撤销本次 稍后再看 排程。`,
 	});
-	chrome.runtime.sendMessage({ action: "stopWatchLater", params: {} }, function (response) { });
+	MessageSwitch.sendMessage('fg', { target: "stopWatchLater", params: {}, InvkSetting: { type: "function" } })
 }
 
 /**
@@ -72,7 +72,7 @@ export async function WatchLaterFpopup() {
 			mdui.snackbar({
 				message: `已经启动 稍后再看 排程。`,
 			});
-			chrome.runtime.sendMessage({ action: "watchLater", params: {} }, function (response) { });
+			MessageSwitch.sendMessage('fg', { target: "watchLater", params: {}, InvkSetting: { type: "function" } })
 		}
 	})
 }
@@ -107,12 +107,15 @@ export async function userInfoFetch() {
 	if (uid == '') { return }
 	fetch("https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=" + Number(uid)).then((res) => {
 		if (res.status == 503) {
-			chrome.runtime.sendMessage({ action: 'notice', params: { title: "AcFun助手", msg: "您操作太过频繁。" } }, function (response) { });
+			MessageSwitch.sendMessage('fg', { target: "notic", params: { title: "AcFun助手", msg: "您操作太过频繁。" }, InvkSetting: { type: "function" } });
 		} return res.text()
 	})
 		.then((res) => {
 			let x = JSON.parse(res);
-			if (x.result != 0) { chrome.runtime.sendMessage({ action: 'notice', params: { title: "AcFun助手", msg: "UID可能存在着某些问题。" } }, function (response) { }); return }
+			if (x.result != 0) {
+				MessageSwitch.sendMessage('fg', { target: "notic", params: { title: "AcFun助手", msg: "UID可能存在着某些问题。" }, InvkSetting: { type: "function" } });
+				return
+			}
 			let raw_data = `
 		<div class="mdui-table-fluid">
 			<table class="mdui-table">
@@ -237,7 +240,7 @@ export function unreadNum() {
  */
 export function attentionTabs() {
 	chrome.windows.getCurrent({}, function (e) {
-		chrome.runtime.sendMessage({ action: "attentionTabs", params: { windowId: e.id } }, function (response) { });
+		MessageSwitch.sendMessage('fg', { target: "attentionTabs", params: { windowId: e.id }, InvkSetting: { type: "function" } })
 	})
 }
 

@@ -1,11 +1,11 @@
 function getImageSource(id) {
     return document.querySelector(`#${id}`).src;
 }
-
 function downloadDanmaku() {
     alert("因为Api接口限制，可能弹幕下载不全。");
     window.parent.postMessage({
-        action: 'downloadDanmaku',
+        to: "AcFunHelper",
+        msg: { source: "frame-downloadDanmaku", target: "downloadDanmaku", InvkSetting: { type: "function" }, params: {} },
     }, '*');
 }
 
@@ -16,7 +16,8 @@ function assDanmaku() {
         alert("因为Api接口限制，可能弹幕下载不全。");
         try {
             window.parent.postMessage({
-                action: 'assDanmaku',
+                to: "AcFunHelper",
+                msg: { source: "frame-assDanmaku", target: "assDanmaku", InvkSetting: { type: "function" }, params: {} },
             }, '*');
         } catch (error) {
             alert("可能出现了某种错误。")
@@ -31,25 +32,29 @@ function registVideoClick() {
             e.preventDefault();
             const ds = e.currentTarget.dataset;
             if (ds.run == "true") {
-
                 window.parent.postMessage({
-                    action: 'notice',
-                    params: {
-                        title: '',
-                        msg: '请耐心等待，视频正在下载中...',
-                    }
+                    to: "AcFunHelper",
+                    msg: {
+                        source: "frame-registVideoClick", target: "notice",
+                        InvkSetting: { type: "function", classicalParmParse: true }, params: {
+                            title: '',
+                            msg: '请耐心等待，视频正在下载中...',
+                        }
+                    },
                 }, '*');
-
                 return;
             }
             window.parent.postMessage({
-                action: 'download',
-                params: {
-                    url: ds.url,
-                    title: ds.title,
-                    id: ds.id,
-                    qualityLabel: ds.quality
-                }
+                to: "AcFunHelper",
+                msg: {
+                    source: "frame-registVideoClick", target: "download",
+                    InvkSetting: { type: "function", classicalParmParse: true }, params: {
+                        url: ds.url,
+                        title: ds.title,
+                        id: ds.id,
+                        qualityLabel: ds.quality
+                    }
+                },
             }, '*');
             e.currentTarget.dataset.run = "true";
         });
@@ -59,30 +64,24 @@ function registVideoClick() {
 function markChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
-        action: 'mark',
-        params: {
-            value: value,
-        }
+        to: "AcFunHelper",
+        msg: { source: "frame-markChange", target: "mark", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
     }, '*');
 }
 
 function scanChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
-        action: 'scan',
-        params: {
-            value: value,
-        }
+        to: "AcFunHelper",
+        msg: { source: "frame-scanChange", target: "scan", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
     }, '*');
 }
 
 function readmodeChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
-        action: 'lightReadMode',
-        params: {
-            value: value,
-        }
+        to: "AcFunHelper",
+        msg: { source: "frame-scanChange", target: "lightReadMode", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
     }, '*');
 }
 
@@ -112,11 +111,13 @@ function lottery() {
     }
     $('#lucy-chou').loading({ text: '请稍候', num: 3, rate: 1000, style: '.' });
     window.parent.postMessage({
-        action: 'lottery',
-        params: {
-            number: number,
-            follow: isFollow
-        }
+        to: "AcFunHelper",
+        msg: {
+            source: "frame-scanChange", target: "lottery", InvkSetting: { type: "function", classicalParmParse: true }, params: {
+                number: number,
+                follow: isFollow
+            }
+        },
     }, '*');
 }
 
@@ -129,11 +130,13 @@ function lotteryAgain() {
     }
     $('#lucy-chouAgain').loading({ text: '请稍候', num: 3, rate: 1000, style: '.' });
     window.parent.postMessage({
-        action: 'lottery2nd',
-        params: {
-            number: number,
-            follow: isFollow
-        }
+        to: "AcFunHelper",
+        msg: {
+            source: "frame-scanChange", target: "lottery2nd", InvkSetting: { type: "function", classicalParmParse: true }, params: {
+                number: number,
+                follow: isFollow
+            }
+        },
     }, '*');
 }
 
@@ -197,11 +200,12 @@ function onDomContentLoaded() {
             document.execCommand("copy");
             document.body.removeChild(aux);
             window.parent.postMessage({
-                action: 'notice',
-                params: {
+                to: "AcFunHelper",
+                msg: { source: "frame-scanChange", target: "notice", 
+                InvkSetting: { type: "function", classicalParmParse: true }, params: {
                     title: 'AcFun助手',
                     msg: '下载地址复制到剪贴板。',
-                }
+                } },
             }, '*');
         })
     })
@@ -215,6 +219,7 @@ function onDomContentLoaded() {
 }
 
 function onMessage(e) {
+    console.log(e)
     const { action, params } = e.data;
     const method = window['api_' + action];
     if (typeof (method) === 'function') {

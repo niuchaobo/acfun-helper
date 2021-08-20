@@ -5,6 +5,7 @@ class LuckyTtab {
     constructor() {
         this.messageFormat = "https://message.acfun.cn/im?targetId={userId}";
         this.hasBeenChosen = [];
+        this.devMode = false;
     }
 
     genNum(mode, num = 0, min = 0, max) {
@@ -181,6 +182,7 @@ class LuckyTtab {
                 arr: JSON.stringify(arr),
             }
         }, '*');
+        return arr;
     }
 
     async RollOutExp(acid, num, follow = false) {
@@ -249,6 +251,7 @@ class LuckyTtab {
                 arr: JSON.stringify(arr),
             }
         }, '*');
+        return arr;
     }
 
     async RollOutExcDb(acid, num, follow = false) {

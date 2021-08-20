@@ -24,7 +24,6 @@ function test() {
 function initializeDBTable() {
     console.log("initializeDBTable For System.")
     initPushList();
-    initHistoryViews();
     initPushListHtml();
     initSquareList();
     inithistoricalAchieve();
