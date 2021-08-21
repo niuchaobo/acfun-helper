@@ -283,7 +283,7 @@ async function updateStorage(progress, id, tabId) {
 
 /**
  * 判断浏览器类型
- * @returns string 'FF' 'Chrome' 'IE' 'Safari' 'IE' 'MSIE'
+ * @returns {'FF'|'Chrome'|'Opera'|'Safari'|'IE'}
  */
 function myBrowser() {
   var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
@@ -777,8 +777,7 @@ throttle = (func, delay) => {
 
 /**
  * 插入DOM对象
- * @param {Object} options { tag = 'div', id = '', css = '', target = document.body, classes = '', createMode = "append", thisHTML = "" }
- * @innerParam {String} createMode append,after,headAppend
+ * @param {addElementPayload} options 
  */
 function addElement(options) {
   let { tag = 'div', id = '', css = '', target = document.body, classes = '', createMode = "append", thisHTML = "", title = "" } = options

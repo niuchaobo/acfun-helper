@@ -321,15 +321,15 @@ class DOMObserver extends UtilsBundle {
 
 /**
  * getAsyncDom Class Version!
- * @param {string} target 
- * @param {Function} fn 
- * @param {Function} insure 
- * @param {Function} purpose 
- * @param {number} time 
- * @param {boolean} instantMode 
- * @param {number} maxWaitTime 
- * @param {boolean} devMode 
- * @param {ParentNode} advancedQueryMethod 
+ * @param {string} target 监听目标
+ * @param {Function} fn 成功回调
+ * @param {Function} insure 失败回调
+ * @param {string|Function} purpose 成功的条件
+ * @param {number} time 一次检测时间间隔
+ * @param {boolean} instantMode 间隔定长
+ * @param {number} maxWaitTime 最长等待时间
+ * @param {boolean} devMode 开发模式
+ * @param {ParentNode} advancedQueryMethod 自定义检测方法
  * @description 监听DOM对象 模块版本!
  */
 class GetAsyncDomUtil extends UtilsBundle {
@@ -736,6 +736,8 @@ class MessageSwitch extends UtilsBundle {
                 asyncWarp: !!sourceParam?.InvkSetting?.asyncWarp,
                 tabId: sourceParam?.tabId,
                 classicalParmParse: sourceParam?.classicalParmParse ?? false,
+                withCallback: sourceParam.withCallback ?? false,
+                callbackId: sourceParam.withCallback == undefined ? false : sourceParam.callbackId,
             },
             params: sourceParam?.params ?? sourceParam?.param
         };
@@ -932,7 +934,6 @@ class MessageSwitch extends UtilsBundle {
         if (!e.data || e.data.to != "AcFunHelper") {
             return
         }
-        console.log(e)
         const { target, source, InvkSetting, params } = e.data.msg;
         const method = this["api_" + target];
         if (InvkSetting.type == "function" && typeof method === "function") {
@@ -1159,6 +1160,112 @@ class MessageSwitch extends UtilsBundle {
                 console.log(`[${formatDate(new Date(), true)}]`, request, sender);
         }
         return true;
+    }
+
+    /**
+     * Bg处理Sandbox消息
+     * @param {MessageSwitchWindowMsgRespnse} e 
+     */
+    SandboxMsgHandler(e) {
+        if (e.data.to != "background") {
+            return;
+        }
+        this.devMode && console.log(e);
+        const { target, source, InvkSetting, params } = e.data.msg;
+
+        let response;
+        switch (InvkSetting?.type) {
+            case "function":
+                const method = this["api_" + target];
+                if (typeof method === "function") {
+                    if (InvkSetting["asyncWarp"]) {
+                        response = new Promise((resolve, reject) => {
+                            try {
+                                method.call(this, params).then(resp => {
+                                    resolve(resp);
+                                })
+                                response.status = true;
+                            } catch (error) {
+                                reject(error);
+                            }
+                        })
+                    }
+                    response = method.call(this, params);
+                }
+                break;
+            case "subMod":
+                const callTarget = window.AcFunHelperBackend[target.mod];
+                if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
+                    params.callback = callback;
+                    if (InvkSetting["asyncWarp"]) {
+                        return Promise((resolve, reject) => {
+                            try {
+                                callTarget["api_" + target.methodName].call(this, params).then(resp => { resolve(resp) });
+                            } catch (error) {
+                                reject(error)
+                            }
+                        })
+                    }
+                    response = callTarget["api_" + target.methodName].call(this, params);
+                }
+                break;
+            case "printMsg":
+                console.log(`Sandbox:[${formatDate(new Date(), true)}]`, `${source} > ${target}`, params);
+                break;
+            default:
+                console.log(`Sandbox:[${formatDate(new Date(), true)}]`, e.data.msg);
+
+        }
+    }
+
+    /**
+     * Sandbox消息处理
+     * @param {MessageSwitchWindowMsgRespnse} e 
+     */
+    UnsafeCallHandler(e) {
+        if (e.data.to != "sandbox") {
+            return;
+        }
+        const { target, source, InvkSetting, params } = e.data.msg;
+        this.devMode && console.log(e);
+
+        let response;
+        switch (InvkSetting?.type) {
+            case "function":
+                const method = this["unsafe_" + target];
+                if (typeof method === "function") {
+                    if (InvkSetting["asyncWarp"]) {
+                        response = new Promise((resolve, reject) => {
+                            try {
+                                method.call(this, params).then(resp => {
+                                    resolve(resp);
+                                })
+                            } catch (error) {
+                                reject(error);
+                            }
+                        })
+                    }
+                    response = method.call(this, params);
+                    this.devMode && console.log(response)
+                }
+                break;
+            default:
+                console.log(`SandboxInner:[${formatDate(new Date(), true)}]`, e.data.msg);
+        }
+        if (response != (undefined || null)) {
+            this.sandboxAgent.taskFinished(e.data.msg, response);
+        }
+    }
+
+    /**
+     * SandboxAgent消息处理
+     * @param {MessageSwitchWindowMsgRespnse} e 
+     * @example let unsafe = new SandboxAgent(document.getElementById('sandbox').contentWindow);unsafe.createTask({ target: "console", InvkSetting: { withCallback: true, callbackId: "test", type: "function" }, params: "2333......" },function(e){console.log(e)})
+     */
+    SandboxComAgent(e) {
+        if (e.data.to == "sandboxAgentCallback") {
+            this.runCallback(e.data.msg)
+        }
     }
 
     /**

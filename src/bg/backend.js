@@ -4,8 +4,10 @@ class AcFunHelperBackend {
         this.target = null;
         this.devMode = false;
 
+        this.initBackend();
+
         this.MessageRouter = new MessageSwitch("bg");
-        this.agent = new Agent(document.getElementById('sandbox').contentWindow);
+        this.sandboxAgent = new SandboxAgent(document.getElementById('sandbox').contentWindow);
         this.MsgNotfs = new MsgNotifs();
         this.authInfo = new AuthInfo();
         this.Ominibox = new Ohminibox();
@@ -14,7 +16,7 @@ class AcFunHelperBackend {
         this.WatchPlan = new WatchPlan();
 
         this.dataset = {
-
+            sandboxStatus: false,
         }
 
         this.Ominibox.registerOmnibox();
@@ -27,7 +29,7 @@ class AcFunHelperBackend {
 
         chrome.runtime.onMessage.addListener(this.MessageRouter.BackgroundMessageSwitch.bind(this));
         // chrome.runtime.onMessageExternal.addListener(this.onExternalMessage.bind(this));
-        window.addEventListener('message', e => this.onSandboxMessage(e));
+        window.addEventListener('message', this.MessageRouter.SandboxMsgHandler.bind(this));
         chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
         chrome.tabs.onCreated.addListener((tab) => this.onTabReady(tab));
         chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
@@ -78,6 +80,11 @@ class AcFunHelperBackend {
             this.scheduler = browser.alarms;
         }
 
+    }
+
+    async initBackend() {
+        let options = await optionsLoad();
+        this.opt_optionsChanged(options);
     }
 
     onCommentRequest(req) {
@@ -190,33 +197,6 @@ class AcFunHelperBackend {
     //================Message Hub and Handler================//
     tabInvoke(tabId, action, params) {
         MessageSwitch.sendMessage('bg', { target: action, InvkSetting: { tabId: tabId, type: "function" }, params: params },)
-    }
-
-    onExternalMessage(e, sender, callback) {
-        const { apiName, params } = e;
-        // console.log(e, sender);
-        let outerApiInst = new HelperApi();
-        if (outerApiInst[apiName] === 'function') {
-            if (params["asyncRequire"]) {
-                outerApiInst[apiName].call({}, params).then(resp => {
-                    callback(resp);
-                })
-                return;
-            }
-            outerApiInst[apiName].call({}, params);
-            return;
-        }
-        callback({ greeting: "[AcFun-Helper]:What are you calling for?" })
-    }
-
-    onSandboxMessage(e) {
-        const {
-            action,
-            params
-        } = e.data;
-        const method = this['api_' + action];
-        if (typeof (method) === 'function')
-            method.call(this, params);
     }
 
     onAlarmsEvent(e) {
@@ -386,14 +366,8 @@ class AcFunHelperBackend {
         }
     }
 
-    async api_initBackend(params) {
-        let options = await optionsLoad();
-        //this.ankiweb.initConnection(options);
-        if (options.dictLibrary) {
-            options.sysscripts = options.dictLibrary;
-            options.dictLibrary = '';
-        }
-        this.opt_optionsChanged(options);
+    api_sandboxReady() {
+        this.dataset.sandboxStatus = true;
     }
 
     async api_Fetch(params) {
@@ -422,22 +396,7 @@ class AcFunHelperBackend {
     // Option page and Brower Action page requests handlers.
     async opt_optionsChanged(options) {
         this.setFrontendOptions(options);
-
-        //let defaultscripts = ['builtin_encn_Collins'];
-        //let newscripts = `${options.sysscripts},${options.udfscripts}`;
-        //let loadresults = null;
-        //if (!this.options || (`${this.options.sysscripts},${this.options.udfscripts}` != newscripts)) {
-        //    const scriptsset = Array.from(new Set(defaultscripts.concat(newscripts.split(',').filter(x => x).map(x => x.trim()))));
-        //    loadresults = await this.loadScripts(scriptsset);
-        //}
-
         this.options = options;
-        //if (loadresults) {
-        //    let namelist = loadresults.map(x => x.result.objectname);
-        //    this.options.dictSelected = namelist.includes(options.dictSelected) ? options.dictSelected : namelist[0];
-        //   this.options.dictNamelist = loadresults.map(x => x.result);
-        //}
-        //await this.setScriptsOptions(this.options);
         optionsSave(this.options);
         return this.options;
     }
@@ -464,19 +423,6 @@ class AcFunHelperBackend {
         return new Promise((resolve, reject) => {
             this.agent.postMessage('setScriptsOptions', { options }, result => resolve(result));
         });
-    }
-
-    callback(data, callbackId) {
-        this.agent.postMessage('callback', { data, callbackId });
-    }
-
-    async popTranslation(expression) {
-        try {
-            let result = await this.findTerm(expression);
-            return result;
-        } catch (err) {
-
-        }
     }
 
     /*transferFormat(data) {

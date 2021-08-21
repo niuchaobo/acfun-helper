@@ -180,6 +180,7 @@ interface PersonalUserInfo {
 }
 interface MessageSwitchCommonPayload {
   target: string | { mod: string; methodName: string };
+  source?: string | FgToInjectPayload;
   InvkSetting: {
     /**
      * @description 消息类型
@@ -193,16 +194,18 @@ interface MessageSwitchCommonPayload {
     /**
      * @description 告知前台标签信息
      */
-    receipt: boolean;
-    responseRequire: boolean;
+    receipt?: boolean;
+    responseRequire?: boolean;
     /**
      * @description 异步封装
      */
-    asyncWarp: boolean;
-    tabId: number | Array | undefined;
-    classicalParmParse: boolean;
+    asyncWarp?: boolean;
+    tabId?: number | Array | undefined;
+    classicalParmParse?: boolean;
+    withCallback?: boolean;
+    callbackId?: number | string;
   };
-  params: {};
+  params: object | Array;
 }
 interface MessageSwitchDedicatedLinkPayload extends MessageSwitchCommonPayload {
   /**
@@ -217,17 +220,26 @@ interface MessageSwitchDedicatedLinkResponse {
   status: boolean;
   result: object;
 }
-interface MessageSwitchFgToInjectPayload extends MessageSwitchCommonPayload {
-  /**
-   @description sender infomation
-   */
-  source: string | FgToInjectPayload;
-}
-interface MessageSwitchWindowMsgPayload extends MessageSwitchFgToInjectPayload {
-  params: object | Array;
-}
+interface MessageSwitchFgToInjectPayload extends MessageSwitchCommonPayload {}
+interface MessageSwitchWindowMsgPayload
+  extends MessageSwitchFgToInjectPayload {}
 interface MessageSwitchWindowMsgRespnse extends Event {
-  data: { msg: MessageSwitchWindowMsgPayload };
+  data: MessageSwitchWindowMsgRespnseInner;
+}
+interface MessageSwitchWindowMsgRespnseInner {
+  to: string | "background" | "sandbox";
+  msg: MessageSwitchWindowMsgPayload;
+}
+interface MessageSwitchSandBoxPayload
+  extends MessageSwitchWindowMsgRespnseInner {}
+interface addElementPayload {
+  tag: string;
+  id: string;
+  css: string;
+  target: document.body | Document;
+  classes: string;
+  createMode: "append"|"after"|"headAppend";
+  thisHTML: string;
 }
 interface FgToInjectPayload {
   tabId: number;

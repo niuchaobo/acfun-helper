@@ -19,10 +19,10 @@ function devConsole(department, module, funcName, message, logLevel, timeSw) {
         }
         switch (department) {
             case "fg":
-                _department = "AcFunHelpeFrontend"
+                _department = "AcFunHelperFrontend"
                 break;
             case "bg":
-                _department = "AcFunHelpeBackend"
+                _department = "AcFunHelperBackend"
                 break;
             default:
                 break;
