@@ -238,7 +238,7 @@ interface addElementPayload {
   css: string;
   target: document.body | Document;
   classes: string;
-  createMode: "append"|"after"|"headAppend";
+  createMode: "append" | "after" | "headAppend";
   thisHTML: string;
 }
 interface FgToInjectPayload {
@@ -274,6 +274,7 @@ interface TabsInfo {
   width: number;
   windowId: number;
 }
+const ExtensionStorageArea: "sync" | "local" | "managed";
 interface MessageExtendEvents extends WindowEventMap {
   AcFunHelperFrontend: string;
   AcFunHelperDataDivEvent: string;

@@ -21,7 +21,7 @@ class Block {
     //页面所有元素加载完成之后通过修改页面元素的方式过滤文章
     async block() {
         let href = window.location.href;
-        let upMap = upMapReverse(window.AcFunHelperFrontend.options);
+        let upMap = ExtOptions.upFilterMap(window.AcFunHelperFrontend.options, true);
         this.homePageFilter(upMap);
         this.articlePageFilter(upMap);
         //如果是文章区详情页，添加屏蔽按钮

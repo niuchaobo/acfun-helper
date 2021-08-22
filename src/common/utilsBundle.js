@@ -56,7 +56,7 @@ class WebStorageUtil extends UtilsBundle {
             navigator.storage.estimate().then(status => {
                 if (status.usage + 10 > status.quota) {
                     this.purgeOutdate();
-                    throw "Storagespace is about out of quota,unable to init WebStorageUtil or execute inner function.";
+                    throw "[LOG]WebStorageUtil > init: Storagespace is about out of quota,unable to init WebStorageUtil or execute inner function.";
                 }
             })
             switch (this.storeMode) {
@@ -67,6 +67,8 @@ class WebStorageUtil extends UtilsBundle {
                     this.hander = window.sessionStorage;
                     break;
             }
+        } else {
+            throw ("[LOG]WebStorageUtil > init: browser is not support localStorage.")
         }
     }
 
@@ -146,7 +148,7 @@ class WebStorageUtil extends UtilsBundle {
 
     watchByKey(targetKey, eventCall) {
         if (!targetKey && typeof eventCall != 'function') {
-            throw "targetKey or eventCall maybe wrong type.";
+            throw "[LOG]WebStorageUtil > watchByKey:targetKey or eventCall maybe wrong type.";
         }
         if (e.key === targetKey) {
             window.addEventListener("storage", eventCall);
@@ -237,7 +239,7 @@ class DOMObserver extends UtilsBundle {
         }
     }
 
-    configSet(childList, attributes, characterData = false, subtree = false, attributeFilter = [], attributeOldValue = false, characterDataOldValue = false) {
+    DOMObserver(childList, attributes, characterData = false, subtree = false, attributeFilter = [], attributeOldValue = false, characterDataOldValue = false) {
         if (childList || attributes || characterData) {
             this.config.childList = childList;
             this.config.attributes = attributes;
@@ -247,7 +249,7 @@ class DOMObserver extends UtilsBundle {
             this.config.characterDataOldValue = characterDataOldValue;
             this.config.subtree = subtree;
         } else {
-            throw "At a minimum, one of childList, attributes, and/or characterData must be true before you call observe()."
+            fgConsole("DOMObserver", "", `minimum, one of childList, attributes, and/or characterData must be true before you call observe().`, 1);
         }
     }
 
@@ -330,10 +332,11 @@ class DOMObserver extends UtilsBundle {
  * @param {number} maxWaitTime 最长等待时间
  * @param {boolean} devMode 开发模式
  * @param {ParentNode} advancedQueryMethod 自定义检测方法
+ * @param {string|Array|object} extraParam 额外参数
  * @description 监听DOM对象 模块版本!
  */
 class GetAsyncDomUtil extends UtilsBundle {
-    constructor(target, fn, insure, purpose = "exist", time = 2500, instantMode = true, maxWaitTime = 30000, devMode = true, advancedQueryMethod) {
+    constructor(target, fn, insure, purpose = "exist", time = 2500, instantMode = true, maxWaitTime = 30000, devMode = true, advancedQueryMethod, extraParam = null) {
         super();
         this.utilsList.push(GetAsyncDomUtil);
 
@@ -350,6 +353,7 @@ class GetAsyncDomUtil extends UtilsBundle {
         this.probeTimeHandler = null;
         this.devMode = devMode;
         this.advancedQueryMethod = advancedQueryMethod;
+        this.extraParam = extraParam;
 
         this.onLoad();
     }
@@ -379,25 +383,26 @@ class GetAsyncDomUtil extends UtilsBundle {
     }
 
     async probe() {
-        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 开始监听 ${this.target}。`);
+        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 开始探测 ${this.target}。`);
         const re = (fn, insure) => {
             return new Promise(resolve => {
                 const targetDom = this.advancedQueryMethod ?? (document.getElementById(this.target) || document.getElementsByClassName(this.target).length || document.querySelector(this.target) || $(`${this.target}`).length || undefined);
-                if (targetDom && typeof (this.condition) == 'function' ? this.condition(targetDom) : this.condition) {
+                let response;
+                if (targetDom && typeof (this.condition) == 'function' ? response = this.condition(targetDom, this.extraParam) : this.condition) {
                     this.index = 0;
                     this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: ${this.target}加载。`, targetDom);
-                    resolve(fn());
+                    resolve(fn(response));
                 } else {
                     if (this.index > this.iterLimit) {
                         this.index = 0;
-                        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: ${this.target} 没找到或者它不满足条件。`);
+                        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 没找到符合条件的 ${this.target} 。`);
                         resolve(insure == undefined ? false : insure());
                         return;
                     };
                     this.index++;
                     this.probeTimeHandler = setTimeout(() => {
                         this.instantMode ? "" : this.time += 500;
-                        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 正在监听 ${this.target} - 第${this.index}次。`);
+                        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 正在探测 ${this.target} - 第${this.index}次。`);
                         resolve(re(this.fn, this.insure));
                     }, this.time);
                 }
@@ -422,19 +427,50 @@ class GetAsyncDomUtil extends UtilsBundle {
      * 判断某个对象是图片且加载好了
      * @param {string} ImgDom 
      * @param {Function} fn 
-     * @param {Function} purpose 
      * @param {Function} insure 
      * @param {number} time 
      * @param {boolean} isDev 
      * @example GetAsyncDomUtil.judgeImgReady("#article-up > div.article-content > div > div:nth-child(2) > img",function(e){console.log("ok了")})
      */
-    static judgeImgReady(ImgDom, fn, purpose = function (e) {
-        if (e instanceof HTMLImageElement && e.complete) {
-            return true
-        }
-        return false
-    }, insure, time = 2000, isDev = true) {
-        new GetAsyncDomUtil(ImgDom, fn, insure, purpose, time, true, 30000, isDev).probe();
+    static judgeImgReady(ImgDom, fn, insure, time = 2000, isDev = true) {
+        new GetAsyncDomUtil(ImgDom, fn, insure, function (e) {
+            if (e instanceof HTMLImageElement && e.complete) {
+                return true
+            }
+            return false
+        }, time, true, 30000, isDev).probe();
+    }
+
+    /**
+     * 判断是否有子节点诞生
+     * @param {string} target 
+     * @param {Function} fn 
+     * @param {Function} insure 
+     * @param {number} time 
+     * @param {boolean} isDev 
+     */
+    static judgeBornChilds(target, fn, insure, time = 3000, isDev = true) {
+        new GetAsyncDomUtil(target, fn, insure, function (e) {
+            if (e.hasChildNodes()) {
+                return true
+            }
+            return false
+        }, time, true, 30000, isDev).probe();
+    }
+
+    /**
+     * 判断加载中的对象稳定后是否存在某个属性或者属性为某个值
+     * @param {string} target 
+     * @param {function} fn 
+     * @param {string|Array} attrName 属性，或者[属性，值]的列表
+     * @param {function} insure 
+     * @param {number} time 
+     * @param {boolean} isDev 
+     */
+    static getLoadingDomAttr(target, fn, attrName, insure, time = 3000, isDev = true) {
+        new GetAsyncDomUtil(target, fn, insure, function (e, f) {
+            return Array.isArray(f) ? f[1] == e.getAttribute(f[0]) : e.getAttribute(f);
+        }, time, true, 30000, isDev, null, attrName).probe();
     }
 
 }
@@ -455,7 +491,7 @@ class InterSectionObserverUtil extends UtilsBundle {
                 if (e) {
                     this.target.push(e);
                 } else {
-                    console.warn("InterSectionObserverUtil constructor param target ", target[i], "is null,omit it.");
+                    fgConsole("InterSectionObserverUtil", "constructor", `"InterSectionObserverUtil constructor param target ${target[i]} is null,omit it.`, 1);
                 }
             })
         } else {
@@ -621,12 +657,72 @@ class Queue extends UtilsBundle {
 /**
  * 工具箱
  */
-class DsUtils extends UtilsBundle {
+class ToolBox extends UtilsBundle {
 
     constructor() {
         super();
-        this.utilsList.push(DsUtils);
+        this.utilsList.push(ToolBox);
 
+    }
+
+    /**
+    * 监控对象中值变化
+    * @param {object} src 监控对象
+    * @param {function} hook 执行操作
+    * @param {Array} keyList 监听的键列表，默认为空(空则为全监听)
+    */
+    static addRefTypeValueListener(src, hook, keyList = []) {
+        if (!Array.isArray(keyList)) {
+            Object.keys(src).forEach(key => {
+                if (typeof (Object.getOwnPropertyDescriptors(src)[key].set) == 'function') {
+                    console.log("[LOG]ToolBox > addRefTypeValueListener: key", key, "is already hook setter.")
+                    return;
+                }
+                defineItsProperty(src, key, src[key], hook);
+            });
+        } else {
+            keyList.forEach(e => {
+                if (typeof (Object.getOwnPropertyDescriptors(src)[e].set) == 'function') {
+                    console.log("[LOG]ToolBox > addRefTypeValueListener: key", e, "is already hook setter.")
+                    return;
+                }
+                defineItsProperty(src, e, src[e], hook);
+            })
+        }
+        function defineItsProperty(src, key, value, hook) {
+            Object.defineProperty(src, key, {
+                get() {
+                    return value;
+                },
+                set(newVal) {
+                    hook(newVal, value);
+                    value = newVal;
+                }
+            })
+        }
+    }
+
+    /**
+     * 删除对象值变动监听
+     * @param {object} src 
+     * @param {Array} keyList 
+     */
+    static removeRefTypeValueListener(src, keyList = []) {
+        if (!Array.isArray(keyList)) {
+            Object.keys(src).forEach(key => {
+                defineItsProperty(src, key);
+            });
+        } else {
+            keyList.forEach(e => {
+                defineItsProperty(src, e);
+            })
+        }
+        function defineItsProperty(src, key) {
+            Object.defineProperty(src, key, {
+                value: src[key],
+                writable: true,
+            })
+        }
     }
 
     /**
@@ -657,6 +753,26 @@ class DsUtils extends UtilsBundle {
                     return e, ""
                 }
         }
+    }
+
+    /**
+     * 找到数组中所有相同的元素索引
+     * @param {Array} arr 
+     * @param {any} item 
+     * @returns {Array}
+     */
+    static findSameArrayItem(arr, item) {
+        if (!Array.isArray(arr)) {
+            throw ("[WARN]ToolBox > findSameItem: param arr should be an Array.")
+        }
+        let index = 0, result = [];
+        arr.forEach(e => {
+            if (e === item) {
+                result.push(index);
+            }
+            index++;
+        })
+        return result;
     }
 
 }
@@ -1327,6 +1443,460 @@ class MessageSwitch extends UtilsBundle {
             }
         })
     }
+
+}
+
+class ExtOptions extends UtilsBundle {
+    constructor(storageArea = "local") {
+        super();
+        this.utilsList.push(ExtOptions);
+
+        this.listenerHandlerName = null;
+        this.listenerHandler = null;
+        this.storageArea = storageArea;
+        this.listenerStatus = {};
+
+        this.callbackList = [];
+        this.callbacks = {};
+        this.interestList = [];
+        this.interestCallMap = {};
+    }
+
+    /**
+     * 向 配置监听器 加入钩子规则
+     * @param {string} callbackName 
+     * @param {function} callback 
+     * @param {string} interstOptionName 配置键名
+     * @param {function} condition 
+     * @returns {boolean}
+     */
+    addChangeEventSwitchRule(callbackName, callback, interstOptionName, condition) {
+        if (this.callbackList.includes(callbackName)) {
+            console.warn("[WARN]ExtOptions > addChangeEventSwitchRule: there are same callbackName in switch");
+            return false;
+        }
+        //回调列表 ->表示其存在
+        this.callbackList.push(callbackName);
+        //回调字典 详细信息
+        this.callbacks[callbackName] = {};
+        this.callbacks[callbackName].callback = callback;
+        this.callbacks[callbackName].interstOptionName = interstOptionName;
+        this.callbacks[callbackName].condition = condition;
+        //兴趣键列表 和 兴趣键-回调名映射
+        this.interestList.push(interstOptionName);
+        if (this.interestCallMap[interstOptionName] == undefined) {
+            console.log(this.interestCallMap, this.interestCallMap[interstOptionName] == undefined);
+            this.interestCallMap[interstOptionName] = new Array();
+            this.interestCallMap[interstOptionName].push(callbackName);
+        } else {
+            this.interestCallMap[interstOptionName];
+        }
+        return true;
+    }
+
+    /**
+     * 从 配置监听器 删除某条规则
+     * @param {function} callbackName 
+     * @param {string} interstOptionName 配置键名
+     * @returns {boolean}
+     */
+    removeChangeEventSwitchRule(callbackName, interstOptionName) {
+        const callbackListIndex = this.callbackList.indexOf(callbackName);
+        if (callbackListIndex == -1) {
+            //回调本来就没有注册
+            return false;
+        }
+        const targetInterestOption = interstOptionName ?? this.callbacks[callbackName].interstOptionName;
+        this.callbackList.splice(callbackListIndex, 1);
+        if (this.interestCallMap[targetInterestOption].length <= 1) {
+            //配置兴趣键-回调映射中只有此回调函数，则删除此兴趣键及其在列表中的位置
+            delete this.interestCallMap[targetInterestOption];
+            this.interestList.splice(targetInterestOption, 1);
+        } else {
+            //从 配置兴趣键-回调映射 中删除回调
+            this.interestCallMap[targetInterestOption].splice(this.interestCallMap[targetInterestOption].indexOf(callbackName), 1)
+        }
+        //从回调字典中删除
+        delete this.callbacks[callbackName];
+        return true;
+    }
+
+    /**
+     * 清空 配置监听器 的规则
+     */
+    purgeChangeEventSwitchRules() {
+        this.callbackList.forEach(e => {
+            this.removeChangeEventSwitchRule(e);
+        });
+    }
+
+    /**
+     * 配置监听器
+     * @param {*} e 
+     */
+    optionChangeSwitch(e) {
+        let sourceKeyName = Object.keys(e)[0];
+        if (this.interestList.includes(sourceKeyName)) {
+            this.interestCallMap[sourceKeyName].forEach(callbackName => {
+                const conditionCall = this.callbacks[callbackName]?.condition;
+                (typeof (conditionCall) == 'function' ? conditionCall(e) : true) && this.callbacks[callbackName].callback(e);
+            })
+        }
+    }
+
+    /**
+     * 单个配置监听器
+     * @param {string|Array} keyList 
+     * @param {string} callbackName 
+     * @param {function} callback 
+     * @returns {boolean}
+     */
+    addChangeEventListener(keyList, callbackName, callback) {
+        this.listenerHandlerName = callbackName;
+        this.listenerHandler = typeof (callback) == 'function' ? callback : this.causeError();
+        this.listenTarget = keyList;
+        this.massReactorNeed = null;
+
+        switch (typeof (this.listenTarget)) {
+            case "string":
+                this.massReactorNeed = false;
+                break;
+            case "object":
+                if (Array.isArray(this.listenTarget)) {
+                    this.massReactorNeed = true;
+                }
+                break;
+            default:
+                console.warn("[WARN]ExtOptions > addChangeEventListener: param key should be assigned.");
+                return false;
+        }
+        chrome.storage.onChanged.addListener(this.optionChangeReactor.bind(this));
+        this.listenerStatus[callbackName] = { status: true, callback: callback };
+        return true;
+    }
+
+    /**
+     * 单配置监听器响应器
+     * @param {*} e 
+     * @param {*} storageArea 
+     * @param {ThisType} ctx 
+     */
+    optionChangeReactor(e, storageArea, ctx = {}) {
+        if (!this.massReactorNeed) {
+            if (e[this.listenTarget]) {
+                this.listenerHandler == undefined ? "" : this.listenerHandler(e, ctx);
+            }
+        } else {
+            if (this.listenTarget.indexOf(Object.keys(e)[0]) != -1) {
+                this.listenerHandler == undefined ? "" : this.listenerHandler(e, ctx);
+            }
+        }
+    }
+
+    /**
+     * 单配置监听器 是否已存在监听
+     * @returns 
+     */
+    hasListener() {
+        return this.listenerStatus[this.listenerHandlerName].status;
+    }
+
+    /**
+     * 删除此个单配置监听器
+     */
+    removeChangeEventListener() {
+        delete this.listenerStatus[this.listenerHandlerName];
+        this.listenerHandlerName = null
+        this.listenerHandler = undefined;
+    }
+
+    causeError() {
+        throw ("[WARN]ExtOptions > addChangeEventListener: param callback should be a function.");
+    }
+
+    /**
+     * 获取相关存储区域的全部配置
+     * @returns {Object}
+     */
+    _getAll() {
+        return new Promise((resolve, reject) => {
+            chrome.storage[this.storageArea].get(null, (options) => {
+                resolve(sanitizeOptions(options));
+            });
+        });
+    }
+
+    /**
+     * 获取所有本地配置
+     * @returns {object}
+     */
+    static getAll() {
+        return new ExtOptions('local')._getAll();
+    }
+
+    /**
+     * 保存所有配置到相关区域
+     * @param {object} options 
+     * @returns 
+     */
+    _saveAll(options) {
+        return new Promise((resolve, reject) => {
+            chrome.storage[this.storageArea].set(transOptions(options), resolve());
+        });
+    }
+
+    /**
+     * 将此配置保存为全部配置
+     * @param {*} options 
+     * @returns 
+     */
+    static saveAll(options) {
+        return new ExtOptions('local')._saveAll(options);
+    }
+
+    /**
+     * 获取相关区域键为key的配置
+     * @param {string|Array} key 
+     * @returns 
+     */
+    _get(key) {
+        return new Promise((resolve, reject) => {
+            chrome.storage[this.storageArea].get(key, (res) => {
+                resolve(res);
+            });
+        });
+    }
+
+    /**
+     * 获取本地键为key的配置
+     * @param {string|Array} key 
+     * @returns 
+     */
+    static get(key) {
+        return new ExtOptions('local')._get(key);
+    }
+
+    /**
+     * 获取相关区域键为key的配置内容
+     * @param {string|Array} key 
+     * @returns 
+     */
+    _getValue(key) {
+        return new Promise((resolve, reject) => {
+            chrome.storage[this.storageArea].get(key, (res) => {
+                resolve(res[key]);
+            });
+        });
+    }
+
+    /**
+     * 获取本地键为key的配置内容
+     * @param {string|Array} key 
+     * @returns 
+     */
+    static getValue(key) {
+        return new ExtOptions('local')._getValue(key);
+    }
+
+    /**
+     * 设置相关区域键key为value的配置
+     * @param {*} key 
+     * @param {*} value 
+     * @returns 
+     */
+    _setValue(key, value) {
+        return Promise((resolve) => {
+            chrome.storage[this.storageArea].set({ [key]: value }, resolve());
+        })
+    }
+
+    /**
+     * 设置本地键key为value的配置
+     * @param {*} key 
+     * @param {*} value 
+     * @returns 
+     */
+    static setValue(key, value) {
+        return new ExtOptions('local')._setValue(key, value);
+    }
+
+    /**
+     * 删除相关区域键key的配置
+     * @param {*} key 
+     * @returns 
+     */
+    _delete(key) {
+        return new Promise((resolve, reject) => {
+            chrome.storage[this.storageArea].remove(key, (res) => {
+                resolve(res);
+            });
+        });
+    }
+
+    /**
+     * 删除本地键key的配置
+     * @param {*} key 
+     * @returns 
+     */
+    static delete(key) {
+        return new ExtOptions('local')._delete(key);
+    }
+
+    /**
+     * 清空相关区域的键key的配置
+     * @param {*} key 
+     * @returns 
+     */
+    _purgeValue(key) {
+        this._setValue(key, null);
+    }
+
+    /**
+     * 清空本地键key的配置
+     * @param {*} key 
+     * @returns 
+     */
+    static purgeValue(key) {
+        return new ExtOptions('local')._purgeValue(key);
+    }
+
+    /**
+     * 清空相关区域所有配置
+     * @param {*} key 
+     * @returns 
+     */
+    _purgeAll() {
+        return new Promise((resolve, reject) => {
+            chrome.storage[this.storageArea].clear(resolve());
+        })
+    }
+
+    /**
+     * 清空本地的所有配置
+     * @param {*} key 
+     * @returns 
+     */
+    static purgeAll() {
+        return new ExtOptions('local')._purgeAll();
+    }
+
+    /**
+     * 重置相关区域所有配置（恢复默认配置）
+     * @param {*} key 
+     * @returns 
+     */
+    _resetAll() {
+        return new Promise((resolve, reject) => {
+            this.purgeAll();
+            this.saveAll(this.sanitizeOptions({}));
+            resolve();
+        })
+    }
+
+    /**
+     * 重置本地所有配置
+     * @param {*} key 
+     * @returns 
+     */
+    static resetAll() {
+        return new ExtOptions('local')._resetAll();
+    }
+
+    _quotaSpace() {
+        return chrome.storage[this.storageArea].QUOTA_BYTES;
+    }
+
+    /**
+     * 查询存储余量
+     * @returns 
+     */
+    static quotaSpace() {
+        return new ExtOptions('local')._quotaSpace();
+    }
+
+    _usedSpace(key = null) {
+        //if key == null,count total space usage.
+        return new Promise((resolve, reject) => {
+            chrome.storage[this.storageArea].getBytesInUse(key, resolve());
+        })
+    }
+
+    /**
+     * 计算使用空间
+     * @param {*} key 
+     * @returns 
+     */
+    static usedSpace(key = null) {
+        return new ExtOptions('local')._usedSpace(key);
+    }
+
+    /**
+     * 以传过来的options为主体做配置填充，如果其中没有就取默认值
+     * @param {*} options 
+     * @returns 
+     */
+    static sanitizeOptions(options) {
+        for (const key in defaults) {
+            if (!options.hasOwnProperty(key)) {
+                options[key] = defaults[key];
+            }
+        }
+        return options;
+    }
+
+    /**
+     * 以default为主体做配置填充，如果传过来的options有对应的key,就用传过来的
+     * @param {*} options 
+     * @returns 
+     */
+    static transOptions(options) {
+        for (const key in defaults) {
+            if (options.hasOwnProperty(key)) {
+                if (readOnlyKey.indexOf(key) > -1) {
+                    continue;
+                }
+                defaults[key] = options[key];
+            }
+        }
+        return defaults;
+    }
+
+    /**
+     * 将UserFilter Object转化为Map
+     * @param {object} options 
+     * @param {boolean} reverseKv 
+     * @returns {Map}
+     */
+    static upFilterMap(options, reverseKv = false) {
+        let map = new Map();
+        let raw = Object.keys(options.UserFilter);
+        if (reverseKv) {
+            for (let i = 0; i < raw.length; i++) {
+                map.set(raw[i], options.UserFilter[raw[i]])
+            }
+            return map;
+        } else {
+            for (let i = 0; i < raw.length; i++) {
+                map.set(options.UserFilter[raw[i]].name, raw[i])
+            }
+            return map;
+        }
+    }
+
+    /**
+     * UserMark Object转化为Map
+     * @param {object} options 
+     * @returns {Map}
+     */
+    static userMarkMap(options) {
+        let map = new Map();
+        let raw = Object.keys(options.UserMarks);
+        for (let i = 0; i < raw.length; i++) {
+            map.set(raw[i], options.UserMarks[raw[i]])
+        }
+        return map;
+    }
+
 
 }
 

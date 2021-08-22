@@ -326,17 +326,6 @@ class AcFunHelperBackend {
         this.WatchPlan.removeAllDiffWatchLaterListItemFromLocal();
     }
 
-    // api_historyView(params){
-    //     this.WatchPlan.viewHistoryBackend(params)
-    // }
-
-    api_getLuckyHistory() {
-        return new Promise(async (resolve) => {
-            let x = await db_getLuckyHistory("userList");
-            resolve(x);
-        });
-    }
-
     api_getLiveWatchTimeList() {
         return this.WatchPlan.getLiveWatchTimeList();
     }

@@ -219,7 +219,6 @@ function onDomContentLoaded() {
 }
 
 function onMessage(e) {
-    console.log(e)
     const { action, params } = e.data;
     const method = window['api_' + action];
     if (typeof (method) === 'function') {

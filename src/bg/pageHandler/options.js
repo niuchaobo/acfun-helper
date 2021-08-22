@@ -144,9 +144,9 @@ function OldUIHandler() {
         mark = options['mark'];
         scan = options['scan'];
         upHighlight = options['upHighlight'];
-        scanUserMap = userMap(items);
+        scanUserMap = ExtOptions.userMarkMap(items);
         filter = options['filter'];
-        filterUps = upMap(items);
+        filterUps = ExtOptions.upFilterMap(items);
         beautify_nav = options['beautify_nav'];
         beautify_personal = options['beautify_personal'];
         custom_rate = options['custom_rate'];

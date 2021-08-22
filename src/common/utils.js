@@ -123,17 +123,39 @@ const REG = {
   videoPartNumByURL: new RegExp("_([0-9].?)"),
 }
 
+const indexdbArch = {
+  "acfunhelper":{
+    dbId:1,
+    tables:{
+      PushList: 'uid,acid,userName,date',
+      PushListHtml: 'id,content',
+      LuckyHistory: 'uid,acid,userName,date',
+      HistoryViews: 'id,historyArray',
+    },
+  }, "acfunhelper-square":{
+    dbId:2,
+    tables:{
+      SquareList: 'acmid,uid,time,userInfo,commentNum,bananaCount,content',
+    },
+  }, "acfunhelper-bangumi":{
+    dbId:3,
+    tables:{
+      MyBangumi:"coverUrls,showPlayCount,shareCount,commentCount,showStowCount,showSerialStatus,isOver,updateDayOfWeek,updateDayTime,bangumiId,lastVideoName,caption,description,paymentType,recoReason,acfunOnly,likeCount,stowCount,shareUrl,playCount,areaShow,firstPlayDate,lastUpdateItemTimeStr,updateDayTimeStr",
+    },
+  }, "acfunhelper-historicalAchieve":{
+    dbId:5,
+    tables:{
+      historical:"acid,date,tag",
+    },
+  },
+}
+
 /**
  * 以传过来的options为主体做好填充,如果其中没有就取默认值
  * @param {*} options 
  */
 function sanitizeOptions(options) {
-  for (const key in defaults) {
-    if (!options.hasOwnProperty(key)) {
-      options[key] = defaults[key];
-    }
-  }
-  return options;
+  return ExtOptions.sanitizeOptions(options);
 }
 
 /**
@@ -141,43 +163,7 @@ function sanitizeOptions(options) {
  * @param {*} options 
  */
 function transOptions(options) {
-  for (const key in defaults) {
-    if (options.hasOwnProperty(key)) {
-      if (readOnlyKey.indexOf(key) > -1) {
-        continue;
-      }
-      defaults[key] = options[key];
-    }
-  }
-  return defaults;
-}
-
-//================配置存储转换处理==============
-function userMap(options) {
-  let map = new Map();
-  let raw = Object.keys(options.UserMarks);
-  for (let i = 0; i < raw.length; i++) {
-    map.set(raw[i], options.UserMarks[raw[i]])
-  }
-  return map;
-}
-
-function upMap(options) {
-  let map = new Map();
-  let raw = Object.keys(options.UserFilter);
-  for (let i = 0; i < raw.length; i++) {
-    map.set(raw[i], options.UserFilter[raw[i]])
-  }
-  return map;
-}
-
-function upMapReverse(options) {
-  let map = new Map();
-  let raw = Object.keys(options.UserFilter);
-  for (let i = 0; i < raw.length; i++) {
-    map.set(options.UserFilter[raw[i]].name, raw[i])
-  }
-  return map;
+  return ExtOptions.transOptions(options);
 }
 
 //===============配置处理=================
@@ -185,11 +171,7 @@ function upMapReverse(options) {
  * 加载所有配置项
  */
 async function optionsLoad() {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get(null, (options) => {
-      resolve(sanitizeOptions(options));
-    });
-  });
+  return ExtOptions.getAll();
 }
 
 /**
@@ -197,17 +179,7 @@ async function optionsLoad() {
  * @param {*} options 
  */
 async function optionsSave(options) {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.set(transOptions(options), resolve());
-  });
-}
-
-async function getResult() {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get({ expression: "" }, (item) => {
-      resolve(item.expression);
-    });
-  });
+  return ExtOptions.saveAll(options);
 }
 
 /**
@@ -215,11 +187,7 @@ async function getResult() {
  * @param {string} key 
  */
 async function getStorage(key) {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get(key, (res) => {
-      resolve(res);
-    });
-  });
+  return ExtOptions.get(key)
 }
 
 /**
@@ -227,11 +195,7 @@ async function getStorage(key) {
  * @param {string} key 
  */
 function delStorage(key) {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.remove(key, (res) => {
-      resolve(res);
-    });
-  });
+  return ExtOptions.delete(key)
 }
 
 function utilAsync(func) {
@@ -946,37 +910,6 @@ function timeToMinute(second) {
   minute = minute.length == 1 ? "0" + minute : minute;
   second = second.length == 1 ? "0" + second : second;
   return minute + ":" + second;
-}
-
-/**
- * 监控对象中值变化
- * @param {object} src 监控对象
- * @param {function} hook 执行操作
- * @param {Array} keyList 监听的键列表，默认为空(空则为全监听)
- */
-function addRefTypeValueListener(src, hook, keyList = []) {
-  if (!keyList.length) {
-    Object.keys(src).forEach(key => {
-      defineItsProperty(src, key, src[key], hook);
-    });
-  } else {
-    keyList.forEach(e => {
-      defineItsProperty(src, e, src[e], hook);
-    })
-  }
-  function defineItsProperty(src, key, value, hook) {
-    Object.defineProperty(src, key, {
-      enumerable: true,
-      configurable: false,
-      get() {
-        return value;
-      },
-      set(newVal) {
-        value = newVal;
-        hook(value);
-      }
-    })
-  }
 }
 
 /**
