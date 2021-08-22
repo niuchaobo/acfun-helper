@@ -974,10 +974,23 @@ class MessageSwitch extends UtilsBundle {
                 break;
             case "printMsg":
             default:
-                let msg = "";
-                for (let x in params) { msg += `${x}:${params[x]} ;` }
-                fgConsole("", "MessageSwitch", msg, 1);
-                callback();
+                let msg = "", returnString;
+                switch (typeof (params)) {
+                    case "object":
+                        msg = ToolBox.convertEverthingToStr(params);
+                        fgConsole("", "MessageSwitch", msg, 1);
+                        returnString = true;
+                        break;
+                    case "string":
+                        fgConsole("", "MessageSwitch", params, 1);
+                        returnString = params;
+                        break;
+                    default:
+                        msg = "你应该提供正确的参数，或者能打印出来的数据结构。";
+                        returnString = msg;
+                        break;
+                }
+                callback(returnString);
                 break;
         }
         return true;
@@ -1031,7 +1044,17 @@ class MessageSwitch extends UtilsBundle {
                 break;
             case "printMsg":
                 let msg = "";
-                for (let x in params) { msg += `${x}:${params[x]} ;` }
+                switch (typeof (params)) {
+                    case "object":
+                        msg = ToolBox.convertEverthingToStr(params);
+                        break;
+                    case "string":
+                        msg = params;
+                        break;
+                    default:
+                        msg = "你应该提供正确的参数，或者能打印出来的数据结构。";
+                        break;
+                }
                 fgConsole("", "MsgEventsHandler", `${source} > ${target} : ${msg}`, 1);
                 break;
             default:
@@ -1054,7 +1077,6 @@ class MessageSwitch extends UtilsBundle {
         const method = this["api_" + target];
         if (InvkSetting.type == "function" && typeof method === "function") {
             if (InvkSetting.classicalParmParse) {
-                console.log("here")
                 method.call(this, params);
                 return;
             }
@@ -1200,7 +1222,7 @@ class MessageSwitch extends UtilsBundle {
                     }
                     break;
                 case "printMsg":
-                    console.log(`[${formatDate(new Date(), true)}]`, target);
+                    console.log(`[${formatDate(new Date(), true)}]`, params);
                     break;
                 default:
                     console.log(`[${formatDate(new Date(), true)}]`, msg, sender);
@@ -1270,7 +1292,23 @@ class MessageSwitch extends UtilsBundle {
                 }
                 break;
             case "printMsg":
-                console.log(`[${formatDate(new Date(), true)}]`, target);
+                let msg = "", returnString;
+                switch (typeof (params)) {
+                    case "object":
+                        msg = ToolBox.convertEverthingToStr(params);
+                        fgConsole("", "MessageSwitch", msg, 1);
+                        returnString = true;
+                        break;
+                    case "string":
+                        fgConsole("", "MessageSwitch", params, 1);
+                        returnString = params;
+                        break;
+                    default:
+                        msg = "你应该提供正确的参数，或者能打印出来的数据结构。";
+                        returnString = msg;
+                        break;
+                }
+                callback(returnString);
                 break;
             default:
                 console.log(`[${formatDate(new Date(), true)}]`, request, sender);
@@ -1415,9 +1453,12 @@ class MessageSwitch extends UtilsBundle {
         chrome.tabs.query({}, (tabs) => {
             payload.InvkSetting.tabId = [];
             for (let tab of tabs) {
-                payload.InvkSetting.tabId.push(tab.id);
+                //绝佳的判断是A站前台标签的方式！(`ε´ )
+                if (tab.favIconUrl == "https://cdn.aixifan.com/ico/favicon.ico") {
+                    payload.InvkSetting.tabId.push(tab.id);
+                }
             }
-            this.sendMessage('bg', payload, callback())
+            this.sendMessage('bg', payload, callback)
         });
     }
 
