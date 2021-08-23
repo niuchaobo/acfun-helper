@@ -58,7 +58,7 @@ class PageBeautify {
   addRightNav() {
     //右侧导航样式
     let style_link = document.createElement("link");
-    style_link.href = chrome.extension.getURL("fg/css/home_nav.css");
+    style_link.href = chrome.runtime.getURL("fg/css/home_nav.css");
     style_link.type = "text/css";
     style_link.real = "stylesheet";
     (document.head || document.documentElement).appendChild(style_link);

@@ -10,7 +10,7 @@ class Block {
     //在DOM加载完成之后通过注入自定义xhr的方式过滤文章
     injectScript() {
         let script = document.createElement("script");
-        script.src = chrome.extension.getURL("fg/js/acfunxhr.js");
+        script.src = chrome.runtime.getURL("fg/js/acfunxhr.js");
         script.addEventListener('load', () => {
             let ups = upMapReverse(window.AcFunHelperFrontend.options);
             window.postMessage({ ups: ups, to: 'acfunxhr' });

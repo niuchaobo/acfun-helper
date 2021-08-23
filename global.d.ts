@@ -200,11 +200,27 @@ interface MessageSwitchCommonPayload {
      * @description 异步封装
      */
     asyncWarp?: boolean;
+    /**
+     * @description 后台向前台通信需要指定tabId
+     */
     tabId?: number | Array | undefined;
+    /**
+     * @description 经典的参数分解方式
+     * @example const {url,method,postData} = params;
+     */
     classicalParmParse?: boolean;
+    /**
+     * @description 是否存在并携带了回调函数
+     */
     withCallback?: boolean;
+    /**
+     * @description 回调函数在回调暂存字典中的Id
+     */
     callbackId?: number | string;
   };
+  /**
+   * @description 参数
+   */
   params: object | Array;
 }
 interface MessageSwitchDedicatedLinkPayload extends MessageSwitchCommonPayload {

@@ -96,15 +96,6 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
 ---
 
-#### TodoList
-<details>
-  <summary>TodoList</summary>
-
-</details>
-
-
----
-
 #### 插件本体获取
 
 - [FireFox 插件商店](https://addons.mozilla.org/zh-CN/firefox/addon/acfun%E5%8A%A9%E6%89%8B/)
@@ -160,8 +151,8 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
     * jquery 3.6.0
     * mdui 0.4.3
-    * dexie 3.0.1
-    * markd 2.1.3
+    * dexie 3.0.3
+    * markd 3.0.0
     * m3u8-parser 4.3.0
 
     * esbuild 0.11.23     
