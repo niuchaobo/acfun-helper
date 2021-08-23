@@ -31,8 +31,7 @@ class Live {
     }
 
     watchTimeRecord() {
-        let timeNow = Date.parse(new Date());
-        chrome.runtime.sendMessage({ action: "livePageWatchTimeRec", params: { receipt: true, startTime: timeNow } }, function () { });
+        MessageSwitch.sendMessage('fg', { target: "livePageWatchTimeRec", InvkSetting: { receipt: true, type: "function" }, params: { startTime: Date.parse(new Date()) } })
     }
 
     async liveMediaSession(href) {

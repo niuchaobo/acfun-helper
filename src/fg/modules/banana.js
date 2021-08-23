@@ -3,7 +3,7 @@
  */
 class Banana {
     constructor() {
-        
+        this.devMode = false;
     }
 
     /**
@@ -62,7 +62,7 @@ class Banana {
                 return;
             }
         }
-        let options = window.odhfront.options;
+        let options = window.AcFunHelperFrontend.options;
         let LikeType = options.LikeHeartClass;
         if (LikeType == "0") {
             this.clickLike(options, Mode);
@@ -109,13 +109,9 @@ class Banana {
             //改变页面上的点赞状态和数量
             $('.right-area .like').addClass('active');
             dougaType == "video" ? document.querySelector(".likeCount").innerText = Number(document.querySelector(".likeCount").innerText) + 1 : "";
-            let action = "notice";
-            let msg = '成功点了个赞';
-            let p = {
-                title: "自动点赞",
-                msg: msg,
-            }
-            options.LikeHeartNotif && chrome.runtime.sendMessage({ action: action, params: p }, function (response) { });
+            options.LikeHeartNotif && MessageSwitch.sendMessage('fg', {
+                target: "notice", params: { title: "自动点赞", msg: "成功点了个赞", }, InvkSetting: { type: "function" }
+            });
             return true
         }
         return false
@@ -132,7 +128,7 @@ class Banana {
         } catch (error) {
             console.log("[LOG]Front-Banana>articleBanana: 没找到登录判断依据。");
         }
-        let options = window.odhfront.options;
+        let options = window.AcFunHelperFrontend.options;
         if (!options.auto_throw) {
             return;
         }
@@ -155,8 +151,8 @@ class Banana {
             var msg = '或许早就成功给 ' + result.name + ' 投蕉了,刷新下页面试试';
         }
         if (res_obj) {
-            options.banana_notice && chrome.runtime.sendMessage({ action: "notice", params: { title: "AcFun助手 - 自动投蕉", msg: msg, } }, function (response) { });
-            options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
+            options.banana_notice && MessageSwitch.sendMessage('fg', { target: "notice", params: { title: "AcFun助手 - 自动投蕉", msg: msg }, InvkSetting: { type: "function" } })
+            options.audioAfterBanana && MessageSwitch.sendMessage('fg', { target: "bananAudio", params: {}, InvkSetting: { type: "function" } })
         }
     }
 
@@ -164,7 +160,7 @@ class Banana {
         if (!isLogin()) {
             return;
         }
-        let options = window.odhfront.options;
+        let options = window.AcFunHelperFrontend.options;
         if (!options.auto_throw) {
             return;
         }
@@ -203,8 +199,8 @@ class Banana {
             var msg = '成功给 ' + result.name + ' 投食' + result.num + '蕉';
         }
         if (res_obj) {
-            options.banana_notice && chrome.runtime.sendMessage({ action: "notice", params: { title: title, msg: msg, } }, function (response) { });
-            options.audioAfterBanana && chrome.runtime.sendMessage({ action: "bananAudio", params: { responseRequire: false, asyncWarp: false } })
+            options.banana_notice && MessageSwitch.sendMessage('fg', { target: "notice", params: { title: title, msg: msg, }, InvkSetting: { type: "function" } });
+            options.audioAfterBanana && MessageSwitch.sendMessage('fg', { target: "bananAudio", params: {}, InvkSetting: { type: "function" } })
         }
     }
 

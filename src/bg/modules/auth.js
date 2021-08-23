@@ -3,7 +3,7 @@
  */
 class AuthInfo {
     constructor() {
-
+        this.devMode = false;
     }
 
     fetchPasstoken() {

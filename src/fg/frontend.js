@@ -1,7 +1,10 @@
-class ODHFront {
+class AcFunHelperFrontend {
 	constructor() {
 		this.options = null;
 		this.href = null;
+		this.devMode = false;
+
+		this.MessageRouterFg = new MessageSwitch("fg");
 		this.div = new Div(); //右侧助手
 		this.block = new Block(); //up主过滤
 		this.pageBeautify = new PageBeautify(); //界面美化
@@ -22,39 +25,15 @@ class ODHFront {
 			dougaInfo: {}, sessionuuid: "",
 		}
 
-		chrome.runtime.onMessage.addListener(this.onBgMessage.bind(this)); //接收来自后台的消息
-		window.addEventListener("message", (e) => this.onFrameMessage(e)); //接收来自iframe的消息
+		chrome.runtime.onMessage.addListener(this.MessageRouterFg.FrontendMessageSwitch.bind(this)); //接收来自后台的消息
+		window.addEventListener("message", this.MessageRouterFg.FrontendIframeMsgHandler.bind(this)); //接收来自iframe的消息
+		window.addEventListener("AcFunHelperFrontend", this.MessageRouterFg.FrontendMsgEventsHandler.bind(this, this.MessageRouterFg));
 
-		this.loading()
+		this.loading();
 
 		//监听storage变化,可用于数据云同步
 		// chrome.storage.onChanged.addListener(function (changes, areaName) {
 		// });
-	}
-
-	onBgMessage(request, sender, callback) {
-		const { action, params } = request;
-		const method = this["api_" + action];
-		let response;
-		if (typeof method === "function") {
-			params.callback = callback;
-			if (params["asyncWarp"]) {
-				method.call(this, params).then(resp => {
-					callback(resp);
-				});
-				return;
-			}
-			response = method.call(this, params);
-			callback(response);
-		}
-	}
-
-	onFrameMessage(e) {
-		const { action, params } = e.data;
-		const method = this["api_" + action];
-		if (typeof method === "function") {
-			method.call(this, params);
-		}
 	}
 
 	/**
@@ -387,36 +366,33 @@ class ODHFront {
 	}
 
 	//抽奖
-	api_lottery(params) {
+	async api_lottery(params) {
 		let { number, follow } = params;
 		let href = window.location.href;
 		let reg = /ac(\d+)/;
 		let acId = reg.exec(href)[1];
-		console.log(this.luckyTurntab.RollOut(acId, number, follow));
+		console.log(await this.luckyTurntab.RollOut(acId, number, follow));
 	}
-	api_lottery2nd(params) {
+	async api_lottery2nd(params) {
 		let { number, follow } = params;
 		let href = window.location.href;
 		let reg = /ac(\d+)/;
 		let acId = reg.exec(href)[1];
-		console.log(this.luckyTurntab.RollOutExp(acId, number, follow));
+		console.log(await this.luckyTurntab.RollOutExp(acId, number, follow));
 	}
 	//下载封面
 	api_downloadCover(params) {
 		this.download.downloadCover(params);
 	}
 	//下载弹幕
-	api_downloadDanmaku(params) {
+	api_downloadDanmaku() {
 		this.download.downloadDanmaku(this.dataset.dougaInfo);
 	}
 	api_assDanmaku() {
 		this.danmaku.sanitizeJsonDanmakuToAss(this.dataset.dougaInfo);
 	}
 	api_notice(params) {
-		let action = "notice";
-		chrome.runtime.sendMessage({ action: action, params: params }, function (
-			response
-		) { });
+		MessageSwitch.sendMessage('fg', { target: "notice", params: params, InvkSetting: { type: "function" } })
 	}
 	//视频下载
 	async api_download(params) {
@@ -509,4 +485,4 @@ class ODHFront {
 
 }
 
-window.odhfront = new ODHFront();
+window.AcFunHelperFrontend = new AcFunHelperFrontend();

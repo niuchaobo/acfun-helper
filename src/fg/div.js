@@ -8,17 +8,16 @@ class Div {
   }
 
   async show(pageInfo, options, type, isUp) {
-    // console.log(window.odhfront.options);
     this.options = options;
     //注入插件按钮
     this.inject();
     //注入展示页面
     this.popup.inject(options);
     //生成展示页面内容
-    let content = this.popup.renderPopup(pageInfo, type, isUp);
+    this.popup.renderPopup(pageInfo, type, isUp);
     this.div.style.visibility = "visible";
     this.div.innerText = "助手";
-    document.body.appendChild(this.div);
+    document.body.appendChild(this.div);window
     //this.searchBind()
   }
   

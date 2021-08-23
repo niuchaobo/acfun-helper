@@ -4,6 +4,7 @@
 class Search {
   constructor() {
     this.searchList = [];
+    this.devMode = false;
     this.i = 0;
     this.lock = true;
     this.pageNum = 1;

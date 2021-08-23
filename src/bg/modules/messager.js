@@ -3,6 +3,7 @@
  */
 class MsgNotifs {
     constructor() {
+        this.devMode = false;
         this.initMod();
         this.browserType = myBrowser();
     }
@@ -164,7 +165,7 @@ class MsgNotifs {
         chrome.storage.local.get(['LocalUserId'], async (Uid) => {
             // 用户没有登录就不去获取信息了
             if (Uid.LocalUserId == "0") { return }
-            let broadcastingUIDlistFollowing = await getResult('broadcastingUIDlistFollowing');
+            let broadcastingUIDlistFollowing = await getStorage('broadcastingUIDlistFollowing');
             let fliveStateWorkDic = {}, fetchLivesInfoDic = {};
             // 假如信息为空字典就填充一下
             if (JSON.stringify(broadcastingUIDlistFollowing) == '{}') {

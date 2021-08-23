@@ -58,7 +58,7 @@ class PageBeautify {
   addRightNav() {
     //右侧导航样式
     let style_link = document.createElement("link");
-    style_link.href = chrome.extension.getURL("fg/css/home_nav.css");
+    style_link.href = chrome.runtime.getURL("fg/css/home_nav.css");
     style_link.type = "text/css";
     style_link.real = "stylesheet";
     (document.head || document.documentElement).appendChild(style_link);
@@ -556,7 +556,7 @@ class PageBeautify {
     renderRelatedTopic(userInfo.profile.name);
     async function renderRelatedTopic(userName) {
       let queryText = encodeURI(`Acfun【${userName}】话题,快来参与`);
-      chrome.runtime.sendMessage({ action: "BkFetch", params: { receipt: false, responseRequire: true, asyncWarp: true, url: `https://www.baidu.com/s?wd=${queryText}&pn=0&rn=2&tn=json` } }, function (resp) {
+      MessageSwitch.sendMessage('fg', { target: "BkFetch", InvkSetting: { responseRequire: true, asyncWarp: true, type: "function" }, params: { url: `https://www.baidu.com/s?wd=${queryText}&pn=0&rn=2&tn=json` } }, function (resp) {
         let x = JSON.parse(resp.data);
         if (new RegExp(userName).test(x.feed.entry[0].title)) {
           // if (x.feed.entry[0].title == `Acfun【${userName}】话题,快来参与`) {

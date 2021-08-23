@@ -4,6 +4,7 @@
  */
 class CommentEnhance {
     constructor() {
+        this.devMode = false;
         this.reg_for_time = new RegExp('[0-9]{1,3}[:分][0-9]{1,2}秒?');
         this.reg_for_time3part = new RegExp('[0-9]{1,3}[:小时][0-9]{1,3}[:分][0-9]{1,2}秒?');
         this.reg_for_part = new RegExp('^p[0-9]{1,2}|^[0-9]{1,2}p', 'i')

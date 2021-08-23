@@ -19,6 +19,7 @@ class WatchPlan {
         this.ori_list = {};
         this.livePageWatchTimeRecList = {};
         this.startToken = true;
+        this.devMode = false;
     }
 
     onLoad() {

@@ -1,4 +1,3 @@
-/* global odhback, localizeHtmlPage, utilAsync, optionsLoad, optionsSave updateVersionIcon*/
 import {
 	renderPushInnerHtml,
 	renderLives,
@@ -43,7 +42,7 @@ async function onReady() {
 	$("#pop-toLiveIndex").click(indexJump);
 	$("#pop-setting").click(openSetting);
 	$("#pop-title .letter").click(titleToHome);
-	options.LocalUserId != "0" && $("#pop-title .Ucenter").show();$("#pop-title .Ucenter").click(toUcenter);
+	options.LocalUserId != "0" && $("#pop-title .Ucenter").show(); $("#pop-title .Ucenter").click(toUcenter);
 	$(document).scroll(hideToTopButton);
 	$(".toTop").click(clickToTop);
 	$("#UserInfoActionBtn").click(userInfoFetch);

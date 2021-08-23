@@ -3,6 +3,7 @@ class Reader {
         this.enableMode = 0;
         this.hasEnabledLightMode = false;
         this.curRotAngle = 0;
+        this.devMode = false;
     }
 
     /**
@@ -41,9 +42,9 @@ class Reader {
             this.hasEnabledLightMode = true;
         }
         if (sw && this.hasEnabledLightMode == true) {
-            document.querySelector("#readMode").disabled = false;
+            document.querySelector("#AcFunHelper_readMode").disabled = false;
         } else {
-            document.querySelector("#readMode").disabled = true;
+            document.querySelector("#AcFunHelper_readMode").disabled = true;
         }
 
     }
