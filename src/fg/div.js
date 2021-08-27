@@ -16,7 +16,7 @@ class Div {
     //生成展示页面内容
     this.popup.renderPopup(pageInfo, type, isUp);
     this.div.style.visibility = "visible";
-    this.div.innerText = "助手";
+    this.div.innerText = DOMPurify.sanitize("助手");
     document.body.appendChild(this.div);window
     //this.searchBind()
   }

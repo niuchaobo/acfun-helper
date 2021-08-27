@@ -45,5 +45,82 @@ const acfunApis = {
     extensionIconImg: `https://i.loli.net/2020/05/28/2k8dPLiGEZNHjny.png`,
     liveReward: `https://m.acfun.cn/rest/apph5-direct/pay/reward/giveRecords?pcursor=`,
     personalBasicInfo: `https://www.acfun.cn/rest/pc-direct/user/personalBasicInfo`,
+    /**
+     * @description 相关视频
+     * @method POST 
+     * @example resourceType=2&resourceId=29898019&count=9
+     */
+    relatedVideos: `https://www.acfun.cn/rest/pc-direct/feed/related/general`,
+    /**
+     * @description 视频预览图
+     * @method POST
+     * @example videoId=21417176&resourceId=25268198&resourceType=2
+     */
+    videoPreviewVtt: `https://www.acfun.cn/rest/pc-direct/play/playInfo/spriteVtt`,
+    /**
+     * @description 检查弹幕角色列表
+     * @param resourceId
+     * @param type "video"|"douga"
+     */
+    danmakuRoleName: "https://www.acfun.cn/rest/pc-direct/new-danmaku/getDanmakuRoleNames?resourceId=${resourceId}6&type=${type}",
+    /**
+     * @description 弹幕热点
+     * @example resourceId=25268198&resourceType=2
+     */
+    hotSpots: `https://www.acfun.cn/rest/pc-direct/play/playInfo/hotSpotDistribution`,
+    /**
+     * @description 是否允许高级弹幕
+     * @example resourceUserId=16854159
+     */
+    allowAdvDanmu: `https://www.acfun.cn/rest/pc-direct/new-danmaku/isAllowUseAdvancedDanmaku`,
+    /**
+     * @description 获取屏蔽的弹幕设定
+     * @method POST
+     */
+    blockDanmakuWords: "https://www.acfun.cn/rest/pc-direct/new-danmaku/blockWords/load",
+    /**
+     * 
+     * @method POST
+     * @example sid=acfun.midground.api
+     */
+    tokenGet: "https://id.app.acfun.cn/rest/web/token/get",
+    /**
+     * @description 表情列表
+     * @method POST
+     * @data kpn=ACFUN_APP
+     */
+    emotionList:"https://zt.gifshow.com/rest/zt/emoticon/package/list?kpn=ACFUN_APP",
+    gifts:"https://www.acfun.cn/rest/pc-direct/pay/deposit/products",
+    /**
+     * @description 打赏列表、稿件礼物列表
+     * @method POST
+     * @data resourceId=${ACID}&resourceType=2 
+     */
+    rewardInfo: "https://www.acfun.cn/rest/pc-direct/pay/reward/resource/cardInfo?resourceId=${ACID}&resourceType=2",
+    /**
+     * @description Ac币余额
+     * @method POST
+     */
+    coinBalance: "https://www.acfun.cn/rest/pc-direct/pay/wallet/acoinBalance",
+    /**
+     * 收藏
+     * @data resourceId=${ACID}&resourceType=9
+     */
+    favorite: "https://www.acfun.cn/rest/pc-direct/favorite",
+    /**
+     * @description 发送弹幕 (videoId不是acid)
+     * @example mode=1&color=16777215&size=25&body=%E5%A5%BD%E6%A3%92&videoId=25879552&position=701&type=douga&id=${ACID}&subChannelId=58&subChannelName=%E9%9F%B3%E4%B9%90&roleId=
+     */
+    danmuFire: "https://www.acfun.cn/rest/pc-direct/new-danmaku/add",
+    /**
+     * @description 阶段性弹幕查询
+     * @method POST
+     * @example resourceId=25879552&enableAdvanced=true&positionFromInclude=0&positionToExclude=22000
+     */
+    danmakuSegQuery: "https://www.acfun.cn/rest/pc-direct/new-danmaku/pollByPosition",
 
+}
+const acfunApisParameter = {
+    ImgProcessParameter: "?imageView2/1/w/${width}/h/${height}|imageslim",
+    ImgWebp: "?imageMogr2/auto-orient/format/webp/quality/75!/ignore-error/1",
 }

@@ -219,19 +219,19 @@ export function unreadNum() {
 	}
 	if (x.comment != 0) {
 		document.querySelector("#msg-comment").style.display = 'block'
-		document.querySelector("#notification-msg-comment").innerText = x.comment;
+		document.querySelector("#notification-msg-comment").innerText = DOMPurify.sanitize(x.comment);
 	}
 	if (x.content_notify != 0) {
 		document.querySelector("#msg-sysnotif").style.display = 'block'
-		document.querySelector("#notification-msg-sysnotif").innerText = x.content_notify;
+		document.querySelector("#notification-msg-sysnotif").innerText = DOMPurify.sanitize(x.content_notify);
 	}
 	if (x.like != 0) {
 		document.querySelector("#msg-likecount").style.display = 'block'
-		document.querySelector("#notification-msg-likecount").innerText = x.like;
+		document.querySelector("#notification-msg-likecount").innerText = DOMPurify.sanitize(x.like);
 	}
 	if (x.system_notify != 0) {
 		document.querySelector("#msg-announce").style.display = 'block'
-		document.querySelector("#notification-msg-announce").innerText = x.system_notify;
+		document.querySelector("#notification-msg-announce").innerText = DOMPurify.sanitize(x.system_notify);
 	}
 }
 

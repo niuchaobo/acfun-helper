@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>AcFun助手 - 首次运行</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="../mdui/css/mdui.min.css" />
+    <link rel="stylesheet" type="text/css" href="./css/animations.css" />
+    <script async type="text/javascript" src="../mdui/js/mdui.min.js"></script>
+    <style>
+      ::-webkit-scrollbar {
+        width: 5px;
+        background-color: #fff;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+        border-radius: 5px;
+      }
+
+      #welcome,
+      #mention {
+        animation: fadeInDown;
+        animation-duration: 0.9s;
+        -webkit-animation: fadeInDown 0.9s;
+      }
+      #mention {
+        -webkit-animation-delay: 0.2s;
+        animation-delay: 0.2s;
+      }
+      .mdui-card-media-covered {
+        background: rgb(0 0 0 / 50%);
+      }
+      .protocolsLink {
+        color: #fbff00;
+      }
+    </style>
+  </head>
+
+  <body class="mdui-ripple" id="openDialog" style="cursor: default">
+    <canvas id="canvas" style="position: fixed; top: 0; z-index: -100"></canvas>
+    <h1
+      id="welcome"
+      style="text-align: center; display: flex; justify-content: center"
+    >
+      AcFun助手 ： 欢迎使用
+    </h1>
+    <h2
+      id="mention"
+      style="text-align: center; display: flex; justify-content: center"
+    >
+      点击任意处开始！
+    </h2>
+
+    <div class="mdui-dialog" id="privacyDialog">
+      <div class="mdui-card">
+        <div class="mdui-card-media">
+          <img src="./images/prpr.jpg" />
+          <div class="mdui-card-media-covered">
+            <div class="mdui-card-primary">
+              <div class="mdui-card-primary-title">使用须知</div>
+              <div class="mdui-card-primary-subtitle">
+                在使用之前，请同意我们的<a
+                  class="protocolsLink"
+                  href="info.html?type=userAgreement"
+                  target="_blank"
+                >
+                  用户协议</a
+                >、<a
+                  href="info.html?type=privacy"
+                  class="protocolsLink"
+                  target="_blank"
+                  >隐私协议</a
+                >、<a
+                  href="https://github.com/niuchaobo/acfun-helper/blob/master/LICENSE"
+                  class="protocolsLink"
+                  target="_blank"
+                  >开源协议</a
+                >。
+              </div>
+            </div>
+            <div class="mdui-card-actions">
+              <button
+                id="iagree"
+                class="mdui-btn mdui-ripple mdui-ripple-white"
+              >
+                我已阅读，并同意上述所有协议内容。
+              </button>
+              <button
+                id="idisagree"
+                class="mdui-btn mdui-ripple mdui-ripple-white"
+              >
+                我不同意。
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script charset="UTF-8" src="../common/utils.js"></script>
+  <script charset="UTF-8" src="../common/utilsBundle.js"></script>
+  <script type="module" src="./pageHandler/welcome.js"></script>
+</html>

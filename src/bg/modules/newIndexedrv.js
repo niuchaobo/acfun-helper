@@ -55,7 +55,7 @@ class IndexedDBAbsLayer {
         dbHandler.close();
     }
 
-    static relateCount(dbName, tableName) {
+    static async relateCount(dbName, tableName) {
         const dbHandler = new Dexie(dbName);
         dbHandler.open();
         return await dbHandler[tableName].count((e) => {
@@ -87,7 +87,7 @@ class IndexedDBAbsLayer {
         }
     }
 
-    static getSquareList(limitNum) {
+    static async getSquareList(limitNum) {
         //获取推送列表前多少个条目
         db2.open();
         let x = await db2.SquareList.orderBy("acmid").reverse().limit(limitNum).toArray();
@@ -95,7 +95,7 @@ class IndexedDBAbsLayer {
         return x;
     }
 
-    static getLuckyHistory(requireExportType) {
+    static async getLuckyHistory(requireExportType) {
         initLuckyHistory();
         db.open();
         let x = await db.LuckyHistory.orderBy("uid").reverse().toArray();
@@ -110,7 +110,7 @@ class IndexedDBAbsLayer {
         }
     }
 
-    static getPushLstMany(limitNum) {
+    static async getPushLstMany(limitNum) {
         //获取推送列表前多少个条目
         db.open();
         let x = await db.PushList.orderBy("acid").reverse().limit(limitNum).toArray();
@@ -118,7 +118,7 @@ class IndexedDBAbsLayer {
         return x;
     }
 
-    async static getPushLstByAcid(Acid, limitNum = 30) {
+    static async getPushLstByAcid(Acid, limitNum = 30) {
         //获取某个推送中的稿件
         initPushList();
         db.open();
@@ -127,7 +127,7 @@ class IndexedDBAbsLayer {
         return x;
     }
 
-    async static getUserMomentFromLocal(uid) {
+    static async getUserMomentFromLocal(uid) {
         initSquareList();
         db2.open();
         if (typeof (uid) == "number") {
@@ -146,7 +146,7 @@ class IndexedDBAbsLayer {
      * @param {string} limitKey 受约束的主键
      * @param {string} limitValue 受约束的值
      */
-    async static getMybangumi(mode, orderType = '', limitKey = '', limitValue = '') {
+    static async getMybangumi(mode, orderType = '', limitKey = '', limitValue = '') {
         initMyBangumi();
         db3.open();
         if (mode == 0) {

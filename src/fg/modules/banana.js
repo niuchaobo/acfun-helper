@@ -87,12 +87,12 @@ class Banana {
     pageBananaState(banana_num, type = "video") {
         if (type == "video") {
             $('.right-area .banana').addClass('active');
-            document.querySelector(".bananaCount").innerText = Number(document.querySelector(".bananaCount").innerText) + Number(banana_num);
+            document.querySelector(".bananaCount").innerText = DOMPurify.sanitize(Number(document.querySelector(".bananaCount").innerText) + Number(banana_num));
         } else if (type == "article") {
             document.querySelectorAll('.bananacount')[0].classList.add("active")
             document.querySelectorAll('.bananacount')[1].classList.add("active")
-            document.querySelectorAll(".Jba_num")[0].innerText = Number(document.querySelectorAll(".Jba_num")[0].innerText) + Number(banana_num);
-            document.querySelectorAll(".Jba_num")[2].innerText = Number(document.querySelectorAll(".Jba_num")[2].innerText) + Number(banana_num);
+            document.querySelectorAll(".Jba_num")[0].innerText = DOMPurify.sanitize(Number(document.querySelectorAll(".Jba_num")[0].innerText) + Number(banana_num));
+            document.querySelectorAll(".Jba_num")[2].innerText = DOMPurify.sanitize(Number(document.querySelectorAll(".Jba_num")[2].innerText) + Number(banana_num));
         }
     }
 
@@ -108,7 +108,7 @@ class Banana {
             dougaType == "video" ? document.querySelector('div.like').click() : document.querySelector('.likecount').click();
             //改变页面上的点赞状态和数量
             $('.right-area .like').addClass('active');
-            dougaType == "video" ? document.querySelector(".likeCount").innerText = Number(document.querySelector(".likeCount").innerText) + 1 : "";
+            dougaType == "video" ? document.querySelector(".likeCount").innerText = DOMPurify.sanitize(Number(document.querySelector(".likeCount").innerText) + 1) : "";
             options.LikeHeartNotif && MessageSwitch.sendMessage('fg', {
                 target: "notice", params: { title: "自动点赞", msg: "成功点了个赞", }, InvkSetting: { type: "function" }
             });
@@ -177,7 +177,7 @@ class Banana {
             document.querySelector('div.like').click();
             //改变页面上的点赞状态和数量
             $('.right-area .like').addClass('active');
-            document.querySelector(".likeCount").innerText = Number(document.querySelector(".likeCount").innerText) + 1;
+            document.querySelector(".likeCount").innerText = DOMPurify.sanitize(Number(document.querySelector(".likeCount").innerText) + 1);
             likeFlag = true;
         }
         if (arr.length == 0) {

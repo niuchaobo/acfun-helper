@@ -287,7 +287,7 @@ export function renderLives() {
 						livexmlData +=
 							livedata.user.id +
 							'" src="' +
-							livedata?.coverUrls[0] +
+							livedata.coverUrls[0] +
 							'" class="preview"> <div class="cover"></div> </a> </div> <div class="r"> <a data-aid="' +
 							livedata.user.id +
 							' "target="_blank" href="' +
@@ -327,7 +327,6 @@ export async function renderLiveWatchTimeLst() {
 	MessageSwitch.sendMessage('fg', { target: "updateLiveWatchTimeListItem", params: {}, InvkSetting: { type: "function", responseRequire: true, asyncWarp: true } }, function (resp0) {
 		if (resp0 == true) {
 			MessageSwitch.sendMessage('fg', { target: "getLiveWatchTimeList", InvkSetting: { responseRequire: true, asyncWarp: false,type:"function" } }, function (resp) {
-				console.log(resp0,resp)
 				var raw_data = "";
 				let lwList = Object.keys(resp)
 				for (let i in lwList) {

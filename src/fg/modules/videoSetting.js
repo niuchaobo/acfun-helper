@@ -39,24 +39,14 @@ class VideoSetting {
   }
 
   onLoad() {
-    var hiddenDiv = document.getElementById("AcFunHelperDataDiv");
-    if (!hiddenDiv) {
-      hiddenDiv = document.createElement("div");
-      hiddenDiv.id = "AcFunHelperDataDiv";
-      hiddenDiv.style.display = "none";
-      document.body.appendChild(hiddenDiv);
-    }
-
     let root = chrome.runtime.getURL("/");
     let sc = document.createElement("script");
     sc.src = `${root}fg/modules/videoSettingInject.js`;
     document.head.appendChild(sc);
     //给inject js 传递数据
     sc.onload = function () {
-      var customEvent = document.createEvent("Event");
-      customEvent.initEvent("AcFunHelperDataDivEvent", true, true);
-      hiddenDiv.innerText = JSON.stringify(window.AcFunHelperFrontend.options);
-      hiddenDiv.dispatchEvent(customEvent);
+      MessageSwitch.sendEventMsgToInject(window, { target: "loadOptionData", source: "videoSetting", InvkSetting: { type: "function" }, params: { title: "optionData", msg: window.AcFunHelperFrontend.options } });
+      MessageSwitch.sendEventMsgToInject(window, { target: "playerFuncAutomate", source: "videoSetting", InvkSetting: { type: "function" }, params: {} });
     };
   }
 
@@ -674,7 +664,7 @@ class VideoSetting {
             leftBottomTip(`已经将音量改为原来的`, `${rate}倍。`);
             document.querySelector(
               ".volume-panel-content"
-            ).children[0].innerText = Number(this.audioOriginVolume) * rate;
+            ).children[0].innerText = DOMPurify.sanitize(Number(this.audioOriginVolume) * rate);
             document.querySelector(".audioVolumeGain").dataset.bindAttr =
               "true";
             this.audioNodeGainFlag = true;
@@ -699,7 +689,7 @@ class VideoSetting {
         leftBottomTip(`已经将音量还原为1倍。`);
         document.querySelector(".audioVolumeGain").dataset.bindAttr = "false";
         document.querySelector(".volume-panel-content").children[0].innerText =
-          this.audioOriginVolume;
+        DOMPurify.sanitize(this.audioOriginVolume);
       }
     });
   }
@@ -1159,7 +1149,7 @@ class VideoSetting {
       } else {
         if (tag) {
           //数据库没数据，并且存在榜单数据，那就写数据进数据库
-          MessageSwitch.sendMessage('fg',{target:"achievementEvent",InvkSetting:{ responseRequire: true, asyncWarp: true, type: "function" }, params: { action: "put", url: window.location.href, tagData: tag } })
+          MessageSwitch.sendMessage('fg', { target: "achievementEvent", InvkSetting: { responseRequire: true, asyncWarp: true, type: "function" }, params: { action: "put", url: window.location.href, tagData: tag } })
         }
       }
     })

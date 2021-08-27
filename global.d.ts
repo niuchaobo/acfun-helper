@@ -239,6 +239,9 @@ interface MessageSwitchDedicatedLinkResponse {
 interface MessageSwitchFgToInjectPayload extends MessageSwitchCommonPayload {}
 interface MessageSwitchWindowMsgPayload
   extends MessageSwitchFgToInjectPayload {}
+interface MessageSwitchInjectRecievePayload extends Event {
+  detail: MessageSwitchDedicatedLinkPayload;
+}
 interface MessageSwitchWindowMsgRespnse extends Event {
   data: MessageSwitchWindowMsgRespnseInner;
 }
@@ -309,6 +312,20 @@ interface Window
     options?: boolean | AddEventListenerOptions
   ): void;
   removeEventListener<K extends keyof MessageExtendEvents>(
+    type: K,
+    listener: (this: Window, ev: WindowEventMap[K]) => any,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+}
+interface Element
+  extends Node,
+    Animatable,
+    ChildNode,
+    InnerHTML,
+    NonDocumentTypeChildNode,
+    ParentNode,
+    Slottable {
+  addEventListener<K extends keyof MessageExtendEvents>(
     type: K,
     listener: (this: Window, ev: WindowEventMap[K]) => any,
     options?: boolean | AddEventListenerOptions
