@@ -58,7 +58,7 @@ class AcFunHelperFrontend {
 
 	async loading() {
 		this.options = await optionsLoad()
-		if (!this.options.enabled) {
+		if (!this.options.enabled || !this.options.permission) {
 			return
 		}
 		this.href = window.location.href;

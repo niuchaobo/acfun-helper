@@ -8,15 +8,18 @@ let AcFunHelperVideoFunction = (function () {
     return;
   }
 
+  var options = null;
   var lastdropedFrame = 0;
   var nowDropFrame = 0;
-  var hiddenDiv = document.getElementById("AcFunHelperDataDiv");
 
   //=======MessageHub=======//
   window.addEventListener("message", (e) => {
     if (e.data.to == "AcFunHelper_vsInject") {
       MessageCommonInvoker(e);
     }
+  })
+  window.addEventListener("AcFunHelperFrontend", (e) => {
+    AcFunHelperFrontendEventInvoker(e);
   })
 
   /**
@@ -29,6 +32,18 @@ let AcFunHelperVideoFunction = (function () {
       to: "AcFunHelperFrontend",
       msg: payload,
     }, "*");
+  }
+
+  /**
+   * 前端调用处理
+   * @param {MessageSwitchInjectRecievePayload} e 
+   */
+  function AcFunHelperFrontendEventInvoker(e) {
+    if (e.detail.InvkSetting.type === "function" && typeof (AcFunHelperVideoFunction[e.detail.target]) === 'function') {
+      AcFunHelperVideoFunction[e.detail.target].call({}, e.detail.params);
+    } else {
+      console.log(e.detail);
+    }
   }
 
   /**
@@ -47,22 +62,12 @@ let AcFunHelperVideoFunction = (function () {
     }
   }
 
-  if (!hiddenDiv) {
-    hiddenDiv = document.createElement("div");
-    hiddenDiv.style.display = "none";
-    try {
-      document.body.appendChild(hiddenDiv);
-    } catch (error) {
-      console.log(
-        "[LOG]Frontend-videoSettingInject: Fail to appendChildElemt hiddenDiv."
-      );
-    }
+  function loadOptionData(e) {
+    const { title, msg } = e;
+    options = msg;
   }
 
-  hiddenDiv.addEventListener("AcFunHelperDataDivEvent", function () {
-    // console.log(window.player);
-    var eventData = document.getElementById("AcFunHelperDataDiv").innerText;
-    let options = JSON.parse(eventData);
+  function playerFuncAutomate() {
     switch (options.player_mode) {
       case "default":
         break;
@@ -159,27 +164,28 @@ let AcFunHelperVideoFunction = (function () {
       })
     }
 
-  });
-
-  try {
-    window.parent.postMessage({
-      to: "videoInfo",
-      msg: `${JSON.stringify(window.player.videoInfo)}`,
-    }, "*");
-
-    window.parent.postMessage({
-      to: 'authinfo_mkey',
-      msg: `${JSON.stringify(window.player.mkey)}`
-    }, '*');
-
-    window.parent.postMessage({
-      to: "vs_videoInfo",
-      msg: `${JSON.stringify(window.player.videoInfo.videoList)}`,
-    }, "*");
-
-  } catch (error) {
-    console.log("[LOG]Frontend-videoSettingInject: Warning postMessage.", error);
+    try {
+      window.parent.postMessage({
+        to: "videoInfo",
+        msg: `${JSON.stringify(window.player.videoInfo)}`,
+      }, "*");
+  
+      window.parent.postMessage({
+        to: 'authinfo_mkey',
+        msg: `${JSON.stringify(window.player.mkey)}`
+      }, '*');
+  
+      window.parent.postMessage({
+        to: "vs_videoInfo",
+        msg: `${JSON.stringify(window.player.videoInfo.videoList)}`,
+      }, "*");
+  
+    } catch (error) {
+      console.log("[LOG]Frontend-videoSettingInject: Warning postMessage.", error);
+    }
+    
   }
+
 
   /**
    * 评论时间播放器快速跳转 - 处理函数
@@ -248,11 +254,11 @@ let AcFunHelperVideoFunction = (function () {
   return {
     quickJump,
     dropFrameIncrementAlz,
-    MessagePush,
+    MessagePush, loadOptionData, playerFuncAutomate
   };
 })();
 let {
   quickJump,
   dropFrameIncrementAlz,
-  MessagePush,
+  MessagePush, loadOptionData, playerFuncAutomate
 } = { ...AcFunHelperVideoFunction };

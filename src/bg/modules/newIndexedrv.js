@@ -55,7 +55,7 @@ class IndexedDBAbsLayer {
         dbHandler.close();
     }
 
-    static relateCount(dbName, tableName) {
+    async static relateCount(dbName, tableName) {
         const dbHandler = new Dexie(dbName);
         dbHandler.open();
         return await dbHandler[tableName].count((e) => {
@@ -87,7 +87,7 @@ class IndexedDBAbsLayer {
         }
     }
 
-    static getSquareList(limitNum) {
+    async static getSquareList(limitNum) {
         //获取推送列表前多少个条目
         db2.open();
         let x = await db2.SquareList.orderBy("acmid").reverse().limit(limitNum).toArray();
@@ -95,7 +95,7 @@ class IndexedDBAbsLayer {
         return x;
     }
 
-    static getLuckyHistory(requireExportType) {
+    async static getLuckyHistory(requireExportType) {
         initLuckyHistory();
         db.open();
         let x = await db.LuckyHistory.orderBy("uid").reverse().toArray();
@@ -110,7 +110,7 @@ class IndexedDBAbsLayer {
         }
     }
 
-    static getPushLstMany(limitNum) {
+    async static getPushLstMany(limitNum) {
         //获取推送列表前多少个条目
         db.open();
         let x = await db.PushList.orderBy("acid").reverse().limit(limitNum).toArray();

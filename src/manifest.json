@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.10.728",
+    "version": "1.2.12.730",
     "default_locale": "zh_CN",
     "description": "__MSG_appDesc__",
     "icons": {
@@ -28,7 +28,7 @@
                 "lib/jquery-3.6.0.min.js",
                 "mdui/js/mdui.min.js",
                 "bg/lib/m3u8-parser.min.js",
-                "bg/lib/md5.js",
+                "bg/lib/purify.min.js",
                 "common/utils.js",
                 "common/consoleProxy.js",
                 "common/encyclopedia.js",
@@ -105,6 +105,7 @@
         "fg/frame.js",
         "fg/css/checkbox.css",
         "lib/jquery-3.6.0.min.js",
+        "bg/lib/purify.min.js",
         "bg/lib/jqueryExtend.js",
         "bg/images/copy_link.png",
         "fg/nav.js",

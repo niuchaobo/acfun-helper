@@ -82,6 +82,7 @@ class Popup {
             let tmp = videoInfo.ksPlayJson;
             let tmpJson = JSON.parse(tmp);
             let infos = tmpJson.adaptationSet[0].representation;
+            let btnIndex = 0;
             if (infos == undefined) {
                 return;
             }
@@ -97,7 +98,7 @@ class Popup {
                 </div>`;
             for (const info of infos) {
                 let vedioUrl = info.url;
-                let id = hex_md5(vedioUrl);
+                let id = btnIndex++;
                 let barId = id + "-bar";
                 let progressText = id + "-text";
                 let qualityLabel = info.qualityLabel;
@@ -229,6 +230,7 @@ class Popup {
             </div>
             <script charset="UTF-8" src="${root + 'lib/jquery-3.6.0.min.js'}"></script>
             <script charset="UTF-8" src="${root + 'bg/lib/jqueryExtend.js'}"></script>
+            <script charset="UTF-8" src="${root + 'bg/lib/purify.min.js'}"></script>
             <script charset="UTF-8" src="${root + 'fg/frame.js'}"></script>
             </body>
         </html>`;

@@ -229,7 +229,7 @@ function onMessage(e) {
 function api_updateProgress(params) {
     let { progress, id } = params;
     document.getElementById(id + "-bar").style.width = progress + "%";
-    document.getElementById(id + "-text").innerText = progress + "%";
+    document.getElementById(id + "-text").innerText = DOMPurify.sanitize(progress + "%");
 }
 
 function api_updateLiveUrl(params) {
@@ -241,7 +241,7 @@ function api_updateLiveUrl(params) {
 function api_showMessage(result) {
     let { res, params } = result;
     document.getElementById("ncb-image").src = res.src;
-    document.getElementById("ncb-span").innerText = decodeURI(res.message);
+    document.getElementById("ncb-span").innerText = DOMPurify.sanitize(decodeURI(res.message));
     fadeIn('message', 10);
     //fadeOut('message',0.5);
 }

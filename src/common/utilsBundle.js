@@ -9,7 +9,7 @@ class UtilsBundle {
         function removeUtil(_this, utilName = "") {
             let elemId = _this.utilsList.indexOf(utilName);
             if (elemId != -1) {
-                _this.utilsList[elemId]?.beforeRemove?.call({});
+                _this.utilsList[elemId].beforeRemove.call({});
                 delete _this.utilsList[elemId];
                 return true;
             }
@@ -165,10 +165,6 @@ class WebStorageUtil extends UtilsBundle {
         })
     }
 
-    test() {
-        console.log(this.storeMode)
-    }
-
     static isSupport() {
         if ("localStorage" in window && "sessionStorage" in window) {
             return true;
@@ -218,7 +214,6 @@ class DOMObserver extends UtilsBundle {
     }
 
     createObserver() {
-        console.log(this.trigger)
         if (Array.isArray(this.target)) {
             this.target.forEach(e => {
                 this.observerInst.push(new this.MutationObserverFg(this.trigger));
@@ -239,7 +234,7 @@ class DOMObserver extends UtilsBundle {
         }
     }
 
-    DOMObserver(childList, attributes, characterData = false, subtree = false, attributeFilter = [], attributeOldValue = false, characterDataOldValue = false) {
+    configSet(childList, attributes, characterData = false, subtree = false, attributeFilter = [], attributeOldValue = false, characterDataOldValue = false) {
         if (childList || attributes || characterData) {
             this.config.childList = childList;
             this.config.attributes = attributes;
@@ -583,12 +578,6 @@ class Queue extends UtilsBundle {
         this.utilsList.push(Queue);
 
         this.dataField = [];
-        this.enter = this.enter;
-        this.exit = this.exit;
-        this.getFirst = this.getFirst;
-        this.getTail = this.getTail;
-        this.clearQueue = this.clear;
-        this.isEmpty = this.isEmpty;
     }
 
     /**
@@ -626,31 +615,70 @@ class Queue extends UtilsBundle {
         }
         return { stat: false, data: '' };
     }
+    get head() {
+        return !this.isEmpty() ? this.dataField[0] : null;
+    }
     /**
      * 获取队尾元素
      * @returns stat->是否存在:bool,data
      */
     getTail() {
         if (this.dataField.length != 0) {
-            return { stat: true, data: this.dataField[length - 1] };
+            return { stat: true, data: this.dataField[this.dataField.length - 1] };
         }
         return { stat: false, data: '' };
+    }
+    get tail() {
+        return !this.isEmpty() ? this.dataField[this.dataField.length - 1] : null;
     }
     /**
      * 队列是否为空
      * @returns bool
      */
     isEmpty() {
-        if (this.dataField.length == 0) {
-            return true
-        }
-        return false
+        return !!this.dataField ? !!this.dataField.length : false;
+    }
+    get status() {
+        return this.isEmpty() ? "empty" : "not empty";
     }
     /**
      * 清除队列
      */
     clear() {
-        delete this.dataField
+        delete this.dataField;
+    }
+}
+
+class Stack extends UtilsBundle {
+    constructor() {
+        super();
+        this.utilsList.push(Stack);
+
+        this.dataField = [];
+    }
+
+    push(e) {
+        return !!e ? this.dataField.push(e) : false;
+    }
+
+    pop() {
+        return this.isEmpty() ? false : this.dataField.pop();
+    }
+
+    get peak() {
+        return this.isEmpty() ? false : this.dataField[this.dataField.length - 1];
+    }
+
+    get top() {
+        return this.isEmpty() ? false : this.dataField.length;
+    }
+
+    isEmpty() {
+        return !!!this.dataField;
+    }
+
+    clear() {
+        return delete this.dataField;
     }
 }
 
@@ -658,7 +686,6 @@ class Queue extends UtilsBundle {
  * 工具箱
  */
 class ToolBox extends UtilsBundle {
-
     constructor() {
         super();
         this.utilsList.push(ToolBox);
@@ -1487,6 +1514,114 @@ class MessageSwitch extends UtilsBundle {
 
 }
 
+class AcFunHelper extends UtilsBundle {
+    constructor(watchInterv, reloadMethod) {
+        super();
+        this.utilsList.append(AcFunHelper);
+
+        this.watchInterv = watchInterv ?? 1000;
+        this.reloadMethod = reloadMethod ?? 1;
+    }
+
+    static reloadAll() {
+        AcFunHelper.reload();
+        AcFunHelper.reloadFrontendInsts();
+    }
+
+    static reload() {
+        chrome.runtime.reload();
+    }
+
+    /**
+     * 重启所有相关前台实例
+     * @param {chrome.tabs.Tab[]} tabs 
+     */
+    static execFgReload(tabs) {
+        for (let tab of tabs) {
+            if (tab.favIconUrl == "https://cdn.aixifan.com/ico/favicon.ico") {
+                chrome.tabs.reload(tab.id);
+            }
+        }
+    }
+
+    static reloadFrontendInsts() {
+        chrome.tabs.query({}, (tabs) => {
+            AcFunHelper.execFgReload(tabs);
+        });
+    }
+
+    static reloadActiveFrontend() {
+        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+            AcFunHelper.execFgReload(tabs);
+        })
+    }
+
+    static getVersion() {
+        return chrome.runtime.getManifest().version;
+    }
+
+    /**
+     * 开发者模式下的变动重启
+     * https://github.com/xpl/crx-hotreload
+     */
+    devModeWatch() {
+        /**
+         * 递归查找所有文件
+         * @param {DirectoryEntry} dir 
+         * @returns {Array}
+         */
+        const filesInDirectory = dir => new Promise(resolve =>
+            /**
+             * @param {FileSystemEntry} entries
+             */
+            dir.createReader().readEntries(entries => {
+                Promise.all(entries.filter(e => e.name[0] !== '.').map(e =>
+                    e.isDirectory
+                        ? filesInDirectory(e)
+                        : new Promise(resolve => e.file(resolve))
+                ))
+                    .then(files => [].concat(...files))
+                    .then(resolve)
+            })
+        )
+
+        const timestampForFilesInDirectory = dir => {
+            filesInDirectory(dir).then(files => {
+                files.map(f => f.name + f.lastModifiedDate).join()
+            })
+        }
+
+        const watchChanges = (dir, lastTimestamp) => {
+            timestampForFilesInDirectory(dir).then(timestamp => {
+                if (!lastTimestamp || (lastTimestamp === timestamp)) {
+                    setTimeout(() => watchChanges(dir, timestamp), this.watchInterv) // default retry after 1s
+                } else {
+                    switch (this.reloadMethod) {
+                        case 0:
+                            AcFunHelper.reload();
+                            break;
+                        case 1:
+                            AcFunHelper.reload();
+                            AcFunHelper.reloadActiveFrontend();
+                            break;
+                        case 2:
+                            AcFunHelper.reloadAll();
+                            break;
+                    }
+                }
+            })
+        }
+
+        chrome.management.getSelf(self => {
+            if (self.installType === 'development') {
+                chrome.runtime.getPackageDirectoryEntry(dir => watchChanges(dir));
+                AcFunHelper.reloadAll();
+            }
+        })
+    }
+
+}
+
 class ExtOptions extends UtilsBundle {
     constructor(storageArea = "local") {
         super();
@@ -1743,11 +1878,20 @@ class ExtOptions extends UtilsBundle {
      * 设置相关区域键key为value的配置
      * @param {*} key 
      * @param {*} value 
-     * @returns 
+     * @returns error | true
      */
     _setValue(key, value) {
-        return Promise((resolve) => {
-            chrome.storage[this.storageArea].set({ [key]: value }, resolve());
+        return new Promise((resolve, reject) => {
+            try {
+                if (readOnlyKey.includes(key)) {
+                    resolve(false);
+                } else {
+                    chrome.storage[this.storageArea].set({ [key]: value });
+                }
+            } catch (error) {
+                reject(error);
+            }
+            resolve(true);
         })
     }
 
@@ -1757,7 +1901,7 @@ class ExtOptions extends UtilsBundle {
      * @param {*} value 
      * @returns 
      */
-    static setValue(key, value) {
+    async static setValue(key, value) {
         return new ExtOptions('local')._setValue(key, value);
     }
 
@@ -1768,9 +1912,13 @@ class ExtOptions extends UtilsBundle {
      */
     _delete(key) {
         return new Promise((resolve, reject) => {
-            chrome.storage[this.storageArea].remove(key, (res) => {
-                resolve(res);
-            });
+            if (readOnlyKey.includes(key)) {
+                resolve(false);
+            } else {
+                chrome.storage[this.storageArea].remove(key, (res) => {
+                    resolve(res);
+                });
+            }
         });
     }
 
@@ -1830,7 +1978,7 @@ class ExtOptions extends UtilsBundle {
         return new Promise((resolve, reject) => {
             this.purgeAll();
             this.saveAll(this.sanitizeOptions({}));
-            resolve();
+            resolve(true);
         })
     }
 
@@ -1938,6 +2086,42 @@ class ExtOptions extends UtilsBundle {
         return map;
     }
 
+    /**
+     * 切换某个功能模块的开关状态
+     * @param {string} featureOptionName 
+     * @param {boolean} swStatus 
+     * @returns true|error
+     */
+    static async changeFeatureSwitch(featureOptionName, swStatus) {
+        if (featureOptionName == undefined || swStatus == undefined || typeof (swStatus) != "boolean") {
+            throw ("[WARN]ExtOptions > changeFeatureSwitch: two param both should not empty or second param should be boolean type.");
+        }
+        let raw = await ExtOptions.getValue(featureOptionName);
+        return raw == swStatus ? true : await ExtOptions.setValue(featureOptionName, swStatus);
+    }
+
+}
+
+class NotificationUtils extends UtilsBundle {
+    constructor() {
+        super();
+        this.utilsList.append(NotificationUtils);
+
+        this.BrowserType = myBrowser();
+        this.browserApi = this.BrowserType == "Chrome" ? chrome.notifications : browser.notifications;
+    }
+
+    static simple(title, message) {
+        if (typeof (title) != "string") {
+            return;
+        }
+        chrome.notifications.create(null, {
+            type: 'basic',
+            iconUrl: 'images/notice.png',
+            title: 'AcFun助手 ' + title,
+            message: message
+        });
+    }
 
 }
 

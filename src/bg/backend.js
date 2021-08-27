@@ -4,87 +4,89 @@ class AcFunHelperBackend {
         this.target = null;
         this.devMode = false;
 
-        this.initBackend();
+        this.initBackend().then(init => {
+            if (init) {
+                this.MessageRouter = new MessageSwitch("bg");
+                this.sandboxAgent = new SandboxAgent(document.getElementById('sandbox').contentWindow);
+                this.MsgNotfs = new MsgNotifs();
+                this.authInfo = new AuthInfo();
+                this.Ominibox = new Ohminibox();
+                this.Upgrade = new UpgradeAgent();
+                // this.ReqOpDrv = new ReqOperationDrv();
+                this.WatchPlan = new WatchPlan();
 
-        this.MessageRouter = new MessageSwitch("bg");
-        this.sandboxAgent = new SandboxAgent(document.getElementById('sandbox').contentWindow);
-        this.MsgNotfs = new MsgNotifs();
-        this.authInfo = new AuthInfo();
-        this.Ominibox = new Ohminibox();
-        this.Upgrade = new UpgradeAgent();
-        // this.ReqOpDrv = new ReqOperationDrv();
-        this.WatchPlan = new WatchPlan();
-
-        this.dataset = {
-            sandboxStatus: false,
-        }
-
-        this.Ominibox.registerOmnibox();
-        this.MsgNotfs.timer4Unread();
-        this.MsgNotfs.fetchPushList();
-        this.MsgNotfs.liveOnlineNotif();
-        this.MsgNotfs.followLiveNotif();
-        this.Upgrade.upgradeMain();
-        this.WatchPlan.onLoad();
-
-        chrome.runtime.onMessage.addListener(this.MessageRouter.BackgroundMessageSwitch.bind(this));
-        // chrome.runtime.onMessageExternal.addListener(this.onExternalMessage.bind(this));
-        window.addEventListener('message', this.MessageRouter.SandboxMsgHandler.bind(this));
-        chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
-        chrome.tabs.onCreated.addListener((tab) => this.onTabReady(tab));
-        chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
-        chrome.alarms.onAlarm.addListener((e) => this.onAlarmsEvent(e));
-        chrome.commands.onCommand.addListener((command) => { this.onCommands(command) });
-
-
-        //监听storage变化,可用于数据云同步
-        // chrome.storage.onChanged.addListener(function (changes, areaName) {
-
-        // });
-
-        chrome.webRequest.onBeforeRequest.addListener(
-            this.onCommentRequest.bind(this),
-            {
-                urls: ["https://www.acfun.cn/rest/pc-direct/comment/*", "*://*/livecloud*"]
-            },
-            []
-        );
-
-        //当关闭标签页时删除此标签页存储的视频信息
-        chrome.tabs.onRemoved.addListener(async function (tabId, removeInfo) {
-            let result = await getStorage(tabId + "").then(result => { return result[tabId] });
-            let obj = await getStorage(result);
-            let arr = Object.values(obj);
-            for (var lineId of arr) {
-                delStorage(lineId + "");
-            }
-            delStorage(tabId + "");
-        });
-
-        //当激活某个tab页时
-        chrome.tabs.onActivated.addListener(function (tab) {
-            let tabId = tab.tabId;
-            chrome.storage.local.set({ activeTabId: tabId }, function () {
-                if (chrome.runtime.lastError) {
-                    notice('发生错误', chrome.runtime.lastError.message);
+                this.dataset = {
+                    sandboxStatus: false,
                 }
-            });
-        });
 
-        //注册右键菜单
-        this.registerContextMenus()
+                this.Ominibox.registerOmnibox();
+                this.MsgNotfs.timer4Unread();
+                this.MsgNotfs.fetchPushList();
+                this.MsgNotfs.liveOnlineNotif();
+                this.MsgNotfs.followLiveNotif();
+                this.Upgrade.upgradeMain();
+                this.WatchPlan.onLoad();
 
-        if (myBrowser() == "Chrome") {
-            this.scheduler = chrome.alarms;
-        } else {
-            this.scheduler = browser.alarms;
-        }
+                chrome.runtime.onMessage.addListener(this.MessageRouter.BackgroundMessageSwitch.bind(this));
+                // chrome.runtime.onMessageExternal.addListener(this.onExternalMessage.bind(this));
+                window.addEventListener('message', this.MessageRouter.SandboxMsgHandler.bind(this));
+                chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
+                chrome.tabs.onCreated.addListener((tab) => this.onTabReady(tab));
+                chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
+                chrome.alarms.onAlarm.addListener((e) => this.onAlarmsEvent(e));
+                chrome.commands.onCommand.addListener((command) => { this.onCommands(command) });
+
+
+                //监听storage变化,可用于数据云同步
+                // chrome.storage.onChanged.addListener(function (changes, areaName) {
+
+                // });
+
+                chrome.webRequest.onBeforeRequest.addListener(
+                    this.onCommentRequest.bind(this),
+                    {
+                        urls: ["https://www.acfun.cn/rest/pc-direct/comment/*", "*://*/livecloud*"]
+                    },
+                    []
+                );
+
+                //当关闭标签页时删除此标签页存储的视频信息
+                chrome.tabs.onRemoved.addListener(async function (tabId, removeInfo) {
+                    let result = await getStorage(tabId + "").then(result => { return result[tabId] });
+                    let obj = await getStorage(result);
+                    let arr = Object.values(obj);
+                    for (var lineId of arr) {
+                        delStorage(lineId + "");
+                    }
+                    delStorage(tabId + "");
+                });
+
+                //当激活某个tab页时
+                chrome.tabs.onActivated.addListener(function (tab) {
+                    let tabId = tab.tabId;
+                    chrome.storage.local.set({ activeTabId: tabId }, function () {
+                        if (chrome.runtime.lastError) {
+                            notice('发生错误', chrome.runtime.lastError.message);
+                        }
+                    });
+                });
+
+                //注册右键菜单
+                this.registerContextMenus()
+
+                if (myBrowser() == "Chrome") {
+                    this.scheduler = chrome.alarms;
+                } else {
+                    this.scheduler = browser.alarms;
+                }
+            }
+        })
 
     }
 
     async initBackend() {
         let options = await optionsLoad();
-        this.opt_optionsChanged(options);
+        return this.opt_optionsChanged(options);
     }
 
     onCommentRequest(req) {
@@ -115,7 +117,7 @@ class AcFunHelperBackend {
         const versionNum = chrome.runtime.getManifest().version;
         initializeDBTable();
         if (details.reason === 'install') {
-            chrome.tabs.create({ url: chrome.runtime.getURL('bg/options.html') });
+            chrome.tabs.create({ url: chrome.runtime.getURL('bg/firstRun.html') });
         }
         if (details.reason === 'update') {
             if (versionNum == details.previousVersion) {
@@ -385,9 +387,12 @@ class AcFunHelperBackend {
     // Option page and Brower Action page requests handlers.
     async opt_optionsChanged(options) {
         this.setFrontendOptions(options);
+        if (!options.permission) {
+            return false;
+        }
         this.options = options;
         optionsSave(this.options);
-        return this.options;
+        return true;
     }
 
     async opt_optionUpdate(options) {

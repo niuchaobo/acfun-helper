@@ -2520,7 +2520,7 @@ function globalConfigure() {
                 mdui.alert("请先在主站登录。");
             }
             if (Uid) {
-                x.innerText = '[ AcFun-Uid : ' + Uid + ' ]';
+                x.innerText = DOMPurify.sanitize('[ AcFun-Uid : ' + Uid + ' ]');
                 chrome.storage.local.get(null, function (items) {
                     delete items["AcpushList1"]; delete items["Mkey"]; delete items["danmakuCache"]; delete items["AcMomentCircle1"]; delete items["AcLives1"];
                     var options_data = JSON.stringify(sanitizeOptions(items));

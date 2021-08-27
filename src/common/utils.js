@@ -1,5 +1,6 @@
 const defaults = {
   enabled: true,//开启关闭插件
+  permission: true,
   auto_throw: false,
   LikeHeart: false,
   LikeHeartClass: "0",
@@ -124,28 +125,28 @@ const REG = {
 }
 
 const indexdbArch = {
-  "acfunhelper":{
-    dbId:1,
-    tables:{
+  "acfunhelper": {
+    dbId: 1,
+    tables: {
       PushList: 'uid,acid,userName,date',
       PushListHtml: 'id,content',
       LuckyHistory: 'uid,acid,userName,date',
       HistoryViews: 'id,historyArray',
     },
-  }, "acfunhelper-square":{
-    dbId:2,
-    tables:{
+  }, "acfunhelper-square": {
+    dbId: 2,
+    tables: {
       SquareList: 'acmid,uid,time,userInfo,commentNum,bananaCount,content',
     },
-  }, "acfunhelper-bangumi":{
-    dbId:3,
-    tables:{
-      MyBangumi:"coverUrls,showPlayCount,shareCount,commentCount,showStowCount,showSerialStatus,isOver,updateDayOfWeek,updateDayTime,bangumiId,lastVideoName,caption,description,paymentType,recoReason,acfunOnly,likeCount,stowCount,shareUrl,playCount,areaShow,firstPlayDate,lastUpdateItemTimeStr,updateDayTimeStr",
+  }, "acfunhelper-bangumi": {
+    dbId: 3,
+    tables: {
+      MyBangumi: "coverUrls,showPlayCount,shareCount,commentCount,showStowCount,showSerialStatus,isOver,updateDayOfWeek,updateDayTime,bangumiId,lastVideoName,caption,description,paymentType,recoReason,acfunOnly,likeCount,stowCount,shareUrl,playCount,areaShow,firstPlayDate,lastUpdateItemTimeStr,updateDayTimeStr",
     },
-  }, "acfunhelper-historicalAchieve":{
-    dbId:5,
-    tables:{
-      historical:"acid,date,tag",
+  }, "acfunhelper-historicalAchieve": {
+    dbId: 5,
+    tables: {
+      historical: "acid,date,tag",
     },
   },
 }
@@ -594,7 +595,7 @@ function stringToDOM(str) {
 async function getAsyncDom(target, fn, time = 2500, isDev = false) {
   let i = 0;
   isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
-  re = (fn) => {
+  let re = (fn) => {
     return new Promise(resolve => {
       targetDom = document.getElementById(target) || document.getElementsByClassName(target).length || $(`${target}`).length || undefined
       if (targetDom) {
