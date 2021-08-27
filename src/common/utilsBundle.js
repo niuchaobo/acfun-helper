@@ -539,7 +539,6 @@ class InterSectionObserverUtil extends UtilsBundle {
             let i = 0;
             this.observerInst.forEach(e => {
                 e.observe(this.target[i++]);
-                console.log(e, this.target)
             })
         } else {
             this.observerInst[0].observe(this.target);

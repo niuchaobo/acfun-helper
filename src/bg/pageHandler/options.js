@@ -134,7 +134,6 @@ function OldUIHandler() {
     }
     chrome.storage.local.get(null, function (items) {
         options = transOptions(items);
-        // console.log('options', options);
         auto_throw = options['auto_throw'];
         to_attention = options['to_attention'];
         to_special = options['to_special'];
@@ -205,9 +204,7 @@ function OldUIHandler() {
                     let key = $(this).data("key");
                     $(this).parent().parent().remove();
                     let raw = await getStorage("UserMarks");
-                    console.log(raw.UserMarks)
                     delete raw.UserMarks[key];
-                    console.log(raw.UserMarks)
                     chrome.storage.local.set({ "UserMarks": raw.UserMarks }, function () { })
                 }
             });
@@ -627,7 +624,6 @@ function OldUIHandler() {
                     var up_html_str;
                     try {
                         up_html_str = await ajax('GET', up_info);
-                        console.log(up_html_str);
                     } catch (e) {
                         $("body").mLoading("hide");
                         $('.fail').text('此uid不存在');
@@ -752,7 +748,6 @@ function OldUIHandler() {
                         $('.mark-fail').show();
                         return;
                     }
-                    console.log(up_html_str)
                     let up_name = JSON.parse(up_html_str);
 
                     if (up_name.result != 0) {
@@ -765,7 +760,6 @@ function OldUIHandler() {
 
                     raw.UserMarks[uid_input] = { "name": up_name, "tag": tag, "desc": user_desc ? user_desc : "" }
                     chrome.storage.local.set({ "UserMarks": raw.UserMarks }, function () {
-                        console.log("1")
                         $('#scan-users #mark-blank').remove();
                         $('#scan-users').prepend('\
                       <tr class="site-tr">\
@@ -782,9 +776,7 @@ function OldUIHandler() {
                         if (mark) {
                             $(this).parent().parent().remove();
                             let raw = await getStorage("UserMarks");
-                            console.log(raw.UserMarks)
                             delete raw.UserMarks[user_key];
-                            console.log(raw.UserMarks)
                             chrome.storage.local.set({ "UserMarks": raw.UserMarks }, function () { })
                         }
                     });
@@ -1014,7 +1006,6 @@ function indexSiteConfigure() {
                 chrome.storage.local.set({ 'liveFloowings': items.liveFloowings });
             });
             // $('.liveWatchOrig').click(function () {
-            //     console.log('origin clicked.');
             //     let this_uid=$(this).data("key");
             //     window.open('https://live.acfun.cn/live/'+this_uid);
             // });
@@ -1137,7 +1128,6 @@ function contentConfigure() {
             var ev = ev || window.event;
             var target = ev.target || ev.srcElement;
             if (target.nodeName.toLowerCase() == 'i') {
-                // console.log(target.dataset);
                 let x = await getStorage("WatchPlanList");
                 let Url = "https://www.acfun.cn/" + target.dataset.type + "/ac" + target.dataset.key;
                 mdui.snackbar({
