@@ -1900,7 +1900,7 @@ class ExtOptions extends UtilsBundle {
      * @param {*} value 
      * @returns 
      */
-    async static setValue(key, value) {
+    static async setValue(key, value) {
         return new ExtOptions('local')._setValue(key, value);
     }
 

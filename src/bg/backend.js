@@ -85,7 +85,7 @@ class AcFunHelperBackend {
     }
 
     async initBackend() {
-        let options = await optionsLoad();
+        let options = await ExtOptions.getAll();
         return this.opt_optionsChanged(options);
     }
 
