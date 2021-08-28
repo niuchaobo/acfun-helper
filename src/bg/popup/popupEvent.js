@@ -251,7 +251,7 @@ function clearPushListDougaButtonClass() {
 		$('.PushListMode').removeClass('active')
 	}, 4500)
 }
-export function LiveWatchTimeLstReact(id, url) {
+export function LiveWatchTimeLstReact(id) {
 	chrome.tabs.update(Number(id), {
 		'selected': true
 	});

@@ -1070,8 +1070,8 @@ class VideoSetting {
 
     window.addEventListener("message", (e) => {
       if (e.data.to == "AcFunHelperFrontend") {
-        if (e.data.msg.modName === "frameStep" && judgeEditorActiveState() === false) {
-          this.frameStepFwd(e.data.msg.msg, this.getVideoFrameRate());
+        if (e.data.msg.target === "frameStep" && judgeEditorActiveState() === false) {
+          this.frameStepFwd(e.data.msg.params, this.getVideoFrameRate());
         }
       }
     })

@@ -50,7 +50,7 @@ async function onReady() {
 	$("#WatchLaterFpopup").click(WatchLaterFpopup);
 	$("#StopWatchLaterFpopup").click(StopWatchLaterFpopup);
 	$("#attentionTabsFg").click(attentionTabs);
-	$("#livePageWatchTimeRecList").click(e => { e.target.className === 'liveWatchListItem' && LiveWatchTimeLstReact(e.target.dataset.key, e.target.href) });
+	document.querySelector("#livePageWatchTimeRecList").addEventListener("click", e => { e.target.dataset.type === "liveWatchListItemReact" && AcFunHelper.activeTabToFront(Number(e.target.dataset.key)) })
 	$(".PushListMode").click(PushListDougaMode);
 	$(".MultOpen").click(PopupLater);
 	$(".MultOpen2").click(PopupLater);

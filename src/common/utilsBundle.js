@@ -1559,6 +1559,16 @@ class AcFunHelper extends UtilsBundle {
         return chrome.runtime.getManifest().version;
     }
 
+    static activeTabToFront(id) {
+        typeof (id) == "number" && chrome.tabs.update(id, {
+            'selected': true
+        });
+    }
+
+    static getThisTabId() {
+        return MessageSwitch.getTabId().id;
+    }
+
     /**
      * 开发者模式下的变动重启
      * https://github.com/xpl/crx-hotreload

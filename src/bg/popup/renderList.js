@@ -21,13 +21,14 @@ var popupLater = {};
 export async function renderFollowGroup() {
 	let rawRes = await fetchResult("https://www.acfun.cn/rest/pc-direct/relation/getGroups");
 	let Res = JSON.parse(rawRes);
+	let inst = new mdui.Menu('#followGroupsBtn', '#followGroups');
 	for (let i = 0; i < Res.groupList.length; i++) {
-		$("#followGroups").append(
+		$("#followGroups").append(DOMPurify.sanitize(
 			`
 			<li class="mdui-menu-item">
 			<a class="mdui-ripple" data-count="${Res.groupList[i].followingCount}" data-id="${Res.groupList[i].groupId}">${Res.groupList[i].groupName}</a>
 			</li>
-		`
+		`, { ADD_ATTR: ['target'] })
 		);
 	}
 }
@@ -66,7 +67,7 @@ function PharseGroupPushData(res) {
 			"发布</span> </div> </div> </div> ";
 		groupPushListData.innerText += xmlData;
 	}
-	$("#pop-groupPush").append(groupPushListData.innerText);
+	$("#pop-groupPush").append(DOMPurify.sanitize(groupPushListData.innerText, { ADD_ATTR: ['target'] }));
 	groupPushListData.innerText = "";
 }
 
@@ -117,7 +118,7 @@ export async function renderPushInnerHtml() {
 		}
 		if (p1data.length != 0) {
 			pushListData.index++;
-			$("#pop-push").append(p1data[0].content);
+			$("#pop-push").append(DOMPurify.sanitize(p1data[0].content, { ADD_ATTR: ['target'] }));
 		}
 	}
 	fetch(
@@ -132,7 +133,7 @@ export async function renderPushInnerHtml() {
 			if (rawdata.feedList.length === 0) {
 				pushListData.arriveEnd = true;
 				$("#pop-push").append(
-					'<p class="push_end" style="text-align: center;margin: 5px 5px 5px 5px;">没有更多数据了</p>'
+					DOMPurify.sanitize('<p class="push_end" style="text-align: center;margin: 5px 5px 5px 5px;">没有更多数据了</p>', { ADD_ATTR: ['target'] })
 				);
 				return;
 			}
@@ -166,7 +167,7 @@ export async function renderPushInnerHtml() {
                 </div>`
 				pushListData.innerText += xmlDataTemplateString;
 			}
-			$("#pop-push").append(pushListData.innerText);
+			$("#pop-push").append(DOMPurify.sanitize(pushListData.innerText, { ADD_ATTR: ['target'] }));
 			pushListData.index++
 			setTimeout(() => {
 				pushListData.busy = false;
@@ -222,7 +223,7 @@ export function renderLives() {
 			list_num === 0
 				? '<a href = "options.html" target = "_blank" style="color:black"> <center style="padding:5px">前往助手添加你的第一个关注吧</center></a>'
 				: '<a href = "https://live.acfun.cn/" target = "_blank" style="color:#aaa"> <center style="padding:5px">主播正在路上,去直播首页逛逛吧</center></a>';
-		is_blank ? $("#pop-push-lives").append(No_data) : "";
+		is_blank ? $("#pop-push-lives").append(DOMPurify.sanitize(No_data, { ADD_ATTR: ['target'] })) : "";
 		for (let i in data.broadcastingUIDlist) {
 			if (data.broadcastingUIDlist[i] == true) {
 				fetch("https://live.acfun.cn/api/live/info?authorId=" + i)
@@ -261,7 +262,7 @@ export function renderLives() {
 							'" class="name">';
 						livexmlData += livedata.user.name + " </a></div> </div> </div> ";
 						live_Data += livexmlData;
-						$("#pop-push-lives").append(live_Data);
+						$("#pop-push-lives").append(DOMPurify.sanitize(live_Data, { ADD_ATTR: ['target'] }));
 					});
 			}
 		}
@@ -299,12 +300,12 @@ export function renderLives() {
 							'</a> </p> <div class="info"><a target="_blank" data-uid="';
 						livexmlData +=
 							livedata.user.id +
-							'" href="https://www.acfun.cn/u/' +
+							'"  href="https://www.acfun.cn/u/' +
 							livedata.user.id +
 							'" class="name">';
 						livexmlData += livedata.user.name + " </a></div> </div> </div> ";
 						live_Data += livexmlData;
-						$("#pop-push-lives2").append(live_Data);
+						$("#pop-push-lives2").append(DOMPurify.sanitize(live_Data, { ADD_ATTR: ['target'] }));
 					})
 			}
 		}
@@ -326,18 +327,26 @@ export async function renderLiveWatchTimeLst() {
 	if (!x.LiveWatchTimeRec_popup) { return }
 	MessageSwitch.sendMessage('fg', { target: "updateLiveWatchTimeListItem", params: {}, InvkSetting: { type: "function", responseRequire: true, asyncWarp: true } }, function (resp0) {
 		if (resp0 == true) {
-			MessageSwitch.sendMessage('fg', { target: "getLiveWatchTimeList", InvkSetting: { responseRequire: true, asyncWarp: false,type:"function" } }, function (resp) {
+			MessageSwitch.sendMessage('fg', { target: "getLiveWatchTimeList", InvkSetting: { responseRequire: true, asyncWarp: false, type: "function" } }, function (resp) {
 				var raw_data = "";
 				let lwList = Object.keys(resp)
 				for (let i in lwList) {
 					var raw_data = raw_data + `
-            <tr>
-                <td><a class="liveWatchListItem" data-key="${[lwList[i]]}" title="切换到标签页"  href="${resp[lwList[i]].url}">[切换]</a> ${resp[lwList[i]].title}</td>
-                <td>${getTimeSinceNow(resp[lwList[i]].startTime, true, true, 'h')}</td>
-            </tr>
-          `;
+					<div class="mdui-grid-tile mdui-ripple liveWatchListItem">
+						<img src="./images/prpr.jpg"/>
+						<div class="mdui-grid-tile-actions">
+							<div class="mdui-grid-tile-text">
+							<div class="mdui-grid-tile-title">${resp[lwList[i]].title}</div>
+							<div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons">grid_on</i>打开于 ${getTimeSinceNow(resp[lwList[i]].startTime, true, true, 'h')}</div>
+						</div>
+						<div class="mdui-grid-tile-buttons switchTabToLive">
+							<button class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons" data-type="liveWatchListItemReact" data-key="${[lwList[i]]}">arrow_forward</i></button>
+						</div>
+						</div>
+					</div>
+					`;
 				}
-				$("#livePageWatchTimeRecList").append(raw_data);
+				$("#livePageWatchTimeRecList").append(DOMPurify.sanitize(raw_data, { ADD_ATTR: ['target'] }));
 			})
 		}
 	})

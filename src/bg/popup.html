@@ -101,7 +101,7 @@
         </div>
 
         <div id="GroupPushList">
-            <button class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#followGroups'}">分组列表</button>
+            <button class="mdui-btn mdui-color-theme-accent" id="followGroupsBtn" mdui-menu="{target: '#followGroups'}">分组列表</button>
             <ul class="mdui-menu" id="followGroups">
             </ul>
             <div id="pop-groupPush" class="pop-push">
@@ -146,6 +146,18 @@
                     </div>
                 </div>
 
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">直播计时</div>
+                        <div class="mdui-panel-item-summary">（计时板）</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                        <div class="mdui-container-fluid" id="livePageWatchTimeRecList" style="overflow: hidden;text-overflow: ellipsis;">
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -162,31 +174,6 @@
                             <h3>
                                 山川异域，风月同天。
                             </h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                        <div class="mdui-panel-item-title">直播计时</div>
-                        <div class="mdui-panel-item-summary">（计时板）</div>
-                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
-                        <div class="mdui-container-fluid"
-                            style="/* white-space: nowrap; */overflow: hidden;text-overflow: ellipsis;">
-                            <div class="mdui-table-fluid">
-                                <table class="mdui-table">
-                                    <thead>
-                                        <tr>
-                                            <th>标签</th>
-                                            <th>计时-打开于</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="livePageWatchTimeRecList">
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 </div>
