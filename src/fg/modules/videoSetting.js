@@ -646,7 +646,7 @@ class VideoSetting {
       <div class="control-checkbox audioVolumeGain" data-bind-key="audioVolumeGain" data-bind-attr="false"></div>
     </div>
     `;
-    $(".setting-panel>.setting-panel-content").append(htmlUi);
+    $(".setting-panel>.setting-panel-content").append(DOMPurify.sanitize(htmlUi));
     $(".setting-panel-content").click((e) => {
       if (
         e.target.dataset.bindKey == "audioVolumeGain" &&
@@ -1117,7 +1117,7 @@ class VideoSetting {
       <div class="control-checkbox danmakuOpr" data-bind-key="danmakuOpr" data-bind-attr="${!this.hideDanmakuOperatordanmakuOprFlag}"></div>
     </div>
     `;
-    $(".setting-panel>.setting-panel-content").append(htmlUi);
+    $(".setting-panel>.setting-panel-content").append(DOMPurify.sanitize(htmlUi));
     $(".setting-panel-content").click((e) => {
       if (e.target.dataset.bindKey == "danmakuOpr" && e.target.dataset.bindAttr == "false") {
         this.hideDanmakuOperator(false);
@@ -1209,7 +1209,7 @@ class VideoSetting {
       <div class="control-checkbox getSomeSleep" data-bind-key="getSomeSleep" data-bind-attr="${sw}"></div>
     </div>
     `;
-    $(".setting-panel>.setting-panel-content").append(htmlUi);
+    $(".setting-panel>.setting-panel-content").append(DOMPurify.sanitize(htmlUi));
     $(".setting-panel-content").click((e) => {
       if (e.target.dataset.bindKey == "getSomeSleep" && e.target.dataset.bindAttr == "false") {
         this.sleepPauseSwSetter(true);

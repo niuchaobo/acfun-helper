@@ -23,7 +23,7 @@ class UtilsBundle {
                 if (removeUtil(this, e)) {
                     stateCount++;
                 } else {
-                    causeElemt.append(e);
+                    causeElemt.push(e);
                 }
             });
             if (stateCount === 0) {
@@ -136,7 +136,7 @@ class WebStorageUtil extends UtilsBundle {
                 if (removeItem(e)) {
                     stateCount++;
                 } else {
-                    causeElemt.append(e);
+                    causeElemt.push(e);
                 }
             });
             if (stateCount === 0) {
@@ -1394,7 +1394,6 @@ class MessageSwitch extends UtilsBundle {
                 break;
             default:
                 console.log(`Sandbox:[${formatDate(new Date(), true)}]`, e.data.msg);
-
         }
     }
 
@@ -1514,17 +1513,11 @@ class MessageSwitch extends UtilsBundle {
 }
 
 class AcFunHelper extends UtilsBundle {
-    constructor(watchInterv, reloadMethod) {
+    constructor(reloadMethod) {
         super();
-        this.utilsList.append(AcFunHelper);
+        this.utilsList.push(AcFunHelper);
 
-        this.watchInterv = watchInterv ?? 1000;
-        this.reloadMethod = reloadMethod ?? 1;
-    }
-
-    static reloadAll() {
-        AcFunHelper.reload();
-        AcFunHelper.reloadFrontendInsts();
+        this.reloadMethod = reloadMethod ?? 0;
     }
 
     static reload() {
@@ -1550,9 +1543,9 @@ class AcFunHelper extends UtilsBundle {
     }
 
     static reloadActiveFrontend() {
-        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+        chrome.tabs.query({ active: true, lastFocusedWindow: false }, tabs => {
             AcFunHelper.execFgReload(tabs);
-        })
+        });
     }
 
     static getVersion() {
@@ -1572,6 +1565,7 @@ class AcFunHelper extends UtilsBundle {
     /**
      * 开发者模式下的变动重启
      * https://github.com/xpl/crx-hotreload
+     * @usage this.devReload = new AcFunHelper();this.devReload.devModeWatch();
      */
     devModeWatch() {
         /**
@@ -1579,44 +1573,37 @@ class AcFunHelper extends UtilsBundle {
          * @param {DirectoryEntry} dir 
          * @returns {Array}
          */
-        const filesInDirectory = dir => new Promise(resolve =>
-            /**
-             * @param {FileSystemEntry} entries
-             */
-            dir.createReader().readEntries(entries => {
-                Promise.all(entries.filter(e => e.name[0] !== '.').map(e =>
-                    e.isDirectory
-                        ? filesInDirectory(e)
-                        : new Promise(resolve => e.file(resolve))
-                ))
-                    .then(files => [].concat(...files))
-                    .then(resolve)
-            })
-        )
+        function filesInDirectory(dir) {
+            return new Promise(resolve =>
+                /**
+                 * @param {FileSystemEntry} entries
+                 */
+                dir.createReader().readEntries(entries => {
+                    Promise.all(entries.filter(e => e.name[0] !== '.').map(e =>
+                        e.isDirectory
+                            ? filesInDirectory(e)
+                            : new Promise(resolve => e.file(resolve))
+                    ))
+                        .then(files => [].concat(...files))
+                        .then(resolve)
+                })
+            )
+        }
 
-        const timestampForFilesInDirectory = dir => {
-            filesInDirectory(dir).then(files => {
-                files.map(f => f.name + f.lastModifiedDate).join()
+        function timestampForFilesInDirectory(dir) {
+            return new Promise((resolve) => {
+                filesInDirectory(dir).then(files => {
+                    resolve(files.map(f => f.name + f.lastModifiedDate).join());
+                })
             })
         }
 
-        const watchChanges = (dir, lastTimestamp) => {
+        function watchChanges(dir, lastTimestamp) {
             timestampForFilesInDirectory(dir).then(timestamp => {
                 if (!lastTimestamp || (lastTimestamp === timestamp)) {
-                    setTimeout(() => watchChanges(dir, timestamp), this.watchInterv) // default retry after 1s
+                    setTimeout(() => watchChanges(dir, timestamp), 1000);
                 } else {
-                    switch (this.reloadMethod) {
-                        case 0:
-                            AcFunHelper.reload();
-                            break;
-                        case 1:
-                            AcFunHelper.reload();
-                            AcFunHelper.reloadActiveFrontend();
-                            break;
-                        case 2:
-                            AcFunHelper.reloadAll();
-                            break;
-                    }
+                    AcFunHelper.reload();
                 }
             })
         }
@@ -1624,8 +1611,9 @@ class AcFunHelper extends UtilsBundle {
         chrome.management.getSelf(self => {
             if (self.installType === 'development') {
                 chrome.runtime.getPackageDirectoryEntry(dir => watchChanges(dir));
-                AcFunHelper.reloadAll();
-            }
+                this.reloadMethod == 1 && AcFunHelper.reloadActiveFrontend();
+                this.reloadMethod == 2 && AcFunHelper.reloadFrontendInsts();
+            };
         })
     }
 
@@ -2114,7 +2102,7 @@ class ExtOptions extends UtilsBundle {
 class NotificationUtils extends UtilsBundle {
     constructor() {
         super();
-        this.utilsList.append(NotificationUtils);
+        this.utilsList.push(NotificationUtils);
 
         this.BrowserType = myBrowser();
         this.browserApi = this.BrowserType == "Chrome" ? chrome.notifications : browser.notifications;

@@ -85,9 +85,9 @@ class CommentEnhance {
                     let text = $(this).text();
                     if (text.indexOf('标记') == -1) {
                         $(this).addClass('comment-mark-parent');
-                        $(this).append('<span class="comment-mark">标记PO</span>');
-                        $(this).append('<span class="comment-jumpLink">复制楼层链接</span>');
-                        $(this).append('<span class="comment-cap">保存为HTML</span>');
+                        $(this).append(DOMPurify.sanitize('<span class="comment-mark">标记PO</span>'));
+                        $(this).append(DOMPurify.sanitize('<span class="comment-jumpLink">复制楼层链接</span>'));
+                        $(this).append(DOMPurify.sanitize('<span class="comment-cap">保存为HTML</span>'));
                         $(this).on('click', '.comment-cap', function () {
                             let data = `<style>
                             html {
@@ -360,7 +360,7 @@ class CommentEnhance {
                     let text = $(this).text();
                     if (text.indexOf('标记') == -1) {
                         $(this).addClass('comment-mark-parent');
-                        $(this).append('<span class="comment-mark">标记</span>');
+                        $(this).append(DOMPurify.sanitize('<span class="comment-mark">标记</span>'));
                         $(this).on('click', '.comment-mark', async function () {
                             let userNode = $(this).parent().parent().parent().find('.name').eq(0);
                             let username = userNode.text();
@@ -421,7 +421,7 @@ class CommentEnhance {
             </div>
             `
 
-            ubbBox.append(html)
+            ubbBox.append(DOMPurify.sanitize(html));
             let timer = null;
             ubbBox.mouseenter(function () {
                 timer && clearTimeout(timer)

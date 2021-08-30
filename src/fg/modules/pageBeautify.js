@@ -512,7 +512,7 @@ class PageBeautify {
 			<div id="comment-lastPage" title="上一页评论" class="icon icon-to-comm tool-item tool-to-comm"><span class="pts">上一页</span></div>
 			<div id="comment-nextPage" title="下一页评论" class="icon icon-to-comm tool-item tool-to-comm"><span class="pts">下一页</span></div>
 			`;
-      $("#toolbar").eq(0).append(elem);
+      $("#toolbar").eq(0).append(DOMPurify.sanitize(elem));
       $("#comment-lastPage").click((e) => {
         if (
           document.querySelector(

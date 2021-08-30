@@ -749,7 +749,7 @@ function addElement(options) {
   let x = document.createElement(tag);
   x.id = id;
   x.className = classes;
-  x.innerHTML = thisHTML;
+  x.innerHTML = DOMPurify.sanitize(thisHTML);
   x.style.cssText = css;
   if (title) {
     x.title = title;

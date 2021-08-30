@@ -7,8 +7,8 @@
 function leftBottomTip(text, importantText = "") {
   $(".left-bottom-tip")
     .eq(0)
-    .append(
-      `<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`
+    .append(DOMPurify.sanitize(
+      `<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`)
     );
   let _timer = setTimeout(() => {
     $(".left-bottom-tip").eq(0).children().eq(0).remove(); //这样写 并不能自定义持续时间
@@ -28,7 +28,7 @@ function LeftBottomNotif(message = "什么都没有发生哦~", level = "info", 
   getAsyncDom("#g-toast", () => {
     var parentContainer = document.querySelector("#g-toast"),
       obj = document.createElement("p");
-    obj.innerHTML = "<i class='icon icon-" + level + "'></i><span>" + message + "</span>",
+    obj.innerHTML = DOMPurify.sanitize("<i class='icon icon-" + level + "'></i><span>" + message + "</span>"),
       obj.classList.add("info"),
       obj.classList.add(level),
       parentContainer.appendChild(obj);
@@ -75,3 +75,97 @@ function updateVersionIcon() {
     }
   });
 }
+
+class PlayerMenuSwitchItem {
+  constructor(name, title, describe, defaultState = false) {
+    this.menuInst = null;
+    this.parentInst = null;
+    this.name = name;
+    this.title = title;
+    this.describe = describe;
+    this.defaultState = defaultState;
+    this.trueHandler = null;
+    this.falseHandler = null;
+    this.firstInit = true;
+    this.initDOM();
+  }
+
+  addEventHandler(tf, ff) {
+    if (tf && ff && typeof (tf) == "function" && typeof (ff) == "function") {
+      this.trueHandler = tf;
+      this.falseHandler = ff;
+      this.startEventHook();
+    }
+  }
+
+  initDOM() {
+    let htmlUi = `
+    <div>
+      <label>${this.title}</label>
+      <div class="control-checkbox ${this.name}" data-bind-key="${this.name}" ${this.describe ? "title=\"" + this.describe + "\" " : ""}data-bind-attr="${this.defaultState}"></div>
+    </div>
+    `;
+    try {
+      $(".setting-panel>.setting-panel-content").append(DOMPurify.sanitize(htmlUi));
+      this.menuInst = document.querySelector("." + this.name);
+      this.parentInst = this.menuInst.parentElement;
+      this.firstInit = false;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+    return true;
+  }
+
+  reloadDOM(newName) {
+    const newInnerSwItem = document.createElement("div");
+    newInnerSwItem.dataset.bindAttr = this.defaultState;
+    newInnerSwItem.dataset.bindKey = newName;
+    this.describe ? newInnerSwItem.title = this.describe : "";
+    newInnerSwItem.className = `control-checkbox ${newName}`;
+    this.parentInst.append(DOMPurify.sanitize(newInnerSwItem));
+    this.menuInst = document.querySelector("." + newName);
+    this.parentInst = this.menuInst.parentElement;
+  }
+
+  startEventHook() {
+    $(".setting-panel-content").on("click", (e) => {
+      if (e.target.dataset.bindKey == this.name && e.target.dataset.bindAttr == "false") {
+        this.menuInst.dataset.bindAttr = true;
+        this.trueHandler();
+      } else if (e.target.dataset.bindKey == this.name && e.target.dataset.bindAttr == "true") {
+        this.menuInst.dataset.bindAttr = false;
+        this.falseHandler();
+      }
+    })
+  }
+
+  changeRefresh() {
+    ToolBox.addRefTypeValueListener(this, (f) => {
+      if (this.firstInit) {
+        return;
+      }
+      this.menuInst.remove();
+      this.firstInit = true;
+      this.reloadDOM(f);
+      this.trueHandler ? $(".setting-panel-content").off("click") && this.addEventHandler(this.trueHandler, this.falseHandler) : "";
+    }, ["name"]);
+    ToolBox.addRefTypeValueListener(this, (f) => {
+      this.menuInst.parentElement.children[0].innerText = f;
+    }, ["title"])
+    ToolBox.addRefTypeValueListener(this, (f) => {
+      this.menuInst.title = f;
+    }, ["describe"])
+  }
+
+  unload(){
+    this.parentInst,remove();
+    delete this;
+  }
+
+}
+
+// let item = new PlayerMenuSwitchItem("bTest2","thisA2","2333",false)
+// item.addEventHandler(()=>{console.log(true)},()=>{console.log(false)})
+// item.changeRefresh()
+// item.name="bTest"

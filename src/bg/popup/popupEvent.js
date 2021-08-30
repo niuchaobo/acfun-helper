@@ -94,7 +94,7 @@ export async function viewHistory() {
 				</tr>
 				`;
 			}
-			$("#ViewHistory").append(raw_data);
+			$("#ViewHistory").append(DOMPurify.sanitize(raw_data));
 			$("#ViewHistoryAction").hide();
 		})
 }
@@ -162,7 +162,7 @@ export async function userInfoFetch() {
 			</table>
 		</div>
 			`;
-			$("#UserInfoPrint").append(raw_data);
+			$("#UserInfoPrint").append(DOMPurify.sanitize(raw_data));
 		})
 
 }
