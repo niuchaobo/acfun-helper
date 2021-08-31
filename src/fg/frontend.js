@@ -204,7 +204,6 @@ class AcFunHelperFrontend {
 			this.options.widenUCVideoList && this.pageBeautify.widenUCVideoList();
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false, true);
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("uc");
-			// this.pageBeautify.userRelatedTopic()
 			this.options.userPageTimeline && this.pageBeautify.userPageTimeline();
 		}
 	}

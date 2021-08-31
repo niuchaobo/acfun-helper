@@ -64,8 +64,8 @@ export const infoPages = {
     updateLog: "更新日志",
 }
 
-export function closeMe(){
-    chrome.tabs.getCurrent(e=>{
+export function closeMe() {
+    chrome.tabs.getCurrent(e => {
         chrome.tabs.remove(e.id);
     })
 }
@@ -213,4 +213,25 @@ export class ParticlesAnimation {
         init();
         animate();
     }
+}
+
+export function getRelatedTopic(name) {
+    return new Promise((resolve)=>{
+        let queryText = encodeURI(`Acfun${name} 话题,快来参与`);
+        MessageSwitch.sendMessage('fg', { target: "BkFetch", InvkSetting: { responseRequire: true, asyncWarp: true, type: "function" }, params: { url: `https://www.baidu.com/s?wd=${queryText}&pn=0&rn=2&tn=json` } }, function (resp) {
+            /**
+             * @type {{feed:{category:{label:string,value:string},entry:[{abs:string,pn:number,relate:number,time:number,title:string,url:string,urlEnc:string},],updated:string,resultnum:number}}}
+             */
+            let x = JSON.parse(resp);
+            let result={};
+            x.feed.entry.forEach(element => {
+                let isTopic = REG.topicCircle.test(element.url);
+                let isMoment = REG.momentContent.test(element.url);
+                if(isTopic||isMoment){
+                    result[element.pn] = element;
+                }
+            });
+            resolve(result);
+        })
+    })
 }

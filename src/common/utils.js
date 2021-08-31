@@ -122,6 +122,8 @@ const REG = {
   liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)"),
   videoPlayerSrc: new RegExp("blob:https://www.acfun.cn/"),
   videoPartNumByURL: new RegExp("_([0-9].?)"),
+  topicCircle:new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/(\d*)"),
+  momentContent:new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/moment\/(\d*)"),
 }
 
 const indexdbArch = {

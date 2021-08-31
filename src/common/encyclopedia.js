@@ -118,7 +118,7 @@ const acfunApis = {
      * @example resourceId=25879552&enableAdvanced=true&positionFromInclude=0&positionToExclude=22000
      */
     danmakuSegQuery: "https://www.acfun.cn/rest/pc-direct/new-danmaku/pollByPosition",
-
+    personalVideoList:`https://www.acfun.cn/u/{Uid}?quickViewId=ac-space-video-list&reqID=3&ajaxpipe=1&type=video&order=newest&page={pageNum}&pageSize=20`,
 }
 const acfunApisParameter = {
     ImgProcessParameter: "?imageView2/1/w/${width}/h/${height}|imageslim",
