@@ -272,6 +272,7 @@ class AcFunHelperFrontend {
 			//直播画中画模式
 			this.livePageBeautify.callPicktureInPictureModeForLive()
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit("live");
+			this.options.liveVolumeMild && this.videoSetting.liveVolumeMild();
 			return
 		}
 		//直播首页

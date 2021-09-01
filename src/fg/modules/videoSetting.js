@@ -689,7 +689,7 @@ class VideoSetting {
         leftBottomTip(`已经将音量还原为1倍。`);
         document.querySelector(".audioVolumeGain").dataset.bindAttr = "false";
         document.querySelector(".volume-panel-content").children[0].innerText =
-        DOMPurify.sanitize(this.audioOriginVolume);
+          DOMPurify.sanitize(this.audioOriginVolume);
       }
     });
   }
@@ -1228,6 +1228,31 @@ class VideoSetting {
       this.sleepPauseSwSetter(defaultMode);
     }
     this.getSomeSleep();
+  }
+
+  /**
+   * 后台直播标签页音量降低
+   */
+  liveVolumeMild() {
+    const videoElemt = document.querySelector("video");
+    let originVolume = videoElemt.volume;
+    const volumeChange = new window.MutationObserver(() => {
+      originVolume = videoElemt.volume;
+    })
+    volumeChange.observe(document.querySelectorAll(".volume-panel")[0], {
+      attributes: true,
+      attributeOldValue: true,
+    });
+    document.addEventListener("visibilitychange", () => {
+      switch (document.visibilityState) {
+        case "hidden":
+          videoElemt.volume = Number((videoElemt.volume / 4).toFixed(2));
+          break;
+        case "visible":
+          videoElemt.volume = originVolume;
+          break;
+      }
+    })
   }
 
 }

@@ -98,7 +98,8 @@ const defaults = {
   hideDanmakuOperator: { defaultMode: false, UI: true, maskSw: false },
   sleepPause: { defaultMode: false, UI: true },
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
-  frameStepSetting: { enabled: false, controlUI: false, }
+  frameStepSetting: { enabled: false, controlUI: false, },
+  liveVolumeMild: false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -122,8 +123,8 @@ const REG = {
   liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)"),
   videoPlayerSrc: new RegExp("blob:https://www.acfun.cn/"),
   videoPartNumByURL: new RegExp("_([0-9].?)"),
-  topicCircle:new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/(\d*)"),
-  momentContent:new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/moment\/(\d*)"),
+  topicCircle: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/(\d*)"),
+  momentContent: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/moment\/(\d*)"),
 }
 
 const indexdbArch = {
