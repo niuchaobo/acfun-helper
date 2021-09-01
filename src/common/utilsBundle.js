@@ -177,78 +177,127 @@ class WebStorageUtil extends UtilsBundle {
  * 监视DOM树
  */
 class DOMObserver extends UtilsBundle {
-    constructor(target, trigger, devMode = false) {
+    /**
+     * @param {HTMLElement|string} targets 选择器
+     * @param {function} trigger 钩子函数
+     * @param {boolean} devMode 
+     * @param {boolean} complex 
+     */
+    constructor(targets, trigger, devMode = false, complex = false) {
         super();
         this.utilsList.push(DOMObserver);
 
-        this.target = target;
+        /**
+         * 一个监控对象或者多个监控对象
+         * @description 一个监控对象对应一个Observer，多个Observer的事件都汇聚到postProcessor，最后由callbackRegister字典中的callbacks.condition筛选消息，交付给callbacks.callback
+         */
+        this.targets = targets;
         this.trigger = trigger;
-        this.triggers = null;
-
-        if (Array.isArray(trigger)) {
-            this.triggers = trigger;
-            this.trigger = function () {
-                this.triggers.forEach((e) => {
-                    typeof (e) === "function" && e();
-                })
-            }
-        }
-
+        /**
+         * 监视器实例
+         * @type {MutationObserver[]}
+         */
         this.observerInst = [];
         this.devMode = devMode;
-        /**
-         *@config   childList：子节点的变动（指新增，删除或者更改）。
-                    attributes：属性的变动。
-                    characterData：节点内容或节点文本的变动。
-
-                    subtree：将该观察该节点的所有后代节点。
-                    attributeFilter：数组，表示需要观察的特定属性（比如['class','src']）。
-                    attributeOldValue ：观察attributes变动时，记录变动前属性值。
-                    characterDataOldValue：观察characterData变动时，记录变动前值。
-         */
+        this.complex = complex;
         this.config = {
-            childList: true, attributes: true, characterData: false,
-            subtree: false, attributeFilter: [], characterDataOldValue: false, attributeOldValue: false
+            hasInit: false, childList: true, attributes: true, characterData: false,
+            subtree: false, characterDataOldValue: false, attributeOldValue: false
         }
+        /**
+         * @type {MutationObserver}
+         */
         this.MutationObserverFg = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-    }
-
-    createObserver() {
-        if (Array.isArray(this.target)) {
-            this.target.forEach(e => {
-                this.observerInst.push(new this.MutationObserverFg(this.trigger));
-            })
+        if (!this.complex) {
+            this.init();
         } else {
-            this.observerInst.push(new this.MutationObserverFg(this.trigger));
-        }
-        this._runObserverInsts();
-    }
-
-    _runObserverInsts() {
-        if (Array.isArray(this.target)) {
-            this.observerInst.forEach(e => {
-                e.observe(e, this.config);
-            })
-        } else {
-            this.observerInst[0].observe(this.target, this.config);
+            this.observerInst = {};
+            this.callType = null;
+            this.callbackRegister = {
+                /**
+                 * @type {string[]}
+                 */
+                names: [],
+                /**
+                 * @type {{[name:string]:{condition:function,callback:function}}}
+                 * @example {"1":{condition:(e)=>{return e.type=="attributes"},callback:()=>{console.log("ok")}}}
+                 */
+                callbacks: {}
+            };
+            this.initx();
         }
     }
 
+    /**
+     * 配置配置
+     * @param {*} childList 子节点的变动（指新增，删除或者更改）。
+     * @param {*} attributes 属性的变动。
+     * @param {*} characterData 节点内容或节点文本的变动。
+     * @param {*} subtree 将该观察该节点的所有后代节点。
+     * @param {*} attributeFilter 数组，表示需要观察的特定属性（比如['class','src']），设定了attributes之后，如果不需要筛选观测的attribute列表就将其从config字典中删除，否则将会筛除所有事件。
+     * @param {*} attributeOldValue 观察attributes变动时，记录变动前属性值。
+     * @param {*} characterDataOldValue 观察characterData变动时，记录变动前值。
+     */
     configSet(childList, attributes, characterData = false, subtree = false, attributeFilter = [], attributeOldValue = false, characterDataOldValue = false) {
         if (childList || attributes || characterData) {
             this.config.childList = childList;
             this.config.attributes = attributes;
             this.config.characterData = characterData;
-            this.config.attributeFilter = attributeFilter;
+            if (attributeFilter.length) {
+                console.log(attributeFilter,attributeFilter.length)
+                this.config.attributeFilter = attributeFilter;
+            }
             this.config.attributeOldValue = attributeOldValue;
             this.config.characterDataOldValue = characterDataOldValue;
             this.config.subtree = subtree;
+            this.config.hasInit = true;
         } else {
             fgConsole("DOMObserver", "", `minimum, one of childList, attributes, and/or characterData must be true before you call observe().`, 1);
         }
     }
 
-    _preRemove(obsvr) {
+    init() {
+        if (Array.isArray(this.trigger)) {
+            const rawTriggers = this.trigger;
+            this.trigger = (e, f) => {
+                rawTriggers.forEach(thisTrigger => {
+                    thisTrigger(e, f);
+                })
+            }
+        }
+    }
+
+    initx() {
+        let rawParType = typeof (this.trigger);
+        switch (rawParType) {
+            case "function":
+                this.callbackRegister.names.push(0);
+                this.callbackRegister.callbacks[0] = this.trigger;
+                this.callType = "function";
+                break;
+            case "object":
+                if (Array.isArray(this.trigger)) {
+                    this.callbackRegister.names.push(0);
+                    this.callbackRegister.callbacks[0].callback = (a, b) => {
+                        this.trigger.forEach(e => {
+                            e(a, b);
+                        });
+                    }
+                    this.callType = "array";
+                    return;
+                }
+                if (this.trigger instanceof Object) {
+                    this.callbackRegister.names = Object.keys(this.trigger);
+                    this.callbackRegister.forEach(e => {
+                        this.callbackRegister.callbacks[e] = this.trigger[e];
+                    });
+                    this.callType = "object";
+                }
+                break;
+        }
+    }
+
+    preRemove(obsvr) {
         const extraMutations = obsvr.takeRecords();
         if (extraMutations) {
             extraMutations.forEach(e => {
@@ -257,25 +306,83 @@ class DOMObserver extends UtilsBundle {
         }
     }
 
-    removeObserver(elements) {
+    createObserver() {
+        if (!Array.isArray(this.targets)) {
+            this.observerInst.push(new this.MutationObserverFg(this.trigger));
+            this.observerInst.forEach(inst => {
+                inst.observe(this.targets, this.config);
+            })
+            return;
+        }
+        this.targets.forEach(() => {
+            this.observerInst.push(new this.MutationObserverFg(this.trigger));
+        })
+        let index = 0;
+        this.targets.forEach(target => {
+            this.observerInst[index++].observe(target, this.config);
+        });
+    }
+
+    /**
+     * 删除监视器
+     * @param {HTMLElement|string} elements 
+     * @param {boolean} preRemove
+     * @returns 
+     */
+    removeObserver(elements, preRemove = false) {
         if (Array.isArray(elements)) {
             elements.forEach(e => {
-                let elemIndex = this.target.indexOf(e);
+                let elemIndex = this.targets.indexOf(e);
+                preRemove && this.preRemove(this.observerInst[elemIndex]);
                 elemIndex != -1 && this.observerInst[elemIndex].disconnect();
             })
         } else {
+            preRemove && this.preRemove(this.observerInst[0]);
             if (elements) {
-                this.target === elements && this.observerInst[0].disconnect();
+                this.targets === elements && this.observerInst[0].disconnect();
                 return;
             }
             this.observerInst[0].disconnect();
         }
     }
 
+    complexInstantProduct() {
+        if (Array.isArray(this.targets)) {
+            this.targets.forEach((target) => {
+                this.observerInst[target] = new this.MutationObserverFg(this.preProcessor(mutations, myself));
+            })
+        }
+        if (this.config.hasInit) {
+            for (let inst in this.observerInst) {
+                this.observerInst[inst].observe(document.querySelector(inst), this.config);
+            }
+        } else {
+            throw "[LOG]DOMObserver > instantProduct:before you create MutationObserver,you should set config dict by use configSet().";
+        }
+    }
+
+    preProcessor(mutations, myself) {
+        if (this.callType == "function") {
+            this.targets(mutations);
+        } else {
+            const conditionFilter = [];
+            this.callbackRegister.names.forEach(e => { conditionFilter.push({ name: e, call: this.callbackRegister.callbacks[e].condition }) });
+            let result = [];
+            mutations.forEach(mutation => {
+                conditionFilter.forEach(call => {
+                    if (call.call()) {
+                        result.push(call.name);
+                    }
+                })
+                result.forEach(f => this.callbackRegister.callbacks[f].callback(mutation));
+            })
+        }
+    }
+
     /**
      * 监控子对象
      * @param {HTMLElement} target 
-     * @param {Function} fns 
+     * @param {Function} fns returns {MutationRecord}
      * @param {boolean} isDev 
      * @returns class DOMObserver
      */
@@ -309,7 +416,7 @@ class DOMObserver extends UtilsBundle {
      */
     static watchAttrs(target, fns, isDev) {
         const ObsrvStaticInst = new DOMObserver(target, fns, isDev);
-        ObsrvStaticInst.configSet(false, true, false, false, [], false, false);
+        ObsrvStaticInst.configSet(false, true, false, false, [], true, false);
         ObsrvStaticInst.createObserver();
         return ObsrvStaticInst;
     }
