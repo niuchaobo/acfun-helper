@@ -230,33 +230,40 @@ class DOMObserver extends UtilsBundle {
 
     /**
      * 配置配置
-     * @param {*} childList 子节点的变动（指新增，删除或者更改）。
-     * @param {*} attributes 属性的变动。
-     * @param {*} characterData 节点内容或节点文本的变动。
-     * @param {*} subtree 将该观察该节点的所有后代节点。
-     * @param {*} attributeFilter 数组，表示需要观察的特定属性（比如['class','src']），设定了attributes之后，如果不需要筛选观测的attribute列表就将其从config字典中删除，否则将会筛除所有事件。
-     * @param {*} attributeOldValue 观察attributes变动时，记录变动前属性值。
-     * @param {*} characterDataOldValue 观察characterData变动时，记录变动前值。
+     * @param {boolean} childList 子节点的变动（指新增，删除或者更改）。
+     * @param {boolean} attributes 属性的变动。
+     * @param {boolean} characterData 节点内容或节点文本的变动。
+     * @param {boolean} subtree 将该观察该节点的所有后代节点。
+     * @param {string[]} attributeFilter 数组，表示需要观察的特定属性（比如['class','src']），设定了attributes之后，如果不需要筛选观测的attribute列表就将其从config字典中删除，否则将会筛除所有事件。
+     * @param {boolean} attributeOldValue 观察attributes变动时，记录变动前属性值。
+     * @param {boolean} characterDataOldValue 观察characterData变动时，记录变动前值。
+     * @param {boolean} throttleEnable 节流处理。
+     * @param {number} throttleInsureTime 节流超时。
      */
-    configSet(childList, attributes, characterData = false, subtree = false, attributeFilter = [], attributeOldValue = false, characterDataOldValue = false) {
+    configSet(childList, attributes, characterData = false, subtree = false, attributeFilter = [], attributeOldValue = false, characterDataOldValue = false, throttleEnable = false, throttleInsureTime = 500) {
         if (childList || attributes || characterData) {
             this.config.childList = childList;
             this.config.attributes = attributes;
             this.config.characterData = characterData;
             if (attributeFilter.length) {
-                console.log(attributeFilter,attributeFilter.length)
                 this.config.attributeFilter = attributeFilter;
             }
             this.config.attributeOldValue = attributeOldValue;
             this.config.characterDataOldValue = characterDataOldValue;
             this.config.subtree = subtree;
             this.config.hasInit = true;
+            this.config.throttleEnable = throttleEnable;
+            this.config.throttleInsureTime = throttleInsureTime;
         } else {
             fgConsole("DOMObserver", "", `minimum, one of childList, attributes, and/or characterData must be true before you call observe().`, 1);
         }
     }
 
     init() {
+        if (this.config.throttleEnable) {
+            const beforeThrottleWarp = this.trigger;
+            this.trigger = throttle(beforeThrottleWarp, this.config.throttleInsureTime);
+        }
         if (Array.isArray(this.trigger)) {
             const rawTriggers = this.trigger;
             this.trigger = (e, f) => {

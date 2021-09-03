@@ -297,6 +297,15 @@ const ExtensionStorageArea: "sync" | "local" | "managed";
 interface MessageExtendEvents extends WindowEventMap {
   AcFunHelperFrontend: string;
   AcFunHelperDataDivEvent: string;
+  DOMAttrModified: string;
+  DOMAttributeNameChanged: string;
+  DOMCharacterDataModified: string;
+  DOMElementNameChanged: string;
+  DOMNodeInserted: string;
+  DOMNodeInsertedIntoDocument: string;
+  DOMNodeRemoved: string;
+  DOMNodeRemovedFromDocument: string;
+  DOMSubtreeModified: string;
 }
 interface Window
   extends EventTarget,

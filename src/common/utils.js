@@ -713,7 +713,7 @@ async function fetchResult(url, method, data, withCredentials) {
   return result
 }
 
-debounce = (fn, delay) => {
+const debounce = (fn, delay) => {
   let timer = null;
   return function (args) {
     let _this = this;
@@ -730,7 +730,7 @@ debounce = (fn, delay) => {
     }
   };
 };
-throttle = (func, delay) => {
+const throttle = (func, delay) => {
   var prev = Date.now();
   return function () {
     var context = this;
