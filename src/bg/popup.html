@@ -57,14 +57,14 @@
         </div>
 
         <div>
-            <div class="mdui-tab pop-common mdui-tab-centered" mdui-tab style="height: 28px; min-height: 28px;">
+            <div id="mainTabs" class="mdui-tab pop-common mdui-tab-centered" mdui-tab style="height: 28px; min-height: 28px;">
                 <a href="#PushList" id="tabPushList" class="mdui-ripple"
                     style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">稿件动态</a>
                 <a href="#GroupPushList" id="tabGroupPushList" class="mdui-ripple"
                     style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">分组动态</a>
-                <a href="#SubLive" class="mdui-ripple"
+                <a href="#SubLive" id="tabLives" class="mdui-ripple"
                     style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;">生放送</a>
-                <a href="#Special" class="mdui-ripple"
+                <a href="#Special" id="tabSpecial" class="mdui-ripple"
                     style="height: 100%; padding: 0; color: black; min-height: 28px;cursor: default;text-transform: capitalize;">Special</a>
             </div>
         </div>
@@ -101,7 +101,7 @@
         </div>
 
         <div id="GroupPushList">
-            <button class="mdui-btn mdui-color-theme-accent" mdui-menu="{target: '#followGroups'}">分组列表</button>
+            <button class="mdui-btn mdui-color-theme-accent" id="followGroupsBtn" mdui-menu="{target: '#followGroups'}">分组列表</button>
             <ul class="mdui-menu" id="followGroups">
             </ul>
             <div id="pop-groupPush" class="pop-push">
@@ -146,6 +146,18 @@
                     </div>
                 </div>
 
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">直播计时</div>
+                        <div class="mdui-panel-item-summary">（计时板）</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                        <div class="mdui-container-fluid" id="livePageWatchTimeRecList" style="overflow: hidden;text-overflow: ellipsis;">
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -162,31 +174,6 @@
                             <h3>
                                 山川异域，风月同天。
                             </h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mdui-panel-item mdui-panel-item-open">
-                    <div class="mdui-panel-item-header">
-                        <div class="mdui-panel-item-title">直播计时</div>
-                        <div class="mdui-panel-item-summary">（计时板）</div>
-                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
-                        <div class="mdui-container-fluid"
-                            style="/* white-space: nowrap; */overflow: hidden;text-overflow: ellipsis;">
-                            <div class="mdui-table-fluid">
-                                <table class="mdui-table">
-                                    <thead>
-                                        <tr>
-                                            <th>标签</th>
-                                            <th>计时-打开于</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="livePageWatchTimeRecList">
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -287,6 +274,29 @@
                             style="cursor: default; left: 5px;">开始</button>
                         <button id="StopWatchLaterFpopup" class="mdui-btn mdui-ripple"
                             style="cursor: default; left: 5px;">结束</button>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">话题查询</div>
+                        <div class="mdui-panel-item-summary">相关话题查询</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body" style="padding: 0 0 !important;">
+                        <div class="mdui-col-xs-6">
+                            <div class="mdui-textfield" style="padding-top: 0px; padding-left: 5px;">
+                                <input id="topicSearch" class="mdui-textfield-input" style="cursor: default;"
+                                    type="text" placeholder="用户UID" />
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-6">
+                            <button id="topicSearchBtn" class="mdui-btn mdui-ripple"
+                                style="cursor: default; left: 5px;">
+                                查询
+                            </button>
+                        </div>
+                        <div class="mdui-container-fluid" id="topicSearchResult"></div>
                     </div>
                 </div>
 

@@ -23,7 +23,7 @@ class UtilsBundle {
                 if (removeUtil(this, e)) {
                     stateCount++;
                 } else {
-                    causeElemt.append(e);
+                    causeElemt.push(e);
                 }
             });
             if (stateCount === 0) {
@@ -136,7 +136,7 @@ class WebStorageUtil extends UtilsBundle {
                 if (removeItem(e)) {
                     stateCount++;
                 } else {
-                    causeElemt.append(e);
+                    causeElemt.push(e);
                 }
             });
             if (stateCount === 0) {
@@ -177,78 +177,134 @@ class WebStorageUtil extends UtilsBundle {
  * 监视DOM树
  */
 class DOMObserver extends UtilsBundle {
-    constructor(target, trigger, devMode = false) {
+    /**
+     * @param {HTMLElement|string} targets 选择器
+     * @param {function} trigger 钩子函数
+     * @param {boolean} devMode 
+     * @param {boolean} complex 
+     */
+    constructor(targets, trigger, devMode = false, complex = false) {
         super();
         this.utilsList.push(DOMObserver);
 
-        this.target = target;
+        /**
+         * 一个监控对象或者多个监控对象
+         * @description 一个监控对象对应一个Observer，多个Observer的事件都汇聚到postProcessor，最后由callbackRegister字典中的callbacks.condition筛选消息，交付给callbacks.callback
+         */
+        this.targets = targets;
         this.trigger = trigger;
-        this.triggers = null;
-
-        if (Array.isArray(trigger)) {
-            this.triggers = trigger;
-            this.trigger = function () {
-                this.triggers.forEach((e) => {
-                    typeof (e) === "function" && e();
-                })
-            }
-        }
-
+        /**
+         * 监视器实例
+         * @type {MutationObserver[]}
+         */
         this.observerInst = [];
         this.devMode = devMode;
-        /**
-         *@config   childList：子节点的变动（指新增，删除或者更改）。
-                    attributes：属性的变动。
-                    characterData：节点内容或节点文本的变动。
-
-                    subtree：将该观察该节点的所有后代节点。
-                    attributeFilter：数组，表示需要观察的特定属性（比如['class','src']）。
-                    attributeOldValue ：观察attributes变动时，记录变动前属性值。
-                    characterDataOldValue：观察characterData变动时，记录变动前值。
-         */
+        this.complex = complex;
         this.config = {
-            childList: true, attributes: true, characterData: false,
-            subtree: false, attributeFilter: [], characterDataOldValue: false, attributeOldValue: false
+            hasInit: false, childList: true, attributes: true, characterData: false,
+            subtree: false, characterDataOldValue: false, attributeOldValue: false
         }
+        /**
+         * @type {MutationObserver}
+         */
         this.MutationObserverFg = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-    }
-
-    createObserver() {
-        if (Array.isArray(this.target)) {
-            this.target.forEach(e => {
-                this.observerInst.push(new this.MutationObserverFg(this.trigger));
-            })
+        if (!this.complex) {
+            this.init();
         } else {
-            this.observerInst.push(new this.MutationObserverFg(this.trigger));
-        }
-        this._runObserverInsts();
-    }
-
-    _runObserverInsts() {
-        if (Array.isArray(this.target)) {
-            this.observerInst.forEach(e => {
-                e.observe(e, this.config);
-            })
-        } else {
-            this.observerInst[0].observe(this.target, this.config);
+            this.observerInst = {};
+            this.callType = null;
+            this.callbackRegister = {
+                /**
+                 * @type {string[]}
+                 */
+                names: [],
+                /**
+                 * @type {{[name:string]:{condition:function,callback:function}}}
+                 * @example {"1":{condition:(e)=>{return e.type=="attributes"},callback:()=>{console.log("ok")}}}
+                 */
+                callbacks: {}
+            };
+            this.initx();
         }
     }
 
-    configSet(childList, attributes, characterData = false, subtree = false, attributeFilter = [], attributeOldValue = false, characterDataOldValue = false) {
+    /**
+     * 配置配置
+     * @param {boolean} childList 子节点的变动（指新增，删除或者更改）。
+     * @param {boolean} attributes 属性的变动。
+     * @param {boolean} characterData 节点内容或节点文本的变动。
+     * @param {boolean} subtree 将该观察该节点的所有后代节点。
+     * @param {string[]} attributeFilter 数组，表示需要观察的特定属性（比如['class','src']），设定了attributes之后，如果不需要筛选观测的attribute列表就将其从config字典中删除，否则将会筛除所有事件。
+     * @param {boolean} attributeOldValue 观察attributes变动时，记录变动前属性值。
+     * @param {boolean} characterDataOldValue 观察characterData变动时，记录变动前值。
+     * @param {boolean} throttleEnable 节流处理。
+     * @param {number} throttleInsureTime 节流超时。
+     */
+    configSet(childList, attributes, characterData = false, subtree = false, attributeFilter = [], attributeOldValue = false, characterDataOldValue = false, throttleEnable = false, throttleInsureTime = 500) {
         if (childList || attributes || characterData) {
             this.config.childList = childList;
             this.config.attributes = attributes;
             this.config.characterData = characterData;
-            this.config.attributeFilter = attributeFilter;
+            if (attributeFilter.length) {
+                this.config.attributeFilter = attributeFilter;
+            }
             this.config.attributeOldValue = attributeOldValue;
             this.config.characterDataOldValue = characterDataOldValue;
             this.config.subtree = subtree;
+            this.config.hasInit = true;
+            this.config.throttleEnable = throttleEnable;
+            this.config.throttleInsureTime = throttleInsureTime;
         } else {
             fgConsole("DOMObserver", "", `minimum, one of childList, attributes, and/or characterData must be true before you call observe().`, 1);
         }
     }
 
-    _preRemove(obsvr) {
+    init() {
+        if (this.config.throttleEnable) {
+            const beforeThrottleWarp = this.trigger;
+            this.trigger = throttle(beforeThrottleWarp, this.config.throttleInsureTime);
+        }
+        if (Array.isArray(this.trigger)) {
+            const rawTriggers = this.trigger;
+            this.trigger = (e, f) => {
+                rawTriggers.forEach(thisTrigger => {
+                    thisTrigger(e, f);
+                })
+            }
+        }
+    }
+
+    initx() {
+        let rawParType = typeof (this.trigger);
+        switch (rawParType) {
+            case "function":
+                this.callbackRegister.names.push(0);
+                this.callbackRegister.callbacks[0] = this.trigger;
+                this.callType = "function";
+                break;
+            case "object":
+                if (Array.isArray(this.trigger)) {
+                    this.callbackRegister.names.push(0);
+                    this.callbackRegister.callbacks[0].callback = (a, b) => {
+                        this.trigger.forEach(e => {
+                            e(a, b);
+                        });
+                    }
+                    this.callType = "array";
+                    return;
+                }
+                if (this.trigger instanceof Object) {
+                    this.callbackRegister.names = Object.keys(this.trigger);
+                    this.callbackRegister.forEach(e => {
+                        this.callbackRegister.callbacks[e] = this.trigger[e];
+                    });
+                    this.callType = "object";
+                }
+                break;
+        }
+    }
+
+    preRemove(obsvr) {
         const extraMutations = obsvr.takeRecords();
         if (extraMutations) {
             extraMutations.forEach(e => {
@@ -257,25 +313,83 @@ class DOMObserver extends UtilsBundle {
         }
     }
 
-    removeObserver(elements) {
+    createObserver() {
+        if (!Array.isArray(this.targets)) {
+            this.observerInst.push(new this.MutationObserverFg(this.trigger));
+            this.observerInst.forEach(inst => {
+                inst.observe(this.targets, this.config);
+            })
+            return;
+        }
+        this.targets.forEach(() => {
+            this.observerInst.push(new this.MutationObserverFg(this.trigger));
+        })
+        let index = 0;
+        this.targets.forEach(target => {
+            this.observerInst[index++].observe(target, this.config);
+        });
+    }
+
+    /**
+     * 删除监视器
+     * @param {HTMLElement|string} elements 
+     * @param {boolean} preRemove
+     * @returns 
+     */
+    removeObserver(elements, preRemove = false) {
         if (Array.isArray(elements)) {
             elements.forEach(e => {
-                let elemIndex = this.target.indexOf(e);
+                let elemIndex = this.targets.indexOf(e);
+                preRemove && this.preRemove(this.observerInst[elemIndex]);
                 elemIndex != -1 && this.observerInst[elemIndex].disconnect();
             })
         } else {
+            preRemove && this.preRemove(this.observerInst[0]);
             if (elements) {
-                this.target === elements && this.observerInst[0].disconnect();
+                this.targets === elements && this.observerInst[0].disconnect();
                 return;
             }
             this.observerInst[0].disconnect();
         }
     }
 
+    complexInstantProduct() {
+        if (Array.isArray(this.targets)) {
+            this.targets.forEach((target) => {
+                this.observerInst[target] = new this.MutationObserverFg(this.preProcessor(mutations, myself));
+            })
+        }
+        if (this.config.hasInit) {
+            for (let inst in this.observerInst) {
+                this.observerInst[inst].observe(document.querySelector(inst), this.config);
+            }
+        } else {
+            throw "[LOG]DOMObserver > instantProduct:before you create MutationObserver,you should set config dict by use configSet().";
+        }
+    }
+
+    preProcessor(mutations, myself) {
+        if (this.callType == "function") {
+            this.targets(mutations);
+        } else {
+            const conditionFilter = [];
+            this.callbackRegister.names.forEach(e => { conditionFilter.push({ name: e, call: this.callbackRegister.callbacks[e].condition }) });
+            let result = [];
+            mutations.forEach(mutation => {
+                conditionFilter.forEach(call => {
+                    if (call.call()) {
+                        result.push(call.name);
+                    }
+                })
+                result.forEach(f => this.callbackRegister.callbacks[f].callback(mutation));
+            })
+        }
+    }
+
     /**
      * 监控子对象
      * @param {HTMLElement} target 
-     * @param {Function} fns 
+     * @param {Function} fns returns {MutationRecord}
      * @param {boolean} isDev 
      * @returns class DOMObserver
      */
@@ -309,7 +423,7 @@ class DOMObserver extends UtilsBundle {
      */
     static watchAttrs(target, fns, isDev) {
         const ObsrvStaticInst = new DOMObserver(target, fns, isDev);
-        ObsrvStaticInst.configSet(false, true, false, false, [], false, false);
+        ObsrvStaticInst.configSet(false, true, false, false, [], true, false);
         ObsrvStaticInst.createObserver();
         return ObsrvStaticInst;
     }
@@ -1394,7 +1508,6 @@ class MessageSwitch extends UtilsBundle {
                 break;
             default:
                 console.log(`Sandbox:[${formatDate(new Date(), true)}]`, e.data.msg);
-
         }
     }
 
@@ -1514,17 +1627,11 @@ class MessageSwitch extends UtilsBundle {
 }
 
 class AcFunHelper extends UtilsBundle {
-    constructor(watchInterv, reloadMethod) {
+    constructor(reloadMethod) {
         super();
-        this.utilsList.append(AcFunHelper);
+        this.utilsList.push(AcFunHelper);
 
-        this.watchInterv = watchInterv ?? 1000;
-        this.reloadMethod = reloadMethod ?? 1;
-    }
-
-    static reloadAll() {
-        AcFunHelper.reload();
-        AcFunHelper.reloadFrontendInsts();
+        this.reloadMethod = reloadMethod ?? 0;
     }
 
     static reload() {
@@ -1550,18 +1657,29 @@ class AcFunHelper extends UtilsBundle {
     }
 
     static reloadActiveFrontend() {
-        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+        chrome.tabs.query({ active: true, lastFocusedWindow: false }, tabs => {
             AcFunHelper.execFgReload(tabs);
-        })
+        });
     }
 
     static getVersion() {
         return chrome.runtime.getManifest().version;
     }
 
+    static activeTabToFront(id) {
+        typeof (id) == "number" && chrome.tabs.update(id, {
+            'selected': true
+        });
+    }
+
+    static getThisTabId() {
+        return MessageSwitch.getTabId().id;
+    }
+
     /**
      * 开发者模式下的变动重启
      * https://github.com/xpl/crx-hotreload
+     * @usage this.devReload = new AcFunHelper();this.devReload.devModeWatch();
      */
     devModeWatch() {
         /**
@@ -1569,44 +1687,37 @@ class AcFunHelper extends UtilsBundle {
          * @param {DirectoryEntry} dir 
          * @returns {Array}
          */
-        const filesInDirectory = dir => new Promise(resolve =>
-            /**
-             * @param {FileSystemEntry} entries
-             */
-            dir.createReader().readEntries(entries => {
-                Promise.all(entries.filter(e => e.name[0] !== '.').map(e =>
-                    e.isDirectory
-                        ? filesInDirectory(e)
-                        : new Promise(resolve => e.file(resolve))
-                ))
-                    .then(files => [].concat(...files))
-                    .then(resolve)
-            })
-        )
+        function filesInDirectory(dir) {
+            return new Promise(resolve =>
+                /**
+                 * @param {FileSystemEntry} entries
+                 */
+                dir.createReader().readEntries(entries => {
+                    Promise.all(entries.filter(e => e.name[0] !== '.').map(e =>
+                        e.isDirectory
+                            ? filesInDirectory(e)
+                            : new Promise(resolve => e.file(resolve))
+                    ))
+                        .then(files => [].concat(...files))
+                        .then(resolve)
+                })
+            )
+        }
 
-        const timestampForFilesInDirectory = dir => {
-            filesInDirectory(dir).then(files => {
-                files.map(f => f.name + f.lastModifiedDate).join()
+        function timestampForFilesInDirectory(dir) {
+            return new Promise((resolve) => {
+                filesInDirectory(dir).then(files => {
+                    resolve(files.map(f => f.name + f.lastModifiedDate).join());
+                })
             })
         }
 
-        const watchChanges = (dir, lastTimestamp) => {
+        function watchChanges(dir, lastTimestamp) {
             timestampForFilesInDirectory(dir).then(timestamp => {
                 if (!lastTimestamp || (lastTimestamp === timestamp)) {
-                    setTimeout(() => watchChanges(dir, timestamp), this.watchInterv) // default retry after 1s
+                    setTimeout(() => watchChanges(dir, timestamp), 1000);
                 } else {
-                    switch (this.reloadMethod) {
-                        case 0:
-                            AcFunHelper.reload();
-                            break;
-                        case 1:
-                            AcFunHelper.reload();
-                            AcFunHelper.reloadActiveFrontend();
-                            break;
-                        case 2:
-                            AcFunHelper.reloadAll();
-                            break;
-                    }
+                    AcFunHelper.reload();
                 }
             })
         }
@@ -1614,8 +1725,9 @@ class AcFunHelper extends UtilsBundle {
         chrome.management.getSelf(self => {
             if (self.installType === 'development') {
                 chrome.runtime.getPackageDirectoryEntry(dir => watchChanges(dir));
-                AcFunHelper.reloadAll();
-            }
+                this.reloadMethod == 1 && AcFunHelper.reloadActiveFrontend();
+                this.reloadMethod == 2 && AcFunHelper.reloadFrontendInsts();
+            };
         })
     }
 
@@ -2104,7 +2216,7 @@ class ExtOptions extends UtilsBundle {
 class NotificationUtils extends UtilsBundle {
     constructor() {
         super();
-        this.utilsList.append(NotificationUtils);
+        this.utilsList.push(NotificationUtils);
 
         this.BrowserType = myBrowser();
         this.browserApi = this.BrowserType == "Chrome" ? chrome.notifications : browser.notifications;

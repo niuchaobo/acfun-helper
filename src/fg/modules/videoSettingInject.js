@@ -86,7 +86,17 @@ let AcFunHelperVideoFunction = (function () {
         }, 1000);
         break;
       case "web":
-        window.player.emit("fullScreenChange", "web");
+        let _timer3 = setInterval(function () {
+          let _header2 = document.getElementById("header");
+          let _main2 = document.getElementById("main");
+          let _vd2 = document.querySelector(".video-description");
+          let _toolbar2 = document.getElementById("toolbar");
+          let _rc2 = document.querySelector(".right-column");
+          if (_header2 && _main2 && _vd2 && _toolbar2 && _rc2) {
+            window.player.emit("fullScreenChange", "web");
+            clearInterval(_timer3);
+          }
+        }, 1000);
         break;
       case "desktop":
         //Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.
@@ -157,9 +167,9 @@ let AcFunHelperVideoFunction = (function () {
       //快捷键绑定
       document.body.addEventListener('keydown', (e) => {
         if (e.shiftKey && e.key === "A") {
-          MessagePush("frameStep", "b")
+          MessagePush({ target: "frameStep", InvkSetting: { type: "function" }, params: "b" });
         } else if (e.shiftKey && e.key === "D") {
-          MessagePush("frameStep", "f")
+          MessagePush({ target: "frameStep", InvkSetting: { type: "function" }, params: "f" });
         }
       })
     }
@@ -169,21 +179,21 @@ let AcFunHelperVideoFunction = (function () {
         to: "videoInfo",
         msg: `${JSON.stringify(window.player.videoInfo)}`,
       }, "*");
-  
+
       window.parent.postMessage({
         to: 'authinfo_mkey',
         msg: `${JSON.stringify(window.player.mkey)}`
       }, '*');
-  
+
       window.parent.postMessage({
         to: "vs_videoInfo",
         msg: `${JSON.stringify(window.player.videoInfo.videoList)}`,
       }, "*");
-  
+
     } catch (error) {
       console.log("[LOG]Frontend-videoSettingInject: Warning postMessage.", error);
     }
-    
+
   }
 
 

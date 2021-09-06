@@ -4,3 +4,4 @@
 ### color-theif https://github.com/lokesh/color-thief/blob/v2.3.2/dist/color-thief.umd.js
 ### m3u8-parser https://github.com/videojs/m3u8-parser/releases/download/v4.3.0/m3u8-parser.min.js
 ### markd https://github.com/markedjs/marked/blob/v3.0.0/lib/marked.js
+### DOMPurify https://github.com/cure53/DOMPurify/blob/2.3.1/dist/purify.min.js

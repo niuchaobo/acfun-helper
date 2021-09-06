@@ -204,7 +204,6 @@ class AcFunHelperFrontend {
 			this.options.widenUCVideoList && this.pageBeautify.widenUCVideoList();
 			this.options.Dev_indexBlurSW && this.pageBeautify.indexBeautify(false, true);
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("uc");
-			// this.pageBeautify.userRelatedTopic()
 			this.options.userPageTimeline && this.pageBeautify.userPageTimeline();
 		}
 	}
@@ -273,6 +272,7 @@ class AcFunHelperFrontend {
 			//直播画中画模式
 			this.livePageBeautify.callPicktureInPictureModeForLive()
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit("live");
+			this.options.liveVolumeMild && this.videoSetting.liveVolumeMild();
 			return
 		}
 		//直播首页

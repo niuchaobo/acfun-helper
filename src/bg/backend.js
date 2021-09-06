@@ -6,6 +6,7 @@ class AcFunHelperBackend {
 
         this.initBackend().then(init => {
             if (init) {
+                // this.devReload = new AcFunHelper(1);this.devReload.devModeWatch();
                 this.MessageRouter = new MessageSwitch("bg");
                 this.sandboxAgent = new SandboxAgent(document.getElementById('sandbox').contentWindow);
                 this.MsgNotfs = new MsgNotifs();

@@ -512,7 +512,7 @@ class PageBeautify {
 			<div id="comment-lastPage" title="上一页评论" class="icon icon-to-comm tool-item tool-to-comm"><span class="pts">上一页</span></div>
 			<div id="comment-nextPage" title="下一页评论" class="icon icon-to-comm tool-item tool-to-comm"><span class="pts">下一页</span></div>
 			`;
-      $("#toolbar").eq(0).append(elem);
+      $("#toolbar").eq(0).append(DOMPurify.sanitize(elem));
       $("#comment-lastPage").click((e) => {
         if (
           document.querySelector(
@@ -544,29 +544,6 @@ class PageBeautify {
     createElementStyle(`
 			.part-wrap{max-height: fit-content !important;}
 		`, document.head, "AcFunHelper_MultiPartListSpread")
-  }
-
-  /**
-   * 百度搜索相关的话题
-   */
-  async userRelatedTopic() {
-    let uid = REG.userHome.exec(window.location.href)[2];
-    let raw = await fetchResult("https://www.acfun.cn/rest/pc-direct/user/userInfo?userId=" + uid);
-    let userInfo = JSON.parse(raw);
-    renderRelatedTopic(userInfo.profile.name);
-    async function renderRelatedTopic(userName) {
-      let queryText = encodeURI(`Acfun【${userName}】话题,快来参与`);
-      MessageSwitch.sendMessage('fg', { target: "BkFetch", InvkSetting: { responseRequire: true, asyncWarp: true, type: "function" }, params: { url: `https://www.baidu.com/s?wd=${queryText}&pn=0&rn=2&tn=json` } }, function (resp) {
-        let x = JSON.parse(resp.data);
-        if (new RegExp(userName).test(x.feed.entry[0].title)) {
-          // if (x.feed.entry[0].title == `Acfun【${userName}】话题,快来参与`) {
-          let elem = document.createElement("span");
-          elem.innerHTML = `<span class="common-info"><a target="_blank" href="${x.feed.entry[0].url}">相关话题</a></span>`;
-          document.querySelector("span.common-info").after(elem);
-          return 0;
-        }
-      })
-    }
   }
 
   /**

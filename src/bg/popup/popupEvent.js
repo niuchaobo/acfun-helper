@@ -1,3 +1,5 @@
+import { getRelatedTopic } from "../pageHandler/pagehandlerLibs.js";
+
 export function openSetting() {
 	//window.open("options.html","_blank");
 	var a = $("<a href='options.html' target='_blank'></a>").get(0);
@@ -94,7 +96,7 @@ export async function viewHistory() {
 				</tr>
 				`;
 			}
-			$("#ViewHistory").append(raw_data);
+			$("#ViewHistory").append(DOMPurify.sanitize(raw_data));
 			$("#ViewHistoryAction").hide();
 		})
 }
@@ -162,9 +164,35 @@ export async function userInfoFetch() {
 			</table>
 		</div>
 			`;
-			$("#UserInfoPrint").append(raw_data);
+			$("#UserInfoPrint").append(DOMPurify.sanitize(raw_data));
 		})
 
+}
+
+export async function topicSearch() {
+	let queryString = $("#topicSearch").val();
+	if (queryString == '') { return }
+	const result = await getRelatedTopic(queryString);
+	let elements = "";
+	for (let e in result) {
+		elements += `<tr>
+			<td><a href="${result[e].url}" target="_blank">${result[e].title}</td>
+		</tr>`;
+	}
+	$("#topicSearchResult").append(DOMPurify.sanitize(`
+	<div class="mdui-table-fluid">
+		<table class="mdui-table">
+			<thead>
+			<tr>
+				<th>结果</th>
+			</tr>
+			</thead>
+			<tbody>
+			${elements}
+			</tbody>
+		</table>
+	</div>
+	`,{ ADD_ATTR: ['target'] }));
 }
 
 /**
@@ -250,9 +278,4 @@ function clearPushListDougaButtonClass() {
 	timer = setTimeout(() => {
 		$('.PushListMode').removeClass('active')
 	}, 4500)
-}
-export function LiveWatchTimeLstReact(id, url) {
-	chrome.tabs.update(Number(id), {
-		'selected': true
-	});
 }

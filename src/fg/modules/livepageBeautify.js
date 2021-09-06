@@ -97,7 +97,7 @@ class LivePageButfy {
         $('.player-outer-wrapper').addClass('main_wide');
         document.getElementsByClassName('face-text-panel')[1].style.right = "-3px";
         document.getElementsByClassName('live-feed')[0].style.borderRadius = "0px";
-        $('.main_wide>.right').append('<div id="wide-player-right">▶︎</div>');
+        $('.main_wide>.right').append(DOMPurify.sanitize('<div id="wide-player-right">▶︎</div>'));
         $(document).one('keydown', (e) => {
             e.keyCode === 27 && $('#toggleWide').click()
         })
@@ -134,8 +134,8 @@ class LivePageButfy {
     //屏蔽按钮以及样式
     simplifyDanmu() {
         let noticeIcon = this.noticeIcon;
-        $('.live-feed .face-text').append(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`)
-        $('#app').append(`<div class="hide_popup"><ul style="width:120px">
+        $('.live-feed .face-text').append(DOMPurify.sanitize(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`));
+        $('#app').append(DOMPurify.sanitize(`<div class="hide_popup"><ul style="width:120px" title="双击项目仅查看此类型弹幕">
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="container-live-anim">屏蔽礼物气泡</input></li>
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li>
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="user-enter">屏蔽进场</input></li>
@@ -144,7 +144,8 @@ class LivePageButfy {
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="follow">屏蔽关注提醒</input></li>
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="join-club">屏蔽守护团消息</input></li>
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="medal-wrapper">屏蔽牌子</input></li>
-        </ul></div>`)
+        <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="comment">屏蔽评论</input></li>
+        </ul></div>`));
         document.getElementsByClassName('hide_popup')[0].style.cssText = 'position: absolute; z-index: 100;display: none;position: absolute; z-index: 100;display: none;background-color: rgba(255, 255, 255, 0.92);margin: 10px;padding: 5px;box-shadow: rgb(0 0 0 / 30%) 0px 0px 5px 0px;';
         document.getElementsByClassName('notice_icon')[0].style.cssText = 'position: absolute; width: 18px; heigth: auto; left: 35px; top: 0px; cursor: pointer;';
         document.getElementsByClassName('notice_icon')[0].children[0].style.cssText = 'width: 100%; height: auto';
@@ -155,8 +156,25 @@ class LivePageButfy {
             e.preventDefault();
             e.stopPropagation();
             $('.hide_popup').css('display') === "none" ?
-                $('.hide_popup').css({ left: e.pageX - 50 + 'px', top: e.pageY - 325 + 'px' }).show() :
+                $('.hide_popup').css({ left: e.pageX - 50 + 'px', top: e.pageY - 355 + 'px' }).show() :
                 $('.hide_popup').hide()
+        });
+        document.querySelector(".hide_popup").addEventListener("dblclick", (e) => {
+            if (e.target.nodeName === "INPUT") {
+                let listElem = document.querySelector(".hide_popup").children[0].children;
+                if (e.target.checked == false) {
+                    const eventSource = e.target.dataset.type;
+                    for (let i = 0; i < listElem.length; i++) {
+                        if (listElem[i].children[0].dataset.type != eventSource) {
+                            listElem[i].children[0].click();
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < listElem.length; i++) {
+                        listElem[i].children[0].click();
+                    }
+                }
+            }
         })
         this.addBanStyle()
         this.loopToBan()
@@ -189,6 +207,7 @@ class LivePageButfy {
         .container-live-slot .ban_container-live-anim,
         .ban_rich-text .rich-text,
         .ban_join-club .join-club,
+        .ban_comment .comment,
         .ban_medal-wrapper .medal-wrapper{display:none !important;}`
         createElementStyle(cssStr, document.head, "AcFunHelper_danmakuBanStyle")
     }

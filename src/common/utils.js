@@ -98,7 +98,8 @@ const defaults = {
   hideDanmakuOperator: { defaultMode: false, UI: true, maskSw: false },
   sleepPause: { defaultMode: false, UI: true },
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
-  frameStepSetting: { enabled: false, controlUI: false, }
+  frameStepSetting: { enabled: false, controlUI: false, },
+  liveVolumeMild: false,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -122,6 +123,8 @@ const REG = {
   liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)"),
   videoPlayerSrc: new RegExp("blob:https://www.acfun.cn/"),
   videoPartNumByURL: new RegExp("_([0-9].?)"),
+  topicCircle: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/(\d*)"),
+  momentContent: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/moment\/(\d*)"),
 }
 
 const indexdbArch = {
@@ -710,7 +713,7 @@ async function fetchResult(url, method, data, withCredentials) {
   return result
 }
 
-debounce = (fn, delay) => {
+const debounce = (fn, delay) => {
   let timer = null;
   return function (args) {
     let _this = this;
@@ -727,7 +730,7 @@ debounce = (fn, delay) => {
     }
   };
 };
-throttle = (func, delay) => {
+const throttle = (func, delay) => {
   var prev = Date.now();
   return function () {
     var context = this;
@@ -749,7 +752,7 @@ function addElement(options) {
   let x = document.createElement(tag);
   x.id = id;
   x.className = classes;
-  x.innerHTML = thisHTML;
+  x.innerHTML = DOMPurify.sanitize(thisHTML);
   x.style.cssText = css;
   if (title) {
     x.title = title;

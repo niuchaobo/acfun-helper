@@ -2216,6 +2216,25 @@ function playerConfigure() {
     });
 
     //====================配置播放结束自动退出全屏然后滚动到评论区===============
+    chrome.storage.local.get(['liveVolumeMild'], function (items) {
+        var liveVolumeMild = items.liveVolumeMild;
+        if (liveVolumeMild) {
+            document.getElementById('liveVolumeMild').checked = true;
+        } else {
+            document.getElementById('liveVolumeMild').checked = false;
+        }
+        $('#liveVolumeMild').on('click', function () {
+            if (!document.getElementById('liveVolumeMild').checked) {
+                document.getElementById('liveVolumeMild').checked = false;
+                ExtOptions.changeFeatureSwitch("liveVolumeMild", false);
+            } else {
+                document.getElementById('liveVolumeMild').checked = true;
+                ExtOptions.changeFeatureSwitch("liveVolumeMild", true);
+            }
+        });
+    });
+
+    //====================配置播放结束自动退出全屏然后滚动到评论区===============
     chrome.storage.local.get(['endedAutoToCommentArea'], function (items) {
         var endedAutoToCommentArea = items.endedAutoToCommentArea;
         if (endedAutoToCommentArea) {

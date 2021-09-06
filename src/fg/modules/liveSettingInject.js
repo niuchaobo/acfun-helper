@@ -21,7 +21,7 @@ let liveFunction = (function () {
               let span = document.createElement('span');
               let time_hour = x.getHours().toString().length == 1 ? "0" + x.getHours().toString() : x.getHours();
               let time_min = x.getMinutes().toString().length == 1 ? "0" + x.getMinutes().toString() : x.getMinutes();
-              span.innerHTML = `[${time_hour}:${time_min}]`;
+              span.innerText = `[${time_hour}:${time_min}]`;
               e.target.children[0].insertBefore(span, f_c);
             }
           } catch (error) {
