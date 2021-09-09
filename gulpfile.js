@@ -157,10 +157,19 @@ function fgModRComment() {
         .pipe(strip()).pipe(dest('./final/fg/modules/'))
 }
 
-function zipFiles() {
+function getVersion() {
+    return new Promise((resolve) => {
+        const path = require('path');
+        const fs = require('fs');
+        fs.readFile(path.join(__dirname, "/src/manifest.json"), (err, d) => { resolve(JSON.parse(d.toString())) });
+    })
+}
+
+async function zipFiles() {
     const zip = require('gulp-zip');
+    const version = await getVersion()["version"];
     return gulp.src('final/**')
-        .pipe(zip('archive.zip'))
+        .pipe(zip(`acfun-helper-${version}.zip`))
         .pipe(gulp.dest('./'))
 }
 
@@ -217,8 +226,8 @@ gulp.task('betaSlim', function (e) {
     e();
 });
 
-gulp.task('zip', function (e) {
+gulp.task('zip', async function (e) {
     console.log("Compress files to a zip file.");
-    zipFiles();
+    await zipFiles();
     e();
 })

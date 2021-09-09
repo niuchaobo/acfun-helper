@@ -45,6 +45,46 @@ class UpgradeAgent {
         }
     }
 
+    installType() {
+        return new Promise((resolve) => {
+            chrome.management.getSelf(e => {
+                if (e.installType == "normal") {
+                    resolve(true);
+                }
+                resolve(false);
+            })
+        })
+    }
+
+    /**
+     * 版本号判断
+     * @param {string} remote 远端版本号
+     * @param {string} local 本地版本号
+     * @returns {0|1|2|undefined} 
+     */
+    versionProcess(remote, local) {
+        if (remote.length != local.length) {
+            return;
+        }
+        if (remote == local) {
+            return 0;
+        }
+        const remoteVersion = remote.split(".");
+        const localVersion = local.split(".");
+        let signal;
+        if (Number(remoteVersion[0]) > Number(localVersion[0])) {
+            return 2;
+        }
+        if (Number(remoteVersion[1]) > Number(localVersion[1])) {
+            return 2;
+        }
+        if (Number(remoteVersion[2]) > Number(localVersion[2])) {
+            return 2;
+        }
+        Number(remoteVersion[3]) - Number(localVersion[3]) > 90 ? signal = 2 : signal = 1;
+        return signal;
+    }
+
     /**
      * 每隔三天清除助手本体的通知响应列表
      * @description 对于常年不关浏览器的同志来说相比是很需要的

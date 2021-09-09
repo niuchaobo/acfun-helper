@@ -174,6 +174,133 @@ class WebStorageUtil extends UtilsBundle {
 }
 
 /**
+ * Cookies处理封装
+ * @description A complete cookies reader/writer framework with full unicode support. https://developer.mozilla.org/en-US/docs/DOM/document.cookie. This framework is released under the GNU Public License, version 3 or later. http://www.gnu.org/licenses/gpl-3.0-standalone.html
+ * @tutorial setItem(name, value[, end[, path[, domain[, secure]]]])
+ * getItem(name)
+ * removeItem(name[, path], domain)
+ * hasKey(name)
+ * keys()
+ * addTime({day:31})
+ */
+class CookiesUtils extends UtilsBundle {
+    constructor() {
+        super();
+        this.utilsList.push(CookiesUtils);
+
+    }
+
+    static getItem(sKey) {
+        return decodeURIComponent(
+            document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")
+        ) || null;
+    }
+
+    /**
+     * 设置Cookies
+     * @param {string} sKey 
+     * @param {string} sValue 
+     * @param {Date|String|Number} vEnd 
+     * @param {string} sPath 
+     * @param {string} sDomain 
+     * @param {true} bSecure 
+     * @returns 
+     */
+    static setItem(sKey, sValue, vEnd = false, sPath = false, sDomain, bSecure) {
+        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+        var sExpires = "";
+        if (vEnd) {
+            switch (vEnd.constructor) {
+                case Number:
+                    //如果是数字,单位默认是:秒
+                    sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                    break;
+                case String:
+                    sExpires = "; expires=" + vEnd;
+                    break;
+                case Date:
+                    sExpires = "; expires=" + vEnd.toUTCString();
+                    break;
+            }
+        }
+        document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "; path=/") + (bSecure ? "; secure" : "");
+        return true;
+    }
+
+    static removeItem(sKey, sPath, sDomain) {
+        if (!sKey || !CookiesUtils.hasKey(sKey)) { return false; }
+        document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "; path=/");
+        return true;
+    }
+
+    static hasKey(sKey) {
+        return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+    }
+
+    static keys() {
+        var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+        for (var nIdx = 0; nIdx < aKeys.length; nIdx++) {
+            aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]);
+        }
+        return aKeys;
+    }
+
+    static addTime(option) {
+        var __DEF = { year: 0, month: 0, day: 0, hour: 0, minute: 0, seconds: 0 }
+        var _option = Object.assign({}, __DEF, option)
+        var dateObject = new Date()
+        dateObject.setFullYear(dateObject.getFullYear() + _option.year)
+        dateObject.setMonth(dateObject.getMonth() + _option.month)
+        dateObject.setDate(dateObject.getDate() + _option.day)
+        dateObject.setHours(dateObject.getHours() + _option.hour)
+        dateObject.setMinutes(dateObject.getMinutes() + _option.minute)
+        dateObject.setSeconds(dateObject.getSeconds() + _option.seconds)
+        return dateObject
+    }
+
+    getAllArray() {
+        return document.cookie == "" ? undefined : document.cookie.split(";");
+    }
+
+    getAllDic() {
+        let raw = this.getAllArray() ?? [];
+        let result = {};
+        raw.forEach(e => {
+            let temp = e.trim().split("=");
+            result[temp[0]] = temp[1];
+        })
+        return result;
+    }
+
+    stringify() {
+        let result = "";
+        let raw = this.getAll();
+        for (let i in raw) {
+            result += i + "=" + raw[i] + "; ";
+        }
+        console.log(result);
+        return result;
+    }
+
+    get(key) {
+        return this.getAll()[key];
+    }
+
+    addChangeListener(key, callback) {
+        /**
+         * @param {Event} e 
+         */
+        cookieStore.onchange = (e) => {
+            e.type == "change" && e.changed.forEach(f => {
+                f.name == key && callback();
+            })
+        }
+    }
+
+}
+
+
+/**
  * 监视DOM树
  */
 class DOMObserver extends UtilsBundle {
@@ -913,6 +1040,30 @@ class ToolBox extends UtilsBundle {
             index++;
         })
         return result;
+    }
+
+
+    static DOMCreater() {
+        return new Proxy(
+            {},
+            {
+                get: function (target, elementType, receiver) {
+                    return function (attrs, ...children) {
+                        const ele = document.createElement(elementType);
+                        for (let attr of Object.keys(attrs)) {
+                            ele.setAttribute(attr, attrs[attr]);
+                        }
+                        for (let child of children) {
+                            if (typeof child === "string") {
+                                child = document.createTextNode(child);
+                            }
+                            ele.append(child);
+                        }
+                        return ele;
+                    };
+                },
+            }
+        );
     }
 
 }

@@ -96,7 +96,7 @@ export async function viewHistory() {
 				</tr>
 				`;
 			}
-			$("#ViewHistory").append(DOMPurify.sanitize(raw_data));
+			$("#ViewHistory").append(raw_data);
 			$("#ViewHistoryAction").hide();
 		})
 }
@@ -192,7 +192,7 @@ export async function topicSearch() {
 			</tbody>
 		</table>
 	</div>
-	`,{ ADD_ATTR: ['target'] }));
+	`, { ADD_ATTR: ['target'] }));
 }
 
 /**

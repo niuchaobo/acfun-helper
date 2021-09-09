@@ -73,6 +73,129 @@ interface Window {
   pageInfo: AcFunPageInfo;
   chrome: ChromeFront;
   globalConfig: globalConfigInterf;
+  player: {
+    $container: HTMLElement;
+    $extendContainer: HTMLElement;
+    $innerPlugins: HTMLElement;
+    $outerPlugins: HTMLElement;
+    $plugins: [
+      {
+        key: string;
+        extend: {
+          events: object;
+          history: object;
+          methods: object;
+          properties: object;
+        };
+        beta: boolean;
+      }
+    ];
+    $video: HTMLVideoElement;
+    $wrapper: HTMLElement;
+    acId: string;
+    albumId: string;
+    beForcedMuted: boolean;
+    currentSrc: {
+      adaptationSet: [
+        {
+          id: number;
+          duration: number;
+          representation: [
+            {
+              id: number;
+              url: string;
+              avgBitrate: number;
+              backupUrl: string;
+              codecs: string;
+              comment: string;
+              frameRate: number;
+              hdrType: number;
+              height: number;
+              m3u8Slice: string;
+              maxBitRate: number;
+              quality: number;
+              qualityLabel: string;
+              qualityType: string;
+              width: number;
+            }
+          ];
+        }
+      ];
+      businessType: number;
+      hideAuto: boolean;
+      manualDefaultSelect: boolean;
+      mediaType: number;
+      stereoType: number;
+      version: string;
+      videoId: string;
+    };
+    currentTime: number;
+    duration: number;
+    eventsNameMap: {};
+    extend: {};
+    firstQuality: string;
+    firstQualityType: number;
+    getUrlByVid: () => string;
+    hasPlayed: boolean;
+    history: {
+      flush: () => boolean;
+      __KEY__: string;
+      _history: {
+        autoplay: boolean;
+        currentFilterName: string;
+        danmaku_allowOverlap: boolean;
+        danmaku_alpha: number;
+        danmaku_area: number;
+        danmaku_blocked: {
+          top: boolean;
+          bottom: boolean;
+          move: boolean;
+          color: boolean;
+          role: boolean;
+        };
+        danmaku_color: number;
+        danmaku_enabled: boolean;
+        danmaku_filtered: { filters: Array; enable: boolean };
+        danmaku_fontScale: number;
+        danmaku_merged: boolean;
+        danmaku_mode: string;
+        danmaku_size: number;
+        danmaku_speedScale: number;
+        firstQualityType: string;
+        isDanmakuGFirstGuideShow: boolean;
+        isDanmakuGFirstNoticeShow: boolean;
+        joysoundSwitch: boolean;
+        loop: boolean;
+        muted: boolean;
+        playContinue: boolean;
+        sound_effects_enable: boolean;
+        sound_effects_eqbands: number;
+        sound_effects_gain: number;
+        sound_effects_preset: string;
+        subtitle_protected: boolean;
+        volume: number;
+        vpp_enabled: boolean;
+      };
+    };
+    isLive: boolean;
+    isLiveUI: boolean;
+    joysoundSwitch: boolean;
+    mkey: string;
+    retryMax: number;
+    retryNum: number;
+    startBitrateNoLimit: Boolean;
+    startFromSec: number;
+    status: string;
+    version: string;
+    vid: string;
+    playHistory: {
+      delete: () => void;
+      get: () => void;
+      set: () => void;
+    };
+    reload: () => void;
+    qualityConfig: {};
+  };
 }
 interface AcFunPageInfo {
   currentVideoId: string;
