@@ -14,3 +14,10 @@
     前台的通信是指以前台作为通信的发起者，向包括了 后台、注入脚本、Popup等模块通信。
 ## 后台通信
     后台的通信是指以后台程序作为通信的发起者，向包括了 前台（标签页）、Popup、sandBox等模块通信。
+
+
+### 助手中 前台 与 后台 立即通信 示例：
+`
+    请求后台的notice函数，发出params里的通知内容
+    MessageSwitch.sendMessage('fg', { target: "notice", params: params, InvkSetting: { type: "function" } })
+`
