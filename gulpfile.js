@@ -157,19 +157,13 @@ function fgModRComment() {
         .pipe(strip()).pipe(dest('./final/fg/modules/'))
 }
 
-function getVersion() {
-    return new Promise((resolve) => {
-        const path = require('path');
-        const fs = require('fs');
-        fs.readFile(path.join(__dirname, "/src/manifest.json"), (err, d) => { resolve(JSON.parse(d.toString())) });
-    })
-}
-
 async function zipFiles() {
     const zip = require('gulp-zip');
-    const version = await getVersion()["version"];
+    const path = require('path');
+    const fs = require('fs');
+    let manifest = JSON.parse(fs.readFileSync(path.join(__dirname, "/src/manifest.json")).toString())
     return gulp.src('final/**')
-        .pipe(zip(`acfun-helper-${version}.zip`))
+        .pipe(zip(`acfun-helper-${manifest['version']}.zip.crx`))
         .pipe(gulp.dest('./'))
 }
 
