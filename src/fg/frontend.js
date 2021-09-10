@@ -189,6 +189,7 @@ class AcFunHelperFrontend {
 					if (checknode.length > 0) {
 						this.livePageBeautify.appendWidePlayer();
 						this.livePageBeautify.simplifyDanmu();
+						this.live.liveDanmakuPiPUi();
 						if (this.options.LiveWatchTimeRec_popup) {
 							this.live.watchTimeRecord();
 						}
