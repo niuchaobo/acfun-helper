@@ -299,13 +299,12 @@ class CookiesUtils extends UtilsBundle {
 
 }
 
-
 /**
  * 监视DOM树
  */
 class DOMObserver extends UtilsBundle {
     /**
-     * @param {HTMLElement|string} targets 选择器
+     * @param {HTMLElement|string|HTMLElement[]} targets 选择器
      * @param {function} trigger 钩子函数
      * @param {boolean} devMode 
      * @param {boolean} complex 
@@ -458,6 +457,66 @@ class DOMObserver extends UtilsBundle {
     }
 
     /**
+     * 增加监听对象
+     * @param {HTMLElement} elem 
+     */
+    addElements(elem) {
+        if (!Array.isArray(elem)) {
+            if (this.targets instanceof HTMLElement) {
+                let tempArr = this.targets;
+                this.targets = [];
+                this.targets.push(tempArr);
+                this.targets.push(elem);
+                this.observerInst.push(new this.MutationObserverFg(this.trigger));
+                this.observerInst[this.observerInst.length - 1].observe(elem, this.config);
+            } else {
+                fgConsole("DOMObserver", "addElements", `the param elem type should be HTMLElement.`, 1);
+            }
+        } else {
+            this.targets.concat(elem);
+            elem.forEach(e => {
+                this.observerInst.push(new this.MutationObserverFg(this.trigger));
+                this.observerInst[this.observerInst.length].observe(e, this.config)
+            });
+        }
+    }
+
+    /**
+     * 复杂模式下的添加对象
+     * @param {*} elem 
+     */
+    addElementsX(elem) {
+
+    }
+
+    /**
+     * 添加回调
+     * @param {function} callbacks 
+     */
+    addCallbacks(callbacks) {
+        if (Array.isArray(callbacks)) {
+            let rawTrig = this.trigger;
+            this.trigger = (e, f) => {
+                rawTrig(e, f);
+                callbacks.forEach(g => {
+                    g(e, f);
+                })
+            }
+        } else if (typeof (this.trigger) == "function") {
+            let rawTrig = this.trigger;
+            this.trigger = [];
+            this.trigger.push(rawTrig);
+            this.trigger.push(callbacks);
+            rawTrig = this.trigger;
+            this.trigger = (e,f)=>{
+                rawTrig.forEach(g=>{
+                    g(e,f);
+                })
+            }
+        }
+    }
+
+    /**
      * 删除监视器
      * @param {HTMLElement|string} elements 
      * @param {boolean} preRemove
@@ -476,7 +535,7 @@ class DOMObserver extends UtilsBundle {
                 this.targets === elements && this.observerInst[0].disconnect();
                 return;
             }
-            this.observerInst[0].disconnect();
+            this.observerInst.forEach(e => e.disconnect());
         }
     }
 
