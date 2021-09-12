@@ -12,6 +12,8 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 > 🍰
 > AcFun-Helper is an open source, and extensible Web Browser Extension for www.acfun.cn.
 
+![Mozilla Add-on](https://img.shields.io/amo/users/acfun%25E5%258A%25A9%25E6%2589%258B?color=red&label=FireFox%20Users&style=flat-square) ![Mozilla Add-on](https://img.shields.io/amo/dw/acfun%25E5%258A%25A9%25E6%2589%258B?color=red&label=FireFox%20Download&style=flat-square) ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/jmpmiaajjammeafdklfobkfaobinefef?label=Chrome%20Users&style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/niuchaobo/acfun-helper?label=Commit%20Activity&style=flat-square)
+
 #### 公告
 
 > 1. 评论抽奖已经完善。（2020-08-09 12：08 排除上次抽奖结果的功能已加入，到底需不需要迁移随机数生成方案@wpscott 在[#issue70](https://github.com/niuchaobo/acfun-helper/issues/70) 已经给出了说明。）
@@ -120,9 +122,8 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 <a id='connect'></a>
 #### 联系我们 
 
-[用户 QQ 群 296107184](https://shang.qq.com/wpa/qunwpa?idkey=fe451dc2e5c33980a1f92725370f80a21048ca5fe2e325b3e0c15f494a8001e3)
-
-[微信公众号 AcFun 助手](https://mp.weixin.qq.com/s/-XjELn35hDd856kiMMQyvA)
+[![用户 QQ 群 296107184](https://img.shields.io/badge/QQ-296107184-blue)](https://shang.qq.com/wpa/qunwpa?idkey=fe451dc2e5c33980a1f92725370f80a21048ca5fe2e325b3e0c15f494a8001e3)
+[![微信公众号 AcFun 助手](https://img.shields.io/badge/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-AcFun%20%E5%8A%A9%E6%89%8B-blue)](https://mp.weixin.qq.com/s/-XjELn35hDd856kiMMQyvA)
 
 #### 加入我们
 
@@ -149,29 +150,13 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
     * gulp 4.0.2    
 </details>    
 
-#### 相关项目
+#### 助手配置同步服务: @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
 
-插件配置同步服务:
+---
+[AcFun 开源项目](./docs/OPENSRC_ECHOSYS.md)
 
-##### @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
 
-独立项目：
 
-##### @wpscott - [AcfunDanmu AcFun 直播弹幕工具](https://github.com/wpscott/AcFunDanmaku "项目地址")
-
-##### @orzogc - [acfunlive AcFun直播通知和下载助手](https://github.com/orzogc/acfunlive "项目地址")
-
-##### @goplayegg - [AcfunQml 基于Qt QML的AcFun桌面客户端](https://github.com/goplayegg/AcfunQml "项目地址")
-
-##### @CrystalSpire - [Acfun TV 客户端 第三方的Tv客户端](https://github.com/CrystalSpire/AcFun "项目地址")
-
-##### @kanoyami - [aclivechat-node JavaScript全栈 的 AcFun直播弹幕姬](https://github.com/kanoyami/aclivechat-node "项目地址")
-
-##### @ShigemoriHakura - [ACFun-Live-Helper AcFunOBS直播助手](https://github.com/ShigemoriHakura/ACFun-Live-Helper "项目地址")
-
-##### @maysrp - [ACFUN_Clock_auto(ESP32 Micropython ESP32 Clock acfun fans clock) ACFUN电子钟自动配网版](https://github.com/maysrp/ACFUN_Clock_auto "项目地址")
-
-##### @baldhumanity - [AcfunComplement ACFUN补全计划-屏蔽功能](https://github.com/baldhumanity/AcfunComplement "项目地址")
 
 ---
 
