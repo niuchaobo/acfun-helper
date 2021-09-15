@@ -700,7 +700,7 @@ class VideoSetting {
    * @ideaRefer https://github.com/Yzi/AcFun-TheaterMode
    */
   videoMediaSession(dougaInfo) {
-    fgConsole(this, this.videoMediaSession, "Init MediaSessionModule.", 1, false);
+    fgConsole(this, "videoMediaSession", "Init MediaSessionModule.", 1, false);
     if (!isBoughtBangumi()) { return }
     let videoInfo = {};
     try {
@@ -764,7 +764,7 @@ class VideoSetting {
       //分P
       this.mediaSessionGatherMultiPartInfo(videoInfo);
     }
-    fgConsole(this, this.videoMediaSession, "Attach MediaSession ActionHandler.", 1, false);
+    fgConsole(this, "videoMediaSession", "Attach MediaSession ActionHandler.", 1, false);
     // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
     this.mediaSessionCore(videoInfo);
   }
@@ -801,7 +801,7 @@ class VideoSetting {
 
     fgConsole(
       this,
-      this.videoMediaSession,
+      "videoMediaSession",
       "Video MediaSession Attach Success.",
       1,
       false
@@ -825,7 +825,7 @@ class VideoSetting {
       });
       fgConsole(
         this,
-        this.videoMediaSession,
+        "videoMediaSession",
         "Video MediaSession MultiPart Attach Success.",
         1,
         false
@@ -836,16 +836,16 @@ class VideoSetting {
   mediaSessionPlayer(action, videoInfo) {
     switch (action) {
       case "previous":
-        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex - 1) % (videoInfo.videoList.length - 1);
+        this.mediaSessionNowPlayingIndex = this.mediaSessionNowPlayingIndex < 0 ? videoInfo.videoList.length - 1 : (this.mediaSessionNowPlayingIndex - 1) % (videoInfo.videoList.length);
         break;
       case "next":
-        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex + 1) % (videoInfo.videoList.length - 1);
-        break;
-      default:
+        this.mediaSessionNowPlayingIndex = (this.mediaSessionNowPlayingIndex + 1) % (videoInfo.videoList.length);
         break;
     }
-    document.querySelector(".scroll-div.over-parts").children[this.mediaSessionNowPlayingIndex].click();
-    document.querySelector("video").play();
+    document.querySelector(".scroll-div").children[this.mediaSessionNowPlayingIndex].click();
+    setTimeout(() => {
+      document.querySelector("video").play();
+    }, 243);
   }
 
   /**
@@ -886,13 +886,9 @@ class VideoSetting {
 
   mediaSessionGatherMultiPartInfo(videoInfo) {
     try {
-      videoInfo["videoList"] = document.querySelector(".scroll-div.over-parts").children;
+      videoInfo["videoList"] = document.querySelector(".scroll-div").children;
     } catch (error) {
-      try {
-        videoInfo["videoList"] = document.querySelector(".scroll-div").children;
-      } catch (error) {
-        fgConsole(this, this.videoMediaSession, "Normal Video.", 1, false);
-      }
+      fgConsole(this, "videoMediaSession", "Normal Video.", 1, false);
     }
   }
 
@@ -929,7 +925,7 @@ class VideoSetting {
         );
       }
     } else {
-      fgConsole(this, this.timelineMain, "No content.", 3, false);
+      fgConsole(this, "timelineMain", "No content.", 3, false);
     }
   }
 

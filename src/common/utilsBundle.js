@@ -508,9 +508,9 @@ class DOMObserver extends UtilsBundle {
             this.trigger.push(rawTrig);
             this.trigger.push(callbacks);
             rawTrig = this.trigger;
-            this.trigger = (e,f)=>{
-                rawTrig.forEach(g=>{
-                    g(e,f);
+            this.trigger = (e, f) => {
+                rawTrig.forEach(g => {
+                    g(e, f);
                 })
             }
         }
@@ -2444,6 +2444,59 @@ class NotificationUtils extends UtilsBundle {
         });
     }
 
+}
+
+class PlayerAction extends UtilsBundle {
+    constructor(devMode) {
+        super();
+        this.utilsList.push(PlayerAction);
+
+        this.devMode = devMode;
+    }
+
+    static addDanmakuFilterRule(data, type) {
+        if (type == "uid") {
+            $(".options-control-select>div[data-value='user']").trigger("click");
+        } else {
+            // keywords
+            $(`div.danmaku-filter-type > div>div>div[data-value="key"]`).trigger("click");
+        }
+        $(".filter-input-wrap>input.filter-input").val(data);
+        $(".btn-danmaku-filter-add").trigger("click");
+        $(".filter-input-wrap>input.filter-input").val("");
+    }
+
+    /**
+     * 添加按UID屏蔽弹幕规则
+     * @param {number} userId
+     */
+    static addUserToDanmakuFilter(userId) {
+        if (userId) {
+            PlayerAction.addDanmakuFilterRule(userId, "uid");
+        }
+    }
+
+    /**
+     * 添加按内容屏蔽弹幕规则
+     * @param {number} userId
+     */
+    static addDanmakuFilterWord(keywords) {
+        if (keywords) {
+            PlayerAction.addDanmakuFilterRule(keywords, "keywords");
+        }
+    }
+
+    static closeAllLoop() {
+        if (document.querySelector(".control-btn.btn-loop>span").dataset.bindAttr == "true") {
+            document.querySelector(".control-btn.btn-loop>span").click();
+        }
+        if (document.querySelector('div.control-checkbox[data-bind-key="playContinue"]').dataset.bindAttr == "true") {
+            $('div.control-checkbox[data-bind-key="playContinue"]').trigger("click");
+        }
+        if (document.querySelector('div.control-checkbox[data-bind-key="autoplay"]').dataset.bindAttr == "true") {
+            $('div.control-checkbox[data-bind-key="playContinue"]').trigger("click");
+        }
+    }
 }
 
 // let x = new WebStorageUtil("session", 3600000)
