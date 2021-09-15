@@ -1,6 +1,6 @@
 //----------------播放器模式（观影、网页全屏、桌面全屏）--------------------
 //通过这种方式和content_script（videoSetting.js）通信，接收videoSetting.js传过来的数据
-let AcFunHelperVideoFunction = (function () {
+let AcFunHelperVideoFunction = (function VideoFunction() {
   let testVideo = new RegExp(
     "((http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+)|(http(s)?:\\/\\/www.acfun.cn\\/bangumi\\/.*))"
   ).test(window.location.href);

@@ -1,4 +1,4 @@
-let liveFunction = (function () {
+let AcFunHelperLiveFunction = (function LiveFunction() {
   let testLive = new RegExp("https://live.acfun.cn/live/*").test(
     window.location.href
   );
@@ -47,4 +47,4 @@ let liveFunction = (function () {
 })();
 let {
   l_setPictureInPictureMode
-} = { ...liveFunction }
+} = { ...AcFunHelperLiveFunction }
