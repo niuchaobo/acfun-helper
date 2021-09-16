@@ -1125,6 +1125,62 @@ class ToolBox extends UtilsBundle {
         );
     }
 
+    /**
+     * 函数列表中全部返回都需要T/F
+     * @param {[{name?:"",callback:function,params:Array}]} functions 
+     * @param {boolean} requestResult
+     * @returns {boolean}
+     */
+    static everyFunction(functions, requestResult = true) {
+        if (Array.isArray(functions)) {
+            let result = requestResult;
+            functions.forEach(e => {
+                let para = null;
+                if (e.params) {
+                    para = e.params
+                }
+                requestResult ? result &&= e.callback(para) : result ||= e.callback(para);
+            })
+            return requestResult == result;
+        }
+        throw ("second param should implement type like [{name?:\"\",callback:function,params:Array}]");
+    }
+
+    /**
+     * 函数列表中有任意一个返回满足要求
+     * @param {[{name?:"",callback:function,params:Array}]} functions 
+     * @param {boolean} requestResult 
+     * @returns {boolean}
+     */
+    static someFunction(functions, requestResult = true) {
+        if (Array.isArray(functions)) {
+            functions.forEach(e => {
+                let para = null;
+                if (e.params) {
+                    para = e.params
+                }
+                if (requestResult == e.callback(para)) {
+                    return true;
+                }
+            })
+            return false;
+        }
+    }
+
+    /**
+     * 仅运行一次的包装
+     * @param {function} fn 
+     * @param {*} args 
+     * @param {*} _this 
+     * @returns {function}
+     */
+    static onceFunction(fn, args = null, _this = {}) {
+        let hadDone = false;
+        return function () {
+            return hadDone ? undefined : (hadDone = true, fn.apply(_this, args));
+        }
+    }
+
 }
 
 /**
@@ -1416,7 +1472,7 @@ class MessageSwitch extends UtilsBundle {
     }
 
     /**
-     * 
+     * 前台与FgPopup通信处理
      * @param {MessageSwitchWindowMsgRespnse} e 
      */
     FrontendIframeMsgHandler(e) {
@@ -1549,6 +1605,18 @@ class MessageSwitch extends UtilsBundle {
                     }
                     break;
                 case "subMod":
+                    const callTarget = window.AcFunHelperBackend[target.mod];
+                    if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
+                        params.callback = callback;
+                        if (InvkSetting["asyncWarp"]) {
+                            callTarget["api_" + target.methodName].call(this, params).then(resp => {
+                                callback(resp);
+                            });
+                            return true;
+                        }
+                        response = callTarget["api_" + target.methodName].call(this, params);
+                        callback(response);
+                    }
                     break;
                 case "echo":
                     response.status = true;
@@ -1627,6 +1695,18 @@ class MessageSwitch extends UtilsBundle {
                 }
                 break;
             case "subMod":
+                const callTarget = window.AcFunHelperBackend[target.mod];
+                if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
+                    params.callback = callback;
+                    if (InvkSetting["asyncWarp"]) {
+                        callTarget["api_" + target.methodName].call(this, params).then(resp => {
+                            callback(resp);
+                        });
+                        return true;
+                    }
+                    response = callTarget["api_" + target.methodName].call(this, params);
+                    callback(response);
+                }
                 break;
             case "echo":
                 request["InvkSetting"].sender = sender;

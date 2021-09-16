@@ -17,7 +17,11 @@
 
 
 ### 助手中 前台 与 后台 立即通信 示例：
+请求后台的notice函数，发出params里的通知内容
 `
-    请求后台的notice函数，发出params里的通知内容
-    MessageSwitch.sendMessage('fg', { target: "notice", params: params, InvkSetting: { type: "function" } })
+    MessageSwitch.sendMessage('fg', { target: "notice", params: {title:"A",message:"Succuess!"}, InvkSetting: { type: "function" } })
 `
+
+其中，sendMessage函数中，第一个参数'fg'表示调用处所在的部门是前台；
+
+第二个参数是个字典，字典中的两个大部分target表示调用的对等体名称，InvkSetting是传递的调用控制信息，它包含了type：表示调用类型，type一般包括function：表示目标是对等体模块下的函数、subMod：表示目标是对等体模块下的子模块的接口（也是函数，但是是以api_开头的对外开放的接口）、echo：表示将消息中params的内容和调用处所在的信息（比如标签页信息等等）返回、printMsg：表示在对等体的控制台中打印消息;type.receipt表示会向调用的目标传送调用源的消息（标签页信息等等）；type.responseRequire表示一定需要返回消息；type.asyncWarp表示需要进行异步函数的结果解析；type.classicalParmParse表示传入的参数会通过单个参数的方式传递，而不是使用列表传递。
