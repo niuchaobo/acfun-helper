@@ -62,6 +62,19 @@ class AcFunHelperFrontend {
 			return
 		}
 		this.href = window.location.href;
+		const XHRProxyLib = document.createElement("script");
+		XHRProxyLib.src = chrome.runtime.getURL("common/xhr-proxy.js");
+		(document.head || document.documentElement).appendChild(XHRProxyLib);
+		XHRProxyLib.addEventListener("load", () => {
+			if (this.options.filter) {
+				const xhrDriver = document.createElement("script");
+				xhrDriver.src = chrome.runtime.getURL("fg/acfunxhr.js");
+				(document.head || document.documentElement).appendChild(xhrDriver);
+				xhrDriver.addEventListener('load', () => {
+					MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } });
+				});
+			}
+		})
 		//页面未加载完成式执行的方法 (提前注入的css/dom..)
 		//this.unLoad()
 		//页面的全部资源加载完后才会执行 包括 图片 视频等
@@ -189,6 +202,7 @@ class AcFunHelperFrontend {
 					if (checknode.length > 0) {
 						this.livePageBeautify.appendWidePlayer();
 						this.livePageBeautify.simplifyDanmu();
+						this.live.liveDanmakuPiPUi();
 						if (this.options.LiveWatchTimeRec_popup) {
 							this.live.watchTimeRecord();
 						}

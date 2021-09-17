@@ -1,7 +1,7 @@
 {
   "name": "acfun-helper-compresser",
-  "version": "1.3.2",
-  "description": "process files in acfun-helper directory(Windows)",
+  "version": "1.5.2",
+  "description": "process files in acfun-helper directory",
   "main": "gulpfile.js",
   "keywords": [
     "zip"
@@ -10,7 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "betaSlim": "gulp betaSlim && echo \"删除一些文件以便减少插件体积，用于测试\" && exit 0",
     "clean": "gulp clean  && xcopy.exe /d /e src\\* final\\ &&  echo \"删除注释\" && exit 0",
+    "cleanLinux": "gulp clean  && cp -rvu src/* final/ &&  echo \"删除注释\" && exit 0",
     "start": "gulp && xcopy.exe /d /e src\\* final\\ && echo \"简化文件\" && exit 0",
+    "startLinux": "gulp && cp -vru src/* final/ && echo \"简化文件\" && exit 0",
     "zip": "gulp zip && echo \"将final文件夹内容压缩为zip文件 \"&& exit 0",
     "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js --mode=development --watch "
   },

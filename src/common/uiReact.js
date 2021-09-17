@@ -1,3 +1,10 @@
+class UIReactor{
+  constructor(devMode){
+    this.devMode = devMode;
+  }
+
+}
+
 /**
  * 播放器浮动通知气泡
  * @param {string} text 通知文本
@@ -76,7 +83,7 @@ function updateVersionIcon() {
   });
 }
 
-class PlayerMenuSwitchItem {
+class PlayerMenuSwitchItem extends UIReactor{
   constructor(name, title, describe, defaultState = false) {
     this.menuInst = null;
     this.parentInst = null;

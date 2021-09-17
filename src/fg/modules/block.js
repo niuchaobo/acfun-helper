@@ -9,13 +9,16 @@ class Block {
 
     //在DOM加载完成之后通过注入自定义xhr的方式过滤文章
     injectScript() {
-        let script = document.createElement("script");
-        script.src = chrome.runtime.getURL("fg/js/acfunxhr.js");
-        script.addEventListener('load', () => {
-            let ups = upMapReverse(window.AcFunHelperFrontend.options);
-            window.postMessage({ ups: ups, to: 'acfunxhr' });
+        let bannedUpsArr = Object.keys(window.AcFunHelperFrontend.options.UserFilter);
+        MessageSwitch.sendEventMsgToInject(window, {
+            "target": "AcFunHelperFrontendXHRDriver", "InvkSetting": { "type": "addRule" }, "params": {
+                params: {
+                    type: "injectedApi", urlExp: "https://www.acfun.cn/rest/pc-direct/article/feed", rule: { "name": "example2", "bound": "post", "action": "injectedApi", "condition": { "target": "articleListFilter" } }
+                }, target: "datasetWriteIn"
+            }
         });
-        (document.head || document.documentElement).appendChild(script);
+        MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRReactor", "InvkSetting": { "type": "function" }, "params": { params: { k: "articleFilterEnable", v: true }, target: "datasetWriteIn" } });
+        MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRReactor", "InvkSetting": { "type": "function" }, "params": { params: { k: "articleFilterUsersUid", v: bannedUpsArr }, target: "datasetWriteIn" } });
     }
 
     //页面所有元素加载完成之后通过修改页面元素的方式过滤文章

@@ -174,11 +174,137 @@ class WebStorageUtil extends UtilsBundle {
 }
 
 /**
+ * Cookies处理封装
+ * @description A complete cookies reader/writer framework with full unicode support. https://developer.mozilla.org/en-US/docs/DOM/document.cookie. This framework is released under the GNU Public License, version 3 or later. http://www.gnu.org/licenses/gpl-3.0-standalone.html
+ * @tutorial setItem(name, value[, end[, path[, domain[, secure]]]])
+ * getItem(name)
+ * removeItem(name[, path], domain)
+ * hasKey(name)
+ * keys()
+ * addTime({day:31})
+ */
+class CookiesUtils extends UtilsBundle {
+    constructor() {
+        super();
+        this.utilsList.push(CookiesUtils);
+
+    }
+
+    static getItem(sKey) {
+        return decodeURIComponent(
+            document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")
+        ) || null;
+    }
+
+    /**
+     * 设置Cookies
+     * @param {string} sKey 
+     * @param {string} sValue 
+     * @param {Date|String|Number} vEnd 
+     * @param {string} sPath 
+     * @param {string} sDomain 
+     * @param {true} bSecure 
+     * @returns 
+     */
+    static setItem(sKey, sValue, vEnd = false, sPath = false, sDomain, bSecure) {
+        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+        var sExpires = "";
+        if (vEnd) {
+            switch (vEnd.constructor) {
+                case Number:
+                    //如果是数字,单位默认是:秒
+                    sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                    break;
+                case String:
+                    sExpires = "; expires=" + vEnd;
+                    break;
+                case Date:
+                    sExpires = "; expires=" + vEnd.toUTCString();
+                    break;
+            }
+        }
+        document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "; path=/") + (bSecure ? "; secure" : "");
+        return true;
+    }
+
+    static removeItem(sKey, sPath, sDomain) {
+        if (!sKey || !CookiesUtils.hasKey(sKey)) { return false; }
+        document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "; path=/");
+        return true;
+    }
+
+    static hasKey(sKey) {
+        return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+    }
+
+    static keys() {
+        var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+        for (var nIdx = 0; nIdx < aKeys.length; nIdx++) {
+            aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]);
+        }
+        return aKeys;
+    }
+
+    static addTime(option) {
+        var __DEF = { year: 0, month: 0, day: 0, hour: 0, minute: 0, seconds: 0 }
+        var _option = Object.assign({}, __DEF, option)
+        var dateObject = new Date()
+        dateObject.setFullYear(dateObject.getFullYear() + _option.year)
+        dateObject.setMonth(dateObject.getMonth() + _option.month)
+        dateObject.setDate(dateObject.getDate() + _option.day)
+        dateObject.setHours(dateObject.getHours() + _option.hour)
+        dateObject.setMinutes(dateObject.getMinutes() + _option.minute)
+        dateObject.setSeconds(dateObject.getSeconds() + _option.seconds)
+        return dateObject
+    }
+
+    getAllArray() {
+        return document.cookie == "" ? undefined : document.cookie.split(";");
+    }
+
+    getAllDic() {
+        let raw = this.getAllArray() ?? [];
+        let result = {};
+        raw.forEach(e => {
+            let temp = e.trim().split("=");
+            result[temp[0]] = temp[1];
+        })
+        return result;
+    }
+
+    stringify() {
+        let result = "";
+        let raw = this.getAll();
+        for (let i in raw) {
+            result += i + "=" + raw[i] + "; ";
+        }
+        console.log(result);
+        return result;
+    }
+
+    get(key) {
+        return this.getAll()[key];
+    }
+
+    addChangeListener(key, callback) {
+        /**
+         * @param {Event} e 
+         */
+        cookieStore.onchange = (e) => {
+            e.type == "change" && e.changed.forEach(f => {
+                f.name == key && callback();
+            })
+        }
+    }
+
+}
+
+/**
  * 监视DOM树
  */
 class DOMObserver extends UtilsBundle {
     /**
-     * @param {HTMLElement|string} targets 选择器
+     * @param {HTMLElement|string|HTMLElement[]} targets 选择器
      * @param {function} trigger 钩子函数
      * @param {boolean} devMode 
      * @param {boolean} complex 
@@ -331,6 +457,66 @@ class DOMObserver extends UtilsBundle {
     }
 
     /**
+     * 增加监听对象
+     * @param {HTMLElement} elem 
+     */
+    addElements(elem) {
+        if (!Array.isArray(elem)) {
+            if (this.targets instanceof HTMLElement) {
+                let tempArr = this.targets;
+                this.targets = [];
+                this.targets.push(tempArr);
+                this.targets.push(elem);
+                this.observerInst.push(new this.MutationObserverFg(this.trigger));
+                this.observerInst[this.observerInst.length - 1].observe(elem, this.config);
+            } else {
+                fgConsole("DOMObserver", "addElements", `the param elem type should be HTMLElement.`, 1);
+            }
+        } else {
+            this.targets.concat(elem);
+            elem.forEach(e => {
+                this.observerInst.push(new this.MutationObserverFg(this.trigger));
+                this.observerInst[this.observerInst.length].observe(e, this.config)
+            });
+        }
+    }
+
+    /**
+     * 复杂模式下的添加对象
+     * @param {*} elem 
+     */
+    addElementsX(elem) {
+
+    }
+
+    /**
+     * 添加回调
+     * @param {function} callbacks 
+     */
+    addCallbacks(callbacks) {
+        if (Array.isArray(callbacks)) {
+            let rawTrig = this.trigger;
+            this.trigger = (e, f) => {
+                rawTrig(e, f);
+                callbacks.forEach(g => {
+                    g(e, f);
+                })
+            }
+        } else if (typeof (this.trigger) == "function") {
+            let rawTrig = this.trigger;
+            this.trigger = [];
+            this.trigger.push(rawTrig);
+            this.trigger.push(callbacks);
+            rawTrig = this.trigger;
+            this.trigger = (e, f) => {
+                rawTrig.forEach(g => {
+                    g(e, f);
+                })
+            }
+        }
+    }
+
+    /**
      * 删除监视器
      * @param {HTMLElement|string} elements 
      * @param {boolean} preRemove
@@ -349,7 +535,7 @@ class DOMObserver extends UtilsBundle {
                 this.targets === elements && this.observerInst[0].disconnect();
                 return;
             }
-            this.observerInst[0].disconnect();
+            this.observerInst.forEach(e => e.disconnect());
         }
     }
 
@@ -915,6 +1101,86 @@ class ToolBox extends UtilsBundle {
         return result;
     }
 
+
+    static DOMCreater() {
+        return new Proxy(
+            {},
+            {
+                get: function (target, elementType, receiver) {
+                    return function (attrs, ...children) {
+                        const ele = document.createElement(elementType);
+                        for (let attr of Object.keys(attrs)) {
+                            ele.setAttribute(attr, attrs[attr]);
+                        }
+                        for (let child of children) {
+                            if (typeof child === "string") {
+                                child = document.createTextNode(child);
+                            }
+                            ele.append(child);
+                        }
+                        return ele;
+                    };
+                },
+            }
+        );
+    }
+
+    /**
+     * 函数列表中全部返回都需要T/F
+     * @param {[{name?:"",callback:function,params:Array}]} functions 
+     * @param {boolean} requestResult
+     * @returns {boolean}
+     */
+    static everyFunction(functions, requestResult = true) {
+        if (Array.isArray(functions)) {
+            let result = requestResult;
+            functions.forEach(e => {
+                let para = null;
+                if (e.params) {
+                    para = e.params
+                }
+                requestResult ? result &&= e.callback(para) : result ||= e.callback(para);
+            })
+            return requestResult == result;
+        }
+        throw ("second param should implement type like [{name?:\"\",callback:function,params:Array}]");
+    }
+
+    /**
+     * 函数列表中有任意一个返回满足要求
+     * @param {[{name?:"",callback:function,params:Array}]} functions 
+     * @param {boolean} requestResult 
+     * @returns {boolean}
+     */
+    static someFunction(functions, requestResult = true) {
+        if (Array.isArray(functions)) {
+            functions.forEach(e => {
+                let para = null;
+                if (e.params) {
+                    para = e.params
+                }
+                if (requestResult == e.callback(para)) {
+                    return true;
+                }
+            })
+            return false;
+        }
+    }
+
+    /**
+     * 仅运行一次的包装
+     * @param {function} fn 
+     * @param {*} args 
+     * @param {*} _this 
+     * @returns {function}
+     */
+    static onceFunction(fn, args = null, _this = {}) {
+        let hadDone = false;
+        return function () {
+            return hadDone ? undefined : (hadDone = true, fn.apply(_this, args));
+        }
+    }
+
 }
 
 /**
@@ -1206,7 +1472,7 @@ class MessageSwitch extends UtilsBundle {
     }
 
     /**
-     * 
+     * 前台与FgPopup通信处理
      * @param {MessageSwitchWindowMsgRespnse} e 
      */
     FrontendIframeMsgHandler(e) {
@@ -1339,6 +1605,18 @@ class MessageSwitch extends UtilsBundle {
                     }
                     break;
                 case "subMod":
+                    const callTarget = window.AcFunHelperBackend[target.mod];
+                    if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
+                        params.callback = callback;
+                        if (InvkSetting["asyncWarp"]) {
+                            callTarget["api_" + target.methodName].call(this, params).then(resp => {
+                                callback(resp);
+                            });
+                            return true;
+                        }
+                        response = callTarget["api_" + target.methodName].call(this, params);
+                        callback(response);
+                    }
                     break;
                 case "echo":
                     response.status = true;
@@ -1417,6 +1695,18 @@ class MessageSwitch extends UtilsBundle {
                 }
                 break;
             case "subMod":
+                const callTarget = window.AcFunHelperBackend[target.mod];
+                if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
+                    params.callback = callback;
+                    if (InvkSetting["asyncWarp"]) {
+                        callTarget["api_" + target.methodName].call(this, params).then(resp => {
+                            callback(resp);
+                        });
+                        return true;
+                    }
+                    response = callTarget["api_" + target.methodName].call(this, params);
+                    callback(response);
+                }
                 break;
             case "echo":
                 request["InvkSetting"].sender = sender;
@@ -2234,6 +2524,59 @@ class NotificationUtils extends UtilsBundle {
         });
     }
 
+}
+
+class PlayerAction extends UtilsBundle {
+    constructor(devMode) {
+        super();
+        this.utilsList.push(PlayerAction);
+
+        this.devMode = devMode;
+    }
+
+    static addDanmakuFilterRule(data, type) {
+        if (type == "uid") {
+            $(".options-control-select>div[data-value='user']").trigger("click");
+        } else {
+            // keywords
+            $(`div.danmaku-filter-type > div>div>div[data-value="key"]`).trigger("click");
+        }
+        $(".filter-input-wrap>input.filter-input").val(data);
+        $(".btn-danmaku-filter-add").trigger("click");
+        $(".filter-input-wrap>input.filter-input").val("");
+    }
+
+    /**
+     * 添加按UID屏蔽弹幕规则
+     * @param {number} userId
+     */
+    static addUserToDanmakuFilter(userId) {
+        if (userId) {
+            PlayerAction.addDanmakuFilterRule(userId, "uid");
+        }
+    }
+
+    /**
+     * 添加按内容屏蔽弹幕规则
+     * @param {number} userId
+     */
+    static addDanmakuFilterWord(keywords) {
+        if (keywords) {
+            PlayerAction.addDanmakuFilterRule(keywords, "keywords");
+        }
+    }
+
+    static closeAllLoop() {
+        if (document.querySelector(".control-btn.btn-loop>span").dataset.bindAttr == "true") {
+            document.querySelector(".control-btn.btn-loop>span").click();
+        }
+        if (document.querySelector('div.control-checkbox[data-bind-key="playContinue"]').dataset.bindAttr == "true") {
+            $('div.control-checkbox[data-bind-key="playContinue"]').trigger("click");
+        }
+        if (document.querySelector('div.control-checkbox[data-bind-key="autoplay"]').dataset.bindAttr == "true") {
+            $('div.control-checkbox[data-bind-key="playContinue"]').trigger("click");
+        }
+    }
 }
 
 // let x = new WebStorageUtil("session", 3600000)

@@ -21,6 +21,8 @@
 # Web store zip
 *.zip
 
+# nodejs dep chain
+package-lock.json
 
 # JS Beautify
 .jsbeautifyrc

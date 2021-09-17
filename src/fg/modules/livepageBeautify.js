@@ -134,7 +134,7 @@ class LivePageButfy {
     //屏蔽按钮以及样式
     simplifyDanmu() {
         let noticeIcon = this.noticeIcon;
-        $('.live-feed .face-text').append(DOMPurify.sanitize(`<i class="notice_icon" id="noticeBtn">${noticeIcon}</i>`));
+        $('.live-feed .face-text').append(DOMPurify.sanitize(`<i class="notice_icon" id="noticeBtn" title="弹幕类型屏蔽">${noticeIcon}</i>`));
         $('#app').append(DOMPurify.sanitize(`<div class="hide_popup"><ul style="width:120px" title="双击项目仅查看此类型弹幕">
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="container-live-anim">屏蔽礼物气泡</input></li>
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li>

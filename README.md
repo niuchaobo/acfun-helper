@@ -12,10 +12,11 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 > 🍰
 > AcFun-Helper is an open source, and extensible Web Browser Extension for www.acfun.cn.
 
+![Mozilla Add-on](https://img.shields.io/amo/users/acfun%25E5%258A%25A9%25E6%2589%258B?color=red&label=FireFox%20Users&style=flat-square) ![Mozilla Add-on](https://img.shields.io/amo/dw/acfun%25E5%258A%25A9%25E6%2589%258B?color=red&label=FireFox%20Download&style=flat-square) ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/jmpmiaajjammeafdklfobkfaobinefef?label=Chrome%20Users&style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/niuchaobo/acfun-helper?label=Commit%20Activity&style=flat-square)
+
 #### 公告
 
 > 1. 评论抽奖已经完善。（2020-08-09 12：08 排除上次抽奖结果的功能已加入，到底需不需要迁移随机数生成方案@wpscott 在[#issue70](https://github.com/niuchaobo/acfun-helper/issues/70) 已经给出了说明。）
-> 2. 累了，有些功能是依靠主站的API接口的，一改，有些功能就要删掉的，那也只能删掉了，就这样吧。   
 ---
 
 #### 主要功能
@@ -25,11 +26,6 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 
   1. 首页增加**右侧导航栏**，方便快速跳转至目标分区。
   2. **个人中心入口增强**,显示你的听众、香蕉、金香蕉、UID、直播间入口等信息。
-  3. <del>视频投稿页面**显示点赞数**信息。</del>(2020-10-12)    
-  4. **评论区标记**,在评论区给 Up 添加一个蓝色标记。（终于不用翻到顶看看 Up 主是谁了，然来 Up 和我互动了？）
-  5. <del>**文章区 Up 屏蔽**,（你说的对，但是说得太不好听了吧( ´_ゝ`)）<del>
-  6. <del>为用户中心首页增加动态标签，可以获取不超过30条的近期动态。(只能看不能说，不太hang) 2021-7-5失效：接口改动<del>    
-  7. 美化主页的顶栏、滚动条（这波啊，叫亚克力板）     
   8. 文章区阅读模式、漫画模式旋转和拖动支持   
   9. 个人中心视频稿件列表优化     
   10. 多页评论页面、用户页面支持使用快捷键（Shift + PageUp/PageDown）翻页     
@@ -52,7 +48,6 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
   14. 通过点击**评论区时间跳转**到视频指定位置、或者选中评论区的一大段时间和标记评论在时间轴上添加**时间轴章节标记**。（空降大成功！）    
   15. 自动播放下一个推荐视频。（“大家都在看”列表播放）  
   16. **评论区抽奖!!!**。【自己的稿件内打开网页右侧“助手”按钮界面，自定义抽奖人数+随机+去重（单个页面内独立的一次结果是不重复的），且助手会直接给出私信中奖 Acer 的链接，并且会详细告知楼层信息 !!!!(**注意一下**，其中“独立抽奖”是指每次抽奖的结果都是单独的，每次抽奖的用户都是单独的；而“排除上次结果抽奖”是指上次抽中的用户是从本次抽奖中排除的，上次抽奖的用户不会放到本次抽奖中。)】（可以给我来个专用抽奖工具吗，咱们三七分成？( ﾟ ∀。)）   
-  17. <del>为视频稿件下评论区中的指向视频的ac号增加信息弹窗。</del>(2021-7-12 主站接口改变)     
   18. 视频、直播 MediaSession 支持          
   19. 评论区快捷翻页、弹幕和评论快捷发送（Ctrl+Enter）             
   20. 个人中心快捷键翻页         
@@ -80,17 +75,13 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
   4. 浏览器**地址栏直接搜索**主站相关关键字。[如何使用？](#searchBar)<a id="searchBarBack"></a>（可以像在主站搜索栏一样使用地址栏了,甚至可以直接输入 ACid 跳转到相应投稿哦。）   
   5. 稍后再看（只要我无限地增加稍后再看列表，那不就是另外一个收藏夹吗( ;´д`),btw,可以在设置或者后台弹出页面中撤销此次任务）      
   6. 直播观看计时（主播超长待机！我也待机！）   
-  7. <del>在助手设置页面进入小广场，查看最近的广场动态信息</del> (2021-7-12 主站接口改变)     
   8. 一键整理当前窗口中所有主站标签到新窗口中     
   9. 音乐播放器[ 放弃了 ] （ 原型：[AcfunFun](https://www.acfun.cn/a/ac19246676)[ @多丶鱼](https://www.acfun.cn/u/51010) ）   
-  10. <del>用户信息、稿件信息查询、用户最近活跃查询（设置主页->小工具）</del>(2021-7-12 主站接口改变)        
 
 ###### 插件相关
 
   1. 配置文件导入导出。    
   2. 一键清除插件配置。（点击即爆炸，如若未想好，千万别输 Y）   
-  3. <del>网络同步插件配置。（可以与服务器来同步配置了！）</del>(2021-7-12 主站登录验证接口改变)  
-  4. <del>联合**AcFun 直播桌面通知和下载助手**桌面程序，在直播界面的小助手弹出栏中可以直接请求程序将 Up 加入/移出 开播通知列表中。 </del>  (程序已开发了自带的UI，请使用其自带UI获得更好的体验，2020-10-18)
   5. 可选提前加载助手前台模块    
   6. 联合AcFunQML   
 
@@ -101,6 +92,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 - [FireFox 插件商店](https://addons.mozilla.org/zh-CN/firefox/addon/acfun%E5%8A%A9%E6%89%8B/)
 - [Chrome 扩展商店](https://chrome.google.com/webstore/detail/acfun%E5%8A%A9%E6%89%8B/jmpmiaajjammeafdklfobkfaobinefef)
 - [Edge Chromium Addons商店](https://microsoftedge.microsoft.com/addons/detail/acfun%E5%8A%A9%E6%89%8B/lbnimimllmcdmojehbgndnebjafgnjfk?hl=zh-CN)
+- [Edge Chromium Addons商店 2号](https://microsoftedge.microsoft.com/addons/detail/acfun%E5%8A%A9%E6%89%8B/hkbnoipklegggkiifgbjlcfdjmjjodio?hl=zh-CN)
 - 群文件 & 公众号 <sup><a href="#connect">点击查看</a>
 
 
@@ -130,9 +122,8 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 <a id='connect'></a>
 #### 联系我们 
 
-[用户 QQ 群 296107184](https://shang.qq.com/wpa/qunwpa?idkey=fe451dc2e5c33980a1f92725370f80a21048ca5fe2e325b3e0c15f494a8001e3)
-
-[微信公众号 AcFun 助手](https://mp.weixin.qq.com/s/-XjELn35hDd856kiMMQyvA)
+[![用户 QQ 群 296107184](https://img.shields.io/badge/QQ-296107184-blue)](https://shang.qq.com/wpa/qunwpa?idkey=fe451dc2e5c33980a1f92725370f80a21048ca5fe2e325b3e0c15f494a8001e3)
+[![微信公众号 AcFun 助手](https://img.shields.io/badge/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-AcFun%20%E5%8A%A9%E6%89%8B-blue)](https://mp.weixin.qq.com/s/-XjELn35hDd856kiMMQyvA)
 
 #### 加入我们
 
@@ -159,29 +150,13 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
     * gulp 4.0.2    
 </details>    
 
-#### 相关项目
+#### 助手配置同步服务: @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
 
-插件配置同步服务:
+---
+[AcFun 开源项目](./docs/OPENSRC_ECHOSYS.md)
 
-##### @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
 
-独立项目：
 
-##### @wpscott - [AcfunDanmu AcFun 直播弹幕工具](https://github.com/wpscott/AcFunDanmaku "项目地址")
-
-##### @orzogc - [acfunlive AcFun直播通知和下载助手](https://github.com/orzogc/acfunlive "项目地址")
-
-##### @goplayegg - [AcfunQml 基于Qt QML的AcFun桌面客户端](https://github.com/goplayegg/AcfunQml "项目地址")
-
-##### @CrystalSpire - [Acfun TV 客户端 第三方的Tv客户端](https://github.com/CrystalSpire/AcFun "项目地址")
-
-##### @kanoyami - [aclivechat-node JavaScript全栈 的 AcFun直播弹幕姬](https://github.com/kanoyami/aclivechat-node "项目地址")
-
-##### @ShigemoriHakura - [ACFun-Live-Helper AcFunOBS直播助手](https://github.com/ShigemoriHakura/ACFun-Live-Helper "项目地址")
-
-##### @maysrp - [ACFUN_Clock_auto(ESP32 Micropython ESP32 Clock acfun fans clock) ACFUN电子钟自动配网版](https://github.com/maysrp/ACFUN_Clock_auto "项目地址")
-
-##### @baldhumanity - [AcfunComplement ACFUN补全计划-屏蔽功能](https://github.com/baldhumanity/AcfunComplement "项目地址")
 
 ---
 
