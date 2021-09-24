@@ -73,6 +73,124 @@ declare namespace APIs {
     mkey: string;
     priority: string;
   }
+  interface Sidelights {
+    bananaCount: number;
+    bananaCountShow: string;
+    caption: string;
+    commentCount: string;
+    commentCountTenThousandShow: string;
+    contentId: string;
+    contributeTime: string;
+    coverImgInfo: UserInfoImg;
+    coverUrls: string;
+    displayPlayCount: string;
+    groupId: string;
+    isLike: boolean;
+    isThrowBanana: boolean;
+    likeCount: number;
+    sourceId: string;
+    stowCount: string;
+    type: number;
+    user: PersonalUserInfo;
+    videoId: string;
+    videoSizeType: number;
+    viewCount: string;
+    vindex: number;
+  }
+  interface BangumiPageInfo {
+    acfunOnly: boolean;
+    allowComment: boolean;
+    allowDownload: boolean;
+    bananaCount: number;
+    bananaCountShow: string;
+    bangumiBananaCount: number;
+    bangumiBananaCountShow: string;
+    bangumiCoverImageH: string;
+    bangumiCoverImageV: string;
+    bangumiId: number;
+    bangumiIntro: string;
+    bangumiIsLike: boolean;
+    bangumiLikeCount: number;
+    bangumiLikeCountShow: string;
+    bangumiPaymentType: { value: number; name: string };
+    bangumiStyleList: [
+      {
+        categoryEntryId: number;
+        createTime: number;
+        id: number;
+        name: string;
+        priority: number;
+        status: string;
+      }
+    ];
+    bangumiTitle: string;
+    belongType: number;
+    commentCount: number;
+    commentCountShow: string;
+    commentParted: boolean;
+    coverImgHInfo: UserInfoImg;
+    coverImgVInfo: UserInfoImg;
+    currentVideoInfo: null;
+    episodeName: string;
+    extendsStatus: string;
+    firstPlayDate: number;
+    highlightId: undefined;
+    hotTags: [];
+    image: string;
+    imgInfo: UserInfoImg;
+    introduction: string;
+    isFavorite: boolean;
+    isLike: boolean;
+    isThrowBanana: boolean;
+    itemCount: number;
+    itemId: number;
+    lastUpdateItemName: string;
+    latestItem: string;
+    mkey: string;
+    needPay: boolean;
+    online: number;
+    onlineTime: number;
+    paidForUser: boolean;
+    paymentType: { value: number; name: string };
+    playCount: number;
+    playCountShow: string;
+    priority: number;
+    recommendBangumis: [RecommendBangumis];
+    relatedBangumis: [
+      { groupId: string; id: number; name: string; sort: number }
+    ];
+    shareUrl: string;
+    showTitle: string;
+    sidelights: [Sidelights];
+    stowCount: number;
+    stowCountShow: string;
+    title: string;
+    updateDayTime: number;
+    updateDayTimeStr: string;
+    updateFrequency: string;
+    updateInfoShow: string;
+    updateStatus: number;
+    updateTime: string;
+    updateWeekDay: number;
+    videoId: number;
+    videoSizeType: number;
+    webUpdateInfoShow: string;
+  }
+  interface RecommendBangumis {
+    coverImageH: string;
+    coverImageV: string;
+    coverImgHInfo: UserInfoImg;
+    coverImgVInfo: UserInfoImg;
+    groupId: string;
+    id: number;
+    itemCount: number;
+    lastUpdateItemName: string;
+    paymentType: { value: number; name: string };
+    stowCount: number;
+    stowCountShow: string;
+    title: string;
+    updateStatus: number;
+  }
   interface MedalInfo {
     clubName: string;
     level: number;

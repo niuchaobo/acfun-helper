@@ -702,12 +702,13 @@ class VideoSetting {
   videoMediaSession(dougaInfo) {
     fgConsole(this, "videoMediaSession", "Init MediaSessionModule.", 1, false);
     if (!isBoughtBangumi()) { return }
+    /**@type {APIs.BangumiPageInfo} */
     let videoInfo = {};
     try {
       if (dougaInfo) {
         videoInfo = dougaInfo;
       } else {
-        throw TypeError;
+        throw TypeError("dougaInfo is Null.");
       }
       try {
         this.acNum = REG.acVid.exec(location.href)[2];
@@ -728,7 +729,6 @@ class VideoSetting {
           videoList: [],
         };
       }
-      throw TypeError;
     } catch (error) {
       videoInfo = {
         title:
@@ -799,18 +799,10 @@ class VideoSetting {
       document.querySelector("video").currentTime = Number(details.seekTime);
     });
 
-    fgConsole(
-      this,
-      "videoMediaSession",
-      "Video MediaSession Attach Success.",
-      1,
-      false
-    );
-
+    fgConsole(this, "videoMediaSession", "Video MediaSession Attach Success.", 1, false);
     if (videoInfo.videoList.length > 1) {
       try {
-        this.mediaSessionNowPlayingIndex =
-          REG.videoPartNumByURL.exec(location.href)[1] || 0;
+        this.mediaSessionNowPlayingIndex = REG.videoPartNumByURL.exec(location.href)[1] || 0;
       } catch (error) {
         this.mediaSessionNowPlayingIndex = 0;
       }
@@ -823,13 +815,7 @@ class VideoSetting {
       navigator.mediaSession.setActionHandler("nexttrack", () => {
         this.mediaSessionPlayer("next", videoInfo);
       });
-      fgConsole(
-        this,
-        "videoMediaSession",
-        "Video MediaSession MultiPart Attach Success.",
-        1,
-        false
-      );
+      fgConsole(this, "videoMediaSession", "Video MediaSession MultiPart Attach Success.", 1, false);
     }
   }
 
