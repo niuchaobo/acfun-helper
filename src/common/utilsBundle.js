@@ -2570,12 +2570,8 @@ class PlayerAction extends UtilsBundle {
         if (document.querySelector(".control-btn.btn-loop>span").dataset.bindAttr == "true") {
             document.querySelector(".control-btn.btn-loop>span").click();
         }
-        if (document.querySelector('div.control-checkbox[data-bind-key="playContinue"]').dataset.bindAttr == "true") {
-            $('div.control-checkbox[data-bind-key="playContinue"]').trigger("click");
-        }
-        if (document.querySelector('div.control-checkbox[data-bind-key="autoplay"]').dataset.bindAttr == "true") {
-            $('div.control-checkbox[data-bind-key="playContinue"]').trigger("click");
-        }
+        $(`div.control-checkbox[data-bind-key="playContinue"]`).data()['bindAttr'] && (console.log("playContinue true"),$('div.control-checkbox[data-bind-key="playContinue"]').trigger("click"));
+        $(`#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-top > div.box-right > div.control-btn.setting > div.setting-panel > div.setting-panel-content > div:nth-child(2) > div`).data()['bindAttr'] && (console.log("autoplay true"),$('#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-top > div.box-right > div.control-btn.setting > div.setting-panel > div.setting-panel-content > div:nth-child(2) > div').trigger("click"));
     }
 }
 

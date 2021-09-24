@@ -319,10 +319,10 @@ declare namespace APIs {
     };
     channelListData: {
       count: number;
-      liveList: liveUserInfo[];
+      liveList: LiveUserInfo[];
       totalCount: number;
     };
-    liveList: liveUserInfo[];
+    liveList: LiveUserInfo[];
     recommendAuthorsData: Array;
     totalCount: number;
   }
@@ -333,7 +333,7 @@ declare namespace APIs {
     visitor: number;
     authorId: number;
     requestId: string;
-    user: liveUserInfo;
+    user: LiveUserInfo;
   }
   interface LiveUserInfo {
     action: number;

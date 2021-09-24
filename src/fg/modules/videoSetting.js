@@ -1263,4 +1263,22 @@ class VideoSetting {
     })
   }
 
+  /**
+   * 鼠标悬停在音量图标上，滚动改变音量
+   */
+  wheelToChangeVolume(isVideo = false) {
+    isVideo && LeftBottomNotif("鼠标悬停在音量图标上，滚动改变音量", "info");
+    document.querySelector(".control-btn.volume").addEventListener("mousewheel", (e) => {
+      /**@type {WheelEvent} */
+      let raw = e;
+      const trend = raw.deltaY > 0;
+      const videoElem = document.querySelector("video");
+      if (trend) {
+        videoElem.volume - 0.05 < 0 ? videoElem.volume = 0 : videoElem.volume -= 0.05;
+      } else {
+        videoElem.volume + 0.05 > 1 ? videoElem.volume = 1 : videoElem.volume += 0.05;
+      }
+    })
+  }
+
 }

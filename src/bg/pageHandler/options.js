@@ -2430,6 +2430,25 @@ function playerConfigure() {
         });
     });
 
+    //====================鼠标滚动音量调整===================
+    chrome.storage.local.get(['wheelToChangeVolume'], function (items) {
+        var wheelToChangeVolume = items.wheelToChangeVolume;
+        if (wheelToChangeVolume) {
+            document.getElementById('wheelToChangeVolume').checked = true;
+        } else {
+            document.getElementById('wheelToChangeVolume').checked = false;
+        }
+        $('#wheelToChangeVolume').on('click', function () {
+            if (!document.getElementById('wheelToChangeVolume').checked) {
+                document.getElementById('wheelToChangeVolume').checked = false;
+                chrome.storage.local.set({ 'wheelToChangeVolume': false });
+            } else {
+                document.getElementById('wheelToChangeVolume').checked = true;
+                chrome.storage.local.set({ 'wheelToChangeVolume': true });
+            }
+        });
+    });
+
     //====================配置播放器画质策略===============
     chrome.storage.local.get(['videoQualityStrategy'], function (items) {
         document.querySelector("#videoQualityStrategy").parentElement.children[1].children[1].children[items.videoQualityStrategy].click()
