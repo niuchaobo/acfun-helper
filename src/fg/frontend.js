@@ -192,6 +192,10 @@ class AcFunHelperFrontend {
 			this.options.videoAchievement && this.videoSetting.historocalAchieve();
 			return
 		}
+		if (REG.liveIndex.test(href) && !REG.live.test(href)) {
+			//直播ad屏蔽
+			this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType, this.options.liveHideAdMute);
+		}
 		//直播
 		if (REG.live.test(href)) {
 			this.options.liveCommentTimeTag && this.livePageBeautify.commentTimeTag();
@@ -293,8 +297,6 @@ class AcFunHelperFrontend {
 		}
 		//直播首页
 		if (REG.liveIndex.test(href) && !REG.live.test(href)) {
-			//直播ad屏蔽
-			this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType, this.options.liveHideAdMute);
 			//直播站主页数量标号
 			this.options.liveIndexRankNum && this.livePageBeautify.listCountFront();
 			//直播站首页用户屏蔽

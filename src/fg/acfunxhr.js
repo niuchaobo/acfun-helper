@@ -104,7 +104,6 @@ let AcFunHelperFrontendXHRDriver = (function XHRDriver() {
 		function postRouting(ctx, handler) {
 			// console.log(ctx.response)
 			const postShouldRun = urlMatch("post", ctx.config.url, urls);
-			console.warn(postShouldRun)
 			if (postShouldRun.length) {
 				postShouldRun.forEach(e => {
 					AcFunHelperFrontendXHRReactor[registry[e].condition.target].call(this, ctx, handler);
