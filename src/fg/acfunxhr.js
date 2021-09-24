@@ -7,15 +7,18 @@ let AcFunHelperFrontendXHRDriver = (function XHRDriver() {
 	let registry = {
 		_sys: {
 			typesCount: {
-				"deny": 0, "requestRPC": 0, "injectedApi": 1, "modify": 0, globalSw: false
+				"deny": 0, "requestRPC": 0, "injectedApi": 2, "modify": 0, globalSw: false
 			},
 			registerdEvents: {
-				"deny": [], "requestRPC": [], "injectedApi": ["https://www.acfun.cn/rest/pc-direct/article/feed"], "modify": [],
+				"deny": [], "requestRPC": [], "injectedApi": ["https://www.acfun.cn/rest/pc-direct/article/feed", "https://www.acfun.cn/rest/pc-direct/comment/list"], "modify": [],
 			},
 		},
 		"https://www.acfun.cn/rest/pc-direct/article/feed": {
 			"name": "example2", "bound": "post", "action": "injectedApi", "condition": { "target": "articleListFilter" }
-		}
+		},
+		"https://www.acfun.cn/rest/pc-direct/comment/list": {
+			"name": "example3", "bound": "post", "action": "injectedApi", "condition": { "target": "commentFilter" }
+		},
 	}
 	window.addEventListener("AcFunHelperFrontend", e => {
 		AcFunHelperFrontendEventInvoker(e);
@@ -101,6 +104,7 @@ let AcFunHelperFrontendXHRDriver = (function XHRDriver() {
 		function postRouting(ctx, handler) {
 			// console.log(ctx.response)
 			const postShouldRun = urlMatch("post", ctx.config.url, urls);
+			console.warn(postShouldRun)
 			if (postShouldRun.length) {
 				postShouldRun.forEach(e => {
 					AcFunHelperFrontendXHRReactor[registry[e].condition.target].call(this, ctx, handler);
@@ -188,7 +192,9 @@ let AcFunHelperFrontendXHRReactor = (function XHRReactor() {
 			userName: "爱稀饭助手-说",
 		},
 		articleFilterUsersUid: [],
+		commentAreaBanUsersId: [6100823,],
 		articleFilterEnable: false,
+		commentAreaBanUsersEnable: false,
 	};
 	window.addEventListener("AcFunHelperFrontend", e => {
 		AcFunHelperFrontendEventInvoker(e);
@@ -250,20 +256,62 @@ let AcFunHelperFrontendXHRReactor = (function XHRReactor() {
 	 * 评论区过滤
 	 * @param {import("../../declares/XHRProxy").XhrResponse} ctx 
 	 * @param {import("../../declares/XHRProxy").XhrResponseHandler} handler 
+	 * @todo 完善置顶评论过滤
 	 */
 	function commentFilter(ctx, handler) {
+		if (!dataset["commentAreaBanUsersEnable"]) {
+			return;
+		}
 		/**
 		 * @type {APIs.CommentApi}
 		 */
-		let rawComment = null;
+		let rawComment = JSON.parse(ctx.response);
+		const banUids = dataset["commentAreaBanUsersId"];
+		let hots = [], root = [], srcMap = {}, sticky = {};
+		hots = rawComment.hotComments.filter(e => !banUids.includes(e.userId));
+		root = rawComment.rootComments.filter(e => !banUids.includes(e.userId));
+		if (Object.keys(rawComment.subCommentsMap).length) {
+			for (let e in rawComment.subCommentsMap) {
+				srcMap[e] = {
+					subComments: rawComment.subCommentsMap[e].subComments.filter(e => !banUids.includes(e.userId)),
+					pcursor: rawComment.subCommentsMap[e].pcursor
+				}
+			}
+
+		}
+		// if (Object.keys(rawComment.stickyComments).length) {
+		// 	for (let e in rawComment.stickyComments) {
+		// 		srcMap[e] = rawComment.stickyComments[e].filter(e => !banUids.includes(e.userId));
+		// 	}
+		// }
+		const afterProcess = {
+			commentCount: rawComment.commentCount,
+			contentUbbVersion: rawComment.contentUbbVersion,
+			curPage: rawComment.curPage,
+			godComments: [],
+			['host-name']: rawComment["host-name"],
+			isUp: rawComment.isUp,
+			pageSize: rawComment.pageSize,
+			pcursor: rawComment.pcursor,
+			result: rawComment.result,
+			sourceType: rawComment.sourceType,
+			stickyComments: rawComment.stickyComments,
+			totalPage: rawComment.totalPage,
+			rootComments: root,
+			hotComments: hots,
+			stickyComments: sticky,
+			subCommentsMap: srcMap,
+		}
+		ctx.response = JSON.stringify(afterProcess)
+		handler.next(ctx);
 	}
 
 	function example(e, f) {
 		console.log(e, f);
 	}
 
-	return { example, datasetWriteIn, articleListFilter };
+	return { example, datasetWriteIn, articleListFilter, commentFilter };
 })();
 let {
-	example, datasetWriteIn, articleListFilter
+	example, datasetWriteIn, articleListFilter, commentFilter
 } = { ...AcFunHelperFrontendXHRReactor }
