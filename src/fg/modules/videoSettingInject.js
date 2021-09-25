@@ -159,7 +159,18 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
     if (options.endedAutoJumpRecommandFirstDougasw) {
       //自动观看“大家都在看”栏目第一个稿件
       document.getElementsByTagName("video")[0].addEventListener("ended", function () {
-        document.getElementsByClassName("recommendation")[0].children[0].children[0].click();
+        const _timer = setTimeout(() => {
+          $(".left-bottom-tip").eq(0).children().eq(0).remove();
+          //因为跳转之后的第一个推荐稿件可能就是上一个稿件，所以这里是跳转到第二个稿件去。
+          document.getElementsByClassName("recommendation")[0].children[1].children[0].click();
+        }, 5000);
+        const text = document.querySelector(".area.recommendation").children[1].children[1];
+        $(".left-bottom-tip").eq(0).append(`<div class="tip-item muted" id="cancelRecommand" ><div class="left-bottom-tip-text"><span>5秒后播放：《${text.children[0].innerText}》 ${text.children[1].innerText.replace("UP：","")}</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="cancelRecommand">取消</span></div></div>`);
+
+        document.querySelector("#cancelRecommand").addEventListener("click", () => {
+          $(".left-bottom-tip").eq(0).children().eq(0).remove();
+          clearTimeout(_timer);
+        })
       });
     }
 

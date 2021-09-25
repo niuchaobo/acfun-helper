@@ -100,6 +100,7 @@ const defaults = {
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, },
   liveVolumeMild: false,
+  wheelToChangeVolume:true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 

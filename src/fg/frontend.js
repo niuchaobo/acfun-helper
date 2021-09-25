@@ -192,6 +192,10 @@ class AcFunHelperFrontend {
 			this.options.videoAchievement && this.videoSetting.historocalAchieve();
 			return
 		}
+		if (REG.liveIndex.test(href) && !REG.live.test(href)) {
+			//直播ad屏蔽
+			this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType, this.options.liveHideAdMute);
+		}
 		//直播
 		if (REG.live.test(href)) {
 			this.options.liveCommentTimeTag && this.livePageBeautify.commentTimeTag();
@@ -248,6 +252,7 @@ class AcFunHelperFrontend {
 				this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
 				//弹幕列表前往Acer个人主页
 				this.options.danmuSearchListToUsersw && this.videoSetting.danmuSearchListToUser()
+				this.options.wheelToChangeVolume && this.videoSetting.wheelToChangeVolume(true);
 			})
 			//分P列表扩展
 			this.options.multiPartListSpread && this.pageBeautify.multiPartListSpread()
@@ -287,12 +292,11 @@ class AcFunHelperFrontend {
 			this.livePageBeautify.callPicktureInPictureModeForLive()
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit("live");
 			this.options.liveVolumeMild && this.videoSetting.liveVolumeMild();
+			this.options.wheelToChangeVolume && this.videoSetting.wheelToChangeVolume(false);
 			return
 		}
 		//直播首页
 		if (REG.liveIndex.test(href) && !REG.live.test(href)) {
-			//直播ad屏蔽
-			this.options.liveHideAd && this.livePageBeautify.LivehideAds(this.options.liveHideAdType, this.options.liveHideAdMute);
 			//直播站主页数量标号
 			this.options.liveIndexRankNum && this.livePageBeautify.listCountFront();
 			//直播站首页用户屏蔽

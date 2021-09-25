@@ -132,6 +132,7 @@ class PageBeautify {
         return res.text();
       })
       .then((res) => {
+        /**@type {APIs.PersonalUserInfoApi} */
         let a = "";
         try {
           a = JSON.parse(res);
@@ -150,7 +151,8 @@ class PageBeautify {
             node.after(
               '<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
               a.info.userId +
-              '">我的直播间</a></p>'
+              '">我的直播</a></p>'+
+              '<p class="crx-guid-p"><a target="_blank" href="https://www.acfun.cn/member/favourite">我的收藏</a></p>'
             );
             node.after('<p class="crx-guid-p">UID: ' + a.info.userId + "</p>");
             node.after(

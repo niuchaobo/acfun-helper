@@ -702,12 +702,13 @@ class VideoSetting {
   videoMediaSession(dougaInfo) {
     fgConsole(this, "videoMediaSession", "Init MediaSessionModule.", 1, false);
     if (!isBoughtBangumi()) { return }
+    /**@type {APIs.BangumiPageInfo} */
     let videoInfo = {};
     try {
       if (dougaInfo) {
         videoInfo = dougaInfo;
       } else {
-        throw TypeError;
+        throw TypeError("dougaInfo is Null.");
       }
       try {
         this.acNum = REG.acVid.exec(location.href)[2];
@@ -728,7 +729,6 @@ class VideoSetting {
           videoList: [],
         };
       }
-      throw TypeError;
     } catch (error) {
       videoInfo = {
         title:
@@ -799,18 +799,10 @@ class VideoSetting {
       document.querySelector("video").currentTime = Number(details.seekTime);
     });
 
-    fgConsole(
-      this,
-      "videoMediaSession",
-      "Video MediaSession Attach Success.",
-      1,
-      false
-    );
-
+    fgConsole(this, "videoMediaSession", "Video MediaSession Attach Success.", 1, false);
     if (videoInfo.videoList.length > 1) {
       try {
-        this.mediaSessionNowPlayingIndex =
-          REG.videoPartNumByURL.exec(location.href)[1] || 0;
+        this.mediaSessionNowPlayingIndex = REG.videoPartNumByURL.exec(location.href)[1] || 0;
       } catch (error) {
         this.mediaSessionNowPlayingIndex = 0;
       }
@@ -823,13 +815,7 @@ class VideoSetting {
       navigator.mediaSession.setActionHandler("nexttrack", () => {
         this.mediaSessionPlayer("next", videoInfo);
       });
-      fgConsole(
-        this,
-        "videoMediaSession",
-        "Video MediaSession MultiPart Attach Success.",
-        1,
-        false
-      );
+      fgConsole(this, "videoMediaSession", "Video MediaSession MultiPart Attach Success.", 1, false);
     }
   }
 
@@ -1259,6 +1245,24 @@ class VideoSetting {
         case "visible":
           videoElemt.volume = originVolume;
           break;
+      }
+    })
+  }
+
+  /**
+   * 鼠标悬停在音量图标上，滚动改变音量
+   */
+  wheelToChangeVolume(isVideo = false) {
+    isVideo && LeftBottomNotif("鼠标悬停在音量图标上，滚动改变音量", "info");
+    document.querySelector(".control-btn.volume").addEventListener("mousewheel", (e) => {
+      /**@type {WheelEvent} */
+      let raw = e;
+      const trend = raw.deltaY > 0;
+      const videoElem = document.querySelector("video");
+      if (trend) {
+        videoElem.volume - 0.05 < 0 ? videoElem.volume = 0 : videoElem.volume -= 0.05;
+      } else {
+        videoElem.volume + 0.05 > 1 ? videoElem.volume = 1 : videoElem.volume += 0.05;
       }
     })
   }
