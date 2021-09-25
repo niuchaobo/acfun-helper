@@ -683,7 +683,9 @@ class GetAsyncDomUtil extends UtilsBundle {
             return new Promise(resolve => {
                 const targetDom = this.advancedQueryMethod ?? (document.getElementById(this.target) || document.getElementsByClassName(this.target).length || document.querySelector(this.target) || $(`${this.target}`).length || undefined);
                 let response;
-                if (targetDom && typeof (this.condition) == 'function' ? response = this.condition(targetDom, this.extraParam) : this.condition) {
+                let isGotDom = Boolean(targetDom);
+                let domMeetCondition = typeof (this.condition) == 'function' ? response = this.condition(targetDom, this.extraParam) : this.condition;
+                if (isGotDom && domMeetCondition) {
                     this.index = 0;
                     this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: ${this.target}加载。`, targetDom);
                     resolve(fn(response));
@@ -2570,7 +2572,7 @@ class PlayerAction extends UtilsBundle {
         if (document.querySelector(".control-btn.btn-loop>span").dataset.bindAttr == "true") {
             document.querySelector(".control-btn.btn-loop>span").click();
         }
-        $(`div.control-checkbox[data-bind-key="playContinue"]`).data()['bindAttr'] &&  $('div.control-checkbox[data-bind-key="playContinue"]').trigger("click");
+        $(`div.control-checkbox[data-bind-key="playContinue"]`).data()['bindAttr'] && $('div.control-checkbox[data-bind-key="playContinue"]').trigger("click");
         $(`#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-top > div.box-right > div.control-btn.setting > div.setting-panel > div.setting-panel-content > div:nth-child(2) > div`).data()['bindAttr'] && $('#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-top > div.box-right > div.control-btn.setting > div.setting-panel > div.setting-panel-content > div:nth-child(2) > div').trigger("click");
     }
 
