@@ -1075,7 +1075,7 @@ class VideoSetting {
         } else {
           createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "AcFunHelper_hideDanmakuOperatorBarStyle");
           if (maskSw) {
-            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0", "AcFunHelper_danmakuLayerMask");
+            ToolBox.DOMElementMask(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0", "AcFunHelper_danmakuLayerMask");
           }
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
           this.hideDanmakuOperatorStyleAdded = true;

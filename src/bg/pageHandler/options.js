@@ -28,7 +28,7 @@ function OldUIHandler() {
             to_special_items: items
         }, function () {
             options.to_special_items = items;
-            //getBackendInst().opt_optionUpdate(options);
+            //AcFunHelper.getBackendInst().opt_optionUpdate(options);
             //location.reload();
         });
     }
@@ -254,7 +254,7 @@ function OldUIHandler() {
                 // location.reload();
                 auto_throw = false;
                 updateUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -265,7 +265,7 @@ function OldUIHandler() {
                 // location.reload();
                 auto_throw = true;
                 updateUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -279,7 +279,7 @@ function OldUIHandler() {
                 // location.reload();
                 banana_notice = false;
                 detectUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -290,7 +290,7 @@ function OldUIHandler() {
                 // location.reload();
                 banana_notice = true;
                 detectUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -305,7 +305,7 @@ function OldUIHandler() {
                     /* globals huaci_button */
                     to_attention = true;
                     attentionUi();
-                    getBackendInst().opt_optionUpdate(options);
+                    AcFunHelper.getBackendInst().opt_optionUpdate(options);
                 });
             }
         }
@@ -321,7 +321,7 @@ function OldUIHandler() {
                     /* globals huaci_button */
                     to_attention = false;
                     attentionUi();
-                    getBackendInst().opt_optionUpdate(options);
+                    AcFunHelper.getBackendInst().opt_optionUpdate(options);
                 });
             }
         }
@@ -343,7 +343,7 @@ function OldUIHandler() {
                 'to_attention_num': attention_num
             }, function () {
                 to_attention_num = attention_num;
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -357,7 +357,7 @@ function OldUIHandler() {
                 // location.reload();
                 upHighlight = false;
                 commentUi()
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -368,7 +368,7 @@ function OldUIHandler() {
                 // location.reload();
                 upHighlight = true;
                 commentUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -382,7 +382,7 @@ function OldUIHandler() {
                 // location.reload();
                 scan = false;
                 commentUi()
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -393,7 +393,7 @@ function OldUIHandler() {
                 // location.reload();
                 scan = true;
                 commentUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -407,7 +407,7 @@ function OldUIHandler() {
                 // location.reload();
                 mark = false;
                 commentUi()
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -418,7 +418,7 @@ function OldUIHandler() {
                 // location.reload();
                 mark = true;
                 commentUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -432,7 +432,7 @@ function OldUIHandler() {
                 // location.reload();
                 filter = false;
                 filterUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -443,7 +443,7 @@ function OldUIHandler() {
                 // location.reload();
                 filter = true;
                 filterUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -457,7 +457,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_nav = false;
                 beautifyUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -468,7 +468,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_nav = true;
                 beautifyUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -482,7 +482,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_personal = false;
                 beautifyUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -493,7 +493,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_personal = true;
                 beautifyUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -507,7 +507,7 @@ function OldUIHandler() {
                 // location.reload();
                 custom_rate = false;
                 customVideoUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -518,7 +518,7 @@ function OldUIHandler() {
                 // location.reload();
                 custom_rate = true;
                 customVideoUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -539,7 +539,7 @@ function OldUIHandler() {
             'player_mode': mode
         }, function () {
             player_mode = mode;
-            getBackendInst().opt_optionUpdate(options);
+            AcFunHelper.getBackendInst().opt_optionUpdate(options);
         });
     });
 

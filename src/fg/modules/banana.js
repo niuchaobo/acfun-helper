@@ -58,7 +58,7 @@ class Banana {
         if (!isLogined && Mode == "video") {
             return;
         } else if (Mode == "article") {
-            if (!isLogin("article")) {
+            if (!ToolBox.isLogin("article")) {
                 return;
             }
         }
@@ -124,7 +124,7 @@ class Banana {
     async articleBanana(params) {
         var isLogined = false;
         try {
-            isLogined = isLogin("video");
+            isLogined = ToolBox.isLogin("video");
         } catch (error) {
             console.log("[LOG]Front-Banana>articleBanana: 没找到登录判断依据。");
         }
@@ -157,7 +157,7 @@ class Banana {
     }
 
     async throwBanana(params) {
-        if (!isLogin()) {
+        if (!ToolBox.isLogin()) {
             return;
         }
         let options = window.AcFunHelperFrontend.options;

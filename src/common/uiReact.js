@@ -1,6 +1,18 @@
-class UIReactor{
-  constructor(devMode){
+class UIReactor {
+  constructor(devMode) {
     this.devMode = devMode;
+  }
+
+  static commentAreaNotice(text) {
+    $(".ac-comment-toast")
+      .eq(0)
+      .append(DOMPurify.sanitize(
+        `<div class="area-comm-toast">${text}</div>`)
+      );
+    let _timer = setTimeout(() => {
+      $(".ac-comment-toast").eq(0).children().eq(0).remove(); //这样写 并不能自定义持续时间
+      clearInterval(_timer);
+    }, 2500);
   }
 
 }
@@ -27,7 +39,7 @@ function leftBottomTip(text, importantText = "") {
  * 文章区、用户中心左下角通知
  * @param {string} message 
  * @param {string} level 通知级别：常用 - error success info warning 其他(可以定义图标) - banana ; success ; error ; warning ; logout ; help ; arrow-round-right ; comments ; envelope ; info ; yonghu ; app-phone ; close ; arrow-slim-up ; rank ; arrow-slim-right ; loading ; triangle-right ; eye ; eye-new ; crown ; arrow-round-left ; plus-circle ; history ; upload ; collect ; calendar ; danmu ; danmu-new ; view-player ; view-player-new ; arrow-round-up ; arrow-round-down ; triangle-slim-right ; chevron-left ; th-list2 ; circle-triangle-w ; circle-triangle-e ; label ; th-large1 ; th3 ; th-large ; th-list ; th ; step-forward ; step-backward ; prompt ; helps ; delete ; to-comm ; to-comm-new ; delete1 ; chevron-right ; chuang-zuo-zhong-xin;
- * @param {Number} time 通知持续时间
+ * @param {number} time 通知持续时间
  * @excludePage 主页、分区、用户后台、创作中心、直播站
  * @refer https://cdnfile.aixifan.com/static/common/widget/toast/toast.947ad3aa2604243116b8.js
  */
@@ -83,7 +95,7 @@ function updateVersionIcon() {
   });
 }
 
-class PlayerMenuSwitchItem extends UIReactor{
+class PlayerMenuSwitchItem extends UIReactor {
   constructor(name, title, describe, defaultState = false) {
     this.menuInst = null;
     this.parentInst = null;
@@ -165,8 +177,8 @@ class PlayerMenuSwitchItem extends UIReactor{
     }, ["describe"])
   }
 
-  unload(){
-    this.parentInst,remove();
+  unload() {
+    this.parentInst, remove();
     delete this;
   }
 

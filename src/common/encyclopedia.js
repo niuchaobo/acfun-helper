@@ -128,7 +128,19 @@ const acfunApis = {
      * @description 搜索推荐
      * @method GET
      */
-    searchDefaul: `https://www.acfun.cn/rest/pc-direct/homePage/searchDefault`
+    searchDefaul: `https://www.acfun.cn/rest/pc-direct/homePage/searchDefault`,
+    Staff: {
+        /**
+         * @description 合作稿件的Staff信息
+         * @method POST
+         * @example resourceId=21194424&resourceType=2 (resourceId 就是ACID)
+         */
+        get: `https://www.acfun.cn/rest/pc-direct/staff/getStaff`,
+        /**@return {APIs.ContributionInfo.StaffInfos} */
+        getStaffInfo: async (acid) => {
+            return JSON.parse(await fetchResult(acfunApis.Staff.get, "POST", `resourceId=${acid}&resourceType=2`,true));
+        }
+    },
 }
 
 const acfunApisParameter = {

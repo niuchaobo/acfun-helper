@@ -1,8 +1,9 @@
 /**
  * 获取认证信息
  */
-class AuthInfo {
+class AuthInfo extends AcFunHelperBackend{
     constructor() {
+        super();
         this.devMode = false;
     }
 

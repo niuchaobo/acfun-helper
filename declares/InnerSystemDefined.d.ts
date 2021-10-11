@@ -11,4 +11,14 @@ declare namespace InnerDefined {
     coverUrl: string;
     videoList: [HTMLElement];
   }
+  namespace CommentAreaIterator{
+    interface Registry {
+      _sys:string[];
+      [callbackName: string]: Function;
+    }
+    interface MenuRegistry {
+      _sys:string[];
+      [callbackName: string]: {callback:function,displayName:string};
+    }
+  }
 }

@@ -19,7 +19,7 @@ class SandboxAPI {
 
     /**
      * 向Agent发送消息
-     * @param {MessageSwitchFgToInjectPayload} e 
+     * @param {MessageSwitchStructs.FgToInjectPayload} e 
      * @returns 
      */
     async postMessage(e) {

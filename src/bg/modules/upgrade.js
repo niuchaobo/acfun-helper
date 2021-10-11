@@ -1,15 +1,26 @@
-/**
- * 定时更新数据
- * @todo 部分功能可以采用 chrome.alarms 的方式实现，create − chrome.alarms.create(string name, object alarmInfo)；get − chrome.alarms.get(string name, function callback)；getAll − chrome.alarms.getAll(function callback)；clear − chrome.alarms.clear(string name, function callback)；clearAll − chrome.alarms.clearAll(function callback)
- */
-class UpgradeAgent {
+class UpgradeAgent extends AcFunHelperBackend {
     constructor() {
-        this.ModuleName = 'UpgradeAgent';
-        this.checkConfigDay = [3, 7]
-        this.option = '';
-        this.scheduler = myBrowser() == "Chrome" ? chrome.alarms : browser.alarms;
-        this.notificationListPurgeCount = 0;
-        this.devMode = false;
+        super();
+        this.initMod();
+    }
+
+    initMod() {
+        this.runtime.dataset.core.scheduler["update"] = {
+            "option": { "periodInMinutes": 1440 },
+            "tasks": {
+                versionCheck: {
+                    callback: this.checkUpdate.bind(this)
+                },
+            }
+        }
+        this.runtime.dataset.core.scheduler["purgeNotifTrg"] = {
+            "option": { "periodInMinutes": 4220 },
+            "tasks": {
+                versionCheck: {
+                    callback: this.checkUpdate.bind(this)
+                },
+            }
+        }
     }
 
     /**
@@ -44,18 +55,7 @@ class UpgradeAgent {
                 })
         }
     }
-
-    installType() {
-        return new Promise((resolve) => {
-            chrome.management.getSelf(e => {
-                if (e.installType == "normal") {
-                    resolve(true);
-                }
-                resolve(false);
-            })
-        })
-    }
-
+    
     /**
      * 版本号判断
      * @param {string} remote 远端版本号
@@ -100,27 +100,4 @@ class UpgradeAgent {
         }
     }
 
-    /**
-     * 总
-     */
-    async upgradeMain() {
-        console.log("Registered Upgrade Check Mod.");
-        // 配置获取
-        let x = await getStorage("krnl_globalTimer").then(function (e) {
-            return e.krnl_globalTimer;
-        })
-        if (x) {
-            this.scheduleTasks();
-        }
-        // 定时执行（一天的样子）
-        this.scheduler.create("scheduleTasks", { "periodInMinutes": 1440 })
-    }
-
-    async scheduleTasks() {
-        //配置
-
-        //调用
-        this.checkUpdate();
-        this.purgeNotificationList();
-    }
 }

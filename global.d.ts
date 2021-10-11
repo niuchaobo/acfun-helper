@@ -1,77 +1,77 @@
 declare global {}
-interface MessageSwitchCommonPayload {
-  target: string | { mod: string; methodName: string };
-  source?: string | FgToInjectPayload;
-  InvkSetting: {
+namespace MessageSwitchStructs {
+  interface CommonPayload {
+    target: string | { mod: string; methodName: string };
+    source?: string | FgToInjectPayload;
+    InvkSetting: {
+      /**
+       * @description 消息类型
+       * @field function ->调用模块下的函数
+       * @field printMsg ->在对端打印target的消息
+       * @field subMod ->请求调用模块下的子模块
+       * @field method ->调用消息处理机中的某个工具方法
+       * @field echo ->回声...回声..回声.
+       */
+      type: "function" | "printMsg" | "subMod" | "method" | "echo";
+      /**
+       * @description 告知前台标签信息
+       */
+      receipt?: boolean;
+      responseRequire?: boolean;
+      /**
+       * @description 异步封装
+       */
+      asyncWarp?: boolean;
+      /**
+       * @description 后台向前台通信需要指定tabId
+       */
+      tabId?: number | Array | undefined;
+      /**
+       * @description 经典的参数分解方式
+       * @example const {url,method,postData} = params;
+       */
+      classicalParmParse?: boolean;
+      /**
+       * @description 是否存在并携带了回调函数
+       */
+      withCallback?: boolean;
+      /**
+       * @description 回调函数在回调暂存字典中的Id
+       */
+      callbackId?: number | string;
+    };
     /**
-     * @description 消息类型
-     * @field function ->调用模块下的函数
-     * @field printMsg ->在对端打印target的消息
-     * @field subMod ->请求调用模块下的子模块
-     * @field method ->调用消息处理机中的某个工具方法
-     * @field echo ->回声...回声..回声.
+     * @description 参数
      */
-    type: "function" | "printMsg" | "subMod" | "method" | "echo";
+    params: object | Array | { target: string; params: object };
+  }
+  interface DedicatedLinkPayload extends CommonPayload {
     /**
-     * @description 告知前台标签信息
+     * @description PortName
      */
-    receipt?: boolean;
-    responseRequire?: boolean;
-    /**
-     * @description 异步封装
-     */
-    asyncWarp?: boolean;
-    /**
-     * @description 后台向前台通信需要指定tabId
-     */
-    tabId?: number | Array | undefined;
-    /**
-     * @description 经典的参数分解方式
-     * @example const {url,method,postData} = params;
-     */
-    classicalParmParse?: boolean;
-    /**
-     * @description 是否存在并携带了回调函数
-     */
-    withCallback?: boolean;
-    /**
-     * @description 回调函数在回调暂存字典中的Id
-     */
-    callbackId?: number | string;
-  };
-  /**
-   * @description 参数
-   */
-  params: object | Array | { target: string; params: object };
+    source: string;
+  }
+  interface DedicatedLinkResponse {
+    eventId: number;
+    source: string;
+    target: string;
+    status: boolean;
+    result: object;
+  }
+  interface FgToInjectPayload extends CommonPayload {}
+  interface WindowMsgPayload extends FgToInjectPayload {}
+  interface InjectRecievePayload extends Event {
+    detail: DedicatedLinkPayload;
+  }
+  interface WindowMsgRespnse extends Event {
+    data: WindowMsgRespnseInner;
+  }
+  interface WindowMsgRespnseInner {
+    to: string | "background" | "sandbox";
+    msg: WindowMsgPayload;
+  }
+  interface SandBoxPayload extends WindowMsgRespnseInner {}
 }
-interface MessageSwitchDedicatedLinkPayload extends MessageSwitchCommonPayload {
-  /**
-   * @description PortName
-   */
-  source: string;
-}
-interface MessageSwitchDedicatedLinkResponse {
-  eventId: number;
-  source: string;
-  target: string;
-  status: boolean;
-  result: object;
-}
-interface MessageSwitchFgToInjectPayload extends MessageSwitchCommonPayload {}
-interface MessageSwitchWindowMsgPayload
-  extends MessageSwitchFgToInjectPayload {}
-interface MessageSwitchInjectRecievePayload extends Event {
-  detail: MessageSwitchDedicatedLinkPayload;
-}
-interface MessageSwitchWindowMsgRespnse extends Event {
-  data: MessageSwitchWindowMsgRespnseInner;
-}
-interface MessageSwitchWindowMsgRespnseInner {
-  to: string | "background" | "sandbox";
-  msg: MessageSwitchWindowMsgPayload;
-}
-interface MessageSwitchSandBoxPayload
-  extends MessageSwitchWindowMsgRespnseInner {}
 interface addElementPayload {
   tag: string;
   id: string;
@@ -169,6 +169,48 @@ interface MessageExtendEvents extends WindowEventMap {
   DOMNodeRemoved: string;
   DOMNodeRemovedFromDocument: string;
   DOMSubtreeModified: string;
+}
+interface runtimeData {
+  modules: [];
+  devMode: {
+    [regString: string]: Function;
+  };
+  options: null | object;
+  dataset: {
+    core: {
+      browserType: string;
+      status: {
+        core: boolean;
+        sandbox: boolean;
+        messageSwitch: boolean;
+        scheduler: boolean;
+        notificationButtunTrigger: boolean;
+      };
+      scheduler: {
+        [taskGroupName: string]: {
+          option: chrome.alarms.AlarmCreateInfo;
+          tasks: {
+            [taskName: string]: {
+              callback: Function;
+            };
+          };
+        };
+      };
+    };
+    notificationBtnTriggerList: string[];
+    notificationBtnTriggerData: {
+      [regString: string]: Function;
+    };
+    contextMenuRegistry: {
+      menuItem: {
+        [itemName: string]: chrome.contextMenus.CreateProperties;
+      };
+      event: {
+        [itemName: string]: function;
+      };
+    };
+    modulesData: {};
+  };
 }
 interface Window
   extends EventTarget,

@@ -47,6 +47,8 @@ class AcFunHelperFrontend {
 			"span.pos {display:inline;font-size: 0.9em;margin: 5px;line-height: 18px;padding: 0px 4px;color: white;border-radius: 14px;}" +
 			".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
 			"span.pos.up {background-color: #66ccff !important;}" +
+			//staff Tag
+			"span.pos.staff {background-color: #c056ff !important;}" +
 			"p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
 			//<a>标签柔和动画
 			"a {transition: color .2s ease, background-color .2s ease;}" +
@@ -107,7 +109,7 @@ class AcFunHelperFrontend {
 			var playerChecker = setInterval(() => {
 				let elem = document.querySelector("#ACPlayer .control-bar-top .box-right")
 				if (elem != null) {
-					if (isLogin("video")) {
+					if (ToolBox.isLogin("video")) {
 						isLogined = true;
 					}
 					//在视频播放页面监听播放器状态(是否全屏)，控制助手按钮是否显示
@@ -353,7 +355,7 @@ class AcFunHelperFrontend {
 			this.href = window.location.href;
 			this.fetchPageInfo();
 			let isLogined = false;
-			if (isLogin("video")) {
+			if (ToolBox.isLogin("video")) {
 				isLogined = true;
 			}
 

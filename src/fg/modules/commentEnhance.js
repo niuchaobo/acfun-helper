@@ -266,8 +266,22 @@ class CommentEnhance {
      * 评论区显示up主名字
      */
     renderScanForUp() {
-        var timer = setInterval(function () {
+        var timer = setInterval(async function () {
             var url = window.location.toString();
+            /**@type {string[]} */
+            let staffs = [];
+            let staffDetail = {}
+            try {
+                /**@type {APIs.ContributionInfo.StaffInfos} */
+                let staffApi = await acfunApis.Staff.getStaffInfo(REG.acVid.exec(window.location.href)[2]);
+                staffApi.staffInfos.forEach(e => {
+                    staffs.push(e["name"]);
+                    staffDetail[e.name] = e["staffRoleName"];
+                })
+                console.log(staffs, staffDetail)
+            } catch (error) {
+                console.log(error)
+            }
             let avr = new RegExp("/v/");
             let aar = new RegExp("/a/");
             let av = avr.exec(url);
@@ -286,6 +300,11 @@ class CommentEnhance {
                         let userName = $(this).text();
                         if (userName == up) {
                             $(this).after('<span class="pos up">UP主</span>');
+                        }
+                        if (staffs) {
+                            if (staffs.includes(userName)) {
+                                $(this).after(`<span class="pos staff">${staffDetail[userName]}</span>`);
+                            }
                         }
                     }
                 });
@@ -324,7 +343,21 @@ class CommentEnhance {
      * @param {string} rootCommentId 
      */
     renderSubScanForUp(rootCommentId) {
-        var timer = setInterval(function () {
+        var timer = setInterval(async function () {
+            /**@type {string[]} */
+            let staffs = [];
+            let staffDetail = {}
+            try {
+                /**@type {APIs.ContributionInfo.StaffInfos} */
+                let staffApi = await acfunApis.Staff.getStaffInfo(REG.acVid.exec(window.location.href)[2]);
+                staffApi.staffInfos.forEach(e => {
+                    staffs.push(e["name"]);
+                    staffDetail[e.name] = e["staffRoleName"];
+                })
+                console.log(staffs, staffDetail)
+            } catch (error) {
+                console.log(error)
+            }
             let url = window.location.toString();
             let avr = new RegExp("/v/");
             let aar = new RegExp("/a/");
@@ -344,6 +377,11 @@ class CommentEnhance {
                         let userName = $(this).text();
                         if (userName == up) {
                             $(this).after('<span class="pos up">UP主</span>');
+                        }
+                        if (staffs) {
+                            if (staffs.includes(userName)) {
+                                $(this).after(`<span class="pos staff">${staffDetail[userName]}</span>`);
+                            }
                         }
                     }
                 });

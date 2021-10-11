@@ -25,7 +25,7 @@ let AcFunHelperFrontendXHRDriver = (function XHRDriver() {
 	})
 	/**
 	 * 调用处理响应函数
-	 * @param {MessageSwitchInjectRecievePayload} e 
+	 * @param {MessageSwitchStructs.InjectRecievePayload} e 
 	 */
 	function AcFunHelperFrontendEventInvoker(e) {
 		if (e.detail.target != "AcFunHelperFrontendXHRDriver") {
@@ -200,7 +200,7 @@ let AcFunHelperFrontendXHRReactor = (function XHRReactor() {
 	})
 	/**
 	 * 消息处理
-	 * @param {MessageSwitchInjectRecievePayload} e 
+	 * @param {MessageSwitchStructs.InjectRecievePayload} e 
 	 */
 	function AcFunHelperFrontendEventInvoker(e) {
 		if (e.detail.target != "AcFunHelperFrontendXHRReactor") {

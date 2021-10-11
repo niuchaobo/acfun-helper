@@ -100,7 +100,7 @@ const defaults = {
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, },
   liveVolumeMild: false,
-  wheelToChangeVolume:true,
+  wheelToChangeVolume: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 
@@ -203,16 +203,6 @@ function delStorage(key) {
   return ExtOptions.delete(key)
 }
 
-function utilAsync(func) {
-  return function (...args) {
-    func.apply(this, args);
-  };
-}
-
-function getBackendInst() {
-  return chrome.extension.getBackgroundPage().AcFunHelperBackend;
-}
-
 function localizeHtmlPage() {
   for (const el of document.querySelectorAll("[data-i18n]")) {
     if ("INPUT" == el.nodeName) {
@@ -239,43 +229,12 @@ function localizeHtmlPage() {
   }
 }
 
-async function updateStorage(progress, id, tabId) {
-  let item = await getStorage(id).then((result) => {
-    return result[id];
-  });
-  item.progress = progress + "%";
-  if (progress == 100) {
-    item.lineText = "已完成";
-  }
-  chrome.storage.local.set({ [id]: item }, function () { });
-}
-
 /**
  * 判断浏览器类型
  * @returns {'FF'|'Chrome'|'Opera'|'Safari'|'IE'}
  */
 function myBrowser() {
-  var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-  var isOpera = userAgent.indexOf("Opera") > -1;
-  if (isOpera) {
-    return "Opera";
-  } //判断是否Opera浏览器
-  if (userAgent.indexOf("Firefox") > -1) {
-    return "FF";
-  } //判断是否Firefox浏览器
-  if (userAgent.indexOf("Chrome") > -1) {
-    return "Chrome";
-  }
-  if (userAgent.indexOf("Safari") > -1) {
-    return "Safari";
-  } //判断是否Safari浏览器
-  if (
-    userAgent.indexOf("compatible") > -1 &&
-    userAgent.indexOf("MSIE") > -1 &&
-    !isOpera
-  ) {
-    return "IE";
-  } //判断是否IE浏览器
+  return ToolBox.thisBrowser();
 }
 
 function ajax(method, url, data, header) {
@@ -769,54 +728,10 @@ function addElement(options) {
   return x
 }
 
-/**
- * 添加一层遮罩
- * @param {Element} obj 
- * @elementID divMask
- */
-function MaskElement(obj, styleText = "", divName = "") {
-  if (!styleText) {
-    styleText = `position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0;`
-  }
-  var hoverdiv = `<div id="${divName}" class="divMask" style="${styleText}"></div>`;
-  $(obj).wrap('<div class="position:relative;"></div>');
-  $(obj).before(hoverdiv);
-  $(obj).data("mask", true);
-}
-
 function removeAPrefix(_$targetDom) {
   let acid = _$targetDom[0].getAttribute("data-aid");
   if (acid == '') { return }
   return acid
-}
-
-/**
- * 判断用户是否登录
- * @param {string} dept "video" or "article"
- * @param {string} evidence "cookies" or "ui"
- * @returns {boolean} 状态
- */
-function isLogin(dept = "video", evidence = "cookies") {
-  if (evidence == "cookies") {
-    return Boolean(getcookie("ac_username"));
-  } else if (evidence == "ui") {
-    switch (dept) {
-      case "video":
-        if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden")) {
-          return true;
-        } else {
-          return false;
-        }
-      case "article":
-        let isLogined = false;
-        try {
-          isLogined = document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0;
-        } catch (error) {
-          isLogined = getcookie("ac_username") != false ? true : false;
-        }
-        return isLogined;
-    }
-  }
 }
 
 /**

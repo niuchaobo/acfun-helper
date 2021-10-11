@@ -132,7 +132,7 @@ class PageBeautify {
         return res.text();
       })
       .then((res) => {
-        /**@type {APIs.PersonalUserInfoApi} */
+        /**@type {APIs.Personal.UserInfo} */
         let a = "";
         try {
           a = JSON.parse(res);

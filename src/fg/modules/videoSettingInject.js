@@ -25,7 +25,7 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
   /**
    * 消息发送器
    * @param {string} modName videoSetting父模块接收函数/模块
-   * @param {MessageSwitchWindowMsgPayload} msg 消息内容 {source:string,target:string,InvkSetting: {type:"function"},params:{}|[]}
+   * @param {MessageSwitchStructs.WindowMsgPayload} msg 消息内容 {source:string,target:string,InvkSetting: {type:"function"},params:{}|[]}
    */
   function MessagePush(payload = {}) {
     window.parent.postMessage({
@@ -36,7 +36,7 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
 
   /**
    * 前端调用处理
-   * @param {MessageSwitchInjectRecievePayload} e 
+   * @param {MessageSwitchStructs.InjectRecievePayload} e 
    */
   function AcFunHelperFrontendEventInvoker(e) {
     if (e.detail.InvkSetting.type === "function" && typeof (AcFunHelperVideoFunction[e.detail.target]) === 'function') {
@@ -48,7 +48,7 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
 
   /**
    * 通用调用处理器
-   * @param {MessageSwitchWindowMsgRespnse} e constraint:{ data: { to: "AcFunHelper_vsInject", msg: {source:string,target:string,InvkSetting: {type:"function"},params:{}|[]} } }
+   * @param {MessageSwitchStructs.WindowMsgRespnse} e constraint:{ data: { to: "AcFunHelper_vsInject", msg: {source:string,target:string,InvkSetting: {type:"function"},params:{}|[]} } }
    */
   function MessageCommonInvoker(e) {
     if (e.data.msg.InvkSetting.type === "function" && typeof (AcFunHelperVideoFunction[e.data.msg.target]) === 'function') {

@@ -15,7 +15,7 @@ class SandboxAgent {
 
     /**
      * 创建任务
-     * @param {MessageSwitchWindowMsgPayload} e 
+     * @param {MessageSwitchStructs.WindowMsgPayload} e 
      * @param {Function} callback 
      */
     createTask(e, callback) {
@@ -36,7 +36,7 @@ class SandboxAgent {
 
     /**
      * 任务完成
-     * @param {MessageSwitchWindowMsgPayload} e 
+     * @param {MessageSwitchStructs.WindowMsgPayload} e 
      */
     taskFinished(e, response) {
         if (this.finishedCallBacks.indexOf(e.InvkSetting.callbackId) == -1) {
@@ -59,7 +59,7 @@ class SandboxAgent {
 
     /**
      * 运行回调
-     * @param {MessageSwitchCommonPayload} e 
+     * @param {MessageSwitchStructs.CommonPayload} e 
      * @returns 
      */
     runCallback(e) {

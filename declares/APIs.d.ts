@@ -67,11 +67,21 @@ declare namespace APIs {
     createTime: string;
     superUbb: boolean;
     shareUrl: string;
-    user: PersonalUserInfo;
+    user: Personal.UserInfo;
     status: string;
     isFavorite: boolean;
     mkey: string;
     priority: string;
+  }
+  namespace ContributionInfo {
+    interface StaffInfos {
+      result: string;
+      staffInfos: Staff[];
+      upInfo: UpInfo;
+    }
+    interface Staff extends UserInfo {
+      staffRoleName: string;
+    }
   }
   interface Sidelights {
     bananaCount: number;
@@ -91,7 +101,7 @@ declare namespace APIs {
     sourceId: string;
     stowCount: string;
     type: number;
-    user: PersonalUserInfo;
+    user: Personal.UserInfo;
     videoId: string;
     videoSizeType: number;
     viewCount: string;
@@ -191,103 +201,107 @@ declare namespace APIs {
     title: string;
     updateStatus: number;
   }
-  interface MedalInfo {
-    clubName: string;
-    level: number;
-    uperHeadUrl: string;
-    uperId: number;
-    uperName: string;
+  namespace Medel {
+    interface MedalInfo {
+      clubName: string;
+      level: number;
+      uperHeadUrl: string;
+      uperId: number;
+      uperName: string;
+    }
+    interface MedalDetail {
+      clubName: string;
+      currentDegreeLimit: number;
+      friendshipDegree: number;
+      joinClubTime: number;
+      level: number;
+      uperHeadUrl: string;
+      uperId: number;
+      uperName: string;
+      wearMedal: boolean;
+    }
+    interface MedalDegreeLimit {
+      bananaDegree: number;
+      bananaDegreeLimit: number;
+      giftDegree: number;
+      giftDegreeLimit: number;
+      liveWatchDegree: number;
+      liveWatchDegreeLimit: number;
+      peachDegree: number;
+      peachDegreeLimit: number;
+      uperId: number;
+    }
+    interface LiveMedalApi {
+      clubName: string;
+      liveGiftConfig: {
+        afterDiscountGiftCount: number;
+        beforeDiscountGiftCount: number;
+        liveGiftId: number;
+      };
+      medal: MedalDegreeLimit;
+      medalDegreeLimit: MedalDegreeLimit;
+      medalList: MedalDetail[];
+      rankList: string;
+      status: number;
+    }
   }
-  interface MedalDetail {
-    clubName: string;
-    currentDegreeLimit: number;
-    friendshipDegree: number;
-    joinClubTime: number;
-    level: number;
-    uperHeadUrl: string;
-    uperId: number;
-    uperName: string;
-    wearMedal: boolean;
-  }
-  interface MedalDegreeLimit {
-    bananaDegree: number;
-    bananaDegreeLimit: number;
-    giftDegree: number;
-    giftDegreeLimit: number;
-    liveWatchDegree: number;
-    liveWatchDegreeLimit: number;
-    peachDegree: number;
-    peachDegreeLimit: number;
-    uperId: number;
-  }
-  interface LiveMedalApi {
-    clubName: string;
-    liveGiftConfig: {
-      afterDiscountGiftCount: number;
-      beforeDiscountGiftCount: number;
-      liveGiftId: number;
-    };
-    medal: MedalDegreeLimit;
-    medalDegreeLimit: MedalDegreeLimit;
-    medalList: MedalDetail[];
-    rankList: string;
-    status: number;
-  }
-  interface PersonalUserInfoBasic {
-    avatarFrame: number;
-    blog: string;
-    comeFrom: string;
-    experimentConfig: string;
-    firstDepositState: number;
-    gender: number;
-    headUrl: string;
-    isRegular: boolean;
-    isSameCityTagAllowShown: boolean;
-    nameColor: number;
-    nameRed: number;
-    qq: string;
-    registerTime: number;
-    sexTrend: -1 | 0 | 1 | 2;
-    signature: string;
-    userId: number;
-    userName: string;
-    verifiedText: string;
-    verifiedTypes: number[];
-  }
-  interface PersonalUserInfo extends PersonalUserInfoBasic {
-    activeRecently: boolean;
-    avatarFrameImgInfo: UserInfoImg;
-    avatarFrameMobileImg: string;
-    avatarFramePcImg: string;
-    avatarImage: string;
-    banana: number;
-    contentCount: string;
-    email: string;
-    followed: string;
-    followedNum: number;
-    following: string;
-    goldBanana: number;
-    isContractUp: boolean;
-    isEmailCheck: boolean;
-    isMobileCheck: boolean;
-    isTeenagerMode: boolean;
-    level: number;
-    mediaWearInfo: MedalInfo;
-    membershipModuleDesc: string;
-    membershipModuleImgUrl: string;
-    membershipState: number;
-    mobile: string;
-    renameCard: number;
-    shareUrl: string;
-    signature: string;
-    tagStowCount: string;
-    taskModuleDesc: string;
-    userHeadImgInfo: UserInfoImg;
-    verifiedType: number;
-  }
-  interface PersonalUserInfoApi {
-    info: PersonalUserInfo;
-    result: number;
+  namespace Personal {
+    interface UserInfoBasic {
+      avatarFrame: number;
+      blog: string;
+      comeFrom: string;
+      experimentConfig: string;
+      firstDepositState: number;
+      gender: number;
+      headUrl: string;
+      isRegular: boolean;
+      isSameCityTagAllowShown: boolean;
+      nameColor: number;
+      nameRed: number;
+      qq: string;
+      registerTime: number;
+      sexTrend: -1 | 0 | 1 | 2;
+      signature: string;
+      userId: number;
+      userName: string;
+      verifiedText: string;
+      verifiedTypes: number[];
+    }
+    interface UserInfo extends UserInfoBasic {
+      activeRecently: boolean;
+      avatarFrameImgInfo: UserInfoImg;
+      avatarFrameMobileImg: string;
+      avatarFramePcImg: string;
+      avatarImage: string;
+      banana: number;
+      contentCount: string;
+      email: string;
+      followed: string;
+      followedNum: number;
+      following: string;
+      goldBanana: number;
+      isContractUp: boolean;
+      isEmailCheck: boolean;
+      isMobileCheck: boolean;
+      isTeenagerMode: boolean;
+      level: number;
+      mediaWearInfo: MedalInfo;
+      membershipModuleDesc: string;
+      membershipModuleImgUrl: string;
+      membershipState: number;
+      mobile: string;
+      renameCard: number;
+      shareUrl: string;
+      signature: string;
+      tagStowCount: string;
+      taskModuleDesc: string;
+      userHeadImgInfo: UserInfoImg;
+      verifiedType: number;
+    }
+    interface Api {
+      info: UserInfo;
+      result: number;
+    }
   }
   interface UserInfoImgCdns {
     freeTrafficCdn: boolean;
@@ -543,186 +557,192 @@ declare namespace APIs {
       }
     ];
   }
-  interface DanmakuItem {
-    body: string;
-    color: number;
-    createTime: number;
-    danmakuAvatarUrl: string;
-    danmakuId: number;
-    danmakuImgUrl: string;
-    danmakuStyle: number;
-    danmakuType: number;
-    isLike: boolean;
-    likeCount: number;
-    mode: number;
-    position: number;
-    rank: number;
-    roleId: number;
-    size: number;
-    userId: number;
-  }
-  /**
-   * @url https://www.acfun.cn/rest/pc-direct/new-danmaku/pollByPosition
-   */
-  interface PollDamakuByPosition {
-    addCount: number;
-    fetchTime: number;
-    danmakus: DanmakuItem[];
-    onlineCount: number;
-    positionFromInclude: number;
-    positionToExclude: number;
-    result: number;
-    styleDanmakuCount: number;
-    totalCount: number;
-    totalCountShow: string;
-  }
-  interface CommentItem {
-    avatarFrame: number;
-    avatarFrameImgInfo: {
-      width: number;
-      height: number;
-      size: number;
-      type: number;
-      thumbnailImage: {
-        cdnUrls: [
-          {
-            freeTrafficCdn: boolean;
-            freeTrafficProductAbbreviation: string;
-            url: string;
-          }
-        ];
+  namespace Comments {
+    interface Item {
+      avatarFrame: number;
+      avatarFrameImgInfo: {
+        width: number;
+        height: number;
+        size: number;
+        type: number;
+        thumbnailImage: {
+          cdnUrls: [
+            {
+              freeTrafficCdn: boolean;
+              freeTrafficProductAbbreviation: string;
+              url: string;
+            }
+          ];
+        };
       };
-    };
-    avatarImage: string;
-    commentId: number;
-    content: string;
-    deviceModel: string;
-    floor: number;
-    headUrl: [
-      {
-        cdn: string;
-        url: string;
-        urlPattern: string;
-      }
-    ];
-    imageInfo: {
-      height: number;
-      size: number;
-      type: number;
-      width: number;
-      cdnUrls: [
+      avatarImage: string;
+      commentId: number;
+      content: string;
+      deviceModel: string;
+      floor: number;
+      headUrl: [
         {
-          freeTrafficCdn: boolean;
-          url: null;
-        }
-      ];
-    };
-    imageUrl: string;
-    isLiked: boolean;
-    isSameCity: boolean;
-    isSignedUpCollege: boolean;
-    isSticky: boolean;
-    isUp: boolean;
-    likeCount: number;
-    likeCountFormat: string;
-    nameColor: number;
-    nameRed: number;
-    postDate: string;
-    replyTo: number;
-    replyToUserName: string;
-    selfComment: boolean;
-    shareCount: number;
-    shareCountFormat: string;
-    sourceId: number;
-    sourceType: number;
-    subCommentCount: number;
-    subCommentCountFormat: string;
-    timestamp: number;
-    totalPage: number;
-    userHeadImgInfo: {
-      width: number;
-      height: number;
-      size: number;
-      type: number;
-      thumbnailImage: {
-        cdnUrls: [
-          {
-            freeTrafficCdn: boolean;
-            freeTrafficProductAbbreviation: string;
-            url: string;
-          }
-        ];
-      };
-    };
-    userId: number;
-    userName: string;
-    verified: number;
-    verifiedText: string;
-    verifiedType: number;
-    verifiedTypes: number[];
-  }
-  interface CommentApi {
-    commentCount: number;
-    contentUbbVersion: string;
-    curPage: number;
-    godComments: CommentItem[];
-    hotComments: CommentItem[];
-    isUp: boolean;
-    pageSize: number;
-    pcursor: string;
-    result: number;
-    sourceType: number;
-    stickyComments: CommentApi[];
-    subCommentsMap: {};
-    totalPage: number;
-    rootComments: CommentItem[];
-  }
-  interface ArticlePart {
-    cursor: string;
-    data: ArticleFeed[];
-    result: number;
-  }
-  interface ArticleFeed {
-    createTime: number;
-    description: string;
-    formatCommentCount: string;
-    formatViewCount: string;
-    isOriginal: boolean;
-    realmId: number;
-    realmName: string;
-    title: string;
-    userId: number;
-    userName: string;
-    articleId: number;
-    commentCount: number;
-    coverImgInfo: {
-      height: number;
-      thumbnailImage: [
-        {
-          freeTrafficCdn: boolean;
-          freeTrafficProductAbbreviation: string;
+          cdn: string;
           url: string;
+          urlPattern: string;
         }
       ];
-      size: number;
-      type: number;
-      width: number;
-    };
+      imageInfo: {
+        height: number;
+        size: number;
+        type: number;
+        width: number;
+        cdnUrls: [
+          {
+            freeTrafficCdn: boolean;
+            url: null;
+          }
+        ];
+      };
+      imageUrl: string;
+      isLiked: boolean;
+      isSameCity: boolean;
+      isSignedUpCollege: boolean;
+      isSticky: boolean;
+      isUp: boolean;
+      likeCount: number;
+      likeCountFormat: string;
+      nameColor: number;
+      nameRed: number;
+      postDate: string;
+      replyTo: number;
+      replyToUserName: string;
+      selfComment: boolean;
+      shareCount: number;
+      shareCountFormat: string;
+      sourceId: number;
+      sourceType: number;
+      subCommentCount: number;
+      subCommentCountFormat: string;
+      timestamp: number;
+      totalPage: number;
+      userHeadImgInfo: {
+        width: number;
+        height: number;
+        size: number;
+        type: number;
+        thumbnailImage: {
+          cdnUrls: [
+            {
+              freeTrafficCdn: boolean;
+              freeTrafficProductAbbreviation: string;
+              url: string;
+            }
+          ];
+        };
+      };
+      userId: number;
+      userName: string;
+      verified: number;
+      verifiedText: string;
+      verifiedType: number;
+      verifiedTypes: number[];
+    }
+    interface Api {
+      commentCount: number;
+      contentUbbVersion: string;
+      curPage: number;
+      godComments: Item[];
+      hotComments: Item[];
+      isUp: boolean;
+      pageSize: number;
+      pcursor: string;
+      result: number;
+      sourceType: number;
+      stickyComments: CommentApi[];
+      subCommentsMap: {};
+      totalPage: number;
+      rootComments: Item[];
+    }
+  }
+  namespace Articles {
+    interface Part {
+      cursor: string;
+      data: Feed[];
+      result: number;
+    }
+    interface Feed {
+      createTime: number;
+      description: string;
+      formatCommentCount: string;
+      formatViewCount: string;
+      isOriginal: boolean;
+      realmId: number;
+      realmName: string;
+      title: string;
+      userId: number;
+      userName: string;
+      articleId: number;
+      commentCount: number;
+      coverImgInfo: {
+        height: number;
+        thumbnailImage: [
+          {
+            freeTrafficCdn: boolean;
+            freeTrafficProductAbbreviation: string;
+            url: string;
+          }
+        ];
+        size: number;
+        type: number;
+        width: number;
+      };
+    }
   }
   interface StaffGet {
     result: number;
-    staffInfos: PersonalUserInfo[];
-    upInfo: PersonalUserInfo;
+    staffInfos: Personal.UserInfo[];
+    upInfo: Personal.UserInfo;
   }
-  interface DanmakuBlockItem {
-    blockWords: string;
-    blockWordsType: number;
-    createTime: number;
-  }
-  interface DanmakuBlockApi {
-    result: number;
-    textType: DanmakuBlockItem[];
-    userIdType: DanmakuBlockItem[];
+  namespace Danmakus {
+    interface BlockItem {
+      blockWords: string;
+      blockWordsType: number;
+      createTime: number;
+    }
+    interface BlockApi {
+      result: number;
+      textType: BlockItem[];
+      userIdType: BlockItem[];
+    }
+    interface Item {
+      body: string;
+      color: number;
+      createTime: number;
+      danmakuAvatarUrl: string;
+      danmakuId: number;
+      danmakuImgUrl: string;
+      danmakuStyle: number;
+      danmakuType: number;
+      isLike: boolean;
+      likeCount: number;
+      mode: number;
+      position: number;
+      rank: number;
+      roleId: number;
+      size: number;
+      userId: number;
+    }
+    /**
+     * @url https://www.acfun.cn/rest/pc-direct/new-danmaku/pollByPosition
+     */
+    interface PollDamakuByPosition {
+      addCount: number;
+      fetchTime: number;
+      danmakus: Item[];
+      onlineCount: number;
+      positionFromInclude: number;
+      positionToExclude: number;
+      result: number;
+      styleDanmakuCount: number;
+      totalCount: number;
+      totalCountShow: string;
+    }
   }
   interface HotSpotsApi {
     hotSpotDistribution: [
@@ -733,74 +753,76 @@ declare namespace APIs {
     ];
     result: number;
   }
-  interface FavoriteBangumiItem {
-    bangumiDesc: string;
-    bangumiId: number;
-    bangumiSerialStatus: number;
-    bangumiTitle: string;
-    coverImage: string;
-    coverImgInfo: UserInfoImg;
-    groupId: string;
-    itemCount: number;
-    lastBangumiItemEpisodeName: string;
-    lastUpdateItemName: string;
-    lastUpdateTime: number;
-    requestId: string;
-    status: number;
-    stows: number;
-    updateStatus: number;
-    updateTime: number;
-    userPlayedSeconds: number;
-    views: number;
-  }
-  interface FavoriteAandVItem {
-    channelInfo: {
-      channelId: number;
-      channelName: string;
-    };
-    comments: number;
-    contentCreateTime: number;
-    contentDesc: string;
-    contentId: number;
-    contentImg: string;
-    contentTitle: string;
-    groupId: string;
-    isLike: boolean;
-    like: boolean;
-    likeCount: number;
-    likeCountShow: string;
-    requestId: string;
-    status: number;
-    stows: number;
-    updateTime: number;
-    userId: number;
-    userImg: string;
-    userName: string;
-    userPlayedSeconds: number;
-    views: number;
-  }
-  interface FavoriteApi {
-    page: number;
-    perpage: number;
-    result: number;
-    total: number;
-    favoriteList: FavoriteAandVItem[];
-  }
-  interface FavoriteAlbum {
-    albumDesc: string;
-    albumId: number;
-    albumTitle: string;
-    coverImage: string;
-    groupId: string;
-    lastUpdateTime: number;
-    requestId: string;
-    status: number;
-    stows: number;
-    updateTime: number;
-    userId: number;
-    userImage: string;
-    userName: string;
-    views: number;
+  namespace Favorite {
+    interface BangumiItem {
+      bangumiDesc: string;
+      bangumiId: number;
+      bangumiSerialStatus: number;
+      bangumiTitle: string;
+      coverImage: string;
+      coverImgInfo: UserInfoImg;
+      groupId: string;
+      itemCount: number;
+      lastBangumiItemEpisodeName: string;
+      lastUpdateItemName: string;
+      lastUpdateTime: number;
+      requestId: string;
+      status: number;
+      stows: number;
+      updateStatus: number;
+      updateTime: number;
+      userPlayedSeconds: number;
+      views: number;
+    }
+    interface AandVItem {
+      channelInfo: {
+        channelId: number;
+        channelName: string;
+      };
+      comments: number;
+      contentCreateTime: number;
+      contentDesc: string;
+      contentId: number;
+      contentImg: string;
+      contentTitle: string;
+      groupId: string;
+      isLike: boolean;
+      like: boolean;
+      likeCount: number;
+      likeCountShow: string;
+      requestId: string;
+      status: number;
+      stows: number;
+      updateTime: number;
+      userId: number;
+      userImg: string;
+      userName: string;
+      userPlayedSeconds: number;
+      views: number;
+    }
+    interface Api {
+      page: number;
+      perpage: number;
+      result: number;
+      total: number;
+      favoriteList: AandVItem[];
+    }
+    interface Album {
+      albumDesc: string;
+      albumId: number;
+      albumTitle: string;
+      coverImage: string;
+      groupId: string;
+      lastUpdateTime: number;
+      requestId: string;
+      status: number;
+      stows: number;
+      updateTime: number;
+      userId: number;
+      userImage: string;
+      userName: string;
+      views: number;
+    }
   }
   interface ArubamuItem {
     assistants: UserInfo[];
@@ -826,62 +848,64 @@ declare namespace APIs {
     updateTime: number;
     viewsCount: number;
   }
-  interface BananaStoreItem {
-    amount: number;
-    coolDownDay: number;
-    description: string;
-    expireTime: number;
-    imageAppUrl: null;
-    imagePCUrl: null;
-    imageUrl: string;
-    levelLimit: number;
-    maxAllowBuy: number;
-    priceInfo: [
-      {
-        count: number;
-        payType: number;
-        payTypeInfo: string;
-      }
-    ];
-    productId: number;
-    sales: number;
-    status: number;
-    title: string;
-    type: number;
-  }
-  interface BananaShopApi {
-    list: BananaStoreItem[];
-    nextPage: string;
-    total: number;
-  }
-  interface BananaShopBoughtRealApi {
-    orders: BananaShopBoughtRealItem[];
-    total: number;
-  }
-  interface BananaShopBoughtVApi {
-    items: BananaShopBoughtVitem[];
-    nextPage: string;
-    total: number;
-  }
-  interface BananaShopBoughtVitem {
-    count: number;
-    description: string;
-    id: number;
-    image: string;
-    name: string;
-    status: number;
-    usageType: number;
-  }
-  interface BananaShopBoughtRealItem {
-    buyTime: number;
-    count: number;
-    id: string;
-    image: string;
-    name: string;
-    payAmount: string;
-    payType: number;
-    productId: number;
-    productType: number;
-    state: string;
+  namespace BananaShop {
+    interface StoreItem {
+      amount: number;
+      coolDownDay: number;
+      description: string;
+      expireTime: number;
+      imageAppUrl: null;
+      imagePCUrl: null;
+      imageUrl: string;
+      levelLimit: number;
+      maxAllowBuy: number;
+      priceInfo: [
+        {
+          count: number;
+          payType: number;
+          payTypeInfo: string;
+        }
+      ];
+      productId: number;
+      sales: number;
+      status: number;
+      title: string;
+      type: number;
+    }
+    interface Api {
+      list: StoreItem[];
+      nextPage: string;
+      total: number;
+    }
+    interface BoughtRealApi {
+      orders: BoughtRealItem[];
+      total: number;
+    }
+    interface BoughtVApi {
+      items: BoughtVitem[];
+      nextPage: string;
+      total: number;
+    }
+    interface BoughtVitem {
+      count: number;
+      description: string;
+      id: number;
+      image: string;
+      name: string;
+      status: number;
+      usageType: number;
+    }
+    interface BoughtRealItem {
+      buyTime: number;
+      count: number;
+      id: string;
+      image: string;
+      name: string;
+      payAmount: string;
+      payType: number;
+      productId: number;
+      productType: number;
+      state: string;
+    }
   }
 }

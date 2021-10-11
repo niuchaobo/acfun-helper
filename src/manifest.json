@@ -97,7 +97,7 @@
             "description": "稍后再看"
         }
     },
-    "content_security_policy": "style-src 'self' 'unsafe-inline';script-src 'self'; object-src 'self';",
+    "content_security_policy": "style-src 'self' 'unsafe-inline';script-src 'self' 'unsafe-eval'; object-src 'self';",
     "web_accessible_resources": [
         "fg/acfunxhr.js",
         "common/xhr-proxy.js",
