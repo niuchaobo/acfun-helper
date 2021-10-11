@@ -491,7 +491,7 @@ function adjustVideoUp() {
   let currentUserNameEncode = getcookie("ac_username");
   if (currentUserNameEncode != "" && currentUserNameEncode != undefined) {
     let userName = decodeURI(currentUserNameEncode);
-    let name = document.getElementsByClassName("up-name")[0].innerText;
+    let name = document.querySelector("a.up-name").innerText;
     if (userName == name) {
       return 1; //是up主
     } else {
