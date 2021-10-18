@@ -104,7 +104,6 @@ class ContextMenuManage extends AcFunHelperBackend {
         }
 
         this.runtime.dataset.contextMenuRegistry["event"]["7"] = function (params, tab) {
-            this.tabInvoke(tab.id, 'timelineDotsMain', { massText: params.selectionText, url: params.pageUrl });
             MessageSwitch.sendMessage('bg', {
                 target: "timelineDotsMain", InvkSetting: { tabId: tab.id, type: "function" }, params: {
                     massText: params.selectionText, url: params.pageUrl

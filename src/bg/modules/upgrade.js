@@ -2,6 +2,7 @@ class UpgradeAgent extends AcFunHelperBackend {
     constructor() {
         super();
         this.initMod();
+        this.checkConfigDay = [3, 7];
     }
 
     initMod() {
@@ -55,7 +56,7 @@ class UpgradeAgent extends AcFunHelperBackend {
                 })
         }
     }
-    
+
     /**
      * 版本号判断
      * @param {string} remote 远端版本号
@@ -90,14 +91,11 @@ class UpgradeAgent extends AcFunHelperBackend {
      * @description 对于常年不关浏览器的同志来说相比是很需要的
      */
     purgeNotificationList() {
-        if (this.notificationListPurgeCount > 2) {
-            chrome.notifications.getAll((e) => {
-                for (let i in e) {
-                    chrome.notifications.clear(i, function () { });
-                }
-            })
-            this.notificationListPurgeCount = 0;
-        }
+        chrome.notifications.getAll((e) => {
+            for (let i in e) {
+                chrome.notifications.clear(i, function () { });
+            }
+        })
     }
 
 }
