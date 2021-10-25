@@ -156,6 +156,9 @@
                     .then(async (res) => {
                         //判断直播状态
                         let x = JSON.parse(res);
+                        if(x.isError){
+                            return;
+                        }
                         if (x.liveId != undefined) {
                             var state = true;
                         } else {
@@ -202,6 +205,9 @@
             }
             let rawResult = await fetchResult("https://live.acfun.cn/api/channel/list?count=56&pcursor=&filters=[%7B%22filterType%22:3,+%22filterId%22:0%7D]");
             let result = JSON.parse(rawResult);
+            if(result?.isError){
+                return;
+            }
             //处理直播状态，将直播状态信息写入 此次直播状态字典
             for (let i = 0; i < result.liveList.length; i++) {
                 fliveStateWorkDic[result.liveList[i].authorId] = true;
