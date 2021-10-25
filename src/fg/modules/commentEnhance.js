@@ -5,6 +5,7 @@
 class CommentEnhance {
     constructor() {
         this.devMode = false;
+        this.preDep = false;
         this.reg_for_time = new RegExp('[0-9]{1,3}[:分][0-9]{1,2}秒?');
         this.reg_for_time3part = new RegExp('[0-9]{1,3}[:小时][0-9]{1,3}[:分][0-9]{1,2}秒?');
         this.reg_for_part = new RegExp('^p[0-9]{1,2}|^[0-9]{1,2}p', 'i')
@@ -48,6 +49,9 @@ class CommentEnhance {
      * 渲染扫描到的用户tag信息
      */
     renderScan() {
+        if (!this.preDep) {
+            return;
+        }
         var timer = setInterval(function () {
             let nodes = $('.area-comment-title a.name');
             let loading = $('.ac-comment-loading').html();
@@ -76,7 +80,12 @@ class CommentEnhance {
     /**
      * 渲染标记、评论保存为HTML（包括其处理函数）按钮
      */
-    renderMark() {
+    renderMark(commentNumber) {
+        if (commentNumber) {
+            this.preDep = true;
+        } else {
+            return;
+        }
         var timer = setInterval(function () {
             let nodes = $('.area-comm-more');
             let loading = $('.ac-comment-loading').html();
@@ -266,6 +275,9 @@ class CommentEnhance {
      * 评论区显示up主名字
      */
     renderScanForUp() {
+        if (!this.preDep) {
+            return;
+        }
         var timer = setInterval(async function () {
             var url = window.location.toString();
             /**@type {string[]} */
@@ -301,7 +313,7 @@ class CommentEnhance {
                         if (userName == up) {
                             $(this).after('<span class="pos up">UP主</span>');
                         }
-                        if (staffs) {
+                        if (staffs.length) {
                             if (staffs.includes(userName)) {
                                 $(this).after(`<span class="pos staff">${staffDetail[userName]}</span>`);
                             }
@@ -314,6 +326,9 @@ class CommentEnhance {
     }
 
     renderSubScan(rootCommentId) {
+        if (!this.preDep) {
+            return;
+        }
         var timer = setInterval(function () {
             let nodes = $("div[data-commentid='" + rootCommentId + "']").find('a.name');
             if (nodes.length > 0) {
@@ -343,6 +358,9 @@ class CommentEnhance {
      * @param {string} rootCommentId 
      */
     renderSubScanForUp(rootCommentId) {
+        if (!this.preDep) {
+            return;
+        }
         var timer = setInterval(async function () {
             /**@type {string[]} */
             let staffs = [];
@@ -378,7 +396,7 @@ class CommentEnhance {
                         if (userName == up) {
                             $(this).after('<span class="pos up">UP主</span>');
                         }
-                        if (staffs) {
+                        if (staffs.length) {
                             if (staffs.includes(userName)) {
                                 $(this).after(`<span class="pos staff">${staffDetail[userName]}</span>`);
                             }
@@ -391,6 +409,9 @@ class CommentEnhance {
     }
 
     renderSubMark(rootCommentId) {
+        if (!this.preDep) {
+            return;
+        }
         var timer = setInterval(function () {
             let nodes = $("div[data-commentid='" + rootCommentId + "']").find('.area-comm-more');
             if (nodes.length > 0) {
@@ -625,6 +646,9 @@ class CommentEnhance {
      * @description 在评论区添加快速跳转至视频对应时间的链接
      */
     searchScanForPlayerTime() {
+        if (!this.preDep) {
+            return;
+        }
         var timer = setInterval(() => {
             let nodes = $('.area-comment-des-content:not(:has(.quickJump))');
             let loading = $('.ac-comment-loading').html();
