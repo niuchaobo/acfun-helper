@@ -2730,7 +2730,7 @@ class CommentAreaIterator extends UtilsBundle {
                     callName != "_sys" && this.registry[callName](e);
                 })
                 this.menuCallback._sys.forEach(() => {
-                    this.#menuExec(e);
+                    this.menuExec(e);
                 })
             }
         });
@@ -2759,7 +2759,7 @@ class CommentAreaIterator extends UtilsBundle {
      * 在遍历过程中添加菜单
      * @param {HTMLElement} commentElem 
      */
-    #menuExec(commentElem) {
+    menuExec(commentElem) {
         if (this.menuCallback._sys) {
             for (let menuItemData in this.menuCallback) {
                 if (menuItemData == "_sys") {

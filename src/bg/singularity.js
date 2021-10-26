@@ -1,8 +1,4 @@
 class AcFunHelperBackend {
-    #coreData = {
-
-    };
-
     constructor() {
         /**@type {runtimeData} */
         this.runtimeData = {
