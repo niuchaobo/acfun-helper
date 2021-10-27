@@ -1,7 +1,7 @@
 /**
  * 通知、提醒和推送的后台守护模块
  */
- class MsgNotifs extends AcFunHelperBackend {
+class MsgNotifs extends AcFunHelperBackend {
     constructor() {
         super();
         this.initMod();
@@ -156,7 +156,7 @@
                     .then(async (res) => {
                         //判断直播状态
                         let x = JSON.parse(res);
-                        if(x.isError){
+                        if (x.isError) {
                             return;
                         }
                         if (x.liveId != undefined) {
@@ -192,6 +192,10 @@
      * 关注用户直播通知
      */
     async followLiveNotifEx() {
+        const sw = await getStorage("followLiveNotif").then(e => { return e.followLiveNotif });
+        if(!sw){
+            return;
+        }
         chrome.storage.local.get(['LocalUserId'], async (Uid) => {
             // 用户没有登录就不去获取信息了
             if (Uid.LocalUserId == "0") { return }
@@ -205,7 +209,7 @@
             }
             let rawResult = await fetchResult("https://live.acfun.cn/api/channel/list?count=56&pcursor=&filters=[%7B%22filterType%22:3,+%22filterId%22:0%7D]");
             let result = JSON.parse(rawResult);
-            if(result?.isError){
+            if (result?.isError) {
                 return;
             }
             //处理直播状态，将直播状态信息写入 此次直播状态字典
