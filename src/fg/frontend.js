@@ -423,7 +423,7 @@ class AcFunHelperFrontend {
 		this.options.mark = value;
 		optionsSave(this.options);
 		if (value) {
-			this.ce.renderMark(this.dataset.dougaInfo.commentCount);
+			this.ce.renderMark();
 		} else {
 			this.ce.clearMark();
 		}
