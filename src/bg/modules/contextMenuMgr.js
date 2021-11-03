@@ -1,3 +1,6 @@
+/**
+ * @description 右键菜单管理器
+ */
 class ContextMenuManage extends AcFunHelperBackend {
     constructor() {
         super();
@@ -7,6 +10,9 @@ class ContextMenuManage extends AcFunHelperBackend {
 
     }
 
+    /**
+     * 右键菜单实体注册
+     */
     initMod() {
         this.runtime.dataset.contextMenuRegistry["menuItem"]["coverDownload"] = {
             documentUrlPatterns: ['https://*.acfun.cn/*'],
@@ -58,6 +64,9 @@ class ContextMenuManage extends AcFunHelperBackend {
 
     }
 
+    /**
+     * 右键菜单点击响应
+     */
     clickEvent() {
         this.runtime.dataset.contextMenuRegistry["event"]["2"] = function (params, tab) {
             let link_url = params.linkUrl;
@@ -113,6 +122,53 @@ class ContextMenuManage extends AcFunHelperBackend {
         }.bind(this)
 
 
+    }
+
+    /**
+     * 挂载全部右键菜单、事件响应
+     */
+    attachAll() {
+        this.registerContextMenuEntity();
+        this.registerCtxMenuEvent();
+    }
+
+    /**挂接菜单 */
+    registerContextMenuEntity() {
+        for (let ctxMenu in this.runtime.dataset.contextMenuRegistry.menuItem) {
+            chrome.contextMenus.create(this.runtime.dataset.contextMenuRegistry.menuItem[ctxMenu]);
+        }
+    }
+
+    /**菜单响应 */
+    registerCtxMenuEvent() {
+        chrome.contextMenus.onClicked.addListener((e, tabInfo) => {
+            this.runtime.dataset.contextMenuRegistry.event[e.menuItemId](e, tabInfo);
+        });
+    }
+
+    /**
+     * 删除某个菜单的挂载
+     * @param {string} name 菜单对象在contextMenuRegistry.menuItem中的名字
+     * @param {()=>any} callback 
+     */
+    unattach(name, callback = null) {
+        const targetElem = this.runtime.dataset.contextMenuRegistry["menuItem"][name];
+        chrome.contextMenus.remove(targetElem.id, callback);
+        delete this.runtime.dataset.contextMenuRegistry["event"][targetElem.id];
+        delete this.runtime.dataset.contextMenuRegistry["menuItem"][name];
+    }
+
+    /**
+     * 删除全部右键菜单挂载
+     * @param {()=>any} callback 
+     * @returns {Promise<boolean>}
+     */
+    unattachAll(callback = null) {
+        return new Promise((resolv, reject) => {
+            chrome.contextMenus.removeAll(resolv(true));
+            callback();
+            reject(false);
+        })
     }
 
 }

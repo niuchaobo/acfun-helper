@@ -1281,6 +1281,18 @@ class ToolBox extends UtilsBundle {
         };
     }
 
+    static curry(func) {
+        return function curried(...args) {
+            if (args.length >= func.length) {
+                return func.apply(this, args);
+            } else {
+                return function (...args2) {
+                    return curried.apply(this, args.concat(args2));
+                }
+            }
+        };
+    }
+
 }
 
 /**
@@ -2122,7 +2134,7 @@ class AcFunHelper extends UtilsBundle {
     }
 
     static getBackendInst() {
-        return chrome.extension.getBackgroundPage().AcFunHelperBackend;
+        return chrome.extension.getBackgroundPage().AcFunHelperBackendInst;
     }
 
 }

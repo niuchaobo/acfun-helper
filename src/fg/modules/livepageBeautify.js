@@ -18,11 +18,15 @@ class LivePageButfy {
         this.devMode = false;
     }
 
-    commentTimeTag() {
+    onLoad() {
         let root = chrome.runtime.getURL('/');
         let sc = document.createElement("script");
         sc.src = `${root}fg/modules/liveSettingInject.js`;
         document.head.appendChild(sc);
+        sc.onload = function () {
+            MessageSwitch.sendEventMsgToInject(window, { target: "LiveloadOptionData", source: "LivePageButfy", InvkSetting: { type: "function" }, params: { title: "optionData", msg: window.AcFunHelperFrontend.options } });
+            MessageSwitch.sendEventMsgToInject(window, { target: "enterPlayerAutomate", source: "LivePageButfy", InvkSetting: { type: "function" }, params: {} });
+          };      
     }
 
     appendWidePlayer() {

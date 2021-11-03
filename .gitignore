@@ -31,3 +31,6 @@ package-lock.json
 *.crx
 *.pem
 src/.DS_Store
+
+# custom rule
+*.devig.*

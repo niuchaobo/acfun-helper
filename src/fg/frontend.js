@@ -200,7 +200,8 @@ class AcFunHelperFrontend {
 		}
 		//直播
 		if (REG.live.test(href)) {
-			this.options.liveCommentTimeTag && this.livePageBeautify.commentTimeTag();
+			// this.options.liveCommentTimeTag && 
+			this.livePageBeautify.onLoad();
 			//直播站功能
 			if (this.options.livePlayerEnhc) {
 				let timer = setInterval(() => {

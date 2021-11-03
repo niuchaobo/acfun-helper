@@ -54,8 +54,7 @@ export async function onOptionChanged(e) {
 	if (!e.originalEvent) return;
 	let options = await optionsLoad();
 	options.enabled = $("#extends-enbaled").prop("checked");
-	let newOptions = await AcFunHelper.getBackendInst().opt_optionsChanged(options);
-	optionsSave(newOptions);
+	AcFunHelper.getBackendInst().opt_optionsChanged(options);
 }
 
 export async function StopWatchLaterFpopup() {

@@ -49,29 +49,33 @@ class AcFunHelperBackendCore extends AcFunHelperBackend {
     }
 
     startDaemon() {
-        /**建立计划任务表 */
-        for (let task in this.runtime.dataset.core.scheduler) {
-            if (typeof (task) == "string") {
-                chrome.alarms.create(task, this.runtime.dataset.core.scheduler[task].option)
+        if (this.options.enabled) {
+            /**建立计划任务表 */
+            for (let task in this.runtime.dataset.core.scheduler) {
+                if (typeof (task) == "string") {
+                    chrome.alarms.create(task, this.runtime.dataset.core.scheduler[task].option)
+                }
             }
+            /**右键菜单实体、事件挂接 */
+            this.contextMenuMgmt.attachAll();
+            /**评论事件钩子 */
+            //评论区
+            chrome.webRequest.onBeforeRequest.addListener(
+                this.onCommentRequest.bind(this),
+                {
+                    urls: ["https://www.acfun.cn/rest/pc-direct/comment/*"]
+                },
+                []
+            );
+            //直播流
+            chrome.webRequest.onBeforeRequest.addListener(
+                this.onLiveStreamUrl.bind(this),
+                {
+                    urls: ["*://*/livecloud*"]
+                },
+                []
+            );
         }
-        /**挂接菜单 */
-        for (let ctxMenu in this.runtime.dataset.contextMenuRegistry.menuItem) {
-            chrome.contextMenus.create(this.runtime.dataset.contextMenuRegistry.menuItem[ctxMenu]);
-        }
-        /**菜单响应 */
-        chrome.contextMenus.onClicked.addListener((e, tabInfo) => {
-            this.runtime.dataset.contextMenuRegistry.event[e.menuItemId](e, tabInfo);
-        });
-        /**评论区Api钩子 */
-        chrome.webRequest.onBeforeRequest.addListener(
-            this.onCommentRequest.bind(this),
-            {
-                urls: ["https://www.acfun.cn/rest/pc-direct/comment/*", "*://*/livecloud*"]
-            },
-            []
-        );
-
 
     }
 
@@ -82,7 +86,7 @@ class AcFunHelperBackendCore extends AcFunHelperBackend {
      * @returns 
      */
     notifBuTrigger(e, index) {
-        for(let regElem in this.runtime.dataset.notificationBtnTriggerData){
+        for (let regElem in this.runtime.dataset.notificationBtnTriggerData) {
             if (new RegExp(regElem).test(e)) {
                 this.runtime.dataset.notificationBtnTriggerData[regElem](e, index);
             }
@@ -170,25 +174,28 @@ class AcFunHelperBackendCore extends AcFunHelperBackend {
     }
 
     onCommentRequest(req) {
-        if (!this.options.enabled) {
-            return;
-        }
         let url = req.url;
         let tabId = req.tabId;
         let commentListReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/list\\?.*");
         let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");
-
-        let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.pull.etoote.com/livecloud/.*");
 
         if (commentListReg.test(url)) {
             this.tabInvoke(tabId, 'renderList', { url: url });
         } else if (commentSubReg.test(url)) {
             let rootCommentId = url.match(commentSubReg)[1];
             this.tabInvoke(tabId, 'renderSub', { rootCommentId: rootCommentId, url: url });
-        } else if (liveReg.test(url)) {
-            this.tabInvoke(tabId, 'renderLive', { url: url });
         }
         this.authInfo.fetchPasstoken();
+    }
+
+    onLiveStreamUrl(req) {
+        this.authInfo.fetchPasstoken();
+        const liveReg = new RegExp("http(s)?://.*-acfun-adaptive.pull.etoote.com/livecloud/.*");
+        const url = req.url;
+        const tabId = req.tabId;
+        if (liveReg.test(url)) {
+            this.tabInvoke(tabId, 'renderLive', { url: url });
+        }
     }
 
     tabInvoke(tabId, action, params) {
@@ -231,6 +238,21 @@ class AcFunHelperBackendCore extends AcFunHelperBackend {
         return new Promise((resolve, reject) => {
             this.agent.postMessage('setScriptsOptions', { options }, result => resolve(result));
         });
+    }
+
+    static async removeTask(taskGroupName) {
+        return new Promise((resolve, reject) => {
+            /**@type {runtimeData} */
+            const runtime = globalThis.AcFunHelperBackendCore.runtime;
+            if (taskGroupName in runtime.dataset.core.scheduler) {
+                chrome.alarms.clear(taskGroupName, (status) => {
+                    if (status) {
+                        delete runtime.dataset.core.scheduler[taskGroupName];
+                        resolve();
+                    }
+                })
+            }
+        })
     }
 
     api_notice(params) {

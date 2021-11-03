@@ -58,7 +58,16 @@ class VideoSetting {
         let lastAcVpid = Number(videoInfo_data[judgeActivePart() - 1].id);
         try {
           if (JSON.parse(localStorage.playHistory)[lastAcVpid]) {
-            document.getElementsByTagName("video")[0].currentTime = JSON.parse(localStorage.playHistory)[lastAcVpid];
+            const _timer = setTimeout(() => {
+              $(".left-bottom-tip").eq(0).append(`<div class="tip-item muted" id="lastPlayTime" ><div class="left-bottom-tip-text"><span>上次播放到 ${localStorage.playHistory}</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="lastPlayTime">继续观看</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="lastPlayTimeCancle">取消</span></div></div>`);
+              document.querySelector("#lastPlayTime").addEventListener("click", () => {
+                document.getElementsByTagName("video")[0].currentTime = JSON.parse(localStorage.playHistory)[lastAcVpid];
+              })
+              document.querySelector("#lastPlayTimeCancle").addEventListener("click", () => {
+                $(".left-bottom-tip").eq(0).remove();
+              })
+            }, 5000);
+            $(".left-bottom-tip").eq(0) ? $(".left-bottom-tip").eq(0).remove() : "";
           } else {
             throw TypeError;
           }

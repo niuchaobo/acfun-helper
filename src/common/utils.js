@@ -1,3 +1,4 @@
+/**@type {OptionStruct.DefaultStruct} */
 const defaults = {
   enabled: true,//开启关闭插件
   permission: true,
@@ -38,6 +39,7 @@ const defaults = {
   custom_rate_keyCode: [38, 40],//shift ↑ ↓ 倍速播放快捷键
   custom_easy_jump_keyCode: [65], //shift A 评论时间跳转快捷键
   player_mode: 'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
+  liveplayer_mode: "wide",
   liveFloowNotif: false,
   liveFollowOpenNow: false,
   videoQualityStrategy: '0',
@@ -103,7 +105,7 @@ const defaults = {
   wheelToChangeVolume: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
-
+/**@type {InnerDefined.REGStruct} */
 const REG = {
   index: new RegExp('http(s)?://www.acfun.cn/$'),
   video: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+'),//视频
@@ -126,6 +128,9 @@ const REG = {
   videoPartNumByURL: new RegExp("_([0-9].?)"),
   topicCircle: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/(\d*)"),
   momentContent: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/moment\/(\d*)"),
+  method:{
+    
+  },
 }
 
 const indexdbArch = {
