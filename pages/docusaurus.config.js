@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'AcFun助手',
   tagline: 'Dinosaurs are cool',
-  url: 'https://',
-  baseUrl: '/',
+  url: 'https://sokwva.gitlab.io/acfun-helper',
+  baseUrl: '/acfun-helper/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
