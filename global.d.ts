@@ -212,6 +212,43 @@ interface runtimeData {
     modulesData: {};
   };
 }
+interface runtimeDataFg {
+  modules: string[];
+  devMode: boolean;
+  options: {};
+  href: null;
+  dataset: {
+    core: {
+      browserType: string;
+      status: {
+        core: boolean;
+        messageSwitch: boolean;
+        videoInjects: boolean;
+        liveInject: boolean;
+        xhrProxy: boolean;
+        authInfo: boolean;
+        videoSetting: boolean;
+        danmaku: boolean;
+        banana: boolean;
+        comments: boolean;
+        danmakuSearch: boolean;
+        download: boolean;
+        live: boolean;
+        livePageBeautify: boolean;
+        luckyTurntab: boolean;
+        pageBeautify: boolean;
+        readMore: boolean;
+        urlparams: boolean;
+        videoPageBeautify: boolean;
+        helperFgPop: boolean;
+        block:boolean;
+      };
+    };
+    dougaInfo: APIs.AcFunPageInfo;
+    sessionUUID: string;
+  };
+  deferQueue: {};
+}
 interface Window
   extends EventTarget,
     AnimationFrameProvider,

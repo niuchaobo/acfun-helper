@@ -1,8 +1,9 @@
 /**
  * 直播
  */
-class Live {
+class Live extends AcFunHelperFgFrame{
     constructor() {
+        super();
         this.devMode = false;
 
         this.liveDanmakuPiPObsver = null;

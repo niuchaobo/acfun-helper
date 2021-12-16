@@ -1,8 +1,9 @@
 /**
  * 页面美化
  */
-class PageBeautify {
+class PageBeautify extends AcFunHelperFgFrame {
   constructor() {
+    super();
     this.personInfo = "https://www.acfun.cn/rest/pc-direct/user/personalInfo";
     this.devMode = false;
     //往里边添加 栏目原来名称 与 导航上显示的名称
@@ -138,7 +139,7 @@ class PageBeautify {
           a = JSON.parse(res);
           if (!a.info.userId) { return }
         } catch (error) {
-          fgConsole(this, this.personBeautify, "fetch userInfo Failed.", 1, false);
+          fgConsole("PageBeautify", this.personBeautify, "fetch userInfo Failed.", 1, false);
           return;
         }
         var url = window.location.toString();
@@ -151,7 +152,7 @@ class PageBeautify {
             node.after(
               '<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
               a.info.userId +
-              '">我的直播</a></p>'+
+              '">我的直播</a></p>' +
               '<p class="crx-guid-p"><a target="_blank" href="https://www.acfun.cn/member/favourite">我的收藏</a></p>'
             );
             node.after('<p class="crx-guid-p">UID: ' + a.info.userId + "</p>");

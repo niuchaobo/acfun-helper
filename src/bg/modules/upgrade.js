@@ -1,4 +1,4 @@
-class UpgradeAgent extends AcFunHelperBackend {
+class UpgradeAgent extends AcFunHelperBgFrame {
     constructor() {
         super();
         this.initMod();

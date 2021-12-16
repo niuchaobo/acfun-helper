@@ -1,10 +1,9 @@
 /**
  * 用户信息获取
  */
-
-class AuthInfo {
+class AuthInfoFg extends AcFunHelperFgFrame {
     constructor() {
-        this.devMode = false;
+        super();
     }
 
     cookInfo() {
@@ -21,6 +20,16 @@ class AuthInfo {
             }
         }, false)
 
+    }
+
+    uidInfo() {
+        //Uid获取
+        try {
+            var UidInCookies = document.cookie.match("auth_key=(.*); ac_username")[1];
+        } catch (TypeError) {
+            var UidInCookies = 0;
+        }
+        chrome.storage.local.set({ LocalUserId: `${UidInCookies}` });
     }
 
 }

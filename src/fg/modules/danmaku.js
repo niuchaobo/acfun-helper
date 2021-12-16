@@ -1,8 +1,9 @@
 /**
  * 弹幕处理
  */
-class Danmaku {
+class Danmaku extends AcFunHelperFgFrame{
     constructor() {
+        super();
         this.devMode = false;
         this.acid = 0;
         this.duration = 10;

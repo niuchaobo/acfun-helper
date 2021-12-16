@@ -1,4 +1,4 @@
-class AcFunHelperBackend {
+class AcFunHelperBgFrame {
     constructor() {
         /**@type {runtimeData} */
         this.runtimeData = {
@@ -36,6 +36,51 @@ class AcFunHelperBackend {
             }
         }
         /**@type {runtimeData} */
+        this.runtime = globalThis.runtimeData;
+    }
+}
+
+class AcFunHelperFgFrame {
+    constructor() {
+        this.runtimeData = {
+            modules: [],
+            /**@type {boolean} */
+            devMode: false,
+            options: null,
+            href: null,
+            dataset: {
+                core: {
+                    browserType: "",
+                    status: {
+                        core: false,
+                        messageSwitch: false,
+                        videoInjects: false,
+                        liveInject: false,
+                        xhrProxy: false,
+                        authInfo: false,
+                        videoSetting: false,
+                        danmaku: false,
+                        banana: false,
+                        comments: false,
+                        danmakuSearch: false,
+                        download: false,
+                        live: false,
+                        livePageBeautify: false,
+                        luckyTurntab: false,
+                        pageBeautify: false,
+                        readMore: false,
+                        urlparams: false,
+                        videoPageBeautify: false,
+                        helperFgPop: false,
+                        block: false,
+                    }
+                },
+                dougaInfo: {},
+                sessionUUID: null,
+            },
+            deferQueue: {}
+        }
+        /**@type {runtimeDataFg} */
         this.runtime = globalThis.runtimeData;
     }
 }

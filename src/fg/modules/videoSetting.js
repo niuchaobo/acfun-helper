@@ -1,8 +1,9 @@
 ﻿/**
  * 视频播放设置
  */
-class VideoSetting {
+class VideoSetting extends AcFunHelperFgFrame {
   constructor() {
+    super();
     window.addEventListener("load", (e) => this.onLoad(e));
     this.underWorld = null;
     this.audioNodeGainFlag = false;
@@ -45,9 +46,10 @@ class VideoSetting {
     document.head.appendChild(sc);
     //给inject js 传递数据
     sc.onload = function () {
-      MessageSwitch.sendEventMsgToInject(window, { target: "loadOptionData", source: "videoSetting", InvkSetting: { type: "function" }, params: { title: "optionData", msg: window.AcFunHelperFrontend.options } });
+      MessageSwitch.sendEventMsgToInject(window, { target: "loadOptionData", source: "videoSetting", InvkSetting: { type: "function" }, params: { title: "optionData", msg: window.AcFunHelperFrontend.runtime.options } });
       MessageSwitch.sendEventMsgToInject(window, { target: "playerFuncAutomate", source: "videoSetting", InvkSetting: { type: "function" }, params: {} });
     };
+    this.runtime.dataset.core.status.videoInjects = true;
   }
 
   //跳转到上次观看(只支持1p投稿的跳转)
@@ -709,7 +711,7 @@ class VideoSetting {
    * @ideaRefer https://github.com/Yzi/AcFun-TheaterMode
    */
   videoMediaSession(dougaInfo) {
-    fgConsole(this, "videoMediaSession", "Init MediaSessionModule.", 1, false);
+    fgConsole("VideoSetting", "videoMediaSession", "Init MediaSessionModule.", 1, false);
     if (!isBoughtBangumi()) { return }
     /**@type {APIs.BangumiPageInfo} */
     let videoInfo = {};
@@ -773,8 +775,8 @@ class VideoSetting {
       //分P
       this.mediaSessionGatherMultiPartInfo(videoInfo);
     }
-    fgConsole(this, "videoMediaSession", "Attach MediaSession ActionHandler.", 1, false);
-    // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
+    fgConsole("VideoSetting", "videoMediaSession", "Attach MediaSession ActionHandler.", 1, false);
+    // fgConsole("VideoSetting", this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
     this.mediaSessionCore(videoInfo);
   }
 
@@ -808,7 +810,7 @@ class VideoSetting {
       document.querySelector("video").currentTime = Number(details.seekTime);
     });
 
-    fgConsole(this, "videoMediaSession", "Video MediaSession Attach Success.", 1, false);
+    fgConsole("VideoSetting", "videoMediaSession", "Video MediaSession Attach Success.", 1, false);
     if (videoInfo.videoList.length > 1) {
       try {
         this.mediaSessionNowPlayingIndex = REG.videoPartNumByURL.exec(location.href)[1] || 0;
@@ -824,7 +826,7 @@ class VideoSetting {
       navigator.mediaSession.setActionHandler("nexttrack", () => {
         this.mediaSessionPlayer("next", videoInfo);
       });
-      fgConsole(this, "videoMediaSession", "Video MediaSession MultiPart Attach Success.", 1, false);
+      fgConsole("VideoSetting", "videoMediaSession", "Video MediaSession MultiPart Attach Success.", 1, false);
     }
   }
 
@@ -883,7 +885,7 @@ class VideoSetting {
     try {
       videoInfo["videoList"] = document.querySelector(".scroll-div").children;
     } catch (error) {
-      fgConsole(this, "videoMediaSession", "Normal Video.", 1, false);
+      fgConsole("VideoSetting", "videoMediaSession", "Normal Video.", 1, false);
     }
   }
 
@@ -920,7 +922,7 @@ class VideoSetting {
         );
       }
     } else {
-      fgConsole(this, "timelineMain", "No content.", 3, false);
+      fgConsole("VideoSetting", "timelineMain", "No content.", 3, false);
     }
   }
 

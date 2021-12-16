@@ -1,4 +1,4 @@
-class AcFunHelperBackendCore extends AcFunHelperBackend {
+class AcFunHelperBackendCore extends AcFunHelperBgFrame {
     constructor() {
         super();
         globalThis.runtimeData = this.runtimeData;
@@ -329,4 +329,4 @@ class AcFunHelperBackendCore extends AcFunHelperBackend {
 
 }
 
-window.AcFunHelperBackendInst = new AcFunHelperBackendCore();
+window.AcFunHelperBackend = new AcFunHelperBackendCore();

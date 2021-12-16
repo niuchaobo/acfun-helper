@@ -1,8 +1,9 @@
 /**
  * 幸运抽奖
  */
-class LuckyTtab {
+class LuckyTtab extends AcFunHelperFgFrame {
     constructor() {
+        super();
         this.messageFormat = "https://message.acfun.cn/im?targetId={userId}";
         this.hasBeenChosen = [];
         this.devMode = false;

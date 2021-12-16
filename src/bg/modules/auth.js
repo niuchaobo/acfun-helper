@@ -1,7 +1,7 @@
 /**
  * 获取认证信息
  */
-class AuthInfo extends AcFunHelperBackend{
+class AuthInfo extends AcFunHelperBgFrame{
     constructor() {
         super();
         this.devMode = false;

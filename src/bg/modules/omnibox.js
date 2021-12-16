@@ -1,4 +1,4 @@
-class Ohminibox extends AcFunHelperBackend {
+class Ohminibox extends AcFunHelperBgFrame {
     constructor() {
         super();
         this.omnibox = chrome.omnibox;

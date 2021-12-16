@@ -1,5 +1,5 @@
 interface Window {
-  AcFunHelperBackendInst: AcFunHelperBackendInst;
+  AcFunHelperBackend: AcFunHelperBackend;
   AcFunHelperFrontend: AcFunHelperFrontend;
   A: {
     Cookie: {

@@ -1,7 +1,7 @@
 /**
  * 通知、提醒和推送的后台守护模块
  */
-class MsgNotifs extends AcFunHelperBackend {
+class MsgNotifs extends AcFunHelperBgFrame {
     constructor() {
         super();
         this.initMod();
@@ -265,7 +265,7 @@ class MsgNotifs extends AcFunHelperBackend {
             return;
         }
         chrome.storage.local.get(['LocalUserId'], (Uid) => {
-            if (Uid.LocalUserId == "0") { clearInterval(_thread) }
+            if (Uid.LocalUserId == "0") { return }
             fetch('https://member.acfun.cn/common/api/getUnreadMess', {
                 method: "POST", credentials: 'include', headers: {
                     'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"

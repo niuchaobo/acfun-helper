@@ -1,7 +1,7 @@
 /**
  * @description 右键菜单管理器
  */
-class ContextMenuManage extends AcFunHelperBackend {
+class ContextMenuManage extends AcFunHelperBgFrame {
     constructor() {
         super();
         this.initMod();
@@ -92,9 +92,8 @@ class ContextMenuManage extends AcFunHelperBackend {
 
         this.runtime.dataset.contextMenuRegistry["event"]["5"] = (params) => {
             let link_url = params.linkUrl;
-            globalThis.AcFunHelperBackendInst.WatchPlan.PushInList(link_url).then(() => {
-                let x = globalThis.AcFunHelperBackendInst.WatchPlan.getOpRes();
-                console.log(globalThis.AcFunHelperBackendInst.WatchPlan)
+            globalThis.AcFunHelperBackend.WatchPlan.PushInList(link_url).then(() => {
+                let x = globalThis.AcFunHelperBackend.WatchPlan.getOpRes();
                 let sw = ""
                 x ? sw = "加入成功。" : sw = "稍后再看已被关闭或为错误对象。"
                 chrome.notifications.create(null, {

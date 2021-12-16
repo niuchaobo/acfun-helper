@@ -1,14 +1,15 @@
 /**
  * 视频下载,封面下载
  */
-class Download {
+class Download extends AcFunHelperFgFrame{
     constructor() {
+        super();
         this.devMode = true;
     }
 
     async downloadVideo(params) {
         this.devMode && console.log(params);
-        let activeKey = window.AcFunHelperFrontend.options.activeTabKey;
+        let activeKey =this.runtime.options.activeTabKey;
         let { url, title, id, qualityLabel } = params;
         let m3u8 = url;
         let tabId = await getStorage(activeKey).then(result => { return result[activeKey] });

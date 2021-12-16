@@ -152,7 +152,7 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
             }
           });
       } catch (error) {
-        console.log("[LOG]Frontend-videoSettingInject: May not in douga Page.");
+        console.log("[LOG]AcFunHelperFrontend-videoSettingInject: May not in douga Page.");
       }
     }
 
@@ -202,7 +202,7 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
       }, "*");
 
     } catch (error) {
-      console.log("[LOG]Frontend-videoSettingInject: Warning postMessage.", error);
+      console.log("[LOG]AcFunHelperFrontend-videoSettingInject: Warning postMessage.", error);
     }
 
   }
@@ -229,7 +229,7 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
     }
     setTimeout(() => {
       v_obj.currentTime = Duration2Seconds(time);
-      console.log("[LOG]Frontend-videoSettingInject: Jump_ok");
+      console.log("[LOG]AcFunHelperFrontend-videoSettingInject: Jump_ok");
     }, 500);
   }
 

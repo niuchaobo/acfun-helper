@@ -1,35 +1,54 @@
-class AcFunHelperFrontend {
+class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	constructor() {
-		this.options = null;
-		this.href = null;
-		this.devMode = false;
+		super();
+		globalThis.runtimeData = this.runtimeData;
+		/**@type {runtimeDataFg} */
+		this.runtime = globalThis.runtimeData;
+		this.runtime.href = window.location.href;
+		this.href = this.runtime.href;
 
 		this.MessageRouterFg = new MessageSwitch("fg");
+		this.runtime.dataset.core.status.messageSwitch = true;
 		this.div = new Div(); //右侧助手
+		this.runtime.dataset.core.status.helperFgPop = true;
 		this.block = new Block(); //up主过滤
+		this.runtime.dataset.core.status.block = true;
 		this.pageBeautify = new PageBeautify(); //界面美化
+		this.runtime.dataset.core.status.pageBeautify = true;
 		this.videoPageBeautify = new videoPageBeautify();//视频页界面美化
+		this.runtime.dataset.core.status.videoPageBeautify = true;
 		this.livePageBeautify = new LivePageButfy(); //生放送界面美化
+		this.runtime.dataset.core.status.livePageBeautify = true;
 		this.ce = new CommentEnhance(); //评论区增强
+		this.runtime.dataset.core.status.comments = true;
 		this.download = new Download(); //下载(视频、封面)
+		this.runtime.dataset.core.status.download = true;
 		this.live = new Live(); //直播
-		this.authInfo = new AuthInfo(); //必要信息获取
+		this.runtime.dataset.core.status.live = true;
+		this.authInfo = new AuthInfoFg(); //必要信息获取
+		this.runtime.dataset.core.status.authInfo = true;
 		this.banana = new Banana(); //自动投蕉
+		this.runtime.dataset.core.status.banana = true;
 		this.videoSetting = new VideoSetting(); //视频播放设置：自定义倍速、观影模式等
+		this.runtime.dataset.core.status.videoSetting = true;
 		this.danmaku = new Danmaku(); //弹幕服务
+		this.runtime.dataset.core.status.danmaku = true;
 		this.danmusearch = new Search();//弹幕列表搜索
+		this.runtime.dataset.core.status.danmakuSearch = true;
 		this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
+		this.runtime.dataset.core.status.luckyTurntab = true;
 		this.reader = new Reader(); //文章区阅读模式
+		this.runtime.dataset.core.status.readMore = true;
+		this.funcUrlParam = new FunctionalUrlParam(); //URLParam指令
+		this.runtime.dataset.core.status.urlparams = true;
 
-		this.dataset = {
-			dougaInfo: {}, sessionuuid: "",
-		}
 
 		chrome.runtime.onMessage.addListener(this.MessageRouterFg.FrontendMessageSwitch.bind(this)); //接收来自后台的消息
 		window.addEventListener("message", this.MessageRouterFg.FrontendIframeMsgHandler.bind(this)); //接收来自iframe的消息
 		window.addEventListener("AcFunHelperFrontend", this.MessageRouterFg.FrontendMsgEventsHandler.bind(this, this.MessageRouterFg));
 
 		this.loading();
+		this.runtime.dataset.core.status.core = true;
 
 		//监听storage变化,可用于数据云同步
 		// chrome.storage.onChanged.addListener(function (changes, areaName) {
@@ -59,11 +78,13 @@ class AcFunHelperFrontend {
 	}
 
 	async loading() {
-		this.options = await optionsLoad()
+		this.runtime.options = await optionsLoad();
+		this.options = this.runtime.options;
+		this.dataset = this.runtime.dataset;
+
 		if (!this.options.enabled || !this.options.permission) {
 			return
 		}
-		this.href = window.location.href;
 		const XHRProxyLib = document.createElement("script");
 		XHRProxyLib.src = chrome.runtime.getURL("common/xhr-proxy.js");
 		(document.head || document.documentElement).appendChild(XHRProxyLib);
@@ -76,7 +97,8 @@ class AcFunHelperFrontend {
 					MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } });
 				});
 			}
-		})
+		});
+		this.runtime.dataset.core.status.xhrProxy = true;
 		//页面未加载完成式执行的方法 (提前注入的css/dom..)
 		//this.unLoad()
 		//页面的全部资源加载完后才会执行 包括 图片 视频等
@@ -93,14 +115,6 @@ class AcFunHelperFrontend {
 		// window.addEventListener("popstate", function(e){
 		// 	this.onPagechanged();
 		// });
-
-		//Uid获取
-		try {
-			var UidInCookies = document.cookie.match("auth_key=(.*); ac_username")[1];
-		} catch (TypeError) {
-			var UidInCookies = 0;
-		}
-		chrome.storage.local.set({ LocalUserId: `${UidInCookies}` });
 	}
 
 	onACPlayerLoaded(e) {
@@ -139,8 +153,10 @@ class AcFunHelperFrontend {
 					clearInterval(playerChecker);
 				}
 			}, 1000);
+			
 			this.onPlayerUrlChange();
 		}
+		this.deferWorks();
 	}
 
 	onDomContentLoaded(e) {
@@ -232,6 +248,7 @@ class AcFunHelperFrontend {
 	onLoad(e) {
 		let href = this.href;
 		this.authInfo.cookInfo();
+		this.authInfo.uidInfo();
 		//开启屏蔽功能
 		this.options.filter && this.block.block();
 		if (REG.video.test(href)) {
@@ -384,6 +401,11 @@ class AcFunHelperFrontend {
 			return false;
 		}
 		return true;
+	}
+
+	deferWorks() {
+		fgConsole("Frontend", "deferWorks", "Loaded.", 1, false);
+		this.funcUrlParam.onLoad();
 	}
 
 	//抽奖

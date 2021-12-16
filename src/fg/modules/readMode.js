@@ -1,5 +1,6 @@
-class Reader {
+class Reader extends AcFunHelperFgFrame {
     constructor() {
+        super();
         this.enableMode = 0;
         this.hasEnabledLightMode = false;
         this.curRotAngle = 0;

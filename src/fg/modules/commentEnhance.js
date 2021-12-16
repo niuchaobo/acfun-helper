@@ -2,8 +2,9 @@
  * 评论是本体
  * @description 根据评论ID跳转到相关位置 评论扫描 评论者标记 Up在评论区的标识 评论区稿件ID弹窗 评论区时间播放器跳转 评论区时间快捷键播放器跳转 评论保存为HTML
  */
-class CommentEnhance {
+class CommentEnhance extends AcFunHelperFgFrame{
     constructor() {
+        super();
         this.devMode = false;
         this.reg_for_time = new RegExp('[0-9]{1,3}[:分][0-9]{1,2}秒?');
         this.reg_for_time3part = new RegExp('[0-9]{1,3}[:小时][0-9]{1,3}[:分][0-9]{1,2}秒?');

@@ -2,7 +2,7 @@
  * 稍后再看
  * @description 思路：我们利用保存好了的数组，当用户点击稍后再看的观看按钮时，我们取出数组中的前几个（自定义数量）元素，打开标签页；打开完了之后，我们维护一个字典：{tabId:{url,{tabInfo}}} =>这里是所有打开了并没有被关闭或者转换了url的标签页信息，如果标签关闭了，或者被导航至其他url时，我们会将其从字典中删除，并将其对应的url从数组中删除。=>观看完毕。其中，我们还要保证其在点击了按钮之后，页面一直保持着打开（自定义）着一定数量的标签（除非数组中满足不了数量的要求）；直到清空数组所有元素。
  */
-class WatchPlan extends AcFunHelperBackend{
+class WatchPlan extends AcFunHelperBgFrame{
     constructor() {
         super();
         this.OpFlag = true;

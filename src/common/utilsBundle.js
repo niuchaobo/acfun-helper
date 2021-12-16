@@ -2134,7 +2134,7 @@ class AcFunHelper extends UtilsBundle {
     }
 
     static getBackendInst() {
-        return chrome.extension.getBackgroundPage().AcFunHelperBackendInst;
+        return chrome.extension.getBackgroundPage().AcFunHelperBackend;
     }
 
 }

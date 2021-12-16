@@ -25,7 +25,22 @@ declare namespace APIs {
     shareCount: number;
     picShareUrl: string;
     danmakuCount: number;
-    videoList: Array;
+    videoList: [
+      {
+        danmakuCount: number;
+        danmakuCountShow: string;
+        danmakuGuidePosition: number;
+        durationMillis: number;
+        fileName: string;
+        id: string;
+        priority: number;
+        sizeType: number;
+        sourceStatus: number;
+        title: string;
+        uploadTime: number;
+        visibleType: number;
+      }
+    ];
     isThrowBanana: boolean;
     viewCount: number;
     bananaCount: number;
@@ -43,7 +58,13 @@ declare namespace APIs {
       sizeType: number;
       sourceStatus: number;
       title: string;
-      transcodeInfos: Array;
+      transcodeInfos: [
+        {
+          hdr: boolean;
+          qualityType: string;
+          sizeInBytes: number;
+        }
+      ];
       uploadTime: number;
       visibleType: number;
     };
@@ -60,7 +81,12 @@ declare namespace APIs {
     "host-name": string;
     commentCount: number;
     coverUrl: string;
-    tagList: Array;
+    tagList: [
+      {
+        id: string;
+        name: string;
+      }
+    ];
     disableEdit: boolean;
     danmakuCountShow: string;
     createTimeMillis: number;
