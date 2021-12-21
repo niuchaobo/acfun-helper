@@ -152,7 +152,7 @@ class MsgNotifs extends AcFunHelperBgFrame {
             // 遍历自定义直播用户关注
             for (let i in items.liveFloowings) {
                 //i就是UID
-                fetch(acfunApis.liveInfo + i).then((res) => { return res.text() })
+                fetch(acfunApis.live.liveInfo + i).then((res) => { return res.text() })
                     .then(async (res) => {
                         //判断直播状态
                         let x = JSON.parse(res);

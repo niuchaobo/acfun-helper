@@ -52,6 +52,7 @@ const defaults = {
   liveBansw: false,
   playerRecommendHide: true,
   PlayerDamakuSearchSw: false,
+  userBatchManage: false,
   PlayerTimeCommentEasyJump: false,
   PlaybackRateKeysw: false,
   FilmModeExclusionsw: true,
@@ -118,6 +119,9 @@ const REG = {
   live: new RegExp("https://live.acfun.cn/live/*"),//直播
   liveIndex: new RegExp("https://live.acfun.cn"),//直播主页
   userHome: new RegExp("http(s)?://www.acfun.cn/u/(\\d+)"),//用户中心
+  userCenter: {
+    following: new RegExp("http(s)?://www.acfun.cn/member/feeds/following"),
+  },
   partIndex: new RegExp("/v/list"),//分区主页
   articleDetail: new RegExp("/v/as"),//文章分区详细页
   acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
@@ -128,8 +132,8 @@ const REG = {
   videoPartNumByURL: new RegExp("_([0-9].?)"),
   topicCircle: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/(\d*)"),
   momentContent: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/moment\/(\d*)"),
-  method:{
-    
+  method: {
+
   },
 }
 
@@ -652,28 +656,42 @@ function getEsFuncName(esFunc) {
 }
 
 /**
- * fetch信息，同步返回
+ * fetch信息
  * @param {string} url 
- * @returns 返回结果的文本内容
+ * @param {string} method "POST"||default "GET"
+ * @param {string} data *postdata
+ * @param {boolean} withCredentials 
+ * @param {"same-origin" | "cors" | "navigate" | "no-cors"} mode 
+ * @param {"default" | "force-cache" | "no-cache" | "no-store" | "only-if-cached" | "reload";} cache 
+ * @param {"same-origin" | "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "strict-origin" | "strict-origin-when-cross-origin" | "unsafe-url"} referrerPolicy 
+ * @param {string} referrer 
+ * @returns 
  */
-async function fetchResult(url, method, data, withCredentials) {
+async function fetchResult(url, method, data, withCredentials = false, mode = "cors", cache = "no-cache", referrerPolicy = "no-referrer", referrer = undefined) {
   var result;
-  if (method == "POST" && withCredentials) {
-    result = fetch(url, {
-      method: "POST", credentials: 'include', headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
-      }, body: data
-    }).then((res => { return res.text() }))
-  } else if (method == "POST" && withCredentials == false) {
-    result = fetch(url, {
-      method: "POST", headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
-      }, body: data
-    }).then((res => { return res.text() }))
-  } else {
-    result = fetch(url).then((response) => {
-      return response.text();
-    })
+  switch (method) {
+    case "POST":
+      if (withCredentials) {
+        result = fetch(url, {
+          method: "POST", credentials: 'include', headers: {
+            'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
+          }, body: data, mode: mode, cache: cache, referrerPolicy: referrerPolicy, referrer: referrer
+        }).then((res => { return res.text() }))
+      } else {
+        result = fetch(url, {
+          method: "POST", headers: {
+            'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
+          }, body: data, mode: mode, cache: cache, referrerPolicy: referrerPolicy, referrer: referrer
+        }).then((res => { return res.text() }))
+      }
+      break;
+    case "PUT":
+      break;
+    default:
+      result = fetch(url, { credentials: withCredentials ? "include" : "same-origin", mode: mode, cache: cache, referrerPolicy: referrerPolicy, referrer: referrer }).then((response) => {
+        return response.text();
+      })
+      break;
   }
   return result
 }

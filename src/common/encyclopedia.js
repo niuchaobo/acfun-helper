@@ -31,16 +31,6 @@ const standardFrameRate = {
 }
 
 const acfunApis = {
-    liveInfo: `https://live.acfun.cn/api/live/info?authorId=`,
-    /**
-     * @Example:?sourceId=30637780&sourceType=3&page=1&pivotCommentId=0&newPivotCommentId=&t=1628913287304&supportZtEmot=true 
-     * sourceId ->acid
-     */
-    comment: `https://www.acfun.cn/rest/pc-direct/comment/list`,
-    /**
-     * @example ?sourceId=30637780&sourceType=3&page=1&pivotCommentId=0&newPivotCommentId=0&t=1628913415510&supportZtEmot=true
-     */
-    floorComment: `https://www.acfun.cn/rest/pc-direct/comment/listByFloor`,
     /**
      * @method POST 
      * @example kpn=ACFUN_APP&kpf=PC_WEB&subBiz=mainApp&interactType=1&objectType=2&objectId=30637780&acfun.midground.api_st=xxxxxxx&extParams%5BisPlaying%5D=false&extParams%5BshowCount%5D=3&extParams%5BotherBtnClickedCount%5D=20&extParams%5BplayBtnClickedCount%5D=0
@@ -48,98 +38,184 @@ const acfunApis = {
     like: `https://kuaishouzt.com/rest/zt/interact/add`,
     unlike: `https://kuaishouzt.com/rest/zt/interact/delete`,
     extensionIconImg: `https://i.loli.net/2020/05/28/2k8dPLiGEZNHjny.png`,
-    liveReward: `https://m.acfun.cn/rest/apph5-direct/pay/reward/giveRecords?pcursor=`,
     personalBasicInfo: `https://www.acfun.cn/rest/pc-direct/user/personalBasicInfo`,
-    /**
-     * @description 相关视频
-     * @method POST 
-     * @example resourceType=2&resourceId=29898019&count=9
-     */
-    relatedVideos: `https://www.acfun.cn/rest/pc-direct/feed/related/general`,
-    /**
-     * @description 视频预览图
-     * @method POST
-     * @example videoId=21417176&resourceId=25268198&resourceType=2
-     */
-    videoPreviewVtt: `https://www.acfun.cn/rest/pc-direct/play/playInfo/spriteVtt`,
-    /**
-     * @description 检查弹幕角色列表
-     * @param resourceId
-     * @param type "video"|"douga"
-     */
-    danmakuRoleName: "https://www.acfun.cn/rest/pc-direct/new-danmaku/getDanmakuRoleNames?resourceId=${resourceId}6&type=${type}",
-    /**
-     * @description 弹幕热点
-     * @example resourceId=25268198&resourceType=2
-     */
-    hotSpots: `https://www.acfun.cn/rest/pc-direct/play/playInfo/hotSpotDistribution`,
-    /**
-     * @description 是否允许高级弹幕
-     * @example resourceUserId=16854159
-     */
-    allowAdvDanmu: `https://www.acfun.cn/rest/pc-direct/new-danmaku/isAllowUseAdvancedDanmaku`,
-    /**
-     * @description 获取屏蔽的弹幕设定
-     * @method POST
-     */
-    blockDanmakuWords: "https://www.acfun.cn/rest/pc-direct/new-danmaku/blockWords/load",
-    /**
-     * 
-     * @method POST
-     * @example sid=acfun.midground.api
-     */
-    tokenGet: "https://id.app.acfun.cn/rest/web/token/get",
-    /**
-     * @description 表情列表
-     * @method POST
-     * @data kpn=ACFUN_APP
-     */
-    emotionList: "https://zt.gifshow.com/rest/zt/emoticon/package/list?kpn=ACFUN_APP",
     gifts: "https://www.acfun.cn/rest/pc-direct/pay/deposit/products",
-    /**
-     * @description 打赏列表、稿件礼物列表
-     * @method POST
-     * @data resourceId=${ACID}&resourceType=2 
-     */
-    rewardInfo: "https://www.acfun.cn/rest/pc-direct/pay/reward/resource/cardInfo?resourceId=${ACID}&resourceType=2",
-    /**
-     * @description Ac币余额
-     * @method POST
-     */
-    coinBalance: "https://www.acfun.cn/rest/pc-direct/pay/wallet/acoinBalance",
-    /**
-     * 收藏
-     * @data resourceId=${ACID}&resourceType=9
-     */
-    favorite: "https://www.acfun.cn/rest/pc-direct/favorite",
-    /**
-     * @description 发送弹幕 (videoId不是acid)
-     * @example mode=1&color=16777215&size=25&body=%E5%A5%BD%E6%A3%92&videoId=25879552&position=701&type=douga&id=${ACID}&subChannelId=58&subChannelName=%E9%9F%B3%E4%B9%90&roleId=
-     */
-    danmuFire: "https://www.acfun.cn/rest/pc-direct/new-danmaku/add",
-    /**
-     * @description 阶段性弹幕查询
-     * @method POST
-     * @example resourceId=25879552&enableAdvanced=true&positionFromInclude=0&positionToExclude=22000
-     */
-    danmakuSegQuery: "https://www.acfun.cn/rest/pc-direct/new-danmaku/pollByPosition",
-    personalVideoList: `https://www.acfun.cn/u/{Uid}?quickViewId=ac-space-video-list&reqID=3&ajaxpipe=1&type=video&order=newest&page={pageNum}&pageSize=20`,
-    /**
-     * @description 搜索推荐
-     * @method GET
-     */
-    searchDefaul: `https://www.acfun.cn/rest/pc-direct/homePage/searchDefault`,
-    Staff: {
+    index: {
         /**
-         * @description 合作稿件的Staff信息
-         * @method POST
-         * @example resourceId=21194424&resourceType=2 (resourceId 就是ACID)
+         * @description 搜索推荐
+         * @method GET
          */
-        get: `https://www.acfun.cn/rest/pc-direct/staff/getStaff`,
-        /**@return {APIs.ContributionInfo.StaffInfos} */
-        getStaffInfo: async (acid) => {
-            return JSON.parse(await fetchResult(acfunApis.Staff.get, "POST", `resourceId=${acid}&resourceType=2`,true));
+        searchDefaul: `https://www.acfun.cn/rest/pc-direct/homePage/searchDefault`,
+        /**
+         * 
+         * @method POST
+         * @example sid=acfun.midground.api
+         */
+        tokenGet: "https://id.app.acfun.cn/rest/web/token/get",
+        /**
+         * @description 表情列表
+         * @method POST
+         * @data kpn=ACFUN_APP
+         */
+        emotionList: "https://zt.gifshow.com/rest/zt/emoticon/package/list?kpn=ACFUN_APP",
+        comment: {
+            /**
+             * @Example:?sourceId=30637780&sourceType=3&page=1&pivotCommentId=0&newPivotCommentId=&t=1628913287304&supportZtEmot=true 
+             * sourceId ->acid
+             * */
+            comment: `https://www.acfun.cn/rest/pc-direct/comment/list`,
+            /**
+             * @example ?sourceId=30637780&sourceType=3&page=1&pivotCommentId=0&newPivotCommentId=0&t=1628913415510&supportZtEmot=true
+             */
+            floorComment: `https://www.acfun.cn/rest/pc-direct/comment/listByFloor`,
         }
+    },
+    video: {
+        Staff: {
+            /**
+             * @description 合作稿件的Staff信息
+             * @method POST
+             * @example resourceId=21194424&resourceType=2 (resourceId 就是ACID)
+             */
+            get: `https://www.acfun.cn/rest/pc-direct/staff/getStaff`,
+            /**@return {APIs.ContributionInfo.StaffInfos} */
+            getStaffInfo: async (acid) => {
+                return JSON.parse(await fetchResult(acfunApis.video.Staff.get, "POST", `resourceId=${acid}&resourceType=2`, true));
+            }
+        },
+        /**
+         * 收藏
+         * @data resourceId=${ACID}&resourceType=9
+         */
+        favorite: "https://www.acfun.cn/rest/pc-direct/favorite",
+        /**
+         * @description 发送弹幕 (videoId不是acid)
+         * @example mode=1&color=16777215&size=25&body=%E5%A5%BD%E6%A3%92&videoId=25879552&position=701&type=douga&id=${ACID}&subChannelId=58&subChannelName=%E9%9F%B3%E4%B9%90&roleId=
+         */
+        danmuFire: "https://www.acfun.cn/rest/pc-direct/new-danmaku/add",
+        /**
+         * @description 阶段性弹幕查询
+         * @method POST
+         * @example resourceId=25879552&enableAdvanced=true&positionFromInclude=0&positionToExclude=22000
+         */
+        danmakuSegQuery: "https://www.acfun.cn/rest/pc-direct/new-danmaku/pollByPosition",
+        /**
+         * @description 相关视频
+         * @method POST 
+         * @example resourceType=2&resourceId=29898019&count=9
+         */
+        relatedVideos: `https://www.acfun.cn/rest/pc-direct/feed/related/general`,
+        /**
+         * @description 视频预览图
+         * @method POST
+         * @example videoId=21417176&resourceId=25268198&resourceType=2
+         */
+        videoPreviewVtt: `https://www.acfun.cn/rest/pc-direct/play/playInfo/spriteVtt`,
+        /**
+         * @description 检查弹幕角色列表
+         * @param resourceId
+         * @param type "video"|"douga"
+         */
+        danmakuRoleName: "https://www.acfun.cn/rest/pc-direct/new-danmaku/getDanmakuRoleNames?resourceId=${resourceId}6&type=${type}",
+        /**
+         * @description 弹幕热点
+         * @example resourceId=25268198&resourceType=2
+         */
+        hotSpots: `https://www.acfun.cn/rest/pc-direct/play/playInfo/hotSpotDistribution`,
+        /**
+         * @description 是否允许高级弹幕
+         * @example resourceUserId=16854159
+         */
+        allowAdvDanmu: `https://www.acfun.cn/rest/pc-direct/new-danmaku/isAllowUseAdvancedDanmaku`,
+        /**
+         * @description 获取屏蔽的弹幕设定
+         * @method POST
+         */
+        blockDanmakuWords: "https://www.acfun.cn/rest/pc-direct/new-danmaku/blockWords/load",
+    },
+    live: {
+        liveInfo: `https://live.acfun.cn/api/live/info?authorId=`,
+        liveReward: `https://m.acfun.cn/rest/apph5-direct/pay/reward/giveRecords?pcursor=`,
+    },
+    navigateCategory: {
+        query: `https://www.acfun.cn/rest/pc-direct/page/queryNavigators`,
+    },
+    ucenter: {
+        personalVideoList: `https://www.acfun.cn/u/{Uid}?quickViewId=ac-space-video-list&reqID=3&ajaxpipe=1&type=video&order=newest&page={pageNum}&pageSize=20`,
+    },
+    users: {
+        followings: `https://www.acfun.cn/rest/pc-direct/relation/getFollows`,
+        /**@example page=1&count=20&action=8 */
+        getFollowings: async (groupId = -1, page = 1, count = 20, action = 7) => {
+            return JSON.parse(await fetchResult(acfunApis.users.followings, "POST", `groupId=${groupId}&page=${page}&count=${count}&action=${action}`));
+        },
+        fans: `https://www.acfun.cn/rest/pc-direct/relation/getFollows`,
+        getFans: async (page = 1, count = 20, action = 8) => {
+            return JSON.parse(await fetchResult(acfunApis.users.followings, "POST", `page=${page}&count=${count}&action=${action}`));
+        },
+        groups: `https://www.acfun.cn/rest/pc-direct/relation/getGroups`,
+        /**@returns {{result:number,groupList:[{followingCount: number,followingCountShow: string,groupId: string,groupName: string}]}} */
+        getGroups: async () => {
+            return JSON.parse(await fetchResult(acfunApis.users.groups));
+        },
+        getGnameGidMap: async (reverse = false) => {
+            let all = await acfunApis.users.getGroups();
+            all = all["groupList"];
+            return Object.fromEntries(all.map(e => {
+                return reverse ? [
+                    e.groupId, e.groupName
+                ] : [
+                    e.groupName, e.groupId
+                ]
+            }))
+        },
+        followAction: `https://www.acfun.cn/rest/pc-direct/relation/follow`,
+        specialFollow: async (uid, mode = true) => {
+            return JSON.parse(await fetchResult(acfunApis.users.followAction, "POST", `toUserId=${uid}&action=${mode ? 14 : 15}`));
+        },
+        /**@description 关注/取关 mode:1/2 @returns {{result:number}}*/
+        follow: async (uid, mode = true, ref = "https://www.acfun.cn/member/feeds/following") => {
+            return JSON.parse(await fetchResult(acfunApis.users.followAction, "POST", `toUserId=${uid}&action=${mode ? 1 : 2}`, true, "same-origin", "default", "same-origin", ref));
+        },
+        locateUserToGroup: async (uid, groupId, mode = true, ref = "https://www.acfun.cn/member/feeds/following") => {
+            //groupId = 0 时是直接移入“未分组”
+            return JSON.parse(await fetchResult(acfunApis.users.followAction, "POST", `toUserId=${uid}&groupId=${mode ? groupId : 0}&action=3`, true, "same-origin", "default", "same-origin", ref));
+        },
+        groupManage: `https://www.acfun.cn/rest/pc-direct/relation/group`,
+        addGroup: async (name) => {
+            return JSON.parse(await fetchResult(acfunApis.users.groupManage, "POST", `action=4&groupName=${name}`));
+        },
+        renameGroup: async (gid, name) => {
+            return JSON.parse(await fetchResult(acfunApis.users.groupManage, "POST", `action=6&groupId=${gid}&groupName=${name}`));
+        },
+        deleteGroup: async (gid) => {
+            return JSON.parse(await fetchResult(acfunApis.users.groupManage, "POST", `action=5&groupId=${gid}`));
+        },
+        /**
+         * @description 打赏列表、稿件礼物列表
+         * @method POST
+         * @data resourceId=${ACID}&resourceType=2 
+         */
+        rewardInfo: "https://www.acfun.cn/rest/pc-direct/pay/reward/resource/cardInfo?resourceId=${ACID}&resourceType=2",
+        /**
+         * @description Ac币余额
+         * @method POST
+         */
+        coinBalance: "https://www.acfun.cn/rest/pc-direct/pay/wallet/acoinBalance",
+        /**@returns {{result:number,data:{firstDepositState:number,aCoinAmount:number}}} */
+        getCoinBalance: async () => {
+            return JSON.parse(await fetchResult(acfunApis.users.coinBalance));
+        },
+    },
+    moment: {
+        friendMoment: `https://www.acfun.cn/rest/pc-direct/feed/followFeedV2?useWebp=true&pcursor=0&count=5&resourceTypes=0`,
+    },
+    bangumi: {
+        myDescribe: `https://www.acfun.cn/rest/pc-direct/feed/favorite/bangumi?count=`,
+        /**@returns {{result:number,feeds:[APIs.Favorite.FullBangumi]}} */
+        getMyDescribe: async (count = 10) => {
+            return JSON.parse(await fetchResult(acfunApis.bangumi.myDescribe + count));
+        },
     },
 }
 
@@ -148,7 +224,34 @@ const acfunApisParameter = {
     ImgWebp: "?imageMogr2/auto-orient/format/webp/quality/75!/ignore-error/1",
 }
 
+/**
+ * @ref https://www.acfun.cn/rest/pc-direct/page/queryNavigators
+ * */
 const acfunDepts = {
+    utils: {
+        getAll: async () => {
+            return JSON.parse(await fetchResult(acfunApis.navigateCategory.query));
+        },
+        getParts: async () => {
+            const category = JSON.parse(await fetchResult(acfunApis.navigateCategory.query));
+            return category.data.map(e => { return { [e.navName]: e.id } });
+        },
+        getAllDetailParts: async () => {
+            let tempdict = [];
+            const raw = JSON.parse(await fetchResult(acfunApis.navigateCategory.query));
+            function recurOut(e) {
+                if (e["children"].length) {
+                    e.children.map(recurOut)
+                } else {
+                    tempdict.push(e);
+                }
+            }
+            raw.data.map(e => {
+                recurOut(e)
+            })
+            return tempdict;
+        }
+    },
     parts: { "AC正义": 112, "番剧": 105, "动画": 14, "娱乐": 18, "生活": 153, "音乐": 16, "舞蹈·偶像": 17, "游戏": 15, "科技": 19, "影视": 20, "体育": 21, "鱼塘": 22, "文章": 24 },
     detail: [
         {

@@ -2028,10 +2028,10 @@ class MessageSwitch extends UtilsBundle {
 
 }
 
-class AcFunHelper extends UtilsBundle {
+class AcFunHelperHelper extends UtilsBundle {
     constructor(reloadMethod) {
         super();
-        this.utilsList.push(AcFunHelper);
+        this.utilsList.push(AcFunHelperHelper);
 
         this.reloadMethod = reloadMethod ?? 0;
     }
@@ -2054,13 +2054,13 @@ class AcFunHelper extends UtilsBundle {
 
     static reloadFrontendInsts() {
         chrome.tabs.query({}, (tabs) => {
-            AcFunHelper.execFgReload(tabs);
+            AcFunHelperHelper.execFgReload(tabs);
         });
     }
 
     static reloadActiveFrontend() {
         chrome.tabs.query({ active: true, lastFocusedWindow: false }, tabs => {
-            AcFunHelper.execFgReload(tabs);
+            AcFunHelperHelper.execFgReload(tabs);
         });
     }
 
@@ -2119,7 +2119,7 @@ class AcFunHelper extends UtilsBundle {
                 if (!lastTimestamp || (lastTimestamp === timestamp)) {
                     setTimeout(() => watchChanges(dir, timestamp), 1000);
                 } else {
-                    AcFunHelper.reload();
+                    AcFunHelperHelper.reload();
                 }
             })
         }
@@ -2127,8 +2127,8 @@ class AcFunHelper extends UtilsBundle {
         chrome.management.getSelf(self => {
             if (self.installType === 'development') {
                 chrome.runtime.getPackageDirectoryEntry(dir => watchChanges(dir));
-                this.reloadMethod == 1 && AcFunHelper.reloadActiveFrontend();
-                this.reloadMethod == 2 && AcFunHelper.reloadFrontendInsts();
+                this.reloadMethod == 1 && AcFunHelperHelper.reloadActiveFrontend();
+                this.reloadMethod == 2 && AcFunHelperHelper.reloadFrontendInsts();
             };
         })
     }

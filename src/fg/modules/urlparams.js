@@ -25,10 +25,20 @@ class FunctionalUrlParam extends AcFunHelperFgFrame {
 
     }
 
-    static hashFunctionDicGen() {
-        return JSON.parse(/#acfunhelper=(.*)|#/.exec(globalThis.location.hash)[1]);
+    /**
+     * 判断url中包含的FunctionalUrlParam的相应hash
+     * @param {string} e url
+     * @returns {boolean}
+     */
+    static hashFunctionDicGen(e) {
+        return JSON.parse(/#acfunhelper=(.*)|#/.exec(decodeURI(e??globalThis.location.hash))[1]);
     }
 
+    /**
+     * 生成包含播放器跳转时间hashUrl
+     * @param {undefined|string} e 时间字符串 exp:01:23
+     * @returns {string}
+     */
     static playerTimeJumpUrlGen(e) {
         return encodeURI(location + "#acfunhelper=" + JSON.stringify({ "jump": e }));
     }

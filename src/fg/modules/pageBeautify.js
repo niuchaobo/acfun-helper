@@ -641,4 +641,110 @@ class PageBeautify extends AcFunHelperFgFrame {
     }
   }
 
+  async userBatchManage(command = true) {
+    /**@type {number[]} */
+    this.userBatchMngList = [];
+    this.gidgnameMap = null;
+    /**
+     * 事件绑定
+     * @param {Event} e 
+     */
+    const bindEvent = (e) => {
+      /**@type {HTMLElement} */
+      const targetElem = e.target;
+      if (targetElem.classList == "ac-member-user-relation") {
+        /**@type {DOMTokenList} */
+        const targetClassList = targetElem.classList;
+        targetClassList.toggle("userBatchManageSelected");
+        toggleUserInList(Number(/\/u\/(.*)/.exec(targetElem.children[0].href)[1]));
+      }
+    }
+
+    const toggleUserInList = (u) => {
+      if (typeof (u) != "number") {
+        throw TypeError("argument 0 should be a number.")
+      }
+      if (this.userBatchMngList.includes(u)) {
+        const index = this.userBatchMngList.indexOf(u);
+        this.userBatchMngList.splice(index);
+        return -1;
+      } else {
+        this.userBatchMngList.push(u);
+        return this.userBatchMngList.length - 1;
+      }
+    }
+
+    const toggleUI = () => {
+      if (document.querySelector("#achUserBatchMng")) {
+        document.querySelector(".following-panel>.group").remove();
+        document.querySelector(".following-panel>.group").remove();
+      } else {
+        let groupMoveElem = document.createElement("a");
+        groupMoveElem.innerText = "批量移动到此分组";
+        groupMoveElem.classList.add("group-edit");
+        groupMoveElem.id = "achUserBatchMngroup";
+
+        let unfollowElem = document.createElement("a");
+        unfollowElem.innerText = "批量取关";
+        unfollowElem.classList.add("group-edit");
+        unfollowElem.id = "achUserBatchMngunf";
+
+        document.querySelector(".following-panel>.group").append(groupMoveElem);
+        document.querySelector(".following-panel>.group").append(unfollowElem);
+      }
+    }
+
+    const getCurrentGid = async () => {
+      if (!this.gidgnameMap) {
+        this.gidgnameMap = await acfunApis.users.getGnameGidMap();
+      }
+      return this.gidgnameMap[document.querySelector("span.ac-select-selection").innerText];
+    }
+
+    const batchMove = async () => {
+      const gid = await getCurrentGid()
+      for (let i in this.userBatchMngList) {
+        acfunApis.users.locateUserToGroup(this.userBatchMngList[i], gid);
+      }
+      UIReactor.ucenterAreaNotice("AcFun助手：用户批量分组移动完成，请刷新以更新状态。");
+    }
+
+    const batchUnfollow = () => {
+      for (let i in this.userBatchMngList) {
+        acfunApis.users.follow(this.userBatchMngList[i], false);
+      }
+      UIReactor.ucenterAreaNotice("AcFun助手：用户批量取关完成。");
+    }
+
+    const buttonEvent = (toggle = true) => {
+      if (toggle) {
+        document.querySelector("#achUserBatchMngroup").addEventListener("click", batchMove);
+        document.querySelector("#achUserBatchMngunf").addEventListener("click", batchUnfollow);
+      } else {
+        document.querySelector("#achUserBatchMngroup").removeEventListener("click", batchMove);
+        document.querySelector("#achUserBatchMngunf").removeEventListener("click", batchUnfollow);
+      }
+    }
+
+    switch (command) {
+      case true:
+        createElementStyle(`
+          .userBatchManageSelected{
+            border: 1px solid #ff42bc !important;
+          }
+        `, document.head, "AcFunHelper_userBatchManage");
+        document.querySelector(".following-list").addEventListener("click", bindEvent);
+        document.querySelector("#AcFunHelper_userBatchManage").disabled = false;
+        toggleUI();
+        buttonEvent();
+        break;
+      case false:
+        document.querySelector(".following-list").removeEventListener("click", bindEvent);
+        document.querySelector("#AcFunHelper_userBatchManage").disabled = true;
+        toggleUI();
+        buttonEvent(false);
+        break;
+    }
+  }
+
 }

@@ -14,7 +14,7 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
                 return;
             }
             /**开发模式 */
-            // this.devReload = new AcFunHelper(1); this.devReload.devModeWatch();
+            // this.devReload = new AcFunHelperHelper(1); this.devReload.devModeWatch();
 
             chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
 

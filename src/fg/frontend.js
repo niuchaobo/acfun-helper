@@ -153,7 +153,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 					clearInterval(playerChecker);
 				}
 			}, 1000);
-			
+
 			this.onPlayerUrlChange();
 		}
 		this.deferWorks();
@@ -322,6 +322,9 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			//直播站首页用户屏蔽
 			this.options.liveBansw && this.block.liveUserBlock();
 			return
+		}
+		if (REG.userCenter.following) {
+			this.options.userBatchManage && this.pageBeautify.userBatchManage();
 		}
 	}
 

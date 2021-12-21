@@ -15,6 +15,28 @@ class UIReactor {
     }, 2500);
   }
 
+  static ucenterAreaNotice(text, latency = 2500) {
+    if(!document.querySelector(".ac-toast")){
+      const e = document.createElement("div");
+      e.className="ac-toast";
+      document.querySelector("#app").append(e);
+    }
+    $(".ac-toast")
+      .eq(0)
+      .append(DOMPurify.sanitize(
+        `<div class="ac-toast-item ac-toast-success ac-motion-fade-slide-down-leave-active ac-motion-fade-slide-down-leave-to" style="opacity: 1;">
+          <div class="ac-toast-content">
+            <span class="ac-icon ac-toast-icon"><i class="iconfont"></i></span
+            ><span>${text}</span>
+          </div>
+        </div>`)
+      );
+    let _timer = setTimeout(() => {
+      $(".ac-toast").eq(0).children().eq(0).remove();
+      clearInterval(_timer);
+    }, latency);
+  }
+
 }
 
 /**

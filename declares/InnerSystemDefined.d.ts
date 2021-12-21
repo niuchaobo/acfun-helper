@@ -34,6 +34,10 @@ declare namespace InnerDefined {
     liveIndex: RegExp;
     /** @description 个人页面 */
     userHome: RegExp;
+    /** @description 个人中心 */
+    userCenter: {
+      following: RegExp;
+    };
     /** @description 文章区主页 */
     partIndex: RegExp;
     /** @description 文章区详细 */

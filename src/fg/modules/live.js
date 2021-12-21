@@ -41,7 +41,7 @@ class Live extends AcFunHelperFgFrame{
 
     async liveMediaSession(href) {
         let roomId = REG.liveRoomID.exec(href)[2];
-        let liveData = JSON.parse(await fetchResult(acfunApis.liveInfo + roomId));
+        let liveData = JSON.parse(await fetchResult(acfunApis.live.liveInfo + roomId));
         if (liveData.streamName == undefined) {
             this.devMode && console.log("offline")
             return;

@@ -283,7 +283,7 @@ class CommentEnhance extends AcFunHelperFgFrame{
             try {
                 if (REG.video.test(globalThis.location.href)) {
                     /**@type {APIs.ContributionInfo.StaffInfos} */
-                    let staffApi = await acfunApis.Staff.getStaffInfo(REG.acVid.exec(window.location.href)[2]);
+                    let staffApi = await acfunApis.video.Staff.getStaffInfo(REG.acVid.exec(window.location.href)[2]);
                     staffApi.staffInfos.forEach(e => {
                         staffs.push(e["name"]);
                         staffDetail[e.name] = e["staffRoleName"];
@@ -369,7 +369,7 @@ class CommentEnhance extends AcFunHelperFgFrame{
             try {
                 if (REG.video.test(globalThis.location.href)) {
                     /**@type {APIs.ContributionInfo.StaffInfos} */
-                    let staffApi = await acfunApis.Staff.getStaffInfo(REG.acVid.exec(window.location.href)[2]);
+                    let staffApi = await acfunApis.video.Staff.getStaffInfo(REG.acVid.exec(window.location.href)[2]);
                     staffApi.staffInfos.forEach(e => {
                         staffs.push(e["name"]);
                         staffDetail[e.name] = e["staffRoleName"];

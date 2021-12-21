@@ -17,7 +17,7 @@ class Div {
     this.popup.renderPopup(pageInfo, type, isUp);
     this.div.style.visibility = "visible";
     this.div.innerText = DOMPurify.sanitize("助手");
-    document.body.appendChild(this.div);window
+    document.body.appendChild(this.div);
     //this.searchBind()
   }
   

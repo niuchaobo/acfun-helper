@@ -56,7 +56,7 @@ async function onReady() {
 				if (statusDic.tabLives) { return };
 				renderLives(); //生放送列表加载
 				renderLiveWatchTimeLst();
-				document.querySelector("#livePageWatchTimeRecList").addEventListener("click", e => { e.target.dataset.type === "liveWatchListItemReact" && AcFunHelper.activeTabToFront(Number(e.target.dataset.key)) });
+				document.querySelector("#livePageWatchTimeRecList").addEventListener("click", e => { e.target.dataset.type === "liveWatchListItemReact" && AcFunHelperHelper.activeTabToFront(Number(e.target.dataset.key)) });
 				statusDic.tabLives = true;
 				break;
 			case "tabSpecial":
