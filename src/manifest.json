@@ -106,6 +106,7 @@
     "bg/images/copy_link.png",
     "fg/nav.js",
     "fg/modules/videoSettingInject.js",
-    "fg/modules/liveSettingInject.js"
+    "fg/modules/liveSettingInject.js",
+    "fg/fixmods/*"
   ]
 }

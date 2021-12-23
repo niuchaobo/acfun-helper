@@ -2137,6 +2137,13 @@ class AcFunHelperHelper extends UtilsBundle {
         return chrome.extension.getBackgroundPage().AcFunHelperBackend;
     }
 
+    static modLoadTrace(modLoadCall) {
+        const startTime = performance.now();
+        const result = modLoadCall();
+        const endTime = performance.now();
+        return { result: result, loadTime: endTime - startTime }
+    }
+
 }
 
 class ExtOptions extends UtilsBundle {

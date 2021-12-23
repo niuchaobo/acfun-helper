@@ -652,25 +652,31 @@ class PageBeautify extends AcFunHelperFgFrame {
     const bindEvent = (e) => {
       /**@type {HTMLElement} */
       const targetElem = e.target;
-      if (targetElem.classList == "ac-member-user-relation") {
+      if (targetElem.classList.contains("ac-member-user-relation")) {
         /**@type {DOMTokenList} */
         const targetClassList = targetElem.classList;
         targetClassList.toggle("userBatchManageSelected");
-        toggleUserInList(Number(/\/u\/(.*)/.exec(targetElem.children[0].href)[1]));
+        toggleUserInList(Number(/\/u\/(.*)/.exec(targetElem.children[0].href)[1]), targetElem.classList.contains("userBatchManageSelected") ?? false);
       }
     }
 
-    const toggleUserInList = (u) => {
+    const toggleUserInList = (u, mode) => {
       if (typeof (u) != "number") {
         throw TypeError("argument 0 should be a number.")
       }
-      if (this.userBatchMngList.includes(u)) {
+      if (this.userBatchMngList?.length >= 19) {
+        UIReactor.ucenterAreaNotice("AcFun助手：待处理列表数量超过20，当翻页时会丢失原来选择的用户显示，但用户依旧还在待处理列表中。", 6000);
+        UIReactor.ucenterAreaNotice("AcFun助手：处理一轮时，请尽量不要翻页。",5500);
+      }
+      if (mode) {
+        if (!this.userBatchMngList.includes(u)) {
+          this.userBatchMngList.push(u);
+          return this.userBatchMngList.length - 1;
+        }
+      } else {
         const index = this.userBatchMngList.indexOf(u);
         this.userBatchMngList.splice(index);
         return -1;
-      } else {
-        this.userBatchMngList.push(u);
-        return this.userBatchMngList.length - 1;
       }
     }
 
@@ -713,7 +719,7 @@ class PageBeautify extends AcFunHelperFgFrame {
       for (let i in this.userBatchMngList) {
         acfunApis.users.follow(this.userBatchMngList[i], false);
       }
-      UIReactor.ucenterAreaNotice("AcFun助手：用户批量取关完成。");
+      UIReactor.ucenterAreaNotice("AcFun助手：用户批量取关完成，请刷新以更新状态。。");
     }
 
     const buttonEvent = (toggle = true) => {
