@@ -372,20 +372,22 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	 * @description 用于在切换分P或者点击大家都在看、推荐视频之后的模块数据刷新。
 	 */
 	reattachFrontMods() {
+		//切换了分P和投稿
+		this.href = window.location.href;
+		this.fetchPageInfo();
+		let isLogined = false;
+		if (ToolBox.isLogin("video")) {
+			isLogined = true;
+		}
 		if (this.videoSetting.mediaSessionJudgeChangeVideo()) {
-			this.href = window.location.href;
-			this.fetchPageInfo();
-			let isLogined = false;
-			if (ToolBox.isLogin("video")) {
-				isLogined = true;
-			}
-
+			//只切换了投稿
 			this.videoSetting.mediaSessionReAttach();
 			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
 			this.videoSetting.videoQuality(isLogined);
 			this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
 		}
+		this.div.reloadIframe(this.options, this.runtime.dataset.dougaInfo, "video", adjustVideoUp());
 	}
 
 	fetchPageInfo() {

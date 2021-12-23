@@ -739,13 +739,13 @@ class PageBeautify extends AcFunHelperFgFrame {
             border: 1px solid #ff42bc !important;
           }
         `, document.head, "AcFunHelper_userBatchManage");
-        document.querySelector(".following-list").addEventListener("click", bindEvent);
+        document.querySelector(".following-list")?.addEventListener("click", bindEvent);
         document.querySelector("#AcFunHelper_userBatchManage").disabled = false;
         toggleUI();
         buttonEvent();
         break;
       case false:
-        document.querySelector(".following-list").removeEventListener("click", bindEvent);
+        document.querySelector(".following-list")?.removeEventListener("click", bindEvent);
         document.querySelector("#AcFunHelper_userBatchManage").disabled = true;
         toggleUI();
         buttonEvent(false);

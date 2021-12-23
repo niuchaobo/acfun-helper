@@ -78,6 +78,7 @@ class Popup {
         let content = '';
         if (type == 'video') {
             let videoInfo = pageInfo.currentVideoInfo;
+            console.log(videoInfo)
             let title = pageInfo.title;
             let tmp = videoInfo.ksPlayJson;
             let tmpJson = JSON.parse(tmp);
