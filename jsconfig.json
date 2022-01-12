@@ -11,6 +11,8 @@
         "global.d.ts",
         "declares/*.d.ts",
         "node_modules/@types/chrome/index.d.ts",
+        "node_modules/bgm-types/index.d.ts",
+        "node_modules/@types/**/*",
     ],
     "typeAcquisition": {},
 }
