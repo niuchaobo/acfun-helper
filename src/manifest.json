@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_appName__",
-  "version": "1.2.13.1216",
+  "version": "1.2.13.1226",
   "default_locale": "zh_CN",
   "description": "__MSG_appDesc__",
   "icons": {
@@ -107,6 +107,6 @@
     "fg/nav.js",
     "fg/modules/videoSettingInject.js",
     "fg/modules/liveSettingInject.js",
-    "fg/fixmods/*"
+    "fg/littleMods/*"
   ]
 }

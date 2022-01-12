@@ -2448,6 +2448,25 @@ function playerConfigure() {
         });
     });
 
+    //====================简单CC字幕===================
+    chrome.storage.local.get(['simpleCC'], function (items) {
+        var simpleCC = items.simpleCC;
+        if (simpleCC) {
+            document.getElementById('simpleCC').checked = true;
+        } else {
+            document.getElementById('simpleCC').checked = false;
+        }
+        $('#simpleCC').on('click', function () {
+            if (!document.getElementById('simpleCC').checked) {
+                document.getElementById('simpleCC').checked = false;
+                chrome.storage.local.set({ 'simpleCC': false });
+            } else {
+                document.getElementById('simpleCC').checked = true;
+                chrome.storage.local.set({ 'simpleCC': true });
+            }
+        });
+    });
+
     //====================鼠标滚动音量调整===================
     chrome.storage.local.get(['wheelToChangeVolume'], function (items) {
         var wheelToChangeVolume = items.wheelToChangeVolume;

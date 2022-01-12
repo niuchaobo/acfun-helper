@@ -245,12 +245,14 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		}
 	}
 
-	onLoad(e) {
+	async onLoad(e) {
 		let href = this.href;
 		this.authInfo.cookInfo();
 		this.authInfo.uidInfo();
 		//开启屏蔽功能
 		this.options.filter && this.block.block();
+		const LittleModLoader = await import("./littleMods/index.js")
+		LittleModLoader.default()
 		if (REG.video.test(href)) {
 			if (!this.fetchPageInfo()) {
 				return;
@@ -282,6 +284,8 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
 			//MediaSession
 			this.options.videoMediaSession && this.videoSetting.videoMediaSession(this.dataset.dougaInfo);
+			//简单CC字幕
+			this.options.simpleCC && this.danmaku.simpleCC();
 			return
 		}
 		//文章
@@ -317,13 +321,14 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		}
 		//直播首页
 		if (REG.liveIndex.test(href) && !REG.live.test(href)) {
+			this.pageBeautify.pageTransKeyBind("depList");
 			//直播站主页数量标号
 			this.options.liveIndexRankNum && this.livePageBeautify.listCountFront();
 			//直播站首页用户屏蔽
 			this.options.liveBansw && this.block.liveUserBlock();
 			return
 		}
-		if (REG.userCenter.following) {
+		if (REG.userCenter.following.test(href)) {
 			this.options.userBatchManage && this.pageBeautify.userBatchManage();
 		}
 	}
@@ -384,9 +389,9 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.videoSetting.mediaSessionReAttach();
 			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
 			this.videoSetting.videoQuality(isLogined);
-			this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
-			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
 		}
+		this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
+		this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 		this.div.reloadIframe(this.options, this.runtime.dataset.dougaInfo, "video", adjustVideoUp());
 	}
 
