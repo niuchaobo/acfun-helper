@@ -1,8 +1,12 @@
+/**
+ * @description 此组件由AcFunHelperFrontend在loading阶段发起注册，函数注册在window下后，将会执行start函数，
+ */
 let AcFunHelperFrontendXHRDriver = (function XHRDriver() {
 	let isRightPage = new RegExp("https://*.*.acfun.cn/*").test(window.location.href);
 	if (!isRightPage) { return };
 	/**
 	 * @type {XHRDriverRegistry}
+	 * @description 首先在这里注册下过滤器的描述信息，首先自增操作类型typescount，然后将对应的URL写入对应类型的registeredEvent中，最后写入具体条目到registry中
 	 */
 	let registry = {
 		_sys: {
@@ -56,8 +60,11 @@ let AcFunHelperFrontendXHRDriver = (function XHRDriver() {
 	}
 
 	/**
-	 * @param {string} url 
-	 * @param {string[]} urlsList 
+	 * 判断url是否匹配注册字典中的规则URL
+	 * @param {string} rouType 请求管理阶段 Pre or Post
+	 * @param {string} url 输入的URL
+	 * @param {Array<string>} urlsList 操作的目标URL列表
+	 * @returns {Array<string>} 
 	 */
 	function urlMatch(rouType, url, urlsList) {
 		let resultExp = []
@@ -72,6 +79,10 @@ let AcFunHelperFrontendXHRDriver = (function XHRDriver() {
 		return resultExp;
 	}
 
+	/**
+	 * 主函数
+	 * @description 定义回调，并从规则注册字典中获取所有注册的目标操作URL，如果请求满足注册字典中的规则，则执行注册字典中的写在AcFunHelperFrontendXHRReactor 的回调(所以要求所有回调都传入ctx并执行handler.next(ctx);)
+	 */
 	function start() {
 		var urls = [];
 		for (let types in registry._sys.registerdEvents) {
@@ -112,6 +123,9 @@ let AcFunHelperFrontendXHRDriver = (function XHRDriver() {
 			}
 			return false;
 		}
+		/**
+		 * @description 注册钩子，如果没有匹配到的规则，则直接执行请求，如果匹配到了规则，则先执行AcFunHelperFrontendXHRReactor 中的回调，然后再执行请求
+		 */
 		XHRProxy.proxy({
 			onRequest: (xhr, handler) => {
 				!preRouting(xhr, handler) && handler.next(xhr);
@@ -136,6 +150,7 @@ let {
 
 let AcFunHelperFrontendXHRReactor = (function XHRReactor() {
 	const dataset = {
+		/**@description 文章区列表屏蔽中，默认的覆盖显示条目 */
 		articleFilterEmptyFill: {
 			allowed_add_tag: false,
 			attitudes: [],
@@ -173,6 +188,7 @@ let AcFunHelperFrontendXHRReactor = (function XHRReactor() {
 			view_count: 0,
 			view_only: true,
 		},
+		/**@description 新版文章区列表屏蔽中，默认的覆盖显示条目 */
 		newArticleFilterEmptyFill: {
 			articleId: 15387968,
 			commentCount: 999,
@@ -190,9 +206,13 @@ let AcFunHelperFrontendXHRReactor = (function XHRReactor() {
 			userId: 7054138,
 			userName: "爱稀饭助手-说",
 		},
+		/**@description  文章区列表过滤的用户ID*/
 		articleFilterUsersUid: [],
+		/**@description  评论区过滤的UID*/
 		commentAreaBanUsersId: [6100823,],
+		/**@description  文章区过滤开关*/
 		articleFilterEnable: false,
+		/**@description  评论区用户过滤开关*/
 		commentAreaBanUsersEnable: false,
 	};
 	window.addEventListener("AcFunHelperFrontend", e => {
@@ -246,6 +266,7 @@ let AcFunHelperFrontendXHRReactor = (function XHRReactor() {
 			if (!newDataArr.length) {
 				newDataArr.push(dataset.newArticleFilterEmptyFill);
 			}
+			/**@description 重新构造请求 */
 			ctx.response = { "cursor": raw.cursor, "data": newDataArr, "result": raw.result };
 			handler.next(ctx);
 		}

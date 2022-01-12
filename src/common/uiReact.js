@@ -119,6 +119,7 @@ function updateVersionIcon() {
 
 class PlayerMenuSwitchItem extends UIReactor {
   constructor(name, title, describe, defaultState = false) {
+    super();
     this.menuInst = null;
     this.parentInst = null;
     this.name = name;

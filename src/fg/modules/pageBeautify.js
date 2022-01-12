@@ -12,6 +12,7 @@ class PageBeautify extends AcFunHelperFgFrame {
       正在直播: "直播",
       "「年」在一起": "春节",
       "舞蹈·偶像": "舞蹈",
+      "主角竟是我": "春节",
     };
   }
 
@@ -122,11 +123,10 @@ class PageBeautify extends AcFunHelperFgFrame {
 
   //------------------------个人中心------------------------------
   async personBeautify() {
-    chrome.storage.local.get(["LocalUserId"], function (Uid) {
-      if (Uid.LocalUserId == "0") {
-        return;
-      }
-    });
+    const hadLogin = await ExtOptions.getValue("LocalUserId");
+    if (hadLogin == "0") {
+      return;
+    }
     let this_page = 0;
     fetch(this.personInfo)
       .then((res) => {
@@ -157,19 +157,17 @@ class PageBeautify extends AcFunHelperFgFrame {
             );
             node.after('<p class="crx-guid-p">UID: ' + a.info.userId + "</p>");
             node.after(
-              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=banana" target="_blank">香蕉: ' +
-              a.info.banana +
-              "</a></p>"
+              '<p class="crx-guid-p">香蕉: ' + a.info.banana + "</p>"
             );
             node.after(
-              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=golden-banana" target="_blank">金香蕉: ' +
+              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/mall?tab=items" target="_blank">金香蕉: ' +
               a.info.goldBanana +
               "</p>"
             );
             node.after(
-              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds?tab=following" target="_blank">关注 ' +
+              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds/following" target="_blank">关注 ' +
               a.info.following +
-              '</a> - <a href="https://www.acfun.cn/member/feeds?tab=fans" target="_blank">听众: ' +
+              '</a> - <a href="https://www.acfun.cn/member/feeds/fans" target="_blank">听众: ' +
               a.info.followed +
               "</a></p>"
             );
@@ -268,8 +266,7 @@ class PageBeautify extends AcFunHelperFgFrame {
   }
 
   userCenterBeautify() {
-    let cssStr;
-    cssStr = `#ac-space .tab-content{background: #ffffffad;} #ac-space .tab{background: #fffffff7;}
+    createElementStyle(`#ac-space .tab-content{background: #ffffffad;} #ac-space .tab{background: #fffffff7;}
 		#ac-space-album-list, #ac-space-article-list, #ac-space-video-list{background: #ffffffad;}
 		#ac-space-info {
 			border: 0px;
@@ -308,12 +305,11 @@ class PageBeautify extends AcFunHelperFgFrame {
 		
 		.ac-space-video .video .icon-play, .ac-space-video .video .mask{
 			transition: all .2s ease-in-out;
-		}`;
-    createElementStyle(cssStr, document.head, "simplifiyPartIndex");
+		}`, document.head, "simplifiyPartIndex");
   }
 
   widenUCVideoList() {
-    let cssStr = `
+    createElementStyle(`
 		.ac-space-video {
 			width: 1000px;
 			height: 100px;
@@ -332,16 +328,13 @@ class PageBeautify extends AcFunHelperFgFrame {
 			line-height: 100px;
       align-items:center;
 		}
-		`;
-    createElementStyle(cssStr, document.head, "widenUCVideoList");
+		`, document.head, "widenUCVideoList");
   }
 
   simplifiyPlayerRecm() {
-    let cssStr;
-    cssStr = `#ACPlayer > div > div.container-video > div > div.recommend-container > div{
+    createElementStyle(`#ACPlayer > div > div.container-video > div > div.recommend-container > div{
 			display:none
-		}`;
-    createElementStyle(cssStr, document.head, "AcFunHelper_simplifiyPlayerRecommend");
+		}`, document.head, "AcFunHelper_simplifiyPlayerRecommend");
   }
 
   hideAds() {
@@ -666,7 +659,7 @@ class PageBeautify extends AcFunHelperFgFrame {
       }
       if (this.userBatchMngList?.length >= 19) {
         UIReactor.ucenterAreaNotice("AcFun助手：待处理列表数量超过20，当翻页时会丢失原来选择的用户显示，但用户依旧还在待处理列表中。", 6000);
-        UIReactor.ucenterAreaNotice("AcFun助手：处理一轮时，请尽量不要翻页。",5500);
+        UIReactor.ucenterAreaNotice("AcFun助手：处理一轮时，请尽量不要翻页。", 5500);
       }
       if (mode) {
         if (!this.userBatchMngList.includes(u)) {
@@ -695,8 +688,8 @@ class PageBeautify extends AcFunHelperFgFrame {
         unfollowElem.classList.add("group-edit");
         unfollowElem.id = "achUserBatchMngunf";
 
-        document.querySelector(".following-panel>.group").append(groupMoveElem);
-        document.querySelector(".following-panel>.group").append(unfollowElem);
+        document.querySelector(".following-panel>.group") && document.querySelector(".following-panel>.group").append(groupMoveElem);
+        document.querySelector(".following-panel>.group") && document.querySelector(".following-panel>.group").append(unfollowElem);
       }
     }
 

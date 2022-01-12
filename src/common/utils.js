@@ -104,6 +104,7 @@ const defaults = {
   frameStepSetting: { enabled: false, controlUI: false, },
   liveVolumeMild: false,
   wheelToChangeVolume: true,
+  simpleCC: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 /**@type {InnerDefined.REGStruct} */
