@@ -251,8 +251,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		this.authInfo.uidInfo();
 		//开启屏蔽功能
 		this.options.filter && this.block.block();
-		const LittleModLoader = await import("./littleMods/index.js")
-		LittleModLoader.default()
 		if (REG.video.test(href)) {
 			if (!this.fetchPageInfo()) {
 				return;

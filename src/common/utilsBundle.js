@@ -717,7 +717,7 @@ class GetAsyncDomUtil extends UtilsBundle {
      * @example GetAsyncDomUtil.getAsyncDomClassic(".ac-comment-list",function(){ console.log("2333") })
      * @returns {GetAsyncDomUtil}
      */
-    static getAsyncDomClassic(target, fn, time = 2500, isDev = true) {
+    static getAsyncDomClassic(target, fn, time = 2500, isDev = false) {
         return new GetAsyncDomUtil(target, fn, null, "exist", time, true, 30000, isDev).probe();
     }
 
@@ -731,7 +731,7 @@ class GetAsyncDomUtil extends UtilsBundle {
      * @example GetAsyncDomUtil.judgeImgReady("#article-up > div.article-content > div > div:nth-child(2) > img",function(e){console.log("ok了")})
      * @returns {GetAsyncDomUtil}
      */
-    static judgeImgReady(ImgDom, fn, insure, time = 2000, isDev = true) {
+    static judgeImgReady(ImgDom, fn, insure, time = 2000, isDev = false) {
         return new GetAsyncDomUtil(ImgDom, fn, insure, function (e) {
             if (e instanceof HTMLImageElement && e.complete) {
                 return true
@@ -749,7 +749,7 @@ class GetAsyncDomUtil extends UtilsBundle {
      * @param {boolean} isDev 
      * @returns {GetAsyncDomUtil}
      */
-    static judgeBornChilds(target, fn, insure, time = 3000, isDev = true) {
+    static judgeBornChilds(target, fn, insure, time = 3000, isDev = false) {
         return new GetAsyncDomUtil(target, fn, insure, function (e) {
             if (e.hasChildNodes()) {
                 return true
@@ -768,7 +768,7 @@ class GetAsyncDomUtil extends UtilsBundle {
      * @param {boolean} isDev 
      * @returns {GetAsyncDomUtil}
      */
-    static getLoadingDomAttr(target, fn, attrName, insure, time = 3000, isDev = true) {
+    static getLoadingDomAttr(target, fn, attrName, insure, time = 3000, isDev = false) {
         return new GetAsyncDomUtil(target, fn, insure, function (e, f) {
             return Array.isArray(f) ? f[1] == e.getAttribute(f[0]) : e.getAttribute(f);
         }, time, true, 30000, isDev, null, attrName).probe();
