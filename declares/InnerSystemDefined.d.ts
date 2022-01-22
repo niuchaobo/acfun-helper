@@ -139,6 +139,7 @@ declare namespace OptionStruct {
     liveBansw: boolean;
     playerRecommendHide: boolean;
     PlayerDamakuSearchSw: boolean;
+    userBatchManage: boolean;
     PlayerTimeCommentEasyJump: boolean;
     PlaybackRateKeysw: boolean;
     FilmModeExclusionsw: boolean;
@@ -194,5 +195,6 @@ declare namespace OptionStruct {
     frameStepSetting: { enabled: boolean; controlUI: boolean };
     liveVolumeMild: boolean;
     wheelToChangeVolume: boolean;
+    simpleCC: boolean;
   }
 }

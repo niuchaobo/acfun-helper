@@ -439,6 +439,19 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	api_downloadDanmaku() {
 		this.download.downloadDanmaku(this.dataset.dougaInfo);
 	}
+	api_playerTimeJumpUrlGenDiv() {
+		const timeText = document.querySelector(".time-label").children[0].innerText;
+		if (timeText) {
+			const ResultUrl = FunctionalUrlParam.playerTimeJumpUrlGen(timeText);
+			var aux = document.createElement("input");
+			aux.setAttribute("value", ResultUrl);
+			document.body.appendChild(aux);
+			aux.select();
+			document.execCommand("copy");
+			document.body.removeChild(aux);
+			MessageSwitch.sendMessage('fg', { target: "notice", params: { title: "播放器时间跳转链接", msg: "跳转到现在播放时间的链接已经复制到剪贴板了。", }, InvkSetting: { type: "function" } })
+		}
+	}
 	api_assDanmaku() {
 		this.danmaku.sanitizeJsonDanmakuToAss(this.dataset.dougaInfo);
 	}

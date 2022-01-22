@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_appName__",
-  "version": "1.2.13.1226",
+  "version": "1.2.13.1230",
   "default_locale": "zh_CN",
   "description": "__MSG_appDesc__",
   "icons": {
@@ -95,6 +95,7 @@
   "content_security_policy": "style-src 'self' 'unsafe-inline';script-src 'self' 'unsafe-eval'; object-src 'self';",
   "web_accessible_resources": [
     "fg/acfunxhr.js",
+    "mdui/*",
     "common/xhr-proxy.js",
     "fg/css/frame.css",
     "fg/css/lucy.css",

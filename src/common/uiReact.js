@@ -37,6 +37,18 @@ class UIReactor {
     }, latency);
   }
 
+  static loadMdui(){
+    const linkTar = document.createElement("link");
+    linkTar.href = chrome.runtime.getURL("mdui/css/mdui.min.css");
+    linkTar.type="text/css";
+    linkTar.rel="stylesheet";
+    (document.head || document.documentElement).appendChild(linkTar);
+    const JsTar = document.createElement("script");
+    JsTar.src = chrome.runtime.getURL("mdui/js/mdui.min.js");
+    JsTar.type="text/javascript";
+    (document.head || document.documentElement).appendChild(JsTar);
+  }
+  
 }
 
 /**

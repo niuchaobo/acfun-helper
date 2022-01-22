@@ -2704,7 +2704,10 @@ class PlayerAction extends UtilsBundle {
         }
     }
 }
-
+/**
+ * 评论区遍历操作
+ * @description 1.遍历评论区评论，并进行操作 newInstant->add->start 2.遍历评论区并添加操作菜单内容 newInstant->menuAdd->start
+ */
 class CommentAreaIterator extends UtilsBundle {
     constructor() {
         super();
@@ -2715,7 +2718,7 @@ class CommentAreaIterator extends UtilsBundle {
             _sys: [],
 
         };
-        /**@type {InnerDefined.CommentAreaIterator.management} */
+        /**@type {InnerDefined.CommentAreaIterator.MenuRegistry} */
         this.menuCallback = {
             _sys: [],
 
