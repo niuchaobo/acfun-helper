@@ -1150,7 +1150,7 @@ function contentConfigure() {
                     var acId = null;
                 }
                 if (acId != null) {
-                    fetch("https://mini.pocketword.cn/api/acfun/info?dougaId=" + acId).then((res => { return res.text() }))
+                    fetch(acfunApis.video.videoInfo + acId).then((res => { return res.text() }))
                         .then((res) => {
                             let x = JSON.parse(res);
                             $("#watchLaterList").append(`
@@ -2592,7 +2592,7 @@ function globalConfigure() {
                     let uploadData = new FormData();
                     uploadData.append("options_data", `${options_data}`);
                     // fetch('http://localhost/api/v1/acfun-helper/options/upload', { method: "POST", credentials: 'include', body: uploadData })
-                    fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload', { method: "POST", credentials: 'include', body: uploadData })
+                    fetch(acfunHelperApis.confSync.upload, { method: "POST", credentials: 'include', body: uploadData })
                         .then((res => { return res.text() }))
                         .then((res) => {
                             if (res) {
@@ -2623,7 +2623,7 @@ function globalConfigure() {
                 let upCookies = new FormData();
                 upCookies.set("authCookie", `${JSON.stringify(svrCookies)}`);
                 // fetch('http://localhost/api/v1/acfun-helper/options/download', { method: "POST", credentials: 'include', body: upCookies })
-                fetch('https://mini.pocketword.cn/api/acfun-helper/options/download', { method: "POST", credentials: 'include', body: upCookies })
+                fetch(acfunHelperApis.confSync.download, { method: "POST", credentials: 'include', body: upCookies })
                     .then((res => { return res.text() }))
                     .then((x) => {
                         try {

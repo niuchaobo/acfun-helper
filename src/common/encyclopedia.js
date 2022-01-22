@@ -71,6 +71,7 @@ const acfunApis = {
         }
     },
     video: {
+        videoInfo: `https://mini.pocketword.cn/api/acfun/dougaInfo?acid=`,
         Staff: {
             /**
              * @description 合作稿件的Staff信息
@@ -211,12 +212,19 @@ const acfunApis = {
         friendMoment: `https://www.acfun.cn/rest/pc-direct/feed/followFeedV2?useWebp=true&pcursor=0&count=5&resourceTypes=0`,
     },
     bangumi: {
-        myDescribe: `https://www.acfun.cn/rest/pc-direct/feed/favorite/bangumi?count=`,
+        mySubscribe: `https://www.acfun.cn/rest/pc-direct/feed/favorite/bangumi?count=`,
         /**@returns {{result:number,feeds:[APIs.Favorite.FullBangumi]}} */
-        getMyDescribe: async (count = 10) => {
+        getMySubscribe: async (count = 10) => {
             return JSON.parse(await fetchResult(acfunApis.bangumi.myDescribe + count));
         },
     },
+}
+
+const acfunHelperApis = {
+    confSync: {
+        upload: `https://mini.pocketword.cn/api/acfun-helper/options/upload`,
+        download: `https://mini.pocketword.cn/api/acfun-helper/options/download`,
+    }
 }
 
 const acfunApisParameter = {
