@@ -659,7 +659,7 @@ function getEsFuncName(esFunc) {
 /**
  * fetch信息
  * @param {string} url 
- * @param {string} method "POST"||default "GET"
+ * @param {"GET"|"POST"} method 
  * @param {string} data *postdata
  * @param {boolean} withCredentials 
  * @param {"same-origin" | "cors" | "navigate" | "no-cors"} mode 

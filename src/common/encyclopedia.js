@@ -38,14 +38,21 @@ const acfunApis = {
     like: `https://kuaishouzt.com/rest/zt/interact/add`,
     unlike: `https://kuaishouzt.com/rest/zt/interact/delete`,
     extensionIconImg: `https://i.loli.net/2020/05/28/2k8dPLiGEZNHjny.png`,
-    personalBasicInfo: `https://www.acfun.cn/rest/pc-direct/user/personalBasicInfo`,
+    personalBasicInfo: {
+        url: `https://www.acfun.cn/rest/pc-direct/user/personalBasicInfo`,
+        /**@returns {{"info":APIs.Personal.UserInfoBasic}} */
+        get: async () => {
+            return JSON.parse(await fetchResult(acfunApis.personalBasicInfo.url))
+        }
+    },
     gifts: "https://www.acfun.cn/rest/pc-direct/pay/deposit/products",
+    contributes: `https://member.acfun.cn/list/api/queryContributeList`,
     index: {
         /**
          * @description 搜索推荐
          * @method GET
          */
-        searchDefaul: `https://www.acfun.cn/rest/pc-direct/homePage/searchDefault`,
+        searchDefault: `https://www.acfun.cn/rest/pc-direct/homePage/searchDefault`,
         /**
          * 
          * @method POST
@@ -68,10 +75,85 @@ const acfunApis = {
              * @example ?sourceId=30637780&sourceType=3&page=1&pivotCommentId=0&newPivotCommentId=0&t=1628913415510&supportZtEmot=true
              */
             floorComment: `https://www.acfun.cn/rest/pc-direct/comment/listByFloor`,
+        },
+        fansClud: {
+            enabled: `https://member.acfun.cn/common/api/showFansClubApplyEntrance`,
+            /**@returns {boolean} */
+            isEnabled: async () => {
+                return JSON.parse(await fetchResult(acfunApis.index.fansClud.enabled, "POST", ""))["enableFansClub"];
+            }
+        },
+        bindKs: {
+            bound: `https://id.app.acfun.cn/rest/web/central/ksaccount/status`,
+            /**@returns {boolean} */
+            isBound: async () => {
+                return JSON.parse(await fetchResult(acfunApis.index.bindKs.bindKs, "POST", ""))["result"] == 1;
+            }
+        },
+        naviList: {
+            url: `https://member.acfun.cn/common/api/getNavList`,
+            get: async () => {
+                return JSON.parse(await fetchResult(acfunApis.index.naviList.url, "POST", ""))
+            }
+        },
+        channelRank: `https://www.acfun.cn/rest/pc-direct/rank/channel`,
+        /**
+         * 排行榜
+         * @param {"THREE_DAYS"|"DAY"|"WEEK"} rankPeriod 
+         * @param {number} rankLimit 
+         * @param {number} channelId 主区CID 可以通过 ```acfunApis.navigateCategory```查看
+         * @param {number} subChannelId 
+         * @returns 
+         */
+        getRank: async (rankPeriod = "DAY", rankLimit = 30, channelId, subChannelId) => {
+            return JSON.parse(await fetchResult(acfunApis.index.channelRank + `channelId=${channelId ? channelId : ""}&subChannelId=${subChannelId ? subChannelId : ""}&rankLimit=${rankLimit}&rankPeriod=${rankPeriod}`));
         }
     },
     video: {
         videoInfo: `https://mini.pocketword.cn/api/acfun/dougaInfo?acid=`,
+        videos: {
+            status: {
+                all: 0,
+                /**通过 */
+                passed: 1,
+                /**待发布 */
+                toBeRelease: 2,
+                /**退回 */
+                retreat: 3,
+            },
+            sortMethods: `https://member.acfun.cn/list/api/getSortList`,
+            getSortMethods: async () => {
+                return JSON.parse(await fetchResult(acfunApis.video.videos.sortMethods, "POST", ""))
+            },
+            /**@description 有跨域问题，尽量在Backend用 */
+            getVideos: async (uid, pcursor = 0, sortType = 3, keyword, status) => {
+                if (!uid) {
+                    return;
+                }
+                return JSON.parse(await fetchResult(acfunApis.contributes, "POST", `pcursor=${pcursor}&resourceType=2&sortType=${sortType}&authorId=${uid}${status ? "&status=" + status : ""}${keyword ? "&keyword=" + keyword : ""}`))
+            },
+            /**@description 有跨域问题，尽量在Backend用 */
+            getArticles: async (uid, pcursor = 0, sortType = 3, keyword, status) => {
+                if (!uid) {
+                    return;
+                }
+                return JSON.parse(await fetchResult(acfunApis.contributes, "POST", `pcursor=${pcursor}&resourceType=3&sortType=${sortType}&authorId=${uid}${status ? "&status=" + status : ""}${keyword ? "&keyword=" + keyword : ""}`))
+            },
+            getMyVideos: async (pcursor = 0) => {
+                const myUid = await acfunApis.ucenter.getUserId();
+                const result = await acfunApis.video.videos.getVideos(myUid, pcursor);
+                return result;
+            },
+            getMyArticles: async (pcursor = 0) => {
+                const myUid = await acfunApis.ucenter.getUserId();
+                const result = await acfunApis.video.videos.getArticles(myUid, pcursor);
+                return result;
+            },
+            glance: `https://member.acfun.cn/interActive/api/getDougaList`,
+            getDougaGlance: async () => {
+                return JSON.parse(await fetchResult(acfunApis.video.videos.glance, "POST", ""));
+            }
+        },
         Staff: {
             /**
              * @description 合作稿件的Staff信息
@@ -134,15 +216,46 @@ const acfunApis = {
          */
         blockDanmakuWords: "https://www.acfun.cn/rest/pc-direct/new-danmaku/blockWords/load",
     },
+    article: {
+        channels: `https://member.acfun.cn/common/api/getChannelList`,
+        getChannels: async () => {
+            return JSON.parse(await fetchResult(acfunApis.article.channels, "POST", `{"types":1}`));
+        }
+    },
     live: {
         liveInfo: `https://live.acfun.cn/api/live/info?authorId=`,
         liveReward: `https://m.acfun.cn/rest/apph5-direct/pay/reward/giveRecords?pcursor=`,
+        list: `https://member.acfun.cn/common/api/getLiveList`,
+        list_acfunDotcn: `https://www.acfun.cn/rest/pc-direct/live/followLiveUsers`,
+        getLiveList: async () => {
+            return JSON.parse(await fetchResult(acfunApis.live.list, "POST", ""));
+        },
+        getLiveList_acfunDotcn: async () => {
+            return JSON.parse(await fetchResult(acfunApis.live.list_acfunDotcn, "POST", `{"headers":{"Content-Type":"application/x-www-form-urlencoded"}}`));
+        },
+        liveTypes: `https://member.acfun.cn/common/api/getLiveTypeList`,
+        getLiveTypes: async () => {
+            return JSON.parse(await fetchResult(acfunApis.like.liveTypes, "POST", ""));
+        }
     },
     navigateCategory: {
         query: `https://www.acfun.cn/rest/pc-direct/page/queryNavigators`,
     },
     ucenter: {
         personalVideoList: `https://www.acfun.cn/u/{Uid}?quickViewId=ac-space-video-list&reqID=3&ajaxpipe=1&type=video&order=newest&page={pageNum}&pageSize=20`,
+        getUserId: async () => {
+            return (JSON.parse(await acfunApis.personalBasicInfo.get()))["info"]["userId"];
+        },
+        followList: {
+            followFeedList: `https://member.acfun.cn/common/api/getFeedList`,
+            getFollowFeedList: async () => {
+                return JSON.parse(await fetchResult(acfunApis.ucenter.followList.followFeedList, "POST", ""));
+            }
+        },
+        upsAcademy: `https://member.acfun.cn/academy/api/checkAcademy`,
+        checkUpAcademy: async () => {
+            return JSON.parse(await fetchResult(acfunApis.ucenter.upsAcademy, "POST", ""));
+        }
     },
     users: {
         followings: `https://www.acfun.cn/rest/pc-direct/relation/getFollows`,
