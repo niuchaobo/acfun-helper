@@ -128,106 +128,136 @@ class PageBeautify extends AcFunHelperFgFrame {
       return;
     }
     let this_page = 0;
-    fetch(this.personInfo)
-      .then((res) => {
-        return res.text();
-      })
-      .then((res) => {
-        /**@type {APIs.Personal.UserInfo} */
-        let a = "";
-        try {
-          a = JSON.parse(res);
-          if (!a.info.userId) { return }
-        } catch (error) {
-          fgConsole("PageBeautify", this.personBeautify, "fetch userInfo Failed.", 1, false);
-          return;
-        }
-        var url = window.location.toString();
-        if (REG.userHome.test(url)) {
-          this_page = 1;
-        }
-        let node = $("div.guide-item-con").find("p").eq(0);
-        getAsyncDom(".guide-item.guide-user.user-logined", () => {
-          if (node) {
-            node.after(
-              '<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
-              a.info.userId +
-              '">我的直播</a></p>' +
-              '<p class="crx-guid-p"><a target="_blank" href="https://www.acfun.cn/member/favourite">我的收藏</a></p>'
-            );
-            node.after('<p class="crx-guid-p">UID: ' + a.info.userId + "</p>");
-            node.after(
-              '<p class="crx-guid-p">香蕉: ' + a.info.banana + "</p>"
-            );
-            node.after(
-              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/mall?tab=items" target="_blank">金香蕉: ' +
-              a.info.goldBanana +
-              "</p>"
-            );
-            node.after(
-              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds/following" target="_blank">关注 ' +
-              a.info.following +
-              '</a> - <a href="https://www.acfun.cn/member/feeds/fans" target="_blank">听众: ' +
-              a.info.followed +
-              "</a></p>"
-            );
-            node.after(
-              '<p class="crx-guid-p">注册时间: ' +
-              formatDate(new Date(a.info.registerTime)) +
-              "</p>"
-            );
-          }
-        }, 1000)
-        let cssStr = `
-        .header .guide-msg .guide-item-con .msg-item{
+    const res = await fetchResult(this.personInfo, "GET", "", true)
+    /**@type {APIs.Personal.UserInfo} */
+    let a = "";
+    try {
+      a = JSON.parse(res);
+      if (!a.info.userId) { return }
+    } catch (error) {
+      fgConsole("PageBeautify", this.personBeautify, "fetch userInfo Failed.", 1, false);
+      return;
+    }
+    var url = window.location.toString();
+    if (REG.userHome.test(url)) {
+      this_page = 1;
+    }
+    let node = $("div.guide-item-con").find("p").eq(0);
+    getAsyncDom(".guide-item.guide-user.user-logined", () => {
+      if (node) {
+        node.after(
+          '<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
+          a.info.userId +
+          '">我的直播</a></p>' +
+          '<p class="crx-guid-p"><a target="_blank" href="https://www.acfun.cn/member/favourite">我的收藏</a></p>'
+        );
+        node.after('<p class="crx-guid-p">UID: ' + a.info.userId + "</p>");
+        node.after(
+          '<p class="crx-guid-p">香蕉: ' + a.info.banana + "</p>"
+        );
+        node.after(
+          '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/mall?tab=items" target="_blank">金香蕉: ' +
+          a.info.goldBanana +
+          "</p>"
+        );
+        node.after(
+          '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds/following" target="_blank">关注 ' +
+          a.info.following +
+          '</a> - <a href="https://www.acfun.cn/member/feeds/fans" target="_blank">听众: ' +
+          a.info.followed +
+          "</a></p>"
+        );
+        node.after(
+          '<p class="crx-guid-p">注册时间: ' +
+          formatDate(new Date(a.info.registerTime)) +
+          "</p>"
+        );
+      }
+    }, 1000)
+    createElementStyle(`
+        .header .guide-msg .guide-item-con .msg-item {
           font-size: 14px;
           line-height: 1.5;
           padding: 0 0 0 0;
         }
-        #guide-msg-list > li:hover{
-            background-color:#ececec;
+        #guide-msg-list > li:hover {
+          background-color: #ececec;
         }
         .header .guide-item li a:hover,
         [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:hover a,
-        #header #nav .guide-msg .guide-item-con a:hover
-        {
-            color: #000;
+        #header #nav .guide-msg .guide-item-con a:hover {
+          color: #000;
         }
-        ul#guide-msg-list{
-          padding:0px 0px 0px 0px;
+        ul#guide-msg-list {
+          padding: 0px 0px 0px 0px;
           border-radius: 3px;
         }
-        [data-c-w-header] .header-guide .guide-msg .guide-item-con{
-          ${this_page ? "width: 114px;" : ""}
-          padding:0px 0px 0px 0px;
-        }
-        [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li{
-            ${this_page ? "text-align: center;" : ""}
-            font-size:14px;
+        [data-c-w-header] .header-guide .guide-msg .guide-item-con {
+          width: 110px;
+          padding: 0px 0px 0px 0px;
         }
         [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li,
-        .header .guide-msg .guide-item-con .msg-item a{
-            padding:10px 5px 10px 5px;
-            text-align: center;
+        [data-c-w-header] .header-guide .guide-item li {
+          font-size: 14px;
         }
-        [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:last-child{
+        [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li,
+        .header .guide-msg .guide-item-con .msg-item a {
+          padding: 10px 5px 10px 5px;
+          text-align: center;
+        }
+        [data-c-w-header] .header-guide .guide-msg .guide-item-con ul li:last-child {
           padding-bottom: 10px;
         }
-        .header .guide-msg .guide-item-con .msg-item:last-child{
-            padding-bottom: 0;
+        .header .guide-msg .guide-item-con .msg-item:last-child {
+          padding-bottom: 0;
         }
-        
-        #header-guide > li.guide-item.guide-history > div > ul > div:hover, 
+        #header-guide > li.guide-item.guide-history > div > ul > div:hover,
         #header-guide > li.guide-item.guide-feed > div > ul > li:hover {
-          background-color:#ececec;
+          background-color: #ececec;
         }
         #header-guide > li.guide-item.guide-history > div > ul > div > div > a:hover,
-        [data-c-w-header] .header-guide .guide-item li a:hover{
+        [data-c-w-header] .header-guide .guide-item li a:hover {
           color: #000000;
         }
-				`;
-        createElementStyle(cssStr);
-      });
+        
+        [data-c-w-header] .header-guide .guide-item.guide-cretive .guide-item-con {
+          padding-top: 0px;
+          padding-bottom: 0px;
+          border-radius: 3px;
+        }
+        [data-c-w-header] .header-guide .guide-item.guide-cretive .guide-item-con {
+          width: 110px;
+        }
+        [data-c-w-header] .header-guide .guide-item.guide-cretive ul,
+        [data-c-w-header] .header-guide .guide-item.guide-upload ul {
+          padding: 0px 0px;
+        }
+        [data-c-w-header] .header-guide .guide-msg.guide-item-con ul li,
+        [data-c-w-header] .header-guide .guide-item.guide-cretive li {
+          font-size: 14px;
+          padding: 10px 0px 10px 0px;
+          text-align: center;
+        }
+        [data-c-w-header] .header-guide .guide-item.guide-cretive li:hover,
+        [data-c-w-header] .header-guide .guide-item.guide-upload li:hover {
+          background-color: #ececec;
+        }
+        
+        [data-c-w-header] .header-guide .guide-item.guide-upload .guide-item-con {
+          padding: 0px 0px;
+          width: 100px;
+          top: 27px;
+        }
+        [data-c-w-header] .header-guide .guide-item.guide-upload li {
+          font-size: 14px;
+          padding: 10px 0px 10px 0px;
+          text-align: center;
+        }
+        p.crx-guid-p {
+          font-size: 15px;
+        }
+        
+        `);
   }
 
   indexBeautify(opt, shadowSw = false, searchBox = true) {
