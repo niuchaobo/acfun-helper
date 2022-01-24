@@ -1153,6 +1153,10 @@ function contentConfigure() {
                     fetch(acfunApis.video.videoInfo + acId).then((res => { return res.text() }))
                         .then((res) => {
                             let x = JSON.parse(res);
+                            if (x.status != 0) {
+                                x = { result: { dougaId: 0, shareUrl: "about:blank", user: { name: "用户" }, title: "稿件不存在" } }
+                            }
+                            x = x.result;
                             $("#watchLaterList").append(`
                             <li class="mdui-list-item mdui-ripple" style="cursor:default">
                             <i class="mdui-list-item-icon mdui-icon material-icons watchLaterListdelItem" data-key=${x.dougaId} data-type="v" style="cursor:pointer">delete</i>
