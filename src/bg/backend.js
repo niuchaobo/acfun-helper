@@ -168,9 +168,6 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
         if (rawOpts['userHomeMoment']) {
             chrome.storage.local.set({ "userHomeMoment": false }, function () { });
         }
-        if (rawOpts['uddPopUp']) {
-            chrome.storage.local.set({ "uddPopUp": false }, function () { });
-        }
     }
 
     onCommentRequest(req) {

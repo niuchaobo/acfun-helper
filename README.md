@@ -55,6 +55,9 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
   22. 主站 **评论、点赞、礼物** 信息通知(站内公告就不加了，免得被认成了广告(`ε´ ))    
   23. 记录打开的稿件站内排行    
   24. 音量放大！   
+  25. 关注列表批量管理  
+  26. 简单CC字幕
+  27. 播放器时间跳转链接【[ 例子 ](https://www.acfun.cn/v/ac31673115#acfunhelper=%7B%22jump%22:%2201:04:41%22%7D) （要求助手版本在1.2.13.1226以上，并且复制方和使用方都安装了助手本体。）】
 
 ##### 直播站
 
@@ -90,6 +93,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 #### 插件本体获取
 
 - [FireFox 插件商店](https://addons.mozilla.org/zh-CN/firefox/addon/acfun%E5%8A%A9%E6%89%8B/)
+- [FireFox 插件商店](https://addons.mozilla.org/zh-CN/firefox/addon/acfun%E5%8A%A9%E6%89%8Bpre/)
 - [Chrome 扩展商店](https://chrome.google.com/webstore/detail/acfun%E5%8A%A9%E6%89%8B/jmpmiaajjammeafdklfobkfaobinefef)
 - [Edge Chromium Addons商店](https://microsoftedge.microsoft.com/addons/detail/acfun%E5%8A%A9%E6%89%8B/lbnimimllmcdmojehbgndnebjafgnjfk?hl=zh-CN)
 - [Edge Chromium Addons商店 2号](https://microsoftedge.microsoft.com/addons/detail/acfun%E5%8A%A9%E6%89%8B/hkbnoipklegggkiifgbjlcfdjmjjodio?hl=zh-CN)
@@ -153,7 +157,7 @@ AcFun-Helper 是一个适用于 AcFun（ www.acfun.cn ） 的浏览器插件。
 #### 助手配置同步服务: @heixiaobai - [acfun-helper-synconfig](https://github.com/heixiaobai/acfun-helper-synconfig "项目地址")
 
 ---
-[AcFun 开源项目](./docs/OPENSRC_ECHOSYS.md)
+[AcFun 第三方开源项目](./docs/OPENSRC_ECHOSYS.md)
 
 
 

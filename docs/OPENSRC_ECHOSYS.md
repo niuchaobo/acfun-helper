@@ -1,7 +1,7 @@
 <p align="center">
 <img src="https://ali-imgs.acfun.cn/kos/nlav10360/static/common/widget/header/img/acfunlogo.11a9841251f31e1a3316.svg" width="120">
 </p>
-<h1 align="center">一些开源项目！</h1>
+<h1 align="center">一些三方开源项目！</h1>
 
     先后与排名无关
 

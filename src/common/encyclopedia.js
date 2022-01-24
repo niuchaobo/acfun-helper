@@ -126,18 +126,18 @@ const acfunApis = {
                 return JSON.parse(await fetchResult(acfunApis.video.videos.sortMethods, "POST", ""))
             },
             /**@description 有跨域问题，尽量在Backend用 */
-            getVideos: async (uid, pcursor = 0, sortType = 3, keyword, status) => {
+            getVideos: async (uid, pcursor = 0, sortType = 3, keyword, count, status) => {
                 if (!uid) {
                     return;
                 }
-                return JSON.parse(await fetchResult(acfunApis.contributes, "POST", `pcursor=${pcursor}&resourceType=2&sortType=${sortType}&authorId=${uid}${status ? "&status=" + status : ""}${keyword ? "&keyword=" + keyword : ""}`))
+                return JSON.parse(await fetchResult(acfunApis.contributes, "POST", `pcursor=${pcursor}&resourceType=2&sortType=${sortType}&authorId=${uid}${status ? "&status=" + status : ""}${count ? "&count=" + count : ""}${keyword ? "&keyword=" + keyword : ""}`))
             },
             /**@description 有跨域问题，尽量在Backend用 */
-            getArticles: async (uid, pcursor = 0, sortType = 3, keyword, status) => {
+            getArticles: async (uid, pcursor = 0, sortType = 3, keyword, count, status) => {
                 if (!uid) {
                     return;
                 }
-                return JSON.parse(await fetchResult(acfunApis.contributes, "POST", `pcursor=${pcursor}&resourceType=3&sortType=${sortType}&authorId=${uid}${status ? "&status=" + status : ""}${keyword ? "&keyword=" + keyword : ""}`))
+                return JSON.parse(await fetchResult(acfunApis.contributes, "POST", `pcursor=${pcursor}&resourceType=3&sortType=${sortType}&authorId=${uid}${status ? "&status=" + status : ""}${count ? "&count=" + count : ""}${keyword ? "&keyword=" + keyword : ""}`))
             },
             getMyVideos: async (pcursor = 0) => {
                 const myUid = await acfunApis.ucenter.getUserId();

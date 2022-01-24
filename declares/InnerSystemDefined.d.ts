@@ -198,3 +198,191 @@ declare namespace OptionStruct {
     simpleCC: boolean;
   }
 }
+
+declare namespace SizzwooApis {
+  interface LiveRoomInfo {
+    avatarImage: string;
+    coverUrl: string;
+    duration: number;
+    endTime: string;
+    fansUp: number;
+    headUrl: string;
+    likeCount: number;
+    liveId: string;
+    maxOnlineCount: number;
+    name: string;
+    onlineCount: number;
+    roomId: number;
+    startTime: string;
+    title: string;
+    uid: number;
+  }
+  interface LiveRecord {
+    coverUrl: string;
+    danmuCount: number;
+    danmuUsers: number;
+    duration: number;
+    endTime: string;
+    fansUp: number;
+    incomes: number;
+    likeCount: number;
+    liveId: string;
+    liveState: number;
+    maxOnlineCount: number;
+    name: string;
+    onlineCount: number;
+    premiumGte5Users: number;
+    premiumUsers: number;
+    startTime: string;
+    title: string;
+    uid: number;
+  }
+  interface LiveCountData {
+    avatarImage: string;
+    clubCount: number;
+    clubCountUp: number;
+    clubName: string;
+    contributeCount: number;
+    dateTime: string;
+    fansCount: number;
+    fansCountUp: number;
+    fansCountUpHour: number;
+    hasFansClub: number;
+    headUrl: string;
+    lastLiveTime: string;
+    likeCount: number;
+    liveState: number;
+    maxOnlineCount: number;
+    name: string;
+    onlineCount: number;
+    signature: string;
+    uid: number;
+    verifiedText: string;
+  }
+  interface UserDetail {
+    code: number;
+    data: {
+      avatarImage: string;
+      clubCount: number;
+      clubCountUp: number;
+      clubName: string;
+      contributeCount: number;
+      dateTime: string;
+      fansCount: number;
+      fansCountUp: number;
+      fansCountUpHour: number;
+      hasFansClub: number;
+      headUrl: string;
+      lastLiveTime: string;
+      likeCount: number;
+      liveState: number;
+      maxOnlineCount: number;
+      name: string;
+      onlineCount: number;
+      signature: string;
+      uid: number;
+      verifiedText: string;
+    };
+    message: string;
+  }
+  interface Analysis {
+    code: number;
+    data: {
+      endDateTime: string;
+      startDateTime: string;
+      type: number;
+      userCount: LiveCountData;
+      maxIncomesLive: LiveRecord;
+      maxFansUpLive: LiveRecord;
+      maxDurationLive: LiveRecord;
+      maxDanmuLive: LiveRecord;
+      fansCountUp: number;
+      fansCount: number;
+      clubCountUp: number;
+      clubCount: number;
+      count: LiveCountData;
+    };
+    message: string;
+  }
+  interface Info {
+    code: number;
+    data: {
+      danmuCount: number;
+      danmuUsers: number;
+      fansUp: number;
+      incomes: number;
+      likeCount: number;
+      maxOnlineCount: number;
+      nowTime: string;
+      onlineCount: number;
+      premiumGte5Users: number;
+      premiumUsers: number;
+      startTime: string;
+      title: string;
+    };
+    message: string;
+  }
+  interface WorldCloud {
+    code: number;
+    data: {
+      day: Array<{ name: string; value: number }>;
+      hour: Array<{ name: string; value: number }>;
+      week: Array<{ name: string; value: number }>;
+    };
+    message: string;
+  }
+  interface RichMen {
+    code: number;
+    data: {
+      data: Array<{
+        avatarImage: string;
+        count: number;
+        countUp: number;
+        details: null;
+        detailsSize: number;
+        headUrl: string;
+        medalCount: number;
+        name: string;
+        rank: number;
+        rankUp: number;
+        uid: number;
+      }>;
+      endDateTime: string;
+      startDateTime: string;
+    };
+    message: string;
+  }
+  interface Gift {
+    code: number;
+    data: {
+      day: Array<{
+        giftId: number;
+        giftName: string;
+        giftPrice: number;
+        url: string;
+      }>;
+    };
+    message: string;
+  }
+  interface Rank {
+    code: number;
+    data: {
+      data: Array<{
+        avatarImage: string;
+        count: number;
+        countUp: number;
+        details: null;
+        detailsSize: number;
+        headUrl: string;
+        medalCount: number;
+        name: string;
+        rank: number;
+        rankUp: number;
+        uid: number;
+      }>;
+      endDateTime: string;
+      startDateTime: string;
+    };
+    message: string;
+  }
+}

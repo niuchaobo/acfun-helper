@@ -509,10 +509,11 @@ class CommentEnhance extends AcFunHelperFgFrame{
                         type && $(this).find('img').css({ opacity: '1' })
                         return
                     }
-                    fetch(`https://mini.pocketword.cn/api/acfun/info?dougaId=${id}`).then(res => res.text()).then(res => {
+                    fetch(`https://mini.pocketword.cn/api/acfun/dougaInfo?acid=${id}`).then(res => res.text()).then(res => {
                         let x = JSON.parse(res);
                         type && $(this).find('img').css({ opacity: '1' })
-                        if (x.result == 0) {
+                        if (x.status == 0) {
+                            x = x.result;
                             innerContent.articleCover = x.coverUrl;
                             innerContent.titleText = x.title;
                             innerContent.descriptionText = `UP: ${x.user.name}  播放: ${x.viewCountShow}`

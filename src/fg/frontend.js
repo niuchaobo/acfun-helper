@@ -315,6 +315,10 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit("live");
 			this.options.liveVolumeMild && this.videoSetting.liveVolumeMild();
 			this.options.wheelToChangeVolume && this.videoSetting.wheelToChangeVolume(false);
+			this.options.beautify_personal && GetAsyncDomUtil.getAsyncDomClassic('#header #nav #nav-parent .header-guide .guide-user p', () => {
+				this.pageBeautify.addMouseAnimation()
+				this.pageBeautify.personBeautify();
+			})
 			return
 		}
 		//直播首页
@@ -324,6 +328,10 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.liveIndexRankNum && this.livePageBeautify.listCountFront();
 			//直播站首页用户屏蔽
 			this.options.liveBansw && this.block.liveUserBlock();
+			this.options.beautify_personal && GetAsyncDomUtil.getAsyncDomClassic('#header #nav #nav-parent .header-guide .guide-user p', () => {
+				this.pageBeautify.addMouseAnimation()
+				this.pageBeautify.personBeautify();
+			})
 			return
 		}
 		if (REG.userCenter.following.test(href)) {
