@@ -1,3 +1,4 @@
+/**@type {OptionStruct.DefaultStruct} */
 const defaults = {
   enabled: true,//开启关闭插件
   permission: true,
@@ -38,6 +39,7 @@ const defaults = {
   custom_rate_keyCode: [38, 40],//shift ↑ ↓ 倍速播放快捷键
   custom_easy_jump_keyCode: [65], //shift A 评论时间跳转快捷键
   player_mode: 'default',//进入页面时播放器的状态，default:默认 film:观影模式  web:网页全屏 screen:桌面全屏
+  liveplayer_mode: "wide",
   liveFloowNotif: false,
   liveFollowOpenNow: false,
   videoQualityStrategy: '0',
@@ -50,6 +52,7 @@ const defaults = {
   liveBansw: false,
   playerRecommendHide: true,
   PlayerDamakuSearchSw: false,
+  userBatchManage: false,
   PlayerTimeCommentEasyJump: false,
   PlaybackRateKeysw: false,
   FilmModeExclusionsw: true,
@@ -100,10 +103,11 @@ const defaults = {
   notificationContent: { commentNotif: true, likeNotif: false, giftNotif: true },
   frameStepSetting: { enabled: false, controlUI: false, },
   liveVolumeMild: false,
-  wheelToChangeVolume:true,
+  wheelToChangeVolume: true,
+  simpleCC: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
-
+/**@type {InnerDefined.REGStruct} */
 const REG = {
   index: new RegExp('http(s)?://www.acfun.cn/$'),
   video: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac\\d+'),//视频
@@ -116,6 +120,9 @@ const REG = {
   live: new RegExp("https://live.acfun.cn/live/*"),//直播
   liveIndex: new RegExp("https://live.acfun.cn"),//直播主页
   userHome: new RegExp("http(s)?://www.acfun.cn/u/(\\d+)"),//用户中心
+  userCenter: {
+    following: new RegExp("http(s)?://www.acfun.cn/member/feeds/following"),
+  },
   partIndex: new RegExp("/v/list"),//分区主页
   articleDetail: new RegExp("/v/as"),//文章分区详细页
   acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
@@ -126,6 +133,9 @@ const REG = {
   videoPartNumByURL: new RegExp("_([0-9].?)"),
   topicCircle: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/(\d*)"),
   momentContent: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/moment\/(\d*)"),
+  method: {
+
+  },
 }
 
 const indexdbArch = {
@@ -203,16 +213,6 @@ function delStorage(key) {
   return ExtOptions.delete(key)
 }
 
-function utilAsync(func) {
-  return function (...args) {
-    func.apply(this, args);
-  };
-}
-
-function getBackendInst() {
-  return chrome.extension.getBackgroundPage().AcFunHelperBackend;
-}
-
 function localizeHtmlPage() {
   for (const el of document.querySelectorAll("[data-i18n]")) {
     if ("INPUT" == el.nodeName) {
@@ -239,43 +239,12 @@ function localizeHtmlPage() {
   }
 }
 
-async function updateStorage(progress, id, tabId) {
-  let item = await getStorage(id).then((result) => {
-    return result[id];
-  });
-  item.progress = progress + "%";
-  if (progress == 100) {
-    item.lineText = "已完成";
-  }
-  chrome.storage.local.set({ [id]: item }, function () { });
-}
-
 /**
  * 判断浏览器类型
  * @returns {'FF'|'Chrome'|'Opera'|'Safari'|'IE'}
  */
 function myBrowser() {
-  var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-  var isOpera = userAgent.indexOf("Opera") > -1;
-  if (isOpera) {
-    return "Opera";
-  } //判断是否Opera浏览器
-  if (userAgent.indexOf("Firefox") > -1) {
-    return "FF";
-  } //判断是否Firefox浏览器
-  if (userAgent.indexOf("Chrome") > -1) {
-    return "Chrome";
-  }
-  if (userAgent.indexOf("Safari") > -1) {
-    return "Safari";
-  } //判断是否Safari浏览器
-  if (
-    userAgent.indexOf("compatible") > -1 &&
-    userAgent.indexOf("MSIE") > -1 &&
-    !isOpera
-  ) {
-    return "IE";
-  } //判断是否IE浏览器
+  return ToolBox.thisBrowser();
 }
 
 function ajax(method, url, data, header) {
@@ -532,7 +501,7 @@ function adjustVideoUp() {
   let currentUserNameEncode = getcookie("ac_username");
   if (currentUserNameEncode != "" && currentUserNameEncode != undefined) {
     let userName = decodeURI(currentUserNameEncode);
-    let name = document.getElementsByClassName("up-name")[0].innerText;
+    let name = document.querySelector("a.up-name").innerText;
     if (userName == name) {
       return 1; //是up主
     } else {
@@ -688,28 +657,42 @@ function getEsFuncName(esFunc) {
 }
 
 /**
- * fetch信息，同步返回
+ * fetch信息
  * @param {string} url 
- * @returns 返回结果的文本内容
+ * @param {"GET"|"POST"} method 
+ * @param {string} data *postdata
+ * @param {boolean} withCredentials 
+ * @param {"same-origin" | "cors" | "navigate" | "no-cors"} mode 
+ * @param {"default" | "force-cache" | "no-cache" | "no-store" | "only-if-cached" | "reload";} cache 
+ * @param {"same-origin" | "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "strict-origin" | "strict-origin-when-cross-origin" | "unsafe-url"} referrerPolicy 
+ * @param {string} referrer 
+ * @returns 
  */
-async function fetchResult(url, method, data, withCredentials) {
+async function fetchResult(url, method, data, withCredentials = false, mode = "cors", cache = "no-cache", referrerPolicy = "no-referrer", referrer = undefined) {
   var result;
-  if (method == "POST" && withCredentials) {
-    result = fetch(url, {
-      method: "POST", credentials: 'include', headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
-      }, body: data
-    }).then((res => { return res.text() }))
-  } else if (method == "POST" && withCredentials == false) {
-    result = fetch(url, {
-      method: "POST", headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
-      }, body: data
-    }).then((res => { return res.text() }))
-  } else {
-    result = fetch(url).then((response) => {
-      return response.text();
-    })
+  switch (method) {
+    case "POST":
+      if (withCredentials) {
+        result = fetch(url, {
+          method: "POST", credentials: 'include', headers: {
+            'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
+          }, body: data, mode: mode, cache: cache, referrerPolicy: referrerPolicy, referrer: referrer
+        }).then((res => { return res.text() }))
+      } else {
+        result = fetch(url, {
+          method: "POST", headers: {
+            'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "accept: application/json, text/plain, */*"
+          }, body: data, mode: mode, cache: cache, referrerPolicy: referrerPolicy, referrer: referrer
+        }).then((res => { return res.text() }))
+      }
+      break;
+    case "PUT":
+      break;
+    default:
+      result = fetch(url, { credentials: withCredentials ? "include" : "same-origin", mode: mode, cache: cache, referrerPolicy: referrerPolicy, referrer: referrer }).then((response) => {
+        return response.text();
+      })
+      break;
   }
   return result
 }
@@ -769,54 +752,10 @@ function addElement(options) {
   return x
 }
 
-/**
- * 添加一层遮罩
- * @param {Element} obj 
- * @elementID divMask
- */
-function MaskElement(obj, styleText = "", divName = "") {
-  if (!styleText) {
-    styleText = `position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0;`
-  }
-  var hoverdiv = `<div id="${divName}" class="divMask" style="${styleText}"></div>`;
-  $(obj).wrap('<div class="position:relative;"></div>');
-  $(obj).before(hoverdiv);
-  $(obj).data("mask", true);
-}
-
 function removeAPrefix(_$targetDom) {
   let acid = _$targetDom[0].getAttribute("data-aid");
   if (acid == '') { return }
   return acid
-}
-
-/**
- * 判断用户是否登录
- * @param {string} dept "video" or "article"
- * @param {string} evidence "cookies" or "ui"
- * @returns {boolean} 状态
- */
-function isLogin(dept = "video", evidence = "cookies") {
-  if (evidence == "cookies") {
-    return Boolean(getcookie("ac_username"));
-  } else if (evidence == "ui") {
-    switch (dept) {
-      case "video":
-        if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden")) {
-          return true;
-        } else {
-          return false;
-        }
-      case "article":
-        let isLogined = false;
-        try {
-          isLogined = document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0;
-        } catch (error) {
-          isLogined = getcookie("ac_username") != false ? true : false;
-        }
-        return isLogined;
-    }
-  }
 }
 
 /**

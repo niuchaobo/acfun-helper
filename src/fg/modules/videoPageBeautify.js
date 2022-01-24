@@ -1,8 +1,9 @@
 /**
  * 页面美化
  */
-class videoPageBeautify {
+class videoPageBeautify extends AcFunHelperFgFrame{
   constructor() {
+    super();
     this.devMode = false;
   }
 

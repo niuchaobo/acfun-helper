@@ -1,6 +1,6 @@
 {
   "name": "acfun-helper-compresser",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "process files in acfun-helper directory",
   "main": "gulpfile.js",
   "keywords": [
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@types/chrome": "0.0.154",
+    "bgm-types": "^2.0.1",
     "gulp-htmlmin": "^5.0.1",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12",

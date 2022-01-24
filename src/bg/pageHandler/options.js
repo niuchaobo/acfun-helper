@@ -28,7 +28,7 @@ function OldUIHandler() {
             to_special_items: items
         }, function () {
             options.to_special_items = items;
-            //getBackendInst().opt_optionUpdate(options);
+            //AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             //location.reload();
         });
     }
@@ -254,7 +254,7 @@ function OldUIHandler() {
                 // location.reload();
                 auto_throw = false;
                 updateUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -265,7 +265,7 @@ function OldUIHandler() {
                 // location.reload();
                 auto_throw = true;
                 updateUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -279,7 +279,7 @@ function OldUIHandler() {
                 // location.reload();
                 banana_notice = false;
                 detectUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -290,7 +290,7 @@ function OldUIHandler() {
                 // location.reload();
                 banana_notice = true;
                 detectUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -305,7 +305,7 @@ function OldUIHandler() {
                     /* globals huaci_button */
                     to_attention = true;
                     attentionUi();
-                    getBackendInst().opt_optionUpdate(options);
+                    AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
                 });
             }
         }
@@ -321,7 +321,7 @@ function OldUIHandler() {
                     /* globals huaci_button */
                     to_attention = false;
                     attentionUi();
-                    getBackendInst().opt_optionUpdate(options);
+                    AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
                 });
             }
         }
@@ -343,7 +343,7 @@ function OldUIHandler() {
                 'to_attention_num': attention_num
             }, function () {
                 to_attention_num = attention_num;
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -357,7 +357,7 @@ function OldUIHandler() {
                 // location.reload();
                 upHighlight = false;
                 commentUi()
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -368,7 +368,7 @@ function OldUIHandler() {
                 // location.reload();
                 upHighlight = true;
                 commentUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -382,7 +382,7 @@ function OldUIHandler() {
                 // location.reload();
                 scan = false;
                 commentUi()
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -393,7 +393,7 @@ function OldUIHandler() {
                 // location.reload();
                 scan = true;
                 commentUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -407,7 +407,7 @@ function OldUIHandler() {
                 // location.reload();
                 mark = false;
                 commentUi()
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -418,7 +418,7 @@ function OldUIHandler() {
                 // location.reload();
                 mark = true;
                 commentUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -432,7 +432,7 @@ function OldUIHandler() {
                 // location.reload();
                 filter = false;
                 filterUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -443,7 +443,7 @@ function OldUIHandler() {
                 // location.reload();
                 filter = true;
                 filterUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -457,7 +457,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_nav = false;
                 beautifyUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -468,7 +468,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_nav = true;
                 beautifyUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -482,7 +482,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_personal = false;
                 beautifyUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -493,7 +493,7 @@ function OldUIHandler() {
                 // location.reload();
                 beautify_personal = true;
                 beautifyUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -507,7 +507,7 @@ function OldUIHandler() {
                 // location.reload();
                 custom_rate = false;
                 customVideoUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         } else {
             /* globals bridge */
@@ -518,7 +518,7 @@ function OldUIHandler() {
                 // location.reload();
                 custom_rate = true;
                 customVideoUi();
-                getBackendInst().opt_optionUpdate(options);
+                AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
             });
         }
     });
@@ -539,7 +539,7 @@ function OldUIHandler() {
             'player_mode': mode
         }, function () {
             player_mode = mode;
-            getBackendInst().opt_optionUpdate(options);
+            AcFunHelperHelper.getBackendInst().opt_optionUpdate(options);
         });
     });
 
@@ -1150,7 +1150,7 @@ function contentConfigure() {
                     var acId = null;
                 }
                 if (acId != null) {
-                    fetch("https://mini.pocketword.cn/api/acfun/info?dougaId=" + acId).then((res => { return res.text() }))
+                    fetch(acfunApis.video.videoInfo + acId).then((res => { return res.text() }))
                         .then((res) => {
                             let x = JSON.parse(res);
                             $("#watchLaterList").append(`
@@ -1897,6 +1897,24 @@ function pageEnhance() {
         });
     });
 
+    chrome.storage.local.get(['userBatchManage'], function (items) {
+        var userBatchManage = items.userBatchManage;
+        if (userBatchManage) {
+            document.getElementById('userBatchManage').checked = true;
+        } else {
+            document.getElementById('userBatchManage').checked = false;
+        }
+        $('#userBatchManage').on('click', function () {
+            if (!document.getElementById('userBatchManage').checked) {
+                document.getElementById('userBatchManage').checked = false;
+                chrome.storage.local.set({ 'userBatchManage': false });
+            } else {
+                document.getElementById('userBatchManage').checked = true;
+                chrome.storage.local.set({ 'userBatchManage': true });
+            }
+        });
+    });
+
 }
 
 function playerConfigure() {
@@ -2430,6 +2448,25 @@ function playerConfigure() {
         });
     });
 
+    //====================简单CC字幕===================
+    chrome.storage.local.get(['simpleCC'], function (items) {
+        var simpleCC = items.simpleCC;
+        if (simpleCC) {
+            document.getElementById('simpleCC').checked = true;
+        } else {
+            document.getElementById('simpleCC').checked = false;
+        }
+        $('#simpleCC').on('click', function () {
+            if (!document.getElementById('simpleCC').checked) {
+                document.getElementById('simpleCC').checked = false;
+                chrome.storage.local.set({ 'simpleCC': false });
+            } else {
+                document.getElementById('simpleCC').checked = true;
+                chrome.storage.local.set({ 'simpleCC': true });
+            }
+        });
+    });
+
     //====================鼠标滚动音量调整===================
     chrome.storage.local.get(['wheelToChangeVolume'], function (items) {
         var wheelToChangeVolume = items.wheelToChangeVolume;
@@ -2555,7 +2592,7 @@ function globalConfigure() {
                     let uploadData = new FormData();
                     uploadData.append("options_data", `${options_data}`);
                     // fetch('http://localhost/api/v1/acfun-helper/options/upload', { method: "POST", credentials: 'include', body: uploadData })
-                    fetch('https://mini.pocketword.cn/api/acfun-helper/options/upload', { method: "POST", credentials: 'include', body: uploadData })
+                    fetch(acfunHelperApis.confSync.upload, { method: "POST", credentials: 'include', body: uploadData })
                         .then((res => { return res.text() }))
                         .then((res) => {
                             if (res) {
@@ -2586,7 +2623,7 @@ function globalConfigure() {
                 let upCookies = new FormData();
                 upCookies.set("authCookie", `${JSON.stringify(svrCookies)}`);
                 // fetch('http://localhost/api/v1/acfun-helper/options/download', { method: "POST", credentials: 'include', body: upCookies })
-                fetch('https://mini.pocketword.cn/api/acfun-helper/options/download', { method: "POST", credentials: 'include', body: upCookies })
+                fetch(acfunHelperApis.confSync.download, { method: "POST", credentials: 'include', body: upCookies })
                     .then((res => { return res.text() }))
                     .then((x) => {
                         try {

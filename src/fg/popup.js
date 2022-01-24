@@ -78,6 +78,7 @@ class Popup {
         let content = '';
         if (type == 'video') {
             let videoInfo = pageInfo.currentVideoInfo;
+            // console.log(videoInfo)
             let title = pageInfo.title;
             let tmp = videoInfo.ksPlayJson;
             let tmpJson = JSON.parse(tmp);
@@ -92,10 +93,15 @@ class Popup {
             <div class="odh-definition">
             <span id="danmakuDownload" class="pos danmakuDownload" style="cursor:pointer">下载此视频弹幕资源</span>
             <span id="assDanmaku" class="pos assDanmaku" style="cursor:pointer">下载Ass弹幕</span>
+            <div class="odh-headsection">
+            <span class="odh-expression">其他</span>
+            <span style="margin-left: 20px;color:#d69acc" id="utils"></span></div>
+            <div class="odh-definition">
+            <span id="playerTimeJumpUrlGen" class="pos playerTimeJumpUrlGen" style="cursor:pointer">复制跳转到此时间的连接</span>
             </div>
-                <div class="odh-headsection">
-                    <span class="odh-expression">视频资源</span>
-                </div>`;
+            <div class="odh-headsection">
+                <span class="odh-expression">视频资源</span>
+            </div>`;
             for (const info of infos) {
                 let vedioUrl = info.url;
                 let id = btnIndex++;

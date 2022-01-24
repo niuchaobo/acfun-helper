@@ -1,8 +1,9 @@
 /**
  * 直播
  */
-class Live {
+class Live extends AcFunHelperFgFrame{
     constructor() {
+        super();
         this.devMode = false;
 
         this.liveDanmakuPiPObsver = null;
@@ -40,7 +41,7 @@ class Live {
 
     async liveMediaSession(href) {
         let roomId = REG.liveRoomID.exec(href)[2];
-        let liveData = JSON.parse(await fetchResult(acfunApis.liveInfo + roomId));
+        let liveData = JSON.parse(await fetchResult(acfunApis.live.liveInfo + roomId));
         if (liveData.streamName == undefined) {
             this.devMode && console.log("offline")
             return;

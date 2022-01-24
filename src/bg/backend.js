@@ -1,117 +1,109 @@
-class AcFunHelperBackend {
+class AcFunHelperBackendCore extends AcFunHelperBgFrame {
     constructor() {
+        super();
+        globalThis.runtimeData = this.runtimeData;
+        /**@type {runtimeData} */
+        this.runtime = globalThis.runtimeData;
+        /**浏览器类型数据 */
+        this.runtime.dataset.core.browserType = ToolBox.thisBrowser();
+
         this.options = null;
-        this.target = null;
-        this.devMode = false;
 
         this.initBackend().then(init => {
-            if (init) {
-                // this.devReload = new AcFunHelper(1);this.devReload.devModeWatch();
-                this.MessageRouter = new MessageSwitch("bg");
-                this.sandboxAgent = new SandboxAgent(document.getElementById('sandbox').contentWindow);
-                this.MsgNotfs = new MsgNotifs();
-                this.authInfo = new AuthInfo();
-                this.Ominibox = new Ohminibox();
-                this.Upgrade = new UpgradeAgent();
-                // this.ReqOpDrv = new ReqOperationDrv();
-                this.WatchPlan = new WatchPlan();
+            if (!init) {
+                return;
+            }
+            /**开发模式 */
+            // this.devReload = new AcFunHelperHelper(1); this.devReload.devModeWatch();
 
-                this.dataset = {
-                    sandboxStatus: false,
-                }
+            chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
 
-                this.Ominibox.registerOmnibox();
-                this.MsgNotfs.timer4Unread();
-                this.MsgNotfs.fetchPushList();
-                this.MsgNotfs.liveOnlineNotif();
-                this.MsgNotfs.followLiveNotif();
-                this.Upgrade.upgradeMain();
-                this.WatchPlan.onLoad();
+            /**消息&调用处理 */
+            this.MessageRouter = new MessageSwitch("bg");
 
-                chrome.runtime.onMessage.addListener(this.MessageRouter.BackgroundMessageSwitch.bind(this));
-                // chrome.runtime.onMessageExternal.addListener(this.onExternalMessage.bind(this));
-                window.addEventListener('message', this.MessageRouter.SandboxMsgHandler.bind(this));
-                chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
-                chrome.tabs.onCreated.addListener((tab) => this.onTabReady(tab));
-                chrome.tabs.onUpdated.addListener(this.onTabUpdate.bind(this));
-                chrome.alarms.onAlarm.addListener((e) => this.onAlarmsEvent(e));
-                chrome.commands.onCommand.addListener((command) => { this.onCommands(command) });
+            chrome.runtime.onMessage.addListener(this.MessageRouter.BackgroundMessageSwitch.bind(this));
+            this.sandboxAgent = new SandboxAgent(document.getElementById('sandbox').contentWindow);
+            window.addEventListener('message', this.MessageRouter.SandboxMsgHandler.bind(this));
+            this.runtime.dataset.core.status.messageSwitch = true;
 
+            /**通知响应 */
+            chrome.notifications.onButtonClicked.addListener((e, index) => this.notifBuTrigger(e, index));
+            this.runtime.dataset.core.status.notificationButtunTrigger = true;
 
-                //监听storage变化,可用于数据云同步
-                // chrome.storage.onChanged.addListener(function (changes, areaName) {
+            /**计划任务处理 */
+            chrome.alarms.onAlarm.addListener((e) => this.onAlarmsEvent(e));
+            this.runtime.dataset.core.status.scheduler = true;
 
-                // });
+            /**模块实例化 */
+            this.MsgNotifsInst = new MsgNotifs();
+            this.contextMenuMgmt = new ContextMenuManage();
+            this.WatchPlan = new WatchPlan();
+            this.authInfo = new AuthInfo();
+            this.Ominibox = new Ohminibox();
+            this.Upgrade = new UpgradeAgent();
 
-                chrome.webRequest.onBeforeRequest.addListener(
-                    this.onCommentRequest.bind(this),
-                    {
-                        urls: ["https://www.acfun.cn/rest/pc-direct/comment/*", "*://*/livecloud*"]
-                    },
-                    []
-                );
+            /**就绪 */
+            this.runtime.dataset.core.status.core = true;
+            this.startDaemon();
+        })
+    }
 
-                //当关闭标签页时删除此标签页存储的视频信息
-                chrome.tabs.onRemoved.addListener(async function (tabId, removeInfo) {
-                    let result = await getStorage(tabId + "").then(result => { return result[tabId] });
-                    let obj = await getStorage(result);
-                    let arr = Object.values(obj);
-                    for (var lineId of arr) {
-                        delStorage(lineId + "");
-                    }
-                    delStorage(tabId + "");
-                });
-
-                //当激活某个tab页时
-                chrome.tabs.onActivated.addListener(function (tab) {
-                    let tabId = tab.tabId;
-                    chrome.storage.local.set({ activeTabId: tabId }, function () {
-                        if (chrome.runtime.lastError) {
-                            notice('发生错误', chrome.runtime.lastError.message);
-                        }
-                    });
-                });
-
-                //注册右键菜单
-                this.registerContextMenus()
-
-                if (myBrowser() == "Chrome") {
-                    this.scheduler = chrome.alarms;
-                } else {
-                    this.scheduler = browser.alarms;
+    startDaemon() {
+        if (this.options.enabled) {
+            /**建立计划任务表 */
+            for (let task in this.runtime.dataset.core.scheduler) {
+                if (typeof (task) == "string") {
+                    chrome.alarms.create(task, this.runtime.dataset.core.scheduler[task].option)
                 }
             }
-        })
+            /**右键菜单实体、事件挂接 */
+            this.contextMenuMgmt.attachAll();
+            /**评论事件钩子 */
+            //评论区
+            chrome.webRequest.onBeforeRequest.addListener(
+                this.onCommentRequest.bind(this),
+                {
+                    urls: ["https://www.acfun.cn/rest/pc-direct/comment/*"]
+                },
+                []
+            );
+            //直播流
+            chrome.webRequest.onBeforeRequest.addListener(
+                this.onLiveStreamUrl.bind(this),
+                {
+                    urls: ["*://*/livecloud*"]
+                },
+                []
+            );
+        }
 
     }
 
-    async initBackend() {
-        let options = await ExtOptions.getAll();
-        return this.opt_optionsChanged(options);
+    /**
+     * 通知按钮点击响应处理
+     * @param {string} e 
+     * @param {number} index 
+     * @returns 
+     */
+    notifBuTrigger(e, index) {
+        for (let regElem in this.runtime.dataset.notificationBtnTriggerData) {
+            if (new RegExp(regElem).test(e)) {
+                this.runtime.dataset.notificationBtnTriggerData[regElem](e, index);
+            }
+        }
     }
 
-    onCommentRequest(req) {
-        if (!this.options.enabled) {
-            return;
+    /**
+     * 计划任务处理
+     * @param {chrome.alarms.Alarm} e 
+     */
+    onAlarmsEvent(e) {
+        const targetTaskGroup = this.runtime.dataset.core.scheduler[e.name];
+        for (let taskgroup in targetTaskGroup.tasks) {
+            for (let task in targetTaskGroup.tasks[taskgroup]) {
+                targetTaskGroup.tasks[taskgroup][task]();
+            }
         }
-        let url = req.url;
-        let tabId = req.tabId;
-        let commentListReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/list\\?.*");
-        let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");
-
-        // let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.hlspull.etoote.com/.*m3u8");
-        let liveReg = new RegExp("http(s)?://.*-acfun-adaptive.pull.etoote.com/livecloud/.*");
-
-        if (commentListReg.test(url)) {
-            this.tabInvoke(tabId, 'renderList', { url: url });
-        } else if (commentSubReg.test(url)) {
-            let rootCommentId = url.match(commentSubReg)[1];
-            this.tabInvoke(tabId, 'renderSub', { rootCommentId: rootCommentId, url: url });
-        } else if (liveReg.test(url)) {
-            // console.log("url1",url);
-            this.tabInvoke(tabId, 'renderLive', { url: url });
-        }
-        this.authInfo.fetchPasstoken();
     }
 
     onInstalled(details) {
@@ -137,14 +129,6 @@ class AcFunHelperBackend {
                 message: '更新了！'
             });
             this.onUpdated();
-        }
-    }
-
-    async onTabReady(tab) {
-    }
-
-    async onTabUpdate(tabId, changeInfo, tab) {
-        if (changeInfo.status == 'complete') {
         }
     }
 
@@ -189,125 +173,88 @@ class AcFunHelperBackend {
         }
     }
 
-    onCommands(command) {
-        if (command === "toggle") {
-            window.open("https://www.acfun.cn/")
-        } else if (command == "watchLater") {
-            this.WatchPlan.execWatch();
+    onCommentRequest(req) {
+        let url = req.url;
+        let tabId = req.tabId;
+        let commentListReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/list\\?.*");
+        let commentSubReg = new RegExp("https://www.acfun.cn/rest/pc-direct/comment/sublist\\?.*rootCommentId=(\\d+).*");
+
+        if (commentListReg.test(url)) {
+            this.tabInvoke(tabId, 'renderList', { url: url });
+        } else if (commentSubReg.test(url)) {
+            let rootCommentId = url.match(commentSubReg)[1];
+            this.tabInvoke(tabId, 'renderSub', { rootCommentId: rootCommentId, url: url });
+        }
+        this.authInfo.fetchPasstoken();
+    }
+
+    onLiveStreamUrl(req) {
+        this.authInfo.fetchPasstoken();
+        const liveReg = new RegExp("http(s)?://.*-acfun-adaptive.pull.etoote.com/livecloud/.*");
+        const url = req.url;
+        const tabId = req.tabId;
+        if (liveReg.test(url)) {
+            this.tabInvoke(tabId, 'renderLive', { url: url });
         }
     }
 
-    //================Message Hub and Handler================//
     tabInvoke(tabId, action, params) {
         MessageSwitch.sendMessage('bg', { target: action, InvkSetting: { tabId: tabId, type: "function" }, params: params },)
     }
 
-    onAlarmsEvent(e) {
-        const method = this['event_' + e.name];
-        if (typeof (method) === 'function') {
-            method.call(this);
-        } else {
-            console.log(`[LOG]Backend-AlarmEvent: [${formatDate(new Date(), true)}] : ${e.name}`);
+    async initBackend() {
+        let options = await ExtOptions.getAll();
+        return this.opt_optionsChanged(options);
+    }
+
+    async opt_optionsChanged(options) {
+        if (!options.permission) {
+            return false;
         }
+        this.options = options;
+        optionsSave(this.options);
+        return true;
     }
 
-    //================Utils==================//
-    setFrontendOptions(options) {
-        switch (options.enabled) {
-            case false:
-                chrome.browserAction.setBadgeText({ text: 'Off' });
-                break;
-            case true:
-                chrome.browserAction.setBadgeText({ text: '' });
-                break;
-        }
-        // this.tabInvokeAll('setFrontendOptions', {
-        //     options
-        // });
+    async opt_optionUpdate(options) {
+        this.options = options;
     }
 
-    registerContextMenus() {
-        //右键菜单
-        chrome.contextMenus.create({
-            documentUrlPatterns: ['https://*.acfun.cn/*'],
-            title: '下载封面',
-            contexts: ['link'],
-            id: '1'
+    async loadScripts(list) {
+        let promises = list.map((name) => this.loadScript(name));
+        let results = await Promise.all(promises);
+        return results.filter(x => {
+            if (x.result) return x.result;
         });
-
-        chrome.contextMenus.create({
-            documentUrlPatterns: ['https://*.acfun.cn/*'],
-            title: '下载原始封面',
-            contexts: ['link'],
-            parentId: '1',
-            onclick: function (params, tab) {
-                let link_url = params.linkUrl;
-                this.tabInvoke(tab.id, 'downloadCover', { link_url: link_url, type: 'normal' });
-            }.bind(this)
-        });
-
-        chrome.contextMenus.create({
-            documentUrlPatterns: ['https://*.acfun.cn/*'],
-            title: '下载高清封面',
-            contexts: ['link'],
-            parentId: '1',
-            onclick: function (params, tab) {
-                let link_url = params.linkUrl;
-                this.tabInvoke(tab.id, 'downloadCover', { link_url: link_url, type: 'high' });
-            }.bind(this)
-        });
-
-        chrome.contextMenus.create({
-            title: '使用AcFun搜索【%s】', // %s表示选中的文字
-            contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
-            onclick: function (params) {
-                chrome.tabs.create({ url: 'https://www.acfun.cn/search?keyword=' + encodeURI(params.selectionText) });
-            }
-        });
-
-        chrome.contextMenus.create({
-            title: '加入到助手的稍后再看',
-            contexts: ['link'],
-            id: '2',
-            onclick: (params) => {
-                let link_url = params.linkUrl;
-                this.WatchPlan.PushInList(link_url).then(() => {
-                    let x = this.WatchPlan.getOpRes();
-                    let sw = ""
-                    x ? sw = "加入成功。" : sw = "稍后再看已被关闭或为错误对象。"
-                    chrome.notifications.create(null, {
-                        type: 'basic',
-                        iconUrl: 'images/notice.png',
-                        title: 'AcFun 助手 - 稍后再看',
-                        message: `${sw}`
-                    });
-                });
-            }
-        });
-
-        chrome.contextMenus.create({
-            title: '从AcFunQml桌面客户端打开',
-            contexts: ['link'],
-            id: '3',
-            onclick: (params) => {
-                let link_url = params.linkUrl;
-                this.WatchPlan.connectAcFunQmlByUrlScheme(link_url).then(() => {
-                });
-            }
-        });
-
-        chrome.contextMenus.create({
-            documentUrlPatterns: ['https://*.acfun.cn/v/*'],
-            title: '在时间轴上添加这些章节标记',
-            contexts: ['selection'],
-            onclick: function (params, tab) {
-                this.tabInvoke(tab.id, 'timelineDotsMain', { massText: params.selectionText, url: params.pageUrl });
-            }.bind(this)
-        });
-
     }
 
-    //================Inner Api==================//
+    async loadScript(name) {
+        return new Promise((resolve, reject) => {
+            this.agent.postMessage('loadScript', { name }, result => resolve(result));
+        });
+    }
+
+    async setScriptsOptions(options) {
+        return new Promise((resolve, reject) => {
+            this.agent.postMessage('setScriptsOptions', { options }, result => resolve(result));
+        });
+    }
+
+    static async removeTask(taskGroupName) {
+        return new Promise((resolve, reject) => {
+            /**@type {runtimeData} */
+            const runtime = globalThis.AcFunHelperBackendCore.runtime;
+            if (taskGroupName in runtime.dataset.core.scheduler) {
+                chrome.alarms.clear(taskGroupName, (status) => {
+                    if (status) {
+                        delete runtime.dataset.core.scheduler[taskGroupName];
+                        resolve();
+                    }
+                })
+            }
+        })
+    }
+
     api_notice(params) {
         let { title, msg } = params;
         notice(title, msg);
@@ -359,7 +306,7 @@ class AcFunHelperBackend {
     }
 
     api_sandboxReady() {
-        this.dataset.sandboxStatus = true;
+        this.runtime.dataset.core.status.sandbox = true;
     }
 
     async api_Fetch(params) {
@@ -380,286 +327,6 @@ class AcFunHelperBackend {
         return await fetchResult(url, method, data, withCredentials);
     }
 
-    //================Inner Events==================//
-    async event_scheduleTasks() {
-        this.Upgrade.scheduleTasks();
-    }
-
-    // Option page and Brower Action page requests handlers.
-    async opt_optionsChanged(options) {
-        this.setFrontendOptions(options);
-        if (!options.permission) {
-            return false;
-        }
-        this.options = options;
-        optionsSave(this.options);
-        return true;
-    }
-
-    async opt_optionUpdate(options) {
-        this.options = options;
-    }
-
-    async loadScripts(list) {
-        let promises = list.map((name) => this.loadScript(name));
-        let results = await Promise.all(promises);
-        return results.filter(x => {
-            if (x.result) return x.result;
-        });
-    }
-
-    async loadScript(name) {
-        return new Promise((resolve, reject) => {
-            this.agent.postMessage('loadScript', { name }, result => resolve(result));
-        });
-    }
-
-    async setScriptsOptions(options) {
-        return new Promise((resolve, reject) => {
-            this.agent.postMessage('setScriptsOptions', { options }, result => resolve(result));
-        });
-    }
-
-    /*transferFormat(data) {
-        // 将源数据从ArrayBuffer格式保存为可操作的Uint8Array格式
-        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
-        var segment = new Uint8Array(data);
-        var combined = true;
-        // 接收无音频ts文件，OutputType设置为'video'，带音频ts设置为'combined'
-        var outputType = 'combined';
-        var remuxedSegments = [];
-        var remuxedBytesLength = 0;
-        var remuxedInitSegment = null;
-
-        // remux选项默认为true，将源数据的音频视频混合为mp4，设为false则不混合
-        var transmuxer = new muxjs.mp4.Transmuxer({remux: true});
-
-        // 监听data事件，开始转换流
-        transmuxer.on('data', function (event) {
-            console.log(event);
-            if (event.type === outputType) {
-                remuxedSegments.push(event);
-                remuxedBytesLength += event.data.byteLength;
-                remuxedInitSegment = event.initSegment;
-            }
-        });
-        // 监听转换完成事件，拼接最后结果并传入MediaSource
-        transmuxer.on('done', function () {
-            var offset = 0;
-            var bytes = new Uint8Array(remuxedInitSegment.byteLength + remuxedBytesLength)
-            bytes.set(remuxedInitSegment, offset);
-            offset += remuxedInitSegment.byteLength;
-
-            for (var j = 0, i = offset; j < remuxedSegments.length; j++) {
-                bytes.set(remuxedSegments[j].data, i);
-                i += remuxedSegments[j].byteLength;
-            }
-            remuxedSegments = [];
-            remuxedBytesLength = 0;
-            // 解析出转换后的mp4相关信息，与最终转换结果无关
-            //vjsParsed = muxjs.mp4.tools.inspect(bytes);
-            //console.log('transmuxed', vjsParsed);
-            return bytes;
-            //this.prepareSourceBuffer(combined, outputType, bytes);
-        });
-        // push方法可能会触发'data'事件，因此要在事件注册完成后调用
-        transmuxer.push(segment); // 传入源二进制数据，分割为m2ts包，依次调用上图中的流程
-        // flush的调用会直接触发'done'事件，因此要事件注册完成后调用
-        transmuxer.flush(); // 将所有数据从缓存区清出来
-    }
-
-    prepareSourceBuffer(combined, outputType, bytes) {
-        var buffer;
-        video = document.createElement('video');
-        video.controls = true;
-        // MediaSource Web API: https://developer.mozilla.org/zh-CN/docs/Web/API/MediaSource
-        mediaSource = new MediaSource();
-        video.src = URL.createObjectURL(mediaSource);
-
-        $('#video-wrapper').appendChild(video); // 将H5 video元素添加到对应DOM节点下
-
-        // 转换后mp4的音频格式 视频格式
-        var codecsArray = ["avc1.64001f", "mp4a.40.5"];
-
-        mediaSource.addEventListener('sourceopen', function () {
-            // MediaSource 实例默认的duration属性为NaN
-            mediaSource.duration = 0;
-            // 转换为带音频、视频的mp4
-            if (combined) {
-                buffer = mediaSource.addSourceBuffer('video/mp4;codecs="' + 'avc1.64001f,mp4a.40.5' + '"');
-            } else if (outputType === 'video') {
-                // 转换为只含视频的mp4
-                buffer = mediaSource.addSourceBuffer('video/mp4;codecs="' + codecsArray[0] + '"');
-            } else if (outputType === 'audio') {
-                // 转换为只含音频的mp4
-                buffer = mediaSource.addSourceBuffer('audio/mp4;codecs="' + (codecsArray[1] || codecsArray[0]) + '"');
-            }
-
-            buffer.addEventListener('updatestart', logevent);
-            buffer.addEventListener('updateend', logevent);
-            buffer.addEventListener('error', logevent);
-            video.addEventListener('error', logevent);
-            // mp4 buffer 准备完毕，传入转换后的数据
-            // 将 bytes 放入 MediaSource 创建的sourceBuffer中
-            // https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/appendBuffer
-            buffer.appendBuffer(bytes);
-            // 自动播放
-            // video.play();
-        });
-    }*/
-
-    /*async downloadVideo(m3u8) {
-        console.log(m3u8);
-        let reg = new RegExp('https:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/|http:\\/\\/.*\\.acfun\\.cn\\/.*\\/segment\\/');
-        var prefix = "";
-        if (reg.test(m3u8)) {
-            prefix = m3u8.match(reg)[0];
-        }
-        let res = await parseM3u8(m3u8);
-        console.log(res);
-        let segments = res.segments;
-        let seArr = new Array();
-        if (segments.length == 0) {
-            notice("警告", "该视频无法播放");
-        } else {
-            let arr = new Array();
-            for (let seg of segments) {
-                let uri = prefix + seg.uri;
-                //acfun的视频片段路径是不完整的,缺少http:// ,需要补全
-                // eg:"EKT8PxpARFg1bzNoUldlcTQ2MU5POWFpVms5cWVDOFl1anVNMzgxV3p3d2pqSkxvMVdhMDBXejJnZ3NGTC1aUE1CbjlkRw.ts?safety_id=AALXcXOtLbPnEichVENCciwF&pkey=AAPvrDb0ntD0obeNv1goe2Rn2rC1sdIAik9UsCzQq_yxTY3W9WNrUlN1eGpSjV-EjVmxl3z99SlX5TCzpithT_DZBDZJL5mAj1f41Be5oIKqNr_qiZ2Xv1OwUCkEyborQJqcBylYF4EpLvIeYh2EWlkfo_ONzw51ohvTuV1bx_9XQcb8nHDciQGrbRNOkym05eDAKVb9_7zd3I4fK5RbscRXsJBO8NLJe4ER9XTyf32L0dSuPhNFzn5ik58aF4Lp1zzOw9sGyCps8tsI10NDewh_K5_Jw5aJclpKhYOjHLnO6A"
-                seArr.push(uri);
-
-            }
-        }
-        console.log('----------start-----------');
-
-
-
-        let mime = 'video/mp4; codecs="mp4a.40.2,avc1.64001f"';
-
-        let mediaSource = new MediaSource();
-        let transmuxer = new muxjs.mp4.Transmuxer();
-
-        let video = document.createElement('video');
-        document.body.appendChild(video);
-        video.src = URL.createObjectURL(mediaSource);
-        mediaSource.addEventListener("sourceopen", appendFirstSegment);
-        video.play();
-        let sourceBuffer;
-        function appendFirstSegment(){
-            if (seArr.length == 0){
-                return;
-            }
-
-            URL.revokeObjectURL(video.src);
-            sourceBuffer = mediaSource.addSourceBuffer(mime);
-            sourceBuffer.addEventListener('updateend', appendNextSegment);
-
-            transmuxer.on('data', (segment) => {
-                let data = new Uint8Array(segment.initSegment.byteLength + segment.data.byteLength);
-                data.set(segment.initSegment, 0);
-                data.set(segment.data, segment.initSegment.byteLength);
-                console.log(muxjs.mp4.tools.inspect(data));
-                sourceBuffer.appendBuffer(data);
-                Uint8ArrayToString(data);
-                //Uint8ArrayToString(segment.data.buffer);
-                //bufferToStream(segment.data.buffer);
-            })
-
-            getVideo(seArr.shift()).then((response)=>{
-                return response;
-            }).then((response)=>{
-                transmuxer.push(new Uint8Array(response));
-                transmuxer.flush();
-            })
-        }
-
-        function appendNextSegment(){
-            // reset the 'data' event listener to just append (moof/mdat) boxes to the Source Buffer
-            transmuxer.off('data');
-            transmuxer.on('data', (segment) =>{
-                console.log(muxjs.mp4.tools.inspect(segment.data));
-                sourceBuffer.appendBuffer(new Uint8Array(segment.data));
-                Uint8ArrayToString(new Uint8Array(segment.data));
-                //Uint8ArrayToString(segment.data.buffer);
-                //bufferToStream(segment.data.buffer);
-            })
-
-            if (seArr.length == 0){
-                // notify MSE that we have no more segments to append.
-                mediaSource.endOfStream();
-
-                /!*let url = video.src;
-                console.log(url);
-                let a = document.createElement('a');
-                a.download = "ncb-test.mp4";
-                a.href = url;
-                a.style.display = 'none'
-                document.body.appendChild(a)
-                a.click();
-                a.remove();*!/
-
-
-                return;
-            }
-
-            //seArr.forEach((segment) => {
-                // fetch the next segment from the segments array and pass it into the transmuxer.push method
-                getVideo(seArr.shift()).then((response)=>{
-                    return response;
-                }).then((response)=>{
-                    transmuxer.push(new Uint8Array(response));
-                    transmuxer.flush();
-                })
-            //})
-        }
-
-
-        function bufferToStream(buffer) {
-            stream.getReader()
-            let stream = new ReadableStream();
-            stream.push(buffer);
-            stream.push(null);
-            return stream;
-        }
-
-
-        function Uint8ArrayToString(fileData){
-           /!* var dataString = "";
-            for (var i = 0; i < fileData.length; i++) {
-                dataString += String.fromCharCode(fileData[i]);
-            }*!/
-
-            /!*var blob = new Blob([fileData], {
-                type: 'text/plain'
-            });*!/
-            var buffer = new ArrayBuffer(fileData);
-            var blob = new Blob([buffer]);
-            let u = window.URL.createObjectURL(blob);
-            let a = document.createElement('a');
-            a.download = "ncb.mp4";
-            a.href = u;
-            a.style.display = 'none'
-            document.body.appendChild(a)
-            a.click();
-            a.remove();
-        }
-
-    }*/
-
 }
 
-
-
-function getInstance() {
-    return new AcFunHelperBackend();
-}
-//getInstance();
-window.AcFunHelperBackend = new AcFunHelperBackend();
-
-/*var ffmpeg = require("ffmpeg");
-window.ffmpeg = ffmpeg;
-var fs = require('browserify-fs');
-window.fs=fs;
-console.log(fs);*/
-//window.buffer = buffer;
+window.AcFunHelperBackend = new AcFunHelperBackendCore();

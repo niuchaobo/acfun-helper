@@ -2,14 +2,15 @@
  * up主屏蔽
  */
 
-class Block {
+class Block extends AcFunHelperFgFrame{
     constructor() {
+        super();
         this.devMode = false;
     }
 
     //在DOM加载完成之后通过注入自定义xhr的方式过滤文章
     injectScript() {
-        let bannedUpsArr = Object.keys(window.AcFunHelperFrontend.options.UserFilter);
+        let bannedUpsArr = Object.keys(this.runtime.options.UserFilter);
         MessageSwitch.sendEventMsgToInject(window, {
             "target": "AcFunHelperFrontendXHRDriver", "InvkSetting": { "type": "addRule" }, "params": {
                 params: {
@@ -24,7 +25,7 @@ class Block {
     //页面所有元素加载完成之后通过修改页面元素的方式过滤文章
     async block() {
         let href = window.location.href;
-        let upMap = ExtOptions.upFilterMap(window.AcFunHelperFrontend.options, true);
+        let upMap = ExtOptions.upFilterMap(this.runtime.options, true);
         this.homePageFilter(upMap);
         this.articlePageFilter(upMap);
         //如果是文章区详情页，添加屏蔽按钮

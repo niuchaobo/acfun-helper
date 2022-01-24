@@ -44,16 +44,16 @@ function devConsole(department, module, funcName, message, logLevel, timeSw) {
                 console.log(`${logTime} ${_logLevel}${_department}-${module} > ${funcName}:${message}`)
                 break;
             case 2:
-                console.warn(`${logTime} ${_logLevel}${_department}-${module} > ${funcName}:${message}`)
                 _logLevel = "[WARN]"
+                console.warn(`${logTime} ${_logLevel}${_department}-${module} > ${funcName}:${message}`)
                 break;
             case 3:
-                console.error(`${logTime} ${_logLevel}${_department}-${module} > ${funcName}:${message}`)
                 _logLevel = "[ERROR]"
+                console.error(`${logTime} ${_logLevel}${_department}-${module} > ${funcName}:${message}`)
                 break;
             case 4:
-                console.error(`${logTime} ${_logLevel}${_department}-${module} > ${funcName}:${message}`)
                 _logLevel = "[CRITICAL]"
+                console.error(`${logTime} ${_logLevel}${_department}-${module} > ${funcName}:${message}`)
                 break;
             default:
                 break;

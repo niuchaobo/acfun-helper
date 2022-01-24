@@ -7,7 +7,7 @@ on:
 
 jobs:
   publishRelease:
-    name: publish a realse package
+    name: publish a release package
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"

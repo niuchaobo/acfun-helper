@@ -1,8 +1,9 @@
 /**
  * 视频播放页弹幕列表搜索模块
  */
-class Search {
+class Search extends AcFunHelperFgFrame{
   constructor() {
+    super();
     this.searchList = [];
     this.devMode = false;
     this.i = 0;

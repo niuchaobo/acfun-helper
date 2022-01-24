@@ -1,17 +1,15 @@
-/**
- * omnibox 地址栏扩展模块
- */
-class Ohminibox {
+class Ohminibox extends AcFunHelperBgFrame {
     constructor() {
-        this.devMode = false;
+        super();
         this.omnibox = chrome.omnibox;
         this.initMod();
     }
 
     initMod() {
-        if (myBrowser() == "FF") {
+        if (this.runtime.dataset.core.browserType == "FF") {
             this.omnibox = browser.omnibox;
         }
+        this.registerOmnibox();
     }
 
     registerOmnibox() {
@@ -31,7 +29,7 @@ class Ohminibox {
                             suggestions = x.suggestKeywords.map((val) => {
                                 return {
                                     "content": val,
-                                    "description": chrome.i18n.getMessage("omniboxInputSuggestion", val)
+                                    "description": val
                                 }
                             });
                             suggest(suggestions);
@@ -65,7 +63,8 @@ class Ohminibox {
         });
 
         this.omnibox.setDefaultSuggestion({
-            "description": chrome.i18n.getMessage("omniboxDefaultSuggestion")
+            "description": "好耶！"
         });
     }
+
 }

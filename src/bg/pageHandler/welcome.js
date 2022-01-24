@@ -13,7 +13,7 @@ document.querySelector("#welcome").addEventListener("animationend",()=>{
     })
     document.querySelector("#idisagree").addEventListener("click", (e) => {
         ExtOptions.changeFeatureSwitch("permission", false);
-        AcFunHelper.reloadAll();
+        AcFunHelperHelper.reloadAll();
         closeMe();
     })
 })

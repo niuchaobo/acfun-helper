@@ -1,14 +1,20 @@
 /**
  * 弹幕处理
  */
-class Danmaku {
+class Danmaku extends AcFunHelperFgFrame {
     constructor() {
+        super();
         this.devMode = false;
         this.acid = 0;
         this.duration = 10;
         this.danmuMotionList = [];
         this.videoQualitiesRefer = videoQualitiesRefer;
         this.thisVideoQuality = 0;
+        this.cc = {
+            state: false,
+            data: null,
+            trackUrl: null,
+        }
     }
 
     /**
@@ -194,6 +200,150 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
             }
         }
         return true;
+    }
+
+    /**
+     * @reference https://cloud.tencent.com/developer/ask/190841
+     */
+    simpleCC() {
+        fgConsole("Danmaku", "simpleCC", `满上！`, 1, false)
+        GetAsyncDomUtil.getAsyncDomClassic(".setting-panel>.setting-panel-content", () => {
+            const menuItem = new PlayerMenuSwitchItem("addSubtitle", "CC字幕", "SRT字幕文件", false);
+
+            const enableCC = () => {
+                if (this.cc.state == true) {
+                    /**@type {HTMLTrackElement} */
+                    const target = document.querySelector("#achp-cctexttrack")
+                    if (target) {
+                        target.track.mode = "showing"
+                        return;
+                    } else {
+                        fgConsole("Danmaku", "simpleCC", `数据错乱.jpg`, 1, false)
+                        return;
+                    }
+                }
+                const inputHandler = document.createElement("input");
+                inputHandler.id = this.runtime.dataset.sessionUUID + "cc";
+                inputHandler.type = "file";
+                document.body.appendChild(inputHandler);
+                document.querySelector("input#" + inputHandler.id).addEventListener("change", function () {
+                    const file = this.files[0];
+                    const reader = new FileReader();
+                    reader.readAsText(file, "utf-8");
+                    reader.onload = function () {
+                        /**
+                         * @reference https://cloud.tencent.com/developer/ask/190841
+                         * @param {string} caption 
+                         * @returns 格式化过的一条数据
+                         */
+                        const convertSrtCue = (caption) => {
+                            // remove all html tags for security reasons
+                            //srt = srt.replace(/<[a-zA-Z\/][^>]*>/g, '');
+                            let cue = "";
+                            let s = caption.split(/\n/);
+                            // concatenate muilt-line string separated in array into one
+                            while (s.length > 3) {
+                                for (let i = 3; i < s.length; i++) {
+                                    s[2] += "\n" + s[i]
+                                }
+                                s.splice(3, s.length - 3);
+                            }
+                            let line = 0;
+                            // detect identifier
+                            if (!s[0].match(/\d+:\d+:\d+/) && s[1].match(/\d+:\d+:\d+/)) {
+                                cue += s[0].match(/\w+/) + "\n";
+                                line += 1;
+                            }
+                            // get time strings
+                            if (s[line].match(/\d+:\d+:\d+/)) {
+                                // convert time string
+                                let m = s[1].match(/(\d+):(\d+):(\d+)(?:,(\d+))?\s*--?>\s*(\d+):(\d+):(\d+)(?:,(\d+))?/);
+                                if (m) {
+                                    cue += m[1] + ":" + m[2] + ":" + m[3] + "." + m[4] + " --> "
+                                        + m[5] + ":" + m[6] + ":" + m[7] + "." + m[8] + "\n";
+                                    line += 1;
+                                } else {
+                                    // Unrecognized timestring
+                                    return "";
+                                }
+                            } else {
+                                // file format error or comment lines
+                                return "";
+                            }
+                            // get cue text
+                            if (s[line]) {
+                                cue += s[line] + "\n\n";
+                            }
+                            return cue;
+                        }
+                        const srt2webvtt = (data) => {
+                            // remove dos newlines
+                            let srt = data.replace(/\r+/g, '');
+                            // trim white space start and end
+                            srt = srt.replace(/^\s+|\s+$/g, '');
+                            // get cues
+                            let cuelist = srt.split('\n\n');
+                            let result = "";
+                            if (cuelist.length > 0) {
+                                result += "WEBVTT\n\n";
+                                for (let i = 0; i < cuelist.length; i = i + 1) {
+                                    result += convertSrtCue(cuelist[i]);
+                                }
+                            }
+                            return result;
+                        }
+
+                        const loadCC = () => {
+                            const trackBlob = new Blob([window.AcFunHelperFrontend.danmaku.cc.data], {
+                                type: "text/plain;charset=utf-8"
+                            });
+                            const trackUrl = URL.createObjectURL(trackBlob);
+                            window.AcFunHelperFrontend.danmaku.cc.trackUrl = trackUrl;
+                            const trackElem = document.createElement("track");
+
+                            console.log(trackUrl, trackElem);
+                            trackElem.id = "achp-cctexttrack";
+                            trackElem.kind = "subtitles";
+                            trackElem.srclang = "zh";
+                            trackElem.label = "externalCCSubtitles";
+                            trackElem.default = true;
+                            trackElem.src = trackUrl;
+
+                            document.querySelector("video").append(trackElem);
+                        }
+
+                        window.AcFunHelperFrontend.danmaku.cc.data = srt2webvtt(this.result);
+                        window.AcFunHelperFrontend.danmaku.cc.state = true;
+                        loadCC();
+                    }
+                })
+                document.querySelector("input#" + inputHandler.id).click();
+            }
+
+            const removeCC = () => {
+                /**@type {HTMLTrackElement} */
+                const target = document.querySelector("#achp-cctexttrack")
+                if (target) {
+                    target.track.mode = "hidden";
+                    URL.revokeObjectURL(this.cc.trackUrl);
+                    target.remove();
+                    this.cc.state = false;
+                    this.cc.data = null;
+                    this.cc.trackUrl = null;
+                }
+            }
+
+            const disableCC = () => {
+                /**@type {HTMLTrackElement} */
+                const target = document.querySelector("#achp-cctexttrack")
+                if (target) {
+                    target.track.mode = "hidden";
+                }
+            }
+
+            menuItem.addEventHandler(enableCC, disableCC);
+        },)
+
     }
 
 }

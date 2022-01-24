@@ -5,6 +5,7 @@ class Div {
     this.popup = new Popup();
     this.t_point = null;
     this.options = null;
+    this.vid = null;
   }
 
   async show(pageInfo, options, type, isUp) {
@@ -17,7 +18,7 @@ class Div {
     this.popup.renderPopup(pageInfo, type, isUp);
     this.div.style.visibility = "visible";
     this.div.innerText = DOMPurify.sanitize("助手");
-    document.body.appendChild(this.div);window
+    document.body.appendChild(this.div);
     //this.searchBind()
   }
   
@@ -79,6 +80,13 @@ class Div {
     }
   }
 
+  reloadIframe(options, pageInfo, type, isUp) {
+    this.popup.popup.remove();
+    this.popup = new Popup();
+    this.popup.inject(options);
+    this.popup.renderPopup(pageInfo, type, isUp);
+  }
+
   inject() {
     if (this.div !== null) {
       return;
@@ -99,7 +107,7 @@ class Div {
     this.div.style.cursor = "default";
     //this.div.style.top=(height/2-20)/2+'px';
     this.div.style.top = 225 + 60 + 2 + "px"; //小窗口高度+顶部导航栏高度+间隙 (不会挡到小窗口播放默认播放位置),
-    this.div.style.zIndex = 9999; //FIXME: 此处改为999(比播放器层级低1)可以不用监听（直接被播放器覆盖），防止在页面未加载时点击全屏之后助手加载，监听失效问题(太多判断了 - -)
+    this.div.style.zIndex = 999; //FIXME: 此处改为999(比播放器层级低1)可以不用监听（直接被播放器覆盖），防止在页面未加载时点击全屏之后助手加载，监听失效问题(太多判断了 - -) 2021-12-23 Sokwva:所以为啥不直接删掉那个多出的9( ﾟ∀。)
     this.div.addEventListener("mousedown", (e) => e.stopPropagation());
     this.div.addEventListener("click", (e) => this.showPopup(e));
     let root = document.body;

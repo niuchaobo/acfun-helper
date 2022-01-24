@@ -2,8 +2,9 @@
  * 评论是本体
  * @description 根据评论ID跳转到相关位置 评论扫描 评论者标记 Up在评论区的标识 评论区稿件ID弹窗 评论区时间播放器跳转 评论区时间快捷键播放器跳转 评论保存为HTML
  */
-class CommentEnhance {
+class CommentEnhance extends AcFunHelperFgFrame{
     constructor() {
+        super();
         this.devMode = false;
         this.reg_for_time = new RegExp('[0-9]{1,3}[:分][0-9]{1,2}秒?');
         this.reg_for_time3part = new RegExp('[0-9]{1,3}[:小时][0-9]{1,3}[:分][0-9]{1,2}秒?');
@@ -69,6 +70,10 @@ class CommentEnhance {
                     }
                 });
                 clearInterval(timer);
+            } else {
+                if (!document.querySelector(".ac-comment-root-list").childElementCount) {
+                    clearInterval(timer);
+                }
             }
         }, 1000);
     }
@@ -258,6 +263,10 @@ class CommentEnhance {
                     }
                 });
                 clearInterval(timer);
+            } else {
+                if (!document.querySelector(".ac-comment-root-list").childElementCount) {
+                    clearInterval(timer);
+                }
             }
         }, 1000);
     }
@@ -266,8 +275,24 @@ class CommentEnhance {
      * 评论区显示up主名字
      */
     renderScanForUp() {
-        var timer = setInterval(function () {
+        var timer = setInterval(async function () {
             var url = window.location.toString();
+            /**@type {string[]} */
+            let staffs = [];
+            let staffDetail = {}
+            try {
+                if (REG.video.test(globalThis.location.href)) {
+                    /**@type {APIs.ContributionInfo.StaffInfos} */
+                    let staffApi = await acfunApis.video.Staff.getStaffInfo(REG.acVid.exec(window.location.href)[2]);
+                    staffApi.staffInfos.forEach(e => {
+                        staffs.push(e["name"]);
+                        staffDetail[e.name] = e["staffRoleName"];
+                    })
+                    console.log(staffs, staffDetail)
+                }
+            } catch (error) {
+                console.log(error)
+            }
             let avr = new RegExp("/v/");
             let aar = new RegExp("/a/");
             let av = avr.exec(url);
@@ -287,9 +312,18 @@ class CommentEnhance {
                         if (userName == up) {
                             $(this).after('<span class="pos up">UP主</span>');
                         }
+                        if (staffs.length) {
+                            if (staffs.includes(userName)) {
+                                $(this).after(`<span class="pos staff">${staffDetail[userName]}</span>`);
+                            }
+                        }
                     }
                 });
                 clearInterval(timer);
+            } else {
+                if (!document.querySelector(".ac-comment-root-list").childElementCount) {
+                    clearInterval(timer);
+                }
             }
         }, 1020);
     }
@@ -315,6 +349,10 @@ class CommentEnhance {
                     }
                 });
                 clearInterval(timer);
+            } else {
+                if (!document.querySelector(".ac-comment-root-list").childElementCount) {
+                    clearInterval(timer);
+                }
             }
         }, 1000);
     }
@@ -324,7 +362,23 @@ class CommentEnhance {
      * @param {string} rootCommentId 
      */
     renderSubScanForUp(rootCommentId) {
-        var timer = setInterval(function () {
+        var timer = setInterval(async function () {
+            /**@type {string[]} */
+            let staffs = [];
+            let staffDetail = {}
+            try {
+                if (REG.video.test(globalThis.location.href)) {
+                    /**@type {APIs.ContributionInfo.StaffInfos} */
+                    let staffApi = await acfunApis.video.Staff.getStaffInfo(REG.acVid.exec(window.location.href)[2]);
+                    staffApi.staffInfos.forEach(e => {
+                        staffs.push(e["name"]);
+                        staffDetail[e.name] = e["staffRoleName"];
+                    })
+                    console.log(staffs, staffDetail)
+                }
+            } catch (error) {
+                console.log(error)
+            }
             let url = window.location.toString();
             let avr = new RegExp("/v/");
             let aar = new RegExp("/a/");
@@ -345,9 +399,18 @@ class CommentEnhance {
                         if (userName == up) {
                             $(this).after('<span class="pos up">UP主</span>');
                         }
+                        if (staffs.length) {
+                            if (staffs.includes(userName)) {
+                                $(this).after(`<span class="pos staff">${staffDetail[userName]}</span>`);
+                            }
+                        }
                     }
                 });
                 clearInterval(timer);
+            } else {
+                if (!document.querySelector(".ac-comment-root-list").childElementCount) {
+                    clearInterval(timer);
+                }
             }
         }, 1020);
     }
@@ -385,6 +448,10 @@ class CommentEnhance {
                     }
                 });
                 clearInterval(timer);
+            } else {
+                if (!document.querySelector(".ac-comment-root-list").childElementCount) {
+                    clearInterval(timer);
+                }
             }
         }, 1000);
     }

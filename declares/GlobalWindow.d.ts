@@ -89,7 +89,7 @@ interface Window {
     showAllDesc: () => void;
     staffInfos: Array;
     toggleShow: () => void;
-    upInfo:APIs.PersonalUserInfo
+    upInfo: APIs.Personal.UserInfo;
   };
   globalConfig: globalConfigInterf;
   player: {

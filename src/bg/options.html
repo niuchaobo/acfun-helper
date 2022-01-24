@@ -11,11 +11,11 @@
     <script src="../lib/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="./lib/jquery.mloading.js"></script>
     <script type="text/javascript" src="../mdui/js/mdui.min.js"></script>
-    <script type="text/javascript" src="./pageHandler/options.js"></script>
     <script type="text/javascript" src="../common/utils.js"></script>
     <script type="text/javascript" src="../common/utilsBundle.js"></script>
     <script type="text/javascript" src="../common/uiReact.js"></script>
     <script type="text/javascript" src="../common/encyclopedia.js"></script>
+    <script type="text/javascript" src="./pageHandler/options.js"></script>
     <style>
         ::-webkit-scrollbar {
             width: 8px;
@@ -992,10 +992,10 @@
                             <div class="mdui-row">
                                 <div class="mdui-row">
                                     <div class="mdui-col-xs-9">
-                                        <h3>个人中心和分区视频详细列表快捷键翻页</h3>
+                                        <h3>快捷键翻页</h3>
                                         <div class="mdui-row">
                                             <div class="mdui-col-xs-8 mdui-col-sm-6">
-                                                <p>在个人中心、视频稿件页和各个分区的<a
+                                                <p>在个人中心、直播站主页、视频稿件页和各个分区的<a
                                                         href="https://www.acfun.cn/v/list190/index.htm?sortField=rankScore&duration=all&date=default&page=1"
                                                         title="例如动画区其中一个版块"
                                                         target="_blank">视频详细列表</a>使用Shift+PageUp/PageDown来翻页</p>
@@ -1040,6 +1040,25 @@
                                             </div>
                                             <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
                                                     <input id="quickCommentSubmit" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>批量操作关注Up</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>在<a href="https://www.acfun.cn/member/feeds/following" target="_blank">个人中心</a>关注的Up条目空白处点击，出现紫色边框之后选定，可以点击批量取关，或者切换到目的分组之后点击批量移动分组将Up移动到所在分组</p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="userBatchManage" type="checkbox" />开关
                                                     <i class="mdui-switch-icon"></i>
                                                 </label></div>
                                         </div>
@@ -1819,6 +1838,23 @@
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="multiPartListSpread" type="checkbox" />
+                                            <i class="mdui-switch-icon"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-col-xs-9">
+                                <h2>外部字幕</h2>
+                            </div>
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                    简单的外部加载字幕实现</div>
+                                <div class="mdui-col-xs-4 mdui-col-sm-6">
+                                    <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
+                                            <input id="simpleCC" type="checkbox" />
                                             <i class="mdui-switch-icon"></i>
                                         </label>
                                     </div>

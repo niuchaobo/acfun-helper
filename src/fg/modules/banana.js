@@ -1,8 +1,9 @@
 /**
  * 自动点赞、投蕉
  */
-class Banana {
+class Banana extends AcFunHelperFgFrame {
     constructor() {
+        super()
         this.devMode = false;
     }
 
@@ -58,11 +59,11 @@ class Banana {
         if (!isLogined && Mode == "video") {
             return;
         } else if (Mode == "article") {
-            if (!isLogin("article")) {
+            if (!ToolBox.isLogin("article")) {
                 return;
             }
         }
-        let options = window.AcFunHelperFrontend.options;
+        let options = this.runtime.options;
         let LikeType = options.LikeHeartClass;
         if (LikeType == "0") {
             this.clickLike(options, Mode);
@@ -124,11 +125,11 @@ class Banana {
     async articleBanana(params) {
         var isLogined = false;
         try {
-            isLogined = isLogin("video");
+            isLogined = ToolBox.isLogin("video");
         } catch (error) {
             console.log("[LOG]Front-Banana>articleBanana: 没找到登录判断依据。");
         }
-        let options = window.AcFunHelperFrontend.options;
+        let options = this.runtime.options;
         if (!options.auto_throw) {
             return;
         }
@@ -157,10 +158,10 @@ class Banana {
     }
 
     async throwBanana(params) {
-        if (!isLogin()) {
+        if (!ToolBox.isLogin()) {
             return;
         }
-        let options = window.AcFunHelperFrontend.options;
+        let options = this.runtime.options;
         if (!options.auto_throw) {
             return;
         }

@@ -1,8 +1,9 @@
 ﻿/**
  * 视频播放设置
  */
-class VideoSetting {
+class VideoSetting extends AcFunHelperFgFrame {
   constructor() {
+    super();
     window.addEventListener("load", (e) => this.onLoad(e));
     this.underWorld = null;
     this.audioNodeGainFlag = false;
@@ -45,9 +46,10 @@ class VideoSetting {
     document.head.appendChild(sc);
     //给inject js 传递数据
     sc.onload = function () {
-      MessageSwitch.sendEventMsgToInject(window, { target: "loadOptionData", source: "videoSetting", InvkSetting: { type: "function" }, params: { title: "optionData", msg: window.AcFunHelperFrontend.options } });
+      MessageSwitch.sendEventMsgToInject(window, { target: "loadOptionData", source: "videoSetting", InvkSetting: { type: "function" }, params: { title: "optionData", msg: window.AcFunHelperFrontend.runtime.options } });
       MessageSwitch.sendEventMsgToInject(window, { target: "playerFuncAutomate", source: "videoSetting", InvkSetting: { type: "function" }, params: {} });
     };
+    this.runtime.dataset.core.status.videoInjects = true;
   }
 
   //跳转到上次观看(只支持1p投稿的跳转)
@@ -58,7 +60,16 @@ class VideoSetting {
         let lastAcVpid = Number(videoInfo_data[judgeActivePart() - 1].id);
         try {
           if (JSON.parse(localStorage.playHistory)[lastAcVpid]) {
-            document.getElementsByTagName("video")[0].currentTime = JSON.parse(localStorage.playHistory)[lastAcVpid];
+            const _timer = setTimeout(() => {
+              $(".left-bottom-tip").eq(0).append(`<div class="tip-item muted" id="lastPlayTime" ><div class="left-bottom-tip-text"><span>上次播放到 ${localStorage.playHistory}</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="lastPlayTime">继续观看</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="lastPlayTimeCancle">取消</span></div></div>`);
+              document.querySelector("#lastPlayTime").addEventListener("click", () => {
+                document.getElementsByTagName("video")[0].currentTime = JSON.parse(localStorage.playHistory)[lastAcVpid];
+              })
+              document.querySelector("#lastPlayTimeCancle").addEventListener("click", () => {
+                $(".left-bottom-tip").eq(0).remove();
+              })
+            }, 5000);
+            $(".left-bottom-tip").eq(0) ? $(".left-bottom-tip").eq(0).remove() : "";
           } else {
             throw TypeError;
           }
@@ -700,7 +711,7 @@ class VideoSetting {
    * @ideaRefer https://github.com/Yzi/AcFun-TheaterMode
    */
   videoMediaSession(dougaInfo) {
-    fgConsole(this, "videoMediaSession", "Init MediaSessionModule.", 1, false);
+    fgConsole("VideoSetting", "videoMediaSession", "Init MediaSessionModule.", 1, false);
     if (!isBoughtBangumi()) { return }
     /**@type {APIs.BangumiPageInfo} */
     let videoInfo = {};
@@ -764,8 +775,8 @@ class VideoSetting {
       //分P
       this.mediaSessionGatherMultiPartInfo(videoInfo);
     }
-    fgConsole(this, "videoMediaSession", "Attach MediaSession ActionHandler.", 1, false);
-    // fgConsole(this, this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
+    fgConsole("VideoSetting", "videoMediaSession", "Attach MediaSession ActionHandler.", 1, false);
+    // fgConsole("VideoSetting", this.videoMediaSession, `向MediaSession报告的信息${videoInfo.title}${videoInfo.coverUrl}${videoInfo.user.name}${videoInfo.videoList.length != 0}`, 1, false);
     this.mediaSessionCore(videoInfo);
   }
 
@@ -799,7 +810,7 @@ class VideoSetting {
       document.querySelector("video").currentTime = Number(details.seekTime);
     });
 
-    fgConsole(this, "videoMediaSession", "Video MediaSession Attach Success.", 1, false);
+    fgConsole("VideoSetting", "videoMediaSession", "Video MediaSession Attach Success.", 1, false);
     if (videoInfo.videoList.length > 1) {
       try {
         this.mediaSessionNowPlayingIndex = REG.videoPartNumByURL.exec(location.href)[1] || 0;
@@ -815,7 +826,7 @@ class VideoSetting {
       navigator.mediaSession.setActionHandler("nexttrack", () => {
         this.mediaSessionPlayer("next", videoInfo);
       });
-      fgConsole(this, "videoMediaSession", "Video MediaSession MultiPart Attach Success.", 1, false);
+      fgConsole("VideoSetting", "videoMediaSession", "Video MediaSession MultiPart Attach Success.", 1, false);
     }
   }
 
@@ -874,7 +885,7 @@ class VideoSetting {
     try {
       videoInfo["videoList"] = document.querySelector(".scroll-div").children;
     } catch (error) {
-      fgConsole(this, "videoMediaSession", "Normal Video.", 1, false);
+      fgConsole("VideoSetting", "videoMediaSession", "Normal Video.", 1, false);
     }
   }
 
@@ -911,7 +922,7 @@ class VideoSetting {
         );
       }
     } else {
-      fgConsole(this, "timelineMain", "No content.", 3, false);
+      fgConsole("VideoSetting", "timelineMain", "No content.", 3, false);
     }
   }
 
@@ -1075,7 +1086,7 @@ class VideoSetting {
         } else {
           createElementStyle(".context-menu.danmaku{display:none !important;}", document.head, "AcFunHelper_hideDanmakuOperatorBarStyle");
           if (maskSw) {
-            MaskElement(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0", "AcFunHelper_danmakuLayerMask");
+            ToolBox.DOMElementMask(".danmaku-screen", "position: absolute; width: 100%; height: 80%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0", "AcFunHelper_danmakuLayerMask");
           }
           document.querySelector(".danmakuOpr").dataset.bindAttr = false;
           this.hideDanmakuOperatorStyleAdded = true;

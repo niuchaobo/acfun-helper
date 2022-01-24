@@ -1,8 +1,9 @@
 /**
  * 页面美化
  */
-class PageBeautify {
+class PageBeautify extends AcFunHelperFgFrame {
   constructor() {
+    super();
     this.personInfo = "https://www.acfun.cn/rest/pc-direct/user/personalInfo";
     this.devMode = false;
     //往里边添加 栏目原来名称 与 导航上显示的名称
@@ -11,6 +12,7 @@ class PageBeautify {
       正在直播: "直播",
       "「年」在一起": "春节",
       "舞蹈·偶像": "舞蹈",
+      "主角竟是我": "春节",
     };
   }
 
@@ -121,24 +123,23 @@ class PageBeautify {
 
   //------------------------个人中心------------------------------
   async personBeautify() {
-    chrome.storage.local.get(["LocalUserId"], function (Uid) {
-      if (Uid.LocalUserId == "0") {
-        return;
-      }
-    });
+    const hadLogin = await ExtOptions.getValue("LocalUserId");
+    if (hadLogin == "0") {
+      return;
+    }
     let this_page = 0;
     fetch(this.personInfo)
       .then((res) => {
         return res.text();
       })
       .then((res) => {
-        /**@type {APIs.PersonalUserInfoApi} */
+        /**@type {APIs.Personal.UserInfo} */
         let a = "";
         try {
           a = JSON.parse(res);
           if (!a.info.userId) { return }
         } catch (error) {
-          fgConsole(this, this.personBeautify, "fetch userInfo Failed.", 1, false);
+          fgConsole("PageBeautify", this.personBeautify, "fetch userInfo Failed.", 1, false);
           return;
         }
         var url = window.location.toString();
@@ -151,24 +152,22 @@ class PageBeautify {
             node.after(
               '<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +
               a.info.userId +
-              '">我的直播</a></p>'+
+              '">我的直播</a></p>' +
               '<p class="crx-guid-p"><a target="_blank" href="https://www.acfun.cn/member/favourite">我的收藏</a></p>'
             );
             node.after('<p class="crx-guid-p">UID: ' + a.info.userId + "</p>");
             node.after(
-              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=banana" target="_blank">香蕉: ' +
-              a.info.banana +
-              "</a></p>"
+              '<p class="crx-guid-p">香蕉: ' + a.info.banana + "</p>"
             );
             node.after(
-              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/#area=golden-banana" target="_blank">金香蕉: ' +
+              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/mall?tab=items" target="_blank">金香蕉: ' +
               a.info.goldBanana +
               "</p>"
             );
             node.after(
-              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds?tab=following" target="_blank">关注 ' +
+              '<p class="crx-guid-p"><a href="https://www.acfun.cn/member/feeds/following" target="_blank">关注 ' +
               a.info.following +
-              '</a> - <a href="https://www.acfun.cn/member/feeds?tab=fans" target="_blank">听众: ' +
+              '</a> - <a href="https://www.acfun.cn/member/feeds/fans" target="_blank">听众: ' +
               a.info.followed +
               "</a></p>"
             );
@@ -267,8 +266,7 @@ class PageBeautify {
   }
 
   userCenterBeautify() {
-    let cssStr;
-    cssStr = `#ac-space .tab-content{background: #ffffffad;} #ac-space .tab{background: #fffffff7;}
+    createElementStyle(`#ac-space .tab-content{background: #ffffffad;} #ac-space .tab{background: #fffffff7;}
 		#ac-space-album-list, #ac-space-article-list, #ac-space-video-list{background: #ffffffad;}
 		#ac-space-info {
 			border: 0px;
@@ -307,12 +305,11 @@ class PageBeautify {
 		
 		.ac-space-video .video .icon-play, .ac-space-video .video .mask{
 			transition: all .2s ease-in-out;
-		}`;
-    createElementStyle(cssStr, document.head, "simplifiyPartIndex");
+		}`, document.head, "simplifiyPartIndex");
   }
 
   widenUCVideoList() {
-    let cssStr = `
+    createElementStyle(`
 		.ac-space-video {
 			width: 1000px;
 			height: 100px;
@@ -331,16 +328,13 @@ class PageBeautify {
 			line-height: 100px;
       align-items:center;
 		}
-		`;
-    createElementStyle(cssStr, document.head, "widenUCVideoList");
+		`, document.head, "widenUCVideoList");
   }
 
   simplifiyPlayerRecm() {
-    let cssStr;
-    cssStr = `#ACPlayer > div > div.container-video > div > div.recommend-container > div{
+    createElementStyle(`#ACPlayer > div > div.container-video > div > div.recommend-container > div{
 			display:none
-		}`;
-    createElementStyle(cssStr, document.head, "AcFunHelper_simplifiyPlayerRecommend");
+		}`, document.head, "AcFunHelper_simplifiyPlayerRecommend");
   }
 
   hideAds() {
@@ -637,6 +631,118 @@ class PageBeautify {
       warp.appendChild(stringToDOM(startTagTemplate)[0]);
       warp.appendChild(PageElem)
       return warp;
+    }
+  }
+
+  async userBatchManage(command = true) {
+    /**@type {number[]} */
+    this.userBatchMngList = [];
+    this.gidgnameMap = null;
+    /**
+     * 事件绑定
+     * @param {Event} e 
+     */
+    const bindEvent = (e) => {
+      /**@type {HTMLElement} */
+      const targetElem = e.target;
+      if (targetElem.classList.contains("ac-member-user-relation")) {
+        /**@type {DOMTokenList} */
+        const targetClassList = targetElem.classList;
+        targetClassList.toggle("userBatchManageSelected");
+        toggleUserInList(Number(/\/u\/(.*)/.exec(targetElem.children[0].href)[1]), targetElem.classList.contains("userBatchManageSelected") ?? false);
+      }
+    }
+
+    const toggleUserInList = (u, mode) => {
+      if (typeof (u) != "number") {
+        throw TypeError("argument 0 should be a number.")
+      }
+      if (this.userBatchMngList?.length >= 19) {
+        UIReactor.ucenterAreaNotice("AcFun助手：待处理列表数量超过20，当翻页时会丢失原来选择的用户显示，但用户依旧还在待处理列表中。", 6000);
+        UIReactor.ucenterAreaNotice("AcFun助手：处理一轮时，请尽量不要翻页。", 5500);
+      }
+      if (mode) {
+        if (!this.userBatchMngList.includes(u)) {
+          this.userBatchMngList.push(u);
+          return this.userBatchMngList.length - 1;
+        }
+      } else {
+        const index = this.userBatchMngList.indexOf(u);
+        this.userBatchMngList.splice(index);
+        return -1;
+      }
+    }
+
+    const toggleUI = () => {
+      if (document.querySelector("#achUserBatchMng")) {
+        document.querySelector(".following-panel>.group").remove();
+        document.querySelector(".following-panel>.group").remove();
+      } else {
+        let groupMoveElem = document.createElement("a");
+        groupMoveElem.innerText = "批量移动到此分组";
+        groupMoveElem.classList.add("group-edit");
+        groupMoveElem.id = "achUserBatchMngroup";
+
+        let unfollowElem = document.createElement("a");
+        unfollowElem.innerText = "批量取关";
+        unfollowElem.classList.add("group-edit");
+        unfollowElem.id = "achUserBatchMngunf";
+
+        document.querySelector(".following-panel>.group") && document.querySelector(".following-panel>.group").append(groupMoveElem);
+        document.querySelector(".following-panel>.group") && document.querySelector(".following-panel>.group").append(unfollowElem);
+      }
+    }
+
+    const getCurrentGid = async () => {
+      if (!this.gidgnameMap) {
+        this.gidgnameMap = await acfunApis.users.getGnameGidMap();
+      }
+      return this.gidgnameMap[document.querySelector("span.ac-select-selection").innerText];
+    }
+
+    const batchMove = async () => {
+      const gid = await getCurrentGid()
+      for (let i in this.userBatchMngList) {
+        acfunApis.users.locateUserToGroup(this.userBatchMngList[i], gid);
+      }
+      UIReactor.ucenterAreaNotice("AcFun助手：用户批量分组移动完成，请刷新以更新状态。");
+    }
+
+    const batchUnfollow = () => {
+      for (let i in this.userBatchMngList) {
+        acfunApis.users.follow(this.userBatchMngList[i], false);
+      }
+      UIReactor.ucenterAreaNotice("AcFun助手：用户批量取关完成，请刷新以更新状态。。");
+    }
+
+    const buttonEvent = (toggle = true) => {
+      if (toggle) {
+        document.querySelector("#achUserBatchMngroup").addEventListener("click", batchMove);
+        document.querySelector("#achUserBatchMngunf").addEventListener("click", batchUnfollow);
+      } else {
+        document.querySelector("#achUserBatchMngroup").removeEventListener("click", batchMove);
+        document.querySelector("#achUserBatchMngunf").removeEventListener("click", batchUnfollow);
+      }
+    }
+
+    switch (command) {
+      case true:
+        createElementStyle(`
+          .userBatchManageSelected{
+            border: 1px solid #ff42bc !important;
+          }
+        `, document.head, "AcFunHelper_userBatchManage");
+        document.querySelector(".following-list")?.addEventListener("click", bindEvent);
+        document.querySelector("#AcFunHelper_userBatchManage").disabled = false;
+        toggleUI();
+        buttonEvent();
+        break;
+      case false:
+        document.querySelector(".following-list")?.removeEventListener("click", bindEvent);
+        document.querySelector("#AcFunHelper_userBatchManage").disabled = true;
+        toggleUI();
+        buttonEvent(false);
+        break;
     }
   }
 

@@ -9,6 +9,13 @@ function downloadDanmaku() {
     }, '*');
 }
 
+function playerTimeJumpUrlGenDiv(){
+    window.parent.postMessage({
+        to: "AcFunHelper",
+        msg: { source: "frame-playerTimeJumpUrlGenDiv", target: "playerTimeJumpUrlGenDiv", InvkSetting: { type: "function" }, params: {} },
+    }, '*');
+}
+
 function assDanmaku() {
     if (window.parent.document.querySelector(".control-btn.quality").children[0].innerText.toLowerCase() == "自动") {
         alert("请先选择一个确定的画质(1080P...)，以便助手确认字幕的宽高。");
@@ -186,6 +193,7 @@ function api_showLucyResult(params) {
 function onDomContentLoaded() {
     registVideoClick();
     $("#danmakuDownload").bind('click', downloadDanmaku);
+    $("#playerTimeJumpUrlGen").bind('click', playerTimeJumpUrlGenDiv);
     $("#assDanmaku").bind('click', assDanmaku);
     $("#comment-scan").change(scanChange);
     $("#comment-mark").change(markChange);

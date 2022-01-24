@@ -715,9 +715,10 @@ class GetAsyncDomUtil extends UtilsBundle {
      * @param {number} time 
      * @param {boolean} isDev 
      * @example GetAsyncDomUtil.getAsyncDomClassic(".ac-comment-list",function(){ console.log("2333") })
+     * @returns {GetAsyncDomUtil}
      */
-    static getAsyncDomClassic(target, fn, time = 2500, isDev = true) {
-        new GetAsyncDomUtil(target, fn, null, "exist", time, true, 30000, isDev).probe();
+    static getAsyncDomClassic(target, fn, time = 2500, isDev = false) {
+        return new GetAsyncDomUtil(target, fn, null, "exist", time, true, 30000, isDev).probe();
     }
 
     /**
@@ -728,9 +729,10 @@ class GetAsyncDomUtil extends UtilsBundle {
      * @param {number} time 
      * @param {boolean} isDev 
      * @example GetAsyncDomUtil.judgeImgReady("#article-up > div.article-content > div > div:nth-child(2) > img",function(e){console.log("ok了")})
+     * @returns {GetAsyncDomUtil}
      */
-    static judgeImgReady(ImgDom, fn, insure, time = 2000, isDev = true) {
-        new GetAsyncDomUtil(ImgDom, fn, insure, function (e) {
+    static judgeImgReady(ImgDom, fn, insure, time = 2000, isDev = false) {
+        return new GetAsyncDomUtil(ImgDom, fn, insure, function (e) {
             if (e instanceof HTMLImageElement && e.complete) {
                 return true
             }
@@ -745,9 +747,10 @@ class GetAsyncDomUtil extends UtilsBundle {
      * @param {Function} insure 
      * @param {number} time 
      * @param {boolean} isDev 
+     * @returns {GetAsyncDomUtil}
      */
-    static judgeBornChilds(target, fn, insure, time = 3000, isDev = true) {
-        new GetAsyncDomUtil(target, fn, insure, function (e) {
+    static judgeBornChilds(target, fn, insure, time = 3000, isDev = false) {
+        return new GetAsyncDomUtil(target, fn, insure, function (e) {
             if (e.hasChildNodes()) {
                 return true
             }
@@ -763,11 +766,30 @@ class GetAsyncDomUtil extends UtilsBundle {
      * @param {function} insure 
      * @param {number} time 
      * @param {boolean} isDev 
+     * @returns {GetAsyncDomUtil}
      */
-    static getLoadingDomAttr(target, fn, attrName, insure, time = 3000, isDev = true) {
-        new GetAsyncDomUtil(target, fn, insure, function (e, f) {
+    static getLoadingDomAttr(target, fn, attrName, insure, time = 3000, isDev = false) {
+        return new GetAsyncDomUtil(target, fn, insure, function (e, f) {
             return Array.isArray(f) ? f[1] == e.getAttribute(f[0]) : e.getAttribute(f);
         }, time, true, 30000, isDev, null, attrName).probe();
+    }
+
+    /**
+     * 等待评论区加载后运行callback
+     * @param {function|function[]} callbacks 
+     * @returns {GetAsyncDomUtil}
+     */
+    static commentAreaLoading(callbacks) {
+        return GetAsyncDomUtil.getAsyncDomClassic(".ac-comment-list", () => {
+            if (Array.isArray(callbacks)) {
+                let results = [];
+                callbacks.forEach(e => {
+                    result.push(e());
+                });
+                return results;
+            }
+            return callbacks();
+        }, 2000, false)
     }
 
 }
@@ -1183,6 +1205,94 @@ class ToolBox extends UtilsBundle {
         }
     }
 
+    static thisBrowser() {
+        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        var isOpera = userAgent.indexOf("Opera") > -1;
+        if (isOpera) {
+            return "Opera";
+        } //判断是否Opera浏览器
+        if (userAgent.indexOf("Firefox") > -1) {
+            return "FF";
+        } //判断是否Firefox浏览器
+        if (userAgent.indexOf("Chrome") > -1) {
+            return "Chrome";
+        }
+        if (userAgent.indexOf("Safari") > -1) {
+            return "Safari";
+        } //判断是否Safari浏览器
+        if (
+            userAgent.indexOf("compatible") > -1 &&
+            userAgent.indexOf("MSIE") > -1 &&
+            !isOpera
+        ) {
+            return "IE";
+        } //判断是否IE浏览器      
+    }
+
+    /**
+     * 添加一层遮罩
+     * @param {HTMLElement} obj 
+     * @param {string} styleText 
+     * @param {string} divName 
+     * @elementID divMask
+     */
+    static DOMElementMask(obj, styleText = "", divName = "") {
+        if (!styleText) {
+            styleText = `position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; background: #fff; opacity: 0; filter: alpha(opacity=0);z-index:0;`
+        }
+        var hoverdiv = `<div id="${divName}" class="divMask" style="${styleText}"></div>`;
+        $(obj).wrap('<div class="position:relative;"></div>');
+        $(obj).before(hoverdiv);
+        $(obj).data("mask", true);
+    }
+
+    /**
+     * 判断用户是否登录
+     * @param {"video"|"article"} dept 
+     * @param {"ui"|"cookies"} evidence 
+     * @returns {boolean}
+     */
+    static isLogin(dept = "video", evidence = "cookies") {
+        if (evidence == "cookies") {
+            return Boolean(CookiesUtils.getItem("ac_username"));
+        } else if (evidence == "ui") {
+            switch (dept) {
+                case "video":
+                    if ($("#ACPlayer > div > div.container-video > div > div.container-controls > div.control-bar-bottom > div.input-area > span.wrap-go2login").is(":hidden")) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                case "article":
+                    let isLogined = false;
+                    try {
+                        isLogined = document.querySelector("#header-guide > li.guide-item.guide-user > a").childElementCount == 0;
+                    } catch (error) {
+                        isLogined = Boolean(CookiesUtils.getItem("ac_username")) ? true : false;
+                    }
+                    return isLogined;
+            }
+        }
+    }
+
+    static utilAsync(func) {
+        return function (...args) {
+            func.apply(this, args);
+        };
+    }
+
+    static curry(func) {
+        return function curried(...args) {
+            if (args.length >= func.length) {
+                return func.apply(this, args);
+            } else {
+                return function (...args2) {
+                    return curried.apply(this, args.concat(args2));
+                }
+            }
+        };
+    }
+
 }
 
 /**
@@ -1245,7 +1355,7 @@ class MessageSwitch extends UtilsBundle {
     /**
      * 格式化参数对象
      * @param {object} sourceParam 
-     * @returns {MessageSwitchCommonPayload}
+     * @returns {MessageSwitchStructs.CommonPayload}
      */
     paramParse(sourceParam) {
         if (!!!sourceParam?.target) {
@@ -1269,7 +1379,7 @@ class MessageSwitch extends UtilsBundle {
 
     /**
      * 发送一次消息
-     * @param {MessageSwitchCommonPayload} e
+     * @param {MessageSwitchStructs.CommonPayload} e
      * @param {Function} callback
      * @param {EventInit} injectMsgSetting
      */
@@ -1310,7 +1420,7 @@ class MessageSwitch extends UtilsBundle {
     /**
      * 发送长连接的消息
      * @param {"fg"|"bg"|"inject"|"iframe"} hostType 
-     * @param {MessageSwitchDedicatedLinkPayload} payload {source:string,target:string;InvkSetting: {type:"function"|"printMsg"|"subMod"|"method"|"echo";receipt:boolean;responseRequire:boolean;asyncWarp:boolean;tabId:number|Array|undefined;};params:{};}
+     * @param {MessageSwitchStructs.DedicatedLinkPayload} payload {source:string,target:string;InvkSetting: {type:"function"|"printMsg"|"subMod"|"method"|"echo";receipt:boolean;responseRequire:boolean;asyncWarp:boolean;tabId:number|Array|undefined;};params:{};}
      */
     connectMessage(hostType = 'fg', payload = {}, tabId = "") {
         switch (hostType) {
@@ -1336,7 +1446,7 @@ class MessageSwitch extends UtilsBundle {
 
     /**
      * 前台消息处理机
-     * @param {MessageSwitchCommonPayload} request 
+     * @param {MessageSwitchStructs.CommonPayload} request 
      * @param {MessageSender} sender 
      * @param {Function} callback 
      * @returns 
@@ -1407,7 +1517,7 @@ class MessageSwitch extends UtilsBundle {
     /**
      * 前台处理Inject和Fg双向的消息
      * @param {MessageSwitch} _this
-     * @param {MessageSwitchFgToInjectPayload} request 
+     * @param {MessageSwitchStructs.FgToInjectPayload} request 
      * @returns 
      */
     FrontendMsgEventsHandler(_this, request) {
@@ -1475,7 +1585,7 @@ class MessageSwitch extends UtilsBundle {
 
     /**
      * 前台与FgPopup通信处理
-     * @param {MessageSwitchWindowMsgRespnse} e 
+     * @param {MessageSwitchStructs.WindowMsgRespnse} e 
      */
     FrontendIframeMsgHandler(e) {
         if (!e.data || e.data.to != "AcFunHelper") {
@@ -1567,7 +1677,7 @@ class MessageSwitch extends UtilsBundle {
 
             const { source = "", target = "", InvkSetting = {}, params = {} } = msg.payload;
             /**
-             * @type {MessageSwitchDedicatedLinkResponse}
+             * @type {MessageSwitchStructs.DedicatedLinkResponse}
              */
             let response = {};
             _this.eventId++;
@@ -1659,7 +1769,7 @@ class MessageSwitch extends UtilsBundle {
 
     /**
      * 后台消息处理机
-     * @param {MessageSwitchCommonPayload} request 
+     * @param {MessageSwitchStructs.CommonPayload} request 
      * @param {MessageSender} sender 
      * @param {Function} callback 
      * @returns 
@@ -1750,7 +1860,7 @@ class MessageSwitch extends UtilsBundle {
 
     /**
      * Bg处理Sandbox消息
-     * @param {MessageSwitchWindowMsgRespnse} e 
+     * @param {MessageSwitchStructs.WindowMsgRespnse} e 
      */
     SandboxMsgHandler(e) {
         if (e.data.to != "background") {
@@ -1805,7 +1915,7 @@ class MessageSwitch extends UtilsBundle {
 
     /**
      * Sandbox消息处理
-     * @param {MessageSwitchWindowMsgRespnse} e 
+     * @param {MessageSwitchStructs.WindowMsgRespnse} e 
      */
     UnsafeCallHandler(e) {
         if (e.data.to != "sandbox") {
@@ -1844,7 +1954,7 @@ class MessageSwitch extends UtilsBundle {
 
     /**
      * SandboxAgent消息处理
-     * @param {MessageSwitchWindowMsgRespnse} e 
+     * @param {MessageSwitchStructs.WindowMsgRespnse} e 
      * @example let unsafe = new SandboxAgent(document.getElementById('sandbox').contentWindow);unsafe.createTask({ target: "console", InvkSetting: { withCallback: true, callbackId: "test", type: "function" }, params: "2333......" },function(e){console.log(e)})
      */
     SandboxComAgent(e) {
@@ -1856,7 +1966,7 @@ class MessageSwitch extends UtilsBundle {
     /**
      * 发送一次消息 - 静态
      * @param {"fg"|"bg"|"inject"|"iframe"} hostType
-     * @param {MessageSwitchCommonPayload} payload { target: string; InvkSetting: { receipt: boolean; responseRequire: boolean; asyncWarp: boolean; tabId: number; }; params: {}; }
+     * @param {MessageSwitchStructs.CommonPayload} payload { target: string; InvkSetting: { receipt: boolean; responseRequire: boolean; asyncWarp: boolean; tabId: number; }; params: {}; }
      */
     static sendMessage(hostType = 'fg', payload = {}, callback) {
         let inst = new MessageSwitch(hostType);
@@ -1866,7 +1976,7 @@ class MessageSwitch extends UtilsBundle {
     /**
      * Fg发送消息给Inject
      * @param {HTMLElement} hostElem
-     * @param {MessageSwitchCommonPayload} payload 
+     * @param {MessageSwitchStructs.CommonPayload} payload 
      * @example MessageSwitch.sendEventMsgToInject(window,{target:"notice",source:"console",InvkSetting:{type:"function"},params:{title:"233",msg:"莫老板今天出门儿"}})
      * @alias sendMsgFromSubmodToFg()
      */
@@ -1877,7 +1987,7 @@ class MessageSwitch extends UtilsBundle {
 
     /**
      * 后台向所有前台广播消息
-     * @param {MessageSwitchCommonPayload} payload 
+     * @param {MessageSwitchStructs.CommonPayload} payload 
      * @param {Function} callback
      */
     static bgBroadcastToFg(payload, callback) {
@@ -1918,10 +2028,10 @@ class MessageSwitch extends UtilsBundle {
 
 }
 
-class AcFunHelper extends UtilsBundle {
+class AcFunHelperHelper extends UtilsBundle {
     constructor(reloadMethod) {
         super();
-        this.utilsList.push(AcFunHelper);
+        this.utilsList.push(AcFunHelperHelper);
 
         this.reloadMethod = reloadMethod ?? 0;
     }
@@ -1944,13 +2054,13 @@ class AcFunHelper extends UtilsBundle {
 
     static reloadFrontendInsts() {
         chrome.tabs.query({}, (tabs) => {
-            AcFunHelper.execFgReload(tabs);
+            AcFunHelperHelper.execFgReload(tabs);
         });
     }
 
     static reloadActiveFrontend() {
         chrome.tabs.query({ active: true, lastFocusedWindow: false }, tabs => {
-            AcFunHelper.execFgReload(tabs);
+            AcFunHelperHelper.execFgReload(tabs);
         });
     }
 
@@ -2009,7 +2119,7 @@ class AcFunHelper extends UtilsBundle {
                 if (!lastTimestamp || (lastTimestamp === timestamp)) {
                     setTimeout(() => watchChanges(dir, timestamp), 1000);
                 } else {
-                    AcFunHelper.reload();
+                    AcFunHelperHelper.reload();
                 }
             })
         }
@@ -2017,10 +2127,21 @@ class AcFunHelper extends UtilsBundle {
         chrome.management.getSelf(self => {
             if (self.installType === 'development') {
                 chrome.runtime.getPackageDirectoryEntry(dir => watchChanges(dir));
-                this.reloadMethod == 1 && AcFunHelper.reloadActiveFrontend();
-                this.reloadMethod == 2 && AcFunHelper.reloadFrontendInsts();
+                this.reloadMethod == 1 && AcFunHelperHelper.reloadActiveFrontend();
+                this.reloadMethod == 2 && AcFunHelperHelper.reloadFrontendInsts();
             };
         })
+    }
+
+    static getBackendInst() {
+        return chrome.extension.getBackgroundPage().AcFunHelperBackend;
+    }
+
+    static modLoadTrace(modLoadCall) {
+        const startTime = performance.now();
+        const result = modLoadCall();
+        const endTime = performance.now();
+        return { result: result, loadTime: endTime - startTime }
     }
 
 }
@@ -2582,6 +2703,134 @@ class PlayerAction extends UtilsBundle {
             $(".send-btn.enable").trigger("click");
         }
     }
+}
+/**
+ * 评论区遍历操作
+ * @description 1.遍历评论区评论，并进行操作 newInstant->add->start 2.遍历评论区并添加操作菜单内容 newInstant->menuAdd->start
+ */
+class CommentAreaIterator extends UtilsBundle {
+    constructor() {
+        super();
+        this.utilsList.push(CommentAreaIterator);
+
+        /**@type {InnerDefined.CommentAreaIterator.Registry} */
+        this.registry = {
+            _sys: [],
+
+        };
+        /**@type {InnerDefined.CommentAreaIterator.MenuRegistry} */
+        this.menuCallback = {
+            _sys: [],
+
+        }
+    }
+
+    /**
+     * 添加selector对应的回调
+     * @param {string} subSelector 
+     * @param {function} callback 
+     * @returns {boolean}
+     */
+    add(subSelector, callback) {
+        if (this.registry._sys.includes(subSelector)) {
+            return false;
+        }
+        this.registry._sys.push(subSelector);
+        this.registry[subSelector] = callback;
+        return true;
+    }
+
+    /**
+     * 执行遍历
+     * @returns 
+     */
+    start() {
+        return GetAsyncDomUtil.commentAreaLoading(() => {
+            const childrens = document.querySelector(".ac-comment-root-list").children;
+            for (let e of childrens) {
+                this.registry._sys.forEach(callName => {
+                    callName != "_sys" && this.registry[callName](e);
+                })
+                this.menuCallback._sys.forEach(() => {
+                    this.menuExec(e);
+                })
+            }
+        });
+    }
+
+    /**
+     * 添加菜单内容
+     * @param {string} menuItemName 
+     * @param {string} menuItemDisplay 
+     * @param {function} callback 
+     * @returns {boolean}
+     */
+    menuAdd(menuItemName, menuItemDisplay, callback) {
+        if (this.menuCallback._sys.includes(menuItemName)) {
+            return false;
+        }
+        this.menuCallback._sys.push(menuItemName);
+        this.menuCallback[menuItemName] = {
+            callback: callback,
+            displayName: menuItemDisplay
+        }
+        return true;
+    }
+
+    /**
+     * 在遍历过程中添加菜单
+     * @param {HTMLElement} commentElem 
+     */
+    menuExec(commentElem) {
+        if (this.menuCallback._sys) {
+            for (let menuItemData in this.menuCallback) {
+                if (menuItemData == "_sys") {
+                    continue;
+                }
+                const newItem = document.createElement("span");
+                newItem.className = menuItemData;
+                newItem.innerText = this.menuCallback[menuItemData].displayName;
+                commentElem.querySelector(".area-comm-more").appendChild(newItem);
+                commentElem.querySelector(".area-comm-more").querySelector("." + menuItemData).addEventListener("click", this.menuCallback[menuItemData].callback);
+            }
+        }
+    }
+
+    /**
+     * 获取对象中的信息
+     * @param {HTMLElement} commentItemElem
+     * @param {"username"|"uid"|"commentid"|"index"|"userimg"|"userimgWidget"|"time"|"content"} info
+     */
+    static reference(commentItemElem, info) {
+        switch (info) {
+            case "commentid":
+                const cid = commentItemElem.children[0].dataset["commentid"];
+                return cid ? Number(cid) : false;
+            case "index":
+                const index = commentItemElem.children[0].querySelector(".index-comment").innerText.replace("#", "");
+                return index ? Number(index) : false;
+            case "uid":
+                const uid = commentItemElem.children[0].children[0].children[1].querySelector("a.name").innerText;
+                return uid ? Number(uid) : false;
+            case "username":
+                return commentItemElem.children[0].children[0].children[1].querySelector("a.name").dataset["userid"];
+            case "userimgWidget":
+                return commentItemElem.children[0].querySelectorAll("img")[1].src;
+            case "userimg":
+                return commentItemElem.children[0].querySelectorAll("img")[0].src;
+            case "time":
+                return commentItemElem.children[0].querySelector(".time_times").innerText;
+            case "like":
+                return commentItemElem.children[0].querySelector(".area-comment-like").innerText.replace("赞", "");
+            case "device":
+                return commentItemElem.children[0].querySelector(".deviceModel").innerText;
+            case "content":
+                return commentItemElem.children[0].querySelector(".area-comment-des").innerText;
+            default:
+                break;
+        }
+    }
+
 }
 
 // let x = new WebStorageUtil("session", 3600000)
