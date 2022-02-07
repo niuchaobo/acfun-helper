@@ -121,6 +121,7 @@ const REG = {
   liveIndex: new RegExp("https://live.acfun.cn"),//直播主页
   userHome: new RegExp("http(s)?://www.acfun.cn/u/(\\d+)"),//用户中心
   userCenter: {
+    index: new RegExp("http(s)?://www.acfun.cn/member/"),
     following: new RegExp("http(s)?://www.acfun.cn/member/feeds/following"),
   },
   partIndex: new RegExp("/v/list"),//分区主页

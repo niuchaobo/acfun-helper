@@ -60,27 +60,21 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	 */
 	addStyle() {
 		let str =
-			".comment-mark-parent{bottom: -80px!important;}" +
-			"#mark-div{top:50%;left:50%;display:none;position:fixed;z-index:999999}" +
-			"span.simple {background-color: #d69acc !important;}" +
-			"span.pos {display:inline;font-size: 0.9em;margin: 5px;line-height: 18px;padding: 0px 4px;color: white;border-radius: 14px;}" +
-			".ext-filter-up{display:inline-block;vertical-align:middle;width:30px;height:18px;font-size:13px;line-height:18px;color:#4a8eff;cursor:pointer;margin-left:5px;}" +
-			"span.pos.up {background-color: #66ccff !important;}" +
-			//staff Tag
-			"span.pos.staff {background-color: #c056ff !important;}" +
-			"p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
 			//<a>标签柔和动画
-			"a {transition: color .2s ease, background-color .2s ease;}" +
+			"a {transition: color .2s ease, background-color .2s ease;}\n" +
 			//AcFun助手-前台Popup按钮样式
 			"#acfun-helper-div { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; box-shadow: 0px 0px 5px #949494; border-radius: 5px 0px 0px 5px; right: -10px !important; transition: all .2s ease; }" +
 			"#acfun-helper-div:hover { transition: all .2s ease; right: 0px !important; }";
+		str += this.pageBeautify.globalLiteAnimation();
 		createElementStyle(str, document.head, "AcFunHelper_Frontend");
+		this.ce.onLoad();
 	}
 
 	async loading() {
 		this.runtime.options = await optionsLoad();
 		this.options = this.runtime.options;
 		this.dataset = this.runtime.dataset;
+		this.dataset.core.browserType = ToolBox.thisBrowser();
 
 		if (!this.options.enabled || !this.options.permission) {
 			return
@@ -311,7 +305,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.LiveUserFocus && this.livePageBeautify.followMe();
 			this.options.liveMediaSession && this.live.liveMediaSession(href);
 			//直播画中画模式
-			this.livePageBeautify.callPicktureInPictureModeForLive()
+			this.runtime.dataset.core.browserType == "Chrome" && this.livePageBeautify.callPicktureInPictureModeForLive();
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit("live");
 			this.options.liveVolumeMild && this.videoSetting.liveVolumeMild();
 			this.options.wheelToChangeVolume && this.videoSetting.wheelToChangeVolume(false);
@@ -334,8 +328,9 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			})
 			return
 		}
-		if (REG.userCenter.following.test(href)) {
+		if (REG.userCenter.index.test(href)) {
 			this.options.userBatchManage && this.pageBeautify.userBatchManage();
+			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("myFav");
 		}
 	}
 
