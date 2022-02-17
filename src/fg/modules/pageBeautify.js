@@ -257,7 +257,47 @@ class PageBeautify extends AcFunHelperFgFrame {
           font-size: 15px;
         }
         
-        `);
+        `, document.head, "AcFunHelper_personBeautify");
+  }
+
+  globalLiteAnimation() {
+    //动画，加上ach前缀做区分
+    return `\n
+    @keyframes achfade-in {
+      0% {opacity: 0;}
+      40% {opacity: 0;}
+      100% {opacity: 1;}
+    }
+    @keyframes achfadeInDown {
+      0% {
+        -webkit-transform: translate3d(0, -20%, 0);
+        transform: translate3d(0, -20%, 0);opacity: 0;
+      }
+      100% {
+        -webkit-transform: none;
+        transform: none;opacity: 1;
+      }
+    }
+    @keyframes achbreathe {
+      from {
+        box-shadow: inset 0 0 2px rgba(255, 255, 255, 0);
+      } to {
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+    }
+    @keyframes achlightOverAndOver {
+      from {
+        box-shadow: 0px 0px 4px #949494;
+      } to {
+        box-shadow: 0px 0px 16px #949494;
+      }
+    }
+    @keyframes achbreath-border {
+      0% {box-shadow: 0 0 0 0 rgba(255, 255, 255, .5);}
+      100% {box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);}
+    }
+    \n
+    `
   }
 
   indexBeautify(opt, shadowSw = false, searchBox = true) {
@@ -273,7 +313,55 @@ class PageBeautify extends AcFunHelperFgFrame {
     searchBox
       ? (cssStr += `.search-box input,[data-c-w-header] .search-box .form input,[data-c-w-header] .search-box .form input{border: none;background: 0 0;border-bottom: 1px solid;color: black;border-radius: 0px!important;} .search-box .search-btn{background: ##ff4b4b70;border-radius: 0px;}`)
       : "";
-    createElementStyle(cssStr);
+    cssStr += `
+      li.guide-item.guide-msg:hover > div,
+      li.guide-item.guide-feed:hover > div,
+      li.guide-item.guide-cretive:hover > div,
+      li.guide-item.guide-upload:hover > div,
+      li.download-app:hover,
+      li.guide-item.guide-user:hover > div,
+      li.guide-item.guide-history:hover > div {
+          animation: achfade-in;
+          animation-duration: 0.5s;
+          -webkit-animation: achfade-in .4s;
+      }
+      div.second-container,
+      div.header-sub-nav {
+          animation: achfadeInDown;
+          animation-duration: 0.3s;
+          -webkit-animation: achfadeInDown .3s;
+      }
+      .top-nav .first-container .first-item .second-container ul {
+          background-color: #fff;
+          box-shadow: 0 3px 3px rgba(0, 0, 0, .3);
+      }
+      .top-nav .first-container .first-item .second-container {
+          background-color: #fff0;
+          box-shadow: none;
+          padding-bottom: 5px;
+      }
+      .second-link {
+          transition: all .2s ease;
+      }
+      .second-link:hover {
+          border-bottom: 2px solid #fd4c5d;
+          transition: all .1s ease;
+      }`
+    /*顶栏二级导航，取消最后一个元素的外边距*/
+    cssStr += `
+      #pagelet_navigation > div > ul > li > div > ul > li:last-child {
+          margin: 0px;
+      }`
+    /*Logo*/
+    cssStr += `
+      #header .nav-entrance-wrap a:hover,
+      .logo:hover {
+          animation: achbreath-border;
+          animation-duration: 0.5s;
+          -webkit-animation: achbreath-border .4s ease-in-out;
+      }
+      `
+    createElementStyle(cssStr, document.head, "AcFunHelper_indexBeautify");
   }
 
   simplifiyIndex(ifPartIndex = false) {
@@ -292,7 +380,7 @@ class PageBeautify extends AcFunHelperFgFrame {
 			display:none
 		}
 		`;
-    createElementStyle(cssStr, document.head, "simplifiyPartIndex");
+    createElementStyle(cssStr, document.head, "AcFunHelper_simplifyPartIndex");
   }
 
   userCenterBeautify() {
@@ -335,7 +423,7 @@ class PageBeautify extends AcFunHelperFgFrame {
 		
 		.ac-space-video .video .icon-play, .ac-space-video .video .mask{
 			transition: all .2s ease-in-out;
-		}`, document.head, "simplifiyPartIndex");
+		}`, document.head, "AcFunHelper_userCenterBeautify");
   }
 
   widenUCVideoList() {
@@ -358,7 +446,7 @@ class PageBeautify extends AcFunHelperFgFrame {
 			line-height: 100px;
       align-items:center;
 		}
-		`, document.head, "widenUCVideoList");
+		`, document.head, "AcFunHelper_widenUCVideoList");
   }
 
   simplifiyPlayerRecm() {
@@ -431,10 +519,13 @@ class PageBeautify extends AcFunHelperFgFrame {
 
   /**
    * 页面快捷键翻页绑定
-   * @param {*} mode 支持的页面："uc" 用户展示中心 "depList" 分区视频列表、文章
+   * @param {"uc"|"depList"|"myFav"} mode 支持的页面："uc" 用户展示中心 "depList" 分区视频列表、文章 "myFav" 个人中心收藏
    */
   pageTransKeyBind(mode) {
     switch (mode) {
+      case "myFav":
+        UIReactor.ucenterAreaNotice("AcFun助手：我们现在可以使用Shift+PageUp/PageDown来翻页啦！", 5500);
+        break;
       case "uc":
         LeftBottomNotif(
           "我们现在可以使用Shift+PageUp/PageDown来翻页啦！",
@@ -465,12 +556,33 @@ class PageBeautify extends AcFunHelperFgFrame {
             this.pageDown4depList();
           }
           break;
+        case "myFav":
+          if (shiftKey && keyCode == 33) {
+            this.pageUp4Myfav();
+          } else if (shiftKey && keyCode == 34) {
+            this.pageDown4Myfav();
+          }
+          break;
 
         default:
           break;
       }
       // e.preventDefault();
     };
+  }
+
+  pageUp4Myfav() {
+    const targetElem = document.querySelector(".ac-pager-prev");
+    if (targetElem.ariaDisabled != 'true') {
+      document.querySelector(".ac-pager-prev").click();
+    }
+  }
+
+  pageDown4Myfav() {
+    const targetElem = document.querySelector(".ac-pager-next");
+    if (targetElem.ariaDisabled != 'true') {
+      document.querySelector(".ac-pager-next").click();
+    }
   }
 
   pageUp4depList() {

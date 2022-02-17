@@ -140,7 +140,7 @@ class LivePageButfy extends AcFunHelperFgFrame {
     //屏蔽按钮以及样式
     simplifyDanmu() {
         let noticeIcon = this.noticeIcon;
-        $('.live-feed .face-text').append(DOMPurify.sanitize(`<i class="notice_icon" id="noticeBtn" title="弹幕类型屏蔽">${noticeIcon}</i>`));
+        $('.live-feed .face-text').append(DOMPurify.sanitize(`<i class="notice_icon" id="noticeBtn" title="弹幕类型屏蔽，双击仅查看评论">${noticeIcon}</i>`));
         $('#app').append(DOMPurify.sanitize(`<div class="hide_popup"><ul style="width:120px" title="双击项目仅查看此类型弹幕">
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="container-live-anim">屏蔽礼物气泡</input></li>
         <li style="height: 35px;display: flex; align-items: center;"><input type="checkbox" data-type="gift">屏蔽礼物</input></li>
@@ -159,7 +159,7 @@ class LivePageButfy extends AcFunHelperFgFrame {
         $(".left").on('mouseenter', () => {
             $('.hide_popup').hide()
         })
-        $('#noticeBtn').click((e) => {
+        $('#noticeBtn').on("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
             $('.hide_popup').css('display') === "none" ?
@@ -181,6 +181,12 @@ class LivePageButfy extends AcFunHelperFgFrame {
                         listElem[i].children[0].click();
                     }
                 }
+            }
+        });
+        document.querySelector("#noticeBtn").addEventListener("dblclick", (e) => {
+            const listElem = document.querySelector(".hide_popup").children[0].children;
+            for (let i = 0; i < listElem.length - 1; i++) {
+                listElem[i].children[0].click();
             }
         })
         this.addBanStyle()
@@ -224,11 +230,10 @@ class LivePageButfy extends AcFunHelperFgFrame {
      * 遍历直播站列表修改标号
      */
     listCountTag() {
-        this.devMode && console.log("NumberThis");
         let listCount = 0;
         document.querySelectorAll("div.live-status > div.live-status-desc").forEach((e) => {
             listCount++;
-            e.innerHTML = `第${listCount}`;
+            e.innerText = `第${listCount}`;
         })
     }
 
@@ -282,10 +287,6 @@ class LivePageButfy extends AcFunHelperFgFrame {
 
     //直播站增加画中画模式
     callPicktureInPictureModeForLive() {
-        const isChrome = navigator.userAgent.indexOf("Chrome") === -1;
-        if (isChrome) {
-            return
-        }
         let cPIP_Livediv = this.cPIP_Livediv;
         let cPIP_span = this.cPIP_span;
         let html = cPIP_Livediv + cPIP_span;

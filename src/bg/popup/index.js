@@ -13,7 +13,8 @@ import {
 	titleToHome,
 	clickToTop,
 	hideToTopButton,
-	viewHistory,
+	liveInfo,
+	fetchDougaInfo,
 	WatchLaterFpopup,
 	StopWatchLaterFpopup,
 	PushListDougaMode,
@@ -62,8 +63,9 @@ async function onReady() {
 			case "tabSpecial":
 				if (statusDic.tabSpecial) { return };
 				$("#UserInfoActionBtn").click(userInfoFetch);
+				$("#dougaInfoAcidbtn").on("click", fetchDougaInfo);
 				document.querySelector("#topicSearchBtn").addEventListener("click", topicSearch);
-				$("#ViewHistoryAction").click(viewHistory);
+				$("#liveRoomInfoBtn").on("click",liveInfo);
 				$("#WatchLaterFpopup").click(WatchLaterFpopup);
 				$("#StopWatchLaterFpopup").click(StopWatchLaterFpopup);
 				$("#attentionTabsFg").click(attentionTabs);

@@ -320,6 +320,22 @@ const acfunApis = {
         getCoinBalance: async () => {
             return JSON.parse(await fetchResult(acfunApis.users.coinBalance));
         },
+        verifiedType: {
+            types: {
+                1: ["AcFun管理员认证", "monkey-verified"],
+                2: ["官方认证", "official-verified"],
+                3: ["AVI联盟", "avi-verified"],
+                4: ["高弹达人标识", "advanced-danmaku-verified"],
+                5: ["阿普学院", "up-college-verified"],
+            },
+            /**
+             * @param {number} id ['AcFun管理员认证', '官方认证', 'AVI联盟', '高弹达人标识', '阿普学院']
+             * @returns {string}
+             */
+            getQueryClassName: (id) => {
+                return "." + acfunApis.users.verifiedType.types[id][1] + "-large.verified-icon-large";
+            }
+        }
     },
     moment: {
         friendMoment: `https://www.acfun.cn/rest/pc-direct/feed/followFeedV2?useWebp=true&pcursor=0&count=5&resourceTypes=0`,

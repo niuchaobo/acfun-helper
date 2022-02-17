@@ -2074,8 +2074,8 @@ class AcFunHelperHelper extends UtilsBundle {
         });
     }
 
-    static getThisTabId() {
-        return MessageSwitch.getTabId().id;
+    static async getThisTabId() {
+        return (await MessageSwitch.getTabId()).id;
     }
 
     /**
@@ -2527,10 +2527,12 @@ class ExtOptions extends UtilsBundle {
         return new ExtOptions('local')._quotaSpace();
     }
 
-    _usedSpace(key = null) {
+    async _usedSpace(key = null) {
         //if key == null,count total space usage.
         return new Promise((resolve, reject) => {
-            chrome.storage[this.storageArea].getBytesInUse(key, resolve());
+            chrome.storage['local'].getBytesInUse(null, (e) => {
+                resolve(e)
+            });
         })
     }
 
@@ -2539,8 +2541,8 @@ class ExtOptions extends UtilsBundle {
      * @param {*} key 
      * @returns 
      */
-    static usedSpace(key = null) {
-        return new ExtOptions('local')._usedSpace(key);
+    static async usedSpace(key = null) {
+        return await new ExtOptions('local')._usedSpace(key);
     }
 
     /**
