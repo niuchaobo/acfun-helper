@@ -46,7 +46,7 @@ export const userApis = {
         url: `https://api.sizzwoo.cc/rest/up/snapshot/latest?uid=`,
         /**@returns {SizzwooApis.UserDetail} */
         get: async (uid) => {
-            return JSON.parse(await fetchResult(userApis.latestData.url + uid));
+            return JSON.parse(await fetchResult(userApis.detail.url + uid));
         }
     },
     analysis: {
