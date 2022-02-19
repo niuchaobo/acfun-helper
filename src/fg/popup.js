@@ -74,19 +74,28 @@ class Popup {
         }
     }
 
+    /**
+     * @param {APIs.AcFunPageInfo} pageInfo 
+     * @param {"video"|"live"} type 
+     * @param {0|1|2} isUp 
+     */
     renderPopup(pageInfo, type, isUp) {
         let content = '';
         if (type == 'video') {
-            let videoInfo = pageInfo.currentVideoInfo;
-            // console.log(videoInfo)
-            let title = pageInfo.title;
-            let tmp = videoInfo.ksPlayJson;
-            let tmpJson = JSON.parse(tmp);
-            let infos = tmpJson.adaptationSet[0].representation;
-            let btnIndex = 0;
+            const videoInfo = pageInfo.currentVideoInfo;
+            const title = pageInfo.title;
+            /**@type {APIs.KsPlayJson} */
+            const tmpJson = JSON.parse(videoInfo.ksPlayJson);
+            const infos = tmpJson.adaptationSet[0].representation;
             if (infos == undefined) {
+                alert("[AcFun助手]：并没有检测到视频下载资源。")
                 return;
             }
+            let transcodeInfos = {};
+            pageInfo.currentVideoInfo.transcodeInfos.map(e => {
+                transcodeInfos[e.qualityType] = e.sizeInBytes;
+            });
+            let btnIndex = 0;
             content += `<div class="odh-headsection">
             <span class="odh-expression">弹幕资源</span>
             <span style="margin-left: 20px;color:#d69acc" id="danmaku-sources"></span></div>
@@ -97,22 +106,24 @@ class Popup {
             <span class="odh-expression">其他</span>
             <span style="margin-left: 20px;color:#d69acc" id="utils"></span></div>
             <div class="odh-definition">
-            <span id="playerTimeJumpUrlGen" class="pos playerTimeJumpUrlGen" style="cursor:pointer">复制跳转到此时间的连接</span>
+            <span id="playerTimeJumpUrlGen" class="pos playerTimeJumpUrlGen" style="cursor:pointer">复制跳转到此时间的链接</span>
             </div>
             <div class="odh-headsection">
                 <span class="odh-expression">视频资源</span>
             </div>`;
             for (const info of infos) {
-                let vedioUrl = info.url;
+                const videoUrl = info.url;
                 let id = btnIndex++;
                 let barId = id + "-bar";
                 let progressText = id + "-text";
-                let qualityLabel = info.qualityLabel;
+                const qualityLabel = info.qualityLabel;
+                /**@type {number} */
+                const sizeInMegaByte = (transcodeInfos[info.qualityType]) / 1e6;
                 content += `<div class="odh-definition">
                             <ul class="ec">
                                 <li class="ec">
-                                    <span id="{id}" data-id="${id}" data-quality="${qualityLabel}" data-title="${title}" data-url="${vedioUrl}" class="pos simple">下载${qualityLabel}视频</span>
-                                    <span class="addressCopySrc" style="background-color: #fd4c5c !important;cursor: pointer;color:white;border-radius:3px;font-size:0.9em; margin-right:5px; padding:2px 4px;" data-id="${id}" data-quality="${qualityLabel}" data-title="${title}" data-url="${vedioUrl}">复制${qualityLabel}地址</span>
+                                    <span id="{id}" data-id="${id}" data-quality="${info.qualityType}" data-title="${title}" data-url="${videoUrl}" title="${info.comment}; AvgBitrate:${info.avgBitrate}; MaxBitrate:${info.maxBitrate}; HDR:${info.hdrType ? "Yes" : "No"}" class="pos simple">下载${qualityLabel} (~${sizeInMegaByte.toFixed(1)}MB) </span>
+                                    <span class="addressCopySrc" style="background-color: #fd4c5c !important;cursor: pointer;color:white;border-radius:3px;font-size:0.9em; margin-right:5px; padding:2px 4px;" data-id="${id}" data-quality="${qualityLabel}" data-title="${title}" data-url="${videoUrl}">复制M3U8地址</span>
                                     <span id="${progressText}" class="ec_chn"></span>
                                 </li>
                             </ul>

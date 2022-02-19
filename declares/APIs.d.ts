@@ -99,6 +99,40 @@ declare namespace APIs {
     mkey: string;
     priority: string;
   }
+  interface KsPlayJson {
+    businessType: number;
+    hideAuto: boolean;
+    manualDefaultSelect: boolean;
+    mediaType: number;
+    stereoType: number;
+    version: string;
+    videoId: string;
+    adaptationSet: [
+      {
+        duration: number;
+        id: number;
+        representation: [
+          {
+            codecs: string;
+            comment: string;
+            frameRate: number;
+            hdrType: number;
+            height: number;
+            id: number;
+            m3u8Slice: string;
+            maxBitrate: number;
+            quality: number;
+            qualityLabel: string;
+            qualityType: string;
+            url: string;
+            width: number;
+            backupUrl: string[];
+            avgBitrate: number;
+          }
+        ];
+      }
+    ];
+  }
   namespace ContributionInfo {
     interface StaffInfos {
       result: string;

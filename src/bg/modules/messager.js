@@ -5,7 +5,7 @@ class MsgNotifs extends AcFunHelperBgFrame {
     constructor() {
         super();
         this.initMod();
-        this.browserType = myBrowser();
+        this.browserType = ToolBox.thisBrowser();
     }
 
     initMod() {
@@ -193,7 +193,7 @@ class MsgNotifs extends AcFunHelperBgFrame {
      */
     async followLiveNotifEx() {
         const sw = await getStorage("followLiveNotif").then(e => { return e.followLiveNotif });
-        if(!sw){
+        if (!sw) {
             return;
         }
         chrome.storage.local.get(['LocalUserId'], async (Uid) => {
@@ -368,8 +368,8 @@ class MsgNotifs extends AcFunHelperBgFrame {
             method: "GET", credentials: 'include', headers: { 'origin': "https://message.acfun.cn/" }
         }).then((res => { return res.text() }))
         raw = raw.replace("/*<!-- fetch-stream -->*/", "");
-        let result = JSON.parse(raw)['html'];
-        let instantDom = stringToDOM(result);
+        const result = JSON.parse(raw)['html'];
+        const instantDom = stringToDOM(result);
         for (let i = 0; i < num; i++) {
             let avt = instantDom[0].children[i].children[0].children[0].children[0].src;
             let uname = instantDom[0].children[i].children[1].children[0].children[0].innerText;
@@ -385,13 +385,14 @@ class MsgNotifs extends AcFunHelperBgFrame {
             method: "GET", credentials: 'include', headers: { 'origin': "https://message.acfun.cn/" }
         }).then((res => { return res.text() }))
         raw = raw.replace("/*<!-- fetch-stream -->*/", "");
-        let result = JSON.parse(raw)['html'];
-        let instantDom = stringToDOM(result);
+        const result = JSON.parse(raw)['html'];
+        const instantDom = stringToDOM(result);
         for (let i = 0; i < num; i++) {
-            let avt = instantDom[0].children[i].children[0].children[0].children[0].src;
-            let uname = instantDom[0].children[i].children[1].children[0].children[0].innerText.replace(/[\r\n]/g, "").trim();
-            let msg = instantDom[0].children[i].children[1].children[0].children[1].innerText.replace(/[\r\n]/g, "").trim();
-            let yourMsg = instantDom[0].children[i].children[1].children[1].children[0].children[0].innerText.replace(/[\r\n]/g, "").trim();
+            const elem = instantDom[0].children[i];
+            let avt = elem.children[0].children[0].children[0].src;
+            let uname = elem.children[1].children[0].children[0].innerText.replace(/[\r\n]/g, "").trim();
+            let msg = elem.children[1].children[0].children[1].innerText.replace(/[\r\n]/g, "").trim();
+            let yourMsg = elem.children[1].children[1].children[0].children[0].innerText.replace(/[\r\n]/g, "").trim();
             this.createNotif("like", uname, msg + " " + yourMsg, avt);
         }
     }
@@ -401,10 +402,21 @@ class MsgNotifs extends AcFunHelperBgFrame {
             method: "GET", credentials: 'include', headers: { 'origin': "https://message.acfun.cn/" }
         }).then((res => { return res.text() }))
         raw = raw.replace("/*<!-- fetch-stream -->*/", "");
-        let result = JSON.parse(raw)['html'];
-        let instantDom = stringToDOM(result);
+        const result = JSON.parse(raw)['html'];
+        const instantDom = stringToDOM(result);
         for (let i = 0; i < num; i++) {
-            let msg = instantDom[0].children[i].children[0].innerText.replace(/[\r\n\t\s]/g, "").replace("，能在香蕉商城兑换哦", "").replace("，可在客户端我的钱包查看收益", "");
+            /**@type {HTMLElement} */
+            const elem = instantDom[0].children[i];
+            /**@type {string} */
+            let msg;
+            if (elem.className.includes("moment-gift")) {
+                //动态的香蕉
+                msg = elem.children[1].innerText;
+            } else {
+                //稿件、直播香蕉收益
+                msg = elem.children[0].innerText;
+            }
+            msg = msg.replace(/[\r\n\t]/g, "").replace("，能在香蕉商城兑换哦").replace("，能在香蕉商城兑换商品哦", "").replace("，可在客户端我的钱包查看收益", "").replace("前往动态", "");
             chrome.notifications.create(null, {
                 type: 'basic',
                 iconUrl: 'images/notice.png',

@@ -133,7 +133,7 @@ function OldUIHandler() {
         $("#" + id).siblings().attr('src', 'images/unselected.png');
     }
     chrome.storage.local.get(null, function (items) {
-        options = transOptions(items);
+        options = ExtOptions.transOptions(items);
         auto_throw = options['auto_throw'];
         to_attention = options['to_attention'];
         to_special = options['to_special'];
@@ -2524,7 +2524,7 @@ function globalConfigure() {
     let config_downloadObj = document.getElementById('configExport');
     config_downloadObj.addEventListener('click', function createDownload() {
         options_data = chrome.storage.local.get(null, function (items) {
-            var options_data = sanitizeOptions(items);
+            var options_data = ExtOptions.sanitizeOptions(items);
             var blob = new Blob([JSON.stringify(options_data)], { type: 'application/octet-stream' });
             var url = window.URL.createObjectURL(blob);
             var saveas = document.createElement('a');
@@ -2569,7 +2569,7 @@ function globalConfigure() {
         if (notice_this == 'Y') {
             chrome.storage.local.clear(function () {
                 //重置设置选项
-                let x = sanitizeOptions({});
+                let x = ExtOptions.sanitizeOptions({});
                 optionsSave(x);
                 afterReconfigure();
             });
@@ -2592,7 +2592,7 @@ function globalConfigure() {
                 x.innerText = DOMPurify.sanitize('[ AcFun-Uid : ' + Uid + ' ]');
                 chrome.storage.local.get(null, function (items) {
                     delete items["AcpushList1"]; delete items["Mkey"]; delete items["danmakuCache"]; delete items["AcMomentCircle1"]; delete items["AcLives1"];
-                    var options_data = JSON.stringify(sanitizeOptions(items));
+                    var options_data = JSON.stringify(ExtOptions.sanitizeOptions(items));
                     let uploadData = new FormData();
                     uploadData.append("options_data", `${options_data}`);
                     // fetch('http://localhost/api/v1/acfun-helper/options/upload', { method: "POST", credentials: 'include', body: uploadData })
@@ -2785,7 +2785,7 @@ function globalConfigure() {
 }
 
 function Final() {
-    if (myBrowser() == "Chrome") {
+    if (ToolBox.thisBrowser() == "Chrome") {
         document.querySelectorAll(".chromeOnly").forEach(function (e) {
             e.style.display = "block"
         })

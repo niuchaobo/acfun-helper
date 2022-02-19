@@ -4,7 +4,7 @@
 class Download extends AcFunHelperFgFrame{
     constructor() {
         super();
-        this.devMode = true;
+        this.devMode = false;
     }
 
     async downloadVideo(params) {

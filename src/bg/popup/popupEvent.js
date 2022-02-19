@@ -89,7 +89,7 @@ export async function liveInfo() {
 		uid=uid[0];
 	}
 
-	const szwApi = await import("../../fg/littleMods/libs/sizzwooApis.mjs");
+	const szwApi = await import("../../common/modulesLib/sizzwooApis.mjs");
 	const result = await szwApi.userApis.detail.get(uid);
 	const analysisApi = await szwApi.userApis.analysis.get(uid);
 	let raw_data = `

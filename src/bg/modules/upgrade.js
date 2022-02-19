@@ -28,7 +28,7 @@ class UpgradeAgent extends AcFunHelperBgFrame {
      * 检查是否是正确的日期
      */
     ifRightDay() {
-        let x = checkDay();
+        let x = new Date().getDay();
         if (this.checkConfigDay.indexOf(x) != -1) {
             console.log(`[LOG]Backend-Upgrade>rightDay: [${formatDate(new Date(), true)}] 是时候检查更新了。`);
             return true;

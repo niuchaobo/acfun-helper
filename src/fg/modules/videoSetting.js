@@ -102,10 +102,10 @@ class VideoSetting extends AcFunHelperFgFrame {
       $(".box-right>div").click((e) => {
         if (e.target.className === "btn-span setPictureInPictureMode") {
           if (!document.pictureInPictureElement) {
-            leftBottomTip("启动", "画中画模式");
+            PlayerUiReact.leftBottomTip("启动", "画中画模式");
             this.setPictureInPictureMode(true);
           } else {
-            leftBottomTip("关闭", "画中画模式");
+            PlayerUiReact.leftBottomTip("关闭", "画中画模式");
             this.setPictureInPictureMode(false);
           }
         } else {
@@ -251,42 +251,42 @@ class VideoSetting extends AcFunHelperFgFrame {
   }
   updateAbPlayFirst() {
     if (this.abPlayFlag === 1) {
-      leftBottomTip("请先", "停止");
+      PlayerUiReact.leftBottomTip("请先", "停止");
       return;
     }
     let firstTime = document.getElementsByTagName("video")[0].currentTime;
     if (this.abPlaySecond && firstTime >= this.abPlaySecond) {
-      leftBottomTip("A要在B之前", "---鲁迅");
+      PlayerUiReact.leftBottomTip("A要在B之前", "---鲁迅");
       return;
     }
     this.abPlayFirst = firstTime;
-    leftBottomTip(`标记点A :`, `${timeToMinute(this.abPlayFirst)}`);
+    PlayerUiReact.leftBottomTip(`标记点A :`, `${timeToMinute(this.abPlayFirst)}`);
     $(".abplay-panel>ul>.updateAbPlayFirst").text(
       `A : ${timeToMinute(this.abPlayFirst)}`
     );
     this.abPlaySecond &&
-      leftBottomTip(
+      PlayerUiReact.leftBottomTip(
         `区间为`,
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
   }
   updateAbPlaySecond() {
     if (this.abPlayFlag === 1) {
-      leftBottomTip("请先", "停止");
+      PlayerUiReact.leftBottomTip("请先", "停止");
       return;
     }
     let secondTime = document.getElementsByTagName("video")[0].currentTime;
     if (this.abPlayFirst && secondTime <= this.abPlayFirst) {
-      leftBottomTip("B要在A之后", "---鲁迅");
+      PlayerUiReact.leftBottomTip("B要在A之后", "---鲁迅");
       return;
     }
     this.abPlaySecond = secondTime;
-    leftBottomTip(`标记点B :`, `${timeToMinute(this.abPlaySecond)}`);
+    PlayerUiReact.leftBottomTip(`标记点B :`, `${timeToMinute(this.abPlaySecond)}`);
     $(".abplay-panel>ul>.updateAbPlaySecond").text(
       `B : ${timeToMinute(this.abPlaySecond)}`
     );
     this.abPlayFirst &&
-      leftBottomTip(
+      PlayerUiReact.leftBottomTip(
         `区间为`,
         `${timeToMinute(this.abPlayFirst)}至${timeToMinute(this.abPlaySecond)}`
       );
@@ -297,7 +297,7 @@ class VideoSetting extends AcFunHelperFgFrame {
     $(".abplay-panel>ul>.updateAbPlaySecond").text("标记点B");
     $(".abplay-panel>ul>.stopAbPlay").text("清除");
     if (this.abPlayFlag === 0) {
-      leftBottomTip("标记", "已清除");
+      PlayerUiReact.leftBottomTip("标记", "已清除");
       return;
     }
     if (this.abPlayFlag === 1) {
@@ -306,7 +306,7 @@ class VideoSetting extends AcFunHelperFgFrame {
         .getElementsByTagName("video")[0]
         .removeEventListener("timeupdate", this.abPlayMain.bind(this), false);
       $(".abplay-panel>ul>.abPlayHandler").text("开始");
-      leftBottomTip("标记已清除,AB回放已", "退出");
+      PlayerUiReact.leftBottomTip("标记已清除,AB回放已", "退出");
       return;
     }
   }
@@ -324,11 +324,11 @@ class VideoSetting extends AcFunHelperFgFrame {
   abPlayHandler() {
     let targetVideo = document.getElementsByTagName("video")[0];
     if (this.abPlayFirst === undefined || this.abPlaySecond === undefined) {
-      leftBottomTip("请先设置", "标记点");
+      PlayerUiReact.leftBottomTip("请先设置", "标记点");
       return;
     }
     if (this.abPlayFlag === 0) {
-      leftBottomTip("AB回放", "开启");
+      PlayerUiReact.leftBottomTip("AB回放", "开启");
       $(".abplay-panel>ul>.abPlayHandler").text("停止");
       $(".abplay-panel>ul>.stopAbPlay").text("清除&停止");
       targetVideo.paused && targetVideo.play();
@@ -355,7 +355,7 @@ class VideoSetting extends AcFunHelperFgFrame {
       targetVideo.pause();
       $(".abplay-panel>ul>.abPlayHandler").text("开始");
       this.abPlayFlag = 0;
-      leftBottomTip("AB回放", "停止");
+      PlayerUiReact.leftBottomTip("AB回放", "停止");
       return;
     }
   }
@@ -672,7 +672,7 @@ class VideoSetting extends AcFunHelperFgFrame {
         if (rate != null && rate != "") {
           if (reg.test(rate)) {
             gainNode.gain.value = rate;
-            leftBottomTip(`已经将音量改为原来的`, `${rate}倍。`);
+            PlayerUiReact.leftBottomTip(`已经将音量改为原来的`, `${rate}倍。`);
             document.querySelector(
               ".volume-panel-content"
             ).children[0].innerText = DOMPurify.sanitize(Number(this.audioOriginVolume) * rate);
@@ -697,7 +697,7 @@ class VideoSetting extends AcFunHelperFgFrame {
         e.target.dataset.bindAttr == "true"
       ) {
         gainNode.gain.value = 1;
-        leftBottomTip(`已经将音量还原为1倍。`);
+        PlayerUiReact.leftBottomTip(`已经将音量还原为1倍。`);
         document.querySelector(".audioVolumeGain").dataset.bindAttr = "false";
         document.querySelector(".volume-panel-content").children[0].innerText =
           DOMPurify.sanitize(this.audioOriginVolume);
