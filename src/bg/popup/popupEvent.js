@@ -333,8 +333,7 @@ export async function userInfoFetch() {
 				<tr>
 					<td>其他信息</td>
 					<td>
-					${x.profile.likeCount ? "<br>获赞数：" + x.profile.likeCount : ""}
-					${x.profile.isContractUp ? "<br>签约Up：" + (x.profile.isContractUp ? "Yes" : "No") : ""}
+					${x.profile.likeCount ? "获赞数：" + x.profile.likeCount : ""}
 					${x.profile.liveId ? "直播流id：" + x.profile.liveId : ""}
 					</td>
 				</tr>

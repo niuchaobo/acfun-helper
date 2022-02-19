@@ -73,8 +73,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	async loading() {
 		this.runtime.options = await optionsLoad();
 		this.options = this.runtime.options;
-		this.dataset = this.runtime.dataset;
-		this.dataset.core.browserType = ToolBox.thisBrowser();
+		this.runtime.dataset.core.browserType = ToolBox.thisBrowser();
 
 		if (!this.options.enabled || !this.options.permission) {
 			return
@@ -154,9 +153,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	}
 
 	onDomContentLoaded(e) {
-		// console.log("options",this.options);
-		//历史观看记录-本地获取
-		// this.authInfo.historyView();
 		let href = this.href;
 		//添加自定义样式
 		this.addStyle();
@@ -250,7 +246,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 				return;
 			}
 			let isUp = adjustVideoUp();
-			this.div.show(this.dataset.dougaInfo, this.options, 'video', isUp);
+			this.div.show(this.runtime.dataset.dougaInfo, this.options, 'video', isUp);
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			//自动投蕉
 			this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
@@ -275,7 +271,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			//快捷键评论发送
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
 			//MediaSession
-			this.options.videoMediaSession && this.videoSetting.videoMediaSession(this.dataset.dougaInfo);
+			this.options.videoMediaSession && this.videoSetting.videoMediaSession(this.runtime.dataset.dougaInfo);
 			//简单CC字幕
 			this.options.simpleCC && this.danmaku.simpleCC();
 			return
@@ -283,7 +279,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		//文章
 		if (REG.article.test(href)) {
 			let isUp = adjustArticleUp();
-			this.div.show(this.dataset.dougaInfo, this.options, 'article', isUp);
+			this.div.show(this.runtime.dataset.dougaInfo, this.options, 'article', isUp);
 			this.options.picDrag && this.reader.picDrag(this.options.picRotate);
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
@@ -301,7 +297,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		//直播
 		if (REG.live.test(href)) {
 			$(".open-app-confirm").hide();
-			this.div.show(this.dataset.dougaInfo, this.options, 'live', '');
+			this.div.show(this.runtime.dataset.dougaInfo, this.options, 'live', '');
 			this.options.LiveUserFocus && this.livePageBeautify.followMe();
 			this.options.liveMediaSession && this.live.liveMediaSession(href);
 			//直播画中画模式
@@ -351,7 +347,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			/**@type {MutationRecord} */
 			const mutations = e[0];
 			if (mutations.oldValue != null && mutations.attributeName == "src" && REG.videoPlayerSrc.test(mutations.oldValue)) {
-				console.log(mutations)
 				this.reattachFrontMods();
 			}
 		})
@@ -364,24 +359,35 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	reattachFrontMods() {
 		//切换了分P和投稿
 		this.href = window.location.href;
-		this.fetchPageInfo();
+		this.fetchPageInfo();		
+		this.div.reloadIframe(this.options, this.runtime.dataset.dougaInfo, "video", adjustVideoUp());
 		let isLogined = false;
-		if (ToolBox.isLogin("video")) {
+		if (ToolBox.isLogin("video", "cookies")) {
 			isLogined = true;
 		}
-		
-		if (this.videoSetting.mediaSessionJudgeChangeVideo()) {
-			//只切换了投稿
-			this.videoSetting.mediaSessionReAttach();
-			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
-			this.videoSetting.videoQuality(isLogined);
+
+		//切换不同分P
+		if (this.runtime.dataset?.vid != this.runtime.dataset.dougaInfo.currentVideoId) {
+			//切换投稿
+			if (this.runtime.dataset?.dougaId != this.runtime.dataset.dougaInfo.dougaId) {
+				setTimeout(() => {
+					this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
+				}, 908);
+				this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
+				this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
+				this.videoSetting.videoQuality(isLogined);
+			}
 		}
-		this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
-		this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
-		this.div.reloadIframe(this.options, this.runtime.dataset.dougaInfo, "video", adjustVideoUp());
+		this.videoSetting.mediaSessionReAttach();
+		this.runtime.dataset.vid = this.runtime.dataset.dougaInfo.currentVideoId;
+		this.runtime.dataset.dougaId = this.runtime.dataset.dougaInfo.dougaId;
 	}
 
 	fetchPageInfo() {
+		if (JSON.stringify(this.runtime.dataset.dougaInfo) == "{}") {
+			this.runtime.dataset.vid = -1;
+			this.runtime.dataset.dougaId = -1;
+		}
 		var div = document.createElement('div');
 		div.style.display = "none";
 		let uuid = uuidBuild();
@@ -389,10 +395,10 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		document.body.appendChild(div);
 		div.setAttribute('onclick', "document.getElementById('" + uuid + "').innerText=JSON.stringify(window.pageInfo)");
 		div.click();
-		this.dataset.dougaInfo = JSON.parse(document.getElementById(uuid).innerText);
-		this.dataset.sessionuuid = uuid;
+		this.runtime.dataset.dougaInfo = JSON.parse(document.getElementById(uuid).innerText);
+		this.runtime.dataset.sessionuuid = uuid;
 		document.body.removeChild(div);
-		let currentVideoInfo = this.dataset.dougaInfo.currentVideoInfo;
+		let currentVideoInfo = this.runtime.dataset.dougaInfo.currentVideoInfo;
 		if (currentVideoInfo == undefined || currentVideoInfo == "" || currentVideoInfo == null) {
 			return false;
 		}
@@ -425,7 +431,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	}
 	//下载弹幕
 	api_downloadDanmaku() {
-		this.download.downloadDanmaku(this.dataset.dougaInfo);
+		this.download.downloadDanmaku(this.runtime.dataset.dougaInfo);
 	}
 	api_playerTimeJumpUrlGenDiv() {
 		const timeText = document.querySelector(".time-label").children[0].innerText;
@@ -441,7 +447,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		}
 	}
 	api_assDanmaku() {
-		this.danmaku.sanitizeJsonDanmakuToAss(this.dataset.dougaInfo);
+		this.danmaku.sanitizeJsonDanmakuToAss(this.runtime.dataset.dougaInfo);
 	}
 	api_notice(params) {
 		MessageSwitch.sendMessage('fg', { target: "notice", params: params, InvkSetting: { type: "function" } })

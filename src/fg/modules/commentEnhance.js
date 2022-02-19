@@ -25,7 +25,7 @@ class CommentEnhance extends AcFunHelperFgFrame {
             "span.pos.up {background-color: #66ccff !important;}" +
             //staff Tag
             "span.pos.staff {background-color: #c056ff !important;}" +
-            "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}"+
+            "p.crx-guid-p{height: 20px !important;line-height: 20px !important;padding: 7px 12px !important;text-align:center;}" +
             `
             @keyframes achfadeInDownForudd {
                 0% {
@@ -316,7 +316,7 @@ class CommentEnhance extends AcFunHelperFgFrame {
                         staffs.push(e["name"]);
                         staffDetail[e.name] = e["staffRoleName"];
                     })
-                    console.log(staffs, staffDetail)
+                    this.devMode && console.log(staffs, staffDetail)
                 }
             } catch (error) {
                 console.log(error)
