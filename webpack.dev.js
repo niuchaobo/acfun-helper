@@ -11,7 +11,7 @@ module.exports = {
         block: ".\\src\\fg\\modules\\block.js",
         pageBeautify: ".\\src\\fg\\modules\\pageBeautify.js",
         videoPageBeautify: ".\\src\\fg\\modules\\videoPageBeautify.js",
-        livepageBeautify: ".\\src\\fg\\modules\\livepageBeautify.js",
+        livePageBeautify: ".\\src\\fg\\modules\\livePageBeautify.js",
         commentEnhance: ".\\src\\fg\\modules\\commentEnhance.js",
         download: ".\\src\\fg\\modules\\download.js",
         live: ".\\src\\fg\\modules\\live.js",
@@ -25,7 +25,6 @@ module.exports = {
         auth: ".\\src\\bg\\modules\\auth.js",
         messager: ".\\src\\bg\\modules\\messager.js",
         omnibox: ".\\src\\bg\\modules\\omnibox.js",
-        reqopdrv: ".\\src\\bg\\modules\\reqopdrv.js",
         indexedrv: ".\\src\\bg\\modules\\indexedrv.js",
         watchplan: ".\\src\\bg\\modules\\watchplan.js",
         upgrade: ".\\src\\bg\\modules\\upgrade.js",
@@ -34,7 +33,7 @@ module.exports = {
             ".\\src\\common\\consoleProxy.js",
             ".\\src\\common\\encyclopedia.js",
             ".\\src\\common\\uiReact.js",
-            ".\\src\\common\\utilsBundle.js",],
+            ".\\src\\common\\CoreUtils.js",],
         extensionPage: [".\\src\\bg\\pageHandler\\options.js", ".\\src\\bg\\pageHandler\\pagehandlerLibs.js"],
         sandbox: [".\\src\\bg\\sandbox\\agent.js", ".\\src\\bg\\sandbox\\sandbox.js"],
         bgPopup: [".\\src\\bg\\popup\\index.js", ".\\src\\bg\\popup\\popupEvent.js", ".\\src\\bg\\popup\\renderList.js"]
@@ -44,8 +43,8 @@ module.exports = {
             port: 9090,
             reloadPage: true,
             entries: {
-                contentScript: ["popup,div,danmakuSearch,block,pageBeautify,videoPageBeautify,livepageBeautify,commentEnhance,download,live,danmaku,authInfo,banana,luckyTurntab,videoSetting,readMode,frontend"],
-                background: ["background,auth,messager,omnibox,reqopdrv,indexedrv,watchplan,upgrade"],
+                contentScript: ["popup,div,danmakuSearch,block,pageBeautify,videoPageBeautify,livePageBeautify,commentEnhance,download,live,danmaku,authInfo,banana,luckyTurntab,videoSetting,readMode,frontend"],
+                background: ["background,auth,messager,omnibox,indexedrv,watchplan,upgrade"],
                 extensionPage: ['utils', "extensionPage", "sandbox", "bgPopup"],
             }
         }),

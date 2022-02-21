@@ -75,7 +75,12 @@ class AcFunHelperFgFrame {
                         block: false,
                     }
                 },
+                notes: {
+                    vid: -1,
+                    dougaId: -1
+                },
                 dougaInfo: {},
+                articleInfo: {},
                 sessionUUID: null,
             },
             deferQueue: {}

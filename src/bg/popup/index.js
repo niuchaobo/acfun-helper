@@ -1,4 +1,5 @@
 import {
+	updateVersionIcon,
 	renderPushInnerHtml,
 	renderLives,
 	renderLiveWatchTimeLst,
@@ -80,7 +81,7 @@ async function onReady() {
 
 document.addEventListener("DOMContentLoaded", function (e) {
 	//处理pop页面宽度
-	let browser = myBrowser();
+	let browser = ToolBox.thisBrowser();
 	if (browser == "FF") {
 		document.getElementById("pop-push").style.width = "95%";
 	}

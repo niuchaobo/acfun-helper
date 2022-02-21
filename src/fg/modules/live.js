@@ -1,7 +1,7 @@
 /**
  * 直播
  */
-class Live extends AcFunHelperFgFrame{
+class Live extends AcFunHelperFgFrame {
     constructor() {
         super();
         this.devMode = false;

@@ -65,11 +65,12 @@ interface Window {
     oldPath: string;
     safetyId: string;
   };
-  lastSourceId: string;
-  lastVid: string;
+  lastSourceId?: string;
+  lastVid?: string;
   likeDomain: string;
-  orideclare: HTMLElement;
-  pageInfo: APIs.AcFunPageInfo;
+  orideclare?: HTMLElement;
+  pageInfo?: APIs.DougaInfo;
+  articleInfo?: APIs.ArticleInfo;
   chrome: ChromeFront;
   intro: {
     $followBtn: JQuerySerializeArrayElement;

@@ -241,10 +241,15 @@ interface runtimeDataFg {
         urlparams: boolean;
         videoPageBeautify: boolean;
         helperFgPop: boolean;
-        block:boolean;
+        block: boolean;
       };
     };
-    dougaInfo: APIs.AcFunPageInfo;
+    notes: {
+      vid: number;
+      dougaId: string;
+    };
+    dougaInfo: APIs.DougaInfo;
+    articleInfo: APIs.ArticleInfo;
     sessionUUID: string;
   };
   deferQueue: {};

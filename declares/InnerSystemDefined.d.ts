@@ -238,26 +238,18 @@ declare namespace SizzwooApis {
     uid: number;
   }
   interface LiveCountData {
-    avatarImage: string;
-    clubCount: number;
-    clubCountUp: number;
-    clubName: string;
-    contributeCount: number;
-    dateTime: string;
-    fansCount: number;
-    fansCountUp: number;
-    fansCountUpHour: number;
-    hasFansClub: number;
-    headUrl: string;
-    lastLiveTime: string;
-    likeCount: number;
-    liveState: number;
-    maxOnlineCount: number;
+    uid: string;
+    roomId: number;
     name: string;
-    onlineCount: number;
-    signature: string;
-    uid: number;
-    verifiedText: string;
+    headUrl: string;
+    avatarImage: string;
+    incomes: number;
+    premiumUsers: number;
+    premiumGtenumberUsers: number;
+    danmuUsers: number;
+    danmuCount: number;
+    duration: number;
+    maxOnlineCount: number;
   }
   interface UserDetail {
     code: number;
@@ -291,16 +283,18 @@ declare namespace SizzwooApis {
       endDateTime: string;
       startDateTime: string;
       type: number;
-      userCount: LiveCountData;
-      maxIncomesLive: LiveRecord;
-      maxFansUpLive: LiveRecord;
-      maxDurationLive: LiveRecord;
-      maxDanmuLive: LiveRecord;
-      fansCountUp: number;
-      fansCount: number;
-      clubCountUp: number;
-      clubCount: number;
-      count: LiveCountData;
+      data: {
+        userCount: LiveCountData;
+        maxIncomesLive: LiveRecord;
+        maxFansUpLive: LiveRecord;
+        maxDurationLive: LiveRecord;
+        maxDanmuLive: LiveRecord;
+        fansCountUp: number;
+        fansCount: number;
+        clubCountUp: number;
+        clubCount: number;
+        count: LiveCountData;
+      };
     };
     message: string;
   }

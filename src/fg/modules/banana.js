@@ -56,12 +56,11 @@ class Banana extends AcFunHelperFgFrame {
     }
 
     LikeHeartFront(Mode = "video", isLogined) {
-        if (!isLogined && Mode == "video") {
+        if (Mode == "article") {
+            isLogined = ToolBox.isLogin("article", "cookies");
+        }
+        if (isLogined == false) {
             return;
-        } else if (Mode == "article") {
-            if (!ToolBox.isLogin("article")) {
-                return;
-            }
         }
         let options = this.runtime.options;
         let LikeType = options.LikeHeartClass;

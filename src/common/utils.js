@@ -166,22 +166,6 @@ const indexdbArch = {
   },
 }
 
-/**
- * 以传过来的options为主体做好填充,如果其中没有就取默认值
- * @param {*} options 
- */
-function sanitizeOptions(options) {
-  return ExtOptions.sanitizeOptions(options);
-}
-
-/**
- * 以default为主体,如果传过来的options有对应的key,就用传过来的
- * @param {*} options 
- */
-function transOptions(options) {
-  return ExtOptions.transOptions(options);
-}
-
 //===============配置处理=================
 /**
  * 加载所有配置项
@@ -206,51 +190,9 @@ async function getStorage(key) {
   return ExtOptions.get(key)
 }
 
-/**
- * 删除插件存储值内容
- * @param {string} key 
- */
-function delStorage(key) {
-  return ExtOptions.delete(key)
-}
-
-function localizeHtmlPage() {
-  for (const el of document.querySelectorAll("[data-i18n]")) {
-    if ("INPUT" == el.nodeName) {
-      if (el.getAttribute("type") == "text") {
-        el.setAttribute(
-          "placeholder",
-          chrome.i18n.getMessage(el.getAttribute("data-i18n"))
-        );
-      } else if (el.getAttribute("type") == "button") {
-        el.setAttribute(
-          "value",
-          chrome.i18n.getMessage(el.getAttribute("data-i18n"))
-        );
-      }
-    }
-    el.innerHTML = DOMPurify.sanitize(chrome.i18n.getMessage(el.getAttribute("data-i18n")));
-    //火狐警告使用innerHTML添加标签 ⬇
-    // HTMLElement.prototype.htmlContent = function(html){
-    //     var dom = new DOMParser().parseFromString('<template>'+html+'</template>', 'text/html').head;
-    //     this.appendChild(dom.firstElementChild.content);
-    // }
-    // el.htmlContent( DOMPurify.sanitize(chrome.i18n.getMessage(el.getAttribute("data-i18n"))));
-
-  }
-}
-
-/**
- * 判断浏览器类型
- * @returns {'FF'|'Chrome'|'Opera'|'Safari'|'IE'}
- */
-function myBrowser() {
-  return ToolBox.thisBrowser();
-}
-
 function ajax(method, url, data, header) {
   //content script发送同源请求，需要区分chrome和FF
-  let browser = myBrowser();
+  let browser = ToolBox.thisBrowser();
   let request = null;
   if (browser == "FF") {
     request = new content.XMLHttpRequest();
@@ -548,7 +490,7 @@ function domToString(node) {
 /**
  * 从string中的HTML内容创建DOM
  * @param {*} str 
- * @returns HTMLElement
+ * @returns {NodeListOf<ChildNode>}
  */
 function stringToDOM(str) {
   let div = document.createElement("div");
@@ -591,20 +533,6 @@ async function getAsyncDom(target, fn, time = 2500, isDev = false) {
     })
   }
   return await re(fn)
-}
-
-/**
- * 从Up名称解析为UID
- * @param {string} upName 
- * @returns upUrl 返回Up主的主页地址
- * @callMethod let uid =await toUpInfo('qyqx')
- */
-async function toUpInfo(upName) {
-  let upUrl = fetch('https://www.acfun.cn/u/' + upName.toString()).then((response) => {
-    let upUrl = response.url
-    return upUrl
-  })
-  return upUrl
 }
 
 /**
