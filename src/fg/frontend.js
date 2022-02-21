@@ -245,6 +245,8 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			if (!this.fetchPageInfo()) {
 				return;
 			}
+			this.runtime.dataset.notes.vid = this.runtime.dataset.dougaInfo.currentVideoId;
+			this.runtime.dataset.notes.dougaId = this.runtime.dataset.dougaInfo.dougaId;
 			let isUp = adjustVideoUp();
 			this.div.show(this.runtime.dataset.dougaInfo, this.options, 'video', isUp);
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
@@ -256,6 +258,8 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			if (!this.fetchPageInfo()) {
 				return;
 			}
+			this.runtime.dataset.notes.vid = this.runtime.dataset.dougaInfo.currentVideoId;
+			this.runtime.dataset.notes.dougaId = this.runtime.dataset.dougaInfo.dougaId;
 			//弹幕列表
 			getAsyncDom('.list-title', () => {
 				//弹幕列表搜索
@@ -359,47 +363,78 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	reattachFrontMods() {
 		//切换了分P和投稿
 		this.href = window.location.href;
-		this.fetchPageInfo();		
-		this.div.reloadIframe(this.options, this.runtime.dataset.dougaInfo, "video", adjustVideoUp());
 		let isLogined = false;
-		if (ToolBox.isLogin("video", "cookies")) {
-			isLogined = true;
-		}
-
-		//切换不同分P
-		if (this.runtime.dataset?.vid != this.runtime.dataset.dougaInfo.currentVideoId) {
-			//切换投稿
-			if (this.runtime.dataset?.dougaId != this.runtime.dataset.dougaInfo.dougaId) {
-				setTimeout(() => {
-					this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
-				}, 908);
-				this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
-				this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
-				this.videoSetting.videoQuality(isLogined);
+		const maxRetryNum = 10;
+		let retryNum = 0;
+		//页面的视频信息刷新与重载钩子被执行有一定的时间间隔
+		let _timer = setInterval(() => {
+			if (this.runtime.dataset.notes.vid == this.runtime.dataset.dougaInfo.currentVideoId) {
+				if(retryNum>maxRetryNum){
+					return false;
+				}
+				this.fetchPageInfo("video");
+				retryNum++;
+			} else {
+				if (ToolBox.isLogin("video", "cookies")) {
+					isLogined = true;
+				}
+				//切换不同分P
+				if (this.runtime.dataset.notes?.vid != this.runtime.dataset.dougaInfo.currentVideoId) {
+					//切换投稿
+					if (this.runtime.dataset.notes?.dougaId != this.runtime.dataset.dougaInfo.dougaId) {
+						this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
+						this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
+						this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
+						this.videoSetting.videoQuality(isLogined);
+					}
+					this.div.reloadIframe(this.options, this.runtime.dataset.dougaInfo, "video", adjustVideoUp());
+				}
+				this.videoSetting.mediaSessionReAttach();
+				this.runtime.dataset.notes.vid = this.runtime.dataset.dougaInfo.currentVideoId;
+				this.runtime.dataset.notes.dougaId = this.runtime.dataset.dougaInfo.dougaId;
+				
+				clearInterval(_timer);
+				return true;
 			}
-		}
-		this.videoSetting.mediaSessionReAttach();
-		this.runtime.dataset.vid = this.runtime.dataset.dougaInfo.currentVideoId;
-		this.runtime.dataset.dougaId = this.runtime.dataset.dougaInfo.dougaId;
+		}, 982);
 	}
 
-	fetchPageInfo() {
-		if (JSON.stringify(this.runtime.dataset.dougaInfo) == "{}") {
-			this.runtime.dataset.vid = -1;
-			this.runtime.dataset.dougaId = -1;
-		}
-		var div = document.createElement('div');
+	/**
+	 * 获取投稿信息
+	 * @param {"video"|"article"} pageType 
+	 * @returns {Boolean} 投稿信息存放在 this.runtime.dataset
+	 */
+	fetchPageInfo(pageType = "video") {
+		let div = document.createElement('div');
 		div.style.display = "none";
 		let uuid = uuidBuild();
+		let currentDougaInfo;
+		this.runtime.dataset.sessionUUID = uuid;
 		div.id = uuid;
 		document.body.appendChild(div);
-		div.setAttribute('onclick', "document.getElementById('" + uuid + "').innerText=JSON.stringify(window.pageInfo)");
+		switch (pageType) {
+			case "video":
+				div.setAttribute('onclick', "document.getElementById('" + uuid + "').innerText=JSON.stringify(window.pageInfo)");
+				break;
+			case "article":
+				div.setAttribute('onclick', "document.getElementById('" + uuid + "').innerText=JSON.stringify(window.articleInfo)");
+				break;
+		}
 		div.click();
-		this.runtime.dataset.dougaInfo = JSON.parse(document.getElementById(uuid).innerText);
-		this.runtime.dataset.sessionuuid = uuid;
+		currentDougaInfo = JSON.parse(document.getElementById(uuid).innerText);
+		switch (pageType) {
+			case "video":
+				this.runtime.dataset.dougaInfo = null;
+				this.runtime.dataset.dougaInfo = currentDougaInfo;
+				break;
+			case "article":
+				this.runtime.dataset.articleInfo = null;
+				this.runtime.dataset.articleInfo = currentDougaInfo;
+				break;
+		}
 		document.body.removeChild(div);
-		let currentVideoInfo = this.runtime.dataset.dougaInfo.currentVideoInfo;
-		if (currentVideoInfo == undefined || currentVideoInfo == "" || currentVideoInfo == null) {
+		div = null;
+		if (currentDougaInfo == undefined || currentDougaInfo == "" || currentDougaInfo == null) {
 			return false;
 		}
 		return true;

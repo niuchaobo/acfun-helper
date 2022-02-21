@@ -1,5 +1,5 @@
 declare namespace APIs {
-  interface AcFunPageInfo {
+  interface DougaInfo {
     currentVideoId: string;
     isLike: string;
     pctr: string;
@@ -98,6 +98,50 @@ declare namespace APIs {
     isFavorite: boolean;
     mkey: string;
     priority: string;
+  }
+  interface ArticleInfo {
+    articleId: string;
+    isLike: string;
+    commentCount: string;
+    stowCount: number;
+    channel: {
+      id: number;
+      name: string;
+      parentId: number;
+      parentName: string;
+    };
+    coverUrl: string;
+    coverCdnUrls: Array;
+    createTimestring;
+    createTimeMillis: number;
+    danmakuCount: number;
+    descriptionstring;
+    formatBananaCount: string;
+    formatCommentCount: string;
+    formatDanmakuCount: string;
+    formatShareCount: string;
+    formatStowCount: string;
+    formatViewCount: string;
+    hasHotComment: boolean;
+    isFavorite: boolean;
+    isLike: boolean;
+    isThrowBanana: boolean;
+    likeCount: number;
+    likeCountShowstring;
+    commentCount: number;
+    result: number;
+    shareCount: number;
+    shareUrlstring;
+    stowCount: number;
+    superUbb: boolean;
+    titlestring;
+    viewCount: number;
+    tagList: [{ name: string; id: number }];
+    realm: {
+      realmId: number;
+      realmName: string;
+    };
+    parts: [{ title: string; content: string }];
   }
   interface KsPlayJson {
     businessType: number;

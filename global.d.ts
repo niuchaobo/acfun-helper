@@ -244,9 +244,12 @@ interface runtimeDataFg {
         block: boolean;
       };
     };
-    vid: number;
-    dougaId: string;
-    dougaInfo: APIs.AcFunPageInfo;
+    notes: {
+      vid: number;
+      dougaId: string;
+    };
+    dougaInfo: APIs.DougaInfo;
+    articleInfo: APIs.ArticleInfo;
     sessionUUID: string;
   };
   deferQueue: {};

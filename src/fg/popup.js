@@ -75,7 +75,7 @@ class Popup {
     }
 
     /**
-     * @param {APIs.AcFunPageInfo} pageInfo 
+     * @param {APIs.DougaInfo} pageInfo 
      * @param {"video"|"live"} type 
      * @param {0|1|2} isUp 
      */
