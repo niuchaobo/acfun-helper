@@ -1,30 +1,21 @@
 import { getRelatedTopic } from "../pageHandler/pagehandlerLibs.js";
 
-export function openSetting() {
-	//window.open("options.html","_blank");
-	var a = $("<a href='options.html' target='_blank'></a>").get(0);
-	var e = document.createEvent("MouseEvents");
-	e.initEvent("click", true, true);
-	a.dispatchEvent(e);
-}
-
 export function indexJump() {
+	let a;
 	switch (this.id) {
 		case 'pop-toLiveIndex':
-			var a = $("<a href='https://live.acfun.cn/' target='_blank'></a>").get(0);
-			var e = document.createEvent("MouseEvents");
-			e.initEvent("click", true, true);
-			a.dispatchEvent(e);
+			a = $("<a href='https://live.acfun.cn/' target='_blank'></a>").get(0);
 			break;
 		case 'pop-toArticlePart':
-			var a = $("<a href='https://www.acfun.cn/v/list63/index.htm' target='_blank'></a>").get(0);
-			var e = document.createEvent("MouseEvents");
-			e.initEvent("click", true, true);
-			a.dispatchEvent(e);
+			a = $("<a href='https://www.acfun.cn/v/list63/index.htm' target='_blank'></a>").get(0);
 			break;
-		default:
+		case 'pop-setting':
+			a = $("<a href='options.html' target='_blank'></a>").get(0);
 			break;
 	}
+	const e = document.createEvent("MouseEvents");
+	e.initEvent("click", true, true);
+	a.dispatchEvent(e);
 }
 
 export function titleToHome() {
@@ -86,12 +77,17 @@ export async function liveInfo() {
 	if (roomUrl == '') { return }
 	let uid = new RegExp("[0-9]+").exec(roomUrl);
 	if (uid != null && uid.length) {
-		uid=uid[0];
+		uid = uid[0];
 	}
 
 	const szwApi = await import("../../common/modulesLib/sizzwooApis.mjs");
 	const result = await szwApi.userApis.detail.get(uid);
 	const analysisApi = await szwApi.userApis.analysis.get(uid);
+	if (result.code != 0 || analysisApi.code != 0) {
+		alert(result.message == "" ? analysisApi.message : result.message);
+		document.querySelector("#liveRoomInfoWait").style.display = "none";
+	}
+
 	let raw_data = `
 	<div class="mdui-table-fluid">
 		<table class="mdui-table">

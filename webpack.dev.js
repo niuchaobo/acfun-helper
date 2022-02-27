@@ -34,7 +34,7 @@ module.exports = {
             ".\\src\\common\\encyclopedia.js",
             ".\\src\\common\\uiReact.js",
             ".\\src\\common\\CoreUtils.js",],
-        extensionPage: [".\\src\\bg\\pageHandler\\options.js", ".\\src\\bg\\pageHandler\\pagehandlerLibs.js"],
+        extensionPage: [".\\src\\bg\\pageHandler\\settingPanel.js", ".\\src\\bg\\pageHandler\\pagehandlerLibs.js"],
         sandbox: [".\\src\\bg\\sandbox\\agent.js", ".\\src\\bg\\sandbox\\sandbox.js"],
         bgPopup: [".\\src\\bg\\popup\\index.js", ".\\src\\bg\\popup\\popupEvent.js", ".\\src\\bg\\popup\\renderList.js"]
     },

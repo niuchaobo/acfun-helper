@@ -52,34 +52,24 @@ class VideoSetting extends AcFunHelperFgFrame {
     this.runtime.dataset.core.status.videoInjects = true;
   }
 
-  //跳转到上次观看(只支持1p投稿的跳转)
   jumpLastWatchTime() {
-    window.addEventListener("message", (e) => {
-      if (e.data.to == "vs_videoInfo") {
-        let videoInfo_data = JSON.parse(e.data.msg);
-        let lastAcVpid = Number(videoInfo_data[judgeActivePart() - 1].id);
-        try {
-          if (JSON.parse(localStorage.playHistory)[lastAcVpid]) {
-            const _timer = setTimeout(() => {
-              $(".left-bottom-tip").eq(0).append(`<div class="tip-item muted" id="lastPlayTime" ><div class="left-bottom-tip-text"><span>上次播放到 ${localStorage.playHistory}</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="lastPlayTime">继续观看</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="lastPlayTimeCancle">取消</span></div></div>`);
-              document.querySelector("#lastPlayTime").addEventListener("click", () => {
-                document.getElementsByTagName("video")[0].currentTime = JSON.parse(localStorage.playHistory)[lastAcVpid];
-              })
-              document.querySelector("#lastPlayTimeCancle").addEventListener("click", () => {
-                $(".left-bottom-tip").eq(0).remove();
-              })
-            }, 5000);
-            $(".left-bottom-tip").eq(0) ? $(".left-bottom-tip").eq(0).remove() : "";
-          } else {
-            throw TypeError;
-          }
-        } catch (error) {
-          console.log(
-            "[LOG]Frontend-videoSetting>jumpLastWatchTime: 没有上次观看的进度。"
-          );
-        }
-      }
-    });
+    const videoInfo_data = this.runtime.dataset.dougaInfo.videoList;
+    const lastAcVpid = Number(videoInfo_data[judgeActivePart() - 1].id);
+    const recordedVideoHistory = JSON.parse(localStorage.playHistory);
+    if (recordedVideoHistory[lastAcVpid]) {
+      let _timer = setTimeout(() => {
+        $(".left-bottom-tip").eq(0).append(`<div class="tip-item muted" id="lastPlayTime" ><div class="left-bottom-tip-text"><span>上次播放到 ${localStorage.playHistory}</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="lastPlayTime">继续观看</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="lastPlayTimeCancle">取消</span></div></div>`);
+        document.querySelector("#lastPlayTime").addEventListener("click", () => {
+          document.getElementsByTagName("video")[0].currentTime = recordedVideoHistory[lastAcVpid];
+        })
+        document.querySelector("#lastPlayTimeCancle").addEventListener("click", () => {
+          $(".left-bottom-tip").eq(0).remove();
+        })
+      }, 5000);
+      $(".left-bottom-tip").eq(0) ? $(".left-bottom-tip").eq(0).remove() : "";
+    } else {
+      fgConsole("videoSetting", "jumpLastWatchTime", "没有上次观看的进度。")
+    }
   }
 
   //画中画模式

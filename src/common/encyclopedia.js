@@ -107,7 +107,9 @@ const acfunApis = {
          */
         getRank: async (rankPeriod = "DAY", rankLimit = 30, channelId, subChannelId) => {
             return JSON.parse(await fetchResult(acfunApis.index.channelRank + `channelId=${channelId ? channelId : ""}&subChannelId=${subChannelId ? subChannelId : ""}&rankLimit=${rankLimit}&rankPeriod=${rankPeriod}`));
-        }
+        },
+        /**@description 稿件推送 */
+        webPush: `https://www.acfun.cn/rest/pc-direct/feed/webPush?count=50&pcursor=0`,
     },
     video: {
         videoInfo: `https://mini.pocketword.cn/api/acfun/dougaInfo?acid=`,
@@ -194,6 +196,14 @@ const acfunApis = {
          * @example videoId=21417176&resourceId=25268198&resourceType=2
          */
         videoPreviewVtt: `https://www.acfun.cn/rest/pc-direct/play/playInfo/spriteVtt`,
+        /**@description 获取视频预览图 */
+        getVideoPreviewVtt: async (vid, acid) => {
+            return await fetchResult(acfunApis.video.videoPreviewVtt + `videoId=${vid}&resourceId=${acid}&resourceType=2`, "POST");
+        },
+        anchorPoint: `https://www.acfun.cn/rest/pc-direct/play/playInfo/anchorPoint`,
+        getAnchroPoint: async (acid) => {
+            return JSON.parse(await fetchResult(acfunApis.video.anchorPoint, "POST", `resourceId=${acid}&resourceType=2`));
+        },
         /**
          * @description 检查弹幕角色列表
          * @param resourceId
@@ -236,6 +246,28 @@ const acfunApis = {
         liveTypes: `https://member.acfun.cn/common/api/getLiveTypeList`,
         getLiveTypes: async () => {
             return JSON.parse(await fetchResult(acfunApis.like.liveTypes, "POST", ""));
+        },
+        /**@param streamId 直播间的流id */
+        banned: `https://onvideoapi.kuaishou.com/api/live/checkLiveBanned?source=ac&streamId=`,
+        /**@returns {{code:number,data:{banned:boolean}}} */
+        getBanned: async (streamId) => {
+            return JSON.parse(await fetchResult(acfunApis.live.banned + streamId));
+        },
+        cutInfo: `https://live.acfun.cn/rest/pc-direct/live/getLiveCutInfo?`,
+        /**@returns {{liveCutStatus:0|1,liveCutUrl:string}} */
+        getCutInfo: async (uid, liveId) => {
+            return JSON.parse(await fetchResult(acfunApis.live.cutInfo + "authorId=" + uid + "&liveId=" + liveId, "GET", null, true));
+        },
+        getKsCutStreamId: async (uid, liveId) => {
+            const raw = await acfunApis.live.getCutInfo(uid, liveId);
+            if (!raw.liveCutStatus) {
+                return;
+            }
+            let result;
+            try {
+                result = new RegExp("[0-9]+").test(raw.liveCutUrl)[0];
+            } catch (error) { }
+            return result;
         }
     },
     navigateCategory: {
