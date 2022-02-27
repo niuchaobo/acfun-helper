@@ -17,8 +17,8 @@ class UpgradeAgent extends AcFunHelperBgFrame {
         this.runtime.dataset.core.scheduler["purgeNotifTrg"] = {
             "option": { "periodInMinutes": 4220 },
             "tasks": {
-                versionCheck: {
-                    callback: this.checkUpdate.bind(this)
+                purgeNotifHandler: {
+                    callback: this.purgeNotificationList.bind(this)
                 },
             }
         }

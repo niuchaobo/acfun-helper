@@ -8,6 +8,7 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
     return;
   }
 
+  /**@type {OptionStruct.DefaultStruct} */
   var options = null;
   var lastdropedFrame = 0;
   var nowDropFrame = 0;
@@ -165,7 +166,7 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
           document.getElementsByClassName("recommendation")[0].children[1].children[0].click();
         }, 5000);
         const text = document.querySelector(".area.recommendation").children[1].children[1];
-        $(".left-bottom-tip").eq(0).append(`<div class="tip-item muted" id="cancelRecommand" ><div class="left-bottom-tip-text"><span>5秒后播放：《${text.children[0].innerText}》 ${text.children[1].innerText.replace("UP：","")}</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="cancelRecommand">取消</span></div></div>`);
+        $(".left-bottom-tip").eq(0).append(`<div class="tip-item muted" id="cancelRecommand" ><div class="left-bottom-tip-text"><span>5秒后播放：《${text.children[0].innerText}》 ${text.children[1].innerText.replace("UP：", "")}</span>&nbsp;&nbsp;<span><a style='color:red;cursor: pointer;' id="cancelRecommand">取消</span></div></div>`);
 
         document.querySelector("#cancelRecommand").addEventListener("click", () => {
           $(".left-bottom-tip").eq(0).children().eq(0).remove();
@@ -195,11 +196,6 @@ let AcFunHelperVideoFunction = (function VideoFunction() {
         to: 'authinfo_mkey',
         msg: `${JSON.stringify(window.player.mkey)}`
       }, '*');
-
-      window.parent.postMessage({
-        to: "vs_videoInfo",
-        msg: `${JSON.stringify(window.player.videoInfo.videoList)}`,
-      }, "*");
 
     } catch (error) {
       console.log("[LOG]AcFunHelperFrontend-videoSettingInject: Warning postMessage.", error);

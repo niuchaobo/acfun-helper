@@ -1,5 +1,5 @@
 let navFunction = (function () {
-    let testHome = new RegExp('http(s)?://www.acfun.cn/$').test(
+  let testHome = new RegExp('http(s)?://www.acfun.cn/$').test(
     window.location.href
   );
   if (!testHome) {
@@ -85,12 +85,12 @@ let navFunction = (function () {
 
   document.addEventListener("DOMContentLoaded", onDomContentLoaded, false);
   return {
-      scrollToTop
+    scrollToTop
   }
 })();
 
 let {
-    scrollToTop
+  scrollToTop
 } = {
-    ...navFunction
+  ...navFunction
 }

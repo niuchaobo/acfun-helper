@@ -9,7 +9,6 @@ import {
 	PopupLater,
 } from "./renderList.js";
 import {
-	openSetting,
 	onOptionChanged,
 	titleToHome,
 	clickToTop,
@@ -37,12 +36,12 @@ async function onReady() {
 	$("#extends-enbaled").prop("checked", options.enabled);
 	$("#extends-enbaled").change(onOptionChanged);
 	options.LocalUserId != "0" && $("#pop-title .Ucenter").show(); $("#pop-title .Ucenter").click(toUcenter);
-	$(document).scroll(hideToTopButton);
-	$(".toTop").click(clickToTop);
-	$("#pop-toArticlePart").click(indexJump);
-	$("#pop-toLiveIndex").click(indexJump);
-	$("#pop-setting").click(openSetting);
-	$("#pop-title .letter").click(titleToHome);
+	$(document).on("scroll", hideToTopButton);
+	$(".toTop").on("click", clickToTop);
+	$("#pop-toArticlePart").on("click", indexJump);
+	$("#pop-toLiveIndex").on("click", indexJump);
+	$("#pop-setting").on("click", indexJump);
+	$("#pop-title .letter").on("click", titleToHome);
 	document.querySelector("#mainTabs").addEventListener("click", (e) => {
 		switch (e.target.id) {
 			case "tabPushList":
@@ -51,7 +50,7 @@ async function onReady() {
 			case "tabGroupPushList":
 				if (statusDic.renderFollowGroup) { return };
 				renderFollowGroup();
-				$("#followGroups").click(e => { renderGroupPush(e.target.dataset.id) });
+				$("#followGroups").on("click", e => { renderGroupPush(e.target.dataset.id) });
 				statusDic.tabGroupPushList = true;
 				break;
 			case "tabLives":
@@ -63,13 +62,13 @@ async function onReady() {
 				break;
 			case "tabSpecial":
 				if (statusDic.tabSpecial) { return };
-				$("#UserInfoActionBtn").click(userInfoFetch);
+				$("#UserInfoActionBtn").on("click", userInfoFetch);
 				$("#dougaInfoAcidbtn").on("click", fetchDougaInfo);
 				document.querySelector("#topicSearchBtn").addEventListener("click", topicSearch);
-				$("#liveRoomInfoBtn").on("click",liveInfo);
-				$("#WatchLaterFpopup").click(WatchLaterFpopup);
-				$("#StopWatchLaterFpopup").click(StopWatchLaterFpopup);
-				$("#attentionTabsFg").click(attentionTabs);
+				$("#liveRoomInfoBtn").on("click", liveInfo);
+				$("#WatchLaterFpopup").on("click", WatchLaterFpopup);
+				$("#StopWatchLaterFpopup").on("click", StopWatchLaterFpopup);
+				$("#attentionTabsFg").on("click", attentionTabs);
 				statusDic.tabSpecial = true;
 				break;
 		}
@@ -94,9 +93,14 @@ document.addEventListener("DOMContentLoaded", function (e) {
 //   });
 // }
 
-// new Vue({
-//   el: '#app',
-//   data: {
-//       message: 'Hello Vue!'
-//   }
-// })   
+// const Counter = {
+// 	data() {
+// 		return {
+// 			message: "Test"
+// 		}
+// 	}
+// }
+
+// /**@type {import("../../../declares/Vue/VueRuntimeCore").App} */
+// const app = Vue.createApp(Counter);
+// app.mount("#app")

@@ -3,9 +3,6 @@
  */
 class WebStorageUtil {
     constructor(storeMode = "local", storeTimeout = 86400000, timeLimit = 2000) {
-        super();
-        this.utilsList.push(WebStorageUtil);
-
         this.storeMode = storeMode;
         this.storeTimeout = storeTimeout;
         this.timeLimit = timeLimit;

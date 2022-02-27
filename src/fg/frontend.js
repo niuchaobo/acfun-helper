@@ -369,7 +369,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		//页面的视频信息刷新与重载钩子被执行有一定的时间间隔
 		let _timer = setInterval(() => {
 			if (this.runtime.dataset.notes.vid == this.runtime.dataset.dougaInfo.currentVideoId) {
-				if(retryNum>maxRetryNum){
+				if (retryNum > maxRetryNum) {
 					return false;
 				}
 				this.fetchPageInfo("video");
@@ -392,7 +392,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 				this.videoSetting.mediaSessionReAttach();
 				this.runtime.dataset.notes.vid = this.runtime.dataset.dougaInfo.currentVideoId;
 				this.runtime.dataset.notes.dougaId = this.runtime.dataset.dougaInfo.dougaId;
-				
+
 				clearInterval(_timer);
 				return true;
 			}

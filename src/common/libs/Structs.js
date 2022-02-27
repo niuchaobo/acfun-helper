@@ -3,9 +3,6 @@
  */
 class Queue {
     constructor() {
-        super();
-        this.utilsList.push(Queue);
-
         this.dataField = [];
     }
 
@@ -80,9 +77,6 @@ class Queue {
 
 class Stack {
     constructor() {
-        super();
-        this.utilsList.push(Stack);
-
         this.dataField = [];
     }
 

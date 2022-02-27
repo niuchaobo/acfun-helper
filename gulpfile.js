@@ -55,17 +55,6 @@ function backPopup() {
         .pipe(dest('./final/bg/popup/'))
 }
 
-function bangumiApp() {
-    return src('./src/bg/bangumiApp/*.js')
-        .pipe(gulpEsbuild({
-            minify: true,
-            loader: {
-                '.js': 'js'
-            }
-        }))
-        .pipe(dest('./final/bg/bangumiApp/'))
-}
-
 function pageHandler() {
     return src('./src/bg/pageHandler/*.js')
         .pipe(gulpEsbuild({
@@ -132,17 +121,32 @@ function backPopupRComment() {
         .pipe(strip()).pipe(dest('./final/bg/popup/'))
 }
 
-function bangumiAppRComment() {
-    return src('./src/bg/bangumiApp/*.js')
-        .pipe(strip()).pipe(dest('./final/bg/bangumiApp/'))
-}
-
 function pageHandlerRComment() {
+    const settingPage = () => {
+        return src('./src/bg/pageHandler/SettingPage/*.js')
+            .pipe(strip()).pipe(dest('./final/bg/pageHandler/SettingPage/'))
+    }
+    settingPage();
     return src('./src/bg/pageHandler/*.js')
         .pipe(strip()).pipe(dest('./final/bg/pageHandler/'))
 }
 
 function commonRComment() {
+    const libs = () => {
+        return src('./src/common/libs/*.js')
+            .pipe(strip()).pipe(dest('./final/common/libs/'))
+    }
+    const reLibs = () => {
+        return src('./src/common/reLibs/*.js')
+            .pipe(strip()).pipe(dest('./final/common/reLibs/'))
+    }
+    const modulesLib = () => {
+        return src('./src/common/modulesLib/*.js')
+            .pipe(strip()).pipe(dest('./final/common/modulesLib/'))
+    }
+    libs();
+    reLibs();
+    modulesLib();
     return src('./src/common/*.js')
         .pipe(strip()).pipe(dest('./final/common/'))
 }
@@ -185,7 +189,6 @@ gulp.task("default", (e) => {
 gulp.task("clean", (e) => {
     console.log("Cleaning...")
     backendRComment()
-    bangumiAppRComment()
     backModsRComment()
     backPopupRComment()
     pageHandlerRComment()
