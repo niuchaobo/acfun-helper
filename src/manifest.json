@@ -39,7 +39,7 @@
         "fg/modules/pageBeautify.js",
         "fg/modules/videoSetting.js",
         "fg/modules/videoPageBeautify.js",
-        "fg/modules/livePageBeautify.js",
+        "fg/modules/livepageBeautify.js",
         "fg/modules/commentEnhance.js",
         "fg/modules/download.js",
         "fg/modules/danmaku.js",

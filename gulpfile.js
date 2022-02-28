@@ -141,7 +141,7 @@ function commonRComment() {
             .pipe(strip()).pipe(dest('./final/common/reLibs/'))
     }
     const modulesLib = () => {
-        return src('./src/common/modulesLib/*.js')
+        return src('./src/common/modulesLib/*.mjs')
             .pipe(strip()).pipe(dest('./final/common/modulesLib/'))
     }
     libs();

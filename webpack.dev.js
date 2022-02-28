@@ -11,7 +11,7 @@ module.exports = {
         block: ".\\src\\fg\\modules\\block.js",
         pageBeautify: ".\\src\\fg\\modules\\pageBeautify.js",
         videoPageBeautify: ".\\src\\fg\\modules\\videoPageBeautify.js",
-        livePageBeautify: ".\\src\\fg\\modules\\livePageBeautify.js",
+        livePageBeautify: ".\\src\\fg\\modules\\livepageBeautify.js",
         commentEnhance: ".\\src\\fg\\modules\\commentEnhance.js",
         download: ".\\src\\fg\\modules\\download.js",
         live: ".\\src\\fg\\modules\\live.js",
