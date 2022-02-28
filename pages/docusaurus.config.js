@@ -7,14 +7,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'AcFun助手',
-  tagline: 'Dinosaurs are cool',
+  tagline: 'Open source, and extensible Web Browser Extension for acfun.cn.',
   url: 'https://sokwva.gitlab.io/acfun-helper',
   baseUrl: '/acfun-helper/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'niuchaobo', // Usually your GitHub org/user name.
+  projectName: 'acfun-helper', // Usually your repo name.
 
   presets: [
     [
@@ -24,13 +24,13 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+          editUrl: 'https://github.com/niuchaobo/acfun-helper/edit/master/pages/docs/',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/main/website/blog/',
+            'https://github.com/niuchaobo/acfun-helper/tree/master/pages/blog',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -45,7 +45,7 @@ const config = {
       navbar: {
         title: 'AcFun助手',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'acfun-helper',
           src: 'img/logo.svg',
         },
         items: [
@@ -55,7 +55,7 @@ const config = {
             position: 'left',
             label: 'Tutorial',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          { to: '/blog', label: 'Blog', position: 'left' },
           {
             href: 'https://github.com/facebook/docusaurus',
             label: 'GitHub',
@@ -79,16 +79,12 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'AcFun - 作者',
+                href: 'https://www.acfun.cn/u/7054138',
               },
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                label: 'AcFun - 功能预览发布',
+                href: 'https://www.acfun.cn/u/33143757',
               },
             ],
           },
@@ -98,10 +94,6 @@ const config = {
               {
                 label: 'Blog',
                 to: '/blog',
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
               },
             ],
           },
