@@ -1,11 +1,11 @@
-import { CodegenResult } from '@vue/compiler-core';
-import { CompilerError } from '@vue/compiler-core';
-import { CompilerOptions } from '@vue/compiler-core';
-import { DirectiveTransform } from '@vue/compiler-core';
-import { NodeTransform } from '@vue/compiler-core';
-import { ParserOptions } from '@vue/compiler-core';
-import { RootNode } from '@vue/compiler-core';
-import { SourceLocation } from '@vue/compiler-core';
+import { CodegenResult } from './VueCompilerCore';
+import { CompilerError } from './VueCompilerCore';
+import { CompilerOptions } from './VueCompilerCore';
+import { DirectiveTransform } from './VueCompilerCore';
+import { NodeTransform } from './VueCompilerCore';
+import { ParserOptions } from './VueCompilerCore';
+import { RootNode } from './VueCompilerCore';
+import { SourceLocation } from './VueCompilerCore';
 
 export declare function compile(template: string, options?: CompilerOptions): CodegenResult;
 
@@ -61,6 +61,6 @@ export declare const V_ON_WITH_MODIFIERS: unique symbol;
 export declare const V_SHOW: unique symbol;
 
 
-export * from "@vue/compiler-core";
+export * from "./VueCompilerCore";
 
 export { }

@@ -34,3 +34,4 @@ src/.DS_Store
 
 # custom rule
 *.devig.*
+devig/

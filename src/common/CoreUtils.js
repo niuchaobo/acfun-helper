@@ -4,9 +4,21 @@
 class DOMObserver {
     /**
      * @param {HTMLElement|string|HTMLElement[]} targets 选择器
-     * @param {function} trigger 钩子函数
+     * @param {(e:MutationRecord[])=>{}} trigger 钩子函数
      * @param {boolean} devMode 
      * @param {boolean} complex 
+     * @example ````最简单的写法：
+        ```js
+        DOMObserver.attrs(document.querySelector("video"), e => { console.log(e) })
+        ```
+     * @example ````常规使用方式：
+        ```js
+        const ObsrvStaticInst = new DOMObserver(document.querySelector("video"), e=>{
+            console.log(e);
+        }, true); //首先实例化一个DOMObserver，并传入参数：需要观察的DOM对象，观察到Mutation事件之后的钩子函数，打开开发者模式。
+        ObsrvStaticInst.configSet(false, true, false, false, [], true, false);  //配置观察属性，只观察值变化，并要求报告旧值
+        ObsrvStaticInst.createObserver(); //启动观察器
+        ```
      */
     constructor(targets, trigger, devMode = false, complex = false) {
         /**
@@ -271,9 +283,9 @@ class DOMObserver {
     /**
      * 监控子对象
      * @param {HTMLElement} target 
-     * @param {Function} fns returns {MutationRecord}
+     * @param {(e:MutationRecord[])=>{}} fns 
      * @param {boolean} isDev 
-     * @returns class DOMObserver
+     * @returns {DOMObserver}
      */
     static childs(target, fns, isDev) {
         const ObsrvStaticInst = new DOMObserver(target, fns, isDev);
@@ -285,9 +297,9 @@ class DOMObserver {
     /**
      * 监控对象所有变动
      * @param {HTMLElement} target 
-     * @param {Function} fns 
+     * @param {(e:MutationRecord[])=>{}} fns 
      * @param {boolean} isDev 
-     * @returns class DOMObserver
+     * @returns {DOMObserver}
      */
     static all(target, fns, isDev) {
         const ObsrvStaticInst = new DOMObserver(target, fns, isDev);
@@ -299,9 +311,9 @@ class DOMObserver {
     /**
      * 监控对象属性变动
      * @param {HTMLElement} target 
-     * @param {Function} fns 
+     * @param {(e:MutationRecord[])=>{}} fns 
      * @param {boolean} isDev 
-     * @returns class DOMObserver
+     * @returns {DOMObserver}
      */
     static attrs(target, fns, isDev) {
         const ObsrvStaticInst = new DOMObserver(target, fns, isDev);

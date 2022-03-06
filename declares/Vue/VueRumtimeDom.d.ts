@@ -1,23 +1,23 @@
-import { BaseTransitionProps } from '@vue/runtime-core';
-import { ComponentInternalInstance } from '@vue/runtime-core';
-import { ComponentOptionsMixin } from '@vue/runtime-core';
-import { ComponentOptionsWithArrayProps } from '@vue/runtime-core';
-import { ComponentOptionsWithObjectProps } from '@vue/runtime-core';
-import { ComponentOptionsWithoutProps } from '@vue/runtime-core';
-import { ComponentPropsOptions } from '@vue/runtime-core';
-import { ComponentPublicInstance } from '@vue/runtime-core';
-import { ComputedOptions } from '@vue/runtime-core';
-import { ConcreteComponent } from '@vue/runtime-core';
-import { CreateAppFunction } from '@vue/runtime-core';
-import { EmitsOptions } from '@vue/runtime-core';
-import { ExtractPropTypes } from '@vue/runtime-core';
-import { FunctionalComponent } from '@vue/runtime-core';
-import { MethodOptions } from '@vue/runtime-core';
-import { ObjectDirective } from '@vue/runtime-core';
-import { RenderFunction } from '@vue/runtime-core';
-import { RootHydrateFunction } from '@vue/runtime-core';
-import { RootRenderFunction } from '@vue/runtime-core';
-import { SetupContext } from '@vue/runtime-core';
+import { BaseTransitionProps } from './VueRuntimeCore';
+import { ComponentInternalInstance } from './VueRuntimeCore';
+import { ComponentOptionsMixin } from './VueRuntimeCore';
+import { ComponentOptionsWithArrayProps } from './VueRuntimeCore';
+import { ComponentOptionsWithObjectProps } from './VueRuntimeCore';
+import { ComponentOptionsWithoutProps } from './VueRuntimeCore';
+import { ComponentPropsOptions } from './VueRuntimeCore';
+import { ComponentPublicInstance } from './VueRuntimeCore';
+import { ComputedOptions } from './VueRuntimeCore';
+import { ConcreteComponent } from './VueRuntimeCore';
+import { CreateAppFunction } from './VueRuntimeCore';
+import { EmitsOptions } from './VueRuntimeCore';
+import { ExtractPropTypes } from './VueRuntimeCore';
+import { FunctionalComponent } from './VueRuntimeCore';
+import { MethodOptions } from './VueRuntimeCore';
+import { ObjectDirective } from './VueRuntimeCore';
+import { RenderFunction } from './VueRuntimeCore';
+import { RootHydrateFunction } from './VueRuntimeCore';
+import { RootRenderFunction } from './VueRuntimeCore';
+import { SetupContext } from './VueRuntimeCore';
 
 declare const ANIMATION = "animation";
 
@@ -158,7 +158,7 @@ export declare const withKeys: (fn: Function, modifiers: string[]) => (event: Ke
 export declare const withModifiers: (fn: Function, modifiers: string[]) => (event: Event, ...args: unknown[]) => any;
 
 
-export * from "@vue/runtime-core";
+export * from "./VueRuntimeCore";
 
 export { }
 
@@ -190,7 +190,7 @@ export { }
 //                 Kanitkorn Sujautra <https://github.com/lukyth>
 //                 Sebastian Silbermann <https://github.com/eps1lon>
 
-import { VNode } from '@vue/runtime-core'
+import { VNode } from './VueRuntimeCore'
 import * as CSS from 'csstype'
 
 export interface CSSProperties extends CSS.Properties<string | number> {
@@ -1466,7 +1466,7 @@ type EventHandlers<E> = {
 
 // use namespace import to avoid collision with generated types which use
 // named imports.
-import * as RuntimeCore from '@vue/runtime-core'
+import * as RuntimeCore from './VueRuntimeCore'
 
 type ReservedProps = {
   key?: string | number | symbol

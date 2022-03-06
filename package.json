@@ -1,10 +1,11 @@
 {
   "name": "acfun-helper-compresser",
-  "version": "1.5.3",
+  "version": "1.5.6",
   "description": "process files in acfun-helper directory",
   "main": "gulpfile.js",
   "keywords": [
-    "zip"
+    "zip",
+    "acfun"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,6 +20,8 @@
   "author": "ncb",
   "license": "MPL-2.0",
   "dependencies": {
+    "@babel/parser": "^7.17.3",
+    "@babel/types": "^7.17.0",
     "@types/chrome": "^0.0.154",
     "del": "^6.0.0",
     "es6-symbol": "^3.1.3",

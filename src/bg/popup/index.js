@@ -93,14 +93,5 @@ document.addEventListener("DOMContentLoaded", function (e) {
 //   });
 // }
 
-// const Counter = {
-// 	data() {
-// 		return {
-// 			message: "Test"
-// 		}
-// 	}
-// }
-
-// /**@type {import("../../../declares/Vue/VueRuntimeCore").App} */
-// const app = Vue.createApp(Counter);
-// app.mount("#app")
+// import { viewRender } from "../popup/popupExtend.devig.mjs";
+// viewRender()

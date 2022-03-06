@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_appName__",
-  "version": "1.2.13.2228",
+  "version": "1.2.13.2306",
   "default_locale": "zh_CN",
   "description": "__MSG_appDesc__",
   "icons": {
@@ -57,7 +57,7 @@
     }
   ],
   "minimum_chrome_version": "50.0.0.0",
-  "homepage_url": "https://www.acfun.cn/u/7054138",
+  "homepage_url": "https://sokwva.gitlab.io/acfun-helper/",
   "options_page": "bg/options.html",
   "permissions": [
     "contextMenus",
@@ -97,6 +97,7 @@
     "fg/acfunxhr.js",
     "mdui/*",
     "common/*",
+    "lib/*",
     "fg/css/frame.css",
     "fg/css/lucy.css",
     "fg/frame.js",
