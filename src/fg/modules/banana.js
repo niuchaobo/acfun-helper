@@ -32,12 +32,12 @@ class Banana extends AcFunHelperFgFrame {
             if (!followed || followed.length <= 0) {
                 return { state: false }
             }
-            up_name = document.getElementsByClassName('up-name')[0].innerText;
+            up_name = document.querySelector('a.up-name')[1].innerText;
             banana_num = options.to_attention_num;
             return { state: true, name: up_name, num: banana_num };
         } else {
             //判断是否为指定up主
-            let up_url = dougaType == "video" ? document.getElementsByClassName('up-name')[0].href : document.getElementsByClassName('upname')[0].href.replace(".aspx", "")
+            let up_url = dougaType == "video" ? document.querySelector('a.up-name')?.href : document.getElementsByClassName('upname')[0].href.replace(".aspx", "")
             let flag = false;
             let special_items = options.to_special_items;
             for (let item of special_items) {
