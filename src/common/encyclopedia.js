@@ -169,11 +169,6 @@ const acfunApis = {
             }
         },
         /**
-         * 收藏
-         * @data resourceId=${ACID}&resourceType=9
-         */
-        favorite: "https://www.acfun.cn/rest/pc-direct/favorite",
-        /**
          * @description 发送弹幕 (videoId不是acid)
          * @example mode=1&color=16777215&size=25&body=%E5%A5%BD%E6%A3%92&videoId=25879552&position=701&type=douga&id=${ACID}&subChannelId=58&subChannelName=%E9%9F%B3%E4%B9%90&roleId=
          */
@@ -367,6 +362,56 @@ const acfunApis = {
             getQueryClassName: (id) => {
                 return "." + acfunApis.users.verifiedType.types[id][1] + "-large.verified-icon-large";
             }
+        },
+        favorites: {
+            video: {
+                list: `https://www.acfun.cn/rest/pc-direct/favorite/resource/dougaList`,
+                get: async (folderId, page = 1, perpage = 30) => {
+                    return JSON.parse(await fetchResult(acfunApis.users.favorites.video.list, "POST", `folderId=${folderId}&page=${page}&perpage=${perpage}`))
+                },
+                remove: `https://www.acfun.cn/rest/pc-direct/favorite/resource/remove`,
+                removeVideo: async (acid, folderId) => {
+                    return JSON.parse(await fetchResult(acfunApis.users.favorites.video.remove, "POST", "resourceType=9&resourceId=" + acid + "&delFolderIds=" + folderId))
+                },
+                add:`https://www.acfun.cn/rest/pc-direct/favorite/resource/add`,
+                addVideo:async (acid,folderId)=>{
+                    return JSON.parse(await fetchResult(acfunApis.users.favorites.video.add, "POST", `resourceId=${acid}&resourceType=9&addFolderIds=${folderId}`))
+                }                
+            },
+            folder: {
+                add: `https://www.acfun.cn/rest/pc-direct/favorite/folder/add`,
+                /**@returns {{result:number,data:APIs.Favorite.FolderInfo}} */
+                addFavoriteFolder: async (name) => {
+                    return JSON.parse(await fetchResult(acfunApis.users.favorites.folder.add, "POST", "name=" + name))
+                },
+                info: `https://www.acfun.cn/rest/pc-direct/favorite/folder/info`,
+                /**@returns {{result:number,data:APIs.Favorite.FolderInfo}} */
+                getInfo: async (folderId) => {
+                    return JSON.parse(await fetchResult(acfunApis.users.favorites.folder.info, "POST", "folderId=" + folderId))
+                },
+                list: `https://www.acfun.cn/rest/pc-direct/favorite/folder/list`,
+                /**@returns {{result:number,data:[APIs.Favorite.FolderInfo]}} */
+                getList: async () => {
+                    return JSON.parse(await fetchResult(acfunApis.users.favorites.folder.list, "POST", ""))
+                },
+                update: `https://www.acfun.cn/rest/pc-direct/favorite/folder/update`,
+                /**@returns {{result:number}} */
+                updateName: async (folderId, newName) => {
+                    return JSON.parse(await fetchResult(acfunApis.users.favorites.folder.update, "POST", "folderId=" + folderId + "&name=" + newName))
+                },
+                remove: `https://www.acfun.cn/rest/pc-direct/favorite/folder/delete`,
+                /**@returns {{result:number}} */
+                removeFolder: async (folderId) => {
+                    return JSON.parse(await fetchResult(acfunApis.users.favorites.folder.list, "POST", "folderId=" + folderId))
+                }
+            },
+        },
+        album: {
+            list: `https://www.acfun.cn/rest/pc-direct/favorite/albumList`,
+            /**@returns {{result:number,favoriteList:[APIs.Album.List]}} */
+            getList: async (page = 1, perpage = 20) => {
+                return JSON.parse(await fetchResult(acfunApis.users.album.list, "POST", "page=" + page + "&perpage=" + perpage))
+            }
         }
     },
     moment: {
@@ -378,6 +423,11 @@ const acfunApis = {
         getMySubscribe: async (count = 10) => {
             return JSON.parse(await fetchResult(acfunApis.bangumi.myDescribe + count));
         },
+        favorite: `https://www.acfun.cn/rest/pc-direct/favorite/bangumiList`,
+        /**@returns {{result:number,favoriteList:[APIs.Favorite.BangumiItem]}} */
+        getFavorites: async (page = 1, perpage = 20) => {
+            return JSON.parse(await fetchResult(acfunApis.bangumi.favorite + "?page=" + page + "&perpage=" + perpage));
+        }
     },
 }
 

@@ -290,7 +290,7 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
     }
 
     api_bananAudio() {
-        this.MsgNotfs.bananAudio();
+        this.MsgNotifsInst.bananAudio();
     }
 
     async api_achievementEvent(e) {

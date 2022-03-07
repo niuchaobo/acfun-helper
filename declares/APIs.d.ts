@@ -858,6 +858,17 @@ declare namespace APIs {
     result: number;
   }
   namespace Favorite {
+    interface FolderInfo {
+      cover: string;
+      favoriteCountLimit: number;
+      folderId: number;
+      inFolder: false;
+      lastFavoriteTime: number;
+      name: string;
+      resourceCount: number;
+      status: number;
+      type: number;
+    }
     interface FullBangumi {
       acfunOnly: boolean;
       albumId: string;
@@ -1078,6 +1089,24 @@ declare namespace APIs {
       productId: number;
       productType: number;
       state: string;
+    }
+  }
+  namespace Album {
+    interface List {
+      albumDesc: string;
+      albumId: number;
+      albumTitle: string;
+      coverImage: string;
+      groupId: string;
+      lastUpdateTime: number;
+      requestId: string;
+      status: number;
+      stows: number;
+      updateTime: number;
+      userId: number;
+      userImage: string;
+      userName: string;
+      views: number;
     }
   }
 }
