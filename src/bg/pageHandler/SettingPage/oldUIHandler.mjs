@@ -637,7 +637,7 @@ export async function OldUIHandler() {
                     //根据uid解析出up主姓名
                     $("body").mLoading("show");
                     let up_url = options.upUrlTemplate.replace('{uid}', uid_input);
-                    let up_info = options.userInfo.replace('{uid}', uid_input);
+                    let up_info = defaults.userInfo.replace('{uid}', uid_input);
                     var up_html_str;
                     try {
                         up_html_str = await ajax('GET', up_info);
@@ -755,7 +755,7 @@ export async function OldUIHandler() {
                 if (input_valid) {
                     //根据uid解析出up主姓名
                     $("body").mLoading("show");
-                    let up_url = options.userInfo.replace('{uid}', uid_input);
+                    let up_url = defaults.userInfo.replace('{uid}', uid_input);
                     var up_html_str;
                     try {
                         up_html_str = await ajax('GET', up_url);

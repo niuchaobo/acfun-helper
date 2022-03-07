@@ -225,8 +225,8 @@ export async function indexSiteConfigure() {
                 mdui.prompt('请输入你需要关注的用户UID', '添加关注',
                     async function (value) {
                         if (!value == '') {
-                            var up_url = options.userInfo.replace('{uid}', value);
-                            for (i in items.liveFloowings) {
+                            var up_url = "https://www.acfun.cn/rest/pc-direct/user/userInfo?userId={uid}".replace('{uid}', value);
+                            for (let i in items.liveFloowings) {
                                 if (i == value) {
                                     var errN = 1;
                                     break

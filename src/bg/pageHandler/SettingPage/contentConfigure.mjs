@@ -110,7 +110,7 @@ export async function contentConfigure() {
     });
     chrome.storage.local.get(['liveBans'], function (items) {
         if (JSON.stringify(items) !== '{}') {
-            for (i in items.liveBans) {
+            for (let i in items.liveBans) {
                 $('ul#liveBanList').append(`<li class="mdui-list-item mdui-ripple" data-key=${i} style="cursor:default"><i class="mdui-list-item-icon mdui-icon material-icons liveBansItems" data-key=${i} style="cursor:pointer">delete</i><a href="https://live.acfun.cn/live/${i}" target="_blank"><i class="mdui-list-item-icon mdui-icon material-icons BanWatchOrig" data-key=${i} style="cursor:pointer">desktop_windows</i></a><div class="mdui-list-item-content">Uid:${i} UserName:${items.liveBans[i]}</div></li>`);
             }
             $('.liveBansItems').click(function () {
@@ -133,8 +133,8 @@ export async function contentConfigure() {
                 mdui.prompt('请输入你需要屏蔽的用户UID', '添加用户',
                     async function (value) {
                         if (!value == '') {
-                            var up_url = options.userInfo.replace('{uid}', value);
-                            for (i in items.liveFloowings) {
+                            var up_url = defaults.userInfo.replace('{uid}', value);
+                            for (let i in items.liveFloowings) {
                                 if (i == value) {
                                     var errN = 1;
                                     break
@@ -293,7 +293,7 @@ export async function contentConfigure() {
                 if (input_valid) {
                     //根据uid解析出up主姓名
                     $("body").mLoading("show");
-                    let up_url = options.userInfo.replace('{uid}', uid_input);
+                    let up_url = defaults.userInfo.replace('{uid}', uid_input);
                     var up_html_str;
                     try {
                         up_html_str = await ajax('GET', up_url);

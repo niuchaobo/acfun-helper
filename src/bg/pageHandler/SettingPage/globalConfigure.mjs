@@ -31,7 +31,7 @@ export async function globalConfigure() {
                     mdui.alert("文件格式不正确");
                     return;
                 }
-                for (i in jsonfy_config) {
+                for (let i in jsonfy_config) {
                     if (i != 'AcpushList') {
                         chrome.storage.local.set({ [i]: jsonfy_config[i] });
                     }
@@ -115,7 +115,7 @@ export async function globalConfigure() {
                             mdui.alert("认证信息格式不正确，请至少在主站登录并进入主站的稿件一次，或者说请不要伪造Cookie信息。");
                             return;
                         }
-                        for (i in jsonfy_config) {
+                        for (let i in jsonfy_config) {
                             chrome.storage.local.set({ [i]: jsonfy_config[i] });
                         }
                         notice("AcFun助手", "配置同步成功~");
