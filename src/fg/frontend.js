@@ -44,8 +44,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 
 
 		chrome.runtime.onMessage.addListener(this.MessageRouterFg.FrontendMessageSwitch.bind(this)); //接收来自后台的消息
-		window.addEventListener("message", this.MessageRouterFg.FrontendIframeMsgHandler.bind(this)); //接收来自iframe的消息
-		window.addEventListener("AcFunHelperFrontend", this.MessageRouterFg.FrontendMsgEventsHandler.bind(this, this.MessageRouterFg));
+		window.addEventListener("message", this.MessageRouterFg.FrontendMsgHandler.bind(this));
 
 		this.loading();
 		this.runtime.dataset.core.status.core = true;
@@ -82,12 +81,15 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		XHRProxyLib.src = chrome.runtime.getURL("common/xhr-proxy.js");
 		(document.head || document.documentElement).appendChild(XHRProxyLib);
 		XHRProxyLib.addEventListener("load", () => {
-			if (this.options.filter) {
+			if (this.options.xhrDrv) {
 				const xhrDriver = document.createElement("script");
 				xhrDriver.src = chrome.runtime.getURL("fg/acfunxhr.js");
+				xhrDriver.type = "module";
 				(document.head || document.documentElement).appendChild(xhrDriver);
-				xhrDriver.addEventListener('load', () => {
-					MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } });
+				xhrDriver.addEventListener('load', (e) => {
+					MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", source: "ARFP", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } });
+
+					this.block.injectScriptData();
 				});
 			}
 		});
@@ -157,8 +159,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		//添加自定义样式
 		this.addStyle();
 		this.options.Dev_thinScrollbar && this.pageBeautify.thinScrollBar();
-		//屏蔽功能
-		this.options.filter && this.block.injectScript();
 		if (!REG.live.test(href) && !REG.liveIndex.test(href)) {
 			//首页个人资料弹框 (未完成)
 			this.options.beautify_personal && getAsyncDom('#header .header-guide .guide-item', () => {

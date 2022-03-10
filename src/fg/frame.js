@@ -4,15 +4,15 @@ function getImageSource(id) {
 function downloadDanmaku() {
     alert("因为Api接口限制，可能弹幕下载不全。");
     window.parent.postMessage({
-        to: "AcFunHelper",
-        msg: { source: "frame-downloadDanmaku", target: "downloadDanmaku", InvkSetting: { type: "function" }, params: {} },
+        to: "AcFunHelperFrontend",
+        data: { source: "frame-downloadDanmaku", target: "downloadDanmaku", InvkSetting: { type: "function" }, params: {} },
     }, '*');
 }
 
 function playerTimeJumpUrlGenDiv(){
     window.parent.postMessage({
-        to: "AcFunHelper",
-        msg: { source: "frame-playerTimeJumpUrlGenDiv", target: "playerTimeJumpUrlGenDiv", InvkSetting: { type: "function" }, params: {} },
+        to: "AcFunHelperFrontend",
+        data: { source: "frame-playerTimeJumpUrlGenDiv", target: "playerTimeJumpUrlGenDiv", InvkSetting: { type: "function" }, params: {} },
     }, '*');
 }
 
@@ -23,8 +23,8 @@ function assDanmaku() {
         alert("因为Api接口限制，可能弹幕下载不全。");
         try {
             window.parent.postMessage({
-                to: "AcFunHelper",
-                msg: { source: "frame-assDanmaku", target: "assDanmaku", InvkSetting: { type: "function" }, params: {} },
+                to: "AcFunHelperFrontend",
+                data: { source: "frame-assDanmaku", target: "assDanmaku", InvkSetting: { type: "function" }, params: {} },
             }, '*');
         } catch (error) {
             alert("可能出现了某种错误。")
@@ -40,8 +40,8 @@ function registVideoClick() {
             const ds = e.currentTarget.dataset;
             if (ds.run == "true") {
                 window.parent.postMessage({
-                    to: "AcFunHelper",
-                    msg: {
+                    to: "AcFunHelperFrontend",
+                    data: {
                         source: "frame-registVideoClick", target: "notice",
                         InvkSetting: { type: "function", classicalParmParse: true }, params: {
                             title: '',
@@ -52,8 +52,8 @@ function registVideoClick() {
                 return;
             }
             window.parent.postMessage({
-                to: "AcFunHelper",
-                msg: {
+                to: "AcFunHelperFrontend",
+                data: {
                     source: "frame-registVideoClick", target: "download",
                     InvkSetting: { type: "function", classicalParmParse: true }, params: {
                         url: ds.url,
@@ -71,24 +71,24 @@ function registVideoClick() {
 function markChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
-        to: "AcFunHelper",
-        msg: { source: "frame-markChange", target: "mark", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
+        to: "AcFunHelperFrontend",
+        data: { source: "frame-markChange", target: "mark", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
     }, '*');
 }
 
 function scanChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
-        to: "AcFunHelper",
-        msg: { source: "frame-scanChange", target: "scan", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
+        to: "AcFunHelperFrontend",
+        data: { source: "frame-scanChange", target: "scan", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
     }, '*');
 }
 
 function readmodeChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
-        to: "AcFunHelper",
-        msg: { source: "frame-scanChange", target: "lightReadMode", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
+        to: "AcFunHelperFrontend",
+        data: { source: "frame-scanChange", target: "lightReadMode", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
     }, '*');
 }
 
@@ -118,8 +118,8 @@ function lottery() {
     }
     $('#lucy-chou').loading({ text: '请稍候', num: 3, rate: 1000, style: '.' });
     window.parent.postMessage({
-        to: "AcFunHelper",
-        msg: {
+        to: "AcFunHelperFrontend",
+        data: {
             source: "frame-scanChange", target: "lottery", InvkSetting: { type: "function", classicalParmParse: true }, params: {
                 number: number,
                 follow: isFollow
@@ -137,8 +137,8 @@ function lotteryAgain() {
     }
     $('#lucy-chouAgain').loading({ text: '请稍候', num: 3, rate: 1000, style: '.' });
     window.parent.postMessage({
-        to: "AcFunHelper",
-        msg: {
+        to: "AcFunHelperFrontend",
+        data: {
             source: "frame-scanChange", target: "lottery2nd", InvkSetting: { type: "function", classicalParmParse: true }, params: {
                 number: number,
                 follow: isFollow
@@ -208,8 +208,8 @@ function onDomContentLoaded() {
             document.execCommand("copy");
             document.body.removeChild(aux);
             window.parent.postMessage({
-                to: "AcFunHelper",
-                msg: { source: "frame-scanChange", target: "notice", 
+                to: "AcFunHelperFrontend",
+                data: { source: "frame-scanChange", target: "notice", 
                 InvkSetting: { type: "function", classicalParmParse: true }, params: {
                     title: 'AcFun助手',
                     msg: '下载地址复制到剪贴板。',

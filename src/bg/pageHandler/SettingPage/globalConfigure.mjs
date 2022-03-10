@@ -182,6 +182,13 @@ export async function globalConfigure() {
         });
     });
 
+    const xhrDrv = await ExtOptions.getValue("xhrDrv");
+    document.querySelector("#xhrDrv").checked = xhrDrv;
+    document.querySelector("#xhrDrv").addEventListener("click", () => {
+        ExtOptions.setValue("xhrDrv", document.querySelector("#xhrDrv").checked);
+    })
+
+
     //====================直播观看计时板===================
     chrome.storage.local.get(['LiveWatchTimeRec_popup'], function (items) {
         var LiveWatchTimeRec_popup = items.LiveWatchTimeRec_popup;

@@ -24,9 +24,8 @@ class LivePageButfy extends AcFunHelperFgFrame {
         let sc = document.createElement("script");
         sc.src = `${root}fg/modules/liveSettingInject.js`;
         document.head.appendChild(sc);
-        sc.onload = function () {
-            MessageSwitch.sendEventMsgToInject(window, { target: "LiveloadOptionData", source: "LivePageButfy", InvkSetting: { type: "function" }, params: { title: "optionData", msg: window.AcFunHelperFrontend.runtime.options } });
-            MessageSwitch.sendEventMsgToInject(window, { target: "enterPlayerAutomate", source: "LivePageButfy", InvkSetting: { type: "function" }, params: {} });
+        sc.onload = () => {
+            MessageSwitch.sendEventMsgToInject(window, { target: "AcFunHelperLiveFunction", source: "LivePageButfy", InvkSetting: { type: "function" }, params: { target: "onLoad", params: this.runtime.options } });
         };
         this.runtime.dataset.core.status.liveInject = true;
     }

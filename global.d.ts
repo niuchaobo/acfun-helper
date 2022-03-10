@@ -27,11 +27,6 @@ namespace MessageSwitchStructs {
        */
       tabId?: number | Array | undefined;
       /**
-       * @description 经典的参数分解方式
-       * @example const {url,method,postData} = params;
-       */
-      classicalParmParse?: boolean;
-      /**
        * @description 是否存在并携带了回调函数
        */
       withCallback?: boolean;
@@ -39,11 +34,12 @@ namespace MessageSwitchStructs {
        * @description 回调函数在回调暂存字典中的Id
        */
       callbackId?: number | string;
+      unsafe?: boolean;
     };
     /**
      * @description 参数
      */
-    params: object | Array | { target: string; params: object };
+    params: object | { target: string; params: object };
   }
   interface DedicatedLinkPayload extends CommonPayload {
     /**
@@ -60,15 +56,12 @@ namespace MessageSwitchStructs {
   }
   interface FgToInjectPayload extends CommonPayload {}
   interface WindowMsgPayload extends FgToInjectPayload {}
-  interface InjectRecievePayload extends Event {
-    detail: DedicatedLinkPayload;
-  }
   interface WindowMsgRespnse extends Event {
     data: WindowMsgRespnseInner;
   }
   interface WindowMsgRespnseInner {
     to: string | "background" | "sandbox";
-    msg: WindowMsgPayload;
+    data: WindowMsgPayload;
   }
   interface SandBoxPayload extends WindowMsgRespnseInner {}
 }
@@ -145,6 +138,10 @@ interface XHRDriverRegistry {
       injectedApi: number;
       modify: number;
     };
+    boundCount: {
+      pre: number;
+      post: number;
+    };
     registerdEvents: {
       deny: string[];
       requestRPC: string[];
@@ -215,7 +212,7 @@ interface runtimeData {
 interface runtimeDataFg {
   modules: string[];
   devMode: boolean;
-  options: {};
+  options: OptionStruct.DefaultStruct;
   href: null;
   dataset: {
     core: {

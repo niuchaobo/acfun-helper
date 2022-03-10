@@ -285,6 +285,11 @@ const acfunApis = {
         }
     },
     users: {
+        info: `https://www.acfun.cn/rest/pc-direct/user/userInfo`,
+        /**@returns {{"profile":APIs.UserInfo}} */
+        getUserInfo: async (uid) => {
+            return JSON.parse(await fetchResult(acfunApis.users.info + "?userId=" + uid));
+        },
         followings: `https://www.acfun.cn/rest/pc-direct/relation/getFollows`,
         /**@example page=1&count=20&action=8 */
         getFollowings: async (groupId = -1, page = 1, count = 20, action = 7) => {
@@ -373,10 +378,10 @@ const acfunApis = {
                 removeVideo: async (acid, folderId) => {
                     return JSON.parse(await fetchResult(acfunApis.users.favorites.video.remove, "POST", "resourceType=9&resourceId=" + acid + "&delFolderIds=" + folderId))
                 },
-                add:`https://www.acfun.cn/rest/pc-direct/favorite/resource/add`,
-                addVideo:async (acid,folderId)=>{
+                add: `https://www.acfun.cn/rest/pc-direct/favorite/resource/add`,
+                addVideo: async (acid, folderId) => {
                     return JSON.parse(await fetchResult(acfunApis.users.favorites.video.add, "POST", `resourceId=${acid}&resourceType=9&addFolderIds=${folderId}`))
-                }                
+                }
             },
             folder: {
                 add: `https://www.acfun.cn/rest/pc-direct/favorite/folder/add`,

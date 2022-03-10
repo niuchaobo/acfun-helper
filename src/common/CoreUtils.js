@@ -450,13 +450,11 @@ class GetAsyncDomUtil {
  * 通信模块
  * @param {"fg"|"bg"|"inject"|"iframe"} hostType 信源类型
  * @param {HTMLElement} hostElement 通信依托实体
- * @param {boolean} persistant 是否长连接
  * @description 打电话！
  */
 class MessageSwitch {
-    constructor(hostType = "bg", hostElement, persistant = false, portName = "", devMode = false) {
+    constructor(hostType = "bg", hostElement, devMode = false) {
         this.hostType = hostType;
-        this.isPersistant = persistant;
         this.devMode = devMode;
         switch (this.hostType) {
             case "fg":
@@ -476,28 +474,6 @@ class MessageSwitch {
                 this.hostElement = hostElement ?? document.querySelector("iframe").contentWindow;
                 break;
         }
-
-        if (this.isPersistant) {
-            /**
-             * @description 长连接端口名
-             * @type {String}
-             */
-            this.portName = portName ?? String((date.getMonth() + 1) + date.getDate() + date.getHours() + date.getMinutes());
-            this.connectionHandler = null;
-            switch (this.hostType) {
-                case "fg":
-                    break;
-                case "bg":
-                    this.eventId = 0;
-                    this.portsDict = {};
-                    this.portsNameList = [];
-                    //下面是用于日志的，不用日志就不需要
-                    this.connectionEvents = [];
-                    this.connectionEventsDict = {};
-                    break;
-            }
-        }
-
     }
 
     /**
@@ -517,9 +493,9 @@ class MessageSwitch {
                 responseRequire: sourceParam?.InvkSetting?.responseRequire ?? true,
                 asyncWarp: !!sourceParam?.InvkSetting?.asyncWarp,
                 tabId: sourceParam?.tabId,
-                classicalParmParse: sourceParam?.classicalParmParse ?? false,
                 withCallback: sourceParam.withCallback ?? false,
                 callbackId: sourceParam.withCallback == undefined ? false : sourceParam.callbackId,
+                unsafe: sourceParam.unsafe ?? false
             },
             params: sourceParam?.params ?? sourceParam?.param
         };
@@ -531,7 +507,7 @@ class MessageSwitch {
      * @param {Function} callback
      * @param {EventInit} injectMsgSetting
      */
-    InstantMsgSender(e, callback = {}, injectMsgSetting = {}) {
+    InstantMsgSender(e, callback = {}) {
         if (!e) { return false; }
         const paramSet = this.paramParse({ target: e.target, InvkSetting: e.InvkSetting, params: e.params });
         switch (this.hostType) {
@@ -558,42 +534,19 @@ class MessageSwitch {
                 break;
             case "inject":
                 //fg->inject
-                let newEvent = new CustomEvent(this.eventName, { "detail": e, "bubbles": injectMsgSetting.bubbles, "cancelable": injectMsgSetting.cancelable, "composed": injectMsgSetting.composed });
-                this.hostElement.dispatchEvent(newEvent);
+                globalThis.postMessage({
+                    to: "AcFunHelperInject",
+                    data: e,
+                }, "*");
+                // let newEvent = new CustomEvent(this.eventName, { "detail": e, "bubbles": injectMsgSetting.bubbles, "cancelable": injectMsgSetting.cancelable, "composed": injectMsgSetting.composed });
+                // this.hostElement.dispatchEvent(newEvent);
                 break;
         }
         return true;
     }
 
     /**
-     * 发送长连接的消息
-     * @param {"fg"|"bg"|"inject"|"iframe"} hostType 
-     * @param {MessageSwitchStructs.DedicatedLinkPayload} payload {source:string,target:string;InvkSetting: {type:"function"|"printMsg"|"subMod"|"method"|"echo";receipt:boolean;responseRequire:boolean;asyncWarp:boolean;tabId:number|Array|undefined;};params:{};}
-     */
-    connectMessage(hostType = 'fg', payload = {}, tabId = "") {
-        switch (hostType) {
-            case "bg":
-                tabId === "" ? console.warn("[Common-MessageSwitch > connectMessage]when in background,you send message to frontend tabs,you need set the tabId.") : ""
-                try {
-                    chrome.tabs.get(tabId, (e) => {
-                        if (e) {
-                            this.connectionHandler === null ? this.connectionHandler = chrome.tabs.connect(tabId, { name: this.portName }) : "";
-                            this.connectionHandler.postMessage({ payload: payload });
-                        }
-                    })
-                } catch (error) {
-                    console.warn("[Common-MessageSwitch > connectMessage]tabId is unvaliable")
-                }
-                break;
-            case "fg":
-                this.connectionHandler === null ? this.connectionHandler = chrome.runtime.connect({ name: this.portName }) : "";
-                this.connectionHandler.postMessage({ payload: payload });
-                break;
-        }
-    }
-
-    /**
-     * 前台消息处理机
+     * 前台消息处理
      * @param {MessageSwitchStructs.CommonPayload} request 
      * @param {MessageSender} sender 
      * @param {Function} callback 
@@ -602,11 +555,11 @@ class MessageSwitch {
     FrontendMessageSwitch(request, sender, callback) {
         this.devMode && console.log(request, sender, callback)
 
-        const { target, InvkSetting = {}, params = {} } = request;
+        const { target, InvkSetting, params } = request;
         let response;
         switch (InvkSetting?.type) {
             case "function":
-                const method = this["api_" + target];
+                const method = InvkSetting.unsafe ? this[target] : this["api_" + target];
                 if (typeof method === "function") {
                     if (!params) { params = {} }
                     params.callback = callback;
@@ -621,16 +574,16 @@ class MessageSwitch {
                 }
                 break;
             case "subMod":
-                const callTarget = window.AcFunHelperFrontend[target.mod];
-                if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
+                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["api_" + target.methodName];
+                if (typeof callTarget === "function") {
                     params.callback = callback;
                     if (InvkSetting["asyncWarp"]) {
-                        callTarget["api_" + target.methodName].call(this, params).then(resp => {
+                        callTarget.call(this, params).then(resp => {
                             callback(resp);
                         });
                         return true;
                     }
-                    response = callTarget["api_" + target.methodName].call(this, params);
+                    response = callTarget.call(this, params);
                     callback(response);
                 }
                 break;
@@ -663,255 +616,33 @@ class MessageSwitch {
     }
 
     /**
-     * 前台处理Inject和Fg双向的消息
-     * @param {MessageSwitch} _this
-     * @param {MessageSwitchStructs.FgToInjectPayload} request 
-     * @returns 
-     */
-    FrontendMsgEventsHandler(_this, request) {
-        this.devMode && console.log(request)
-
-        const { target, source, InvkSetting = {}, params = {} } = request.detail;
-        let response;
-        switch (InvkSetting?.type) {
-            case "function":
-                const method = this["api_" + target];
-                if (typeof method === "function") {
-                    if (InvkSetting["asyncWarp"]) {
-                        response = new Promise((resolve, reject) => {
-                            try {
-                                method.call(this, params).then(resp => {
-                                    resolve(resp);
-                                })
-                                response.status = true;
-                            } catch (error) {
-                                reject(error);
-                            }
-                        })
-                    }
-                    response = method.call(this, params);
-                }
-                break;
-            case "subMod":
-                const callTarget = window.AcFunHelperFrontend[target.mod];
-                if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
-                    params.callback = callback;
-                    if (InvkSetting["asyncWarp"]) {
-                        return Promise((resolve, reject) => {
-                            try {
-                                callTarget["api_" + target.methodName].call(this, params).then(resp => { resolve(resp) });
-                            } catch (error) {
-                                reject(error)
-                            }
-                        })
-                    }
-                    response = callTarget["api_" + target.methodName].call(this, params);
-                }
-                break;
-            case "printMsg":
-                let msg = "";
-                switch (typeof (params)) {
-                    case "object":
-                        msg = ToolBox.convertEverthingToStr(params);
-                        break;
-                    case "string":
-                        msg = params;
-                        break;
-                    default:
-                        msg = "你应该提供正确的参数，或者能打印出来的数据结构。";
-                        break;
-                }
-                fgConsole("", "MsgEventsHandler", `${source} > ${target} : ${msg}`, 1);
-                break;
-            default:
-                fgConsole("", "MsgEventsHandler", `${source} > ${target} : ${InvkSetting.type}`, 1);
-                break;
-        }
-        response && _this.sendEventMsgToInject(this.hostElement, { target: source, source: target, InvkSetting: {}, params: response })
-        return true;
-    }
-
-    /**
      * 前台与FgPopup通信处理
      * @param {MessageSwitchStructs.WindowMsgRespnse} e 
      */
-    FrontendIframeMsgHandler(e) {
-        if (!e.data || e.data.to != "AcFunHelper") {
+    FrontendMsgHandler(e) {
+        if (!e.data || e.data.to != "AcFunHelperFrontend") {
             return
         }
-        const { target, source, InvkSetting, params } = e.data.msg;
-        const method = this["api_" + target];
-        if (InvkSetting.type == "function" && typeof method === "function") {
-            if (InvkSetting.classicalParmParse) {
-                method.call(this, params);
-                return;
-            }
-            let paramList;
-            Array.isArray(params) ? paramList = paramList : paramList = Object.values(params);
-            method.apply(this, paramList);
-        } else {
-            fgConsole("", "FrontendIframeMsgHandler", `${source} > ${target} : ${InvkSetting.type}`, 1);
+        this.devMode && console.log(e)
+        const { target, source, InvkSetting, params } = e.data.data;
+        switch (InvkSetting.type) {
+            case "function":
+                const method = InvkSetting.unsafe ? this[target] : this["api_" + target];
+                if (typeof method === "function") {
+                    method.call(this, params);
+                    return;
+                }
+                break;
+            case "subMod":
+                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["api_" + target.methodName];
+                if (typeof callTarget === "function") {
+                    callTarget.call(this, params);
+                    return;
+                }
+            default:
+                fgConsole("", "FrontendMsgHandler", `${source} > ${target} : ${InvkSetting.type}`, 1);
+                break;
         }
-    }
-
-    /**
-     * 前台长连接处理机
-     * @returns 
-     */
-    FrontendDedicatedLink(_this, port) {
-        port.onMessage.addListener((msg) => {
-            const { target, source, InvkSetting = {}, params = {} } = msg.payload;
-            let response = {};
-            response.target = source;
-            response.source = _this.portName;
-            switch (InvkSetting?.type) {
-                case "function":
-                    const method = this["api_" + target];
-                    if (typeof method === "function") {
-                        response.status = false;
-                        if (InvkSetting["asyncWarp"]) {
-                            response.result = new Promise((resolve, reject) => {
-                                try {
-                                    method.call(this, params).then(resp => {
-                                        resolve(resp);
-                                    })
-                                    response.status = true;
-                                } catch (error) {
-                                    reject(error);
-                                }
-                            })
-                            return true;
-                        }
-                        response = method.call(this, params);
-                        if (response) {
-                            response.stat = true;
-                        }
-                    }
-                    break;
-                case "subMod":
-                    break;
-                case "echo":
-                    response.status = true;
-                    msg.payload["InvkSetting"].sender = port.sender.tab;
-                    response = msg.payload;
-                    break;
-                default:
-                    fgConsole("", "MessageSwitch", params, 1);
-                    break;
-            }
-
-        })
-        port.onDisconnect.addListener((signaling) => {
-            delete _this.MessageDedicatedLinkFg;
-        })
-    }
-
-    /**
-     * 后台长连接处理机
-     * @param {MessageSwitch} _this MessageSwitch实例化之后的长连接对象
-     * @param {string} port 端口对象
-     * @tutorial Fg:|1.this.MessageDedicatedLinkFg = new MessageSwitch('fg', null, true); 2.chrome.runtime.onConnect.addListener(this.MessageDedicatedLinkFg.FrontendDedicatedLink.bind(this, this.MessageDedicatedLinkFg)); 3.this.MessageDedicatedLinkFg.connectMessage('fg', { source: "fg", target: "bg", InvkSetting: { asyncWarp: true, responseRequire: true, type: "echo" },params:{} })
-     * @tutorial Bg:|1.this.MessageDedicatedSwitch = new MessageSwitch('bg', null, true, "AcFunHelperBackendDedicatedLink");2.chrome.runtime.onConnect.addListener(this.MessageDedicatedSwitch.BackgroundDedicatedLink.bind(this, this.MessageDedicatedSwitch));3.this.MessageDedicatedSwitch.connectMessage('bg', { source: "bg", target: "fg", InvkSetting: { asyncWarp: true, responseRequire: true, type: "echo" },params:{} },280)
-     */
-    BackgroundDedicatedLink(_this, port) {
-        this.devMode && console.log(port)
-        if (_this.portsNameList.indexOf(port.sender.tab.id) == -1) {
-            _this.portsNameList.push(port.sender.tab.id);
-            _this.portsDict[port.sender.tab.id] = port;
-        }
-        port.onMessage.addListener((msg) => {
-            this.devMode && console.log('收到长连接消息：', msg);
-
-            const { source = "", target = "", InvkSetting = {}, params = {} } = msg.payload;
-            /**
-             * @type {MessageSwitchStructs.DedicatedLinkResponse}
-             */
-            let response = {};
-            _this.eventId++;
-            response.target = source;
-            response.source = _this.portName;
-            response.eventId = _this.eventId;
-            switch (InvkSetting?.type) {
-                case "function":
-                    const method = this["api_" + target];
-                    if (typeof (method) === 'function') {
-                        if (InvkSetting["receipt"]) {
-                            params.tabid = port.sender.tab;
-                        }
-                        if (InvkSetting["responseRequire"]) {
-                            if (InvkSetting["asyncWarp"]) {
-                                response.status = false;
-                                response.result = new Promise((resolve, reject) => {
-                                    try {
-                                        method.call(this, params).then(resp => {
-                                            resolve(resp);
-                                        })
-                                        response.status = true;
-                                    } catch (error) {
-                                        reject(error);
-                                    }
-                                })
-                            } else {
-                                response.status = false;
-                                response.result = method.call(this, params);
-                                if (response.result) {
-                                    response.status = true;
-                                }
-                            }
-                        } else {
-                            method.call(this, params);
-                        }
-                    }
-                    break;
-                case "subMod":
-                    const callTarget = window.AcFunHelperBackend[target.mod];
-                    if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
-                        params.callback = callback;
-                        if (InvkSetting["asyncWarp"]) {
-                            callTarget["api_" + target.methodName].call(this, params).then(resp => {
-                                callback(resp);
-                            });
-                            return true;
-                        }
-                        response = callTarget["api_" + target.methodName].call(this, params);
-                        callback(response);
-                    }
-                    break;
-                case "echo":
-                    response.status = true;
-                    msg.payload["InvkSetting"].sender = port.sender.tab;
-                    response.result = msg;
-                case "method":
-                    const LocalMethod = MessageSwitch["method_" + target];
-                    response.status = false;
-                    if (typeof (LocalMethod) === 'function') {
-                        response.result = Promise((resolve, reject) => {
-                            LocalMethod.call(this, params).then(resp => {
-                                try {
-                                    response.status = true;
-                                    resolve(resp);
-
-                                } catch (error) {
-                                    resolve(error);
-                                }
-                            })
-                        })
-                    }
-                    break;
-                case "printMsg":
-                    console.log(`[${formatDate(new Date(), true)}]`, params);
-                    break;
-                default:
-                    console.log(`[${formatDate(new Date(), true)}]`, msg, sender);
-            }
-            port.postMessage(response);
-            return true;
-        })
-        port.onDisconnect.addListener((signaling) => {
-            delete _this.portsDict[port.sender.tab.id];
-            _this.portsNameList = Object.keys(_this.portsDict);
-            return true;
-        })
     }
 
     /**
@@ -924,10 +655,10 @@ class MessageSwitch {
     BackgroundMessageSwitch(request, sender, callback) {
         this.devMode && console.log(request, sender, callback)
 
-        const { target = "", InvkSetting = {}, params = {} } = request;
+        const { target = "", InvkSetting, params } = request;
         switch (InvkSetting?.type) {
             case "function":
-                const method = this["api_" + target];
+                const method = InvkSetting.unsafe ? this[target] : this["api_" + target];
                 if (typeof (method) === 'function') {
                     if (InvkSetting["receipt"]) {
                         //告知调用程序信源标签的tabID
@@ -954,16 +685,16 @@ class MessageSwitch {
                 }
                 break;
             case "subMod":
-                const callTarget = window.AcFunHelperBackend[target.mod];
-                if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
+                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["api_" + target.methodName];
+                if (typeof callTarget === "function") {
                     params.callback = callback;
                     if (InvkSetting["asyncWarp"]) {
-                        callTarget["api_" + target.methodName].call(this, params).then(resp => {
+                        callTarget.call(this, params).then(resp => {
                             callback(resp);
                         });
                         return true;
                     }
-                    response = callTarget["api_" + target.methodName].call(this, params);
+                    response = callTarget.call(this, params);
                     callback(response);
                 }
                 break;
@@ -1014,12 +745,12 @@ class MessageSwitch {
             return;
         }
         this.devMode && console.log(e);
-        const { target, source, InvkSetting, params } = e.data.msg;
+        const { target, source, InvkSetting, params } = e.data.data;
 
         let response;
         switch (InvkSetting?.type) {
             case "function":
-                const method = this["api_" + target];
+                const method = InvkSetting.unsafe ? this[target] : this["api_" + target];
                 if (typeof method === "function") {
                     if (InvkSetting["asyncWarp"]) {
                         response = new Promise((resolve, reject) => {
@@ -1037,26 +768,26 @@ class MessageSwitch {
                 }
                 break;
             case "subMod":
-                const callTarget = window.AcFunHelperBackend[target.mod];
-                if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
+                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["api_" + target.methodName];
+                if (typeof callTarget === "function") {
                     params.callback = callback;
                     if (InvkSetting["asyncWarp"]) {
                         return Promise((resolve, reject) => {
                             try {
-                                callTarget["api_" + target.methodName].call(this, params).then(resp => { resolve(resp) });
+                                callTarget.call(this, params).then(resp => { resolve(resp) });
                             } catch (error) {
                                 reject(error)
                             }
                         })
                     }
-                    response = callTarget["api_" + target.methodName].call(this, params);
+                    response = callTarget.call(this, params);
                 }
                 break;
             case "printMsg":
                 console.log(`Sandbox:[${formatDate(new Date(), true)}]`, `${source} > ${target}`, params);
                 break;
             default:
-                console.log(`Sandbox:[${formatDate(new Date(), true)}]`, e.data.msg);
+                console.log(`Sandbox:[${formatDate(new Date(), true)}]`, e.data.data);
         }
     }
 
@@ -1068,13 +799,13 @@ class MessageSwitch {
         if (e.data.to != "sandbox") {
             return;
         }
-        const { target, source, InvkSetting, params } = e.data.msg;
+        const { target, source, InvkSetting, params } = e.data.data;
         this.devMode && console.log(e);
 
         let response;
         switch (InvkSetting?.type) {
             case "function":
-                const method = this["unsafe_" + target];
+                const method = InvkSetting.unsafe ? this[target] : this["unsafe_" + target];
                 if (typeof method === "function") {
                     if (InvkSetting["asyncWarp"]) {
                         response = new Promise((resolve, reject) => {
@@ -1092,10 +823,10 @@ class MessageSwitch {
                 }
                 break;
             default:
-                console.log(`SandboxInner:[${formatDate(new Date(), true)}]`, e.data.msg);
+                console.log(`SandboxInner:[${formatDate(new Date(), true)}]`, e.data.data);
         }
         if (response != (undefined || null)) {
-            this.sandboxAgent.taskFinished(e.data.msg, response);
+            this.sandboxAgent.taskFinished(e.data.data, response);
         }
     }
 
@@ -1106,7 +837,7 @@ class MessageSwitch {
      */
     SandboxComAgent(e) {
         if (e.data.to == "sandboxAgentCallback") {
-            this.runCallback(e.data.msg)
+            this.runCallback(e.data.data)
         }
     }
 
@@ -1124,12 +855,12 @@ class MessageSwitch {
      * Fg发送消息给Inject
      * @param {HTMLElement} hostElem
      * @param {MessageSwitchStructs.CommonPayload} payload 
-     * @example MessageSwitch.sendEventMsgToInject(window,{target:"notice",source:"console",InvkSetting:{type:"function"},params:{title:"233",msg:"莫老板今天出门儿"}})
+     * @example MessageSwitch.sendEventMsgToInject(window,{target:"notice",source:"console",InvkSetting:{type:"function"},params:{title:"233",data:"莫老板今天出门儿"}})
      * @alias sendMsgFromSubmodToFg()
      */
-    static sendEventMsgToInject(hostElem, payload, bubbles = false, cancelable = false, composed = false) {
-        let inst = new MessageSwitch('inject', hostElem, false, "", false);
-        return inst.InstantMsgSender(payload, null, { bubbles: bubbles, cancelable: cancelable, composed: composed });
+    static sendEventMsgToInject(hostElem, payload) {
+        let inst = new MessageSwitch('inject', hostElem, false);
+        return inst.InstantMsgSender(payload, null);
     }
 
     /**
@@ -1274,7 +1005,6 @@ class CookiesUtils {
         for (let i in raw) {
             result += i + "=" + raw[i] + "; ";
         }
-        console.log(result);
         return result;
     }
 

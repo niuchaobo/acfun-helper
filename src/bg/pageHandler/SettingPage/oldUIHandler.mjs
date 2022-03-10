@@ -98,35 +98,6 @@ export async function OldUIHandler() {
         $("#" + id).siblings().attr('src', 'images/unselected.png');
     }
 
-    function filterUi() {
-        if (filter) {
-            $('#filter-switch').addClass('switch-close').attr('src', 'images/on.png');
-            $('.div-filter-switch').css('background', '#fff');
-            $('#filter-switch-l p').css('color', '#333');
-            $('.div-filter-switch h3').css('color', '#333');
-
-            $(".div-filter-list").css('background', '#fff');
-            $('.div-filter-list td').css('color', '#333');
-            $('.div-filter-list .site a').removeClass('text-closed');
-            $('.div-filter-list .site-name a').removeClass('text-closed');
-            $('.div-filter-list .filter-remove').removeClass('text-closed');
-            $('#filter-add').removeClass('text-closed');
-        } else {
-            $('#filter-switch').addClass('switch-open').attr('src', 'images/off.png');
-            $('.div-filter-switch').css('background', '#ededed');
-            $('#filter-switch-l p').css('color', '#ccc');
-            $('.div-filter-switch h3').css('color', '#ccc');
-
-            $(".div-filter-list").css('background', '#ededed');
-            $('.div-filter-list td').css('color', '#ccc');
-            $('.div-filter-list .site a').addClass('text-closed');
-            $('.div-filter-list .site-name a').addClass('text-closed');
-            $('.div-filter-list .filter-remove').addClass('text-closed');
-            $('#filter-add').addClass('text-closed');
-        }
-
-    }
-
     function playModeUi() {
         let id = "mode_" + player_mode;
         $("#" + id).attr('src', 'images/selected.png');
@@ -143,8 +114,6 @@ export async function OldUIHandler() {
     let scan
     let upHighlight
     let scanUserMap
-    let filter
-    let filterUps
     let beautify_nav
     let beautify_personal
     let custom_rate
@@ -161,8 +130,6 @@ export async function OldUIHandler() {
         scan = options['scan'];
         upHighlight = options['upHighlight'];
         scanUserMap = ExtOptions.userMarkMap(items);
-        filter = options['filter'];
-        filterUps = ExtOptions.upFilterMap(items);
         beautify_nav = options['beautify_nav'];
         beautify_personal = options['beautify_personal'];
         custom_rate = options['custom_rate'];
@@ -231,35 +198,6 @@ export async function OldUIHandler() {
                   <td class="custom-nothing">无</td>\
                 </tr>');
         }
-
-        if (filterUps && filterUps.size > 0) {
-            $('#filter-ups').addClass('table-custom-padding');
-            filterUps.forEach(function (value, key) {
-                let userId = key.replace("FILTER_", "");
-                let user_home = options.upUrlTemplate.replace("{uid}", userId);
-                $('#filter-ups').append('\
-                <tr class="site-tr">\
-                    <td style="width: 200px;" class="site"><a href="' + user_home + '" target="_blank">' + userId + '</a></td>\
-                    <td class="site-name"><a href="' + user_home + '" target="_blank">' + value.name + '</a></td>\
-                    <td class="site-remove"><span href="#" data-key="'+ key + '" class="filter-remove">移除</span></td>\
-                </tr>');
-            })
-            $('.filter-remove').click(function () {
-                if (filter) {
-                    let key = $(this).data("key");
-                    $(this).parent().parent().remove();
-                    chrome.storage.local.remove(key, function () {
-                        //do something
-                    });
-                }
-            });
-        } else {
-            $('#filter-ups').append('\
-                <tr id="filter-blank">\
-                  <td class="custom-nothing">无</td>\
-                </tr>');
-        }
-        filterUi()
     });
 
     $('#switch').click(function () {

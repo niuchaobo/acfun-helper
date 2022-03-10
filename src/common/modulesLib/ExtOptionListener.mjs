@@ -34,7 +34,6 @@ export class ExtOptionListener {
         //兴趣键列表 和 兴趣键-回调名映射
         this.interestList.push(interstOptionName);
         if (this.interestCallMap[interstOptionName] == undefined) {
-            console.log(this.interestCallMap, this.interestCallMap[interstOptionName] == undefined);
             this.interestCallMap[interstOptionName] = new Array();
             this.interestCallMap[interstOptionName].push(callbackName);
         } else {

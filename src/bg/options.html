@@ -471,50 +471,73 @@
 
             <div class="mdui-panel" mdui-panel>
 
-                <div class="mdui-panel-item mdui-panel-item-open devFeature">
+                <div class="mdui-panel-item mdui-panel-item-open">
                     <div class="mdui-panel-item-header">
-                        <div class="mdui-panel-item-title">屏蔽指定Up的内容</div>
+                        <div class="mdui-panel-item-title">屏蔽评论</div>
                         <div class="mdui-panel-item-summary">我不喜欢你说的</div>
                         <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                     <div class="mdui-panel-item-body">
-                        <div class="div-filter-switch" style="margin-top: 0px">
-                            <h3>开启Up主屏蔽</h3>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td id="filter-switch-l">
-                                            <p style="color: rgb(204, 204, 204);">
-                                                开启之后，将看不到以下Up主的文章
-                                            </p>
-                                        </td>
-                                        <td id="filter-switch-r">
-                                            <img src="images/off.png" class="switch-open switch-close"
-                                                id="filter-switch">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>评论屏蔽列表（请先打开 高级设置-插件前台-请求管理）</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6"><button
+                                                    class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple"
+                                                    id="commentBanAdd"><i
+                                                        class="mdui-icon material-icons">add</i></button>添加屏蔽用户</div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="commentBan" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="mdui-list" id="commentBanList">
+                                </ul>
+                            </div>
                         </div>
 
-
-                        <div class="div-filter-list" style="margin-top: 0px">
-                            <table class="table custom-head">
-                                <tbody>
-                                    <tr>
-                                        <td id="filter-add-text" class="">
-                                            已屏蔽Up主
-                                        </td>
-                                        <td>
-                                            <span id="filter-add" class="">+ 添加Up主</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table id="filter-ups" class="table-custom table-custom-padding wordcontent">
-
-                            </table>
+                        <div class="mdui-panel-item-actions">
+                            <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
+                            <button class="mdui-btn mdui-ripple">保存</button>
                         </div>
+                    </div>
+                </div>
+
+                <div class="mdui-panel-item mdui-panel-item-open">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">文章子分区Up屏蔽</div>
+                        <div class="mdui-panel-item-summary">我不喜欢你发的</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>屏蔽列表（请先打开 高级设置-插件前台-请求管理）</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6"><button
+                                                    class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple"
+                                                    id="articleBanAdd"><i
+                                                        class="mdui-icon material-icons">add</i></button>添加屏蔽用户</div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
+                                                    <input id="articleBan" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="mdui-list" id="articleBanList">
+                                </ul>
+                            </div>
+                        </div>
+
                         <div class="mdui-panel-item-actions">
                             <button class="mdui-btn mdui-ripple" mdui-panel-item-close>取消</button>
                             <button class="mdui-btn mdui-ripple">保存</button>
@@ -623,10 +646,10 @@
 
                         <div class="mdui-chip">
                             <span class="mdui-chip-title">这些功能，均需要开启 助手设置-高级设置-插件核心配置-推送消息轮询 开关。</span>
-                          </div>
+                        </div>
                         <div class="mdui-chip">
                             <span class="mdui-chip-title">此功能会自动去收取未读信息箱中的内容，会导致通知计数的改变。</span>
-                          </div>
+                        </div>
 
                     </div>
                 </div>
@@ -1055,7 +1078,9 @@
                                         <h3>批量操作关注Up</h3>
                                         <div class="mdui-row">
                                             <div class="mdui-col-xs-8 mdui-col-sm-6">
-                                                <p>在<a href="https://www.acfun.cn/member/feeds/following" target="_blank">个人中心</a>关注的Up条目空白处点击，出现紫色边框之后选定，可以点击批量取关，或者切换到目的分组之后点击批量移动分组将Up移动到所在分组</p>
+                                                <p>在<a href="https://www.acfun.cn/member/feeds/following"
+                                                        target="_blank">个人中心</a>关注的Up条目空白处点击，出现紫色边框之后选定，可以点击批量取关，或者切换到目的分组之后点击批量移动分组将Up移动到所在分组
+                                                </p>
                                             </div>
                                             <div class="mdui-col-xs-4 mdui-col-sm-6"><label class="mdui-switch">
                                                     <input id="userBatchManage" type="checkbox" />开关
@@ -1153,6 +1178,26 @@
                                                     <input id="livePlayerEnhc" type="checkbox" />开关
                                                     <i class="mdui-switch-icon"></i>
                                                 </label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-col-xs-9">
+                                    <h3>播放器默认模式</h3>
+                                    <div class="mdui-row">
+                                        <div class="mdui-col-xs-8 mdui-col-sm-6">选择播放器默认模式</div>
+                                        <div class="mdui-col-xs-4 mdui-col-sm-6">
+                                            <select id="liveplayer_mode" class="mdui-select"
+                                                mdui-select="{position: 'top'}">
+                                                <option value="default">默认</option>
+                                                <option value="webfull">网页全屏</option>
+                                                <option value="film">观影模式</option>
+                                                <option value="wide">助手宽屏</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1342,10 +1387,12 @@
                                     <select id="videoQualityStrategy" class="mdui-select"
                                         mdui-select="{position: 'top'}">
                                         <option value="0">0 - 自动</option>
-                                        <option value="1">1 - 默认最高</option>
+                                        <option value="1">1 - 默认最高画质</option>
                                         <option value="2">2 - 偏向非60帧的最高画质</option>
                                         <option value="3">3 - 默认最低</option>
                                         <option value="4">4 - 偏向非4k的最高画质</option>
+                                        <option value="5">5 - 支持HDR的最低画质</option>
+                                        <option value="6">6 - 仅偏好1080下的60帧画质</option>
                                     </select>
                                 </div>
                             </div>
@@ -1388,7 +1435,8 @@
                                 <h2>弹幕列表发送用户跳转</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">可以在弹幕列表中的弹幕条目的操作菜单按钮旁加入一个(⌂ 像房子一样)按钮快速跳转至发送用户页面
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">可以在弹幕列表中的弹幕条目的操作菜单按钮旁加入一个(⌂
+                                    像房子一样)按钮快速跳转至发送用户页面
                                 </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
@@ -1437,7 +1485,8 @@
                                 <h2>视频帧步进</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">在视频页面，使用Shift+A or Shift+D来一帧一帧地调整视频进度。</div>
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在视频页面，使用Shift+A or Shift+D来一帧一帧地调整视频进度。
+                                </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="frameStepSetting" type="checkbox" />
@@ -1453,7 +1502,8 @@
                                 <h2>播放器视频帧步进菜单</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器中添加一个菜单，用以控制视频以一帧一帧前进后退。（首先要打开视频帧步进开关）</div>
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器中添加一个菜单，用以控制视频以一帧一帧前进后退。（首先要打开视频帧步进开关）
+                                </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="frameStepUI" type="checkbox" />
@@ -1493,7 +1543,8 @@
                                             maxlength="9" />
                                         <div class="mdui-textfield-error">输入十六进制颜色值：#fd4c5d</div>
                                         <div class="mdui-textfield-helper">请输入十六进制颜色值 <a
-                                                href="http://www.whx.me/color/index.html" target="_blank">取色器</a></div>
+                                                href="http://www.whx.me/color/index.html" target="_blank">取色器</a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
@@ -1614,7 +1665,8 @@
                                 <h2>播放结束自动退出全屏</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">在全屏（观影模式和网页全屏）下，视频结束时退出全屏模式（并且没有开启洗脑循环）</div>
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在全屏（观影模式和网页全屏）下，视频结束时退出全屏模式（并且没有开启洗脑循环）
+                                </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="endedAutoExitFullscreensw" type="checkbox" />
@@ -1678,7 +1730,8 @@
                                 <h2>隐藏弹幕快捷操作-遮罩隔离弹幕</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器上增加一层遮罩，防止鼠标接触到弹幕使其暂停滚动（这样会使得点击画面暂停失效）</div>
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在播放器上增加一层遮罩，防止鼠标接触到弹幕使其暂停滚动（这样会使得点击画面暂停失效）
+                                </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="hideDanmakuOperatorMaskSw" type="checkbox" />
@@ -1758,7 +1811,8 @@
                                 <h2>观影模式关灯适配暗色</h2>
                             </div>
                             <div class="mdui-row">
-                                <div class="mdui-col-xs-8 mdui-col-sm-6">在进入观影模式时，匹配页面暗色模式（部分元素使用反色，若不适应请关闭此选项）</div>
+                                <div class="mdui-col-xs-8 mdui-col-sm-6">在进入观影模式时，匹配页面暗色模式（部分元素使用反色，若不适应请关闭此选项）
+                                </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="FilmModeExclusionsw" type="checkbox" />
@@ -1816,7 +1870,8 @@
                             <div class="mdui-row">
                                 <div class="mdui-col-xs-8 mdui-col-sm-6">
                                     选中评论中的带有时间标记和内容文本右键执行“在时间轴上添加这些章节标记”之后，将会在时间轴上添加对应的点（将鼠标指针移动其上可查看其描述），以标记其对应的内容。<br>测试地址：<a
-                                        href="https://www.acfun.cn/v/ac24325439_2" target="blank">[2021年Ac春晚]</a></div>
+                                        href="https://www.acfun.cn/v/ac24325439_2" target="blank">[2021年Ac春晚]</a>
+                                </div>
                                 <div class="mdui-col-xs-4 mdui-col-sm-6">
                                     <div class="mdui-col-xs-4 mdui-col-sm-6"> <label class="mdui-switch">
                                             <input id="timelineDots" type="checkbox" />
@@ -2006,6 +2061,27 @@
                                             <div class="mdui-col-xs-4 mdui-col-sm-6">
                                                 <label class="mdui-switch">
                                                     <input id="timer4Unread_daemonsw" type="checkbox" />开关
+                                                    <i class="mdui-switch-icon"></i>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mdui-container-fluid">
+                            <div class="mdui-row">
+                                <div class="mdui-row">
+                                    <div class="mdui-col-xs-9">
+                                        <h3>插件前台-请求管理</h3>
+                                        <div class="mdui-row">
+                                            <div class="mdui-col-xs-8 mdui-col-sm-6">
+                                                <p>允许助手管理前台请求</p>
+                                            </div>
+                                            <div class="mdui-col-xs-4 mdui-col-sm-6">
+                                                <label class="mdui-switch">
+                                                    <input id="xhrDrv" type="checkbox" />开关
                                                     <i class="mdui-switch-icon"></i>
                                                 </label>
                                             </div>
@@ -2274,4 +2350,5 @@
 
 </body>
 <script src="lib/purify.min.js"></script>
+
 </html>

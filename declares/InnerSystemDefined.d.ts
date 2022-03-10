@@ -106,6 +106,8 @@ declare namespace OptionStruct {
     userInfo: string;
     banana_notice: boolean;
     watchLater: boolean;
+    CommentFilter: Map<number, string>;
+    commentFilterSw: boolean;
     fetchPushList_daemonsw: boolean;
     timer4Unread_daemonsw: boolean;
     krnl_videossEarly: boolean;

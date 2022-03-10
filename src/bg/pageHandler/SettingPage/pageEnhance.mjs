@@ -480,4 +480,12 @@ export async function pageEnhance() {
         });
     });
 
+    const liveplayer_mode = await ExtOptions.getValue("liveplayer_mode");
+    const liveplayer_modeIndex = ["default", "webfull", "film", "wide"].indexOf(liveplayer_mode);
+    document.querySelector("#liveplayer_mode").parentElement.children[1].children[1].children[liveplayer_modeIndex].click();
+    $('#liveplayer_mode').on('close.mdui.select', function () {
+        var inst = new mdui.Select('#liveplayer_mode');
+        ExtOptions.setValue("liveplayer_mode", inst.value);
+    });
+
 }

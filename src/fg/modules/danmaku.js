@@ -46,6 +46,9 @@ class Danmaku extends AcFunHelperFgFrame {
      * @refer UTF8 to UTF8-BOM参考：https://www.itranslater.com/qa/details/2583765774754120704
      */
     async assDanmakuProcess(danmakuRes, danmakuLength, videoInfo) {
+        if (danmakuRes || danmakuRes.length == 0) {
+            alert("弹幕空空。")
+        }
         let thisVideoQuality = document.querySelector(".control-btn.quality").children[0].innerText.toLowerCase();
         this.thisVideoQuality = thisVideoQuality;
         let fontsize = Number(danmakuRes[0].size) + 15;
@@ -301,7 +304,6 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
                             window.AcFunHelperFrontend.danmaku.cc.trackUrl = trackUrl;
                             const trackElem = document.createElement("track");
 
-                            console.log(trackUrl, trackElem);
                             trackElem.id = "achp-cctexttrack";
                             trackElem.kind = "subtitles";
                             trackElem.srclang = "zh";
@@ -342,7 +344,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
             }
 
             menuItem.addEventHandler(enableCC, disableCC);
-        },)
+        })
 
     }
 

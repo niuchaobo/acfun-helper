@@ -17,7 +17,6 @@ class FunctionalUrlParam extends AcFunHelperFgFrame {
         let extFunctionalParams = null;
         if (hashData && /acfunhelper=/.test(hashData)) {
             extFunctionalParams = JSON.parse(/#acfunhelper=(.*)|#/.exec(hashData)[1]);
-            console.log(extFunctionalParams)
             for (let e of Object.keys(extFunctionalParams)) {
                 this.reactors[e](extFunctionalParams[e]);
             }
