@@ -26,6 +26,11 @@ class VideoInject {
                     this[payload.params.target](payload.params.params);
                 }
                 break;
+            case "method":
+                if (typeof (VideoInject[payload.params.target]) == "function") {
+                    VideoInject[payload.params.target](payload.params.params);
+                }
+                break;
             default:
                 VideoInject.MessagePush({
                     target: "",
@@ -103,6 +108,17 @@ class VideoInject {
     }
 
     exitAtEnd() {
+        const exitModes = () => {
+            window.player.emit("filmModeChanged", false);
+            window.player.emit("fullScreenChange", false);
+
+            if (this.options.endedAutoToCommentArea) {
+                _thisTimer = setTimeout(e => {
+                    document.querySelector("#to-comm").click();
+                    clearTimeout(_thisTimer);
+                }, 435);
+            }
+        }
         if (this.options.endedAutoExitFullscreensw) {
             //自动退出观影模式、网页全屏
             try {
@@ -116,26 +132,10 @@ class VideoInject {
                         if (!window.player._loop && nowMode) {
                             if (isMultiPart) {
                                 if (document.querySelector(".control-checkbox").dataset.bindAttr == "false") {
-                                    window.player.emit("filmModeChanged", false);
-                                    window.player.emit("fullScreenChange", false);
-
-                                    if (options.endedAutoToCommentArea) {
-                                        _thisTimer = setTimeout(e => {
-                                            document.querySelector("#to-comm").click();
-                                            clearTimeout(_thisTimer);
-                                        }, 435);
-                                    }
+                                    exitModes()
                                 }
                             } else {
-                                window.player.emit("filmModeChanged", false);
-                                window.player.emit("fullScreenChange", false);
-
-                                if (options.endedAutoToCommentArea) {
-                                    _thisTimer = setTimeout(e => {
-                                        document.querySelector("#to-comm").click();
-                                        clearTimeout(_thisTimer);
-                                    }, 435);
-                                }
+                                exitModes()
                             }
                         }
                     });

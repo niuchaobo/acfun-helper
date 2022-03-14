@@ -141,6 +141,9 @@ const REG = {
 
   },
 }
+const ARFPModsConfName = [
+  "filter", "commentFilterSw"
+]
 
 const indexdbArch = {
   "acfunhelper": {

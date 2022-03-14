@@ -37,6 +37,7 @@ class AcFunHelperBgFrame {
         }
         /**@type {runtimeData} */
         this.runtime = globalThis.runtimeData;
+        this.devMode = false;
     }
 }
 
@@ -87,5 +88,6 @@ class AcFunHelperFgFrame {
         }
         /**@type {runtimeDataFg} */
         this.runtime = globalThis.runtimeData;
+        this.devMode = false;
     }
 }

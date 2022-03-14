@@ -28,6 +28,11 @@ class LiveFunction {
                     this[payload.params.target](payload.params.params);
                 }
                 break;
+            case "method":
+                if (typeof (VideoInject[payload.params.target]) == "function") {
+                    VideoInject[payload.params.target](payload.params.params);
+                }
+                break;
             default:
                 InjectXHRDriver.MessagePush({
                     target: "",
@@ -90,7 +95,7 @@ class LiveFunction {
         }, 2000);
     }
 
-    setPictureInPictureMode() {
+    static setPictureInPictureMode() {
         let v = document.getElementsByTagName("video")[0];
         document.pictureInPictureElement ? document.exitPictureInPicture() : v.requestPictureInPicture();
     }

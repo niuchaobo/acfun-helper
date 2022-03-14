@@ -497,7 +497,7 @@ class MessageSwitch {
                 callbackId: sourceParam.withCallback == undefined ? false : sourceParam.callbackId,
                 unsafe: sourceParam.unsafe ?? false
             },
-            params: sourceParam?.params ?? sourceParam?.param
+            params: sourceParam?.params ?? {}
         };
     }
 
@@ -1659,11 +1659,3 @@ class ExtOptions {
     }
 
 }
-
-// let x = new DOMObserver(document.querySelector(".Topstory-container"), function (e) { console.log(e) }, true)
-// x.configSet(true, true, true, true, [], true, true)
-// x.createObserver()
-// x.disconnect(document.querySelector(".Topstory-container"))
-
-// MessageSwitch.parseParmNow({ target: "test", InvkSetting: { async: true }, params: { x: 1 } })
-// MessageSwitch.sendMessage('fg', { target: "test", InvkSetting: { async: true ,tabId:[688]}, params: { x: 1 } })

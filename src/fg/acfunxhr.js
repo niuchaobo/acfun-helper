@@ -54,6 +54,11 @@ class InjectXHRDriver {
                     this[payload.params.target](payload.params.params);
                 }
                 break;
+            case "method":
+                if (typeof (VideoInject[payload.params.target]) == "function") {
+                    VideoInject[payload.params.target](payload.params.params);
+                }
+                break;
             default:
                 InjectXHRDriver.MessagePush({
                     target: "",

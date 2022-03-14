@@ -7,6 +7,9 @@ sidebar_position: 3
 ## Edge Chromium 浏览器
     商店：
     手动：
+## Firefox 浏览器
+    商店：
+    手动：
 ## Google Chrome 浏览器
     商店：
     手动：

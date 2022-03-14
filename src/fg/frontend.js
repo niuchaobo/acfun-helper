@@ -86,10 +86,13 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 				xhrDriver.src = chrome.runtime.getURL("fg/acfunxhr.js");
 				xhrDriver.type = "module";
 				(document.head || document.documentElement).appendChild(xhrDriver);
-				xhrDriver.addEventListener('load', (e) => {
-					MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", source: "ARFP", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } });
-
-					this.block.injectScriptData();
+				xhrDriver.addEventListener('load', async () => {
+					let ARFPModsConf = [];
+					ARFPModsConfName.forEach(async e => ARFPModsConf.push(await ExtOptions.getValue(e)));
+					ARFPModsConf.some(e => e == true) && (
+						MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", source: "ARFP", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } }),
+						this.block.injectScriptData()
+					)
 				});
 			}
 		});
@@ -478,7 +481,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			aux.select();
 			document.execCommand("copy");
 			document.body.removeChild(aux);
-			MessageSwitch.sendMessage('fg', { target: "notice", params: { title: "播放器时间跳转链接", msg: "跳转到现在播放时间的链接已经复制到剪贴板了。", }, InvkSetting: { type: "function" } })
+			LeftBottomNotif("跳转到现在播放时间的链接已经复制到剪贴板了。")
 		}
 	}
 	api_assDanmaku() {

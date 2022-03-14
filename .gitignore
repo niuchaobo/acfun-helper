@@ -32,6 +32,9 @@ package-lock.json
 *.pem
 src/.DS_Store
 
+# vim tempfile ignore
+*.*~
+
 # custom rule
 *.devig.*
 devig/

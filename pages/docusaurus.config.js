@@ -57,8 +57,8 @@ const config = {
           },
           { to: '/blog', label: 'Blog', position: 'left' },
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
+            href: 'https://gitlab.com/Sokwva/acfun-helper/-/tree/master/pages',
+            label: 'Gitlab Pages',
             position: 'right',
           },
         ],
@@ -94,6 +94,18 @@ const config = {
               {
                 label: 'Blog',
                 to: '/blog',
+              },
+              {
+                label: '主仓库',
+                to: 'https://github.com/niuchaobo/acfun-helper',
+              },
+              {
+                label: 'GitLab仓库 <Gitlab Pages>',
+                to: 'https://gitlab.com/Sokwva/acfun-helper',
+              },
+              {
+                label: '国内Gitee仓库 <version check API>',
+                to: 'https://gitee.com/sokwva/acfun-helper',
               },
             ],
           },

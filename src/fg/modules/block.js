@@ -11,9 +11,8 @@ class Block extends AcFunHelperFgFrame {
     injectScriptData() {
         let bannedUpsArr = Object.keys(this.runtime.options.UserFilter);
         let bannedCommentUiArr = Object.keys(this.runtime.options.CommentFilter);
-        this.runtime.options.commentFilterSw && MessageSwitch.sendEventMsgToInject(window, { target: "AcFunHelperFrontendXHRDriver", "InvkSetting": { "type": "function" }, "params": { params: { k: "commentAreaBanUsersId", v: bannedCommentUiArr }, target: "addData" }, source: "ARFP" });
-        this.runtime.options.filter && MessageSwitch.sendEventMsgToInject(window, { target: "AcFunHelperFrontendXHRDriver", "InvkSetting": { "type": "function" }, "params": { params: { k: "articleFilterUsersUid", v: bannedUpsArr }, target: "addData" }, source: "ARFP" });
-
+        this.runtime.options.commentFilterSw && MessageSwitch.sendEventMsgToInject(window, { target: "AcFunHelperFrontendXHRDriver", InvkSetting: { "type": "function" }, params: { params: { k: "commentAreaBanUsersId", v: bannedCommentUiArr }, target: "addData" }, source: "ARFP" });
+        this.runtime.options.filter && MessageSwitch.sendEventMsgToInject(window, { target: "AcFunHelperFrontendXHRDriver", InvkSetting: { "type": "function" }, params: { params: { k: "articleFilterUsersUid", v: bannedUpsArr }, target: "addData" }, source: "ARFP" });
     }
 
     //页面所有元素加载完成之后通过修改页面元素的方式过滤文章

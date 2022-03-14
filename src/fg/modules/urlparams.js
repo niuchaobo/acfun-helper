@@ -5,7 +5,7 @@ class FunctionalUrlParam extends AcFunHelperFgFrame {
         this.reactors = {
             jump: e => {
                 getAsyncDom(".ac-pc-comment", () => {
-                    typeof (e) == 'string' && MessageSwitch.sendEventMsgToInject(window, { target: "quickJump", source: "FunctionalUrlParam", InvkSetting: { type: "function" }, params: e });
+                    typeof (e) == 'string' && MessageSwitch.sendEventMsgToInject(window, { target: "VideoInject", source: "FunctionalUrlParam", InvkSetting: { type: "method" }, params: { target: "quickJump", params: e } });
                 })
             }
         }
@@ -16,7 +16,7 @@ class FunctionalUrlParam extends AcFunHelperFgFrame {
         const hashData = decodeURI(globalThis.location.hash);
         let extFunctionalParams = null;
         if (hashData && /acfunhelper=/.test(hashData)) {
-            extFunctionalParams = JSON.parse(/#acfunhelper=(.*)|#/.exec(hashData)[1]);
+            extFunctionalParams = FunctionalUrlParam.parse(hashData)
             for (let e of Object.keys(extFunctionalParams)) {
                 this.reactors[e](extFunctionalParams[e]);
             }
@@ -24,13 +24,18 @@ class FunctionalUrlParam extends AcFunHelperFgFrame {
 
     }
 
+    static parse(e) {
+        const testResult = /acfunhelper=(.*)\#|acfunhelper=(.*)/.exec(e);
+        return JSON.parse(testResult[1] ?? testResult[2]);
+    }
+
     /**
-     * 判断url中包含的FunctionalUrlParam的相应hash
+     * 解析url中包含的FunctionalUrlParam的相应hash
      * @param {string} e url
      * @returns {boolean}
      */
     static hashFunctionDicGen(e) {
-        return JSON.parse(/#acfunhelper=(.*)|#/.exec(decodeURI(e??globalThis.location.hash))[1]);
+        return FunctionalUrlParam.parse(e ?? globalThis.location.href);
     }
 
     /**

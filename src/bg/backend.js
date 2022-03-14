@@ -99,10 +99,14 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
      */
     onAlarmsEvent(e) {
         const targetTaskGroup = this.runtime.dataset.core.scheduler[e.name];
-        for (let taskgroup in targetTaskGroup.tasks) {
-            for (let task in targetTaskGroup.tasks[taskgroup]) {
-                targetTaskGroup.tasks[taskgroup][task]();
+        try {
+            for (let taskgroup in targetTaskGroup.tasks) {
+                for (let task in targetTaskGroup.tasks[taskgroup]) {
+                    targetTaskGroup.tasks[taskgroup][task]();
+                }
             }
+        } catch (error) {
+            console.log(error, e, targetTaskGroup)
         }
     }
 
@@ -160,13 +164,11 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
             chrome.storage.local.set({ "UserMarks": UserMarks }, function () { })
             chrome.storage.local.set({ "UserFilter": UserFilter }, function () { })
         }
-        //关闭文章区用户内容评论
-        if (rawOpts['filter']) {
-            chrome.storage.local.set({ "filter": false }, function () { });
-        }
-        //关闭用户动态渲染（2021-7-5失效：接口改动）
-        if (rawOpts['userHomeMoment']) {
-            chrome.storage.local.set({ "userHomeMoment": false }, function () { });
+        //火狐不支持注入XHRProxy
+        if(this.runtime.dataset.core.browserType!="Chrome"){
+            ExtOptions.setValue("xhrDrv",false)
+            ExtOptions.setValue("filter",false)
+            ExtOptions.setValue("commentFilterSw",false)
         }
     }
 

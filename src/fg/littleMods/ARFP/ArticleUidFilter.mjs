@@ -1,7 +1,7 @@
 /**
  * 文章区Feed过滤
- * @param {import("../../declares/XHRProxy").XhrResponse} ctx 
- * @param {import("../../declares/XHRProxy").XhrResponseHandler} handler 
+ * @param {import("../../../../declares/XHRProxy").XhrResponse} ctx 
+ * @param {import("../../../../declares/XHRProxy").XhrResponseHandler} handler 
  */
 function articleListUidFilter(ctx, handler) {
     /**
