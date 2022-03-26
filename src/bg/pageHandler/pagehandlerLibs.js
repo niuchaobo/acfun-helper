@@ -216,22 +216,77 @@ export class ParticlesAnimation {
 }
 
 export function getRelatedTopic(name) {
-    return new Promise((resolve)=>{
+    return new Promise((resolve) => {
         let queryText = encodeURI(`Acfun${name} 话题,快来参与`);
         MessageSwitch.sendMessage('fg', { target: "BkFetch", InvkSetting: { responseRequire: true, asyncWarp: true, type: "function" }, params: { url: `https://www.baidu.com/s?wd=${queryText}&pn=0&rn=2&tn=json` } }, function (resp) {
             /**
              * @type {{feed:{category:{label:string,value:string},entry:[{abs:string,pn:number,relate:number,time:number,title:string,url:string,urlEnc:string},],updated:string,resultnum:number}}}
              */
             let x = JSON.parse(resp);
-            let result={};
+            let result = {};
             x.feed.entry.forEach(element => {
                 let isTopic = REG.topicCircle.test(element.url);
                 let isMoment = REG.momentContent.test(element.url);
-                if(isTopic||isMoment){
+                if (isTopic || isMoment) {
                     result[element.pn] = element;
                 }
             });
             resolve(result);
         })
     })
+}
+
+export async function batchOprtSwitches(targets) {
+    for (let i = 0; i < targets.length; i++) {
+        let element = targets[i].key;
+        if (!element) {
+            continue;
+        }
+        if (element.includes("-")) {
+            let newE = element.split("-");
+            const sw = await ExtOptions.getValue(newE[0]);
+            document.querySelector("input#" + element).checked = sw[newE[1]];
+        } else {
+            const sw = await ExtOptions.getValue(element);
+            document.querySelector("input#" + element).checked = sw;
+        }
+    }
+}
+
+export async function panelSwitchesHandler(e) {
+    /**@type {HTMLElement} */
+    let target = e?.target;
+    if (!target) {
+        return;
+    }
+    if (target.id.includes("-")) {
+        let id = target.id.split("-");
+        let raw = await ExtOptions.getValue(id[0]);
+        raw[id[1]] = !raw[id[1]];
+        ExtOptions.setValue(id[0], raw);
+        return
+    }
+    let raw = await ExtOptions.getValue(target.id)
+    ExtOptions.setValue(target.id, !raw);
+}
+
+export async function panelSelectsHandler(name, list, devMode) {
+    const conf = await ExtOptions.getValue(name);
+    const index = list.indexOf(conf);
+    devMode ? (console.log(name, list, conf, index)) : ""
+    if (index == -1) {
+        return;
+    }
+    document.querySelector("#" + name).parentElement.children[1].children[1].children[index].click();
+    document.querySelector("#" + name).addEventListener("close.mdui.select", (e) => {
+        ExtOptions.setValue(name, e.detail.inst.value);
+    });
+}
+
+export const saveConfromIndexDic = (list) => {
+    let result = []
+    for (let i in list) {
+        result.push(list[i])
+    }
+    ExtOptions.setValue("to_special_items", result);
 }
