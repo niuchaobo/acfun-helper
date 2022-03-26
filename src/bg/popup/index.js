@@ -42,37 +42,34 @@ async function onReady() {
 	$("#pop-toLiveIndex").on("click", indexJump);
 	$("#pop-setting").on("click", indexJump);
 	$("#pop-title .letter").on("click", titleToHome);
-	document.querySelector("#mainTabs").addEventListener("click", (e) => {
-		switch (e.target.id) {
-			case "tabPushList":
-				statusDic.tabPushList = true;
-				break;
-			case "tabGroupPushList":
-				if (statusDic.renderFollowGroup) { return };
-				renderFollowGroup();
-				$("#followGroups").on("click", e => { renderGroupPush(e.target.dataset.id) });
-				statusDic.tabGroupPushList = true;
-				break;
-			case "tabLives":
-				if (statusDic.tabLives) { return };
-				renderLives(); //生放送列表加载
-				renderLiveWatchTimeLst();
-				document.querySelector("#livePageWatchTimeRecList").addEventListener("click", e => { e.target.dataset.type === "liveWatchListItemReact" && AcFunHelperHelper.activeTabToFront(Number(e.target.dataset.key)) });
-				statusDic.tabLives = true;
-				break;
-			case "tabSpecial":
-				if (statusDic.tabSpecial) { return };
-				$("#UserInfoActionBtn").on("click", userInfoFetch);
-				$("#dougaInfoAcidbtn").on("click", fetchDougaInfo);
-				document.querySelector("#topicSearchBtn").addEventListener("click", topicSearch);
-				$("#liveRoomInfoBtn").on("click", liveInfo);
-				$("#WatchLaterFpopup").on("click", WatchLaterFpopup);
-				$("#StopWatchLaterFpopup").on("click", StopWatchLaterFpopup);
-				$("#attentionTabsFg").on("click", attentionTabs);
-				statusDic.tabSpecial = true;
-				break;
-		}
+	document.querySelector("#tabPushList").addEventListener("click", () => {
+		statusDic.tabPushList = true;
 	})
+	document.querySelector("#tabGroupPushList").addEventListener("click", () => {
+		if (statusDic.renderFollowGroup) { return };
+		renderFollowGroup();
+		$("#followGroups").on("click", e => { renderGroupPush(e.target.dataset.id) });
+		statusDic.tabGroupPushList = true;
+	})
+	document.querySelector("#tabLives").addEventListener("click", () => {
+		if (statusDic.tabLives) { return };
+		renderLives(); //生放送列表加载
+		renderLiveWatchTimeLst();
+		document.querySelector("#livePageWatchTimeRecList").addEventListener("click", e => { e.target.dataset.type === "liveWatchListItemReact" && AcFunHelperHelper.activeTabToFront(Number(e.target.dataset.key)) });
+		statusDic.tabLives = true;
+	})
+	document.querySelector("#tabSpecial").addEventListener("click", () => {
+		if (statusDic.tabSpecial) { return };
+		$("#UserInfoActionBtn").on("click", userInfoFetch);
+		$("#dougaInfoAcidbtn").on("click", fetchDougaInfo);
+		document.querySelector("#topicSearchBtn").addEventListener("click", topicSearch);
+		$("#liveRoomInfoBtn").on("click", liveInfo);
+		$("#WatchLaterFpopup").on("click", WatchLaterFpopup);
+		$("#StopWatchLaterFpopup").on("click", StopWatchLaterFpopup);
+		$("#attentionTabsFg").on("click", attentionTabs);
+		statusDic.tabSpecial = true;
+	})
+
 	$(".PushListMode").click(PushListDougaMode);
 	$(".MultOpen").click(PopupLater);
 	$(".MultOpen2").click(PopupLater);
@@ -92,6 +89,3 @@ document.addEventListener("DOMContentLoaded", function (e) {
 //     navigator.serviceWorker.register('./ServiceWorker/sworker.js');
 //   });
 // }
-
-// import { viewRender } from "../popup/popupExtend.devig.mjs";
-// viewRender()
