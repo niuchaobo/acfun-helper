@@ -291,7 +291,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
 			this.options.articleReadMode && this.reader.lightReadMode();
-			if (this.options.articleBanana) {
+			if (this.options.auto_throw && this.options.articleBanana) {
 				setTimeout(() => {
 					this.banana.articleBanana({ key: REG.acAid.exec(href)[2] })
 				}, 1000);
@@ -334,6 +334,9 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		if (REG.userCenter.index.test(href)) {
 			this.options.userBatchManage && this.pageBeautify.userBatchManage();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("myFav");
+		}
+		if (REG.userHome.test(href)) {
+			this.options.userTagRender && this.pageBeautify.userTagRender();
 		}
 	}
 

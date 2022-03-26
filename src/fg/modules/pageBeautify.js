@@ -777,7 +777,7 @@ class PageBeautify extends AcFunHelperFgFrame {
   }
 
   async userBatchManage(command = true) {
-    let uiAttached = false;    
+    let uiAttached = false;
     /**
      * 事件绑定
      * @param {Event} e 
@@ -923,6 +923,25 @@ class PageBeautify extends AcFunHelperFgFrame {
         }
       })
     })
+  }
+
+  userTagRender() {
+    try {
+      const uid = Number(REG.userHome.exec(globalThis.location.href)[2]);
+      if (uid in this.runtime.options.UserMarks) {
+        const info = this.runtime.options.UserMarks[uid];
+        let tagEle = document.createElement("span");
+        tagEle.classList.add("pos");
+        tagEle.classList.add("up");
+        tagEle.style.fontSize = "1.1em";
+        tagEle.title = "用户标记"
+        tagEle.innerText = info.tag;
+        document.querySelector("div.fl.main>div.top").after(tagEle);
+      }
+    } catch (error) {
+      fgConsole(this, "userTagRender", error)
+      return;
+    }
   }
 
 }
