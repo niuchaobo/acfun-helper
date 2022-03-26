@@ -113,5 +113,73 @@ export class Tools {
 
         }
     }
-    
+
+}
+
+/**
+ * 兽音译者
+ * @source https://www.52pojie.cn/thread-1571575-1-1.html
+ */
+export class HowlingTranslator {
+    constructor(codeTxt) {
+        this.__codeTxt = "嗷呜啊~";
+        if (codeTxt != null) {
+            codeTxt = codeTxt.trim();
+            if (codeTxt.length == 4) {
+                this.__codeTxt = codeTxt;
+            }
+        }
+    }
+
+    convert(txt) {
+        txt = txt.trim();
+        if (txt.length < 1) {
+            return "";
+        }
+        let result = this.__codeTxt[3] + this.__codeTxt[1] + this.__codeTxt[0];
+        let offset = 0;
+        for (let i = 0; i < txt.length; i++) {
+            //逐个字符转为二进制
+            let c = txt.charCodeAt(i);
+            for (let b = 12; b >= 0; b -= 4) {
+                //映射
+                let hex = (c >> b) + offset++ & 15;
+                result += this.__codeTxt[(hex >> 2)];
+                result += this.__codeTxt[(hex & 3)];
+            }
+        }
+        result += this.__codeTxt[2];
+        return result;
+    }
+
+    deConvert(txt) {
+        txt = txt.trim();
+        if (txt.length < 4) {
+            return "";
+        }
+        let result = "";
+        let offset = 0;
+        for (let i = 3; i < txt.length - 1;) {
+            let c = 0;
+            for (let b = i + 8; i < b; i++) {
+                c = c << 4 | ((this.__codeTxt.indexOf(txt[i++]) << 2 | this.__codeTxt.indexOf(txt[i])) + offset) & 0xf;
+                offset = (offset == 0 ? 0x10000 * 0x10000 - 1 : offset - 1);
+            }
+            result += String.fromCharCode(c);
+        }
+        return result;
+    }
+
+    identify(txt) {
+        txt = txt.trim()
+        if (txt.length > 11) {
+            if (txt[0] == this.__codeTxt[3] && txt[1] == this.__codeTxt[1] && txt[2] == this.__codeTxt[0] && txt.charAt(txt.length - 1) == this.__codeTxt[2] && ((txt.length - 4) % 8) == 0) {
+                for (let i = 0; i < txt.length; i++) {
+                    if (this.__codeTxt.indexOf(txt[i]) < 0) return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 }

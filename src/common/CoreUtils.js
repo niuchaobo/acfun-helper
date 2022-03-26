@@ -363,7 +363,7 @@ class GetAsyncDomUtil {
         if (this.maxWaitTime % this.time != 0) {
             let extraTime = this.maxWaitTime % this.time;
             maxTryNum = (this.maxWaitTime - extraTime) / this.time;
-            this.iterLimit = extraTime > (time / 2) ? maxTryNum++ : maxTryNum;
+            this.iterLimit = extraTime > (this.time / 2) ? maxTryNum++ : maxTryNum;
         }
         this.iterLimit = maxTryNum;
         if (typeof (this.purpose) == 'function') {
@@ -386,31 +386,55 @@ class GetAsyncDomUtil {
         this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 开始探测 ${this.target}。`);
         const re = (fn, insure) => {
             return new Promise(resolve => {
-                const targetDom = this.advancedQueryMethod ?? (document.getElementById(this.target) || document.getElementsByClassName(this.target).length || document.querySelector(this.target) || $(`${this.target}`).length || undefined);
+                let hasJqueryLib = false;
+                //检测JQuery的支持，解决没有引入JQuery下出现的问题
+                try {
+                    hasJqueryLib = ($ != undefined);
+                } catch (error) {
+                    hasJqueryLib = false;
+                }
+                //DOM探测
+                const targetDom = this.advancedQueryMethod ?? (document.getElementById(this.target) || document.getElementsByClassName(this.target).length || document.querySelector(this.target) || (hasJqueryLib && $(`${this.target}`).length) || undefined);
+                this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 第${this.index}次探测时的targetDom: ${targetDom}`)
                 let response;
                 let isGotDom = Boolean(targetDom);
+                //DOM状态要求
                 let domMeetCondition = typeof (this.condition) == 'function' ? response = this.condition(targetDom, this.extraParam) : this.condition;
+                this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 第${this.index}次探测时的targetDom: ${domMeetCondition}`)
                 if (isGotDom && domMeetCondition) {
                     this.index = 0;
-                    this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: ${this.target}加载。`, targetDom);
+                    this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: ${this.target}完成。`, targetDom);
                     resolve(fn(response));
                 } else {
                     if (this.index > this.iterLimit) {
                         this.index = 0;
-                        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 没找到符合条件的 ${this.target} 。`);
+                        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 没符合条件 ${this.target} 。`);
                         resolve(insure == undefined ? false : insure());
                         return;
                     };
                     this.index++;
                     this.probeTimeHandler = setTimeout(() => {
                         this.instantMode ? "" : this.time += 500;
-                        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 正在探测 ${this.target} - 第${this.index}次。`);
+                        this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 准备${this.target}的 - 第${this.index}次。`);
                         resolve(re(this.fn, this.insure));
                     }, this.time);
                 }
             })
         }
         return await re(this.fn, this.insure);
+    }
+
+    async judgeJqueryExist() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                try {
+                    resolve($ != undefined)
+                } catch (error) {
+                    this.devMode && console.log("[WARN]UtilsBundle > getAsyncDom: No Jquery Lib.")
+                    resolve(false);
+                }
+            }, 0)
+        })
     }
 
     /**
@@ -1532,8 +1556,8 @@ class ExtOptions {
      */
     _resetAll() {
         return new Promise((resolve, reject) => {
-            this.purgeAll();
-            this.saveAll(this.sanitizeOptions({}));
+            ExtOptions.purgeAll();
+            ExtOptions.saveAll(ExtOptions.sanitizeOptions({}));
             resolve(true);
         })
     }

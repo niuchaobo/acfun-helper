@@ -286,7 +286,7 @@ const acfunApis = {
     },
     users: {
         info: `https://www.acfun.cn/rest/pc-direct/user/userInfo`,
-        /**@returns {{"profile":APIs.UserInfo}} */
+        /**@returns {APIs.UserInfoApi} */
         getUserInfo: async (uid) => {
             return JSON.parse(await fetchResult(acfunApis.users.info + "?userId=" + uid));
         },

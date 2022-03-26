@@ -9,7 +9,7 @@ declare namespace InnerDefined {
       name: string;
     };
     coverUrl: string;
-    videoList: [HTMLElement];
+    videoList: HTMLElement[];
   }
   interface REGStruct {
     /** @description 主站 */
@@ -83,8 +83,10 @@ declare namespace OptionStruct {
     LikeHeartNotif: boolean;
     to_attention: boolean;
     to_attention_num: number;
-    to_special_items: [];
-    broadcastingUIDlistFollowing: {};
+    to_special_items: [
+      { bananaNum: string; name: string; uid: string; up_url: string }
+    ];
+    broadcastingUIDlistFollowing: { [number]: boolean };
     MarkedComment: {
       setting: {
         enabled: boolean;
@@ -98,7 +100,7 @@ declare namespace OptionStruct {
       };
       datasets: {};
     };
-    WatchPlanList: [];
+    WatchPlanList: string[];
     PictureInPictureModeUI: boolean;
     activeTabKey: string;
     extendsName: "AcFun助手";
@@ -116,8 +118,17 @@ declare namespace OptionStruct {
     custom_css_style: string;
     logSetting: { consoleOutput: boolean; logLevel: number };
     mark: boolean;
-    UserMarks: {};
-    UserFilter: {};
+    UserMarks: {
+      [uid: number]: {
+        name: string;
+        tag: string;
+        desc?: string;
+        commentId?: number;
+        evidence?: string;
+        refer?: string;
+      };
+    };
+    UserFilter: { [uid: number]: { name: string } };
     scan: boolean;
     upHighlight: boolean;
     filter: boolean;
@@ -137,7 +148,8 @@ declare namespace OptionStruct {
     hideAd: boolean;
     userPageTimeline: boolean;
     liveHideAd: boolean;
-    liveHideAdType: 1 | 2;
+    liveHideAdType: "0" | "1";
+    liveHideAdMute: boolean;
     liveBansw: boolean;
     playerRecommendHide: boolean;
     PlayerDamakuSearchSw: boolean;
@@ -181,6 +193,7 @@ declare namespace OptionStruct {
     videoMediaSession: boolean;
     videoAchievement: boolean;
     userCenterBeautify: boolean;
+    userTagRender: boolean;
     pageTransKeyBind: boolean;
     quickCommentSubmit: boolean;
     widenUCVideoList: boolean;
