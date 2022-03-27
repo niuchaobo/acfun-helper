@@ -19,7 +19,11 @@
                 </div>
                 <div class="mdui-col-xs-4 mdui-col-sm-4">
                   <label class="mdui-switch">
-                    <input id="commentNotif" type="checkbox" v-on:click="switchHandler($event)"/>
+                    <input
+                      id="commentNotif"
+                      type="checkbox"
+                      v-on:click="switchHandler($event)"
+                    />
                     <i class="mdui-switch-icon"></i>
                   </label>
                 </div>
@@ -40,7 +44,11 @@
                 </div>
                 <div class="mdui-col-xs-4 mdui-col-sm-4">
                   <label class="mdui-switch">
-                    <input id="likeNotif" type="checkbox" />
+                    <input
+                      id="likeNotif"
+                      type="checkbox"
+                      v-on:click="switchHandler($event)"
+                    />
                     <i class="mdui-switch-icon"></i>
                   </label>
                 </div>
@@ -60,8 +68,43 @@
                   <p></p>
                 </div>
                 <div class="mdui-col-xs-4 mdui-col-sm-4">
-                  <label class="mdui-switch" mdui-tooltip="{content: '香蕉和桃'}">
-                    <input id="giftNotif" type="checkbox" />
+                  <label
+                    class="mdui-switch"
+                    mdui-tooltip="{content: '香蕉和桃'}"
+                  >
+                    <input
+                      id="giftNotif"
+                      type="checkbox"
+                      v-on:click="switchHandler($event)"
+                    />
+                    <i class="mdui-switch-icon"></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mdui-container-fluid">
+        <div class="mdui-row">
+          <div class="mdui-row">
+            <div class="mdui-col-xs-9">
+              <h3>@我</h3>
+              <div class="mdui-row">
+                <div class="mdui-col-xs-8 mdui-col-sm-8">
+                  <p></p>
+                </div>
+                <div class="mdui-col-xs-4 mdui-col-sm-4">
+                  <label
+                    class="mdui-switch"
+                    mdui-tooltip="{content: '@我的消息'}"
+                  >
+                    <input
+                      id="atNotif"
+                      type="checkbox"
+                      v-on:click="switchHandler($event)"
+                    />
                     <i class="mdui-switch-icon"></i>
                   </label>
                 </div>

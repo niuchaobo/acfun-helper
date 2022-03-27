@@ -206,6 +206,7 @@ declare namespace OptionStruct {
       commentNotif: boolean;
       likeNotif: boolean;
       giftNotif: boolean;
+      atNotif: boolean;
     };
     frameStepSetting: { enabled: boolean; controlUI: boolean };
     liveVolumeMild: boolean;
