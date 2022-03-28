@@ -28,6 +28,16 @@ const app = {
                     desc: `开启之后，在A站首页的右侧会出现分区导航条`
                 },
                 {
+                    key: "hideAd",
+                    title: "取消显示推广弹出窗",
+                    desc: `取消播放器弹出的站内活动推广窗口`
+                },
+                {
+                    key: "playerRecommendHide",
+                    title: "隐藏播放器推荐宫格",
+                    desc: `隐藏播放器播放完成之后的推荐宫格 （播放结束之后不能点击画面重新播放的原因就是因为原来有个推荐宫格挡住了，请点击播放按钮，而不是画面）`
+                },
+                {
                     key: "userCenterBeautify",
                     title: "个人中心修改样式",
                     desc: `RT`

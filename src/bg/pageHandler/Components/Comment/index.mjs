@@ -1,5 +1,6 @@
 import { importVue } from "../../../../common/modulesLib/SFCUtil.mjs";
 import { tagswitches } from "./TagSwitches.mjs";
+import { banuserIncomment } from "./BanUserInComment.mjs";
 
 const sfcData = await importVue("pageHandler/Components/Comment/index.vue");
 
@@ -7,7 +8,7 @@ const sfcData = await importVue("pageHandler/Components/Comment/index.vue");
 const app = {
     template:sfcData.template,
     components: {
-        tagswitches
+        tagswitches,banuserIncomment
     },
     data() {
         return {

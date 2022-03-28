@@ -124,14 +124,20 @@ const app = {
                     X分X秒、npX分X秒）转化为链接，点击时向播放器发送跳转指令，跳转至目的时间。<br>测试地址：<a href="https://www.acfun.cn/v/ac4919284#ncid=232956340" target="blank">[司鼓君-【2019猴山春晚/原创国风电音】燃灯挂霓虹 ft.小勒个朵]</a>`,
                 },
                 {
+                    key: "timelineDots",
+                    title: "时间轴章节",
+                    desc: `选中评论中的带有时间标记和内容文本右键执行“在时间轴上添加这些章节标记”之后，将会在时间轴上添加对应的点（将鼠标指针移动其上可查看其描述），以标记其对应的内容。<br>测试地址：<a href="https://www.acfun.cn/v/ac24325439_2" target="blank">[2021年Ac春晚]</a>`
+                },
+                {
                     key: "easySearchScanForPlayerTimesw",
                     title: "选中时间使用快捷键使播放器快速跳转",
                     desc: `选中评论中的数字（此功能针对类似于：“102秒”的评论），然后按下快捷键(Shift+A)快速跳转至目的秒数。`,
                 },
                 {
-                    key: "",
-                    title: "时间轴章节",
-                    desc: `选中评论中的带有时间标记和内容文本右键执行“在时间轴上添加这些章节标记”之后，将会在时间轴上添加对应的点（将鼠标指针移动其上可查看其描述），以标记其对应的内容。<br>测试地址：<a href="https://www.acfun.cn/v/ac24325439_2" target="blank">[2021年Ac春晚]</a>`
+                    key: "simpleCC",
+                    split: true,
+                    title: "外部CC字幕",
+                    desc: `简单的外部加载CC字幕实现，支持加载SRT字幕`
                 },
             ]
         }

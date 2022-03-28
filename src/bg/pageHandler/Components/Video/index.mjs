@@ -1,13 +1,14 @@
 import { importVue } from "../../../../common/modulesLib/SFCUtil.mjs";
 import { playerenc } from "./Player.mjs"
 import { danmakuenc } from "./Danmaku.mjs"
+import { watchLater } from "./WatchLater.mjs";
 
 const sfcData = await importVue("pageHandler/Components/Video/index.vue");
 /**@type {import("../../../../../declares/Vue/VueRuntimeCore").Component} */
 const app = {
     template: sfcData.template,
     components: {
-        playerenc, danmakuenc
+        playerenc, danmakuenc,watchLater
     },
     data() {
         return {

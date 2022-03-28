@@ -1,7 +1,7 @@
 <template>
   <div class="mdui-panel-item mdui-panel-item-open">
     <div class="mdui-panel-item-header">
-      <div class="mdui-panel-item-title">关注直播推送</div>
+      <div class="mdui-panel-item-title">文章区子分区列表用户屏蔽</div>
       <div class="mdui-panel-item-summary">
         将你所关注的主播直播信息通过浏览器推送
       </div>
@@ -14,50 +14,26 @@
         <div class="mdui-row">
           <div class="mdui-row">
             <div class="mdui-col-xs-12">
-              <h3>关注列表</h3>
+              <h3>列表</h3>
               <div class="mdui-row">
                 <div class="mdui-col-xs-3 mdui-col-sm-2">
                   <button
                     class="
                       mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple
                     "
-                    id="liveFollowAdd"
                     v-on:click="addUser"
                   >
                     <i class="mdui-icon material-icons">add</i></button
-                  >添加关注用户
+                  >添加用户
                 </div>
                 <div class="mdui-col-xs-3 mdui-col-sm-2">
                   <label class="mdui-switch">
                     <input
-                      id="liveFloowNotif"
                       type="checkbox"
                       v-on:click="switchHandler"
+                      id="filter"
                     />
-                    <i class="mdui-switch-icon"></i>--自定Up开播提醒--
-                  </label>
-                </div>
-                <div
-                  class="mdui-col-xs-3 mdui-col-sm-2"
-                  title="只要自定义Up开播弹出通知就立刻打开Up直播页面"
-                >
-                  <label class="mdui-switch">
-                    <input
-                      id="liveFollowOpenNow"
-                      type="checkbox"
-                      v-on:click="switchHandler"
-                    />
-                    <i class="mdui-switch-icon"></i>--立即打开页面--
-                  </label>
-                </div>
-                <div class="mdui-col-xs-3 mdui-col-sm-2">
-                  <label class="mdui-switch">
-                    <input
-                      id="followLiveNotif"
-                      type="checkbox"
-                      v-on:click="switchHandler"
-                    />
-                    <i class="mdui-switch-icon"></i>--关注Up开播提醒--
+                    <i class="mdui-switch-icon"></i>--功能开关--
                   </label>
                 </div>
               </div>
@@ -78,7 +54,7 @@
                 >
               </div>
               <div class="mdui-panel-item-body">
-                <ul id="liveFollowNotifList" class="mdui-list">
+                <ul class="mdui-list">
                   <li
                     class="mdui-list-item"
                     v-for="(name, uid) in raw"
@@ -86,25 +62,17 @@
                     style="cursor: default"
                   >
                     <i
-                      class="
-                        mdui-list-item-icon mdui-icon
-                        material-icons
-                        liveFloowingsItems
-                      "
+                      class="mdui-list-item-icon mdui-icon material-icons"
                       :data-key="uid"
                       :data-name="name"
                       v-on:click="removeUser"
                       style="cursor: pointer"
                       >delete</i
                     ><a
-                      v-bind:href="'https://live.acfun.cn/live/' + uid"
+                      v-bind:href="'https://www.acfun.cn/u/' + uid"
                       target="_blank"
                       ><i
-                        class="
-                          mdui-list-item-icon mdui-icon
-                          material-icons
-                          liveWatchOrig
-                        "
+                        class="mdui-list-item-icon mdui-icon material-icons"
                         v-bind:key="uid"
                         style="cursor: pointer"
                         >desktop_windows</i
@@ -120,9 +88,14 @@
           </div>
         </div>
       </div>
-      <br>
+      <br />
+      <div class="mdui-chip" v-if="!require">
+        <span class="mdui-chip-title"
+          >在此之前，请打开 通用-高级配置-前台-请求管理 开关。</span
+        >
+      </div>
       <div class="mdui-chip">
-        <span class="mdui-chip-title">准点新闻，该看就看！</span>
+        <span class="mdui-chip-title">无良媒体。</span>
       </div>
     </div>
   </div>

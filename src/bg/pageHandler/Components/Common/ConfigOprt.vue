@@ -13,9 +13,7 @@
       <div class="div-export-settings" style="margin-top: 0px">
         <h3>导入导出配置</h3>
         <button
-          class="
-            mdui-btn mdui-color-green-400 mdui-color-theme-accent mdui-ripple
-          "
+          class="mdui-btn mdui-color-green-400 mdui-ripple"
           id="configExport"
           v-on:click="configExport"
         >
@@ -35,9 +33,7 @@
           导入配置文件
         </button>
         <button
-          class="
-            mdui-btn mdui-color-red-900 mdui-color-theme-accent mdui-ripple
-          "
+          class="mdui-btn mdui-color-red-900 mdui-ripple"
           id="configClean"
           v-on:click="configClean"
         >
