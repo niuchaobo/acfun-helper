@@ -62,7 +62,9 @@ const defaults = {
   FilmModeExclusionsw: true,
   endedAutoExitFullscreensw: true,
   endedAutoToCommentArea: false,
+  endedCloseFg: false,
   easySearchScanForPlayerTimesw: false,
+  videoRememberLastSend: true,
   Dev_indexBlurSW: false,
   userHomeMoment: true,
   Upgradeable: 0,
@@ -80,6 +82,7 @@ const defaults = {
   autOpenVideoDescsw: true,
   followLiveNotif: true,
   liveCommentTimeTag: true,
+  liveRememberLastSend: false,
   LiveUserFocus: false,
   LiveWatchTimeRec_popup: false,
   multiPartListSpread: true,
@@ -147,33 +150,6 @@ const ARFPModsConfName = [
   "filter", "commentFilterSw"
 ]
 
-const indexdbArch = {
-  "acfunhelper": {
-    dbId: 1,
-    tables: {
-      PushList: 'uid,acid,userName,date',
-      PushListHtml: 'id,content',
-      LuckyHistory: 'uid,acid,userName,date',
-      HistoryViews: 'id,historyArray',
-    },
-  }, "acfunhelper-square": {
-    dbId: 2,
-    tables: {
-      SquareList: 'acmid,uid,time,userInfo,commentNum,bananaCount,content',
-    },
-  }, "acfunhelper-bangumi": {
-    dbId: 3,
-    tables: {
-      MyBangumi: "coverUrls,showPlayCount,shareCount,commentCount,showStowCount,showSerialStatus,isOver,updateDayOfWeek,updateDayTime,bangumiId,lastVideoName,caption,description,paymentType,recoReason,acfunOnly,likeCount,stowCount,shareUrl,playCount,areaShow,firstPlayDate,lastUpdateItemTimeStr,updateDayTimeStr",
-    },
-  }, "acfunhelper-historicalAchieve": {
-    dbId: 5,
-    tables: {
-      historical: "acid,date,tag",
-    },
-  },
-}
-
 //===============配置处理=================
 /**
  * 加载所有配置项
@@ -196,38 +172,6 @@ async function optionsSave(options) {
  */
 async function getStorage(key) {
   return ExtOptions.get(key)
-}
-
-function ajax(method, url, data, header) {
-  //content script发送同源请求，需要区分chrome和FF
-  let browser = ToolBox.thisBrowser();
-  let request = null;
-  if (browser == "FF") {
-    request = new content.XMLHttpRequest();
-  } else {
-    request = new XMLHttpRequest();
-  }
-  //var request = new content.XMLHttpRequest();
-  //var request = content.XMLHttpRequest;
-  // console.log(request);
-  return new Promise(function (resolve, reject) {
-    request.onreadystatechange = function () {
-      if (request.readyState === 4) {
-        if (request.status === 200) {
-          resolve(request.responseText);
-        } else {
-          reject(request.status);
-        }
-      }
-    };
-    request.open(method, url);
-    if (header) {
-      header.forEach(function (value, key) {
-        request.setRequestHeader(key, value);
-      });
-    }
-    request.send(data);
-  });
 }
 
 function getPageData(href) {
@@ -696,19 +640,6 @@ function removeAPrefix(_$targetDom) {
 }
 
 /**
- * 判断番剧购买情况（普通视频也会有.hide）
- * @returns Bool
- */
-async function isBoughtBangumi() {
-  return await getAsyncDom(".setting-panel-content", () => {
-    if (document.querySelector(".container-player .pay_bangumi.hide")) {
-      return true;
-    }
-    return false;
-  })
-}
-
-/**
  * 在某个地方（默认为head下）增加一个css的style标签
  * @param {string} cssText CSS样式文本
  * @param {HTMLElement} targetDom 添加于，默认是document.head
@@ -731,27 +662,6 @@ function createElementStyle(cssText, targetDom = document.head, id = null) {
 }
 
 /**
- * 判断现在视频稿件所播放的分P编号
- * @returns {Number} PartNumber
- */
-function judgeActivePart() {
-  try {
-    let x = document.querySelector("#main-content > div.right-column > div.part > div.fl.part-wrap > ul").children;
-    for (let i = 0; i < x.length; i++) {
-      if (x[i].classList[1] == "active") {
-        return i + 1;
-      }
-    }
-  } catch (error) {
-    return REG.videoPartNumByURL.test(window.location.href) ? Number(REG.videoPartNumByURL.exec(window.location.href)[1]) : 1;
-  }
-}
-
-function judgeEditorActiveState() {
-  return document.activeElement.hasAttribute("contentEditable");
-}
-
-/**
  * 投蕉
  * @param {object} params == {key:稿件Id}
  * @param {number} banana_num  投蕉数
@@ -759,6 +669,34 @@ function judgeEditorActiveState() {
  * @tutorial 此接口下的resourceType参数，2为视频投稿，3为文章投稿
  */
 async function bananaThrow(params, banana_num, dougaType = "video") {
+  function ajax(method, url, data, header) {
+    //content script发送同源请求，需要区分chrome和FF
+    let browser = ToolBox.thisBrowser();
+    let request = null;
+    if (browser == "FF") {
+      request = new content.XMLHttpRequest();
+    } else {
+      request = new XMLHttpRequest();
+    }
+    return new Promise(function (resolve, reject) {
+      request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+          if (request.status === 200) {
+            resolve(request.responseText);
+          } else {
+            reject(request.status);
+          }
+        }
+      };
+      request.open(method, url);
+      if (header) {
+        header.forEach(function (value, key) {
+          request.setRequestHeader(key, value);
+        });
+      }
+      request.send(data);
+    });
+  }
   //投蕉操作
   let { key, callback } = params;
   let header = new Map();

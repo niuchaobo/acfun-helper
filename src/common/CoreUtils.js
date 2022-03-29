@@ -394,7 +394,7 @@ class GetAsyncDomUtil {
                     hasJqueryLib = false;
                 }
                 //DOM探测
-                const targetDom = this.advancedQueryMethod ?? (document.getElementById(this.target) || document.getElementsByClassName(this.target).length || document.querySelector(this.target) || (hasJqueryLib && $(`${this.target}`).length) || undefined);
+                const targetDom = this.advancedQueryMethod ?? (document.querySelector(this.target) || document.getElementById(this.target) || document.getElementsByClassName(this.target).length || (hasJqueryLib && $(`${this.target}`).length) || undefined);
                 this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 第${this.index}次探测时的targetDom: ${targetDom}`)
                 let response;
                 let isGotDom = Boolean(targetDom);
@@ -583,7 +583,8 @@ class MessageSwitch {
         let response;
         switch (InvkSetting?.type) {
             case "function":
-                const method = InvkSetting.unsafe ? this[target] : this["api_" + target];
+                const method = InvkSetting.unsafe ? this[target] : this["Apis"][target];
+                this.devMode && console.log(method);
                 if (typeof method === "function") {
                     if (!params) { params = {} }
                     params.callback = callback;
@@ -598,7 +599,7 @@ class MessageSwitch {
                 }
                 break;
             case "subMod":
-                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["api_" + target.methodName];
+                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["Apis"][target.methodName];
                 if (typeof callTarget === "function") {
                     params.callback = callback;
                     if (InvkSetting["asyncWarp"]) {
@@ -651,14 +652,14 @@ class MessageSwitch {
         const { target, source, InvkSetting, params } = e.data.data;
         switch (InvkSetting.type) {
             case "function":
-                const method = InvkSetting.unsafe ? this[target] : this["api_" + target];
+                const method = InvkSetting.unsafe ? this[target] : this["Apis"][target];
                 if (typeof method === "function") {
                     method.call(this, params);
                     return;
                 }
                 break;
             case "subMod":
-                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["api_" + target.methodName];
+                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["Apis"][target.methodName];
                 if (typeof callTarget === "function") {
                     callTarget.call(this, params);
                     return;
@@ -682,7 +683,8 @@ class MessageSwitch {
         const { target = "", InvkSetting, params } = request;
         switch (InvkSetting?.type) {
             case "function":
-                const method = InvkSetting.unsafe ? this[target] : this["api_" + target];
+                const method = InvkSetting.unsafe ? this[target] : this["Apis"][target];
+                this.devMode && console.log(method);
                 if (typeof (method) === 'function') {
                     if (InvkSetting["receipt"]) {
                         //告知调用程序信源标签的tabID
@@ -709,7 +711,7 @@ class MessageSwitch {
                 }
                 break;
             case "subMod":
-                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["api_" + target.methodName];
+                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["Apis"][target.methodName];
                 if (typeof callTarget === "function") {
                     params.callback = callback;
                     if (InvkSetting["asyncWarp"]) {
@@ -774,7 +776,7 @@ class MessageSwitch {
         let response;
         switch (InvkSetting?.type) {
             case "function":
-                const method = InvkSetting.unsafe ? this[target] : this["api_" + target];
+                const method = InvkSetting.unsafe ? this[target] : this["Apis"][target];
                 if (typeof method === "function") {
                     if (InvkSetting["asyncWarp"]) {
                         response = new Promise((resolve, reject) => {
@@ -792,7 +794,7 @@ class MessageSwitch {
                 }
                 break;
             case "subMod":
-                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["api_" + target.methodName];
+                const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["Apis"][target.methodName];
                 if (typeof callTarget === "function") {
                     params.callback = callback;
                     if (InvkSetting["asyncWarp"]) {
