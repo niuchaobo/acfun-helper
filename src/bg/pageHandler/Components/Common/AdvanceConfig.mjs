@@ -15,6 +15,7 @@ const app = {
                 {
                     key: "xhrDrv",
                     title: "请求管理",
+                    chromeOnly: true,
                     desc: "允许助手管理前台请求，以支持例如评论区用户过滤、文章区过滤等功能"
                 },
             ],
@@ -51,12 +52,12 @@ const app = {
         }
     },
     methods: {
-        switchHandler:async function (e) {
+        switchHandler: async function (e) {
             /**@type {HTMLElement} */
             let target = e.target;
             let raw = await ExtOptions.getValue(target.id)
             ExtOptions.setValue(target.id, !raw);
-            if(target.id=="custom_css"){
+            if (target.id == "custom_css") {
                 this.customPopupStyle = !raw;
             }
         }

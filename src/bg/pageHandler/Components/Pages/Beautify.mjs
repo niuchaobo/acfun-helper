@@ -10,6 +10,7 @@ const app = {
                 {
                     key: "Dev_indexBlurSW",
                     title: "主页顶栏模糊",
+                    chromeOnly: true,
                     desc: `在主页顶栏增加模糊特效`
                 },
                 {
@@ -49,7 +50,7 @@ const app = {
                 },
                 {
                     key: "userPageTimeline",
-                    devFeature:true,
+                    devFeature: true,
                     title: "个人页面稿件时间卷",
                     desc: `在个人页面的视频稿件，记录每页的时间`
                 },

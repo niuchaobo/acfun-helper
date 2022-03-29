@@ -13,7 +13,10 @@
         class="mdui-container-fluid"
         v-for="item in configItems"
         v-bind:key="item.key"
-        v-bind:class="{ devFeature: item.devFeature }"
+        v-bind:class="{
+          devFeature: item.devFeature,
+          chromeOnly: item.chromeOnly,
+        }"
       >
         <div class="mdui-divider" v-if="item.split"></div>
         <div class="mdui-row" v-bind:class="{ devFeature: item.devFeature }">

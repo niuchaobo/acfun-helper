@@ -35,7 +35,12 @@ const app = {
         }
     },
     mounted: async function () {
-        createElementStyle(sfcData.style,document.head, "AcFunHelperSFCstyle_Body");
+        createElementStyle(sfcData.style, document.head, "AcFunHelperSFCstyle_Body");
+        ToolBox.thisBrowser() != "Chrome" && createElementStyle(`
+            .chromeOnly{
+                display:none;
+            }
+        `.style, document.head, "AcFunHelperSFCstyle_chromeOnly");
     }
 }
 

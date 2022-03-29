@@ -14,7 +14,10 @@
         class="mdui-container-fluid"
         v-for="item in fgitems"
         v-bind:key="item.key"
-        v-bind:class="{ devFeature: item.devFeature }"
+        v-bind:class="{
+          devFeature: item.devFeature,
+          chromeOnly: item.chromeOnly,
+        }"
       >
         <div class="mdui-row">
           <div class="mdui-row">
@@ -116,7 +119,6 @@
         <textarea id="custom-css" class="mdui-textfield-input"></textarea>
       </div>
     </div>
-
   </div>
 </template>
 
