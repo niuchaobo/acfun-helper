@@ -119,29 +119,29 @@ class VideoInject {
                 }, 435);
             }
         }
-        if (this.options.endedAutoExitFullscreensw) {
-            //自动退出观影模式、网页全屏
-            try {
-                document
-                    .getElementsByTagName("video")[0]
-                    .addEventListener("ended", function () {
-                        let nowMode =
-                            document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" ||
-                            document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web";
-                        let isMultiPart = document.querySelector("#main-content > div.right-column > div.part") != null;
-                        if (!window.player._loop && nowMode) {
-                            if (isMultiPart) {
-                                if (document.querySelector(".control-checkbox").dataset.bindAttr == "false") {
-                                    exitModes()
-                                }
-                            } else {
-                                exitModes()
-                            }
-                        }
-                    });
-            } catch (error) {
-                console.log("[LOG]AcFunHelperFrontend-videoSettingInject: May not in douga Page.");
+        //自动退出观影模式、网页全屏
+        const autoExitMode = () => {
+            let nowMode =
+                document.querySelector("div.btn-film-model").children[0].dataset.bindAttr == "true" ||
+                document.querySelector("div.btn-fullscreen").children[0].dataset.bindAttr == "web";
+            let isMultiPart = document.querySelector("#main-content > div.right-column > div.part") != null;
+            if (!window.player._loop && nowMode) {
+                if (isMultiPart) {
+                    document.querySelector(".control-checkbox").dataset.bindAttr == "false" && exitModes()
+                } else {
+                    exitModes()
+                }
             }
+        }
+        try {
+            document
+                .getElementsByTagName("video")[0]
+                .addEventListener("ended", () => {
+                    this.options.endedAutoExitFullscreensw && autoExitMode();
+                    this.options.endedCloseFg && window.close();
+                });
+        } catch (error) {
+            console.log("[LOG]AcFunHelperFrontend-videoSettingInject: May not in douga Page.");
         }
 
     }

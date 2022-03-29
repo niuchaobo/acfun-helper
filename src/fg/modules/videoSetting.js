@@ -54,7 +54,7 @@ class VideoSetting extends AcFunHelperFgFrame {
 
   jumpLastWatchTime() {
     const videoInfo_data = this.runtime.dataset.dougaInfo.videoList;
-    const lastAcVpid = Number(videoInfo_data[judgeActivePart() - 1].id);
+    const lastAcVpid = Number(videoInfo_data[UIReactor.judgeActivePart() - 1].id);
     const recordedVideoHistory = JSON.parse(localStorage.playHistory);
     if (recordedVideoHistory[lastAcVpid]) {
       let _timer = setTimeout(() => {
@@ -718,7 +718,7 @@ class VideoSetting extends AcFunHelperFgFrame {
    */
   videoMediaSession(dougaInfo) {
     fgConsole("VideoSetting", "videoMediaSession", "Init MediaSessionModule.", 1, false);
-    if (!isBoughtBangumi()) { return }
+    if (!UIReactor.isBoughtBangumi()) { return }
     /**@type {APIs.BangumiPageInfo} */
     let videoInfo = {};
     try {
@@ -1012,7 +1012,7 @@ class VideoSetting extends AcFunHelperFgFrame {
   frameStepFwd(mode = "f") {
     // console.log(mode, frameRate, document.getElementsByTagName("video")[0].currentTime)
     const frameRate = VideoSetting.getVideoFrameRate()
-    if (frameRate && judgeEditorActiveState() === false) {
+    if (frameRate && UIReactor.judgeEditorActiveState() === false) {
       document.getElementsByTagName("video")[0].pause();
       switch (mode) {
         case "f":
@@ -1272,6 +1272,10 @@ class VideoSetting extends AcFunHelperFgFrame {
         videoElem.volume + 0.05 > 1 ? videoElem.volume = 1 : videoElem.volume += 0.05;
       }
     }, { passive: true })
+  }
+
+  rememberLastSend() {
+    UIReactor.rememberLastSend("input.danmaku-input")
   }
 
 }

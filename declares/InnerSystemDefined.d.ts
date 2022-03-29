@@ -159,7 +159,9 @@ declare namespace OptionStruct {
     FilmModeExclusionsw: boolean;
     endedAutoExitFullscreensw: boolean;
     endedAutoToCommentArea: boolean;
+    endedCloseFg: boolean;
     easySearchScanForPlayerTimesw: boolean;
+    videoRememberLastSend: boolean;
     Dev_indexBlurSW: boolean;
     userHomeMoment: boolean;
     Upgradeable: 0;
@@ -177,6 +179,7 @@ declare namespace OptionStruct {
     autOpenVideoDescsw: boolean;
     followLiveNotif: boolean;
     liveCommentTimeTag: boolean;
+    liveRememberLastSend: boolean;
     LiveUserFocus: boolean;
     LiveWatchTimeRec_popup: boolean;
     multiPartListSpread: boolean;

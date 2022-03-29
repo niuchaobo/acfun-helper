@@ -350,20 +350,7 @@ class LivePageButfy extends AcFunHelperFgFrame {
      * 记录上次发送的弹幕内容
      */
     rememberLastSend() {
-        let lastRecord = "";
-        document.querySelector("textarea.danmaku-input").addEventListener("change", (e) => {
-            if (e.target.value) {
-                console.log(e.target.value)
-                lastRecord = e.target.value;
-            }
-        })
-        document.querySelector("textarea.danmaku-input").addEventListener("keydown", (e) => {
-            if (e.code == "ArrowUp") {
-                const tArea = document.querySelector("textarea.danmaku-input");
-                console.log(tArea.value);
-                (tArea.value == "" && lastRecord != "") && (tArea.value = lastRecord);
-            }
-        },{})
+        UIReactor.rememberLastSend("textarea.danmaku-input")
     }
 
 }
