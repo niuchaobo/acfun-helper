@@ -14,6 +14,7 @@
         class="mdui-container-fluid"
         v-for="item in fgitems"
         v-bind:key="item.key"
+        v-bind:class="{ devFeature: item.devFeature }"
       >
         <div class="mdui-row">
           <div class="mdui-row">
@@ -46,6 +47,7 @@
         class="mdui-container-fluid"
         v-for="item in bgitems"
         v-bind:key="item.key"
+        v-bind:class="{ devFeature: item.devFeature }"
       >
         <div class="mdui-row">
           <div class="mdui-row">
@@ -78,6 +80,7 @@
         class="mdui-container-fluid"
         v-for="item in popitems"
         v-bind:key="item.key"
+        v-bind:class="{ devFeature: item.devFeature }"
       >
         <div class="mdui-row">
           <div class="mdui-row">

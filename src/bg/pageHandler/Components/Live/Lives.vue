@@ -1,8 +1,8 @@
 <template>
   <div class="mdui-panel-item mdui-panel-item-open" v-bind:id="name">
     <div class="mdui-panel-item-header">
-      <div class="mdui-panel-item-title">直播站首页</div>
-      <div class="mdui-panel-item-summary">电视机的入口！</div>
+      <div class="mdui-panel-item-title">直播间</div>
+      <div class="mdui-panel-item-summary">一号台一号台！能听见！</div>
       <i class="mdui-panel-item-arrow mdui-icon material-icons"
         >keyboard_arrow_down</i
       >
@@ -13,6 +13,7 @@
         class="mdui-container-fluid"
         v-for="item in configItems"
         v-bind:key="item.key"
+        v-bind:class="{ devFeature: item.devFeature }"
       >
         <div class="mdui-divider" v-if="item.split"></div>
         <div class="mdui-row">

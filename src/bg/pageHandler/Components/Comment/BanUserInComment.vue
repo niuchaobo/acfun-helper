@@ -1,10 +1,8 @@
 <template>
   <div class="mdui-panel-item mdui-panel-item-open">
     <div class="mdui-panel-item-header">
-      <div class="mdui-panel-item-title">文章区子分区列表用户屏蔽</div>
-      <div class="mdui-panel-item-summary">
-        将你所关注的主播直播信息通过浏览器推送
-      </div>
+      <div class="mdui-panel-item-title">评论区用户屏蔽</div>
+      <div class="mdui-panel-item-summary">你尽管说，我反正看不见你。･ﾟ( ﾉヮ´ )</div>
       <i class="mdui-panel-item-arrow mdui-icon material-icons"
         >keyboard_arrow_down</i
       >

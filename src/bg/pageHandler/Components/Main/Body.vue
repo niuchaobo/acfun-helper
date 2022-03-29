@@ -41,8 +41,4 @@ export default {};
 body {
   overflow-y: overlay;
 }
-
-.devFeature {
-  display: none;
-}
 </style>

@@ -3,7 +3,7 @@
     <div class="mdui-panel-item-header">
       <div class="mdui-panel-item-title">文章区子分区列表用户屏蔽</div>
       <div class="mdui-panel-item-summary">
-        将你所关注的主播直播信息通过浏览器推送
+        例如，综合、生活情感、游戏的子分区，大分区！大分区管不了！！！
       </div>
       <i class="mdui-panel-item-arrow mdui-icon material-icons"
         >keyboard_arrow_down</i

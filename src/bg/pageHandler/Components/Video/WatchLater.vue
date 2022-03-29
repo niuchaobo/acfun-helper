@@ -16,30 +16,36 @@
           <div class="mdui-row">
             <div class="mdui-col-xs-12">
               <h3>列表</h3>
-              <div class="mdui-row">
-                <button
-                  class="mdui-btn mdui-color-green-400 mdui-ripple"
-                  v-on:click="loadList"
-                >
-                  加载列表
-                </button>
-                <button
-                  class="mdui-btn mdui-color-green-400 mdui-ripple"
-                  v-on:click="start"
-                >
-                  开始！
-                </button>
-                <div class="mdui-col-xs-3 mdui-col-sm-2">
-                  <label class="mdui-switch">
-                    <input
-                      type="checkbox"
-                      v-on:click="switchHandler"
-                      id="watchLater"
-                    />
-                    <i class="mdui-switch-icon"></i>--功能开关--
-                  </label>
-                </div>
-              </div>
+              <button
+                class="
+                  mdui-btn
+                  mdui-color-green-400
+                  mdui-color-theme-accent
+                  mdui-ripple
+                "
+                v-on:click="loadList"
+              >
+                加载列表
+              </button>
+              <button
+                class="
+                  mdui-btn
+                  mdui-color-green-400
+                  mdui-color-theme-accent
+                  mdui-ripple
+                "
+                v-on:click="start"
+              >
+                开始！
+              </button>
+              <label class="mdui-switch">
+                <input
+                  type="checkbox"
+                  v-on:click="switchHandler"
+                  id="watchLater"
+                />
+                <i class="mdui-switch-icon"></i>--功能开关--
+              </label>
             </div>
           </div>
           <br />
@@ -124,7 +130,9 @@
       </div>
       <br />
       <div class="mdui-chip">
-        <span class="mdui-chip-title">无良媒体。</span>
+        <span class="mdui-chip-title"
+          >那就尽量看完，这样也不失为一种支持。</span
+        >
       </div>
     </div>
   </div>

@@ -2,7 +2,7 @@
   <div class="mdui-panel-item mdui-panel-item-open" v-bind:id="name">
     <div class="mdui-panel-item-header">
       <div class="mdui-panel-item-title">评论区小功能</div>
-      <div class="mdui-panel-item-summary">标记或者标记。</div>
+      <div class="mdui-panel-item-summary">标记或者被标记。</div>
       <i class="mdui-panel-item-arrow mdui-icon material-icons"
         >keyboard_arrow_down</i
       >
@@ -13,6 +13,7 @@
         class="mdui-container-fluid"
         v-for="item in configItems"
         v-bind:key="item.key"
+        v-bind:class="{ devFeature: item.devFeature }"
       >
         <div class="mdui-divider" v-if="item.split"></div>
         <div class="mdui-row">

@@ -52,4 +52,7 @@ export default {};
 </script>
 
 <style>
+.devFeature {
+  display: none;
+}
 </style>

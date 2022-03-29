@@ -96,6 +96,12 @@ const app = {
                     desc: "视频结束时退出全屏模式然后滚动到评论区"
                 },
                 {
+                    key: "endedCloseFg",
+                    title: "结束关闭页面",
+                    devFeature:true,
+                    desc: "CloseTab"
+                },
+                {
                     key: "sleepPause-defaultMode",
                     title: "后台自动暂停",
                     split: true,

@@ -35,7 +35,7 @@ const app = {
         }
     },
     mounted: async function () {
-        createElementStyle(sfcData.style,document.head, "AcFunHelperSFCstyle_devFeature");
+        createElementStyle(sfcData.style,document.head, "AcFunHelperSFCstyle_Body");
     }
 }
 
