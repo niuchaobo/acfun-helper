@@ -42,6 +42,8 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
             this.Ominibox = new Ohminibox();
             this.Upgrade = new UpgradeAgent();
 
+            this.Apis = new AcFunHelperBackendAPIs(this);
+
             /**就绪 */
             this.runtime.dataset.core.status.core = true;
             this.startDaemon();
@@ -252,78 +254,6 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
                 })
             }
         })
-    }
-
-    api_notice(params) {
-        let { title, msg } = params;
-        notice(title, msg);
-    }
-
-    async api_watchLater() {
-        this.WatchPlan.execWatch();
-    }
-
-    async api_stopWatchLater() {
-        this.WatchPlan.exitWatchPlan();
-    }
-
-    async api_syncWatchLaterList() {
-        return this.WatchPlan.syncAppWatchLater();
-    }
-
-    async api_removeDiffWatchLaterList() {
-        this.WatchPlan.removeAllDiffWatchLaterListItemFromLocal();
-    }
-
-    api_getLiveWatchTimeList() {
-        return this.WatchPlan.getLiveWatchTimeList();
-    }
-
-    api_livePageWatchTimeRec(params) {
-        this.WatchPlan.livePageWatchTimeRec(params);
-    }
-
-    api_attentionTabs(params) {
-        return this.WatchPlan.attentionTabs(params.windowId);
-    }
-
-    api_updateLiveWatchTimeListItem() {
-        return this.WatchPlan.updateLiveWatchTimeList();
-    }
-
-    api_bananAudio() {
-        this.MsgNotifsInst.bananAudio();
-    }
-
-    async api_achievementEvent(e) {
-        if (e.action == "get") {
-            return await db_getHistoricalAchievs(REG.acVid.exec(e.url)[2]);
-        } else if (e.action == "put") {
-            db_insertHistoricalAchievs(REG.acVid.exec(e.url)[2], e.tagData);
-            return true;
-        }
-    }
-
-    api_sandboxReady() {
-        this.runtime.dataset.core.status.sandbox = true;
-    }
-
-    async api_Fetch(params) {
-        let { url, callbackId } = params;
-        let request = {
-            url,
-            type: 'GET',
-            dataType: 'text',
-            timeout: 3000,
-            error: (xhr, status, error) => this.callback(null, callbackId),
-            success: (data, status) => this.callback(data, callbackId)
-        };
-        $.ajax(request);
-    }
-
-    async api_BkFetch(params) {
-        let { url, method, data, withCredentials, callback } = params;
-        return await fetchResult(url, method, data, withCredentials);
     }
 
 }

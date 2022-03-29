@@ -80,7 +80,7 @@ function scanChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
         to: "AcFunHelperFrontend",
-        data: { source: "frame-scanChange", target: "scan", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
+        data: { source: "frame", target: "scan", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
     }, '*');
 }
 
@@ -88,7 +88,7 @@ function readmodeChange(e) {
     let value = $(this).prop('checked');
     window.parent.postMessage({
         to: "AcFunHelperFrontend",
-        data: { source: "frame-scanChange", target: "lightReadMode", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
+        data: { source: "frame", target: "lightReadMode", InvkSetting: { type: "function", classicalParmParse: true }, params: { value: value } },
     }, '*');
 }
 
@@ -120,7 +120,7 @@ function lottery() {
     window.parent.postMessage({
         to: "AcFunHelperFrontend",
         data: {
-            source: "frame-scanChange", target: "lottery", InvkSetting: { type: "function", classicalParmParse: true }, params: {
+            source: "frame", target: "lottery", InvkSetting: { type: "function", classicalParmParse: true }, params: {
                 number: number,
                 follow: isFollow
             }
@@ -139,7 +139,7 @@ function lotteryAgain() {
     window.parent.postMessage({
         to: "AcFunHelperFrontend",
         data: {
-            source: "frame-scanChange", target: "lottery2nd", InvkSetting: { type: "function", classicalParmParse: true }, params: {
+            source: "frame", target: "lottery2nd", InvkSetting: { type: "function", classicalParmParse: true }, params: {
                 number: number,
                 follow: isFollow
             }
@@ -209,7 +209,7 @@ function onDomContentLoaded() {
             document.body.removeChild(aux);
             window.parent.postMessage({
                 to: "AcFunHelperFrontend",
-                data: { source: "frame-scanChange", target: "notice", 
+                data: { source: "frame", target: "notice", 
                 InvkSetting: { type: "function", classicalParmParse: true }, params: {
                     title: 'AcFun助手',
                     msg: '下载地址复制到剪贴板。',
