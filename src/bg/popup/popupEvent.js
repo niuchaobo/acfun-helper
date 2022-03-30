@@ -26,9 +26,9 @@ export function toUcenter() {
 	window.open("https://www.acfun.cn/member/");
 }
 
-export function hideToTopButton() {
+export function hideToTopButton(requireHight=2000) {
 	let top = $(".toTop").offset().top;
-	if (top < 2000) {
+	if (top < requireHight) {
 		$(".toTop").css({ opacity: "0" });
 		//$(".PushListMode").css({ right: '16px' })
 	} else {
@@ -129,6 +129,10 @@ export async function liveInfo() {
 			<tr>
 				<td>最高同接</td>
 				<td>${result.data.maxOnlineCount}</td>
+			</tr>
+			<tr>
+				<td>数据来源</td>
+				<td><a href="https://www.sizzwoo.cc/">AC直播数据站 (ゝ∀･)</a></td>
 			</tr>
 			</tbody>
 		</table>

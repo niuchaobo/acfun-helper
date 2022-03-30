@@ -49,6 +49,60 @@ class UIReactor {
     (document.head || document.documentElement).appendChild(JsTar);
   }
 
+  static rememberLastSend(targetTag, definedKeyFunc = false) {
+    let lastRecord = "";
+    GetAsyncDomUtil.getAsyncDomClassic(targetTag, () => {
+      document.querySelector(targetTag).addEventListener("input", (e) => {
+        if (e.target.value) {
+          lastRecord = e.target.value;
+        }
+      })
+      document.querySelector(targetTag).addEventListener("keydown", (e) => {
+        if (definedKeyFunc) {
+          definedKeyFunc();
+          return;
+        }
+        if (e.code == "ArrowUp") {
+          const tArea = document.querySelector(targetTag);
+          (tArea.value == "" && lastRecord != "") && (tArea.value = lastRecord);
+        }
+      })
+    })
+  }
+  /**
+   * 判断现在视频稿件所播放的分P编号
+   * @returns {Number} PartNumber
+   */
+  static judgeActivePart() {
+    try {
+      let x = document.querySelector("#main-content > div.right-column > div.part > div.fl.part-wrap > ul").children;
+      for (let i = 0; i < x.length; i++) {
+        if (x[i].classList[1] == "active") {
+          return i + 1;
+        }
+      }
+    } catch (error) {
+      return REG.videoPartNumByURL.test(window.location.href) ? Number(REG.videoPartNumByURL.exec(window.location.href)[1]) : 1;
+    }
+  }
+
+  static judgeEditorActiveState() {
+    return document.activeElement.hasAttribute("contentEditable");
+  }
+
+  /**
+   * 判断番剧购买情况（普通视频也会有.hide）
+   * @returns {boolean}
+   */
+  static async isBoughtBangumi() {
+    return await getAsyncDom(".setting-panel-content", () => {
+      if (document.querySelector(".container-player .pay_bangumi.hide")) {
+        return true;
+      }
+      return false;
+    })
+  }
+
 }
 
 /**

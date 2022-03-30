@@ -7,6 +7,6 @@ window.addEventListener("load", (e) => {
      * privacy userAgreement updateLog
      */
     const pageType = requestParm.searchParams.get("type");
-    renderMarkdownDoc(`/note/${pageType}.md`, document.getElementById('content'));
+    renderMarkdownDoc(`/note/${pageType ?? "userAgreement"}.md`, document.getElementById('content'));
     document.title = infoPages[pageType];
 })

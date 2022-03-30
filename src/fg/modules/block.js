@@ -1,25 +1,18 @@
 /**
- * up主屏蔽
+ * up主屏蔽 AcFunHelperRequestFilterPlatform
  */
-
-class Block extends AcFunHelperFgFrame{
+class Block extends AcFunHelperFgFrame {
     constructor() {
         super();
         this.devMode = false;
     }
 
     //在DOM加载完成之后通过注入自定义xhr的方式过滤文章
-    injectScript() {
+    injectScriptData() {
         let bannedUpsArr = Object.keys(this.runtime.options.UserFilter);
-        MessageSwitch.sendEventMsgToInject(window, {
-            "target": "AcFunHelperFrontendXHRDriver", "InvkSetting": { "type": "addRule" }, "params": {
-                params: {
-                    type: "injectedApi", urlExp: "https://www.acfun.cn/rest/pc-direct/article/feed", rule: { "name": "example2", "bound": "post", "action": "injectedApi", "condition": { "target": "articleListFilter" } }
-                }, target: "datasetWriteIn"
-            }
-        });
-        MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRReactor", "InvkSetting": { "type": "function" }, "params": { params: { k: "articleFilterEnable", v: true }, target: "datasetWriteIn" } });
-        MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRReactor", "InvkSetting": { "type": "function" }, "params": { params: { k: "articleFilterUsersUid", v: bannedUpsArr }, target: "datasetWriteIn" } });
+        let bannedCommentUiArr = Object.keys(this.runtime.options.CommentFilter);
+        this.runtime.options.commentFilterSw && MessageSwitch.sendEventMsgToInject(window, { target: "AcFunHelperFrontendXHRDriver", InvkSetting: { "type": "function" }, params: { params: { k: "commentAreaBanUsersId", v: bannedCommentUiArr }, target: "addData" }, source: "ARFP" });
+        this.runtime.options.filter && MessageSwitch.sendEventMsgToInject(window, { target: "AcFunHelperFrontendXHRDriver", InvkSetting: { "type": "function" }, params: { params: { k: "articleFilterUsersUid", v: bannedUpsArr }, target: "addData" }, source: "ARFP" });
     }
 
     //页面所有元素加载完成之后通过修改页面元素的方式过滤文章

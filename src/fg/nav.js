@@ -40,7 +40,7 @@ let navFunction = (function () {
       step = -100;
     }
     var repeatTimes = Math.abs((scrollPos - remainder) / 100);
-    console.log("remainder:" + remainder + ",repeatTimes:" + repeatTimes);
+    // console.log("remainder:" + remainder + ",repeatTimes:" + repeatTimes);
     ScrollSmoothly(scrollPos, repeatTimes, step);
     window.scrollBy(0, remainder);
   }

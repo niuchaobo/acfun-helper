@@ -45,16 +45,16 @@ class VideoSetting extends AcFunHelperFgFrame {
     sc.src = `${root}fg/modules/videoSettingInject.js`;
     document.head.appendChild(sc);
     //给inject js 传递数据
-    sc.onload = function () {
-      MessageSwitch.sendEventMsgToInject(window, { target: "loadOptionData", source: "videoSetting", InvkSetting: { type: "function" }, params: { title: "optionData", msg: window.AcFunHelperFrontend.runtime.options } });
-      MessageSwitch.sendEventMsgToInject(window, { target: "playerFuncAutomate", source: "videoSetting", InvkSetting: { type: "function" }, params: {} });
+    sc.onload = () => {
+      MessageSwitch.sendEventMsgToInject(window, { target: "VideoInject", source: "videoSetting", InvkSetting: { type: "function" }, params: { target: "loadOptionData", params: this.runtime.options } });
+      MessageSwitch.sendEventMsgToInject(window, { target: "VideoInject", source: "videoSetting", InvkSetting: { type: "function" }, params: { target: "playerFuncAutomate", params: null } });
     };
     this.runtime.dataset.core.status.videoInjects = true;
   }
 
   jumpLastWatchTime() {
     const videoInfo_data = this.runtime.dataset.dougaInfo.videoList;
-    const lastAcVpid = Number(videoInfo_data[judgeActivePart() - 1].id);
+    const lastAcVpid = Number(videoInfo_data[UIReactor.judgeActivePart() - 1].id);
     const recordedVideoHistory = JSON.parse(localStorage.playHistory);
     if (recordedVideoHistory[lastAcVpid]) {
       let _timer = setTimeout(() => {
@@ -108,62 +108,78 @@ class VideoSetting extends AcFunHelperFgFrame {
   setPictureInPictureMode(sw) {
     if (sw) {
       document.getElementsByTagName("video")[0].requestPictureInPicture();
-      console.log("[LOG]Frontend-videoSetting: Calling PictureInPicture Mode.");
+      fgConsole("VideoSetting", "videoMediaSession", "Calling PictureInPicture Mode.", 1, false);
     } else {
       document.exitPictureInPicture();
-      console.log("[LOG]Frontend-videoSetting: Exit PictureInPicture Mode.");
+      fgConsole("VideoSetting", "videoMediaSession", "Exit PictureInPicture Mode.", 1, false);
     }
   }
 
   //画质策略
   videoQuality(isLogin) {
-    var timer = setInterval(function () {
-      let nodes = $(".quality-panel");
-      var vqregexp = RegExp("p60");
-      var vqreg2exp = RegExp("2160p");
-      if (nodes.length > 0) {
-        //模式标准：0=自动；1=默认最高；2=非60帧的最高画质；3=强制标清；4=偏向非4k的最高画质
-        chrome.storage.local.get(["videoQualityStrategy"], function (items) {
-          let mode = Number(items.videoQualityStrategy);
-          let qualitys = document.querySelector(".quality-panel > ul").children;
-          if (isLogin && mode != 3) {
-            clearInterval(timer);
-          }
-          switch (mode) {
-            case 0:
-              return;
-            case 1:
-              qualitys[0].click();
-              // console.log(qualitys[0].dataset.qualityType);
-              break;
-            case 2:
-              for (let i = 0; i <= qualitys.length; i++) {
-                let result = vqregexp.exec(qualitys[i].dataset.qualityType);
-                let result2 = vqreg2exp.exec(qualitys[i].dataset.qualityType);
-                if (result == null && result2 == null) {
-                  qualitys[i].click();
-                  break;
-                }
-              }
-              break;
-            case 3:
-              let Lowest = qualitys.length - 2; //减去1的话就是播放器的自动模式
-              qualitys[Lowest].click();
-              break;
-            case 4:
-              for (let x = 0; x <= qualitys.length - 1;) {
-                if (vqreg2exp.test(qualitys[x].dataset.qualityType)) {
-                  x++;
-                } else {
-                  qualitys[x].click();
-                  break;
-                }
-              }
-          }
-          clearInterval(timer);
-        });
+    chrome.storage.local.get(["videoQualityStrategy"], (items) => {
+      /**@description 模式标准：0=自动；1=默认最高；2=非60帧的最高画质；3=强制标清；4=偏向非4k的最高画质；5=HDR最低；6=仅偏好1080p60*/
+      const strategy = Number(items.videoQualityStrategy);
+      if (isLogin == false) {
+        return;
       }
-    }, 5000);
+      GetAsyncDomUtil.getAsyncDomClassic("div.quality-panel", () => {
+        const qualities = document.querySelector("div.quality-panel > ul").children;
+        switch (strategy) {
+          case 0:
+            qualities[qualities.length - 1].click();
+            break;
+          case 1:
+            qualities[0].click();
+            break;
+          case 2:
+            for (let i = 0; i < qualities.length; i++) {
+              const e = qualities[i];
+              const qualityType = e.dataset.qualityType;
+              if (/p60/.test(qualityType) == false) {
+                e.click();
+                break;
+              }
+            }
+            break;
+          case 3:
+            qualities[qualities.length - 2].click();
+            break;
+          case 4:
+            for (let i = 0; i < qualities.length; i++) {
+              const e = qualities[i];
+              const qualityType = e.dataset.qualityType;
+              if (/2160p/.test(qualityType) == false) {
+                e.click();
+                break;
+              }
+            }
+            break;
+          case 5:
+            for (let i = qualities.length - 1; i >= 0; i--) {
+              const e = qualities[i];
+              const qualityType = e.dataset.qualityType;
+              if (/HDR/.test(qualityType)) {
+                e.click();
+                break;
+              }
+            }
+            PlayerUiReact.leftBottomTip("AcFun助手：没有HDR相关画质。")
+            break;
+          case 6:
+            for (let i = 0; i < qualities.length; i++) {
+              const e = qualities[i];
+              const qualityType = e.dataset.qualityType;
+              if (/1080p60/.test(qualityType)) {
+                e.click();
+                break;
+              }
+            }
+            PlayerUiReact.leftBottomTip("AcFun助手：没有1080P60帧画质。")
+            break;
+        }
+      }, 1000)
+    })
   }
 
   //自定义倍速
@@ -207,7 +223,7 @@ class VideoSetting extends AcFunHelperFgFrame {
   //==============AB回放================
   addABPlayUI() {
     getAsyncDom(" .box-right ", () => {
-      let html = `
+      const html = `
         <div class="control-btn speed" type='abplay'><span data-bind-key="AddABPlayUI">AB</span>
             <div class="speed-panel abplay-panel">
                 <ul>
@@ -220,8 +236,8 @@ class VideoSetting extends AcFunHelperFgFrame {
         </div>
         `;
       $(" .box-right ").prepend(html);
-      $(" .box-right>div[type=abplay] ").click((e) => {
-        let target = e.target.className;
+      $(" .box-right>div[type=abplay] ").on("click", (e) => {
+        const target = e.target.className;
         switch (target) {
           case "updateAbPlayFirst":
             this.updateAbPlayFirst();
@@ -702,7 +718,7 @@ class VideoSetting extends AcFunHelperFgFrame {
    */
   videoMediaSession(dougaInfo) {
     fgConsole("VideoSetting", "videoMediaSession", "Init MediaSessionModule.", 1, false);
-    if (!isBoughtBangumi()) { return }
+    if (!UIReactor.isBoughtBangumi()) { return }
     /**@type {APIs.BangumiPageInfo} */
     let videoInfo = {};
     try {
@@ -988,15 +1004,15 @@ class VideoSetting extends AcFunHelperFgFrame {
 
   /**
    * 调整视频时间以平均标准帧步进
-   * @param {int} frameRate 每一千秒所播放的帧数
    * @param {string} mode 前进或者后退 f or b
    * @QA 为什么不能去获取实时的帧率：different time means different frame. In the example, Chrome is trying to match the 24Hz of the movie on my 60Hz computer by trying to get 45 Hz ( = 60 / 2 + 60 / 4), the nearest from 48 = 2*24. For the 21 created frames i don't know if it interpolates or merely duplicates the frames. It surely changes depending on browser/device (Gpu especially).Anyway given the high cost of checking with the imageData。<=插件去实时获取的开销很大。
    * @refer https://stackoverflow.com/questions/28420724/how-to-determine-the-intended-frame-rate-on-an-html-video-element
    * @origin github@RadND
    */
-  frameStepFwd(mode = "f", frameRate) {
+  frameStepFwd(mode = "f") {
     // console.log(mode, frameRate, document.getElementsByTagName("video")[0].currentTime)
-    if (frameRate) {
+    const frameRate = VideoSetting.getVideoFrameRate()
+    if (frameRate && UIReactor.judgeEditorActiveState() === false) {
       document.getElementsByTagName("video")[0].pause();
       switch (mode) {
         case "f":
@@ -1009,10 +1025,9 @@ class VideoSetting extends AcFunHelperFgFrame {
     }
   }
 
-  getVideoFrameRate() {
-    let vQuality = document.querySelector("div.control-btn.quality").children[0]
-      .innerText;
-    let frameRateExp = new RegExp("[0-9].*p([0-9].*)");
+  static getVideoFrameRate() {
+    const vQuality = document.querySelector("div.control-btn.quality").children[0].innerText;
+    const frameRateExp = new RegExp("[0-9].*p([0-9].*)");
     let vFrameRate = "";
     //假如是自动画质选项，那么稳定之后的画质应该是当前稿件可选画质的最高选项，我们获取到最高选项之后在画质参考选项中获取名称，然后获取标准帧率。
     if (vQuality == "自动") {
@@ -1042,23 +1057,14 @@ class VideoSetting extends AcFunHelperFgFrame {
       let contentElem = `<div class="control-btn speed" type='frameStep'>
       <div class="speed-panel frameStep-panel">
         <ul>
-          <li data-mode="f" onclick="MessagePush('frameStep', 'f')">下一帧</li>
-          <li data-mode="b" onclick="MessagePush('frameStep', 'b')">上一帧</li>
+          <li data-mode="f" onclick="VideoInject.MessagePush({ target: { mod: 'videoSetting', methodName: 'frameStepFwd' }, InvkSetting: { type: 'subMod', unsafe: true }, params: 'f' });">下一帧</li>
+          <li data-mode="b" onclick="VideoInject.MessagePush({ target: { mod: 'videoSetting', methodName: 'frameStepFwd' }, InvkSetting: { type: 'subMod', unsafe: true }, params: 'b' });">上一帧</li>
         </ul>
             <div class="transparent-placeholder"></div>
       </div>${fwdUIIcon}
     `;
       $(" .box-right ").prepend(contentElem);
     }
-
-    window.addEventListener("message", (e) => {
-      if (e.data.to == "AcFunHelperFrontend") {
-        if (e.data.msg.target === "frameStep" && judgeEditorActiveState() === false) {
-          this.frameStepFwd(e.data.msg.params, this.getVideoFrameRate());
-        }
-      }
-    })
-
   }
 
   /**
@@ -1265,7 +1271,11 @@ class VideoSetting extends AcFunHelperFgFrame {
       } else {
         videoElem.volume + 0.05 > 1 ? videoElem.volume = 1 : videoElem.volume += 0.05;
       }
-    })
+    }, { passive: true })
+  }
+
+  rememberLastSend() {
+    UIReactor.rememberLastSend("input.danmaku-input")
   }
 
 }

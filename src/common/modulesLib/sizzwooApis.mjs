@@ -81,7 +81,6 @@ export const summary = {
         }
         const liveId = await summary.getLiveId(uid);
         const data = await liveApis.getInfo(liveId);
-        console.log(data)
         return data;
     }
 }

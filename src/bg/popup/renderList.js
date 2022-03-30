@@ -20,22 +20,23 @@ var popupLater = {};
  * @description 数据从插件存储中取
  */
 export function updateVersionIcon() {
+	const updateBlogUrl = "https://sokwva.gitlab.io/acfun-helper/blog"
 	chrome.storage.local.get(["Upgradeable"], (data) => {
 		if (data.Upgradeable === 1) {
 			$('#update-box').css('display', 'inline-block')
-			$('.update-letter').html('助手有轻量更新')
+			$('.update-letter').html('轻量更新')
 			$('.head').addClass('lightUpdate')
-			$('#update-box').click(() => {
-				window.open('https://www.acfun.cn/u/7054138')
+			$('#update-box').on("click",() => {
+				window.open(updateBlogUrl)
 			})
 			return
 		}
 		if (data.Upgradeable === 2) {
 			$('#update-box').css('display', 'inline-block')
-			$('.update-letter').html('助手有重大更新')
+			$('.update-letter').html('重大更新！')
 			$('.update-icon').css('background', 'red')
-			$('#update-box').click(() => {
-				window.open('https://www.acfun.cn/u/7054138')
+			$('#update-box').on("click",() => {
+				window.open(updateBlogUrl)
 			})
 			$('.head').addClass('heavyUpdate')
 			return

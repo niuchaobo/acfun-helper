@@ -1,6 +1,6 @@
 import type { BlockStatement as BlockStatement_2 } from '@babel/types';
 import type { Function as Function_2 } from '@babel/types';
-import { generateCodeFrame } from '@vue/shared';
+import { generateCodeFrame } from './VueShared';
 import type { Identifier } from '@babel/types';
 import type { Node as Node_3 } from '@babel/types';
 import type { ObjectProperty } from '@babel/types';

@@ -69,3 +69,21 @@ export function getLoadingDomAttr(target, fn, attrName, insure, time = 3000, isD
         return Array.isArray(f) ? f[1] == e.getAttribute(f[0]) : e.getAttribute(f);
     }, time, true, 30000, isDev, null, attrName).probe();
 }
+
+/**
+ * 评论区加载完成
+ * @returns {Promise<boolean>}
+ */
+export const commentAreaReady = async () => {
+    return new Promise((resolve) => {
+        new GetAsyncDomUtil("commentArea", () => {
+            resolve(true);
+        }, () => {
+            resolve(false);
+        }, null, null, 3000, false, 30000, false,
+            (
+                !!document.querySelector('.area-comment-title a.name') && document.querySelector('.ac-comment-loading').innerHTML == ""
+            )
+        ).probe()
+    })
+}

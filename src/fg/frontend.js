@@ -7,7 +7,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		this.runtime.href = window.location.href;
 		this.href = this.runtime.href;
 
-		this.MessageRouterFg = new MessageSwitch("fg");
+		this.MessageRouterFg = new MessageSwitch("fg", null, true);
 		this.runtime.dataset.core.status.messageSwitch = true;
 		this.div = new Div(); //右侧助手
 		this.runtime.dataset.core.status.helperFgPop = true;
@@ -42,13 +42,12 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		this.funcUrlParam = new FunctionalUrlParam(); //URLParam指令
 		this.runtime.dataset.core.status.urlparams = true;
 
-
 		chrome.runtime.onMessage.addListener(this.MessageRouterFg.FrontendMessageSwitch.bind(this)); //接收来自后台的消息
-		window.addEventListener("message", this.MessageRouterFg.FrontendIframeMsgHandler.bind(this)); //接收来自iframe的消息
-		window.addEventListener("AcFunHelperFrontend", this.MessageRouterFg.FrontendMsgEventsHandler.bind(this, this.MessageRouterFg));
+		window.addEventListener("message", this.MessageRouterFg.FrontendMsgHandler.bind(this));
 
 		this.loading();
 		this.runtime.dataset.core.status.core = true;
+		this.Apis = null;
 
 		//监听storage变化,可用于数据云同步
 		// chrome.storage.onChanged.addListener(function (changes, areaName) {
@@ -74,6 +73,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		this.runtime.options = await optionsLoad();
 		this.options = this.runtime.options;
 		this.runtime.dataset.core.browserType = ToolBox.thisBrowser();
+		this.Apis = new AcFunHelperFrontendApis(this);
 
 		if (!this.options.enabled || !this.options.permission) {
 			return
@@ -82,12 +82,20 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		XHRProxyLib.src = chrome.runtime.getURL("common/xhr-proxy.js");
 		(document.head || document.documentElement).appendChild(XHRProxyLib);
 		XHRProxyLib.addEventListener("load", () => {
-			if (this.options.filter) {
+			if (this.options.xhrDrv) {
 				const xhrDriver = document.createElement("script");
 				xhrDriver.src = chrome.runtime.getURL("fg/acfunxhr.js");
+				xhrDriver.type = "module";
 				(document.head || document.documentElement).appendChild(xhrDriver);
-				xhrDriver.addEventListener('load', () => {
-					MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } });
+				xhrDriver.addEventListener('load', async () => {
+					ARFPModsConfName.forEach(async e => {
+						let status = await ExtOptions.getValue(e);
+						//只要有任意一种屏蔽模块启用，那么就应该拉起XHRDriver
+						status && (
+							MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", source: "ARFP", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } }),
+							this.block.injectScriptData()
+						)
+					});
 				});
 			}
 		});
@@ -157,8 +165,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		//添加自定义样式
 		this.addStyle();
 		this.options.Dev_thinScrollbar && this.pageBeautify.thinScrollBar();
-		//屏蔽功能
-		this.options.filter && this.block.injectScript();
 		if (!REG.live.test(href) && !REG.liveIndex.test(href)) {
 			//首页个人资料弹框 (未完成)
 			this.options.beautify_personal && getAsyncDom('#header .header-guide .guide-item', () => {
@@ -251,7 +257,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.div.show(this.runtime.dataset.dougaInfo, this.options, 'video', isUp);
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			//自动投蕉
-			this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
+			this.options.auto_throw && this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {
@@ -278,6 +284,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.videoMediaSession && this.videoSetting.videoMediaSession(this.runtime.dataset.dougaInfo);
 			//简单CC字幕
 			this.options.simpleCC && this.danmaku.simpleCC();
+			this.options.videoRememberLastSend && this.videoSetting.rememberLastSend();
 			return
 		}
 		//文章
@@ -288,7 +295,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
 			this.options.articleReadMode && this.reader.lightReadMode();
-			if (this.options.articleBanana) {
+			if (this.options.auto_throw && this.options.articleBanana) {
 				setTimeout(() => {
 					this.banana.articleBanana({ key: REG.acAid.exec(href)[2] })
 				}, 1000);
@@ -309,6 +316,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit("live");
 			this.options.liveVolumeMild && this.videoSetting.liveVolumeMild();
 			this.options.wheelToChangeVolume && this.videoSetting.wheelToChangeVolume(false);
+			this.options.liveRememberLastSend && this.livePageBeautify.rememberLastSend();
 			this.options.beautify_personal && GetAsyncDomUtil.getAsyncDomClassic('#header #nav #nav-parent .header-guide .guide-user p', () => {
 				this.pageBeautify.addMouseAnimation()
 				this.pageBeautify.personBeautify();
@@ -332,6 +340,9 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.userBatchManage && this.pageBeautify.userBatchManage();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("myFav");
 		}
+		if (REG.userHome.test(href)) {
+			this.options.userTagRender && this.pageBeautify.userTagRender();
+		}
 	}
 
 	onCommentAreaLoaded(e) {
@@ -347,13 +358,15 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	 * @todo 我觉得还是使用URL监听使用的开销少。
 	 */
 	onPlayerUrlChange() {
-		DOMObserver.attrs(document.querySelector("video"), e => {
-			/**@type {MutationRecord} */
-			const mutations = e[0];
-			if (mutations.oldValue != null && mutations.attributeName == "src" && REG.videoPlayerSrc.test(mutations.oldValue)) {
-				this.reattachFrontMods();
-			}
-		})
+		if (REG.bangumi.test(window.location.href) == false) {
+			DOMObserver.attrs(document.querySelector("video"), e => {
+				/**@type {MutationRecord} */
+				const mutations = e[0];
+				if (mutations.oldValue != null && mutations.attributeName == "src" && REG.videoPlayerSrc.test(mutations.oldValue)) {
+					this.reattachFrontMods();
+				}
+			})
+		}
 	}
 
 	/**
@@ -443,137 +456,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	deferWorks() {
 		fgConsole("Frontend", "deferWorks", "Loaded.", 1, false);
 		this.funcUrlParam.onLoad();
-	}
-
-	//抽奖
-	async api_lottery(params) {
-		let { number, follow } = params;
-		let href = window.location.href;
-		let reg = /ac(\d+)/;
-		let acId = reg.exec(href)[1];
-		console.log(await this.luckyTurntab.RollOut(acId, number, follow));
-	}
-	async api_lottery2nd(params) {
-		let { number, follow } = params;
-		let href = window.location.href;
-		let reg = /ac(\d+)/;
-		let acId = reg.exec(href)[1];
-		console.log(await this.luckyTurntab.RollOutExp(acId, number, follow));
-	}
-	//下载封面
-	api_downloadCover(params) {
-		this.download.downloadCover(params);
-	}
-	//下载弹幕
-	api_downloadDanmaku() {
-		this.download.downloadDanmaku(this.runtime.dataset.dougaInfo);
-	}
-	api_playerTimeJumpUrlGenDiv() {
-		const timeText = document.querySelector(".time-label").children[0].innerText;
-		if (timeText) {
-			const ResultUrl = FunctionalUrlParam.playerTimeJumpUrlGen(timeText);
-			var aux = document.createElement("input");
-			aux.setAttribute("value", ResultUrl);
-			document.body.appendChild(aux);
-			aux.select();
-			document.execCommand("copy");
-			document.body.removeChild(aux);
-			MessageSwitch.sendMessage('fg', { target: "notice", params: { title: "播放器时间跳转链接", msg: "跳转到现在播放时间的链接已经复制到剪贴板了。", }, InvkSetting: { type: "function" } })
-		}
-	}
-	api_assDanmaku() {
-		this.danmaku.sanitizeJsonDanmakuToAss(this.runtime.dataset.dougaInfo);
-	}
-	api_notice(params) {
-		MessageSwitch.sendMessage('fg', { target: "notice", params: params, InvkSetting: { type: "function" } })
-	}
-	//视频下载
-	async api_download(params) {
-		this.download.downloadVideo(params);
-	}
-	api_mark(params) {
-		let { value } = params;
-		this.options.mark = value;
-		optionsSave(this.options);
-		if (value) {
-			this.ce.renderMark();
-		} else {
-			this.ce.clearMark();
-		}
-	}
-	api_timelineDotsMain(params) {
-		let { massText, url } = params;
-		this.options.timelineDots && this.videoSetting.timelineDotsMain(massText);
-	}
-	api_scan(params) {
-		let { value } = params;
-		this.options.scan = value;
-		//保存配置信息到插件配置存储
-		optionsSave(this.options);
-		if (value) {
-			this.ce.renderScan();
-			this.ce.renderScanForUp();
-		} else {
-			this.ce.clearScan();
-		}
-	}
-	api_lightReadMode(params) {
-		let { value } = params;
-		this.options.articleReadMode = value;
-		if (value) {
-			this.reader.lightReadMode(true);
-		} else {
-			this.reader.lightReadMode(false);
-		}
-	}
-	//直播m3u8 url赋值到前台页面
-	async api_renderLive(params) {
-		if (REG.live.test(this.href)) {
-			this.live.renderLive(params);
-		}
-	}
-	//评论区折叠部分的标记渲染入口
-	api_renderSub(params) {
-		let { url, rootCommentId } = params;
-		if (this.options.mark) {
-			this.ce.renderSubMark(rootCommentId);
-		}
-		if (this.options.scan) {
-			this.ce.renderSubScan(rootCommentId);
-		}
-		if (this.options.upHighlight) {
-			this.ce.renderSubScanForUp(rootCommentId);
-		}
-		if (this.options.PlayerTimeCommentEasyJump) {
-			//评论空降
-			REG.videoAndBangumi.test(this.href) && this.ce.searchScanForPlayerTime();
-		}
-	}
-	//评论区整体部分的标记渲染入口 ()
-	api_renderList(params) {
-		let { url } = params.url;
-		if (this.options.mark) {
-			this.ce.renderMark();
-		}
-		if (this.options.scan) {
-			this.ce.renderScan();
-		}
-		if (this.options.upHighlight) {
-			this.ce.renderScanForUp();
-		}
-		if (this.options.PlayerTimeCommentEasyJump) {
-			REG.videoAndBangumi.test(this.href) && this.ce.searchScanForPlayerTime();
-		}
-		//跳转链接弹框
-		this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
-		if (REG.videoAndBangumi.test(this.href)) {
-			//快捷键空降 TODO:全功能快捷键！
-			if (this.options.easySearchScanForPlayerTimesw) {
-				getAsyncDom('.ac-pc-comment', () => {
-					this.ce.easySearchScanForPlayerTime(this.options.custom_easy_jump_keyCode)
-				});
-			}
-		}
 	}
 
 }

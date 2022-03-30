@@ -9,7 +9,7 @@ declare namespace InnerDefined {
       name: string;
     };
     coverUrl: string;
-    videoList: [HTMLElement];
+    videoList: HTMLElement[];
   }
   interface REGStruct {
     /** @description 主站 */
@@ -83,8 +83,10 @@ declare namespace OptionStruct {
     LikeHeartNotif: boolean;
     to_attention: boolean;
     to_attention_num: number;
-    to_special_items: [];
-    broadcastingUIDlistFollowing: {};
+    to_special_items: [
+      { bananaNum: string; name: string; uid: string; up_url: string }
+    ];
+    broadcastingUIDlistFollowing: { [number]: boolean };
     MarkedComment: {
       setting: {
         enabled: boolean;
@@ -98,7 +100,7 @@ declare namespace OptionStruct {
       };
       datasets: {};
     };
-    WatchPlanList: [];
+    WatchPlanList: string[];
     PictureInPictureModeUI: boolean;
     activeTabKey: string;
     extendsName: "AcFun助手";
@@ -106,6 +108,8 @@ declare namespace OptionStruct {
     userInfo: string;
     banana_notice: boolean;
     watchLater: boolean;
+    CommentFilter: Map<number, string>;
+    commentFilterSw: boolean;
     fetchPushList_daemonsw: boolean;
     timer4Unread_daemonsw: boolean;
     krnl_videossEarly: boolean;
@@ -114,8 +118,17 @@ declare namespace OptionStruct {
     custom_css_style: string;
     logSetting: { consoleOutput: boolean; logLevel: number };
     mark: boolean;
-    UserMarks: {};
-    UserFilter: {};
+    UserMarks: {
+      [uid: number]: {
+        name: string;
+        tag: string;
+        desc?: string;
+        commentId?: number;
+        evidence?: string;
+        refer?: string;
+      };
+    };
+    UserFilter: { [uid: number]: { name: string } };
     scan: boolean;
     upHighlight: boolean;
     filter: boolean;
@@ -135,7 +148,8 @@ declare namespace OptionStruct {
     hideAd: boolean;
     userPageTimeline: boolean;
     liveHideAd: boolean;
-    liveHideAdType: 1 | 2;
+    liveHideAdType: "0" | "1";
+    liveHideAdMute: boolean;
     liveBansw: boolean;
     playerRecommendHide: boolean;
     PlayerDamakuSearchSw: boolean;
@@ -145,7 +159,9 @@ declare namespace OptionStruct {
     FilmModeExclusionsw: boolean;
     endedAutoExitFullscreensw: boolean;
     endedAutoToCommentArea: boolean;
+    endedCloseFg: boolean;
     easySearchScanForPlayerTimesw: boolean;
+    videoRememberLastSend: boolean;
     Dev_indexBlurSW: boolean;
     userHomeMoment: boolean;
     Upgradeable: 0;
@@ -163,6 +179,7 @@ declare namespace OptionStruct {
     autOpenVideoDescsw: boolean;
     followLiveNotif: boolean;
     liveCommentTimeTag: boolean;
+    liveRememberLastSend: boolean;
     LiveUserFocus: boolean;
     LiveWatchTimeRec_popup: boolean;
     multiPartListSpread: boolean;
@@ -179,6 +196,7 @@ declare namespace OptionStruct {
     videoMediaSession: boolean;
     videoAchievement: boolean;
     userCenterBeautify: boolean;
+    userTagRender: boolean;
     pageTransKeyBind: boolean;
     quickCommentSubmit: boolean;
     widenUCVideoList: boolean;
@@ -191,6 +209,7 @@ declare namespace OptionStruct {
       commentNotif: boolean;
       likeNotif: boolean;
       giftNotif: boolean;
+      atNotif: boolean;
     };
     frameStepSetting: { enabled: boolean; controlUI: boolean };
     liveVolumeMild: boolean;

@@ -777,9 +777,7 @@ class PageBeautify extends AcFunHelperFgFrame {
   }
 
   async userBatchManage(command = true) {
-    /**@type {number[]} */
-    this.userBatchMngList = [];
-    this.gidgnameMap = null;
+    let uiAttached = false;
     /**
      * 事件绑定
      * @param {Event} e 
@@ -859,12 +857,31 @@ class PageBeautify extends AcFunHelperFgFrame {
 
     const buttonEvent = (toggle = true) => {
       if (toggle) {
-        document.querySelector("#achUserBatchMngroup").addEventListener("click", batchMove);
-        document.querySelector("#achUserBatchMngunf").addEventListener("click", batchUnfollow);
+        document.querySelector("#achUserBatchMngroup")?.addEventListener("click", batchMove);
+        document.querySelector("#achUserBatchMngunf")?.addEventListener("click", batchUnfollow);
       } else {
-        document.querySelector("#achUserBatchMngroup").removeEventListener("click", batchMove);
-        document.querySelector("#achUserBatchMngunf").removeEventListener("click", batchUnfollow);
+        document.querySelector("#achUserBatchMngroup")?.removeEventListener("click", batchMove);
+        document.querySelector("#achUserBatchMngunf")?.removeEventListener("click", batchUnfollow);
       }
+    }
+
+    const active = () => {
+      /**@type {number[]} */
+      this.userBatchMngList = [];
+      this.gidgnameMap = null;
+      document.querySelector(".following-list")?.addEventListener("click", bindEvent);
+      document.querySelector("#AcFunHelper_userBatchManage").disabled = false;
+      toggleUI();
+      buttonEvent();
+      uiAttached = true;
+    }
+
+    const deactive = () => {
+      document.querySelector(".following-list")?.removeEventListener("click", bindEvent);
+      document.querySelector("#AcFunHelper_userBatchManage").disabled = true;
+      toggleUI();
+      buttonEvent(false);
+      uiAttached = false;
     }
 
     switch (command) {
@@ -874,17 +891,56 @@ class PageBeautify extends AcFunHelperFgFrame {
             border: 1px solid #ff42bc !important;
           }
         `, document.head, "AcFunHelper_userBatchManage");
-        document.querySelector(".following-list")?.addEventListener("click", bindEvent);
-        document.querySelector("#AcFunHelper_userBatchManage").disabled = false;
-        toggleUI();
-        buttonEvent();
+        if (document.querySelector(".following-list")) {
+          active();
+        }
         break;
       case false:
-        document.querySelector(".following-list")?.removeEventListener("click", bindEvent);
-        document.querySelector("#AcFunHelper_userBatchManage").disabled = true;
-        toggleUI();
-        buttonEvent(false);
+        if (document.querySelector(".following-list")) {
+          deactive();
+        }
         break;
+    }
+
+    DOMObserver.all(document.querySelector(".ac-member-navigation"), (e) => {
+      e.forEach(f => {
+        //从 关注列表 切换出去
+        if (f.oldValue == "ac-member-navigation-item ac-member-navigation-sub-item router-link-exact-active ac-member-navigation-item-active") {
+          uiAttached = false;
+          return;
+        }
+        if (f.target.innerText == "关注列表" && uiAttached == false) {
+          GetAsyncDomUtil.getAsyncDomClassic(".following-list", () => {
+            switch (command) {
+              case true:
+                active();
+                break;
+              case true:
+                deactive();
+                break;
+            }
+          })
+        }
+      })
+    })
+  }
+
+  userTagRender() {
+    try {
+      const uid = Number(REG.userHome.exec(globalThis.location.href)[2]);
+      if (uid in this.runtime.options.UserMarks) {
+        const info = this.runtime.options.UserMarks[uid];
+        let tagEle = document.createElement("span");
+        tagEle.classList.add("pos");
+        tagEle.classList.add("up");
+        tagEle.style.fontSize = "1.1em";
+        tagEle.title = "用户标记"
+        tagEle.innerText = info.tag;
+        document.querySelector("div.fl.main>div.top").after(tagEle);
+      }
+    } catch (error) {
+      fgConsole(this, "userTagRender", error)
+      return;
     }
   }
 

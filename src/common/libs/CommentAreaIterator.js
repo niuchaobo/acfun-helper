@@ -22,7 +22,6 @@ class CommentAreaIterator {
 
         }
         if (typeof (GetAsyncDomUtil) == "undefined") {
-            const DependencyError = import("../ErrorClass.mjs");
             throw new DependencyError("该类依赖于核心类 GetAsyncDomUtil");
         }
     }

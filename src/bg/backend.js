@@ -42,6 +42,8 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
             this.Ominibox = new Ohminibox();
             this.Upgrade = new UpgradeAgent();
 
+            this.Apis = new AcFunHelperBackendAPIs(this);
+
             /**就绪 */
             this.runtime.dataset.core.status.core = true;
             this.startDaemon();
@@ -99,10 +101,14 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
      */
     onAlarmsEvent(e) {
         const targetTaskGroup = this.runtime.dataset.core.scheduler[e.name];
-        for (let taskgroup in targetTaskGroup.tasks) {
-            for (let task in targetTaskGroup.tasks[taskgroup]) {
-                targetTaskGroup.tasks[taskgroup][task]();
+        try {
+            for (let taskgroup in targetTaskGroup.tasks) {
+                for (let task in targetTaskGroup.tasks[taskgroup]) {
+                    targetTaskGroup.tasks[taskgroup][task]();
+                }
             }
+        } catch (error) {
+            console.log(error, e, targetTaskGroup)
         }
     }
 
@@ -160,13 +166,11 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
             chrome.storage.local.set({ "UserMarks": UserMarks }, function () { })
             chrome.storage.local.set({ "UserFilter": UserFilter }, function () { })
         }
-        //关闭文章区用户内容评论
-        if (rawOpts['filter']) {
-            chrome.storage.local.set({ "filter": false }, function () { });
-        }
-        //关闭用户动态渲染（2021-7-5失效：接口改动）
-        if (rawOpts['userHomeMoment']) {
-            chrome.storage.local.set({ "userHomeMoment": false }, function () { });
+        //火狐不支持注入XHRProxy
+        if(this.runtime.dataset.core.browserType!="Chrome"){
+            ExtOptions.setValue("xhrDrv",false)
+            ExtOptions.setValue("filter",false)
+            ExtOptions.setValue("commentFilterSw",false)
         }
     }
 
@@ -250,78 +254,6 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
                 })
             }
         })
-    }
-
-    api_notice(params) {
-        let { title, msg } = params;
-        notice(title, msg);
-    }
-
-    async api_watchLater() {
-        this.WatchPlan.execWatch();
-    }
-
-    async api_stopWatchLater() {
-        this.WatchPlan.exitWatchPlan();
-    }
-
-    async api_syncWatchLaterList() {
-        return this.WatchPlan.syncAppWatchLater();
-    }
-
-    async api_removeDiffWatchLaterList() {
-        this.WatchPlan.removeAllDiffWatchLaterListItemFromLocal();
-    }
-
-    api_getLiveWatchTimeList() {
-        return this.WatchPlan.getLiveWatchTimeList();
-    }
-
-    api_livePageWatchTimeRec(params) {
-        this.WatchPlan.livePageWatchTimeRec(params);
-    }
-
-    api_attentionTabs(params) {
-        return this.WatchPlan.attentionTabs(params.windowId);
-    }
-
-    api_updateLiveWatchTimeListItem() {
-        return this.WatchPlan.updateLiveWatchTimeList();
-    }
-
-    api_bananAudio() {
-        this.MsgNotfs.bananAudio();
-    }
-
-    async api_achievementEvent(e) {
-        if (e.action == "get") {
-            return await db_getHistoricalAchievs(REG.acVid.exec(e.url)[2]);
-        } else if (e.action == "put") {
-            db_insertHistoricalAchievs(REG.acVid.exec(e.url)[2], e.tagData);
-            return true;
-        }
-    }
-
-    api_sandboxReady() {
-        this.runtime.dataset.core.status.sandbox = true;
-    }
-
-    async api_Fetch(params) {
-        let { url, callbackId } = params;
-        let request = {
-            url,
-            type: 'GET',
-            dataType: 'text',
-            timeout: 3000,
-            error: (xhr, status, error) => this.callback(null, callbackId),
-            success: (data, status) => this.callback(data, callbackId)
-        };
-        $.ajax(request);
-    }
-
-    async api_BkFetch(params) {
-        let { url, method, data, withCredentials, callback } = params;
-        return await fetchResult(url, method, data, withCredentials);
     }
 
 }

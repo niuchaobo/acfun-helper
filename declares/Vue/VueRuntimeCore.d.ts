@@ -1,55 +1,55 @@
-import { camelize } from '@vue/shared';
-import { capitalize } from '@vue/shared';
-import { computed } from '@vue/reactivity';
-import { ComputedGetter } from '@vue/reactivity';
-import { ComputedRef } from '@vue/reactivity';
-import { customRef } from '@vue/reactivity';
-import { DebuggerEvent } from '@vue/reactivity';
-import { DebuggerOptions } from '@vue/reactivity';
-import { DeepReadonly } from '@vue/reactivity';
-import { effect } from '@vue/reactivity';
-import { EffectScope } from '@vue/reactivity';
-import { effectScope } from '@vue/reactivity';
-import { getCurrentScope } from '@vue/reactivity';
-import { isProxy } from '@vue/reactivity';
-import { isReactive } from '@vue/reactivity';
-import { isReadonly } from '@vue/reactivity';
-import { isRef } from '@vue/reactivity';
-import { markRaw } from '@vue/reactivity';
-import { normalizeClass } from '@vue/shared';
-import { normalizeProps } from '@vue/shared';
-import { normalizeStyle } from '@vue/shared';
-import { onScopeDispose } from '@vue/reactivity';
-import { proxyRefs } from '@vue/reactivity';
-import { reactive } from '@vue/reactivity';
-import { ReactiveEffect } from '@vue/reactivity';
-import { ReactiveEffectOptions } from '@vue/reactivity';
-import { ReactiveFlags } from '@vue/reactivity';
-import { readonly } from '@vue/reactivity';
-import { Ref } from '@vue/reactivity';
-import { ref } from '@vue/reactivity';
-import { shallowReactive } from '@vue/reactivity';
-import { shallowReadonly } from '@vue/reactivity';
-import { shallowRef } from '@vue/reactivity';
-import { ShallowUnwrapRef } from '@vue/reactivity';
-import { ShapeFlags } from '@vue/shared';
-import { SlotFlags } from '@vue/shared';
-import { stop as stop_2 } from '@vue/reactivity';
-import { toDisplayString } from '@vue/shared';
-import { toHandlerKey } from '@vue/shared';
-import { toRaw } from '@vue/reactivity';
-import { ToRef } from '@vue/reactivity';
-import { toRef } from '@vue/reactivity';
-import { ToRefs } from '@vue/reactivity';
-import { toRefs } from '@vue/reactivity';
-import { TrackOpTypes } from '@vue/reactivity';
-import { TriggerOpTypes } from '@vue/reactivity';
-import { triggerRef } from '@vue/reactivity';
-import { unref } from '@vue/reactivity';
-import { UnwrapNestedRefs } from '@vue/reactivity';
-import { UnwrapRef } from '@vue/reactivity';
-import { WritableComputedOptions } from '@vue/reactivity';
-import { WritableComputedRef } from '@vue/reactivity';
+import { camelize } from './VueShared';
+import { capitalize } from './VueShared';
+import { computed } from './VueReactivity';
+import { ComputedGetter } from './VueReactivity';
+import { ComputedRef } from './VueReactivity';
+import { customRef } from './VueReactivity';
+import { DebuggerEvent } from './VueReactivity';
+import { DebuggerOptions } from './VueReactivity';
+import { DeepReadonly } from './VueReactivity';
+import { effect } from './VueReactivity';
+import { EffectScope } from './VueReactivity';
+import { effectScope } from './VueReactivity';
+import { getCurrentScope } from './VueReactivity';
+import { isProxy } from './VueReactivity';
+import { isReactive } from './VueReactivity';
+import { isReadonly } from './VueReactivity';
+import { isRef } from './VueReactivity';
+import { markRaw } from './VueReactivity';
+import { normalizeClass } from './VueShared';
+import { normalizeProps } from './VueShared';
+import { normalizeStyle } from './VueShared';
+import { onScopeDispose } from './VueReactivity';
+import { proxyRefs } from './VueReactivity';
+import { reactive } from './VueReactivity';
+import { ReactiveEffect } from './VueReactivity';
+import { ReactiveEffectOptions } from './VueReactivity';
+import { ReactiveFlags } from './VueReactivity';
+import { readonly } from './VueReactivity';
+import { Ref } from './VueReactivity';
+import { ref } from './VueReactivity';
+import { shallowReactive } from './VueReactivity';
+import { shallowReadonly } from './VueReactivity';
+import { shallowRef } from './VueReactivity';
+import { ShallowUnwrapRef } from './VueReactivity';
+import { ShapeFlags } from './VueShared';
+import { SlotFlags } from './VueShared';
+import { stop as stop_2 } from './VueReactivity';
+import { toDisplayString } from './VueShared';
+import { toHandlerKey } from './VueShared';
+import { toRaw } from './VueReactivity';
+import { ToRef } from './VueReactivity';
+import { toRef } from './VueReactivity';
+import { ToRefs } from './VueReactivity';
+import { toRefs } from './VueReactivity';
+import { TrackOpTypes } from './VueReactivity';
+import { TriggerOpTypes } from './VueReactivity';
+import { triggerRef } from './VueReactivity';
+import { unref } from './VueReactivity';
+import { UnwrapNestedRefs } from './VueReactivity';
+import { UnwrapRef } from './VueReactivity';
+import { WritableComputedOptions } from './VueReactivity';
+import { WritableComputedRef } from './VueReactivity';
 
 /**
  * Default allowed non-declared props on component in TSX
@@ -1035,7 +1035,7 @@ export declare type LegacyConfig = {
     productionTip?: boolean;
 };
 
-declare interface LegacyOptions<Props, D, C extends ComputedOptions, M extends MethodOptions, Mixin extends ComponentOptionsMixin, Extends extends ComponentOptionsMixin> {
+export declare interface LegacyOptions<Props, D, C extends ComputedOptions, M extends MethodOptions, Mixin extends ComponentOptionsMixin, Extends extends ComponentOptionsMixin> {
     compatConfig?: CompatConfig;
     [key: string]: any;
     data?: (this: CreateComponentPublicInstance<Props, {}, {}, {}, MethodOptions, Mixin, Extends>, vm: CreateComponentPublicInstance<Props, {}, {}, {}, MethodOptions, Mixin, Extends>) => D;
@@ -1936,7 +1936,7 @@ export { }
 // Note: this file is auto concatenated to the end of the bundled d.ts during
 // build.
 
-declare module '@vue/reactivity' {
+declare module './VueReactivity' {
   export interface RefUnwrapBailTypes {
     runtimeCoreBailTypes:
       | VNode

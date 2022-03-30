@@ -29,7 +29,7 @@ class SandboxAgent {
 
             this.hostElement.postMessage({
                 to: "sandbox",
-                msg: e
+                data: e
             }, '*');
         }
     }
@@ -43,7 +43,7 @@ class SandboxAgent {
             e.InvkSetting.response = response;
             this.hostElement.postMessage({
                 to: "sandboxAgentCallback",
-                msg: e
+                data: e
             }, '*');
 
             this.finishedCallBacks.push(e.InvkSetting.callbackId);
@@ -52,7 +52,7 @@ class SandboxAgent {
 
             this.hostElement.postMessage({
                 to: "background",
-                msg: e
+                data: e
             }, '*');
         }
     }
@@ -69,7 +69,7 @@ class SandboxAgent {
     postMessage(e) {
         this.hostElement.postMessage({
             to: "background",
-            msg: e
+            data: e
         }, '*');
     }
 

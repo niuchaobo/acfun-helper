@@ -1,7 +1,7 @@
 /**
  * 视频下载,封面下载
  */
-class Download extends AcFunHelperFgFrame{
+class Download extends AcFunHelperFgFrame {
     constructor() {
         super();
         this.devMode = false;
@@ -9,7 +9,7 @@ class Download extends AcFunHelperFgFrame{
 
     async downloadVideo(params) {
         this.devMode && console.log(params);
-        let activeKey =this.runtime.options.activeTabKey;
+        let activeKey = this.runtime.options.activeTabKey;
         let { url, title, id, qualityLabel } = params;
         let m3u8 = url;
         let tabId = await getStorage(activeKey).then(result => { return result[activeKey] });
@@ -44,10 +44,12 @@ class Download extends AcFunHelperFgFrame{
         let seArr = new Array();
         if (segments.length == 0) {
             MessageSwitch.sendMessage('fg', {
-                target: "notice", params: {
+                target: "notice",
+                params: {
                     title: "警告",
                     msg: "视频信息已过期，请刷新当前页面",
-                }, InvkSetting: { type: "function" }
+                }, 
+                InvkSetting: { type: "function" }
             })
             return;
         } else {
@@ -67,10 +69,12 @@ class Download extends AcFunHelperFgFrame{
                 a = await getVideo(url);
             } catch (e) {
                 MessageSwitch.sendMessage('fg', {
-                    target: "notice", params: {
+                    target: "notice",
+                    params: {
                         title: "警告",
                         msg: "视频下载失败，请刷新后重试",
-                    }, InvkSetting: { type: "function" }
+                    },
+                    InvkSetting: { type: "function" }
                 })
             }
             myBlobBuilder.append(a);
