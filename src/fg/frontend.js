@@ -7,7 +7,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		this.runtime.href = window.location.href;
 		this.href = this.runtime.href;
 
-		this.MessageRouterFg = new MessageSwitch("fg",null,true);
+		this.MessageRouterFg = new MessageSwitch("fg", null, true);
 		this.runtime.dataset.core.status.messageSwitch = true;
 		this.div = new Div(); //右侧助手
 		this.runtime.dataset.core.status.helperFgPop = true;
@@ -257,7 +257,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.div.show(this.runtime.dataset.dougaInfo, this.options, 'video', isUp);
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			//自动投蕉
-			this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
+			this.options.auto_throw && this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {
