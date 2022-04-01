@@ -50,6 +50,9 @@ class WebStorageUtil {
     getByKey(key = "") {
         if (key) {
             const result = JSON.parse(this.hander.getItem(key));
+            if (!result) {
+                return;
+            }
             if (!result.timeout) {
                 return result;
             }

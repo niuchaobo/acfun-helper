@@ -15,8 +15,8 @@ const app = {
         upload: function () {
             chrome.storage.local.get(['AcCookies'], function (datao) {
                 let UidReg, Uid;
-                $('.SyncWait1').show();
-                let x = $('p.read_result')[0];
+                document.querySelector(".SyncWait1").style.display = "block"
+                let x = document.querySelector('p.read_result');
                 try {
                     UidReg = new RegExp('auth_key=(.*); ac_username');
                     Uid = Number(UidReg.exec(datao.AcCookies)[1]);
@@ -45,7 +45,7 @@ const app = {
                             })
                     });
                 }
-                $('.SyncWait1').hide();
+                document.querySelector().style.display = "none";
             });
 
         }

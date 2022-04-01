@@ -1,6 +1,6 @@
 import { importVue } from "../../../../common/modulesLib/SFCUtil.mjs"
 import { batchOprtSwitches, panelSwitchesHandler } from "../../pagehandlerLibs.js";
-import { defaultMode } from "./defaultMode.mjs";
+import { defaultMode } from "./DefaultMode.mjs";
 
 /**@type {import("../../../../../declares/Vue/VueRuntimeCore").Component} */
 const app = {
