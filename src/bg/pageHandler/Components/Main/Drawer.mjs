@@ -62,7 +62,7 @@ const ListAppData = {
     },
     mounted: function () {
         this.addThemePanel();
-        chrome.notifications.getPermissionLevel(e => {
+        chrome.notifications.getPermissionLevel && chrome.notifications?.getPermissionLevel(e => {
             if (e != "granted") {
                 mdui.snackbar({
                     message: `您没有允许助手的通知权限，有些功能可能不会生效。`,
