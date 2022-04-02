@@ -3,7 +3,7 @@ import { afterReconfigure } from "../Modules/Utils.mjs";
 
 /**@type {import("../../../../../declares/Vue/VueRuntimeCore").Component} */
 const app = {
-    template: (await importVue("pageHandler/Components/Common/configOprt.vue")).template,
+    template: (await importVue("pageHandler/Components/Common/ConfigOprt.vue")).template,
     props: ["name"],
     data() {
         return {
