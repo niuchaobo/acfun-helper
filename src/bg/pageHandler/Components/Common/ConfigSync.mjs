@@ -1,7 +1,7 @@
 import { importVue } from "../../../../../common/modulesLib/SFCUtil.mjs";
 
 import { afterReconfigure } from "../Modules/Utils.mjs";
-const sfcData = await importVue("pageHandler/Components/Common/configSync.vue")
+const sfcData = await importVue("pageHandler/Components/Common/ConfigSync.vue")
 
 /**@type {import("../../../../../declares/Vue/VueRuntimeCore").Component} */
 const app = {
