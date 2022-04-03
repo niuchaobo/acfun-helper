@@ -3,7 +3,7 @@
     <div class="mdui-panel-item-header">
       <div class="mdui-panel-item-title">文章区子分区列表用户屏蔽</div>
       <div class="mdui-panel-item-summary">
-        例如，综合、生活情感、游戏的子分区，大分区！大分区管不了！！！
+        文章区首页、文章区子分区（综合、情感...）
       </div>
       <i class="mdui-panel-item-arrow mdui-icon material-icons"
         >keyboard_arrow_down</i
@@ -27,7 +27,7 @@
                   >添加用户
                 </div>
                 <div class="mdui-col-xs-3 mdui-col-sm-2">
-                  <label class="mdui-switch">
+                  <label class="mdui-switch" mdui-tooltip="{content:'文章内用户信息旁的屏蔽按钮也依赖于此开关'}">
                     <input
                       type="checkbox"
                       v-on:click="switchHandler"
