@@ -6,7 +6,6 @@ class Sandbox {
     }
 
     unsafe_console(e) {
-        console.log("From unsafe: ", e)
         return true;
     }
 

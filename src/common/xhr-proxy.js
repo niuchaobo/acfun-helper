@@ -111,7 +111,7 @@ let XHRProxy = (function () {
     /**
      * 取消hook-Hook
      */
-     function unHook() {
+    function unHook() {
         if (window[realXhr]) XMLHttpRequest = window[realXhr];
         window[realXhr] = undefined;
     }
@@ -124,8 +124,8 @@ let XHRProxy = (function () {
         eventReadyStateChange = events[4],
         eventAbort = events[5];
 
-    var singleton,prototype = 'prototype';
-    
+    var singleton, prototype = 'prototype';
+
     /**
      * 使用Proxy方式抽象对XHR的Hook。
      * @description proxy()抽象度高，并且构建了请求上下文（请求信息config在各个回调中都可以直接获取），使用起来更简单、高效。

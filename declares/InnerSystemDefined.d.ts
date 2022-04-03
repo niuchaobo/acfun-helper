@@ -150,7 +150,6 @@ declare namespace OptionStruct {
     liveHideAd: boolean;
     liveHideAdType: "0" | "1";
     liveHideAdMute: boolean;
-    liveBansw: boolean;
     playerRecommendHide: boolean;
     PlayerDamakuSearchSw: boolean;
     userBatchManage: boolean;

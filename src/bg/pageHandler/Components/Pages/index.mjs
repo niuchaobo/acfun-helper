@@ -15,7 +15,6 @@ const app = {
     },
     methods: {
         devMode: function () {
-            console.log(this.clickNum)
             this.clickNum >= 6 ? (globalThis.devMode = true) : ""
             return this.clickNum++;
         }

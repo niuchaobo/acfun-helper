@@ -243,8 +243,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 
 	async onLoad(e) {
 		let href = this.href;
-		this.authInfo.cookInfo();
-		this.authInfo.uidInfo();
+		this.authInfo.onLoad();
 		//开启屏蔽功能
 		this.options.filter && this.block.block();
 		if (REG.video.test(href)) {
@@ -328,8 +327,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.pageBeautify.pageTransKeyBind("depList");
 			//直播站主页数量标号
 			this.options.liveIndexRankNum && this.livePageBeautify.listCountFront();
-			//直播站首页用户屏蔽
-			this.options.liveBansw && this.block.liveUserBlock();
 			this.options.beautify_personal && GetAsyncDomUtil.getAsyncDomClassic('#header #nav #nav-parent .header-guide .guide-user p', () => {
 				this.pageBeautify.addMouseAnimation()
 				this.pageBeautify.personBeautify();

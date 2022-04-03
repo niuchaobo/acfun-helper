@@ -6,6 +6,11 @@ class AuthInfoFg extends AcFunHelperFgFrame {
         super();
     }
 
+    onLoad() {
+        this.cookInfo();
+        this.uidInfo();
+    }
+
     cookInfo() {
         try {
             var AcCookies = document.cookie;

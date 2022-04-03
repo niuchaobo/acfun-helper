@@ -919,7 +919,6 @@ class VideoSetting extends AcFunHelperFgFrame {
       //文本内存在时间标记
       if (if_matchTime) {
         var chapterDic = this.timelineDotsTextProcess(massText);
-        // console.log(chapterDic)
         this.timelineDotsResultCache = chapterDic;
         this.timelineDotsRender(chapterDic);
       } else {
@@ -986,9 +985,6 @@ class VideoSetting extends AcFunHelperFgFrame {
         );
         //此时间标记在时间轴上的位置
         let progressLen = Number((processBarLen * percent).toFixed(1));
-        // console.log("processBarLen: ", processBarLen)
-        // console.log("length: ", processBarLen * percent.toFixed(1))
-        // console.log(percent, progressLen)
         addElement({
           tag: "div",
           css: `left: ${progressLen}px;position: absolute;-moz-box-sizing: border-box;box-sizing: border-box;top: 50%;background-color: #F44C5D;border: 2px solid white;width: 14px;height: 14px;margin-left: -14px;top: 50%;margin-top: -7px;opacity: 0.5;-webkit-transition: opacity 0.3s, height 0.3s, width 0.3s, margin-top 0.3s, margin-left 0.3s;transition: opacity 0.3s, height 0.3s, width 0.3s, margin-top 0.3s, margin-left 0.3s;z-index: 98;`,
@@ -1010,7 +1006,6 @@ class VideoSetting extends AcFunHelperFgFrame {
    * @origin github@RadND
    */
   frameStepFwd(mode = "f") {
-    // console.log(mode, frameRate, document.getElementsByTagName("video")[0].currentTime)
     const frameRate = VideoSetting.getVideoFrameRate()
     if (frameRate && UIReactor.judgeEditorActiveState() === false) {
       document.getElementsByTagName("video")[0].pause();

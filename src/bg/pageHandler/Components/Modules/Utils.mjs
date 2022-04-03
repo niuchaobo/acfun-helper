@@ -24,7 +24,6 @@ export function removeExtalElem(tag, max = 2) {
 
 /**@param {(e:APIs.UserInfoApi,f:string)=>{} fn*/
 export const userAddWrap = async (list, e, fn) => {
-    console.log(e)
     if (!e) {
         mdui.alert("数据空空");
         return

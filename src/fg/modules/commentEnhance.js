@@ -521,6 +521,12 @@ class CommentEnhance extends AcFunHelperFgFrame {
             let timer = null;
             ubbBox.mouseenter(function () {
                 timer && clearTimeout(timer)
+                function removeAPrefix(_$targetDom) {
+                    let acid = _$targetDom[0].getAttribute("data-aid");
+                    if (acid == '') { return }
+                    return acid
+                }
+
                 let id = removeAPrefix($(this));
                 let _this = this.children[0];
                 let imgCover = type && _this.children[0];
