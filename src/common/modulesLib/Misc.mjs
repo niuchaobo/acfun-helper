@@ -114,6 +114,23 @@ export class Tools {
         }
     }
 
+    /**
+     * 检测JQuery支持
+     * @returns {Promise<boolean>}
+     */
+    static async judgeJqueryExist() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                try {
+                    resolve($ != undefined)
+                } catch (error) {
+                    this.devMode && console.log("[WARN]UtilsBundle > getAsyncDom: No Jquery Lib.")
+                    resolve(false);
+                }
+            }, 0)
+        })
+    }
+
 }
 
 /**

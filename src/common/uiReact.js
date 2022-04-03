@@ -162,6 +162,21 @@ class UcenterUiReact {
 }
 
 class PlayerMenuSwitchItem {
+  /**
+   * 播放器开关功能封装
+   * @param {*} name 不仅仅是DOM类名
+   * @param {*} title 
+   * @param {*} describe 
+   * @param {*} defaultState 
+   * @example
+ ```js
+  let item = new PlayerMenuSwitchItem("bTest2", "thisA2", "2333", false)
+  item.addEventHandler(() => { console.log(true) }, () => { console.log(false) })
+  //以下是可选的值变化重载示例
+  item.changeRefresh()
+  item.name = "bTest"
+  ```
+   */
   constructor(name, title, describe, defaultState = false) {
     this.menuInst = null;
     this.parentInst = null;
@@ -250,7 +265,70 @@ class PlayerMenuSwitchItem {
 
 }
 
-// let item = new PlayerMenuSwitchItem("bTest2","thisA2","2333",false)
-// item.addEventHandler(()=>{console.log(true)},()=>{console.log(false)})
-// item.changeRefresh()
-// item.name="bTest"
+class StyleSheetManager {
+  constructor() {
+    this.nameList = [];
+    /**@type {CSSStyleSheet[]} */
+    this.handlers = {};
+    this.initAppend();
+  }
+
+  initAppend() {
+    document.querySelectorAll("style").forEach(e => {
+      (e.id && /^AcFunHelper.*/.test(e.id)) && this.nameList.push(e.id);
+      this.handlers[e.id] = document.querySelector("style#" + e.id);
+    })
+  }
+
+  toggle(name, reqStatus) {
+    const target = this.handlers[name];
+    if (target) {
+      target.disabled = reqStatus ?? !target.disabled;
+    }
+  }
+
+  disable(name) {
+    this.toggle(name, true);
+  }
+
+  enable(name) {
+    this.toggle(name, false);
+  }
+
+  add(content, name) {
+    if (document.querySelector("style#" + "AcFunHelper_" + name) == null) {
+      StyleSheetManager.createElementStyle(content, document.head, "AcFunHelper_" + name);
+      this.nameList.push("AcFunHelper_" + name);
+      this.handlers["AcFunHelper_" + name] = document.querySelector("style#" + "AcFunHelper_" + name);
+      return true;
+    }
+    return false;
+  }
+
+  delete(name) {
+    if (document.querySelector("style#" + "AcFunHelper_" + name) != null) {
+      document.querySelector("style#" + "AcFunHelper_" + name).remove();
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * 在某个地方（默认为head下）增加一个css的style标签
+   * @param {string} cssText CSS样式文本
+   * @param {HTMLElement} targetDom 添加于，默认是document.head
+   * @param {string} id css标签的ID
+   */
+  static createElementStyle(cssText, targetDom = document.head, id = null) {
+    let target = targetDom;
+    let nod = document.createElement("style");
+    let str = cssText;
+    nod.type = "text/css";
+    id ? nod.id = id : null;
+    nod.textContent = str;
+    target.appendChild(nod);
+    return () => {
+      target.removeChild(document.getElementById(id));
+    }
+  }
+}

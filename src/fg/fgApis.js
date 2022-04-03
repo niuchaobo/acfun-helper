@@ -13,7 +13,7 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
         let href = window.location.href;
         let reg = /ac(\d+)/;
         let acId = reg.exec(href)[1];
-        console.log(await this.luckyTurntab.RollOut(acId, number, follow));
+        this.luckyTurntab.RollOut(acId, number, follow);
     }
 
     async lottery2nd(params) {
@@ -21,7 +21,7 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
         let href = window.location.href;
         let reg = /ac(\d+)/;
         let acId = reg.exec(href)[1];
-        console.log(await this.luckyTurntab.RollOutExp(acId, number, follow));
+        await this.luckyTurntab.RollOutExp(acId, number, follow);
     }
 
     //下载封面
@@ -64,7 +64,7 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
     mark(params) {
         let { value } = params;
         this.runtime.options.mark = value;
-        optionsSave(this.options);
+        ExtOptions.saveAll(this.options);
         if (value) {
             this.ce.renderMark();
         } else {
@@ -81,7 +81,7 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
         let { value } = params;
         this.runtime.options.scan = value;
         //保存配置信息到插件配置存储
-        optionsSave(this.options);
+        ExtOptions.saveAll(this.options);
         if (value) {
             this.ce.renderScan();
             this.ce.renderScanForUp();
@@ -127,7 +127,6 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
 
     //评论区整体部分的标记渲染入口 ()
     renderList(params) {
-        console.log(this)
         let { url } = params.url;
         if (this.runtime.options.mark) {
             this.ce.renderMark();

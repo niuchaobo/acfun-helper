@@ -63,7 +63,7 @@ const app = {
                 chrome.storage.local.clear(function () {
                     //重置设置选项
                     let x = ExtOptions.sanitizeOptions({});
-                    optionsSave(x);
+                    ExtOptions.saveAll(x);
                 });
                 afterReconfigure();
             }

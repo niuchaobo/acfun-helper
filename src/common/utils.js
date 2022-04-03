@@ -53,7 +53,6 @@ const defaults = {
   liveHideAd: true,
   liveHideAdType: 1,
   liveHideAdMute: false,
-  liveBansw: false,
   playerRecommendHide: true,
   PlayerDamakuSearchSw: false,
   userBatchManage: false,
@@ -156,14 +155,6 @@ const ARFPModsConfName = [
  */
 async function optionsLoad() {
   return ExtOptions.getAll();
-}
-
-/**
- * 存储读取后修改的配置
- * @param {*} options 
- */
-async function optionsSave(options) {
-  return ExtOptions.saveAll(options);
 }
 
 /**
@@ -357,20 +348,6 @@ function Duration2Seconds(time) {
     let Th = Number(arr[0]) * 60 * 60;
     let seconds = Th + Tm + Ts;
     return seconds;
-  }
-}
-
-/**
- * 检查今天周几
- * @param {boolean} ifToday 是否是检查今天
- * @param {Date} dateObj 传入时间对象 new Date()的返回
- */
-function checkDay(ifToday = true, dateObj) {
-  if (ifToday) {
-    let x = new Date();
-    return x.getDay();
-  } else {
-    return dateObj.getDay();
   }
 }
 
@@ -633,32 +610,8 @@ function addElement(options) {
   return x
 }
 
-function removeAPrefix(_$targetDom) {
-  let acid = _$targetDom[0].getAttribute("data-aid");
-  if (acid == '') { return }
-  return acid
-}
-
-/**
- * 在某个地方（默认为head下）增加一个css的style标签
- * @param {string} cssText CSS样式文本
- * @param {HTMLElement} targetDom 添加于，默认是document.head
- * @param {string} id css标签的ID
- */
 function createElementStyle(cssText, targetDom = document.head, id = null) {
-  let target = targetDom;
-  let nod = document.createElement("style");
-  let str = cssText;
-  nod.type = "text/css";
-  id ? nod.id = id : null;
-  nod.textContent = str;
-  target.appendChild(nod);
-  return () => {
-    // console.log(target)
-    // console.log(id)
-    target.removeChild(document.getElementById(id));
-  }
-
+  StyleSheetManager.createElementStyle(cssText,targetDom,id);
 }
 
 /**

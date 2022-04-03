@@ -281,15 +281,16 @@ class DOMObserver {
     }
 
     /**
-     * 监控子对象
+     * 监控子对象（和子对象的子对象、和子对象子对象的子对象...）
      * @param {HTMLElement} target 
      * @param {(e:MutationRecord[])=>{}} fns 
+     * @param {boolean} andItsChilds 
      * @param {boolean} isDev 
      * @returns {DOMObserver}
      */
-    static childs(target, fns, isDev) {
+    static childs(target, fns, andItsChilds = true, isDev) {
         const ObsrvStaticInst = new DOMObserver(target, fns, isDev);
-        ObsrvStaticInst.configSet(true, false, false, false, [], false, false);
+        ObsrvStaticInst.configSet(true, false, false, andItsChilds, [], false, false);
         ObsrvStaticInst.createObserver();
         return ObsrvStaticInst;
     }
@@ -331,7 +332,7 @@ class DOMObserver {
  * @param {Function} insure 失败回调
  * @param {string|Function} purpose 成功的条件
  * @param {number} time 一次检测时间间隔
- * @param {boolean} instantMode 间隔定长
+ * @param {boolean} instantMode 间隔定长与否，不定长则每次增加0.5s检测时间
  * @param {number} maxWaitTime 最长等待时间
  * @param {boolean} devMode 开发模式
  * @param {ParentNode} advancedQueryMethod 自定义检测方法
@@ -424,19 +425,6 @@ class GetAsyncDomUtil {
         return await re(this.fn, this.insure);
     }
 
-    async judgeJqueryExist() {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                try {
-                    resolve($ != undefined)
-                } catch (error) {
-                    this.devMode && console.log("[WARN]UtilsBundle > getAsyncDom: No Jquery Lib.")
-                    resolve(false);
-                }
-            }, 0)
-        })
-    }
-
     /**
      * 模仿莫老板写的getAsyncDom，大概原汁原味？
      * @param {string} target 
@@ -460,7 +448,7 @@ class GetAsyncDomUtil {
             if (Array.isArray(callbacks)) {
                 let results = [];
                 callbacks.forEach(e => {
-                    result.push(e());
+                    results.push(e());
                 });
                 return results;
             }
@@ -562,8 +550,6 @@ class MessageSwitch {
                     to: "AcFunHelperInject",
                     data: e,
                 }, "*");
-                // let newEvent = new CustomEvent(this.eventName, { "detail": e, "bubbles": injectMsgSetting.bubbles, "cancelable": injectMsgSetting.cancelable, "composed": injectMsgSetting.composed });
-                // this.hostElement.dispatchEvent(newEvent);
                 break;
         }
         return true;
@@ -1051,7 +1037,6 @@ class CookiesUtils {
 
 }
 
-
 /**
  * 工具箱
  */
@@ -1309,7 +1294,7 @@ class AcFunHelperHelper {
     /**
      * 开发者模式下的变动重启
      * https://github.com/xpl/crx-hotreload
-     * @usage this.devReload = new AcFunHelper();this.devReload.devModeWatch();
+     * @usage this.devReload = new AcFunHelperHelper();this.devReload.devModeWatch();
      */
     devModeWatch() {
         /**

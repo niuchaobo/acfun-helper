@@ -132,7 +132,6 @@ class LuckyTtab extends AcFunHelperFgFrame {
         var res = new Object();
         while (Object.keys(res).length < num) {
             for (let i = x; i > y; i--) {
-                // console.log(w[i])
                 if (w[i].children[0].children[1].classList == "manage-icon icon-ks") {
                     res[w[i].children[0].children[2].dataset.userId] = w[i].children[0].children[2].dataset.comment
                 } else {
@@ -143,7 +142,6 @@ class LuckyTtab extends AcFunHelperFgFrame {
                 if (y == 0 || y < 0) { return {} }
                 x = y
                 y = y - 1
-                // console.log(y)
             }
         }
         return res

@@ -2,7 +2,6 @@
  * 评论区过滤
  * @param {import("../../../../declares/XHRProxy").XhrResponse} ctx 
  * @param {import("../../../../declares/XHRProxy").XhrResponseHandler} handler 
- * @todo 完善置顶评论过滤
  */
 function commentFilter(ctx, handler) {
     /**

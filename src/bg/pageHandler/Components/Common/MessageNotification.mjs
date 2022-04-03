@@ -12,10 +12,8 @@ const app = {
         switchHandler: async function (e) {
             /**@type {HTMLElement} */
             let target = e.target;
-            console.log(target)
             let raw = await ExtOptions.getValue("notificationContent")
             raw[target.id] = !raw[target.id]
-            console.log(raw)
             ExtOptions.setValue("notificationContent", raw)
         }
     },

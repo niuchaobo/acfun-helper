@@ -213,7 +213,7 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
             return false;
         }
         this.options = options;
-        optionsSave(this.options);
+        ExtOptions.saveAll(this.options);
         return true;
     }
 

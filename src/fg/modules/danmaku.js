@@ -343,7 +343,11 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\
                 }
             }
 
-            menuItem.addEventHandler(enableCC, disableCC);
+            const removeOrDisable = () => {
+                confirm("[AcFun助手]：打算移除此字幕（确认）还是说暂时关闭（取消）？") ? removeCC() : disableCC();
+            }
+
+            menuItem.addEventHandler(enableCC, removeOrDisable);
         })
 
     }

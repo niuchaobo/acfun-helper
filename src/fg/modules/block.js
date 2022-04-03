@@ -19,156 +19,59 @@ class Block extends AcFunHelperFgFrame {
     async block() {
         let href = window.location.href;
         let upMap = ExtOptions.upFilterMap(this.runtime.options, true);
-        this.homePageFilter(upMap);
-        this.articlePageFilter(upMap);
+        href == "https://www.acfun.cn/v/list63/index.htm" && this.homePageFilter(upMap);
         //如果是文章区详情页，添加屏蔽按钮
         if (REG.article.test(href)) {
             this.renderFilter();
         }
     }
 
-    homePageFilter(map) {
-        $(".rank-right").find('li a').each(function () {
-            let title = $(this).attr("title");
-            if (title == '' || title == undefined) {
-                return;
-            }
-            let href = $(this).attr("href");
-            let hrefReg = new RegExp("/u/\\d+");
-            //针对首页文章区第一条信息做处理(带图的那一条)
-            if (hrefReg.test(href)) {
-                let up_name = $(this).attr('title');
-                let uid = map.get(up_name);
-                if (uid != null && uid != '' && uid != undefined) {
-                    $(this).parent().parent().parent().parent().parent().remove();
-                    return;
-                }
-            }
-
-            title = title.replace(/[\r\n]/g, "");
-            title = title.replace(/[\n]/g, "");
-            let reg = new RegExp("UP\\:(.*)发布于");
-            let res = reg.exec(title);
-            if (res != null && res != undefined && res.length > 1) {
-                let up_name = res[1];
-                if (up_name != null && up_name != '') {
-                    let uid = map.get(up_name);
-                    if (uid != null && uid != '' && uid != undefined) {
-                        $(this).parent().remove();
-                    }
-                }
+    async homePageFilter(map) {
+        const filterList = await ExtOptions.getValue("UserFilter");
+        //综合推荐
+        document.querySelector(".article-left-wrap").querySelectorAll("div.article-item").forEach(e => {
+            const infoEle = e.querySelector("span.up > a");
+            let uid = /[0-9]+/.exec(infoEle.href)[0];
+            const inList = uid in filterList;
+            if (infoEle && uid && inList) {
+                e.remove();
             }
         });
-    }
-
-    articlePageFilter(map) {
-        $(".atc-info.clearfix>a.atc-up").each(function () {
-            let up_name = $(this).attr('title');
-            if (up_name != '' && up_name != null && up_name != undefined) {
-                let uid = map.get(up_name);
-                if (uid != '' && uid != null && uid != undefined) {
-                    $(this).parent().parent().parent().next().remove();
-                    $(this).parent().parent().parent().remove();
+        //热门文章
+        DOMObserver.all(document.querySelector("div.article-hot-article"), () => {
+            document.querySelector("div.rank-list").querySelectorAll("li.rank-item").forEach(e => {
+                const infoEle = e.querySelector("span.up > a");
+                let uid = /[0-9]+/.exec(infoEle.href)[0];
+                const inList = uid in filterList;
+                if (infoEle && uid && inList) {
+                    e.remove();
                 }
-            }
-        })
-
+            })
+        });
     }
 
     renderFilter() {
         $('.action-up').append('<a class="ext-filter-up">屏蔽</a>');
         $('.up-abstract').css("width", "600px");
         $('.action-up').css("width", "100px");
-        $('.action-up').on('click', '.ext-filter-up', function () {
+        $('.action-up').on('click', '.ext-filter-up', async function () {
             let up_name = $('.up-name').find('a:first').text();
             let msg = '确定屏蔽『' + up_name + '』吗？';
             if (confirm(msg)) {
                 let hrefReg = new RegExp("/u/(\\d+)\\.aspx");
                 let href = $('.up-name').find('a:first').attr("href");
                 let regRes = hrefReg.exec(href);
-                if (regRes != undefined && regRes != null) {
-                    let key = "FILTER_" + regRes[1];
-                    let v = { name: up_name };
-                    chrome.storage.local.set({ [key]: v }, function () {
-                        let params = {
-                            title: 'AcFun助手',
-                            msg: '『' + up_name + '』已被屏蔽'
-                        }
-                        chrome.runtime.sendMessage({ action: 'notice', params: params }, function (response) {
-
-                        });
-                    });
+                if (regRes && up_name) {
+                    let uid = regRes[1];
+                    let raw = await ExtOptions.getValue("UserFilter");
+                    raw[uid] = up_name;
+                    ExtOptions.setValue("UserFilter", raw);
+                    confirm("Ok，写进小本本了。所以，现在需要关闭这个页面吗？") && window.close();
+                } else {
+                    alert("或许Up主名字或者他的UID有点问题。");
                 }
-            } else {
-                return;
             }
         });
 
     }
-
-    liveUserBlock() {
-        chrome.storage.local.get(['liveBans'], function (items) {
-            let LiveUsers = document.querySelectorAll('div.live-list-item');
-            LiveUsers.forEach(function (e) {
-                let this_obj = e.children[1].children[1].children[1];
-                if (this_obj.getAttribute('data-uid') in items.liveBans) {
-                    var timer = setInterval(function () {
-                        console.log('[LOG]Frontend-Block>liveUserBlock: Remove ' + this_obj.getAttribute('data-uid'))
-                        e.remove();
-                        clearInterval(timer);
-                    }, 1000);
-                }
-            })
-        })
-        // document.querySelectorAll('a.pager__btn').forEach(function(e){
-        //     e.addEventListener("click",function(){})
-        // })
-        $('.category-item').click(function () {
-            let opr = 0;
-            var timer = setInterval(function () {
-                chrome.storage.local.get(['liveBans'], function (items) {
-                    opr = opr + 1;
-                    let LiveUsers = document.querySelectorAll('div.live-list-item');
-                    for (let i = 0; i < LiveUsers.length; i++) {
-                        let this_obj = LiveUsers[i];
-                        if (this_obj.children[1].children[1].children[1].getAttribute('data-uid') in items.liveBans) {
-                            this_obj.remove();
-                            console.log('[LOG]Frontend-Block>liveUserBlock: Remove ' + this_obj.children[1].children[1].children[1].getAttribute('data-uid'))
-                        }
-                    }
-                })
-                if (opr >= 5) { clearInterval(timer); }
-            }, 2000);
-        })
-        var timer = setInterval(function () {
-            var config = { attributes: true, childList: true, subtree: true };
-            var elementWeb2 = document.querySelectorAll("a.pager__btn");
-            var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-            var obsrvcall = function (mutations) {
-                chrome.storage.local.get(['liveBans'], function (items) {
-                    let LiveUsers = document.querySelectorAll('div.live-list-item');
-                    for (let i = 0; i < LiveUsers.length; i++) {
-                        let this_obj = LiveUsers[i];
-                        if (this_obj.children[1].children[1].children[1].getAttribute('data-uid') in items.liveBans) {
-                            this_obj.remove();
-                            console.log('[LOG]Frontend-Block>liveUserBlock: Remove ' + this_obj.children[1].children[1].children[1].getAttribute('data-uid'))
-                        }
-                    }
-                })
-            }
-            var observer = new MutationObserver(obsrvcall);
-            try {
-                observer.observe(elementWeb2[0], config);
-                observer.observe(elementWeb2[1], config);
-                observer.observe(elementWeb2[2], config);
-                observer.observe(elementWeb2[3], config);
-            } catch (error) {
-                clearInterval(timer);
-            }
-            if (document.querySelectorAll("a.pager__btn").length > 0) {
-                clearInterval(timer);
-            }
-        }, 1000)
-    }
-
 }
