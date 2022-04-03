@@ -72,9 +72,6 @@ class Search extends AcFunHelperFgFrame{
     let input = $("#acfun-helper-search-input");
     let text = input.val();
     if (!text) return;
-    $('#danmaku').bind('mouseleave', () => {
-      $('#acfun-helper-search-close').trigger('click')
-    })
     input.blur();
     this.firstSearchInit();
     getAsyncDom("danmaku-item", this.danmakuSearch.bind(this, text), 200).then(
@@ -147,7 +144,6 @@ class Search extends AcFunHelperFgFrame{
     $("#acfun-helper-search-input").val("");
     $("#acfun-helper-search>div").removeClass("search-hidden");
     $(".danmaku-items").unbind("DOMNodeInserted");
-    $("#danmaku").unbind('mouseleave')
     this.searchList.forEach((item, index) => {
       $(item.item).css({ background: "", color: "" });
     });
@@ -218,7 +214,7 @@ class Search extends AcFunHelperFgFrame{
     const danmakuList = [];
     const a = $("#danmaku .danmaku-item").get();
     a.forEach((item, index) => {
-      if (text === item.getAttribute("data-message")) {
+      if (item.getAttribute("data-message").includes(text)) {
         danmakuList.push({
           time: item.getAttribute("data-time"),
           offsetTop: $(item).offset().top - $(".list-body").offset().top,
