@@ -466,11 +466,7 @@ class PageBeautify extends AcFunHelperFgFrame {
           createElementStyle(cssStr, document.head, "AcFunHelper_hideAds");
           document.querySelector(".shareCount").remove();
           document.querySelector(".usemobile").remove();
-        } catch (error) { }
-        try {
           document.querySelector(".download-app").remove();
-        } catch (error) { }
-        try {
           document.querySelector(".pause-display-container").remove();
         } catch (error) { }
         clearInterval(timer);
@@ -479,23 +475,32 @@ class PageBeautify extends AcFunHelperFgFrame {
   }
 
   async addMouseAnimation() {
-    let obj = document.querySelector(
-      "[data-c-w-header] .header-guide .guide-item"
-    );
-    let imgObj = document.querySelector(
-      "[data-c-w-header] .header-guide .guide-user .user-avatar img"
-    );
-    try {
-      obj.addEventListener("mouseenter", function () {
-        imgObj.style.transform = "scale(1.6)";
-        imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
-        imgObj.style.boxShadow = "0 0 2px 0px #ff0505;";
-      });
-      obj.addEventListener("mouseleave", function () {
-        imgObj.style.transform = "scale(1)";
-        imgObj.style.transition = "all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1)";
-      });
-    } catch (error) { }
+    createElementStyle(`
+    .guide-user img{
+      transition: all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1);
+    }
+    .guide-user:hover img{
+      transform: scale(1.6);
+      transition: all 0.2s cubic-bezier(0.74, 0.01, 0.24, 1);
+      boxShadow: 0 0 2px 0px #ff0505;
+    }
+
+    .normal-module .module-left .module-left-header .right-area .header-right-more,
+    .bangumi-list .area-left .area-header .header-right-more,
+    .more,
+    .ranked-list .ranked-list-header .right-area span,
+    .category-item {
+        transition: all .2s ease;
+    }
+    .normal-module .module-left .module-left-header .right-area .header-right-more:hover,
+    .bangumi-list .area-left .area-header .header-right-more:hover,
+    .more:hover,
+    .ranked-list .ranked-list-header .right-area span:hover,
+    .category-item:hover {
+        letter-spacing: 3px;
+        transition: all .2s ease;
+    }
+    `, document.head, "AcFunHelper_indexHoverAnimations")
   }
 
   thinScrollBar() {
@@ -524,11 +529,11 @@ class PageBeautify extends AcFunHelperFgFrame {
   pageTransKeyBind(mode) {
     switch (mode) {
       case "myFav":
-        UIReactor.ucenterAreaNotice("AcFun助手：我们现在可以使用Shift+PageUp/PageDown来翻页啦！", 5500);
+        UIReactor.ucenterAreaNotice("AcFun助手：在收藏夹，可以使用Shift+pageUp/pageDown来翻页！", 5500);
         break;
       case "uc":
         LeftBottomNotif(
-          "我们现在可以使用Shift+PageUp/PageDown来翻页啦！",
+          "AcFun助手：可以使用Shift+pageUp/pageDown来翻页！",
           "info",
           8500
         );
@@ -536,6 +541,71 @@ class PageBeautify extends AcFunHelperFgFrame {
       default:
         break;
     }
+
+    function pageUp4Myfav() {
+      const targetElem = document.querySelector(".ac-pager-prev");
+      if (targetElem.ariaDisabled != 'true') {
+        document.querySelector(".ac-pager-prev").click();
+      }
+    }
+  
+    function pageDown4Myfav() {
+      const targetElem = document.querySelector(".ac-pager-next");
+      if (targetElem.ariaDisabled != 'true') {
+        document.querySelector(".ac-pager-next").click();
+      }
+    }
+  
+    function pageUp4depList() {
+      let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
+      if (targetElem.length == 0) {
+        return;
+      }
+      if (targetElem[0].className == "pager__btn pager__btn__prev") {
+        targetElem[0].click();
+      }
+    }
+  
+    function pageDown4depList() {
+      let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next");
+      if (targetElem.length == 0) {
+        return;
+      }
+      if (targetElem[0].className == "pager__btn pager__btn__next") {
+        targetElem[0].click();
+      }
+    }
+  
+    function pageUp4UC() {
+      let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
+      for (let i = 0; i < targetElem.length; i++) {
+        if (
+          targetElem[i].className == "pager__btn pager__btn__prev" &&
+          (targetElem[i].parentElement.parentElement.parentElement.classList[1] ==
+            "active" ||
+            targetElem[i].parentElement.parentElement.parentElement.parentElement
+              .classList[1] == "active")
+        ) {
+          targetElem[i].click();
+        }
+      }
+    }
+  
+    function pageDown4UC() {
+      let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next");
+      for (let i = 0; i < targetElem.length; i++) {
+        if (
+          targetElem[i].className == "pager__btn pager__btn__next" &&
+          (targetElem[i].parentElement.parentElement.parentElement.classList[1] ==
+            "active" ||
+            targetElem[i].parentElement.parentElement.parentElement.parentElement
+              .classList[1] == "active")
+        ) {
+          targetElem[i].click();
+        }
+      }
+    }
+
     document.onkeydown = (event) => {
       var e = event || window.e;
       var keyCode = e.keyCode || e.which || e.charCode;
@@ -544,105 +614,30 @@ class PageBeautify extends AcFunHelperFgFrame {
         case "uc":
           //User Center
           if (shiftKey && keyCode == 33) {
-            this.pageUp4UC();
+            pageUp4UC();
           } else if (shiftKey && keyCode == 34) {
-            this.pageDown4UC();
+            pageDown4UC();
           }
           break;
         case "depList":
           if (shiftKey && keyCode == 33) {
-            this.pageUp4depList();
+            pageUp4depList();
           } else if (shiftKey && keyCode == 34) {
-            this.pageDown4depList();
+            pageDown4depList();
           }
           break;
         case "myFav":
           if (shiftKey && keyCode == 33) {
-            this.pageUp4Myfav();
+            pageUp4Myfav();
           } else if (shiftKey && keyCode == 34) {
-            this.pageDown4Myfav();
+            pageDown4Myfav();
           }
-          break;
-
-        default:
           break;
       }
       // e.preventDefault();
     };
   }
 
-  pageUp4Myfav() {
-    const targetElem = document.querySelector(".ac-pager-prev");
-    if (targetElem.ariaDisabled != 'true') {
-      document.querySelector(".ac-pager-prev").click();
-    }
-  }
-
-  pageDown4Myfav() {
-    const targetElem = document.querySelector(".ac-pager-next");
-    if (targetElem.ariaDisabled != 'true') {
-      document.querySelector(".ac-pager-next").click();
-    }
-  }
-
-  pageUp4depList() {
-    let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
-    if (targetElem.length == 0) {
-      return;
-    }
-    if (targetElem[0].className == "pager__btn pager__btn__prev") {
-      targetElem[0].click();
-    }
-  }
-
-  pageDown4depList() {
-    let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next");
-    if (targetElem.length == 0) {
-      return;
-    }
-    if (targetElem[0].className == "pager__btn pager__btn__next") {
-      targetElem[0].click();
-    }
-  }
-
-  pageUp4UC() {
-    let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
-    for (let i = 0; i < targetElem.length; i++) {
-      // console.log(
-      //   targetElem[i].parentElement.parentElement.parentElement.classList
-      // );
-      // console.log(
-      //   targetElem[i].parentElement.parentElement.parentElement
-      //     .classList[1] == "active" ||
-      //   targetElem[i].parentElement.parentElement.parentElement
-      //     .parentElement.classList[1] == "active"
-      // );
-      if (
-        targetElem[i].className == "pager__btn pager__btn__prev" &&
-        (targetElem[i].parentElement.parentElement.parentElement.classList[1] ==
-          "active" ||
-          targetElem[i].parentElement.parentElement.parentElement.parentElement
-            .classList[1] == "active")
-      ) {
-        targetElem[i].click();
-      }
-    }
-  }
-
-  pageDown4UC() {
-    let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next");
-    for (let i = 0; i < targetElem.length; i++) {
-      if (
-        targetElem[i].className == "pager__btn pager__btn__next" &&
-        (targetElem[i].parentElement.parentElement.parentElement.classList[1] ==
-          "active" ||
-          targetElem[i].parentElement.parentElement.parentElement.parentElement
-            .classList[1] == "active")
-      ) {
-        targetElem[i].click();
-      }
-    }
-  }
 
   commentPageEasyTrans() {
     if (document.querySelector(".pager__wrapper") != null) {
@@ -730,7 +725,6 @@ class PageBeautify extends AcFunHelperFgFrame {
      * @returns 
      */
     function userPageTimelineRender(pageNum, PageElem) {
-      // console.log(PageElem)
       if (pageNum === 1 && pageList.indexOf(1) === -1) {
         document.querySelector("div.tag-content.active > div.pagination").before(PageElem);
         pageList.push(1);
