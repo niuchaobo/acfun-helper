@@ -48,10 +48,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		this.loading();
 		this.runtime.dataset.core.status.core = true;
 		this.Apis = null;
-
-		//监听storage变化,可用于数据云同步
-		// chrome.storage.onChanged.addListener(function (changes, areaName) {
-		// });
 	}
 
 	/**
@@ -72,12 +68,13 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	async loading() {
 		this.runtime.options = await optionsLoad();
 		this.options = this.runtime.options;
-		this.runtime.dataset.core.browserType = ToolBox.thisBrowser();
-		this.Apis = new AcFunHelperFrontendApis(this);
-
 		if (!this.options.enabled || !this.options.permission) {
 			return
 		}
+
+		this.runtime.dataset.core.browserType = ToolBox.thisBrowser();
+		this.Apis = new AcFunHelperFrontendApis(this);
+
 		const XHRProxyLib = document.createElement("script");
 		XHRProxyLib.src = chrome.runtime.getURL("common/xhr-proxy.js");
 		(document.head || document.documentElement).appendChild(XHRProxyLib);
@@ -88,13 +85,15 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 				xhrDriver.type = "module";
 				(document.head || document.documentElement).appendChild(xhrDriver);
 				xhrDriver.addEventListener('load', async () => {
+					//就运行一次吧
+					const { onceFunction } = await import("../common/modulesLib/Misc.mjs");
+					const LoadXhrProxyModules = onceFunction(() => {
+						MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", source: "ARFP", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } });
+						this.block.injectScriptData();
+					}, null, this);
 					ARFPModsConfName.forEach(async e => {
-						let status = await ExtOptions.getValue(e);
 						//只要有任意一种屏蔽模块启用，那么就应该拉起XHRDriver
-						status && (
-							MessageSwitch.sendEventMsgToInject(window, { "target": "AcFunHelperFrontendXHRDriver", source: "ARFP", "InvkSetting": { "type": "function" }, "params": { params: {}, target: "start" } }),
-							this.block.injectScriptData()
-						)
+						(await ExtOptions.getValue(e)) && LoadXhrProxyModules();
 					});
 				});
 			}
@@ -167,7 +166,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		this.options.Dev_thinScrollbar && this.pageBeautify.thinScrollBar();
 		if (!REG.live.test(href) && !REG.liveIndex.test(href)) {
 			//首页个人资料弹框 (未完成)
-			this.options.beautify_personal && getAsyncDom('#header .header-guide .guide-item', () => {
+			this.options.beautify_personal && GetAsyncDomUtil.getAsyncDomClassic('#header .header-guide .guide-item', () => {
 				this.pageBeautify.addMouseAnimation()
 				this.pageBeautify.personBeautify();
 			})
@@ -254,7 +253,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.runtime.dataset.notes.dougaId = this.runtime.dataset.dougaInfo.dougaId;
 			let isUp = adjustVideoUp();
 			this.div.show(this.runtime.dataset.dougaInfo, this.options, 'video', isUp);
-			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
+			this.onCommentAreaLoaded();
 			//自动投蕉
 			this.options.auto_throw && this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
 		}
@@ -266,7 +265,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.runtime.dataset.notes.vid = this.runtime.dataset.dougaInfo.currentVideoId;
 			this.runtime.dataset.notes.dougaId = this.runtime.dataset.dougaInfo.dougaId;
 			//弹幕列表
-			getAsyncDom('.list-title', () => {
+			GetAsyncDomUtil.getAsyncDomClassic('.list-title', () => {
 				//弹幕列表搜索
 				this.options.PlayerDamakuSearchSw && this.danmusearch.inject()
 				//弹幕列表前往Acer个人主页
@@ -343,7 +342,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 	}
 
 	onCommentAreaLoaded(e) {
-		getAsyncDom(".ac-pc-comment", () => {
+		GetAsyncDomUtil.getAsyncDomClassic(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
 		}, 3000)
