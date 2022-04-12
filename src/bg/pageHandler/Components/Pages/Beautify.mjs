@@ -14,6 +14,11 @@ const app = {
                     desc: `在主页顶栏增加模糊特效`
                 },
                 {
+                    key: "pageTransKeyBind",
+                    title: "快捷键翻页",
+                    desc: "在评论区域和分区详细页面、收藏夹、用户页面（投稿）、直播站首页使用Shift+PageUp/PageDown翻页"
+                },
+                {
                     key: "Dev_thinScrollbar",
                     title: "小型滚动条",
                     desc: `在主站的界面中，使用类似于此设置页面的‘瘦’版滚动条`
