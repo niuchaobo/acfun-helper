@@ -1,5 +1,5 @@
 export async function getUid() {
-    let Uid = await getStorage('LocalUserId');
+    let Uid = await ExtOptions.get('LocalUserId');
     if (Uid != 0) {
         return Uid.LocalUserId
     } else {

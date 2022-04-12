@@ -139,7 +139,7 @@ export async function renderGroupPush(gid) {
  */
 export async function renderPushInnerHtml() {
 	pushListData.busy = true;
-	let bkFetchPushLst = await getStorage("fetchPushList_daemonsw").then(e => { return e.fetchPushList_daemonsw })
+	let bkFetchPushLst = await ExtOptions.get("fetchPushList_daemonsw").then(e => { return e.fetchPushList_daemonsw })
 	if (pushListData.index == 1 && bkFetchPushLst) {
 		try {
 			var p1data = await db_getPushListHtml();
@@ -353,7 +353,7 @@ export function PopupLater() {
  * 渲染直播观看时间计分板
  */
 export async function renderLiveWatchTimeLst() {
-	let x = await getStorage("LiveWatchTimeRec_popup");
+	let x = await ExtOptions.get("LiveWatchTimeRec_popup");
 	if (!x.LiveWatchTimeRec_popup) { return }
 	MessageSwitch.sendMessage('fg', { target: "updateLiveWatchTimeListItem", params: {}, InvkSetting: { type: "function", responseRequire: true, asyncWarp: true } }, function (resp0) {
 		if (resp0 == true) {
@@ -383,7 +383,7 @@ export async function renderLiveWatchTimeLst() {
 }
 
 export async function customCss() {
-	let x = await getStorage("custom_css");
+	let x = await ExtOptions.get("custom_css");
 	if (!x.custom_css) { return }
 	chrome.storage.local.get(['custom_css_style'], function (i) {
 		try {

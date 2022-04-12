@@ -1,7 +1,7 @@
 /**
  * 异步观察目标元素与其祖先元素或顶级文档视窗交叉状态
  */
-class InterSectionObserverUtil {
+export class InterSectionObserverUtil {
     constructor(target, trigger, devMode) {
         this.target = null;
 

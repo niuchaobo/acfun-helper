@@ -1,3 +1,4 @@
+const { WebStorageUtil } = await import("../../../../common/modulesLib/WebStorageUtil.mjs")
 const locaStrg = new WebStorageUtil("local");
 /**@type {import("../../../../../declares/Vue/VueRuntimeCore").Component} */
 const app = {

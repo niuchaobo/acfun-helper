@@ -143,7 +143,7 @@ class PageBeautify extends AcFunHelperFgFrame {
       this_page = 1;
     }
     let node = $("div.guide-item-con").find("p").eq(0);
-    getAsyncDom(".guide-item.guide-user.user-logined", () => {
+    GetAsyncDomUtil.getAsyncDomClassic(".guide-item.guide-user.user-logined", () => {
       if (node) {
         node.after(
           '<p class="crx-guid-p"><a target="_blank" href="https://live.acfun.cn/live/' +

@@ -1,7 +1,7 @@
 /**
  * SenssionStorage & LocalStorage 操作封装
  */
-class WebStorageUtil {
+export class WebStorageUtil {
     constructor(storeMode = "local", storeTimeout = 86400000, timeLimit = 2000) {
         this.storeMode = storeMode;
         this.storeTimeout = storeTimeout;

@@ -9,7 +9,7 @@ class DependencyError {
  * 评论区遍历操作
  * @description 1.遍历评论区评论，并进行操作 newInstant->add->start 2.遍历评论区并添加操作菜单内容 newInstant->menuAdd->start
  */
-class CommentAreaIterator {
+export class CommentAreaIterator {
     constructor() {
         /**@type {InnerDefined.CommentAreaIterator.Registry} */
         this.registry = {
@@ -46,17 +46,26 @@ class CommentAreaIterator {
      * @returns 
      */
     start() {
-        return GetAsyncDomUtil.commentAreaLoading(() => {
-            const childrens = document.querySelector(".ac-comment-root-list").children;
-            for (let e of childrens) {
-                this.registry._sys.forEach(callName => {
-                    callName != "_sys" && this.registry[callName](e);
-                })
-                this.menuCallback._sys.forEach(() => {
-                    this.menuExec(e);
-                })
-            }
-        });
+        const childrens = document.querySelector(".ac-comment-root-list").children;
+        const hotChildrens = document.querySelector(".ac-comment-hot-list").children;
+        for (let e of childrens) {
+            this.registry._sys.forEach(callName => {
+                callName != "_sys" && this.registry[callName](e);
+            })
+            this.menuCallback._sys.forEach(() => {
+                this.menuExec(e);
+            })
+        }
+        for (let i = 0; i < hotChildrens.length - 1; i++) {
+            const e = hotChildrens[i];
+            console.log(e)
+            this.registry._sys.forEach(callName => {
+                callName != "_sys" && this.registry[callName](e);
+            })
+            this.menuCallback._sys.forEach(() => {
+                this.menuExec(e);
+            })
+        }
     }
 
     /**
@@ -111,24 +120,22 @@ class CommentAreaIterator {
                 const index = commentItemElem.children[0].querySelector(".index-comment").innerText.replace("#", "");
                 return index ? Number(index) : false;
             case "uid":
-                const uid = commentItemElem.children[0].children[0].children[1].querySelector("a.name").innerText;
+                const uid = commentItemElem.querySelector("a.name").dataset["userid"];
                 return uid ? Number(uid) : false;
             case "username":
-                return commentItemElem.children[0].children[0].children[1].querySelector("a.name").dataset["userid"];
+                return commentItemElem.querySelector("a.name").innerText;
             case "userimgWidget":
-                return commentItemElem.children[0].querySelectorAll("img")[1].src;
+                return commentItemElem.querySelector("a.thumb").children[1].src;
             case "userimg":
-                return commentItemElem.children[0].querySelectorAll("img")[0].src;
+                return commentItemElem.querySelector("a.avatar").src;
             case "time":
-                return commentItemElem.children[0].querySelector(".time_times").innerText;
+                return commentItemElem.querySelector("span.time_times").innerText
             case "like":
-                return commentItemElem.children[0].querySelector(".area-comment-like").innerText.replace("赞", "");
+                return commentItemElem.querySelector("a.area-comment-like").innerText.replace("赞", "")
             case "device":
-                return commentItemElem.children[0].querySelector(".deviceModel").innerText;
+                return commentItemElem.querySelector("a.deviceModel").innerText
             case "content":
-                return commentItemElem.children[0].querySelector(".area-comment-des").innerText;
-            default:
-                break;
+                return commentItemElem.querySelector("p.area-comment-des-content").innerHTML;
         }
     }
 

@@ -1,11 +1,11 @@
 /**
- * 通信模块
+ * 长连接通信模块
  * @param {"fg"|"bg"|"inject"|"iframe"} hostType 信源类型
  * @param {HTMLElement} hostElement 通信依托实体
  * @param {boolean} persistant 是否长连接
  * @description 打电话！
  */
-class MessageCircuitSwitch {
+export class MessageCircuitSwitch {
     constructor(hostType = "bg", hostElement, portName = "", devMode = false) {
         this.hostType = hostType;
         this.devMode = devMode;
@@ -67,7 +67,7 @@ class MessageCircuitSwitch {
     connectMessage(hostType = 'fg', payload = {}, tabId = "") {
         switch (hostType) {
             case "bg":
-                tabId === "" ? console.warn("[Common-MessageSwitch > connectMessage]when in background,you send message to frontend tabs,you need set the tabId.") : ""
+                tabId === "" ? console.warn("[Common-MessageSwitch > connectMessage] when in background,you send message to frontend tabs,you need set the tabId.") : ""
                 try {
                     chrome.tabs.get(tabId, (e) => {
                         if (e) {
@@ -76,7 +76,7 @@ class MessageCircuitSwitch {
                         }
                     })
                 } catch (error) {
-                    console.warn("[Common-MessageSwitch > connectMessage]tabId is unvaliable")
+                    console.warn("[Common-MessageSwitch > connectMessage] tabId is unvaliable")
                 }
                 break;
             case "fg":
@@ -98,7 +98,7 @@ class MessageCircuitSwitch {
             response.source = _this.portName;
             switch (InvkSetting?.type) {
                 case "function":
-                    const method = this["api_" + target];
+                    const method = InvkSetting.unsafe ? this[target] : this["Apis"][target];
                     if (typeof method === "function") {
                         response.status = false;
                         if (InvkSetting["asyncWarp"]) {
@@ -121,6 +121,18 @@ class MessageCircuitSwitch {
                     }
                     break;
                 case "subMod":
+                    const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["Apis"][target.methodName];
+                    if (typeof callTarget === "function") {
+                        params.callback = callback;
+                        if (InvkSetting["asyncWarp"]) {
+                            callTarget.call(this, params).then(resp => {
+                                callback(resp);
+                            });
+                            return true;
+                        }
+                        response = callTarget.call(this, params);
+                        callback(response);
+                    }
                     break;
                 case "echo":
                     response.status = true;
@@ -165,7 +177,7 @@ class MessageCircuitSwitch {
             response.eventId = _this.eventId;
             switch (InvkSetting?.type) {
                 case "function":
-                    const method = this["api_" + target];
+                    const method = InvkSetting.unsafe ? this[target] : this["Apis"][target];
                     if (typeof (method) === 'function') {
                         if (InvkSetting["receipt"]) {
                             params.tabid = port.sender.tab;
@@ -196,16 +208,16 @@ class MessageCircuitSwitch {
                     }
                     break;
                 case "subMod":
-                    const callTarget = window.AcFunHelperBackend[target.mod];
-                    if (typeof callTarget === "object" && typeof callTarget["api_" + target.methodName] === "function") {
+                    const callTarget = InvkSetting.unsafe ? this[target.mod][target.methodName] : this[target.mod]["Apis"][target.methodName];
+                    if (typeof callTarget === "function") {
                         params.callback = callback;
                         if (InvkSetting["asyncWarp"]) {
-                            callTarget["api_" + target.methodName].call(this, params).then(resp => {
+                            callTarget.call(this, params).then(resp => {
                                 callback(resp);
                             });
                             return true;
                         }
-                        response = callTarget["api_" + target.methodName].call(this, params);
+                        response = callTarget.call(this, params);
                         callback(response);
                     }
                     break;

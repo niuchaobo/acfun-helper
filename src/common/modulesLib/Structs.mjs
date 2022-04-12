@@ -1,7 +1,7 @@
 /**
  * 队列
  */
-class Queue {
+export class Queue {
     constructor() {
         this.dataField = [];
     }
@@ -75,7 +75,7 @@ class Queue {
     }
 }
 
-class Stack {
+export class Stack {
     constructor() {
         this.dataField = [];
     }

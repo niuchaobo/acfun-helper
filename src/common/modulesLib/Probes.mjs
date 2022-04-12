@@ -80,10 +80,71 @@ export const commentAreaReady = async () => {
             resolve(true);
         }, () => {
             resolve(false);
-        }, null, null, 3000, false, 30000, false,
-            (
+        }, (e, f) => {
+            if (
                 !!document.querySelector('.area-comment-title a.name') && document.querySelector('.ac-comment-loading').innerHTML == ""
-            )
+            ) {
+                return true
+            } else {
+                return document.querySelector("div.ac-comment-root-list").childElementCount
+            }
+        }, 3000, false, 30000, true, true
         ).probe()
     })
+}
+
+/**
+ * 
+ * @param {{ target: string | HTMLElement | HTMLCollection, fn: () => { }, insure: () => { }, purpose: string | (e:boolean|HTMLElement|HTMLCollection,f:any)=> boolean , time: number, instantMode: boolean, maxWaitTime: boolean, devMode: boolean, advancedQueryMethod: boolean | ()=> boolean, extraParam: any }} e 
+ * @returns 
+ */
+export function getAsyncDom(e) {
+    const { target, fn, insure, purpose, time, instantMode, maxWaitTime, devMode, advancedQueryMethod, extraParam } = e
+    return GetAsyncDomUtil(target, fn, insure, purpose, time, instantMode, maxWaitTime, devMode, advancedQueryMethod, extraParam).probe();
+}
+
+export function pageLoadTimeAnalysis() {
+    const perf = window.performance;
+    if (perf) {
+        const perfEntries = perf.getEntriesByType("navigation")[0], perfTiming = 0;
+        perfEntries || (perfTiming = (perfEntries = perf.timing).navigationStart);
+        const result = [{
+            key: "Redirect",
+            desc: "\u7f51\u9875\u91cd\u5b9a\u5411\u7684\u8017\u65f6",
+            value: perfEntries.redirectEnd - perfEntries.redirectStart
+        }, {
+            key: "AppCache",
+            desc: "\u68c0\u67e5\u672c\u5730\u7f13\u5b58\u7684\u8017\u65f6",
+            value: perfEntries.domainLookupStart - perfEntries.fetchStart
+        }, {
+            key: "DNS",
+            desc: "DNS\u67e5\u8be2\u7684\u8017\u65f6",
+            value: perfEntries.domainLookupEnd - perfEntries.domainLookupStart
+        }, {
+            key: "TCP",
+            desc: "TCP\u8fde\u63a5\u7684\u8017\u65f6",
+            value: perfEntries.connectEnd - perfEntries.connectStart
+        }, {
+            key: "Waiting(TTFB)",
+            desc: "\u4ece\u5ba2\u6237\u7aef\u53d1\u8d77\u8bf7\u6c42\u5230\u63a5\u6536\u5230\u54cd\u5e94\u7684\u65f6\u95f4 / Time To First Byte",
+            value: perfEntries.responseStart - perfEntries.requestStart
+        }, {
+            key: "Content Download",
+            desc: "\u4e0b\u8f7d\u670d\u52a1\u7aef\u8fd4\u56de\u6570\u636e\u7684\u65f6\u95f4",
+            value: perfEntries.responseEnd - perfEntries.responseStart
+        }, {
+            key: "HTTP Total Time",
+            desc: "http\u8bf7\u6c42\u603b\u8017\u65f6",
+            value: perfEntries.responseEnd - perfEntries.requestStart
+        }, {
+            key: "DOMContentLoaded",
+            desc: "dom\u52a0\u8f7d\u5b8c\u6210\u7684\u65f6\u95f4",
+            value: perfEntries.domContentLoadedEventEnd - perfTiming
+        }, {
+            key: "Loaded",
+            desc: "\u9875\u9762load\u7684\u603b\u8017\u65f6",
+            value: perfEntries.loadEventEnd - perfTiming
+        }];
+        return result
+    }
 }

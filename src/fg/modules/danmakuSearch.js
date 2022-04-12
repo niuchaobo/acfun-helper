@@ -74,7 +74,7 @@ class Search extends AcFunHelperFgFrame{
     if (!text) return;
     input.blur();
     this.firstSearchInit();
-    getAsyncDom("danmaku-item", this.danmakuSearch.bind(this, text), 200).then(
+    GetAsyncDomUtil.getAsyncDomClassic("danmaku-item", this.danmakuSearch.bind(this, text), 200).then(
       (res) => {
         this.lock = false;
         this.buttonStatusChange(false);
@@ -181,7 +181,7 @@ class Search extends AcFunHelperFgFrame{
         this.buttonStatusChange(true);
         $("#danmaku .list-body").scrollTop(0);
         let text = $("#acfun-helper-search-input").val();
-        getAsyncDom(
+        GetAsyncDomUtil.getAsyncDomClassic(
           "danmaku-item",
           this.danmakuSearch.bind(this, text),
           200

@@ -1,8 +1,7 @@
-
 /**
  * @ref https://www.acfun.cn/rest/pc-direct/page/queryNavigators
  * */
-const acfunDepts = {
+export const acfunDepts = {
     getAll: async () => {
         return JSON.parse(await fetchResult(acfunApis.navigateCategory.query));
     },

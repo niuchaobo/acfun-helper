@@ -175,12 +175,12 @@ class MsgNotifs extends AcFunHelperBgFrame {
      * 自定义关注用户直播通知
      */
     async liveOnlineNotif() {
-        let Ifswitch = await getStorage("liveFloowNotif");
+        let Ifswitch = await ExtOptions.get("liveFloowNotif");
         if (Ifswitch.liveFloowNotif) {
             //获取自定义直播用户关注字典
-            let items = await getStorage("liveFloowings");
+            let items = await ExtOptions.get("liveFloowings");
             //获取上次直播状态字典
-            let broadcastingUIDlist = await getStorage("broadcastingUIDlist");
+            let broadcastingUIDlist = await ExtOptions.get("broadcastingUIDlist");
             // console.log(broadcastingUIDlist);
             // 构造本次直播状态信息字典
             let liveStateWorkDic = {}
@@ -216,7 +216,7 @@ class MsgNotifs extends AcFunHelperBgFrame {
                             //假如上次直播状态为 否,并且上次直播状态与本次直播状态不一致（意思是现在为 是）
                             if (lastState == false) {
                                 this.createNotif("live", i, x.user.name, x.title, x.user.headUrl);
-                                let OpenNow = await getStorage("liveFollowOpenNow");
+                                let OpenNow = await ExtOptions.get("liveFollowOpenNow");
                                 if (OpenNow.liveFollowOpenNow) {
                                     chrome.tabs.create({ url: `https://live.acfun.cn/live/${i}` });
                                 }
@@ -234,14 +234,14 @@ class MsgNotifs extends AcFunHelperBgFrame {
      * 关注用户直播通知
      */
     async followLiveNotifEx() {
-        const sw = await getStorage("followLiveNotif").then(e => { return e.followLiveNotif });
+        const sw = await ExtOptions.get("followLiveNotif").then(e => { return e.followLiveNotif });
         if (!sw) {
             return;
         }
         chrome.storage.local.get(['LocalUserId'], async (Uid) => {
             // 用户没有登录就不去获取信息了
             if (Uid.LocalUserId == "0") { return }
-            let broadcastingUIDlistFollowing = await getStorage('broadcastingUIDlistFollowing');
+            let broadcastingUIDlistFollowing = await ExtOptions.get('broadcastingUIDlistFollowing');
             let fliveStateWorkDic = {}, fetchLivesInfoDic = {};
             // 假如信息为空字典就填充一下
             if (JSON.stringify(broadcastingUIDlistFollowing) == '{}') {
@@ -260,7 +260,7 @@ class MsgNotifs extends AcFunHelperBgFrame {
                 fetchLivesInfoDic[result.liveList[i].authorId] = { title: result.liveList[i].title, userAvatar: result.liveList[i].user.headUrl.replace("40/h/40", "100/h/100") }
             }
             // 获取关注的UP上次的正在直播UID字典
-            let lastLiveStateDic = await getStorage('broadcastingUIDlistFollowing');
+            let lastLiveStateDic = await ExtOptions.get('broadcastingUIDlistFollowing');
             // 获取关注的UP上次的正在直播UID列表
             let lastStateUIDList = Object.keys(lastLiveStateDic.broadcastingUIDlistFollowing);
             // 获取本次从API获取的正在直播的Up的UID列表
@@ -300,7 +300,7 @@ class MsgNotifs extends AcFunHelperBgFrame {
     }
 
     async timer4Unread() {
-        const sw = await getStorage("timer4Unread_daemonsw").then(e => { return e.timer4Unread_daemonsw });
+        const sw = await ExtOptions.get("timer4Unread_daemonsw").then(e => { return e.timer4Unread_daemonsw });
         if (!sw) {
             chrome.action.setTitle({ title: `AcFun助手，Ac在爱一直在` });
             chrome.action.setBadgeText({ text: "" });
@@ -326,7 +326,7 @@ class MsgNotifs extends AcFunHelperBgFrame {
                     let a4 = b.unReadCount.new_system_notify;//站内公告
                     let a5 = b.unReadCount.new_gift;//礼物
                     let atNotif = b.unReadCount.at_notify;//@消息
-                    let notifs = await getStorage("notificationContent");
+                    let notifs = await ExtOptions.get("notificationContent");
                     let pushNum = a0 + a1 + a2 + a3 + a4 + a5 + atNotif;
                     (a0 && notifs.notificationContent.commentNotif) && this.commentDetailNotif(a0);
                     (a1 && notifs.notificationContent.likeNotif) && this.likeDetailNotif(a1);
@@ -345,7 +345,7 @@ class MsgNotifs extends AcFunHelperBgFrame {
     }
 
     async fetchPushList() {
-        let sw = await getStorage("fetchPushList_daemonsw")
+        let sw = await ExtOptions.get("fetchPushList_daemonsw")
         if (sw.fetchPushList_daemonsw == false) { return }
         chrome.storage.local.get(['LocalUserId'], function (Uid) {
             if (Uid.LocalUserId == "0") { return }

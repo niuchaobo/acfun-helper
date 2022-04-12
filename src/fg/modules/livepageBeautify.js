@@ -85,7 +85,7 @@ class LivePageButfy extends AcFunHelperFgFrame {
     }
 
     helperDivHide(i) {
-        getAsyncDom("#acfun-popup-helper", () => {
+        GetAsyncDomUtil.getAsyncDomClassic("#acfun-popup-helper", () => {
             document.getElementById("acfun-popup-helper").style.display = i;
             document.getElementById("acfun-helper-div").style.display = i;
         }, 1000);

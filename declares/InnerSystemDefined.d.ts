@@ -87,19 +87,6 @@ declare namespace OptionStruct {
       { bananaNum: string; name: string; uid: string; up_url: string }
     ];
     broadcastingUIDlistFollowing: { [number]: boolean };
-    MarkedComment: {
-      setting: {
-        enabled: boolean;
-        storeLocation: string;
-        storePlugin: [
-          "ExtensionStore",
-          "IndexedDB",
-          "Nextcloud",
-          "UserdefinedServer"
-        ];
-      };
-      datasets: {};
-    };
     WatchPlanList: string[];
     PictureInPictureModeUI: boolean;
     activeTabKey: string;
@@ -131,10 +118,10 @@ declare namespace OptionStruct {
     UserFilter: { [uid: number]: { name: string } };
     scan: boolean;
     upHighlight: boolean;
+    StaffMark: boolean;
     filter: boolean;
     beautify_nav: boolean;
     beautify_personal: boolean;
-    show_like: boolean;
     custom_rate: boolean;
     custom_rate_keyCode: number[];
     custom_easy_jump_keyCode: string[];
@@ -162,16 +149,18 @@ declare namespace OptionStruct {
     easySearchScanForPlayerTimesw: boolean;
     videoRememberLastSend: boolean;
     Dev_indexBlurSW: boolean;
-    userHomeMoment: boolean;
     Upgradeable: 0;
     ABPlaysw: boolean;
     ProgressBarsw: boolean;
     ProgressBarStyle: {
       barColor: string;
       barHeight: string;
-      loadedOpen: string;
       loadedColor: string;
       loadedHeight: string;
+      innerBarColor: string;
+      innerBarHeight: string;
+      innerBarLoadColor: string;
+      innerBarLoadHeight: string;
     };
     danmuSearchListToUsersw: boolean;
     endedAutoJumpRecommandFirstDougasw: boolean;
