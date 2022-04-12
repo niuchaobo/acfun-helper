@@ -68,8 +68,79 @@
           <div class="mdui-textfield-helper">请输入百分比</div>
         </div>
       </div>
+
+      <div class="mdui-col-xs-4 mdui-col-sm-4">
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">全屏播放进度条颜色</label>
+          <input
+            id="innerBarColor"
+            class="mdui-textfield-input"
+            type="text"
+            pattern="^#.*"
+            maxlength="9"
+          />
+          <div class="mdui-textfield-error">输入十六进制颜色值：#fd4c5d</div>
+          <div class="mdui-textfield-helper">
+            请输入十六进制颜色值
+            <a href="http://www.whx.me/color/index.html" target="_blank"
+              >取色器</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="mdui-col-xs-4 mdui-col-sm-4">
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">全屏播放进度条厚度</label>
+          <input
+            id="innerBarHeight"
+            class="mdui-textfield-input"
+            type="text"
+            pattern="[1-9]\d*%$|[1-9]\d*.\d*%$|0.\d*[1-9]\d*%$"
+          />
+          <div class="mdui-textfield-error">百分比：0.4%</div>
+          <div class="mdui-textfield-helper">请输入百分比</div>
+        </div>
+      </div>
+      <div class="mdui-col-xs-4 mdui-col-sm-4">
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">全屏加载进度条颜色</label>
+          <input
+            id="innerBarLoadColor"
+            class="mdui-textfield-input"
+            type="text"
+            pattern="^#.*"
+            maxlength="9"
+          />
+          <div class="mdui-textfield-error">输入十六进制颜色值：#ffffffb3</div>
+          <div class="mdui-textfield-helper">
+            请输入十六进制颜色值
+            <a href="https://www.materialpalette.com/colors" target="_blank"
+              >取色器</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="mdui-col-xs-4 mdui-col-sm-4">
+        <div class="mdui-textfield">
+          <label class="mdui-textfield-label">全屏加载进度条厚度</label>
+          <input
+            id="innerBarLoadHeight"
+            class="mdui-textfield-input"
+            type="text"
+            pattern="[1-9]\d*%$|[1-9]\d*.\d*%$|0.\d*[1-9]\d*%$"
+          />
+          <div class="mdui-textfield-error">百分比：0.4%</div>
+          <div class="mdui-textfield-helper">请输入百分比</div>
+        </div>
+      </div>
     </div>
-    <button id="proBarConfSave" class="mdui-btn mdui-btn-block" v-on:click="saveConf">保存</button>
+    <button
+      id="proBarConfSave"
+      class="mdui-btn mdui-btn-block"
+      v-on:click="saveConf"
+    >
+      保存
+    </button>
   </div>
 </template>
 

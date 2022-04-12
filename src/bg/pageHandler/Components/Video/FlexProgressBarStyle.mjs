@@ -8,7 +8,11 @@ const app = {
             barColor: null,
             barHeight: null,
             loadedColor: null,
-            loadedHeight: null
+            loadedHeight: null,
+            innerBarColor: null,
+            innerBarHeight: null,
+            innerBarLoadColor: null,
+            innerBarLoadHeight: null,
         }
     },
     methods: {
@@ -19,6 +23,10 @@ const app = {
                 "barHeight",
                 "loadedColor",
                 "loadedHeight",
+                "innerBarColor",
+                "innerBarHeight",
+                "innerBarLoadColor",
+                "innerBarLoadHeight",
             ].forEach(e => {
                 raw[e] = document.querySelector("#" + e).value;
             })
@@ -32,7 +40,11 @@ const app = {
             "barHeight",
             "loadedColor",
             "loadedHeight",
-        ].forEach(e => {
+            "innerBarColor",
+            "innerBarHeight",
+            "innerBarLoadColor",
+            "innerBarLoadHeight",
+    ].forEach(e => {
             document.querySelector("#" + e).value = raw[e];
         })
     }
