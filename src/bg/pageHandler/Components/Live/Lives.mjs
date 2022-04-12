@@ -37,7 +37,7 @@ const app = {
                 {
                     key: "liveVolumeMild",
                     title: "后台将直播音量降低",
-                    desc: "将在后台的直播标签页的播放器音量降低只四分之一"
+                    desc: "将在后台的直播标签页的播放器音量降低至四分之一"
                 },
                 {
                     key: "wheelToChangeVolume",

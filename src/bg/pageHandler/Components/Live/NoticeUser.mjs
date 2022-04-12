@@ -26,6 +26,7 @@ const app = {
                 },
                 onClose: () => {
                     ExtOptions.setValue("liveFloowings", this.raw);
+                    this.memberNum--;
                 },
             });
         },
@@ -34,6 +35,7 @@ const app = {
                 userAddWrap(this.raw, e, (userInfo, uid) => {
                     const name = userInfo.profile.name;
                     this.raw[uid] = name;
+                    this.memberNum++;
                     ExtOptions.setValue("liveFloowings", this.raw).then(() => {
                         mdui.snackbar({
                             message: "也许把 " + name + " 成功添加了。",

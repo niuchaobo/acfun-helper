@@ -13,12 +13,12 @@ const app = {
             configItems: [
                 {
                     key: "commentPageEasyTrans",
-                    title: "评论区快捷翻页",
+                    title: "快捷翻页按钮",
                     desc: "在页面右下角工具栏添加快捷按钮进行翻页"
                 },
                 {
                     key: "uddPopUp",
-                    title: "ac号信息弹框",
+                    title: "Ac号信息弹框",
                     acidFlyout: true,
                     desc: "指针悬停在评论区的ac号上时，获取视频投稿信息"
                 },

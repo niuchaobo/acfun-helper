@@ -51,7 +51,7 @@ const app = {
                             return;
                         }
                         ExtOptions.resetAll();
-                        ExtOptions.saveAll(jsonfy_config);
+                        ExtOptions.saveAll(ExtOptions.transOptions(jsonfy_config));
                         afterReconfigure();
                     })
                 }
