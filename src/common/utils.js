@@ -154,6 +154,7 @@ const ARFPModsConfName = [
 
 /**
  * 加载所有配置项
+ * @returns {OptionStruct.DefaultStruct}
  */
 async function optionsLoad() {
   return ExtOptions.getAll();
@@ -570,7 +571,7 @@ function addElement(options) {
 }
 
 function createElementStyle(cssText, targetDom = document.head, id = null) {
-  StyleSheetManager.createElementStyle(cssText, targetDom, id);
+  return StyleSheetManager.createElementStyle(cssText, targetDom, id);
 }
 
 /**

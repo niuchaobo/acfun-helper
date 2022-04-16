@@ -340,9 +340,10 @@ export const userAddWrap = async (list, e, fn) => {
             }
             throw TypeError("你猜猜用户存不存在。")
         } catch (error) {
-            mdui.alert("你输入的数据不对劲？或者服务器出毛病了。")
+            mdui.alert("你输入的数据不对劲？或者服务器出毛病了。" + error)
         }
     } else {
         mdui.alert("你输入的数据不对劲");
+        return false;
     }
 }

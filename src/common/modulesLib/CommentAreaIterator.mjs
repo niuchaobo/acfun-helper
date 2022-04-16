@@ -58,7 +58,6 @@ export class CommentAreaIterator {
         }
         for (let i = 0; i < hotChildrens.length - 1; i++) {
             const e = hotChildrens[i];
-            console.log(e)
             this.registry._sys.forEach(callName => {
                 callName != "_sys" && this.registry[callName](e);
             })

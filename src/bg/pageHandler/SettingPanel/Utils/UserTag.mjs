@@ -52,12 +52,12 @@ const app = {
             document.querySelector("#detailUserTag_evidence").value = this.raw[uid].evidence ?? ""
             document.querySelector("#detailUserTag_commentId").value = this.raw[uid].commentId ?? ""
         },
-        copyEvidence:function(e){
+        copyEvidence: function (e) {
             const target = e.target;
             navigator.clipboard.writeText(target.title);
             mdui.snackbar({
-                message:"复制完成",
-                position:"right-bottom"
+                message: "复制完成",
+                position: "right-bottom"
             })
         }
     },
@@ -72,19 +72,6 @@ const app = {
             const uid = menus.children[0].children[1].value
             const tag = menus.children[1].children[1].value
             const desc = menus.children[2].children[1].value
-            let userValid = await acfunApis.users.getUserInfo(uid);
-            if (!userValid.result == 0) {
-                this.uidError = true;
-                this.uidErrorMsg = "或许没办法在这里面的内容找到与UID有关的消息~"
-                document.querySelector("#userTag_uid").value = uid
-                document.querySelector("#userTag_tag").value = tag
-                document.querySelector("#userTag_desc").value = desc
-
-                document.querySelector("#userTag_uid").click();
-                document.querySelector("#openAddUserTag").click();
-                return
-            }
-            this.uidError = false
             userAddWrap(this.raw, uid, (userInfo, uid) => {
                 const name = userInfo.profile.name;
                 this.raw[uid] = {
@@ -93,7 +80,15 @@ const app = {
                     desc: desc,
                 }
                 ExtOptions.setValue("UserMarks", this.raw)
-            })
+                this.memberNum++;
+            }) === false && (
+                    document.querySelector("#userTag_uid").value = uid,
+                    document.querySelector("#userTag_tag").value = tag,
+                    document.querySelector("#userTag_desc").value = desc,
+                    this.uidError = true,
+                    document.querySelector("#userTag_uid").click(),
+                    document.querySelector("#openAddUserTag").click()
+                )
         })
         //修改
         document.querySelector("#changeUserTag").addEventListener("confirm.mdui.dialog", async (e) => {

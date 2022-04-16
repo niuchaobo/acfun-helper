@@ -231,11 +231,10 @@ class PlayerMenuSwitchItem {
   startEventHook() {
     $(".setting-panel-content").on("click", (e) => {
       if (e.target.dataset.bindKey == this.name && e.target.dataset.bindAttr == "false") {
-        this.menuInst.dataset.bindAttr = true;
-        this.trueHandler();
+        (this.trueHandler() ?? true) && (this.menuInst.dataset.bindAttr = true)
       } else if (e.target.dataset.bindKey == this.name && e.target.dataset.bindAttr == "true") {
         this.menuInst.dataset.bindAttr = false;
-        this.falseHandler();
+        (this.falseHandler() ?? true) && (this.menuInst.dataset.bindAttr = false);
       }
     })
   }

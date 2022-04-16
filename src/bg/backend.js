@@ -140,38 +140,19 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
 
     async onUpdated() {
         let rawOpts = await optionsLoad();
-        //更改用户标记、文章区用户内容屏蔽数据的结构
-        if (rawOpts.UserMarks == null && rawOpts.UserFilter == null) {
-            let rawOptsKey = Object.keys(rawOpts);
-            let markExp = new RegExp("^AC_(.*)");
-            let filterExp = new RegExp("^FILTER_(.*)");
-            let UserMarks = {};
-            let UserFilter = {};
-            for (let i = 0; i < rawOptsKey.length; i++) {
-                if (markExp.test(rawOptsKey[i])) {
-                    UserMarks[markExp.exec(rawOptsKey[i])[1]] = rawOpts[markExp.exec(rawOptsKey[i])[0]];
-                    delete rawOpts[markExp.exec(rawOptsKey[i])[0]]
-                } else if (filterExp.test(rawOptsKey[i])) {
-                    UserFilter[filterExp.exec(rawOptsKey[i])[1]] = rawOpts[filterExp.exec(rawOptsKey[i])[0]];
-                    delete rawOpts[filterExp.exec(rawOptsKey[i])[0]]
-                }
-            }
-            let x = Object.keys(rawOpts);
-            let y = new RegExp("AC_.*");
-            x.forEach((e) => {
-                if (y.test(e)) {
-                    chrome.storage.local.remove(e, function () { });
-                }
-            })
-            chrome.storage.local.set({ "UserMarks": UserMarks }, function () { })
-            chrome.storage.local.set({ "UserFilter": UserFilter }, function () { })
+        const raw = rawOpts.ProgressBarStyle;
+        const defaultData = defaults.ProgressBarStyle;
+        let newData = {
+            barColor: raw.barColor ?? defaultData.barColor,
+            barHeight: raw.barHeight ?? defaultData.barHeight,
+            loadedColor: raw.loadedColor ?? defaultData.loadedColor,
+            loadedHeight: raw.loadedHeight ?? defaultData.loadedHeight,
+            innerBarColor: raw.innerBarColor ?? defaultData.innerBarColor,
+            innerBarHeight: raw.innerBarHeight ?? defaultData.innerBarHeight,
+            innerBarLoadColor: raw.innerBarLoadColor ?? defaultData.innerBarLoadColor,
+            innerBarLoadHeight: raw.innerBarLoadHeight ?? defaultData.innerBarLoadHeight,
         }
-        //火狐不支持注入XHRProxy
-        if(this.runtime.dataset.core.browserType!="Chrome"){
-            ExtOptions.setValue("xhrDrv",false)
-            ExtOptions.setValue("filter",false)
-            ExtOptions.setValue("commentFilterSw",false)
-        }
+        ExtOptions.setValue("ProgressBarStyle", newData);
     }
 
     onCommentRequest(req) {

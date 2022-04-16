@@ -492,6 +492,7 @@ class PageBeautify extends AcFunHelperFgFrame {
     .category-item {
         transition: all .2s ease;
     }
+    ${this.runtime.dataset.core.browserType == "Chrome" ? `
     .normal-module .module-left .module-left-header .right-area .header-right-more:hover,
     .bangumi-list .area-left .area-header .header-right-more:hover,
     .more:hover,
@@ -499,7 +500,7 @@ class PageBeautify extends AcFunHelperFgFrame {
     .category-item:hover {
         letter-spacing: 3px;
         transition: all .2s ease;
-    }
+    }`: ""}
     `, document.head, "AcFunHelper_indexHoverAnimations")
   }
 
@@ -548,14 +549,14 @@ class PageBeautify extends AcFunHelperFgFrame {
         document.querySelector(".ac-pager-prev").click();
       }
     }
-  
+
     function pageDown4Myfav() {
       const targetElem = document.querySelector(".ac-pager-next");
       if (targetElem.ariaDisabled != 'true') {
         document.querySelector(".ac-pager-next").click();
       }
     }
-  
+
     function pageUp4depList() {
       let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
       if (targetElem.length == 0) {
@@ -565,7 +566,7 @@ class PageBeautify extends AcFunHelperFgFrame {
         targetElem[0].click();
       }
     }
-  
+
     function pageDown4depList() {
       let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next");
       if (targetElem.length == 0) {
@@ -575,7 +576,7 @@ class PageBeautify extends AcFunHelperFgFrame {
         targetElem[0].click();
       }
     }
-  
+
     function pageUp4UC() {
       let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__prev");
       for (let i = 0; i < targetElem.length; i++) {
@@ -590,7 +591,7 @@ class PageBeautify extends AcFunHelperFgFrame {
         }
       }
     }
-  
+
     function pageDown4UC() {
       let targetElem = document.querySelectorAll("a.pager__btn.pager__btn__next");
       for (let i = 0; i < targetElem.length; i++) {

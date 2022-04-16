@@ -23,6 +23,7 @@ const app = {
                 buttonText: '撤销',
                 onButtonClick: () => {
                     this.raw[id] = name;
+                    this.memberNum++;
                 },
                 onClose: () => {
                     ExtOptions.setValue("liveFloowings", this.raw);

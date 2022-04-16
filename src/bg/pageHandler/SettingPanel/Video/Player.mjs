@@ -20,7 +20,7 @@ const app = {
                     desc: "在页面和网页全屏时增加一个进度条，以提示当前播放进度"
                 },
                 {
-                    key: "customRate",
+                    key: "custom_rate",
                     title: "自定义倍速",
                     defaultMode: true,
                     qualityStratagy: true,
