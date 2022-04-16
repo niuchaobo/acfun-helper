@@ -4,7 +4,7 @@ class FunctionalUrlParam extends AcFunHelperFgFrame {
         this.params = new URL(this.runtime.href);
         this.reactors = {
             jump: e => {
-                getAsyncDom(".ac-pc-comment", () => {
+                GetAsyncDomUtil.getAsyncDomClassic(".ac-pc-comment", () => {
                     typeof (e) == 'string' && MessageSwitch.sendEventMsgToInject(window, { target: "VideoInject", source: "FunctionalUrlParam", InvkSetting: { type: "method" }, params: { target: "quickJump", params: e } });
                 })
             }

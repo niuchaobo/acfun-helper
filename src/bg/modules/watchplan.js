@@ -56,11 +56,11 @@ class WatchPlan extends AcFunHelperBgFrame {
     }
 
     async EmptyFix() {
-        var ori_list = await getStorage("WatchPlanList");
+        var ori_list = await ExtOptions.get("WatchPlanList");
         //假如任务队列为空，则先构造一个列表
         if (ori_list.WatchPlanList == null) {
             chrome.storage.local.set({ WatchPlanList: [] });
-            ori_list = await getStorage("WatchPlanList");
+            ori_list = await ExtOptions.get("WatchPlanList");
         }
 
     }
@@ -70,10 +70,10 @@ class WatchPlan extends AcFunHelperBgFrame {
      * @returns this.OpFlag 判断结果
      */
     async PushInList(data) {
-        var sw = await getStorage("watchLater");
+        var sw = await ExtOptions.get("watchLater");
         if (!sw.watchLater) { this.OpFlag = false; return }
         await this.EmptyFix();
-        var ori_list = await getStorage("WatchPlanList");
+        var ori_list = await ExtOptions.get("WatchPlanList");
         //假如传入数据（链接）为视频、文章、用户首页 并且 其不是先存在于任务队列中的数据 就假如队列，并修改操作状态信息为 是
         if ((REG.video.test(data) || REG.article.test(data) || REG.userHome.test(data)) && !this.ifExist(ori_list.WatchPlanList, data)) {
             ori_list.WatchPlanList.push(data)
@@ -88,10 +88,10 @@ class WatchPlan extends AcFunHelperBgFrame {
      * @param {List} list UrlList
      */
     async MassInsert(list) {
-        var sw = await getStorage("watchLater");
+        var sw = await ExtOptions.get("watchLater");
         if (!sw.watchLater) { this.OpFlag = false; return }
         await this.EmptyFix();
-        await getStorage("WatchPlanList").then((ori_list) => {
+        await ExtOptions.get("WatchPlanList").then((ori_list) => {
             let res = ori_list.WatchPlanList.concat(list);
             chrome.storage.local.set({ "WatchPlanList": res });
         })
@@ -116,7 +116,7 @@ class WatchPlan extends AcFunHelperBgFrame {
      */
     async execWatch() {
         //打开列表中的前面几项（默认3项），并监听他们的状态（onRemoved or onUpdated），状态改变之后就将其从列表中删除，并补上页面，保持页面数量在指定数量。
-        this.ori_list = await getStorage("WatchPlanList");
+        this.ori_list = await ExtOptions.get("WatchPlanList");
         chrome.tabs.onRemoved.addListener((id) => {
             //在关闭某个标签，检查是否是我们维护的标签状态对象里面的对象
             if (this.tabStateDic.hasOwnProperty(id)) {

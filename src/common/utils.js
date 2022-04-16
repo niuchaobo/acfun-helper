@@ -10,7 +10,6 @@ const defaults = {
   to_attention_num: 5,
   to_special_items: [],
   broadcastingUIDlistFollowing: {},
-  MarkedComment: { setting: { enabled: true, storeLocation: "ExtensionStore", storePlugin: ["ExtensionStore", "IndexedDB", "Nextcloud", "UserdefinedServer"] }, datasets: {} },
   WatchPlanList: [],
   PictureInPictureModeUI: true,
   activeTabKey: 'activeTabId',
@@ -32,12 +31,12 @@ const defaults = {
   CommentFilter: {},
   scan: false,//评论用户扫描
   upHighlight: true,//up主评论高亮
+  StaffMark: true,
   commentFilterSw: false,
   xhrDrv: false,
   filter: false,//up文章区屏蔽
   beautify_nav: true,//首页右侧导航
   beautify_personal: true,//顶栏个人中心优化
-  show_like: false,//视频投稿显示点赞数、投桃数
   custom_rate: true,//开启自定义倍速
   custom_rate_keyCode: [38, 40],//shift ↑ ↓ 倍速播放快捷键
   custom_easy_jump_keyCode: [65], //shift A 评论时间跳转快捷键
@@ -45,6 +44,7 @@ const defaults = {
   liveplayer_mode: "default",
   liveFloowNotif: false,
   liveFollowOpenNow: false,
+  liveFloowings: [],
   videoQualityStrategy: '0',
   livePlayerEnhc: false,
   autoJumpLastWatchSw: false,
@@ -65,16 +65,18 @@ const defaults = {
   easySearchScanForPlayerTimesw: false,
   videoRememberLastSend: true,
   Dev_indexBlurSW: false,
-  userHomeMoment: true,
   Upgradeable: 0,
   ABPlaysw: true,
   ProgressBarsw: true,
   ProgressBarStyle: {
     barColor: "#fd4c5d",
     barHeight: "0.4%",
-    loadedOpen: "open",
-    loadedColor: "#ffffffb3",
+    loadedColor: "#e8e8e8",
     loadedHeight: "0.4%",
+    innerBarColor: "#fd4c5d",
+    innerBarHeight: "0.4%",
+    innerBarLoadColor: "#ffffffb3",
+    innerBarLoadHeight: "0.4%",
   },
   danmuSearchListToUsersw: true,
   endedAutoJumpRecommandFirstDougasw: false,
@@ -145,24 +147,17 @@ const REG = {
 
   },
 }
+
 const ARFPModsConfName = [
   "filter", "commentFilterSw"
 ]
 
-//===============配置处理=================
 /**
  * 加载所有配置项
+ * @returns {OptionStruct.DefaultStruct}
  */
 async function optionsLoad() {
   return ExtOptions.getAll();
-}
-
-/**
- * 获取插件存储值内容
- * @param {string} key 
- */
-async function getStorage(key) {
-  return ExtOptions.get(key)
 }
 
 function getPageData(href) {
@@ -430,41 +425,6 @@ function stringToDOM(str) {
 }
 
 /**
- * 监听DOM对象
- * @param {HTMLElement} target DOM对象
- * @param {function} fn 
- * @param {number} time 定时器周期 2500
- * @param {boolean} isDev 是否显示详细的监听文本 false
- * @todo 有时候，虽然DOM加载完了，但是因为页面不在前台，所以某些模块的函数没有得到执行，如果可以的话可以考虑加上使用document.visibilityState == "hidden"(万一插件根本没法获取到页面状态呢？)来判断，当页面切换到前台之后再执行那些函数。
- */
-async function getAsyncDom(target, fn, time = 2500, isDev = false) {
-  let i = 0;
-  isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 开始监听 ${target}`);
-  let re = (fn) => {
-    return new Promise(resolve => {
-      targetDom = document.getElementById(target) || document.getElementsByClassName(target).length || $(`${target}`).length || undefined
-      if (targetDom) {
-        i = 0;
-        isDev && console.log(`[LOG]Common-Utils>getAsyncDom: ${target}加载`);
-        resolve(fn())
-      } else {
-        if (i >= 9000 / time) {
-          i = 0;
-          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: ${target} 没找到`);
-          return
-        };
-        i++;
-        setTimeout(() => {
-          isDev && console.log(`[LOG]Common-Utils>getAsyncDom: 正在监听 ${target} - 第${i}次`);
-          resolve(re(fn));
-        }, time);
-      }
-    })
-  }
-  return await re(fn)
-}
-
-/**
  * 页面位置计算
  * @tutorial 一般用来判断是否到底部 getScrollHeight() == getWindowHeight() + getDocumentTop();文档高度 = 可视窗口高度 + 滚动条高度
  */
@@ -611,7 +571,7 @@ function addElement(options) {
 }
 
 function createElementStyle(cssText, targetDom = document.head, id = null) {
-  StyleSheetManager.createElementStyle(cssText,targetDom,id);
+  return StyleSheetManager.createElementStyle(cssText, targetDom, id);
 }
 
 /**

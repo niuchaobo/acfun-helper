@@ -1,8 +1,8 @@
 import * as Vue from "../../lib/vue.esm-browser.prod.js"
 
-import { headerpanel } from "./Components/Main/Header.mjs";
-import { bodypanel } from "./Components/Main/Body.mjs";
-import { drawerApp } from "./Components/Main/Drawer.mjs";
+import { headerpanel } from "./SettingPanel/Main/Header.mjs";
+import { bodypanel } from "./SettingPanel/Main/Body.mjs";
+import { drawerApp } from "./SettingPanel/Main/Drawer.mjs";
 import { clickToTop, hideToTopButton } from "../popup/popupEvent.js";
 // const ListIndex = ["index", "common", "video", "live", "article", "comment", "pages", "utils"]
 

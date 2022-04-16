@@ -216,7 +216,7 @@ interface runtimeDataFg {
   href: null;
   dataset: {
     core: {
-      browserType: string;
+      browserType: "Opera" | "FF" | "Chrome" | "Safari" | "IE";
       status: {
         core: boolean;
         messageSwitch: boolean;

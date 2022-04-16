@@ -113,7 +113,7 @@ class VideoInject {
             window.player.emit("fullScreenChange", false);
 
             if (this.options.endedAutoToCommentArea) {
-                _thisTimer = setTimeout(e => {
+                let _thisTimer = setTimeout(() => {
                     document.querySelector("#to-comm").click();
                     clearTimeout(_thisTimer);
                 }, 435);

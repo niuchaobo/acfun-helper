@@ -12,7 +12,7 @@ class Download extends AcFunHelperFgFrame {
         let activeKey = this.runtime.options.activeTabKey;
         let { url, title, id, qualityLabel } = params;
         let m3u8 = url;
-        let tabId = await getStorage(activeKey).then(result => { return result[activeKey] });
+        let tabId = await ExtOptions.get(activeKey).then(result => { return result[activeKey] });
         let fileName = title + "-" + qualityLabel + ".mp4";
 
         var MyBlobBuilder = function () {

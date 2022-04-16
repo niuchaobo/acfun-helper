@@ -271,7 +271,7 @@ const acfunApis = {
     ucenter: {
         personalVideoList: `https://www.acfun.cn/u/{Uid}?quickViewId=ac-space-video-list&reqID=3&ajaxpipe=1&type=video&order=newest&page={pageNum}&pageSize=20`,
         getUserId: async () => {
-            return (JSON.parse(await acfunApis.personalBasicInfo.get()))["info"]["userId"];
+            return (await acfunApis.personalBasicInfo.get())["info"]["userId"];
         },
         followList: {
             followFeedList: `https://member.acfun.cn/common/api/getFeedList`,

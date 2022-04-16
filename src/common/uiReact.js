@@ -95,7 +95,7 @@ class UIReactor {
    * @returns {boolean}
    */
   static async isBoughtBangumi() {
-    return await getAsyncDom(".setting-panel-content", () => {
+    return await GetAsyncDomUtil.getAsyncDomClassic(".setting-panel-content", () => {
       if (document.querySelector(".container-player .pay_bangumi.hide")) {
         return true;
       }
@@ -114,7 +114,7 @@ class UIReactor {
  * @refer https://cdnfile.aixifan.com/static/common/widget/toast/toast.947ad3aa2604243116b8.js
  */
 function LeftBottomNotif(message = "什么都没有发生哦~", level = "info", time = 2000) {
-  getAsyncDom("#g-toast", () => {
+  GetAsyncDomUtil.getAsyncDomClassic("#g-toast", () => {
     var parentContainer = document.querySelector("#g-toast"),
       obj = document.createElement("p");
     obj.innerHTML = DOMPurify.sanitize("<i class='icon icon-" + level + "'></i><span>" + message + "</span>"),
@@ -231,11 +231,10 @@ class PlayerMenuSwitchItem {
   startEventHook() {
     $(".setting-panel-content").on("click", (e) => {
       if (e.target.dataset.bindKey == this.name && e.target.dataset.bindAttr == "false") {
-        this.menuInst.dataset.bindAttr = true;
-        this.trueHandler();
+        (this.trueHandler() ?? true) && (this.menuInst.dataset.bindAttr = true)
       } else if (e.target.dataset.bindKey == this.name && e.target.dataset.bindAttr == "true") {
         this.menuInst.dataset.bindAttr = false;
-        this.falseHandler();
+        (this.falseHandler() ?? true) && (this.menuInst.dataset.bindAttr = false);
       }
     })
   }

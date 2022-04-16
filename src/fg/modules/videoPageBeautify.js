@@ -8,7 +8,7 @@ class videoPageBeautify extends AcFunHelperFgFrame{
   }
 
   openVideoDesc() {
-    getAsyncDom(".desc-operate", () => {
+    GetAsyncDomUtil.getAsyncDomClassic(".desc-operate", () => {
       document.getElementsByClassName("desc-operate")[0].click();
     });
   }  

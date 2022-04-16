@@ -325,21 +325,21 @@ class DOMObserver {
 
 }
 
-/**
- * getAsyncDom Class Version!
- * @param {string} target 监听目标
- * @param {Function} fn 成功回调
- * @param {Function} insure 失败回调
- * @param {string|Function} purpose 成功的条件
- * @param {number} time 一次检测时间间隔
- * @param {boolean} instantMode 间隔定长与否，不定长则每次增加0.5s检测时间
- * @param {number} maxWaitTime 最长等待时间
- * @param {boolean} devMode 开发模式
- * @param {ParentNode} advancedQueryMethod 自定义检测方法
- * @param {string|Array|object} extraParam 额外参数
- * @description 监听DOM对象 模块版本!
- */
 class GetAsyncDomUtil {
+    /**
+     * getAsyncDom Class Version!
+     * @param {string|HTMLElement|HTMLCollection} target 监听目标
+     * @param {()=>{}} fn 成功回调
+     * @param {()=>{}} insure 失败回调
+     * @param {string | (e:boolean|HTMLElement|HTMLCollection,f:any)=> boolean} purpose 成功的条件
+     * @param {number} time 一次检测时间间隔
+     * @param {boolean} instantMode 间隔定长与否，不定长则每次增加0.5s检测时间
+     * @param {number} maxWaitTime 最长等待时间
+     * @param {boolean} devMode 开发模式
+     * @param {boolean|HTMLElement|HTMLCollection} advancedQueryMethod 自定义检测方法
+     * @param {string|Array|object} extraParam 额外参数
+     * @description 监听DOM对象 模块版本!
+     */
     constructor(target, fn, insure, purpose = "exist", time = 2500, instantMode = true, maxWaitTime = 30000, devMode = true, advancedQueryMethod, extraParam = null) {
         this.index = 0;
         this.iterLimit = 0;
@@ -395,13 +395,13 @@ class GetAsyncDomUtil {
                     hasJqueryLib = false;
                 }
                 //DOM探测
-                const targetDom = this.advancedQueryMethod ?? (document.querySelector(this.target) || document.getElementById(this.target) || document.getElementsByClassName(this.target).length || (hasJqueryLib && $(`${this.target}`).length) || undefined);
-                this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 第${this.index}次探测时的targetDom: ${targetDom}`)
+                const targetDom = this.advancedQueryMethod ?? ((hasJqueryLib && $(`${this.target}`).length) || document.getElementById(this.target) || document.getElementsByClassName(this.target).length || document.querySelector(this.target) || undefined);
+                this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 第${this.index}次探测时targetDom: ${targetDom}`);
                 let response;
                 let isGotDom = Boolean(targetDom);
-                //DOM状态要求
+                //DOM要求 - domMeetCondition是执行函数，所以更加灵活
                 let domMeetCondition = typeof (this.condition) == 'function' ? response = this.condition(targetDom, this.extraParam) : this.condition;
-                this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 第${this.index}次探测时的targetDom: ${domMeetCondition}`)
+                this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: 第${this.index}次探测时domMeetCondition: ${domMeetCondition}`);
                 if (isGotDom && domMeetCondition) {
                     this.index = 0;
                     this.devMode && console.log(`[LOG]UtilsBundle > getAsyncDom: ${this.target}完成。`, targetDom);
@@ -435,27 +435,8 @@ class GetAsyncDomUtil {
      * @returns {GetAsyncDomUtil}
      */
     static getAsyncDomClassic(target, fn, time = 2500, isDev = false) {
-        return new GetAsyncDomUtil(target, fn, null, "exist", time, true, 30000, isDev).probe();
+        return new GetAsyncDomUtil(target, fn, null, "exist", time, true, 30000, isDev,).probe();
     }
-
-    /**
-     * 等待评论区加载后运行callback
-     * @param {function|function[]} callbacks 
-     * @returns {GetAsyncDomUtil}
-     */
-    static commentAreaLoading(callbacks) {
-        return GetAsyncDomUtil.getAsyncDomClassic(".ac-comment-list", () => {
-            if (Array.isArray(callbacks)) {
-                let results = [];
-                callbacks.forEach(e => {
-                    results.push(e());
-                });
-                return results;
-            }
-            return callbacks();
-        }, 2000, false)
-    }
-
 }
 
 /**
@@ -1131,29 +1112,6 @@ class ToolBox {
         }
     }
 
-    static DOMCreater() {
-        return new Proxy(
-            {},
-            {
-                get: function (target, elementType, receiver) {
-                    return function (attrs, ...children) {
-                        const ele = document.createElement(elementType);
-                        for (let attr of Object.keys(attrs)) {
-                            ele.setAttribute(attr, attrs[attr]);
-                        }
-                        for (let child of children) {
-                            if (typeof child === "string") {
-                                child = document.createTextNode(child);
-                            }
-                            ele.append(child);
-                        }
-                        return ele;
-                    };
-                },
-            }
-        );
-    }
-
     static thisBrowser() {
         var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
         var isOpera = userAgent.indexOf("Opera") > -1;
@@ -1222,12 +1180,6 @@ class ToolBox {
                     return isLogined;
             }
         }
-    }
-
-    static utilAsync(func) {
-        return function (...args) {
-            func.apply(this, args);
-        };
     }
 
     static curry(func) {

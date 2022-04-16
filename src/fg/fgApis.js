@@ -60,7 +60,7 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
     async download(params) {
         this.download.downloadVideo(params);
     }
-    
+
     mark(params) {
         let { value } = params;
         this.runtime.options.mark = value;
@@ -84,7 +84,6 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
         ExtOptions.saveAll(this.options);
         if (value) {
             this.ce.renderScan();
-            this.ce.renderScanForUp();
         } else {
             this.ce.clearScan();
         }
@@ -110,15 +109,8 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
     //评论区折叠部分的标记渲染入口
     renderSub(params) {
         let { url, rootCommentId } = params;
-        if (this.runtime.options.mark) {
-            this.ce.renderSubMark(rootCommentId);
-        }
-        if (this.runtime.options.scan) {
-            this.ce.renderSubScan(rootCommentId);
-        }
-        if (this.runtime.options.upHighlight) {
-            this.ce.renderSubScanForUp(rootCommentId);
-        }
+        this.ce.renderSubScan(rootCommentId);
+        this.ce.renderSubMark(rootCommentId);
         if (this.runtime.options.PlayerTimeCommentEasyJump) {
             //评论空降
             REG.videoAndBangumi.test(this.href) && this.ce.searchScanForPlayerTime();
@@ -128,15 +120,8 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
     //评论区整体部分的标记渲染入口 ()
     renderList(params) {
         let { url } = params.url;
-        if (this.runtime.options.mark) {
-            this.ce.renderMark();
-        }
-        if (this.runtime.options.scan) {
-            this.ce.renderScan();
-        }
-        if (this.runtime.options.upHighlight) {
-            this.ce.renderScanForUp();
-        }
+        this.ce.renderScan();
+        this.ce.renderMark();
         if (this.runtime.options.PlayerTimeCommentEasyJump) {
             REG.videoAndBangumi.test(this.href) && this.ce.searchScanForPlayerTime();
         }
@@ -145,7 +130,7 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
         if (REG.videoAndBangumi.test(this.href)) {
             //快捷键空降 TODO:全功能快捷键！
             if (this.runtime.options.easySearchScanForPlayerTimesw) {
-                getAsyncDom('.ac-pc-comment', () => {
+                GetAsyncDomUtil.getAsyncDomClassic('.ac-pc-comment', () => {
                     this.ce.easySearchScanForPlayerTime(this.runtime.options.custom_easy_jump_keyCode)
                 });
             }

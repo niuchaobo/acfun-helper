@@ -183,7 +183,7 @@ declare namespace APIs {
       staffInfos: Staff[];
       upInfo: UpInfo;
     }
-    interface Staff extends UserInfo {
+    interface Staff extends UpInfo {
       staffRoleName: string;
     }
   }
@@ -476,7 +476,7 @@ declare namespace APIs {
     sexTrend: number;
     signature: string;
     userHeadImgInfo: UserInfoImg;
-    userId: string;
+    id: string;
     userImg: string;
     userName: string;
     verifiedText: string;

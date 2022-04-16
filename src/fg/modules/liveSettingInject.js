@@ -52,8 +52,13 @@ class LiveFunction {
     }
 
     onLoad(e) {
-        this.load(e);
+        this.options = e;
 
+        this.playerAutomate();
+        this.options.liveCommentTimeTag && this.commentTimeTag();
+    }
+
+    commentTimeTag() {
         let tryNum = 0
         let _timer = setInterval(function () {
             let node = document.getElementsByClassName("live-feed-messages");
@@ -100,9 +105,7 @@ class LiveFunction {
         document.pictureInPictureElement ? document.exitPictureInPicture() : v.requestPictureInPicture();
     }
 
-    load(e) {
-        this.options = e;
-
+    playerAutomate() {
         let retryNum = 0;
         switch (this.options.liveplayer_mode ?? "default") {
             case "default":
