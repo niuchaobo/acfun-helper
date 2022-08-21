@@ -158,6 +158,9 @@ const app = {
         }
 
         this.raw = await ExtOptions.getValue("to_special_items")
+        if (!!this.raw) {
+            await ExtOptions.setValue("to_special_items", {});
+        }
         this.memberNum = Object.keys(this.raw).length
 
         removeExtalElem("#to_attention")

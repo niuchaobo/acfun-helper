@@ -50,6 +50,9 @@ const app = {
     mounted: async function () {
         batchOprtSwitches([{ key: "liveFloowNotif" }, { key: "liveFollowOpenNow" }, { key: "followLiveNotif" }]);
         this.raw = await ExtOptions.getValue("liveFloowings");
+        if (!!this.raw) {
+            await ExtOptions.setValue("liveFloowings", {});
+        }
         this.memberNum = Object.keys(this.raw).length;
     }
 }

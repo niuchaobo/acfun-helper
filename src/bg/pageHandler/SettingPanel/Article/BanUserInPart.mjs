@@ -50,6 +50,9 @@ const app = {
     mounted: async function () {
         batchOprtSwitches([{ key: "filter" }]);
         this.raw = await ExtOptions.getValue("UserFilter");
+        if (!!this.raw) {
+            await ExtOptions.setValue("UserFilter", {});
+        }
         this.require = await ExtOptions.getValue("xhrDrv");
         this.memberNum = Object.keys(this.raw).length;
     }

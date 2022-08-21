@@ -63,6 +63,9 @@ const app = {
     },
     mounted: async function () {
         this.raw = await ExtOptions.getValue("UserMarks")
+        if (!!this.raw) {
+            await ExtOptions.setValue("UserMarks", {});
+        }
         this.memberNum = Object.keys(this.raw).length;
         //addUser
         document.querySelector("#addUserTag").addEventListener("confirm.mdui.dialog", async (e) => {
