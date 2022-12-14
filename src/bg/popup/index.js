@@ -13,7 +13,6 @@ import {
 	titleToHome,
 	clickToTop,
 	hideToTopButton,
-	liveInfo,
 	fetchDougaInfo,
 	WatchLaterFpopup,
 	StopWatchLaterFpopup,
@@ -63,7 +62,6 @@ async function onReady() {
 		$("#UserInfoActionBtn").on("click", userInfoFetch);
 		$("#dougaInfoAcidbtn").on("click", fetchDougaInfo);
 		document.querySelector("#topicSearchBtn").addEventListener("click", topicSearch);
-		$("#liveRoomInfoBtn").on("click", liveInfo);
 		$("#WatchLaterFpopup").on("click", WatchLaterFpopup);
 		$("#StopWatchLaterFpopup").on("click", StopWatchLaterFpopup);
 		$("#attentionTabsFg").on("click", attentionTabs);
