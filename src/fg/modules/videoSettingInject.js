@@ -127,7 +127,15 @@ class VideoInject {
             let isMultiPart = document.querySelector("#main-content > div.right-column > div.part") != null;
             if (!window.player._loop && nowMode) {
                 if (isMultiPart) {
-                    document.querySelector(".control-checkbox").dataset.bindAttr == "false" && exitModes()
+                    //没有开启播放器的分P自动播放，就直接退出
+                    if(document.querySelector(".control-checkbox").dataset.bindAttr == "false"){
+                        exitModes()
+                    }else{
+                        //播放到了最后一个分P：播放器右侧分P列表的最后一个列表中元素具有active类
+                        if(document.querySelector("ul.scroll-div").children[document.querySelector("ul.scroll-div").childElementCount-1].classList.contains("active")){
+                            exitModes()
+                        }
+                    }
                 } else {
                     exitModes()
                 }
