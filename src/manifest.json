@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_appName__",
-  "version": "1.3.19.1231",
+  "version": "1.3.20.103",
   "default_locale": "zh_CN",
   "description": "__MSG_appDesc__",
   "icons": {
@@ -23,7 +23,7 @@
     {
       "matches": ["https://*.acfun.cn/*"],
       "js": [
-        "lib/jquery-3.6.0.min.js",
+        "lib/jquery-3.6.3.min.js",
         "mdui/js/mdui.min.js",
         "bg/lib/m3u8-parser.min.js",
         "bg/lib/purify.min.js",
@@ -111,7 +111,7 @@
     "fg/css/lucy.css",
     "fg/frame.js",
     "fg/css/checkbox.css",
-    "lib/jquery-3.6.0.min.js",
+    "lib/jquery-3.6.3.min.js",
     "bg/lib/purify.min.js",
     "bg/lib/jqueryExtend.js",
     "bg/images/copy_link.png",
