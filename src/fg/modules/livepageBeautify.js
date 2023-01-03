@@ -201,7 +201,12 @@ class LivePageButfy extends AcFunHelperFgFrame {
         });
         document.querySelector("#noticeBtn").addEventListener("dblclick", (e) => {
             const listElem = document.querySelector(".hide_popup").children[0].children;
+            //0-9，这里减去1就是不屏蔽评论
             for (let i = 0; i < listElem.length - 1; i++) {
+                if (i == 7) {
+                    //不屏蔽牌子
+                    continue
+                }
                 listElem[i].children[0].click();
             }
         })
