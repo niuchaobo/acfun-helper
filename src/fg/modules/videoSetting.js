@@ -193,7 +193,7 @@ class VideoSetting extends AcFunHelperFgFrame {
 
   //==============AB回放================
   addABPlayUI() {
-    GetAsyncDomUtil.getAsyncDomClassic(" .box-right ", () => {
+    GetAsyncDomUtil.getAsyncDomClassic(".box-right", () => {
       const html = `
         <div class="control-btn speed abplay"><span data-bind-key="AddABPlayUI">AB</span>
             <div class="speed-panel abplay-panel">
@@ -206,8 +206,8 @@ class VideoSetting extends AcFunHelperFgFrame {
                 <div class="transparent-placeholder"></div>
         </div>
         `;
-      $(" .box-right ").prepend(html);
-      $(" .box-right>div[type=abplay] ").on("click", (e) => {
+      $(".box-right").prepend(html);
+      $(".box-right>div.abplay").on("click", (e) => {
         const target = e.target.className;
         switch (target) {
           case "updateAbPlayFirst":
