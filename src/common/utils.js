@@ -47,7 +47,6 @@ const defaults = {
   liveFloowings: [],
   videoQualityStrategy: '0',
   livePlayerEnhc: false,
-  autoJumpLastWatchSw: false,
   hideAd: true,
   userPageTimeline: false,
   liveHideAd: true,
