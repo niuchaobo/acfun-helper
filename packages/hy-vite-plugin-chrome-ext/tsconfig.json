@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": false,
+    "noImplicitAny": false,
+    "baseUrl": ".",
+    "paths": {},
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "typings/*.d.ts",
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ]
+}

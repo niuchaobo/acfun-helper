@@ -1,0 +1,3 @@
+interface ChromeExtensionOptions {
+  contentScript: string[];
+}

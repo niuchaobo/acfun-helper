@@ -1,0 +1,30 @@
+{
+    "name": "hy-vite-plugin-chrome-ext",
+    "version": "0.0.1",
+    "license": "MIT",
+    "author": "huyu",
+    "description": "A plugin for building Chrome extensions!",
+    "keywords": [
+        "vite-plugin",
+        "chrome extension"
+    ],
+    "main": "src/index.ts",
+    "module": "lib/index-esm.js",
+    "scripts": {
+        "dev": "rollup -c -w",
+        "build:types": "tsc -p tsconfigs/tsconfig-types.json",
+        "build": "rollup -c"
+    },
+    "dependencies": {
+        "slash": "^3.0.0"
+    },
+    "devDependencies": {
+        "rollup": "^2.76.0"
+    },
+    "peerDependencies": {
+        "vite": "^2.2.0"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    }
+}

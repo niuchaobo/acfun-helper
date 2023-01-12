@@ -1,0 +1,81 @@
+{
+  "name": "AcFun助手",
+  "description": "Open source, and extensible Web Browser Extension for acfun.cn.",
+  "version": "0.0.3",
+  "author": "ncb",
+  "manifest_version": 3,
+  "permissions": [
+    "storage",
+    "tabs",
+    "cookies",
+    "notifications",
+    "declarativeContent",
+    "scripting",
+    "contextMenus"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "host_permissions": [
+    "*://*.acfun.cn/*"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "*://*.acfun.cn/*",
+      "*://*.aixifan.com/*"
+    ]
+  },
+  "homepage_url": "https://sokwva.gitlab.io/acfun-helper/",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "action": {
+    "default_title": "AcFun助手",
+    "default_icon": "Logo/icon128.png",
+    "default_popup": "UI/Popup/popup.html"
+  },
+  "icons": {
+    "16": "Logo/icon16.png",
+    "48": "Logo/icon48.png",
+    "128": "Logo/icon128.png"
+  },
+  "omnibox": {
+    "keyword": "ac"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "frontend.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "sdk.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "commands": {
+    "toggle": {
+      "openAcFun": {
+        "default": "Ctrl+Shift+A"
+      },
+      "description": "打开主站"
+    },
+    "watchLater": {
+      "watchLaterStart": {
+        "default": "Ctrl+Shift+W"
+      },
+      "description": "稍后再看"
+    }
+  }
+}

@@ -1,42 +1,92 @@
 {
-  "name": "acfun-helper-compresser",
-  "version": "1.5.9",
-  "description": "process files in acfun-helper directory",
-  "main": "gulpfile.js",
-  "keywords": [
-    "zip",
-    "acfun"
-  ],
+  "name": "acfun-helper-project",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "betaSlim": "gulp betaSlim && echo \"删除一些文件以便减少插件体积，用于测试\" && exit 0",
-    "clean": "gulp clean  && xcopy.exe /d /e src\\* final\\ &&  echo \"删除注释\" && exit 0",
-    "cleanLinux": "gulp clean  && cp -rvn src/* final/ &&  echo \"删除注释\" && exit 0",
-    "start": "gulp && xcopy.exe /d /e src\\* final\\ && echo \"简化文件\" && exit 0",
-    "startLinux": "gulp && cp -vrn src/* final/ && echo \"简化文件\" && exit 0",
-    "zip": "gulp zip && echo \"将final文件夹内容压缩为zip文件 \"&& exit 0",
-    "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js --mode=development --watch "
+    "dev-win": "sh scripts/build.sh && set BUILD_ENV=development && vite build --watch",
+    "dev": "sh scripts/build.sh && vite build --watch",
+    "debug": "npx --node-arg=--inspect-brk vite build --watch",
+    "build": "sh scripts/build.sh && vite build",
+    "serve": "vite preview",
+    "preview": "vite preview",
+    "eslint": "eslint src/** --ext .js, .jsx, .ts, .tsx, .vue",
+    "lintverfix": "eslint src/** --ext .js, .jsx, .ts, .tsx, .vue src --debug --fix",
+    "lint": "lint-staged",
+    "prettier": "prettier --write",
+    "prepare": "husky install"
   },
-  "author": "ncb",
-  "license": "MPL-2.0",
+  "lint-staged": {
+    "src/**": [
+      "prettier"
+    ]
+  },
+  "commotlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "dependencies": {
-    "@babel/parser": "^7.17.3",
-    "@babel/types": "^7.17.0",
-    "@types/chrome": "^0.0.154",
-    "del": "^6.0.0",
-    "es6-symbol": "^3.1.3",
-    "esbuild": "^0.11.23",
-    "gulp": "^4.0.2",
-    "gulp-esbuild": "^0.7.7",
-    "gulp-strip-comments": "^2.5.2",
-    "gulp-zip": "^5.1.0"
+    "sass": "^1.53.0",
+    "terser": "^5.14.2",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.2"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.154",
-    "bgm-types": "^2.0.1",
-    "gulp-htmlmin": "^5.0.1",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-extension-reloader": "^1.1.4"
+    "@commitlint/config-conventional": "^17.0.3",
+    "@types/chrome": "^0.0.193",
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "@vitejs/plugin-vue": "^3.0.0",
+    "commitlint": "^17.0.3",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.2.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "naive-ui": "^2.31.0",
+    "prettier": "^2.7.1",
+    "rollup": "^2.76.0",
+    "typescript": "^4.6.4",
+    "unplugin-vue-components": "^0.21.1",
+    "vfonts": "^0.0.3",
+    "vite": "^3.0.0",
+    "vue-tsc": "^0.38.4"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "ignorePatterns": [
+      ".vue","*.svg"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:vue/vue3-essential",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "parser": "@typescript-eslint/recommended",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "vue",
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "no-undef": "off",
+      "linebreak-style": [
+        0,
+        "error",
+        "window"
+      ]
+    }
+  },
+  "prettier": {
+    "endOfLine": "auto"
   }
 }

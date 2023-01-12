@@ -3,6 +3,7 @@
 /tmp
 /out-tsc
 /final
+output
 
 # dependencies
 /node_modules
