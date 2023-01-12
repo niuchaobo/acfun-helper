@@ -50,6 +50,9 @@ const app = {
     mounted: async function () {
         batchOprtSwitches([{ key: "commentFilterSw" }]);
         this.raw = await ExtOptions.getValue("CommentFilter");
+        if (!!this.raw) {
+            await ExtOptions.setValue("CommentFilter", {});
+        }
         this.require = await ExtOptions.getValue("xhrDrv");
         this.memberNum = Object.keys(this.raw).length;
     }

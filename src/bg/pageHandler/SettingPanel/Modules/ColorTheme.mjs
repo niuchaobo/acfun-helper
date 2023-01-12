@@ -77,17 +77,24 @@ const app = {
         },
     },
     mounted: function () {
-        let layout = locaStrg.getByKey("settingpanel-layout")
-        let theme = locaStrg.getByKey("settingpanel-theme")
-        let accent = locaStrg.getByKey("settingpanel-accent")
+        let layout = locaStrg.getByKey("settingpanel-layout");
+        let theme = locaStrg.getByKey("settingpanel-theme");
+        let accent = locaStrg.getByKey("settingpanel-accent");
         if (layout) {
-            this.removeColors("layout")
-            document.querySelector("body").classList.toggle("mdui-theme-layout-" + layout)
+            this.removeColors("layout");
+            document.querySelector("body").classList.toggle("mdui-theme-layout-" + layout);
             document.querySelectorAll("#layoutChoose > div > div > label > input").forEach(e => {
                 if (e._value == layout) {
-                    e.click()
+                    e.click();
                 }
             })
+            if (layout == "auto") {
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.querySelector("body").classList.remove("mdui-theme-layout-light");
+                    document.querySelector("body").classList.add("mdui-theme-layout-dark");
+                }
+                // window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {})
+            }
         }
         if (theme) {
             this.removeColors("theme")

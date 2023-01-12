@@ -131,7 +131,6 @@ declare namespace OptionStruct {
     liveFollowOpenNow: boolean;
     videoQualityStrategy: "0" | "1" | "2" | "3" | "4";
     livePlayerEnhc: boolean;
-    autoJumpLastWatchSw: boolean;
     hideAd: boolean;
     userPageTimeline: boolean;
     liveHideAd: boolean;

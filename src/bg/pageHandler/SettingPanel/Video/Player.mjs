@@ -27,11 +27,6 @@ const app = {
                     desc: "在视频倍速栏增加自定义倍速功能"
                 },
                 {
-                    key: "autoJumpLastWatchSw",
-                    title: "跳转到上次观看的时间",
-                    desc: "进入页面，自动跳转到上次观看到，并且播放器记录到了的时间点"
-                },
-                {
                     key: "ABPlaysw",
                     title: "AB回放",
                     desc: "以在播放器中指定AB两个时间点，令播放器在这两点中循环播放"

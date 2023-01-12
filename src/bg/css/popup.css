@@ -2,12 +2,15 @@
     0% {
         opacity: 0;
     }
+
     30% {
         opacity: 1;
     }
+
     70% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
@@ -17,6 +20,7 @@
     0% {
         transform: translateY(20px);
     }
+
     40% {
         transform: translateY(-5px);
         -webkit-transform: translateY(-5px);
@@ -24,6 +28,7 @@
         -ms-transform: translateY(-5px);
         -o-transform: translateY(-5px);
     }
+
     50% {
         transform: translateY(0px);
         -webkit-transform: translateY(0px);
@@ -31,6 +36,7 @@
         -ms-transform: translateY(0px);
         -o-transform: translateY(0px);
     }
+
     100% {
         transform: rotateY(180deg);
         -webkit-transform: rotateY(180deg);
@@ -44,12 +50,15 @@
     0% {
         transform: translateY(0px)
     }
+
     70% {
         transform: translateY(-5px)
     }
+
     80% {
         transform: translateY(2px)
     }
+
     100% {
         transform: translateY(0px)
     }
@@ -63,6 +72,7 @@
         -ms-transform: rotate(0deg);
         -o-transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
         -webkit-transform: rotate(360deg);
@@ -98,7 +108,6 @@
 }
 
 blockquote,
-body,
 button,
 dd,
 div,
@@ -126,12 +135,84 @@ ul {
 }
 
 body {
+    min-width: 310px;
+    overflow-x: hidden;
+    overflow-y: overlay;
     font-family: "Segoe UI", Arial, "Microsoft Yahei", sans-serif;
     font-size: 12px;
     width: 200px;
     border-radius: 5px;
     padding: 0;
-    background-color: #f6f2f2
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+}
+
+/* https://www.peisebiao.com/info/peise2.php 色卡参考#245*/
+@media (prefers-color-scheme: dark) {
+
+    body {
+        background-color: #2f373f !important;
+    }
+
+    .Ucenter,
+    #pop-push-lives>a>center,
+    .mdui-panel-item-header>div,
+    #followGroupsBtn,
+    .mdui-textfield-input {
+        color: white !important;
+    }
+
+    body>div.container.mdui-appbar.mdui-appbar-fixed.mdui-appbar-scroll-hide.mdui-headroom>div.top-fixed.mdui-hoverable>div.head,
+    body>div.container.mdui-appbar.mdui-appbar-fixed.mdui-appbar-scroll-hide.mdui-headroom>div.top-fixed.mdui-hoverable>div.mdui-row-xs-2.mdui-row-gapless,
+    #mainTabs,
+    #tabPushList,
+    #tabGroupPushList,
+    #tabLives,
+    #tabSpecial,
+    .mdui-panel-item-body,
+    .mdui-panel-item-header,
+    .mdui-menu-item {
+        background: #1d242b !important;
+        color: #0d93e6 !important;
+    }
+
+    .enabled {
+        background: #5a5a5a;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        background-color: rgba(101, 101, 101, 0.861);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: rgb(192, 192, 192);
+        border-radius: 3px;
+    }
+
+
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: #f6f2f2 !important;
+    }
+
+    ::-webkit-scrollbar {
+        background-color: #fff;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+    }
+
+
 }
 
 .container {
@@ -430,7 +511,7 @@ span.go-live {
 /*按钮大小位置*/
 
 .toTop-bg-color {
-    background-color: #0000008c!important;
+    background-color: #0000008c !important;
 }
 
 .toTop-bg-color i {
@@ -565,16 +646,6 @@ span.go-live {
     color: #999;
     text-align: center;
     line-height: 200%;
-}
-
- ::-webkit-scrollbar {
-    width: 8px;
-    background-color: #fff;
-}
-
- ::-webkit-scrollbar-thumb {
-    background-color: #ddd;
-    border-radius: 3px;
 }
 
 #update-box {

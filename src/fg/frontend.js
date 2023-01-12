@@ -197,7 +197,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		if (REG.video.test(href)) {
 			//播放器和弹幕功能
 			this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
-			this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
 			//隐藏ad
 			this.options.hideAd && this.pageBeautify.hideAds();
 			this.options.playerRecommendHide && this.pageBeautify.simplifiyPlayerRecm();
@@ -393,7 +392,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 					if (this.runtime.dataset.notes?.dougaId != this.runtime.dataset.dougaInfo.dougaId) {
 						this.options.LikeHeart && this.banana.LikeHeartFront("video", isLogined);
 						this.options.autoOpenVideoDescsw && this.videoPageBeautify.openVideoDesc();
-						this.options.autoJumpLastWatchSw && this.videoSetting.jumpLastWatchTime();
 						this.videoSetting.videoQuality(isLogined);
 					}
 					this.div.reloadIframe(this.options, this.runtime.dataset.dougaInfo, "video", adjustVideoUp());

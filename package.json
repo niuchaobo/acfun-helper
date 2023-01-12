@@ -1,6 +1,6 @@
 {
   "name": "acfun-helper-compresser",
-  "version": "1.5.7",
+  "version": "1.5.9",
   "description": "process files in acfun-helper directory",
   "main": "gulpfile.js",
   "keywords": [
