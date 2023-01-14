@@ -140,6 +140,12 @@ const app = {
                     title: "外部CC字幕",
                     desc: `简单的外部加载CC字幕实现，支持加载SRT字幕`
                 },
+                {
+                    key: "arubamuBatchToWatchLater",
+                    split: true,
+                    title: "合集：批量加入稍后再看接口",
+                    desc: `在合集页面显示“批量加入稍后再看”和“批量逆序加入稍后再看”按钮`
+                },
             ]
         }
     },

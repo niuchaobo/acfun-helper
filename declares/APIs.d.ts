@@ -1007,28 +1007,28 @@ declare namespace APIs {
       views: number;
     }
   }
+  interface ArubamuApi {
+    contents: ArubamuI;
+    page: number;
+    pageCount: number;
+    size: number;
+    totalSize: number;
+  }
   interface ArubamuItem {
-    assistants: UserInfo[];
-    authorHeadImgInfo: UserInfoImg;
-    authorHeadUrl: string;
-    authorId: number;
-    authorName: string;
-    coverImage: string;
-    coverImgInfo: UserInfoImg;
-    createTime: number;
-    favorite: number;
     groupId: string;
+    duration: number;
+    sort: number;
     id: number;
-    intro: string;
-    itemCount: number;
-    lastBrowseHistory: null;
-    requestId: null;
-    resourceType: number;
-    shareUrl: string;
-    status: number;
-    stowCount: number;
+    createTime: number;
+    videoList: DougaInfo[]
+    resourceType: string;
+    resourceTypeValue: number;
     title: string;
+    coverImage: string;
     updateTime: number;
+    uperName: string;
+    commentCount: number;
+    resourceId: null;
     viewsCount: number;
   }
   namespace BananaShop {

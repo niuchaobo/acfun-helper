@@ -113,6 +113,7 @@ const defaults = {
   liveVolumeMild: false,
   wheelToChangeVolume: true,
   simpleCC: true,
+  arubamuBatchToWatchLater: true,
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 /**@type {InnerDefined.REGStruct} */
@@ -142,6 +143,7 @@ const REG = {
   videoPartNumByURL: new RegExp("_([0-9].?)"),
   topicCircle: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/(\d*)"),
   momentContent: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/moment\/(\d*)"),
+  arubamu: new RegExp("http(s)?:\\/\\/www.acfun.cn\\/a\\/aa(\\d+)"),//合集
   method: {
 
   },

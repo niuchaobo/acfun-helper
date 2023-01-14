@@ -1,4 +1,4 @@
-declare global {}
+declare global { }
 namespace MessageSwitchStructs {
   interface CommonPayload {
     target: string | { mod: string; methodName: string };
@@ -54,8 +54,8 @@ namespace MessageSwitchStructs {
     status: boolean;
     result: object;
   }
-  interface FgToInjectPayload extends CommonPayload {}
-  interface WindowMsgPayload extends FgToInjectPayload {}
+  interface FgToInjectPayload extends CommonPayload { }
+  interface WindowMsgPayload extends FgToInjectPayload { }
   interface WindowMsgRespnse extends Event {
     data: WindowMsgRespnseInner;
   }
@@ -63,7 +63,7 @@ namespace MessageSwitchStructs {
     to: string | "background" | "sandbox";
     data: WindowMsgPayload;
   }
-  interface SandBoxPayload extends WindowMsgRespnseInner {}
+  interface SandBoxPayload extends WindowMsgRespnseInner { }
 }
 interface addElementPayload {
   tag: string;
@@ -172,7 +172,7 @@ interface runtimeData {
   devMode: {
     [regString: string]: Function;
   };
-  options: null | object;
+  options: OptionStruct.DefaultStruct | null;
   dataset: {
     core: {
       browserType: string;
@@ -253,12 +253,12 @@ interface runtimeDataFg {
 }
 interface Window
   extends EventTarget,
-    AnimationFrameProvider,
-    GlobalEventHandlers,
-    WindowEventHandlers,
-    WindowLocalStorage,
-    WindowOrWorkerGlobalScope,
-    WindowSessionStorage {
+  AnimationFrameProvider,
+  GlobalEventHandlers,
+  WindowEventHandlers,
+  WindowLocalStorage,
+  WindowOrWorkerGlobalScope,
+  WindowSessionStorage {
   addEventListener<K extends keyof MessageExtendEvents>(
     type: K,
     listener: (this: Window, ev: WindowEventMap[K]) => any,
@@ -272,12 +272,12 @@ interface Window
 }
 interface Element
   extends Node,
-    Animatable,
-    ChildNode,
-    InnerHTML,
-    NonDocumentTypeChildNode,
-    ParentNode,
-    Slottable {
+  Animatable,
+  ChildNode,
+  InnerHTML,
+  NonDocumentTypeChildNode,
+  ParentNode,
+  Slottable {
   addEventListener<K extends keyof MessageExtendEvents>(
     type: K,
     listener: (this: Window, ev: WindowEventMap[K]) => any,

@@ -193,6 +193,7 @@ class AcFunHelperBackendCore extends AcFunHelperBgFrame {
         if (!options.permission) {
             return false;
         }
+        /**@type {OptionStruct.DefaultStruct|null} */
         this.options = options;
         ExtOptions.saveAll(this.options);
         return true;

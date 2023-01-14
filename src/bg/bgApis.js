@@ -40,6 +40,24 @@ class AcFunHelperBackendAPIs extends AcFunHelperBgFrame {
         this.MsgNotifsInst.bananAudio();
     }
 
+    getWatchLaterStatusAndNum() {
+        return {
+            status: this.WatchPlan.daemon != 0,
+            leaves: this.WatchPlan.ori_list.length
+        }
+    }
+
+    async arubamuInsert(e) {
+        if (e) {
+            if (e.reverse) {
+                return this.WatchPlan.arubamuInsert(e.arid, true);
+            }else{
+                return this.WatchPlan.arubamuInsert(e.arid);
+            }
+        }
+        console.warn("[AcFunHelperBg]:APIs->arubamuInsert: ", e);
+    }
+
     async achievementEvent(e) {
         if (e.action == "get") {
             return await db_getHistoricalAchievs(REG.acVid.exec(e.url)[2]);
