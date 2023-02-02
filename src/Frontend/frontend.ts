@@ -1,2 +1,2 @@
-console.log("Hello from Acfun-helper-abyss")
-export {}
+console.log("Hello from AcFun-Helper-Abyss!");
+export {};

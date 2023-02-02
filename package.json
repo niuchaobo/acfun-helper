@@ -6,6 +6,8 @@
   "scripts": {
     "dev-win": "sh scripts/build.sh && set BUILD_ENV=development && vite build --watch",
     "dev": "sh scripts/build.sh && vite build --watch",
+    "dev:live": "sh scripts/build.sh && vite build --watch --config ./scripts/vite.live.config.js",
+    "dev:fg": "sh scripts/build.sh && vite build --watch --config scripts/vite.fg.config.js",
     "debug": "npx --node-arg=--inspect-brk vite build --watch",
     "build": "sh scripts/build.sh && vite build",
     "serve": "vite preview",
@@ -34,6 +36,7 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.3",
+    "@crxjs/vite-plugin": "2.0.0-beta.12",
     "@types/chrome": "^0.0.193",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
@@ -60,7 +63,8 @@
       "es2021": true
     },
     "ignorePatterns": [
-      ".vue","*.svg"
+      ".vue",
+      "*.svg"
     ],
     "extends": [
       "eslint:recommended",
@@ -79,6 +83,7 @@
     ],
     "rules": {
       "no-undef": "off",
+      "indent": 0,
       "linebreak-style": [
         0,
         "error",

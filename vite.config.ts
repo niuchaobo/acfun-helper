@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { defineConfig } from "vite";
+import { defineConfig, UserConfigExport } from "vite";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 // @ts-ignore
@@ -11,38 +11,10 @@ import Components from "unplugin-vue-components/vite";
 import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
 
 const isDev = process.env.BUILD_ENV === "development";
-// https://github.com/defghy/demos/blob/master/chrome-extension/vite.config.ts
-// https://vitejs.dev/config/
-export default defineConfig({
+
+export const commonDevOptions = {
   root: "src",
-  base: "./",
-  mode: isDev ? "production" : "production",
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  build: {
-    minify: isDev ? false : "terser",
-    sourcemap: false,
-    outDir: path.resolve(__dirname, "output"),
-    assetsDir: "./assets",
-    rollupOptions: {
-      inlineDynamicImports: true,
-      input: {
-        popup: path.resolve(__dirname, "src/UI/Popup/popup.html"),
-        setting: path.resolve(__dirname, "src/UI/Setting/setting.html"),
-        frontend: path.resolve(__dirname, "src/Frontend/frontend.ts"),
-        background: path.resolve(__dirname, "src/Background/background.js"),
-        // sdk: path.resolve(__dirname, "src/utils/sdk/page-sdk.ts"),
-      },
-      output: {
-        assetFileNames: "[name].[ext]",
-        entryFileNames: "[name].js",
-        chunkFileNames: "[name].js",
-      },
-    },
-  },
+  mode: isDev ? "development" : "production",
   plugins: [
     vue(),
     // chromeExtension({
@@ -52,4 +24,39 @@ export default defineConfig({
       resolvers: [NaiveUiResolver()],
     }),
   ],
-});
+}
+
+export const fullDevOptions: UserConfigExport = {
+  ...commonDevOptions,
+  base: "./",
+  build: {
+    minify: isDev ? false : "terser",
+    sourcemap: false,
+    outDir: path.resolve(__dirname, "output"),
+    assetsDir: "./assets",
+    rollupOptions: {
+      inlineDynamicImports: true,
+      input: {
+        popup: "src/UI/Popup/popup.html",
+        setting: "src/UI/Setting/setting.html",
+        frontend: path.resolve(__dirname, "src/Frontend/frontend.ts"),
+        background: path.resolve(__dirname, "src/Background/background.ts"),
+        // sdk: path.resolve(__dirname, "src/utils/sdk/page-sdk.ts"),
+      },
+      output: {
+        assetFileNames: "[name].[ext]",
+        entryFileNames: "[name].js",
+        chunkFileNames: "[name].js",
+      },
+    },
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+}
+
+// https://github.com/defghy/demos/blob/master/chrome-extension/vite.config.ts
+// https://vitejs.dev/config/
+export default defineConfig(fullDevOptions);

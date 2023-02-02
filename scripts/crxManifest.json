@@ -14,8 +14,7 @@
     "contextMenus"
   ],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "service_worker": "src/Background/background.ts"
   },
   "host_permissions": [
     "*://*.acfun.cn/*"
@@ -30,16 +29,16 @@
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   },
-  "options_page": "UI/Setting/setting.html",
   "action": {
     "default_title": "AcFun助手",
     "default_icon": "Logo/icon128.png",
-    "default_popup": "UI/Popup/popup.html"
+    "default_popup": "src/UI/Popup/popup.html"
   },
+  "options_page": "src/UI/Setting/setting.html",
   "icons": {
-    "16": "Logo/icon16.png",
-    "48": "Logo/icon48.png",
-    "128": "Logo/icon128.png"
+    "16": "public/Logo/icon16.png",
+    "48": "public/Logo/icon48.png",
+    "128": "public/Logo/icon128.png"
   },
   "omnibox": {
     "keyword": "ac"
@@ -50,7 +49,7 @@
         "<all_urls>"
       ],
       "js": [
-        "frontend.js"
+        "src/Frontend/frontend.ts"
       ],
       "run_at": "document_end"
     }
