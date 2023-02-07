@@ -6,7 +6,8 @@
   "scripts": {
     "dev-win": "sh scripts/build.sh && set BUILD_ENV=development && vite build --watch",
     "dev": "sh scripts/build.sh && vite build --watch",
-    "dev:live": "sh scripts/build.sh && vite build --watch --config ./scripts/vite.live.config.js",
+    "dev:live-win": "vite --config ./scripts/vite.live.config.js",
+    "dev:live": "sh scripts/build.sh && vite --config ./scripts/vite.live.config.js",
     "dev:fg": "sh scripts/build.sh && vite build --watch --config scripts/vite.fg.config.js",
     "debug": "npx --node-arg=--inspect-brk vite build --watch",
     "build": "sh scripts/build.sh && vite build",
