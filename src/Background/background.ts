@@ -1,2 +1,2 @@
-console.log("Hi there!");
-export {};
+console.log("Hi there! from Backend.");
+export { };
