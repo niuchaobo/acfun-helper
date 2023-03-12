@@ -1,0 +1,26 @@
+.nav-fixed {
+    background-color: #f8f8f896 !important;
+    border-bottom: 0px;
+    backdrop-filter: blur(1.2vw) !important
+}
+
+#header {
+    background-color: #f8f8f896;
+    backdrop-filter: blur(1.2vw);
+    .header-guide .item .guide-item-title {
+        color: #333 !important
+    }
+    .search-box .form input {
+        color: black;
+        border: 0px;
+        background: #0000001a
+    }
+}
+
+// .top-nav .first-container .first-item .first-link {
+//     color: #333 !important
+// }
+
+// .header .header-banner {
+//     margin-top: -47px;
+// }

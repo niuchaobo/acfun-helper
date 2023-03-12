@@ -1,0 +1,7 @@
+class AcFunHelperFgFrame {
+
+}
+
+export {
+    AcFunHelperFgFrame
+}

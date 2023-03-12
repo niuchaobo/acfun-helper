@@ -7,8 +7,16 @@ export namespace ModuleStd {
     //style text to inject or uninject
     Styling = "Styling",
   }
+  export enum WorkSpace {
+    Frontend = "Fg",
+    Backgroumd = "Bg"
+  }
   export interface manifest {
     name: string;
     type: ModType;
+    workSpace: WorkSpace;
+    dataset?: {};
+    main: () => {};
+    exit?: () => {};
   }
 }

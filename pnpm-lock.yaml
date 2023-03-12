@@ -30,7 +30,6 @@ specifiers:
   xmldom: ^0.6.0
 
 dependencies:
-  '@types/xmldom': 0.1.31
   sass: 1.57.1
   terser: 5.16.1
   vue: 3.2.45
@@ -41,6 +40,7 @@ devDependencies:
   '@commitlint/config-conventional': 17.4.0
   '@crxjs/vite-plugin': 2.0.0-beta.12
   '@types/chrome': 0.0.193
+  '@types/xmldom': 0.1.31
   '@typescript-eslint/eslint-plugin': 5.48.1_3jon24igvnqaqexgwtxk6nkpse
   '@typescript-eslint/parser': 5.48.1_iukboom6ndih5an6iafl45j2fe
   '@vitejs/plugin-vue': 3.2.0_vite@3.2.5+vue@3.2.45
@@ -521,7 +521,7 @@ packages:
 
   /@types/xmldom/0.1.31:
     resolution: {integrity: sha512-bVy7s0nvaR5D1mT1a8ZkByHWNOGb6Vn4yi5TWhEdmyKlAG+08SA7Md6+jH+tYmMLueAwNeWvHHpeKrr6S4c4BA==}
-    dev: false
+    dev: true
 
   /@typescript-eslint/eslint-plugin/5.48.1_3jon24igvnqaqexgwtxk6nkpse:
     resolution: {integrity: sha512-9nY5K1Rp2ppmpb9s9S2aBiF3xo5uExCehMDmYmmFqqyxgenbHJ3qbarcLt4ITgaD6r/2ypdlcFRdcuVPnks+fQ==}

@@ -7,4 +7,4 @@
 
 ## 介绍
 
-AcFun-Helper-Bang 是一个适用于 AcFun（ acfun.cn ） 的UserScript。
+AcFun-Helper-Bang 是一个适用于 AcFun（ acfun.cn ） 的插件。
