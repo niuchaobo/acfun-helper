@@ -1,21 +1,21 @@
 import { defineConfig } from "vite";
 import path from "path";
-import { commonDevOptions } from "../vite.config";
+import { commonDevOptions } from "../../vite.config";
 
 const isDev = process.env.BUILD_ENV === "development";
 
 const devOptions = {
   ...commonDevOptions,
-  base: "../",
+  base: "../../",
   build: {
     minify: isDev ? false : true,
     sourcemap: false,
-    outDir: "../output",
-    assetsDir: "./Asset",
+    outDir: "../../output",
+    assetsDir: "../../Asset",
     rollupOptions: {
       inlineDynamicImports: true,
       input: {
-        frontend: "src/Frontend/frontend.ts",
+        frontend: "../../src/Frontend/frontend.ts",
       },
       output: {
         assetFileNames: "[name].[ext]",
@@ -26,7 +26,7 @@ const devOptions = {
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "../src"),
+      "@": path.resolve(__dirname, "../../src"),
     },
   },
 };

@@ -13,7 +13,7 @@ PACKAGE_VERSION=$(cat package.json \
   | sed 's/[",]//g' \
   | tr -d '[[:space:]]')
 
-zipPath="${DIR}/../output/acfun-helper-abyss-${PACKAGE_VERSION}.zip"
+zipPath="${DIR}/../../output/acfun-helper-abyss-${PACKAGE_VERSION}.zip"
 echo $zipPath
 npm run build
 cd output

@@ -1,4 +1,4 @@
 declare global {
-    var AcFunHelperFg: AcFunHelperFgFrame;
+	var AcFunHelperFg: AcFunHelperFgFrame;
 }
 export {};
