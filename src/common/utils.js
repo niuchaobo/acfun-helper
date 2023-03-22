@@ -67,6 +67,7 @@ const defaults = {
   Upgradeable: 0,
   ABPlaysw: true,
   ProgressBarsw: true,
+  ProgressBarAndTitleName: false,
   ProgressBarStyle: {
     barColor: "#fd4c5d",
     barHeight: "0.4%",

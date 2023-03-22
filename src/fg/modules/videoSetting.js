@@ -27,6 +27,9 @@ class VideoSetting extends AcFunHelperFgFrame {
     this.hideDanmakuOperatordanmakuOprFlag = false;
     this.beforeChangeTabPlayStatus = false;
     this.sleepPauseSw = false;
+    GetAsyncDomUtil.getAsyncDomClassic("title", () => {
+      this.originalTitle = document.querySelector("title").innerText;
+    })
   }
 
   onLoad() {
@@ -406,6 +409,10 @@ class VideoSetting extends AcFunHelperFgFrame {
     const barObserver = document.getElementsByClassName("pro-current")[0];
     const barObserverFn = () => {
       let barLength = barObserver.style.width;
+      if (this.runtime.options.ProgressBarAndTitleName) {
+        const titleElem = document.querySelector("title");
+        titleElem.innerText = barLength + " " + this.originalTitle;
+      }
       $("#achlp-proBar,#achlp-proBar-inner").css({ width: barLength });
     };
     this.setObserverWeb(barObserver, barObserverFn);

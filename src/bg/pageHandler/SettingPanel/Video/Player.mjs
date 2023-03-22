@@ -20,6 +20,11 @@ const app = {
                     desc: "在页面和网页全屏时增加一个进度条，以提示当前播放进度"
                 },
                 {
+                    key: "ProgressBarAndTitleName",
+                    title: "将播放百分比写到标签页的名称上",
+                    desc: "这样就能在标签页上看到自己还有哪些69.7%的视频，可以打算继续看了。"
+                },
+                {
                     key: "custom_rate",
                     title: "自定义倍速",
                     defaultMode: true,
@@ -159,4 +164,5 @@ const app = {
     }
 }
 
+console.log(app)
 export const playerenc = app

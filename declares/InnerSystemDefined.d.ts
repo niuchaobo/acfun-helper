@@ -153,6 +153,7 @@ declare namespace OptionStruct {
     Upgradeable: 0;
     ABPlaysw: boolean;
     ProgressBarsw: boolean;
+    ProgressBarAndTitleName: boolean;
     ProgressBarStyle: {
       barColor: string;
       barHeight: string;
@@ -204,7 +205,7 @@ declare namespace OptionStruct {
     liveVolumeMild: boolean;
     wheelToChangeVolume: boolean;
     simpleCC: boolean;
-    arubamuBatchToWatchLater:boolean;
+    arubamuBatchToWatchLater: boolean;
   }
 }
 
