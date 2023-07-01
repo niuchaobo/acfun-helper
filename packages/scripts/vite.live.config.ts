@@ -4,6 +4,8 @@ import { crx } from "@crxjs/vite-plugin";
 import manifest from "./crxManifest.json" assert { type: "json" };
 import path from "path";
 
+manifest.name = "AcFun助手Dev";
+
 export default defineConfig({
   resolve: {
     alias: {
