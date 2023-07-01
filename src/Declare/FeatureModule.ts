@@ -11,9 +11,19 @@ export namespace ModuleStd {
     Frontend = "Fg",
     Backgroumd = "Bg"
   }
+  export enum SequentialType{
+    Loaded = 1,
+    OnDOMContentLoaded,
+    OnHeaderLoaded,
+    OnAcVideoPlayerLoaded,
+    OnAcLivePlayerLoaded,
+    OnAcPaginationLoaded,
+    OnDamakuLoaded,
+  }
   export interface manifest {
     name: string;
     type: ModType;
+    sequentialType?:SequentialType;
     workSpace: WorkSpace;
     dataset?: {};
     main: () => {};
