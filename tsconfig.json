@@ -16,7 +16,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["naive-ui/volar", "chrome"]
+    "types": ["naive-ui/volar", "chrome","jquery"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue","*.json"],
   "references": [{ "path": "./tsconfig.node.json" }]

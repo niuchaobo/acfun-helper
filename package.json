@@ -30,6 +30,7 @@
     ]
   },
   "dependencies": {
+    "jquery": "^3.7.0",
     "sass": "^1.53.0",
     "terser": "^5.14.2",
     "vue": "^3.2.37",
@@ -37,10 +38,11 @@
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
-    "@types/xmldom": "^0.1.31",
     "@commitlint/config-conventional": "^17.0.3",
     "@crxjs/vite-plugin": "2.0.0-beta.12",
     "@types/chrome": "^0.0.193",
+    "@types/jquery": "^3.5.16",
+    "@types/xmldom": "^0.1.31",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
     "@vitejs/plugin-vue": "^3.0.0",
