@@ -27,6 +27,9 @@ class VideoSetting extends AcFunHelperFgFrame {
     this.hideDanmakuOperatordanmakuOprFlag = false;
     this.beforeChangeTabPlayStatus = false;
     this.sleepPauseSw = false;
+    GetAsyncDomUtil.getAsyncDomClassic("title", () => {
+      this.originalTitle = document.querySelector("title").innerText;
+    })
   }
 
   onLoad() {
@@ -406,6 +409,10 @@ class VideoSetting extends AcFunHelperFgFrame {
     const barObserver = document.getElementsByClassName("pro-current")[0];
     const barObserverFn = () => {
       let barLength = barObserver.style.width;
+      if (this.runtime.options.ProgressBarAndTitleName) {
+        const titleElem = document.querySelector("title");
+        titleElem.innerText = barLength + " " + this.originalTitle;
+      }
       $("#achlp-proBar,#achlp-proBar-inner").css({ width: barLength });
     };
     this.setObserverWeb(barObserver, barObserverFn);
@@ -1237,6 +1244,47 @@ class VideoSetting extends AcFunHelperFgFrame {
 
   rememberLastSend() {
     UIReactor.rememberLastSend("input.danmaku-input")
+  }
+
+  arubamuToWatchLater() {
+    let clicked = false;
+    const statusReport = (e) => {
+      if (e) {
+        window.alert("[AcFun助手]：完成！");
+        clicked = true;
+      } else {
+        window.alert("[AcFun助手]：不知道怎么地就失败了~");
+      }
+    }
+    GetAsyncDomUtil.getAsyncDomClassic(".btn-area", () => {
+      const btnA = document.createElement("button");
+      btnA.style.cssText = "margin-right: 10px;background: #fd4c5c;color: #fff;width: 100px;height: 20px;border-radius: 6px;font-size: 12px;border: 1px solid transparent;"
+      btnA.innerText = "顺序稍后再看";
+      const btnB = document.createElement("button");
+      btnB.style.cssText = "margin-right: 10px;background: #fd4c5c;color: #fff;width: 100px;height: 20px;border-radius: 6px;font-size: 12px;border: 1px solid transparent;"
+      btnB.innerText = "逆序稍后再看";
+      document.querySelector("div.album-left-wrap > div.album-info > div.album-info-right > div.btn-area").appendChild(btnA);
+      document.querySelector("div.album-left-wrap > div.album-info > div.album-info-right > div.btn-area").appendChild(btnB);
+
+      btnA.addEventListener("click", (e) => {
+        if (clicked) {
+          let cfm = window.confirm("[AcFun助手]：已经加入一遍了，确认再加入一遍吗？")
+          if (!cfm) {
+            return
+          }
+        }
+        MessageSwitch.sendMessage('fg', { target: "arubamuInsert", params: { arid: REG.arubamu.exec(window.location)[2], reverse: false }, InvkSetting: { type: "function", responseRequire: true, asyncWarp: true } }, statusReport)
+      })
+      btnB.addEventListener("click", (e) => {
+        if (clicked) {
+          let cfm = window.confirm("[AcFun助手]：已经加入一遍了，确认再加入一遍吗？")
+          if (!cfm) {
+            return
+          }
+        }
+        MessageSwitch.sendMessage('fg', { target: "arubamuInsert", params: { arid: REG.arubamu.exec(window.location)[2], reverse: true }, InvkSetting: { type: "function", responseRequire: true, asyncWarp: true } }, statusReport)
+      })
+    })
   }
 
 }

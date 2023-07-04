@@ -5,6 +5,7 @@
 class WatchPlan extends AcFunHelperBgFrame {
     constructor() {
         super();
+        /**@description 稍后再看列表操作状态信息 @type {boolean} */
         this.OpFlag = true;
         /**
          * 需要保持的打开的稍后再看任务数量
@@ -16,10 +17,12 @@ class WatchPlan extends AcFunHelperBgFrame {
         this.tabStateDic = {};
         /**
          * 任务列表
+         * @type {string[]}
          */
-        this.ori_list = {};
+        this.ori_list = [];
         this.livePageWatchTimeRecList = {};
         this.startToken = true;
+        this.daemon = 0;
         this.devMode = false;
         this.onLoad();
     }
@@ -74,7 +77,7 @@ class WatchPlan extends AcFunHelperBgFrame {
         if (!sw.watchLater) { this.OpFlag = false; return }
         await this.EmptyFix();
         var ori_list = await ExtOptions.get("WatchPlanList");
-        //假如传入数据（链接）为视频、文章、用户首页 并且 其不是先存在于任务队列中的数据 就假如队列，并修改操作状态信息为 是
+        //假如传入数据（链接）为视频、文章、用户首页 并且 其不是先存在于任务队列中的数据 就加入队列，并修改操作状态信息为 是
         if ((REG.video.test(data) || REG.article.test(data) || REG.userHome.test(data)) && !this.ifExist(ori_list.WatchPlanList, data)) {
             ori_list.WatchPlanList.push(data)
             chrome.storage.local.set({ "WatchPlanList": ori_list.WatchPlanList });
@@ -98,6 +101,47 @@ class WatchPlan extends AcFunHelperBgFrame {
     }
 
     /**
+     * 批量加入合集稿件
+     * @param {number} arubamuId 
+     * @param {boolean} reverse 倒序添加
+     * @returns {boolean}
+     */
+    async arubamuInsert(arubamuId, reverse = false) {
+        const sw = await ExtOptions.getValue("watchLater");
+        if (arubamuId != undefined && sw) {
+            let apiResPageOne = await acfunApis.arubamu.getList(arubamuId, 1, 2);
+            if (apiResPageOne.contents.length == 0) {
+                return false
+            }
+            const total = apiResPageOne.totalSize;
+            const needReqSize = total < 100 ? 1 : Math.round(total / 100);
+            /**@type {APIs.ArubamuItem[]} */
+            let res = []
+            for (let i = 1; i <= needReqSize; i++) {
+                let resp = await acfunApis.arubamu.getList(arubamuId, i, 100);
+                res = res.concat(resp.contents);
+            }
+            let oList = await ExtOptions.getValue("WatchPlanList");
+            let urlRes = []
+            if (reverse) {
+                for (let k = res.length - 1; k >= 0; k--) {
+                    urlRes.push("https://www.acfun.cn/v/ac" + res[k].resourceId);
+                }
+            } else {
+                res.forEach((v) => {
+                    urlRes.push("https://www.acfun.cn/v/ac" + v.resourceId);
+                })
+            }
+            //把原来的列表项目放到最后
+            if (oList != null) {
+                urlRes = urlRes.concat(oList);
+            }
+            return await ExtOptions.setValue("WatchPlanList", urlRes);
+        }
+        return false
+    }
+
+    /**
      * 打开标签，并返回一个tab Info字典
      * @param {string} url 
      * @returns tabInfo dict
@@ -116,7 +160,7 @@ class WatchPlan extends AcFunHelperBgFrame {
      */
     async execWatch() {
         //打开列表中的前面几项（默认3项），并监听他们的状态（onRemoved or onUpdated），状态改变之后就将其从列表中删除，并补上页面，保持页面数量在指定数量。
-        this.ori_list = await ExtOptions.get("WatchPlanList");
+        this.ori_list = await ExtOptions.getValue("WatchPlanList");
         chrome.tabs.onRemoved.addListener((id) => {
             //在关闭某个标签，检查是否是我们维护的标签状态对象里面的对象
             if (this.tabStateDic.hasOwnProperty(id)) {
@@ -124,19 +168,20 @@ class WatchPlan extends AcFunHelperBgFrame {
             }
         })
 
-        var _daemon = setInterval(async () => {
+        this.daemon = window.setInterval(async () => {
             if (this.startToken == false) {
-                clearInterval(_daemon);
+                clearInterval(this.daemon);
+                this.daemon = 0;
                 this.startToken = true;
                 return;
             }
             //判断 标签状态对象 里面的维护对象数（此次稍后再看排程列表长）是否比需要保持的稍后再看的标签保持数小，并且稍后再看列表不为空
-            if (Object.keys(this.tabStateDic).length < this.execWatchReqTabNum && this.ori_list.WatchPlanList.length != 0) {
-                let info = await this.execTabCreate(this.ori_list.WatchPlanList.slice(-1)[0]);
+            if (Object.keys(this.tabStateDic).length < this.execWatchReqTabNum && this.ori_list.length != 0) {
+                let info = await this.execTabCreate(this.ori_list.slice(-1)[0]);
                 this.tabStateDic[info.id] = { url: info.pendingUrl, tabInfo: info };
-                this.ori_list.WatchPlanList.pop(this.ori_list.WatchPlanList.slice(-1)[0]);
+                this.ori_list.pop(this.ori_list.slice(-1)[0]);
             }
-            if (Object.keys(this.tabStateDic).length == 0 && this.ori_list.WatchPlanList.length == 0) {
+            if (Object.keys(this.tabStateDic).length == 0 && this.ori_list.length == 0) {
                 //清空存储中的任务列表，发送通知
                 chrome.storage.local.set({ WatchPlanList: [] });
                 chrome.notifications.create(null, {
@@ -145,7 +190,8 @@ class WatchPlan extends AcFunHelperBgFrame {
                     title: 'AcFun 助手 - 稍后再看',
                     message: '已完成所有稍后再看列表项排程'
                 });
-                clearInterval(_daemon);
+                clearInterval(this.daemon);
+                this.daemon = 0;
             }
         }, 2000);
         return;

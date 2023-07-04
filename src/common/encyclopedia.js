@@ -434,6 +434,13 @@ const acfunApis = {
             return JSON.parse(await fetchResult(acfunApis.bangumi.favorite + "?page=" + page + "&perpage=" + perpage));
         }
     },
+    arubamu: {
+        list: `https://www.acfun.cn/rest/pc-direct/arubamu/content/list`,
+        /**@returns {APIs.ArubamuApi} @description 获取合集内容【判空：返回值中content数组为空】*/
+        getList: async (arubamuId, page = 1, size = 30) => {
+            return JSON.parse(await fetchResult(acfunApis.arubamu.list + "?page=" + page + "&size=" + size + "&arubamuId=" + arubamuId))
+        }
+    },
 }
 
 const acfunHelperApis = {

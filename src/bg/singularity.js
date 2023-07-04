@@ -38,6 +38,20 @@ class AcFunHelperBgFrame {
         /**@type {runtimeData} */
         this.runtime = globalThis.runtimeData;
         this.devMode = false;
+
+        /**@type {MsgNotifs} */
+        this.MsgNotifsInst = {};
+        /**@type {ContextMenuManage} */
+        this.contextMenuMgmt = {};
+        /**@type {WatchPlan} */
+        this.WatchPlan = {};
+        /**@type {AuthInfo} */
+        this.authInfo = {};
+        /**@type {Ohminibox} */
+        this.Ominibox = {};
+        /**@type {UpgradeAgent} */
+        this.Upgrade = {};
+
     }
 }
 

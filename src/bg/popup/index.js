@@ -7,6 +7,7 @@ import {
 	renderFollowGroup,
 	renderGroupPush,
 	PopupLater,
+	watchlaterNotif,
 } from "./renderList.js";
 import {
 	onOptionChanged,
@@ -30,6 +31,7 @@ async function onReady() {
 	let options = await optionsLoad(); //global function
 	renderPushInnerHtml(); //稿件动态列表加载
 	updateVersionIcon(); //更新提醒
+	watchlaterNotif();
 	unreadNum();
 	customCss();//自定义popup样式
 	$("#extends-enbaled").prop("checked", options.enabled);

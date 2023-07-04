@@ -26,7 +26,7 @@ export function updateVersionIcon() {
 			$('#update-box').css('display', 'inline-block')
 			$('.update-letter').html('轻量更新')
 			$('.head').addClass('lightUpdate')
-			$('#update-box').on("click",() => {
+			$('#update-box').on("click", () => {
 				window.open(updateBlogUrl)
 			})
 			return
@@ -35,7 +35,7 @@ export function updateVersionIcon() {
 			$('#update-box').css('display', 'inline-block')
 			$('.update-letter').html('重大更新！')
 			$('.update-icon').css('background', 'red')
-			$('#update-box').on("click",() => {
+			$('#update-box').on("click", () => {
 				window.open(updateBlogUrl)
 			})
 			$('.head').addClass('heavyUpdate')
@@ -392,4 +392,22 @@ export async function customCss() {
 			console.log(error);
 		}
 	})
+}
+
+export async function watchlaterNotif() {
+	/**@type {Array<String>} */
+	const list = await ExtOptions.getValue("WatchPlanList");
+	if (list && list.length) {
+		MessageSwitch.sendMessage('fg', { target: "getWatchLaterStatusAndNum", params: {}, InvkSetting: { type: "function" } }, function (e) {
+			if (e.status) {
+				document.querySelector(".watchlaterNotif").style.background = "#79ff79"
+				document.querySelector(".watchlaterNotif").innerText = "|观看任务" + e.leaves + "/" + list.length;
+				document.querySelector(".watchlaterNotif").title = "稍后再看：\n剩余观看数/全部待看任务数\n助手设置->视频->稍后再看（助手自带）";
+
+			} else {
+				document.querySelector(".watchlaterNotif").innerText = "| " + list.length + " 待看";
+				document.querySelector(".watchlaterNotif").title = "暂存待看的稿件\n助手设置->视频->稍后再看（助手自带）";
+			}
+		})
+	}
 }

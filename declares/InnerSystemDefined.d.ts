@@ -57,6 +57,8 @@ declare namespace InnerDefined {
     topicCircle: RegExp;
     /** @description 网页端动态内容 */
     momentContent: RegExp;
+    /**@description 合集 */
+    arubamu: RegExp;
     /**@description 实用工具 */
     method: {
       [methodName: string]: () => any;
@@ -151,6 +153,7 @@ declare namespace OptionStruct {
     Upgradeable: 0;
     ABPlaysw: boolean;
     ProgressBarsw: boolean;
+    ProgressBarAndTitleName: boolean;
     ProgressBarStyle: {
       barColor: string;
       barHeight: string;
@@ -202,6 +205,7 @@ declare namespace OptionStruct {
     liveVolumeMild: boolean;
     wheelToChangeVolume: boolean;
     simpleCC: boolean;
+    arubamuBatchToWatchLater: boolean;
   }
 }
 

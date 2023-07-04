@@ -338,6 +338,9 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		if (REG.userHome.test(href)) {
 			this.options.userTagRender && this.pageBeautify.userTagRender();
 		}
+		if (REG.arubamu.test(href)) {
+			this.options.arubamuBatchToWatchLater && this.videoSetting.arubamuToWatchLater();
+		}
 	}
 
 	onCommentAreaLoaded(e) {
