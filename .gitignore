@@ -40,3 +40,4 @@ src/.DS_Store
 # custom rule
 *.devig.*
 devig/
+*-raw.js
