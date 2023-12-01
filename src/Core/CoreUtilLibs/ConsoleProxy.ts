@@ -117,7 +117,7 @@ const error = (title: string, msg: string) => {
 /**
  * 控制台消息代理
  */
-export function devConsole(department: string, module: any, funcName: Function, message: string, logLevel: number, timeSw: boolean) {
+export function devConsole(department: string, module: any, funcName: any, message: string, logLevel: number, timeSw: boolean) {
     chrome.storage.local.get(['logSetting'], (logSetting) => {
         if (logSetting.consoleOutput == false) {
             return
@@ -139,7 +139,7 @@ export function devConsole(department: string, module: any, funcName: Function, 
         }
         if (timeSw) {
             var date = new Date();
-            var logTime = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+            var logTime = date.toLocaleTimeString();
         } else {
             var logTime = "";
         }
@@ -183,6 +183,10 @@ export function fgDebugLog(cls: any, clsFunc: any, msg: string, logLevel: number
         clsFunc = getEsFuncName(clsFunc);
     }
     devConsole("fg", cls, clsFunc, msg, logLevel, timesw);
+}
+
+export const modLog = (msg: string, moduleName: string = "", funcName: string = "", logLevel: number = LogLevel.Debug) => {
+    devConsole("fg", moduleName, funcName, msg, logLevel, true)
 }
 
 function getEsClassName(esClass: any) {
