@@ -10,7 +10,7 @@ class AcFunHelperFrontend implements AcFunHelperFgFrame {
         this.Init();
     }
 
-    Init() {
+    async Init() {
         window.alitadebug = true;
         fgDebugLog("Fg","Init","Init...",LogLevel.Info)
         for (let featName in features) {
