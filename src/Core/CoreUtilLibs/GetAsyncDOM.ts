@@ -9,10 +9,10 @@ export class GetAsyncDOM {
     condition: boolean | ((e: boolean | HTMLElement | HTMLCollection, f: any) => boolean);
     /** 钩子 */
     fn: (e?: any) => any;
-    /** 单次探测的时间 */
+    /** 单次探测的时间 ms*/
     time: number;
     instantMode: boolean;
-    /** 探测超时时间 */
+    /** 探测超时时间 ms*/
     maxWaitTime: number;
     /** 未探测到之后执行的钩子 */
     insure: (e?: any) => any | undefined;
@@ -52,8 +52,7 @@ export class GetAsyncDOM {
         let maxTryNum = this.maxWaitTime / this.time;
         if (this.maxWaitTime % this.time != 0) {
             let extraTime = this.maxWaitTime % this.time;
-            maxTryNum = (this.maxWaitTime - extraTime) / this.time;
-            this.iterLimit = extraTime > (this.time / 2) ? maxTryNum++ : maxTryNum;
+            extraTime > (this.time / 2) ? maxTryNum++ : maxTryNum;
         }
         this.iterLimit = maxTryNum;
 
