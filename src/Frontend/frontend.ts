@@ -1,25 +1,28 @@
 import { AcFunHelperFgFrame } from "@/Core/Sigularity";
 import { ModuleStd } from "@/Declare/FeatureModule";
-// import { module as navGlass } from "@/Modules/IndexTheming/navGlass"
 import { features } from "../Modules/FeatureRegistry";
-
-
-console.log("Hello from AcFun-Helper-Abyss!");
+import { fgDebugLog,LogLevel } from "@/Core/CoreUtilLibs/ConsoleProxy";
 
 class AcFunHelperFrontend implements AcFunHelperFgFrame {
-    TypedModules: Record<ModuleStd.SequentialType, Array<ModuleStd.manifest>>;
+    TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
     constructor() {
-        this.TypedModules = {} as Record<ModuleStd.SequentialType, Array<ModuleStd.manifest>>
+        this.TypedModules = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
         this.Init();
     }
 
     Init() {
-        for (let f in features) {
-            const module = features[f];
+        window.alitadebug = true;
+        fgDebugLog("Fg","Init","Init...",LogLevel.Info)
+        for (let featName in features) {
+            const module = features[featName];
             if (!module.sequentialType) {
-                this.TypedModules[ModuleStd.SequentialType.Loaded].push(features[f])
+                if (this.TypedModules[ModuleStd.SequentialType.Loaded]) {
+                    this.TypedModules[ModuleStd.SequentialType.Loaded][module.name] = module;
+                } else {
+                    this.TypedModules[ModuleStd.SequentialType.Loaded] = {};
+                }
             } else {
-                this.TypedModules[module.sequentialType].push(module);
+                this.TypedModules[module.sequentialType][module.name] = module;
             }
 
         }
@@ -32,16 +35,19 @@ class AcFunHelperFrontend implements AcFunHelperFgFrame {
             this.OnDOMContentLoaded(e);
         });
 
-        
 
     }
 
-    Loaded(e:Event) {
-        
+    async Loaded(e: Event) {
+        for (let featName in this.TypedModules[ModuleStd.SequentialType.Loaded]) {
+            this.TypedModules[ModuleStd.SequentialType.Loaded][featName].main();
+        }
     }
 
-    OnDOMContentLoaded(e:Event) {
-
+    async OnDOMContentLoaded(e: Event) {
+        for (let featName in this.TypedModules[ModuleStd.SequentialType.OnDOMContentLoaded]) {
+            this.TypedModules[ModuleStd.SequentialType.OnDOMContentLoaded][featName].main();
+        }
     }
 
 }

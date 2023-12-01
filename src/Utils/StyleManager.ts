@@ -32,6 +32,21 @@ export class GlobalStyleManager {
         }
     }
 
+    /**
+     * @returns 当前状态
+     */
+    toggle(rawName: string, id: string, disable?: boolean): boolean {
+        const name = "AcFunHelper_" + rawName + "_" + id;
+        if (disable === undefined) {
+            this.handlers[name].disabled = !this.handlers[name].disabled;
+            return this.handlers[name].disabled;
+        }
+        if (this.handlers[name].disabled != disable) {
+            this.handlers[name].disabled = disable;
+        }
+        return true
+    }
+
     remove(rawName: string, id: string): boolean {
         const name = "AcFunHelper_" + rawName + "_" + id;
         if (!!this.handlers[name]) {
@@ -42,7 +57,7 @@ export class GlobalStyleManager {
         return false
     }
 
-    replace(rawName: string, id: string, newContent: string, specialTarget?:Element): boolean {
+    replace(rawName: string, id: string, newContent: string, specialTarget?: Element): boolean {
         if (this.remove(rawName, id)) {
             return this.add(rawName, id, newContent, specialTarget)
         }

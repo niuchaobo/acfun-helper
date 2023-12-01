@@ -7,8 +7,6 @@ import path from "path";
 // import { chromeExtension } from "./packages/hy-vite-plugin-chrome-ext";
 // // @ts-ignore
 import Components from "unplugin-vue-components/vite";
-// // @ts-ignore
-import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
 
 const isDev = process.env.BUILD_ENV === "development";
 
@@ -16,12 +14,18 @@ export const commonDevOptions = {
   root: "src",
   mode: isDev ? "development" : "production",
   plugins: [
-    vue(),
+    vue({
+      template:{
+        compilerOptions:{
+          isCustomElement: (tag) => tag.startsWith('mdui-'),
+        }
+      }
+    }),
     // chromeExtension({
     //   singleScripts: ["content", "sdk"],
     // }),
     Components({
-      resolvers: [NaiveUiResolver()],
+      resolvers: [],
     }),
   ],
 }

@@ -1,6 +1,8 @@
 declare global {
 	var AcFunHelperFg: AcFunHelperFgFrame;
 	var CookieStore: CookieStore;
+	var alitadebug:boolean;
+	var chalk:any;
 }
 
 declare namespace CookieStore {

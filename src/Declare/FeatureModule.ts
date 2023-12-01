@@ -26,7 +26,9 @@ export namespace ModuleStd {
     sequentialType?:SequentialType;
     workSpace: WorkSpace;
     dataset?: {};
-    main: () => {};
-    exit?: () => {};
+    main: () => any;
+    exit?: () => any;
+    enable?:()=>any;
+    disable?:()=>any;
   }
 }

@@ -9,7 +9,7 @@
  * keys()
  * addTime({day:31})
  */
-class CookiesUtils {
+export class CookiesUtils {
     static getItem(sKey: string) {
         return decodeURIComponent(
             document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[-.+*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")

@@ -18,5 +18,11 @@ export default defineConfig({
       port: 5174,
     },
   },
-  plugins: [vue(), crx({ manifest })],
+  plugins: [vue({
+    template: {
+      compilerOptions: {
+        isCustomElement: (tag) => tag.startsWith('mdui-'),
+      }
+    }
+  }), crx({ manifest })],
 });
