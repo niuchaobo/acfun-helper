@@ -2,7 +2,6 @@ import { confOprt } from "./ConfigOprt.mjs";
 import { msgNotif } from "./MessageNotification.mjs";
 import { advConf } from "./AdvanceConfig.mjs"
 import { importVue } from "../../../../common/modulesLib/SFCUtil.mjs";
-import { confsync } from "./ConfigSync.mjs";
 
 const sfcData = await importVue("pageHandler/SettingPanel/Common/index.vue");
 
@@ -12,7 +11,7 @@ const app = {
     components: {
         confOprt,
         msgNotif,
-        advConf,confsync,
+        advConf,
     },
     data() {
         return {
