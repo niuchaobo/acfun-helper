@@ -20,8 +20,8 @@
   "author": "ncb",
   "license": "MPL-2.0",
   "dependencies": {
-    "@babel/parser": "^7.23.5",
-    "@babel/types": "^7.23.5",
+    "@babel/parser": "^7.23.9",
+    "@babel/types": "^7.23.9",
     "@types/chrome": "^0.0.154",
     "del": "^6.1.1",
     "es6-symbol": "^3.1.3",
