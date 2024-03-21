@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@mdui/icons": "^1.0.2",
+    "dayjs": "^1.11.10",
     "jquery": "^3.7.1",
     "material-design-icons": "^3.0.1",
     "mdui": "^2.0.6",
