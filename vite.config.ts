@@ -36,10 +36,10 @@ export const fullDevOptions: UserConfigExport = {
   build: {
     minify: isDev ? false : "terser",
     sourcemap: false,
-    outDir: path.resolve(__dirname, "output"),
+    outDir: path.resolve(__dirname, "dist"),
     assetsDir: "./assets",
+    target:"esnext",
     rollupOptions: {
-      inlineDynamicImports: true,
       input: {
         popup: "src/UI/Popup/popup.html",
         setting: "src/UI/Setting/setting.html",
@@ -48,6 +48,7 @@ export const fullDevOptions: UserConfigExport = {
         // sdk: path.resolve(__dirname, "src/utils/sdk/page-sdk.ts"),
       },
       output: {
+        inlineDynamicImports:true,
         assetFileNames: "[name].[ext]",
         entryFileNames: "[name].js",
         chunkFileNames: "[name].js",
