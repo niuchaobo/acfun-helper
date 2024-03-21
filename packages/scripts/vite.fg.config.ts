@@ -10,7 +10,7 @@ const devOptions = {
   build: {
     minify: isDev ? false : true,
     sourcemap: false,
-    outDir: "../../output",
+    outDir: "../../dist",
     assetsDir: "../../Asset",
     rollupOptions: {
       inlineDynamicImports: true,

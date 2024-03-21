@@ -1,7 +1,7 @@
 {
   "name": "AcFun助手",
   "description": "Open source, and extensible Web Browser Extension for acfun.cn.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "ncb",
   "manifest_version": 3,
   "permissions": [

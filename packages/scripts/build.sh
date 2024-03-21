@@ -1,3 +1,3 @@
-rm -rf ./output
-mkdir output
-cp -rf ./public/* ./output
+rm -rf ./dist
+mkdir dist
+cp -rf ./public/* ./dist
