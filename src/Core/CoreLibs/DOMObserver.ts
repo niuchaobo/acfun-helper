@@ -30,7 +30,7 @@ interface observeConfig extends MutationObserverInit {
 
 interface observeTarget {
     name: string;
-    targetNode: HTMLElement;
+    targetNode: Element;
     config: observeConfig;
 }
 
@@ -131,7 +131,7 @@ export class DOMObserver {
         return inst;
     }
 
-    static attr(target: HTMLElement, triggerfn: (e: any) => any, devMode: boolean = false) {
+    static attr(target: Element, triggerfn: (e: MutationRecord) => any, devMode: boolean = false) {
         const inst = new DOMObserver({
             "Main": {
                 name: "Main",

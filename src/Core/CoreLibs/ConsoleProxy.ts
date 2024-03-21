@@ -117,7 +117,7 @@ const error = (title: string, msg: string) => {
 /**
  * 控制台消息代理
  */
-export function devConsole(department: string, module: any, funcName: any, message: string, logLevel: number, timeSw: boolean) {
+export function devConsole(department: string, module: any, funcName: any, message: any, logLevel: number, timeSw: boolean) {
     chrome.storage.local.get(['logSetting'], (logSetting) => {
         if (logSetting.consoleOutput == false) {
             return
@@ -185,7 +185,7 @@ export function fgDebugLog(cls: any, clsFunc: any, msg: string, logLevel: number
     devConsole("fg", cls, clsFunc, msg, logLevel, timesw);
 }
 
-export const modLog = (msg: string, moduleName: string = "", funcName: string = "", logLevel: number = LogLevel.Debug) => {
+export const modLog = (msg: any, moduleName: string = "", funcName: string = "", logLevel: number = LogLevel.Debug) => {
     devConsole("fg", moduleName, funcName, msg, logLevel, true)
 }
 

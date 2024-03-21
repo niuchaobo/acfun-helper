@@ -32,12 +32,14 @@ class AcFunHelperFrontend implements AcFunHelperFgFrame {
         fgDebugLog("Fg", "Init", "Init...", LogLevel.Info);
         for (let featName in features) {
             const module = features[featName];
+            if (module.workSpace != ModuleStd.WorkSpace.Frontend) {
+                continue
+            }
             if (!module.sequentialType) {
-                if (this.TypedModules[ModuleStd.SequentialType.Loaded]) {
-                    this.TypedModules[ModuleStd.SequentialType.Loaded][module.name] = module;
-                } else {
+                if (!this.TypedModules[ModuleStd.SequentialType.Loaded]) {
                     this.TypedModules[ModuleStd.SequentialType.Loaded] = {};
                 }
+                this.TypedModules[ModuleStd.SequentialType.Loaded][module.name] = module;
             } else {
                 if (!this.TypedModules[module.sequentialType]) {
                     this.TypedModules[module.sequentialType] = {};

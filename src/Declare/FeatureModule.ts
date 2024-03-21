@@ -9,9 +9,9 @@ export namespace ModuleStd {
   }
   export enum WorkSpace {
     Frontend = "Fg",
-    Backgroumd = "Bg"
+    Background = "Bg"
   }
-  export enum SequentialType{
+  export enum SequentialType {
     Loaded = 1,
     OnDOMContentLoaded,
     OnHeaderLoaded,
@@ -19,16 +19,29 @@ export namespace ModuleStd {
     OnAcLivePlayerLoaded,
     OnAcPaginationLoaded,
     OnDamakuLoaded,
+
+    OnContextMenuReg,
+  }
+  export type ModApiTrigger = string
+  export interface modApi {
+    triggers: Array<ModApiTrigger>
+    add: (...e: any) => any;
+    remove: (...e: any) => any
+  }
+  export interface lordManifest{
+    name:string;
+    requiredSequentialType:SequentialType;
+    main:(...args:any)=>any;
   }
   export interface manifest {
     name: string;
     type: ModType;
-    sequentialType?:SequentialType;
+    sequentialType?: SequentialType;
     workSpace: WorkSpace;
     dataset?: {};
-    main: () => any;
-    exit?: () => any;
-    enable?:()=>any;
-    disable?:()=>any;
+    main: (...args:any) => any;
+    exit?: (...args:any) => any;
+    enable?: (...args:any) => any;
+    disable?: (...args:any) => any;
   }
 }

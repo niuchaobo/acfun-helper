@@ -2,6 +2,10 @@ class AcFunHelperFgFrame {
 
 }
 
+class AcFunHelperBgFrame {
+
+}
+
 export {
-    AcFunHelperFgFrame
+    AcFunHelperFgFrame, AcFunHelperBgFrame
 }

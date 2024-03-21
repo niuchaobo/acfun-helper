@@ -1,8 +1,12 @@
+import { AcFunHelperBgFrame } from "./Core/Sigularity";
+
 declare global {
 	var AcFunHelperFg: AcFunHelperFgFrame;
+	var AcFunHelperBackend:AcFunHelperBgFrame;
 	var CookieStore: CookieStore;
 	var alitadebug:boolean;
 	var chalk:any;
+	var pageInfo:APIs.DougaInfo;
 }
 
 declare namespace CookieStore {

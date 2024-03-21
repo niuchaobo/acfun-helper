@@ -43,13 +43,13 @@ export class ExtOptions {
     /**
      * 获取相关区域键为key的配置
      */
-    _get(key: string | Array<any>): Promise<boolean> {
+    _get(key: string | Array<any>): Promise<any> {
         return new Promise((resolve, reject) => {
             chrome.storage[this.storageArea].get(key, (res) => {
                 if (res.length == 2 && JSON.stringify(res) == "{}") {
-                    reject(false);
+                    reject(null);
                 } else {
-                    resolve(true);
+                    resolve(res);
                 }
             });
         });
@@ -69,7 +69,7 @@ export class ExtOptions {
         return new Promise<{ [key: string]: any }>((resolve, reject) => {
             chrome.storage[this.storageArea].get(key, (res) => {
                 if (res.length == 2 && JSON.stringify(res) == "{}") {
-                    reject(false);
+                    reject(null);
                 } else {
                     resolve(res[key]);
                 }
