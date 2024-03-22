@@ -1,6 +1,7 @@
 import { defaultConf as FlexProgressBar } from "@/Modules/VideoPlayer/FlexProgressBar/flexProgressbar"
 import { defaultConf as ABPlay } from "@/Modules/VideoPlayer/ABPlay/abPlay"
 import { defaultConf as SearchMenu } from "@/Modules/Global/SearchMenu/searchMenu"
+import { defaultConf as OmniAcid } from "@/Modules/Global/Omnibox/acid"
 
 export const readOnlyKey: Array<string> = [
 
@@ -17,5 +18,6 @@ export const defaultOption: Record<string, any> = {
     FlexProgressBar,
     ABPlay,
 
-    SearchMenu
+    SearchMenu,
+    OmniAcid,
 }

@@ -21,6 +21,7 @@ export namespace ModuleStd {
     OnDamakuLoaded,
 
     OnContextMenuReg,
+    OnOmniboxObjectReg,
   }
   export type ModApiTrigger = string
   export interface modApi {
