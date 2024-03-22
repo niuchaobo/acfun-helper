@@ -7,6 +7,7 @@ declare global {
 	var alitadebug:boolean;
 	var chalk:any;
 	var pageInfo:APIs.DougaInfo;
+	var browser;
 }
 
 declare namespace CookieStore {

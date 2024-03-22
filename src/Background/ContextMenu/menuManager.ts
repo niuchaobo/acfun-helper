@@ -1,33 +1,37 @@
 import { ModuleStd } from "@/Declare/FeatureModule";
 
-interface MenuRegEntry {
+export interface RegEntry {
     enabled: boolean;
     item: chrome.contextMenus.CreateProperties;
     trigger: (...e: any) => any
 }
 
-const triggerReg:Record<string,(...e:any)=>any> = {
+//保存菜单与钩子的映射关系
+const triggerReg: Record<string, (...e: any) => any> = {
 
 }
 
 const main = async (modules: Record<ModuleStd.lordManifest["name"], ModuleStd.manifest>) => {
-    for (let menuEntryName in modules) {
-        let menuEntry = modules[menuEntryName];
-        let regInfo: MenuRegEntry = await menuEntry.main();
-        if (regInfo.enabled) {
-            chrome.contextMenus.create(regInfo.item);
-            if(regInfo.item.id){
-                triggerReg[regInfo.item.id] = regInfo.trigger;
-            }
+    //注册菜单项
+    for (let modName in modules) {
+        const mod = modules[modName];
+        let regInfo: RegEntry = await mod.main();
+        if (!regInfo.enabled) {
+            continue
+        }
+        chrome.contextMenus.create(regInfo.item);
+        if (regInfo.item.id) {
+            triggerReg[regInfo.item.id] = regInfo.trigger;
         }
     }
+    //挂接钩子
     registerCtxMenuEvent();
 }
 
 /**菜单响应 */
-const registerCtxMenuEvent=()=> {
+const registerCtxMenuEvent = () => {
     chrome.contextMenus.onClicked.addListener((e, tabInfo) => {
-        triggerReg[e.menuItemId](e,tabInfo);
+        triggerReg[e.menuItemId](e, tabInfo);
     });
 }
 

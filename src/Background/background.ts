@@ -2,7 +2,7 @@ import { AcFunHelperBgFrame } from "@/Core/Sigularity";
 import { ExtOptions } from "@/Core/CoreUtils";
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { bgFeatures } from "@/Modules/BgModules";
-import { hosts } from "./execHostReg";
+import { hosts } from "./ExecHostReg";
 
 class AcFunHelperBackend implements AcFunHelperBgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
