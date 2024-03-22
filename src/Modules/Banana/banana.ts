@@ -1,4 +1,4 @@
-import { modLog } from "@/Core/CoreUtilLibs/ConsoleProxy";
+import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { REG, isTargetPage, pageAcID } from "@/Core/Regs";
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { hasThrowBanana, isFollowed, isLogin } from "@/Utils/Check";
@@ -40,7 +40,7 @@ const main = async () => {
     } else {
         acID = vids[2];
     }
-    modLog(Uid + "\n" + hasFollowed, module.name, "main");
+    modLog(Uid + " ;hasFollowed: " + hasFollowed, module.name, "main");
 
 }
 

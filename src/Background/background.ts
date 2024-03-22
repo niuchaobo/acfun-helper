@@ -3,8 +3,9 @@ import { ExtOptions } from "@/Core/CoreUtils";
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { bgFeatures } from "@/Modules/BgModules";
 import { hosts } from "./ExecHostReg";
+import { Runtime, browser } from "wxt/browser";
 
-class AcFunHelperBackend implements AcFunHelperBgFrame {
+export class AcFunHelperBackend implements AcFunHelperBgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
     ExecHost: Record<ModuleStd.SequentialType, Record<ModuleStd.lordManifest["name"], ModuleStd.lordManifest>>;
 
@@ -44,15 +45,15 @@ class AcFunHelperBackend implements AcFunHelperBgFrame {
             host.main(this.TypedModules[host.requiredSequentialType])
         }
 
-        chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
+        browser.runtime.onInstalled.addListener(this.onInstalled.bind(this));
     }
 
-    onInstalled(details: chrome.runtime.InstalledDetails) {
-        const versionNum = chrome.runtime.getManifest().version;
+    onInstalled(details: Runtime.OnInstalledDetailsType) {
+        const versionNum = browser.runtime.getManifest().version;
         console.log(versionNum)
         if (details.reason === 'install') {
-            // chrome.tabs.create({ url: chrome.runtime.getURL('bg/firstRun.html') });
-            chrome.notifications.create("", {
+            // browser.tabs.create({ url: browser.runtime.getURL('bg/firstRun.html') });
+            browser.notifications.create("", {
                 type: 'basic',
                 iconUrl: 'Logo/icon128.png',
                 title: 'AcFun助手',
@@ -61,7 +62,7 @@ class AcFunHelperBackend implements AcFunHelperBgFrame {
         }
         if (details.reason === 'update') {
             if (versionNum == details.previousVersion) {
-                chrome.notifications.create("", {
+                browser.notifications.create("", {
                     type: 'basic',
                     iconUrl: 'Logo/icon128.png',
                     title: 'AcFun助手',
@@ -69,7 +70,7 @@ class AcFunHelperBackend implements AcFunHelperBgFrame {
                 });
                 return;
             }
-            chrome.notifications.create("", {
+            browser.notifications.create("", {
                 type: 'basic',
                 iconUrl: 'Logo/icon128.png',
                 title: 'AcFun助手',
@@ -80,5 +81,4 @@ class AcFunHelperBackend implements AcFunHelperBgFrame {
 
 }
 
-globalThis.AcFunHelperBackend = new AcFunHelperBackend();
 export { };

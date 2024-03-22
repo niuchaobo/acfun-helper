@@ -1,107 +1,31 @@
 {
-  "name": "acfun-helper-project",
+  "name": "wxt-starter",
+  "description": "manifest.json description",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev-win": "sh ./packages/scripts/build.sh && set BUILD_ENV=development && vite build --watch",
-    "dev": "sh ./packages/scripts/build.sh && vite build --watch",
-    "dev:live-win": "vite --config ./packages/scripts/vite.live.config.js",
-    "dev:live": "sh ./packages/scripts/build.sh && vite --config ./packages/scripts/vite.live.config.js",
-    "dev:fg": "sh ./packages/scripts/build.sh && vite build --watch --config ./packages/scripts/vite.fg.config.js",
-    "debug": "npx --node-arg=--inspect-brk vite build --watch",
-    "build": "sh ./packages/scripts/build.sh && vite build",
-    "serve": "vite preview",
-    "preview": "vite preview",
-    "eslint": "eslint src/** --ext .js, .jsx, .ts, .tsx, .vue",
-    "lintverfix": "eslint src/** --ext .js, .jsx, .ts, .tsx, .vue src --debug --fix",
-    "lint": "lint-staged",
-    "prettier": "prettier --write",
-    "prepare": "husky install"
-  },
-  "lint-staged": {
-    "src/**": [
-      "prettier"
-    ]
-  },
-  "commotlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+    "dev": "wxt -b edge",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "vue-tsc --noEmit",
+    "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@mdui/icons": "^1.0.2",
+    "@types/chrome": "^0.0.263",
     "dayjs": "^1.11.10",
-    "jquery": "^3.7.1",
-    "material-design-icons": "^3.0.1",
-    "mdui": "^2.0.6",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0",
-    "xmldom": "^0.6.0"
+    "pinia": "^2.1.7",
+    "vue": "^3.4.0"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^17.8.1",
-    "@crxjs/vite-plugin": "2.0.0-beta.12",
-    "@types/chrome": "^0.0.240",
     "@types/jquery": "^3.5.29",
-    "@types/node": "^20.11.30",
-    "@types/xmldom": "^0.1.34",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "@vitejs/plugin-vue": "^4.6.2",
-    "commitlint": "^17.8.1",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^8.10.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.23.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.3.0",
-    "prettier": "^3.2.5",
-    "rollup": "^3.29.4",
-    "sass": "^1.72.0",
-    "terser": "^5.29.2",
+    "@vitejs/plugin-vue": "^5.0.1",
     "tinykeys": "^2.1.0",
-    "typescript": "^5.4.2",
-    "unplugin-vue-components": "^0.25.2",
-    "vfonts": "^0.0.3",
-    "vite": "^4.5.2",
-    "vue-tsc": "^1.8.27"
-  },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "es2021": true
-    },
-    "ignorePatterns": [
-      ".vue",
-      "*.svg"
-    ],
-    "extends": [
-      "eslint:recommended",
-      "plugin:vue/vue3-essential",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:prettier/recommended"
-    ],
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "parser": "@typescript-eslint/recommended",
-      "sourceType": "module"
-    },
-    "plugins": [
-      "vue",
-      "@typescript-eslint"
-    ],
-    "rules": {
-      "no-undef": "off",
-      "indent": 0,
-      "linebreak-style": [
-        0,
-        "error",
-        "window"
-      ]
-    }
-  },
-  "prettier": {
-    "endOfLine": "auto"
+    "typescript": "^5.3.3",
+    "vue-tsc": "^2.0.6",
+    "wxt": "^0.17.0"
   }
 }

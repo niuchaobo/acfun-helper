@@ -1,4 +1,4 @@
-import { GetAsyncDOM } from "@/Core/CoreUtils";
+import { GetAsyncDOM } from "../Core/CoreUtils";
 import { CookiesUtils } from "./Storage/CookiesUtils";
 
 /**

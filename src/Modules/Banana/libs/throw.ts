@@ -9,7 +9,7 @@ export async function bananaThrow(resourceId: string, banana_num: number, dougaT
     let result = await doThrow(resourceId, banana_num, dougaType)
     if (!!result) {
         res_obj = JSON.parse(result);
-        if(res_obj.result==0){
+        if (res_obj.result == 0) {
             return true
         }
     }

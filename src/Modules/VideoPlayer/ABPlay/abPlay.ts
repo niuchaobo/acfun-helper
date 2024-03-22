@@ -3,6 +3,7 @@ import { ExtOptions, GetAsyncDOM } from "@/Core/CoreUtils";
 import { REG, isTargetPage } from "@/Core/Regs";
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { App, createApp } from "vue";
+import { createPinia } from 'pinia'
 import Main from "./abplay-ui.vue"
 import { addElement } from "@/Utils/GUI/dom";
 
@@ -11,7 +12,7 @@ let allOptions: Conf;
 
 const main = async () => {
     //加载配置
-    allOptions = await ExtOptions.getValue("ABPlay") as Conf;
+    allOptions = await ExtOptions.getValue(module.name) as Conf;
     if (!allOptions.enable) {
         return
     }
@@ -23,7 +24,9 @@ const main = async () => {
     GetAsyncDOM.Get("div.container-controls > div.control-bar-top > div.box-right", () => {
         addElement({ tag: "div", id: "acArbs-Abplay", target: document.querySelector(".box-right") as Element, classes: "control-btn speed acArbs-abplay", createMode: "headChildAppend" });
         modLog("Init Container.", module.name, "main..GetAsyncDOM")
+        const pinia = createPinia();
         app = createApp(Main);
+        app.use(pinia);
         app.mount("#acArbs-Abplay");
         modLog("Mount App.", module.name, "main..GetAsyncDOM")
     })

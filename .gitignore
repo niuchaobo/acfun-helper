@@ -41,3 +41,4 @@ src/.DS_Store
 *.devig.*
 devig/
 *-raw.js
+.output
