@@ -89,16 +89,6 @@ class AcFunHelperFrontendApis extends AcFunHelperFgFrame {
         }
     }
 
-    lightReadMode(params) {
-        let { value } = params;
-        this.runtime.options.articleReadMode = value;
-        if (value) {
-            this.reader.lightReadMode(true);
-        } else {
-            this.reader.lightReadMode(false);
-        }
-    }
-
     //直播m3u8 url赋值到前台页面
     async renderLive(params) {
         if (REG.live.test(this.href)) {
