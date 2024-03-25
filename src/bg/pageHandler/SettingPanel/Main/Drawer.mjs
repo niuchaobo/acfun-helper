@@ -60,25 +60,6 @@ const ListAppData = {
                 });
             }
         })
-        mdui.snackbar({
-            message: '🍭🥳欢迎使用我们新的控制面板',
-            position: 'left-bottom',
-            timeout: 0,
-            buttonText: "不习惯？",
-            onButtonClick: function () {
-                setTimeout(() => {
-                    mdui.alert("哈哈哈，其实旧的控制面板已经删了，但人总会是要新的人生阶段的，现在能让我们一起携手去看新的星星吗？(〃∀〃)", () => {
-                        mdui.snackbar({
-                            message: "欢迎来到新的世界！🥳🥳"
-                        })
-                    }, {
-                        confirmText: "可不许拒绝",
-                        modal: true,
-                        closeOnEsc: false
-                    })
-                }, 1210);
-            }
-        });
     }
 }
 
