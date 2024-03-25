@@ -176,7 +176,6 @@ declare namespace OptionStruct {
     audioGain: boolean;
     uddPopUp: boolean;
     uddPopUptype: 0;
-    articleReadMode: boolean;
     articleBanana: boolean;
     audioAfterBanana: boolean;
     picDrag: boolean;

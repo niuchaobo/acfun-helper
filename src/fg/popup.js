@@ -164,10 +164,9 @@ class Popup {
     }
 
     popComment(type) {
-        let { mark, scan, articleReadMode } = this.options;
+        let { mark, scan } = this.options;
         let m = mark ? "checked" : "";
         let s = scan ? "checked" : "";
-        let t = articleReadMode ? "checked" : "";
 
         let domString = `<div class="odh-headsection">
                     <span class="odh-expression">评论才是本体</span>
@@ -186,18 +185,6 @@ class Popup {
                         <label for="comment-mark"></label>
                     </div>
                 </div>`
-        if (type != 'video') {
-            domString +=
-                `
-                <div class="odh-definition">
-                    <label class="readmode">手动阅读模式</label>
-                    <div class="enabled">
-                        <input type="checkbox" ${t} id="readmode">
-                        <label for="readmode"></label>
-                    </div>
-                </div>
-                `;
-        }
         return domString;
     }
 
