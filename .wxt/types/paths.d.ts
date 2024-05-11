@@ -10,6 +10,11 @@ declare module "wxt/browser" {
     | "/_locales/zh_TW/messages.json"
     | "/background.js"
     | "/content-scripts/content.js"
+    | "/icon/icon128.png"
+    | "/icon/icon16.png"
+    | "/icon/icon32.png"
+    | "/icon/icon48.png"
+    | "/icon/icon64.png"
     | "/popup.html"
   type HtmlPublicPath = Extract<PublicPath, `${string}.html`>
   export interface WxtRuntime extends Runtime.Static {

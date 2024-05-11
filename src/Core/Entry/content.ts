@@ -1,6 +1,10 @@
+import { AcFunHelperFrontend } from "@/Frontend/frontend";
+
 export default defineContentScript({
-  matches: ['*://*.google.com/*'],
+  matches: ['*://*.acfun.cn/*'],
+  runAt: 'document_start',
   main() {
-    console.log('Hello content.');
+    const AcFunHelperFg = new AcFunHelperFrontend();
+    globalThis.AcFunHelperFg = AcFunHelperFg;
   },
 });

@@ -1,4 +1,4 @@
-import { GetAsyncDOM } from "../Core/CoreUtils";
+import { GetAsyncDOM } from "@/Core/CoreUtils";
 
 export function getUpUid(dept: "video" | "article"): Promise<string> {
     switch (dept) {

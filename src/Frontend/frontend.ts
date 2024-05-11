@@ -13,7 +13,7 @@ interface AcFunHelperFgRuntimeData {
     }
 }
 
-class AcFunHelperFrontend implements AcFunHelperFgFrame {
+export class AcFunHelperFrontend implements AcFunHelperFgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
     runtime: AcFunHelperFgRuntimeData;
     constructor() {
@@ -49,19 +49,18 @@ class AcFunHelperFrontend implements AcFunHelperFgFrame {
 
         }
 
-        //获取稿件信息
-        let result = fetchPageInfo();
-        if (result.status) {
-            fgDebugLog("Fg", "Loaded", "fetchPageInfo successful.", LogLevel.Info);
-            this.runtime.dataset.fetchDougaInfoStatus = true;
-            this.runtime.dataset.dougaInfo = result.result;
-        }
-
         window.addEventListener("load", (e) => {
             this.Loaded(e);
         });
 
         document.addEventListener("DOMContentLoaded", (e) => {
+            //获取稿件信息
+            let result = fetchPageInfo();
+            if (result.status) {
+                fgDebugLog("Fg", "DOMContentLoaded", "fetchPageInfo successful.", LogLevel.Info);
+                this.runtime.dataset.fetchDougaInfoStatus = true;
+                this.runtime.dataset.dougaInfo = result.result;
+            }
             this.OnDOMContentLoaded(e);
         });
 
@@ -86,7 +85,3 @@ class AcFunHelperFrontend implements AcFunHelperFgFrame {
     }
 
 }
-
-const AcFunHelperFg = new AcFunHelperFrontend();
-globalThis.AcFunHelperFg = AcFunHelperFg;
-export { };

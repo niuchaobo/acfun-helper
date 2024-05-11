@@ -18,7 +18,7 @@ interface addElementPayload {
     css?: string;
     target?: Element;
     classes?: string;
-    createMode?: "append" | "after" | "headChildAppend" | "headPrepend";
+    createMode?: "append" | "after" | "headChildAppend" | "headPrepend" | "before";
     thisHTML?: string;
     title?: string;
 }
@@ -49,6 +49,8 @@ export function addElement(options: addElementPayload) {
             let tempTarget = target.firstChild;
             target.insertBefore(x, tempTarget);
             break;
+        case "before":
+            target.insertBefore(x, target);
     }
     return x
 }

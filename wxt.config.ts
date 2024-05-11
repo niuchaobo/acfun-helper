@@ -1,13 +1,12 @@
 import { defineConfig } from 'wxt';
 import vue from '@vitejs/plugin-vue';
-import path from "path";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   manifest: {
     name: "AcFun-Helper-Bang2",
     description: "test ext",
-    version: "0.0.4",
+    version: "2.1.1",
     default_locale: "zh_CN",
     author: "ncb",
     action: {
@@ -21,10 +20,10 @@ export default defineConfig({
     },
     icons: {
       16: 'icon/icon16.png',
-      32: 'icon/icon32.png,',
-      48: 'icon/icon48.png,',
-      64: 'icon/icon64.png,',
-      128: 'icon/icon128.png,',
+      32: 'icon/icon32.png',
+      48: 'icon/icon48.png',
+      64: 'icon/icon64.png',
+      128: 'icon/icon128.png',
     },
     permissions: [
       "storage",

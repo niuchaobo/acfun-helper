@@ -2,7 +2,7 @@
   "name": "wxt-starter",
   "description": "manifest.json description",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "wxt -b edge",
@@ -16,16 +16,19 @@
   },
   "dependencies": {
     "@types/chrome": "^0.0.263",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
+    "material-design-icons": "^3.0.1",
+    "mdui": "^2.1.1",
     "pinia": "^2.1.7",
-    "vue": "^3.4.0"
+    "vue": "^3.4.27"
   },
   "devDependencies": {
-    "@types/jquery": "^3.5.29",
-    "@vitejs/plugin-vue": "^5.0.1",
+    "@types/jquery": "^3.5.30",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "sass": "^1.77.1",
     "tinykeys": "^2.1.0",
-    "typescript": "^5.3.3",
-    "vue-tsc": "^2.0.6",
-    "wxt": "^0.17.0"
+    "typescript": "^5.4.5",
+    "vue-tsc": "^2.0.17",
+    "wxt": "^0.17.12"
   }
 }

@@ -1,5 +1,5 @@
 import { ModuleStd } from "@/Declare/FeatureModule";
-const style = await import("./asset/navGlass.scss")
+const style = import("./asset/navGlass.scss")
 
 const main = () => {
     return style

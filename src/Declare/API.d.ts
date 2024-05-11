@@ -1,4 +1,10 @@
 declare namespace APIs {
+  interface ChannelInfo {
+    id: number
+    name: string
+    parentId: number
+    parentName: string
+  }
   interface DougaInfo {
     currentVideoId: string;
     isLike: string;
@@ -14,13 +20,19 @@ declare namespace APIs {
     stowCountShow: string;
     giftPeachCountShow: string;
     stowCount: number;
-    channel: string;
+    channel: ChannelInfo;
     description: string;
     likeCount: number;
     title: string;
     shareCountShow: string;
     hasHotComment: string;
     isDislike: boolean;
+    /**@description bangumi only */
+    showTitle: string;
+    /**@description bangumi only */
+    image: string;
+    /**@description bangumi only */
+    episodeName: string;
     result: string;
     shareCount: number;
     picShareUrl: string;
@@ -142,6 +154,60 @@ declare namespace APIs {
       realmName: string;
     };
     parts: [{ title: string; content: string }];
+  }
+  namespace Personal {
+    interface UserInfoBasic {
+      avatarFrame: number;
+      blog: string;
+      comeFrom: string;
+      experimentConfig: string;
+      firstDepositState: number;
+      gender: number;
+      headUrl: string;
+      isRegular: boolean;
+      isSameCityTagAllowShown: boolean;
+      nameColor: number;
+      nameRed: number;
+      qq: string;
+      registerTime: number;
+      sexTrend: -1 | 0 | 1 | 2;
+      signature: string;
+      userId: number;
+      name: string;
+      verifiedText: string;
+      verifiedTypes: number[];
+    }
+    interface UserInfo extends UserInfoBasic {
+      activeRecently: boolean;
+      avatarFrameImgInfo: UserInfoImg;
+      avatarFrameMobileImg: string;
+      avatarFramePcImg: string;
+      avatarImage: string;
+      banana: number;
+      contentCount: string;
+      email: string;
+      followed: string;
+      followedNum: number;
+      following: string;
+      goldBanana: number;
+      isContractUp: boolean;
+      isEmailCheck: boolean;
+      isMobileCheck: boolean;
+      isTeenagerMode: boolean;
+      level: number;
+      mediaWearInfo: MedalInfo;
+      membershipModuleDesc: string;
+      membershipModuleImgUrl: string;
+      membershipState: number;
+      mobile: string;
+      renameCard: number;
+      shareUrl: string;
+      signature: string;
+      tagStowCount: string;
+      taskModuleDesc: string;
+      userHeadImgInfo: UserInfoImg;
+      verifiedType: number;
+    }
   }
   namespace Medel {
     interface MedalInfo {

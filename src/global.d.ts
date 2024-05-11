@@ -1,8 +1,10 @@
-import { AcFunHelperBgFrame } from "./Core/Sigularity";
+import { AcFunHelperBackend } from "./Background/background";
+import { AcFunHelperBgFrame,AcFunHelperFgFrame } from "./Core/Sigularity";
+import { AcFunHelperFrontend } from "./Frontend/frontend";
 
 declare global {
-	var AcFunHelperFg: AcFunHelperFgFrame;
-	var AcFunHelperBackend:AcFunHelperBgFrame;
+	var AcFunHelperFg: AcFunHelperFrontend;
+	var AcFunHelperBackend:AcFunHelperBackend;
 	var CookieStore: CookieStore;
 	var alitadebug:boolean;
 	var chalk:any;

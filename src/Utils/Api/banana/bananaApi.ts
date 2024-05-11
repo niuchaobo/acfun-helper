@@ -1,5 +1,4 @@
 import { fetchResult } from "@/Core/CoreLibs/WebRequest"
-import { fetchPageInfo } from "@/Frontend/pageInfo"
 
 export const banana = {
     throw: "https://www.acfun.cn/rest/pc-direct/banana/throwBanana",

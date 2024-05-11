@@ -3,7 +3,6 @@ import { ExtOptions } from "@/Core/CoreUtils";
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { bgFeatures } from "@/Modules/BgModules";
 import { hosts } from "./ExecHostReg";
-import { Runtime, browser } from "wxt/browser";
 
 export class AcFunHelperBackend implements AcFunHelperBgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
@@ -45,15 +44,15 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
             host.main(this.TypedModules[host.requiredSequentialType])
         }
 
-        browser.runtime.onInstalled.addListener(this.onInstalled.bind(this));
+        chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
     }
 
-    onInstalled(details: Runtime.OnInstalledDetailsType) {
-        const versionNum = browser.runtime.getManifest().version;
+    onInstalled(details: chrome.runtime.InstalledDetails) {
+        const versionNum = chrome.runtime.getManifest().version;
         console.log(versionNum)
         if (details.reason === 'install') {
-            // browser.tabs.create({ url: browser.runtime.getURL('bg/firstRun.html') });
-            browser.notifications.create("", {
+            // chrome.tabs.create({ url: chrome.runtime.getURL('bg/firstRun.html') });
+            chrome.notifications.create("", {
                 type: 'basic',
                 iconUrl: 'Logo/icon128.png',
                 title: 'AcFun助手',
@@ -62,7 +61,7 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
         }
         if (details.reason === 'update') {
             if (versionNum == details.previousVersion) {
-                browser.notifications.create("", {
+                chrome.notifications.create("", {
                     type: 'basic',
                     iconUrl: 'Logo/icon128.png',
                     title: 'AcFun助手',
@@ -70,7 +69,7 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
                 });
                 return;
             }
-            browser.notifications.create("", {
+            chrome.notifications.create("", {
                 type: 'basic',
                 iconUrl: 'Logo/icon128.png',
                 title: 'AcFun助手',
