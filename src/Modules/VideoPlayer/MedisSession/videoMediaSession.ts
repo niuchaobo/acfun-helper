@@ -7,7 +7,7 @@ interface Conf {
     enable: boolean
 }
 
-interface MediaSessionBaseInfo {
+export interface MediaSessionBaseInfo {
     title: string
     channel: {
         parentName: string
