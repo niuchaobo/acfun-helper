@@ -40,7 +40,6 @@ export async function fetchResult(url: string, method: "GET" | "POST", data: str
                     'Content-Type': 'application/x-www-form-urlencoded', 'Accept': "*/*"
                 }, body: data, mode: mode, cache: cache, referrerPolicy: referrerPolicy, referrer: referrer
             }
-            console.log(config)
             result = fetch(url, config).then((res => { return res.text() }))
             break;
         case "GET":
@@ -48,7 +47,6 @@ export async function fetchResult(url: string, method: "GET" | "POST", data: str
             result = fetch(url, { credentials: withCredentials ? "include" : "same-origin", mode: mode, cache: cache, referrerPolicy: referrerPolicy, referrer: referrer }).then((response) => {
                 return response.text();
             })
-            console.log("here")
             break;
     }
     return result
