@@ -6,9 +6,10 @@ import { module as flexProgressbar } from "@/Modules/VideoPlayer/FlexProgressBar
 import { module as rightNavBar } from "@/Modules/Pages/IndexRightMenu/rightNavBar"
 import { module as abPlay } from "@/Modules/VideoPlayer/ABPlay/abPlay"
 import { module as mediaSession } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession"
-import { module as bgTabSleep} from "./VideoPlayer/BgTabSleep/bgTabSleep";
+import { module as bgTabSleep } from "./VideoPlayer/BgTabSleep/bgTabSleep";
 import { module as pictureInPicture } from "./VideoPlayer/PIP/pictureInPicture";
+import { module as liveMediaSession } from "./Live/LiveMediaSession/liveMediaSession";
 
 export const features: Record<string, ModuleStd.manifest> = {
-    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay,mediaSession,bgTabSleep,pictureInPicture,
+    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession,
 }
