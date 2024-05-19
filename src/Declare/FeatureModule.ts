@@ -29,10 +29,10 @@ export namespace ModuleStd {
     add: (...e: any) => any;
     remove: (...e: any) => any
   }
-  export interface lordManifest{
-    name:string;
-    requiredSequentialType:SequentialType;
-    main:(...args:any)=>any;
+  export interface lordManifest {
+    name: string;
+    requiredSequentialType: SequentialType;
+    main: (...args: any) => any;
   }
   export interface manifest {
     name: string;
@@ -40,9 +40,16 @@ export namespace ModuleStd {
     sequentialType?: SequentialType;
     workSpace: WorkSpace;
     dataset?: {};
-    main: (...args:any) => any;
-    exit?: (...args:any) => any;
-    enable?: (...args:any) => any;
-    disable?: (...args:any) => any;
+    main: (...args: any) => any;
+    exit?: (...args: any) => any;
+    enable?: (...args: any) => any;
+    disable?: (...args: any) => any;
+  }
+  export interface optManifest {
+    modName: string,
+    name: string,
+    description: string,
+    // location:
+    main: (...args: any) => any;
   }
 }
