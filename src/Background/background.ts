@@ -9,9 +9,8 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
     ExecHost: Record<ModuleStd.SequentialType, Record<ModuleStd.lordManifest["name"], ModuleStd.lordManifest>>;
 
     constructor() {
-        console.log(new Date(), "Hi there! from Backend.");
-        console.log(ExtOptions.saveAll(ExtOptions.sanitizeOptions({})))
-        console.log(ExtOptions.getAll())
+        console.log(new Date(), "Hello from Backend.");
+        chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
 
         this.TypedModules = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
         this.ExecHost = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.lordManifest["name"], ModuleStd.lordManifest>>;
@@ -19,6 +18,7 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
     }
 
     Init() {
+        this.UpdateConf();
         //加载功能模块
         for (let featName in bgFeatures) {
             const module = bgFeatures[featName];
@@ -44,17 +44,16 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
             host.main(this.TypedModules[host.requiredSequentialType])
         }
 
-        chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
     }
 
     onInstalled(details: chrome.runtime.InstalledDetails) {
+        this.UpdateConf();
         const versionNum = chrome.runtime.getManifest().version;
-        console.log(versionNum)
         if (details.reason === 'install') {
             // chrome.tabs.create({ url: chrome.runtime.getURL('bg/firstRun.html') });
             chrome.notifications.create("", {
                 type: 'basic',
-                iconUrl: 'Logo/icon128.png',
+                iconUrl: 'icon/icon128.png',
                 title: 'AcFun助手',
                 message: '安装了！'
             });
@@ -63,7 +62,7 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
             if (versionNum == details.previousVersion) {
                 chrome.notifications.create("", {
                     type: 'basic',
-                    iconUrl: 'Logo/icon128.png',
+                    iconUrl: 'icon/icon128.png',
                     title: 'AcFun助手',
                     message: '重启了！'
                 });
@@ -71,11 +70,16 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
             }
             chrome.notifications.create("", {
                 type: 'basic',
-                iconUrl: 'Logo/icon128.png',
+                iconUrl: 'icon/icon128.png',
                 title: 'AcFun助手',
                 message: '更新了！'
             });
         }
+    }
+
+    UpdateConf() {
+        ExtOptions.saveAll(ExtOptions.sanitizeOptions({}))
+        console.log("配置更新完成");
     }
 
 }

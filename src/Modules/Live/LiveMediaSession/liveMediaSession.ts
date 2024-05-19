@@ -2,7 +2,6 @@ import { ModuleStd } from "@/Declare/FeatureModule";
 import { ExtOptions } from "@/Core/CoreUtils";
 import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { isTargetPage, REG } from "@/Core/Regs";
-import { MediaSessionBaseInfo } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession";
 import { getLiveDataByUid } from "@/Utils/Api/live/liveBaseInfo";
 
 interface Conf {
@@ -10,7 +9,6 @@ interface Conf {
 }
 
 let allOptions: Conf;
-let baseInfo: MediaSessionBaseInfo;
 
 const main = async () => {
     allOptions = await ExtOptions.getValue(module.name) as Conf;

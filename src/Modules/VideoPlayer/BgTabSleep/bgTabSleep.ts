@@ -7,11 +7,7 @@ import { state } from "./bgTabSleepState";
 import { addElement } from "@/Utils/GUI/dom";
 import { createApp, App } from "vue";
 import Main from "./bgTabSleepUI.vue"
-
-interface Conf {
-    enable: boolean;
-    withVolume: boolean;
-}
+import { Conf } from "./bgTabSleepConf";
 
 let allOptions: Conf;
 let beforeChangeTabPlayStatus: boolean;
@@ -45,7 +41,7 @@ const mountApp = () => {
 const trigger = () => {
     let originVolumeNumber = 0;
     document.addEventListener("visibilitychange", () => {
-        if(!state.tempSw){
+        if (!state.tempSw) {
             return
         }
         const volBar = document.querySelector(".volume-panel-content") as HTMLDivElement;
@@ -92,10 +88,6 @@ const trigger = () => {
     })
 }
 
-export const defaultConf: Conf = {
-    enable: false,
-    withVolume: false
-}
 
 export const module: ModuleStd.manifest = {
     name: "BgTabSleep",

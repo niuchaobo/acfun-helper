@@ -5,6 +5,7 @@ import { ModuleStd } from "@/Declare/FeatureModule";
 import { App, createApp } from "vue";
 import Main from "./abplay-ui.vue"
 import { addElement } from "@/Utils/GUI/dom";
+import { Conf } from "./abPlayConf";
 
 let app: App<Element>;
 let allOptions: Conf;
@@ -27,14 +28,6 @@ const main = async () => {
         app.mount("#acArbs-Abplay");
         modLog("Mount App.", module.name, "main..GetAsyncDOM")
     })
-}
-
-interface Conf {
-    enable: boolean,
-}
-
-export const defaultConf: Conf = {
-    enable: true,
 }
 
 export const module: ModuleStd.manifest = {

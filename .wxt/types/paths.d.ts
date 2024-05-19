@@ -15,6 +15,7 @@ declare module "wxt/browser" {
     | "/icon/icon32.png"
     | "/icon/icon48.png"
     | "/icon/icon64.png"
+    | "/options.html"
     | "/popup.html"
   type HtmlPublicPath = Extract<PublicPath, `${string}.html`>
   export interface WxtRuntime extends Runtime.Static {

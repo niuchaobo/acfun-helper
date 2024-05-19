@@ -10,6 +10,7 @@ declare global {
 	var chalk:any;
 	var pageInfo:APIs.DougaInfo;
 	var browser;
+	var AcFunHelperDevKit;
 }
 
 declare namespace CookieStore {
