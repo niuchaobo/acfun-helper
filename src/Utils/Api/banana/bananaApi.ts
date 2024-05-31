@@ -1,6 +1,6 @@
 import { fetchResult } from "@/Core/CoreLibs/WebRequest"
 
-export const banana = {
+export const api = {
     throw: "https://www.acfun.cn/rest/pc-direct/banana/throwBanana",
 }
 
@@ -27,5 +27,5 @@ export async function doThrow(resourceId: string, banana_num: number, dougaType:
     }
 
     let data = "resourceId=" + resourceId + "&count=" + banana_num + "&resourceType=" + resType;
-    return fetchResult(banana.throw, "POST", data, "same-origin", "cors","default","strict-origin-when-cross-origin",window.location.href);
+    return fetchResult(api.throw, "POST", data, "same-origin", "cors", "default", "strict-origin-when-cross-origin", window.location.href);
 }
