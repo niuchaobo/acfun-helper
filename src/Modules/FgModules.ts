@@ -9,7 +9,8 @@ import { module as mediaSession } from "@/Modules/VideoPlayer/MedisSession/video
 import { module as bgTabSleep } from "./VideoPlayer/BgTabSleep/bgTabSleep";
 import { module as pictureInPicture } from "./VideoPlayer/PIP/PinP";
 import { module as liveMediaSession } from "./Live/LiveMediaSession/liveMediaSession";
+import { module as commentIterator } from "./Comment/iterator";
 
 export const features: Record<string, ModuleStd.manifest> = {
-    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession,
+    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession,commentIterator
 }

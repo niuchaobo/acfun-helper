@@ -16,7 +16,7 @@ export class GetAsyncDOM {
     maxWaitTime: number;
     /** 未探测到之后执行的钩子 */
     insure: (e?: any) => any | undefined;
-    probeTimeHandler: number;
+    probeTimeHandler: any;
     devMode: boolean;
     /** 自定义的对象获取方式 */
     advancedQueryMethod: boolean | (() => any);

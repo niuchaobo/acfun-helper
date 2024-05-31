@@ -6,6 +6,9 @@ import { defaultConf as MediaSession } from "@/Modules/VideoPlayer/MedisSession/
 import { defaultConf as BgTabSleep } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleepConf"
 import { defaultConf as PictureInPicture } from "@/Modules/VideoPlayer/PIP/PinPConf"
 import { defaultConf as LiveMediaSession } from "@/Modules/Live/LiveMediaSession/liveMediaSession"
+import { defaultConf as CommentIterator } from "@/Modules/Comment/iterator"
+import { defaultConf as UserTag } from "@/Modules/Comment/UserTag/userTag"
+import { defaultConf as UpAndStaffTag } from "@/Modules/Comment/UpAndStaffTag/upAndStaffTag"
 
 export const readOnlyKey: Array<string> = [
 
@@ -28,4 +31,7 @@ export const defaultOption: Record<string, any> = {
     BgTabSleep,
     PictureInPicture,
     LiveMediaSession,
+    CommentIterator,
+    UserTag,
+    UpAndStaffTag,
 }
