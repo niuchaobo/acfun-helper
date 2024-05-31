@@ -51,10 +51,10 @@ const trigger = () => {
             modLog("Not Got Player", module.name, "trigger")
             return
         }
-        originVolumeNumber = Number(volBarSpan.innerText) / 1e2;
         switch (document.visibilityState) {
             case "hidden":
                 beforeChangeTabPlayStatus = !videoElemt.paused;
+                originVolumeNumber = Number(volBarSpan.innerText) / 1e2;
                 //开启画中画则不暂停
                 if (!document.pictureInPictureElement) {
                     allOptions.withVolume && (videoElemt.volume = 0);
@@ -68,15 +68,16 @@ const trigger = () => {
                     //音量调大~
                     if (!document.pictureInPictureElement && allOptions.withVolume) {
                         //慢慢提大音量
+                        let v = 0;
+                        let videoVolume = videoElemt.volume;
                         var _voluemUpper = setInterval(() => {
-                            let lastVolume = 0;
-                            if (Number(videoElemt.volume) != Number(originVolumeNumber) && Number(videoElemt.volume) <= 1) {
-                                lastVolume = Number((videoElemt.volume).toFixed(2));
-                                videoElemt.volume = Number(lastVolume) + 0.01;
-                                if (Number(videoElemt.volume) == 1) {
+                            if (videoVolume != originVolumeNumber && videoVolume < 1) {
+                                v = Number((videoElemt.volume).toFixed(2));
+                                videoElemt.volume = Number(v) + 0.01;
+                                videoVolume = videoElemt.volume;
+                                if (videoVolume == originVolumeNumber || videoVolume == 1) {
                                     clearTimeout(_voluemUpper);
                                 }
-                                lastVolume = Number((videoElemt.volume).toFixed(2));
                             } else {
                                 clearTimeout(_voluemUpper);
                             }
