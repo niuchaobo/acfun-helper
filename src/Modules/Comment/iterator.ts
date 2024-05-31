@@ -23,7 +23,7 @@ const main = async () => {
     modLog("Init", module.name, "main");
     for (let i in ProcessChain) {
         const mod = ProcessChain[i];
-        !!mod.init ? (await mod.init() && (!!mod.isEnabled ? (mod.isEnabled() ? enabledModules.push(i) : "") : "")) : "";
+        !!mod.init ? (await mod.init() && enabledModules.push(i)) : "";
     }
     GetAsyncDOM.Get(".ac-pc-comment", loaded)
 }

@@ -18,6 +18,7 @@ export const REG = {
     articleDetail: new RegExp("/v/as"),//文章分区详细页
     acVid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/v\\/ac(\\d+)'),
     acAid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/a\\/ac(\\d+)'),
+    acid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/(a|v)\\/ac(\\d+)'),
     acBangumid: new RegExp('http(s)?:\\/\\/www.acfun.cn\\/bangumi/aa(\\d+)'),
     liveRoomID: new RegExp("http(s)?://live.acfun.cn/live/(\\d+)"),
     videoPlayerSrc: new RegExp("blob:https://www.acfun.cn/"),
@@ -34,6 +35,6 @@ export const isTargetPage = (reg: RegExp) => {
     return reg.test(window.location.href)
 }
 
-export const pageAcID = (reg: RegExp) => {
-    return reg.exec(window.location.href)
+export const pageAcID = () => {
+    return REG.acid.exec(window.location.href)?.[3]
 }
