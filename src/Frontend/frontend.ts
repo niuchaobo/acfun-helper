@@ -5,6 +5,7 @@ import { fgDebugLog, LogLevel, modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { GetAsyncDOM } from "@/Core/CoreUtils";
 import { isTargetPage, REG } from "@/Core/Regs";
 import { fetchPageInfo } from "./pageInfo";
+import { GlobalStyleManager } from "@/Utils/StyleManager";
 
 interface AcFunHelperFgRuntimeData {
     dataset: {
@@ -16,6 +17,7 @@ interface AcFunHelperFgRuntimeData {
 export class AcFunHelperFrontend implements AcFunHelperFgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
     runtime: AcFunHelperFgRuntimeData;
+    StyleManager: GlobalStyleManager;
     constructor() {
         this.TypedModules = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
         this.runtime = {
@@ -24,6 +26,7 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
                 dougaInfo: {} as APIs.DougaInfo
             }
         }
+        this.StyleManager = new GlobalStyleManager();
         this.Init();
     }
 

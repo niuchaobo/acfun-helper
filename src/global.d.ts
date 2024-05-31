@@ -1,16 +1,18 @@
 import { AcFunHelperBackend } from "./Background/background";
-import { AcFunHelperBgFrame,AcFunHelperFgFrame } from "./Core/Sigularity";
+import { AcFunHelperBgFrame, AcFunHelperFgFrame } from "./Core/Sigularity";
 import { AcFunHelperFrontend } from "./Frontend/frontend";
+import { GlobalStyleManager } from "./Utils/StyleManager";
 
 declare global {
 	var AcFunHelperFg: AcFunHelperFrontend;
-	var AcFunHelperBackend:AcFunHelperBackend;
+	var AcFunHelperBackend: AcFunHelperBackend;
 	var CookieStore: CookieStore;
-	var alitadebug:boolean;
-	var chalk:any;
-	var pageInfo:APIs.DougaInfo;
+	var alitadebug: boolean;
+	var chalk: any;
+	var pageInfo: APIs.DougaInfo;
 	var browser;
 	var AcFunHelperDevKit;
+	var AcFunHelperStyleMgr: GlobalStyleManager;
 }
 
 declare namespace CookieStore {
