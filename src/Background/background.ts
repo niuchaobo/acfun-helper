@@ -3,6 +3,7 @@ import { ExtOptions } from "@/Core/CoreUtils";
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { bgFeatures } from "@/Modules/BgModules";
 import { hosts } from "./ExecHostReg";
+import { MainReqHandler } from "./RequestApi/reqApi";
 
 export class AcFunHelperBackend implements AcFunHelperBgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
@@ -11,6 +12,7 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
     constructor() {
         console.log(new Date(), "Hello from Backend.");
         chrome.runtime.onInstalled.addListener(this.onInstalled.bind(this));
+        MainReqHandler()
 
         this.TypedModules = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
         this.ExecHost = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.lordManifest["name"], ModuleStd.lordManifest>>;

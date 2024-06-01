@@ -32,7 +32,8 @@ export default defineConfig({
       "notifications",
       "declarativeContent",
       "scripting",
-      "contextMenus"
+      "contextMenus",
+      "declarativeNetRequest", "declarativeNetRequestWithHostAccess", "declarativeNetRequestFeedback"
     ],
   },
   imports: {

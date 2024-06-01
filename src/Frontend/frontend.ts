@@ -27,6 +27,7 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
             }
         }
         this.StyleManager = new GlobalStyleManager();
+        globalThis.AcFunHelperStyleMgr = this.StyleManager;
         this.Init();
     }
 
