@@ -27,7 +27,7 @@ export class GetAsyncDOM {
      * GetAsyncDOM Class Version!
      * @description 监听DOM对象 模块版本!
      */
-    constructor(target: string, fn: (e?: any) => {}, time: number = 2500, devMode: boolean = false, insure: (e?: any) => any, purpose: string | ((e: boolean | HTMLElement | HTMLCollection, f: any) => boolean) = "exist", instantMode: boolean = true, maxWaitTime: number = 30000, advancedQueryMethod: boolean | (() => any) = false, extraParam: string | Array<any> | object = "") {
+    constructor(target: string, fn: (e?: any) => any, time: number = 2500, devMode: boolean = false, insure: (e?: any) => any, purpose: string | ((e: boolean | HTMLElement | HTMLCollection, f: any) => boolean) = "exist", instantMode: boolean = true, maxWaitTime: number = 30000, advancedQueryMethod: boolean | (() => any) = false, extraParam: string | Array<any> | object = "") {
         this.index = 0;
         this.iterLimit = 0;
 
@@ -120,9 +120,13 @@ export class GetAsyncDOM {
      * 模仿莫老板写的GetAsyncDOM，大概原汁原味？
      * @example GetAsyncDOM.Get(".ac-comment-list",function(){ console.log("2333") })
      */
-    static Get(target: string, fn: (e?: any) => any, time: number = 2500, isDev: boolean = false): GetAsyncDOM {
+    static Get(target: string, fn: (e?: any) => any, time: number = 2500, isDev: boolean = false, reqResponse: boolean = false): GetAsyncDOM | Promise<any> {
         const inst = new GetAsyncDOM(target, fn, time, isDev, () => { });
-        inst.probe();
-        return inst;
+        const resp = inst.probe();
+        if (reqResponse) {
+            return resp;
+        } else {
+            return inst;
+        }
     }
 }

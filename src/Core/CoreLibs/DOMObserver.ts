@@ -153,3 +153,64 @@ export class DOMObserver {
     }
 
 }
+
+
+export class DOMObserverSlim {
+    target: observeTarget;
+    trigger: MutationCallback;
+
+    observerInstance: MutationObserver;
+    devMode: boolean = false;
+    MutationObserverFg: { new(callback: MutationCallback): MutationObserver; prototype: MutationObserver; };
+
+    constructor(target: observeTarget, trigger: MutationCallback, devMode: boolean) {
+        this.target = target;
+        this.trigger = trigger;
+
+        this.MutationObserverFg = window.MutationObserver;
+        this.observerInstance = {} as MutationObserver;
+        this.devMode = devMode;
+        this.devMode && console.log("Init Class.")
+    }
+
+    init() {
+        this.devMode && console.log("Init target: " + this.target.name)
+        this.createObserver();
+    }
+
+    createObserver() {
+        let obsv: MutationObserver;
+        obsv = new this.MutationObserverFg(this.trigger);
+        this.devMode && console.log("createObserver for " + this.target.name);
+
+        obsv.observe(this.target.targetNode, this.target.config);
+        this.devMode && console.log("startObserver for " + this.target.name);
+
+        this.observerInstance = obsv;
+    }
+
+    static L1Cilds(target: Element, trigger: MutationCallback, devMode: boolean) {
+        const inst = new DOMObserverSlim({
+            name: "Main",
+            targetNode: target,
+            config: {
+                childList: true, attributes: false
+            }
+        }, trigger, devMode)
+        inst.init();
+        return inst;
+    }
+
+    static allChilds(target: Element, trigger: MutationCallback, devMode: boolean = false) {
+        const inst = new DOMObserverSlim({
+            name: "Main",
+            targetNode: target,
+            config: {
+                childList: true, attributes: false, subtree: true
+            }
+        }, trigger, devMode)
+        inst.init();
+        return inst;
+    }
+
+}

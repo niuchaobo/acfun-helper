@@ -118,7 +118,7 @@ export const throttle = (func: Function, time: number, immediate = false) => {
 }
 
 export const debounce = (fn: Function, delay: number) => {
-    let timer: number | null = null;
+    let timer: any = null;
     return (...args: any) => {
         let _this = this;
         let _args = args;
