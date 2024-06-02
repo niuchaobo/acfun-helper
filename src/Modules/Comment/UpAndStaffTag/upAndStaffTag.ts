@@ -1,7 +1,7 @@
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { ExtOptions } from "@/Core/CoreUtils";
 import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
-import { pageAcID } from "@/Core/Regs";
+import { REG, isTargetPage, pageAcID } from "@/Core/Regs";
 import { getStaffInfo, StaffInfoApi } from "@/Utils/Api/douga/staff";
 
 interface Conf {
@@ -37,10 +37,19 @@ let staffUidList: Array<string> = [];
 const init = async () => {
     allOptions = await ExtOptions.getValue(module.name) as Conf;
     if (allOptions.enable) {
+        AcFunHelperStyleMgr.add(module.name, "up", styleText) ? "" : log("style add faild.", "init");
         acid = pageAcID() ?? "";
-        if (acid.length == 0) {
+        log("init: " + acid.length ? "type api" : "type gui", "");
+        if (acid.length == 0 || isTargetPage(REG.article)) {
             // 没获取到ACID就应该换方案了，因为通过API获取到Staff信息需要ACID
             infoGatherMethold = 1;
+            staffGUICache = {
+                "upInfo": {},
+                "staffInfos": [],
+            } as unknown as StaffInfoFromGUI;
+            if (isTargetPage(REG.article)) {
+                return gatherInfoFromArticlePage();
+            }
             return gatherInfoFromPage();
         }
         staffApiCache = await getStaffInfo(acid);
@@ -51,14 +60,11 @@ const init = async () => {
             index += 1;
         })
         staffUidList = Object.keys(staffApiUidMap)
-        console.log(staffApiUidMap, staffUidList)
         if (!staffApiCache || staffApiCache.result != 0) {
             infoGatherMethold = 1;
             //API请求失败或者消息有问题，就返回通过DOM获取信息的情况
             return !!staffGUICache;
         }
-        log("", "init");
-        AcFunHelperStyleMgr.add(module.name, "up", styleText) ? "" : log("style add faild.", "init");
         return true;
     }
     return false;
@@ -81,18 +87,37 @@ span.pos.staff {
 }`
 
 const log = (msg: string, position: string) => {
-    modLog("CommentIteratorProcessChainItem: " + msg + module.name, module.name, position);
+    modLog(msg, module.name, position);
 }
 
-//TODO
+const gatherInfoFromArticlePage = () => {
+    if (infoGatherMethold != 1) {
+        return false;
+    }
+    const upInfoArea = document.querySelector("section#up-info");
+    if (!upInfoArea) {
+        return false;
+    }
+    const aName = upInfoArea.querySelector("a.name") as HTMLAnchorElement;
+    if (!aName) {
+        return false;
+    }
+    const UpUid = aName.href.match(/[0-9]+/)?.[0] ?? "";
+    if (!UpUid.length) {
+        return false;
+    }
+    staffGUICache["upInfo"] = {
+        "id": UpUid,
+        "name": "Up",
+        "staffRoleName": "Up"
+    }
+    return true;
+}
+
 const gatherInfoFromPage = (): boolean => {
     if (infoGatherMethold != 1) {
         return false;
     }
-    staffGUICache = {
-        "upInfo": {},
-        "staffInfos": [],
-    } as unknown as StaffInfoFromGUI;
     const staffArea = document.querySelector("div.introduction>div.up-area.staff-area");
     if (!staffArea?.children?.length) {
         return false
@@ -103,13 +128,13 @@ const gatherInfoFromPage = (): boolean => {
         switch (e.className) {
             case "up-details staff-details":
                 staffGUICache["upInfo"] = {
-                    id: (e.querySelector("a.up-name") as HTMLAnchorElement).href.match(/[0-9]+/)?.[0] ?? "-1",
+                    id: (e.querySelector("a.up-name") as HTMLAnchorElement).href.match(/[0-9]+/)?.[0] ?? "",
                     name: (e.querySelector("a.up-name") as HTMLElement).innerText ?? "Up主",
                     staffRoleName: (e.querySelector("div.role") as HTMLElement).innerText ?? "Up主",
                 }
                 break;
             case "staff-details":
-                const userid = (e.querySelector("a.staff-name") as HTMLAnchorElement).href.match(/[0-9]+/)?.[0] ?? "-1"
+                const userid = (e.querySelector("a.staff-name") as HTMLAnchorElement).href.match(/[0-9]+/)?.[0] ?? ""
                 staffGUICache["staffInfos"][userid] = {
                     id: userid,
                     name: (e.querySelector("a.staff-name") as HTMLElement).innerText ?? "合作者",

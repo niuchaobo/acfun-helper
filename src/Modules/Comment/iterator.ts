@@ -3,6 +3,7 @@ import { ExtOptions, GetAsyncDOM } from "@/Core/CoreUtils";
 import { isTargetPage, REG } from "@/Core/Regs";
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { ProcessChain } from "./commentProcChain";
+import { DOMObserverSlim } from "@/Core/CoreLibs/DOMObserver";
 
 interface Conf {
     enable: boolean
@@ -28,9 +29,49 @@ const main = async () => {
     GetAsyncDOM.Get(".ac-pc-comment", loaded)
 }
 
+interface AcceptableForEachMethod {
+    forEach: (callbackfn: (value: Element, key: number, parent: NodeListOf<Element>) => void) => any;
+}
+
 const loaded = () => {
     const commentList = document.querySelectorAll(".area-comment-title");
-    commentList.forEach(e => {
+    iterator(commentList);
+    const CommentAreaElem = document.querySelector(".ac-pc-comment ");
+    if (!CommentAreaElem) {
+        return false;
+    }
+    // 评论区DOM变动（折叠的评论、评论区刷新、）后的操作逻辑
+    DOMObserverSlim.allChilds(CommentAreaElem, (m: MutationRecord[], e: MutationObserver) => {
+        const rerenderArea = m[0].target as HTMLDivElement;
+        switch (rerenderArea.className) {
+            case "area-sec-list":
+                const commentList = rerenderArea.querySelectorAll(".area-comment-title");
+                iterator(commentList);
+                break;
+            case "ac-comment-loading":
+                const probe = new GetAsyncDOM(".ac-comment-loading", () => {
+                    const commentListAfterLoading = document.querySelectorAll(".area-comment-title");
+                    iterator(commentListAfterLoading);
+                }, 3000, false, () => { }, (e) => {
+                    if (!(e instanceof HTMLElement)) {
+                        return false;
+                    }
+                    if (e.childElementCount == 0) {
+                        return true;
+                    }
+                    return false;
+                })
+                probe.probe();
+                break;
+            default:
+                break;
+        }
+    })
+    return true;
+}
+
+const iterator = (domList: AcceptableForEachMethod) => {
+    domList.forEach(e => {
         enabledModules.forEach(m => {
             const module = ProcessChain[m];
             module.main(e);
