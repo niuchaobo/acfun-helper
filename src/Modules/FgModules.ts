@@ -7,10 +7,12 @@ import { module as rightNavBar } from "@/Modules/Pages/IndexRightMenu/rightNavBa
 import { module as abPlay } from "@/Modules/VideoPlayer/ABPlay/abPlay"
 import { module as mediaSession } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession"
 import { module as bgTabSleep } from "./VideoPlayer/BgTabSleep/bgTabSleep";
-import { module as pictureInPicture } from "./VideoPlayer/PIP/PinP";
+import { module as pictureInPicture } from "./VideoPlayer/PicInPic";
 import { module as liveMediaSession } from "./Live/LiveMediaSession/liveMediaSession";
 import { module as commentIterator } from "./Comment/iterator";
+import { module as initNetPage } from "./Pages/NextPage/init";
+import { module as indexNextPage } from "./Pages/NextPage/index"
 
 export const features: Record<string, ModuleStd.manifest> = {
-    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession,commentIterator
+    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, initNetPage, indexNextPage
 }

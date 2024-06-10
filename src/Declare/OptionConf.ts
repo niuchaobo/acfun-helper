@@ -4,11 +4,13 @@ import { defaultConf as SearchMenu } from "@/Modules/Global/SearchMenu/searchMen
 import { defaultConf as OmniAcid } from "@/Modules/Global/Omnibox/acid"
 import { defaultConf as MediaSession } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession"
 import { defaultConf as BgTabSleep } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleepConf"
-import { defaultConf as PictureInPicture } from "@/Modules/VideoPlayer/PIP/PinPConf"
+import { defaultConf as PictureInPicture } from "@/Modules/VideoPlayer/PicInPic/conf"
 import { defaultConf as LiveMediaSession } from "@/Modules/Live/LiveMediaSession/liveMediaSession"
 import { defaultConf as CommentIterator } from "@/Modules/Comment/iterator"
 import { defaultConf as UserTag } from "@/Modules/Comment/UserTag/userTag"
 import { defaultConf as UpAndStaffTag } from "@/Modules/Comment/UpAndStaffTag/upAndStaffTag"
+import { defaultConf as InitNextPage } from "@/Modules/Pages/NextPage/init"
+import { defaultConf as IndexNextPage } from "@/Modules/Pages/NextPage/index"
 
 export const readOnlyKey: Array<string> = [
 
@@ -34,4 +36,6 @@ export const defaultOption: Record<string, any> = {
     CommentIterator,
     UserTag,
     UpAndStaffTag,
+    InitNextPage,
+    IndexNextPage,
 }

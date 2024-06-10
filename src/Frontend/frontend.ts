@@ -6,6 +6,7 @@ import { GetAsyncDOM } from "@/Core/CoreUtils";
 import { isTargetPage, REG } from "@/Core/Regs";
 import { fetchPageInfo } from "./pageInfo";
 import { GlobalStyleManager } from "@/Utils/StyleManager";
+import { KeyBindMgr } from "@/Utils/KeyBind/KeyBindMgr"
 
 interface AcFunHelperFgRuntimeData {
     dataset: {
@@ -18,6 +19,7 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
     runtime: AcFunHelperFgRuntimeData;
     StyleManager: GlobalStyleManager;
+    KeyMgr: typeof KeyBindMgr = KeyBindMgr;
     constructor() {
         this.TypedModules = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
         this.runtime = {

@@ -5,6 +5,7 @@ import { ExtOptions } from "@/Core/CoreUtils";
 import 'mdui/mdui.css';
 import 'mdui';
 import { createPinia } from "pinia";
+import { KeyBindMgr } from "@/Utils/KeyBind/KeyBindMgr";
 
 const pinia = createPinia();
 const app = Vue.createApp(settingApp);
@@ -12,7 +13,7 @@ app.use(pinia)
 app.mount("#Main");
 
 const AcFunHelperDevKit = {
-    ExtOptions,
+    ExtOptions,KeyBindMgr
 }
 
 globalThis.AcFunHelperDevKit = AcFunHelperDevKit;

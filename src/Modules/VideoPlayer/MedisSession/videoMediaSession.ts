@@ -36,12 +36,12 @@ const main = async () => {
     }
     //兼容性检查
     if (!("mediaSession" in navigator)) {
-        modLog("此浏览器不支持MediaSession", module.name, "main")
+        modLog("此浏览器不支持MediaSession", module.name, "main");
         return
     }
     //稿件信息情况检查
     if (!globalThis.AcFunHelperFg.runtime.dataset.fetchDougaInfoStatus) {
-        modLog("在此之前的稿件信息获取失败，此处后续操作取消", module.name, "main")
+        modLog("在此之前的稿件信息获取失败，此处后续操作取消", module.name, "main");
         return
     }
     videoInfo = globalThis.AcFunHelperFg.runtime.dataset.dougaInfo;

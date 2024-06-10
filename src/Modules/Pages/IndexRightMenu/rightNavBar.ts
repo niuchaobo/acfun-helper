@@ -7,7 +7,7 @@ import "./backTopAsCtr.scss"
 let navItems: { name: string; title: string; id: string }[] = [];
 let container: HTMLDivElement;
 let bannedPart = [];
-const presetList = [
+export const presetList = [
     { name: '排行', id: 'pagelet_top_area', title: '？' },
     { name: '正在直播', id: 'pagelet_live', title: '单推还是DD？' },
     { name: '猴子推荐', id: 'pagelet_monkey_recommend', title: '吃我五蕉啦！' },
