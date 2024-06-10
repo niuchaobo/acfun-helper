@@ -20,15 +20,15 @@
     "material-design-icons": "^3.0.1",
     "mdui": "^2.1.1",
     "pinia": "^2.1.7",
+    "tinykeys": "^2.1.0",
     "vue": "^3.4.27"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.30",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "sass": "^1.77.1",
-    "tinykeys": "^2.1.0",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "sass": "^1.77.4",
     "typescript": "^5.4.5",
-    "vue-tsc": "^2.0.17",
+    "vue-tsc": "^2.0.21",
     "wxt": "^0.17.12"
   }
 }

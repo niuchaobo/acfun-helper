@@ -3,9 +3,9 @@ import { ExtOptions, GetAsyncDOM } from "@/Core/CoreUtils";
 import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { isTargetPage, REG } from "@/Core/Regs";
 import { createApp, App } from "vue";
-import Main from "./PinPUI.vue";
+import Main from "./ui.vue";
 import { addElement } from "@/Utils/GUI/dom";
-import { Conf } from "./PinPConf";
+import { Conf } from "./conf";
 
 let allOptions: Conf;
 let app: App<Element>;
@@ -22,10 +22,10 @@ const main = async () => {
     modLog("Init", module.name, "main")
     GetAsyncDOM.Get("div.control-btn.setting", () => {
         addElement({ tag: "div", id: "acArbs-pictureInpicture", classes: "control-btn pip", target: document.querySelector("div.control-btn.setting") as Element, createMode: "after" });
-        modLog("Init Container.", module.name, "main..GetAsyncDOM")
+        modLog("Init Container.", module.name, "main..GetAsyncDOM");
         app = createApp(Main);
         app.mount("#acArbs-pictureInpicture");
-        modLog("Mount App.", module.name, "main..GetAsyncDOM")
+        modLog("Mount App.", module.name, "main..GetAsyncDOM");
     })
 }
 

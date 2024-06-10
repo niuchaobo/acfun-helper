@@ -13,6 +13,7 @@ declare global {
 	var browser;
 	var AcFunHelperDevKit;
 	var AcFunHelperStyleMgr: GlobalStyleManager;
+	var documentPictureInPicture: lib.TrustedTypesWindow;
 }
 
 declare namespace CookieStore {

@@ -3,28 +3,94 @@
         <div class=" control-btn btn-pip" @click="toggle">
             <span class="btn-span setPictureInPictureMode"></span>
         </div>
-        <span class="tip-pip">画中画</span>
+        <span class="tip-pip">画中画x</span>
     </div>
 </template>
 
 <script setup lang="ts">
 import { modLog } from '@/Core/CoreLibs/ConsoleProxy';
-
+//PIP是否已打开
 let status: boolean = false;
+
+let docPIPInst: Window | undefined;
+let playerWraper2: HTMLElement | null;
 
 const log = (msg: string) => {
     modLog(msg, "PictureInPicture", "_view.main");
 }
 
 const toggle = () => {
-    log("StatusChange: " + String(status));
     if (status) {
-        document.exitPictureInPicture();
+        if ("documentPictureInPicture" in window) {
+            documentPIPDisable();
+        } else {
+            document.exitPictureInPicture();
+        }
         status = false;
     } else {
-        document.getElementsByTagName("video")[0].requestPictureInPicture();
+        if ("documentPictureInPicture" in window) {
+            documentPIPEnable();
+        } else {
+            document.getElementsByTagName("video")[0].requestPictureInPicture();
+        }
         status = true;
     }
+    log("StatusChange: " + String(status));
+}
+
+/**
+ * @refer https://runebook.dev/zh/docs/dom/document_picture-in-picture_api/using
+ */
+const documentPIPEnable = async () => {
+    if (!!docPIPInst == true) {
+        return
+    }
+    playerWraper2 = document.querySelector("div#player");
+    if (!playerWraper2) {
+        return
+    }
+    docPIPInst = await window.documentPictureInPicture.requestWindow({
+        width: 640,
+        height: 360,
+    });
+    [...document.styleSheets].forEach((styleSheet) => {
+        try {
+            const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join("");
+            const style = document.createElement("style");
+            style.textContent = cssRules;
+            docPIPInst?.document.head.appendChild(style);
+        } catch (e) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.type = styleSheet.type;
+            link.media = styleSheet.media as unknown as string;
+            link.href = styleSheet.href as unknown as string;
+            docPIPInst?.document.head.appendChild(link);
+        }
+    });
+    const hideStatus = document.createElement("style");
+    hideStatus.sheet?.insertRule(".container-controls .video-status { display:none !important }");
+    docPIPInst?.document.head.append(hideStatus);
+    docPIPInst?.document.body.append(playerWraper2);
+    //监听使用关闭窗口按钮关闭PIP
+    docPIPInst?.addEventListener("pagehide", () => {
+        if (status) {
+            toggle();
+        }
+    })
+}
+
+const documentPIPDisable = async () => {
+    if (!!docPIPInst == false) {
+        return
+    }
+    const originalPlayerWrapperContainer = document.querySelector("div.player-box");
+    if (!originalPlayerWrapperContainer || !playerWraper2) {
+        return
+    }
+    originalPlayerWrapperContainer.append(playerWraper2);
+    window.documentPictureInPicture.window.close();
+    docPIPInst = undefined;
 }
 
 </script>
