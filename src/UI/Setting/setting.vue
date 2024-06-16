@@ -60,7 +60,7 @@
                                 data-id="Video">视频</mdui-list-item>
                             <div style="margin-left: 2.5rem">
                                 <mdui-list-item data-type="L2" data-id="ABPlay">AB回放</mdui-list-item>
-                                <mdui-list-item data-type="L2" data-id="BgTabSleep">后台标签页暂停播放</mdui-list-item>
+                                <mdui-list-item data-type="L2" data-id="BgTabSleep" v-if="browserType=='FF'">后台标签页暂停播放</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                         <mdui-collapse-item id="articleEntry">
@@ -129,6 +129,7 @@ import Page from './Page/index.vue';
 import Tool from './Tool/index.vue';
 
 let navigationDrawer: NavigationDrawer;
+const browserType = thisBrowser();
 const store = useActivatePart();
 //抽屉的下一个状态，false=>关，true=>开
 const drawerState = ref(false);

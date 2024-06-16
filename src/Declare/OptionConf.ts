@@ -11,6 +11,7 @@ import { defaultConf as UserTag } from "@/Modules/Comment/UserTag/userTag"
 import { defaultConf as UpAndStaffTag } from "@/Modules/Comment/UpAndStaffTag/upAndStaffTag"
 import { defaultConf as InitNextPage } from "@/Modules/Pages/NextPage/init"
 import { defaultConf as IndexNextPage } from "@/Modules/Pages/NextPage/index"
+import { defaultConf as NormalPartListNextPage } from "@/Modules/Pages/NextPage/partList"
 
 export const readOnlyKey: Array<string> = [
 
@@ -38,4 +39,5 @@ export const defaultOption: Record<string, any> = {
     UpAndStaffTag,
     InitNextPage,
     IndexNextPage,
+    NormalPartListNextPage,
 }

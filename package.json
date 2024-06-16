@@ -15,7 +15,7 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.263",
+    "@types/chrome": "^0.0.268",
     "dayjs": "^1.11.11",
     "material-design-icons": "^3.0.1",
     "mdui": "^2.1.1",
@@ -26,9 +26,9 @@
   "devDependencies": {
     "@types/jquery": "^3.5.30",
     "@vitejs/plugin-vue": "^5.0.5",
-    "sass": "^1.77.4",
+    "sass": "^1.77.5",
     "typescript": "^5.4.5",
     "vue-tsc": "^2.0.21",
-    "wxt": "^0.17.12"
+    "wxt": "^0.18.4"
   }
 }

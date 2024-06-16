@@ -26,6 +26,7 @@ export const REG = {
     topicCircle: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/(\d*)"),
     momentContent: new RegExp("^https:\/\/m.acfun.cn\/communityCircle\/moment\/(\d*)"),
     arubamu: new RegExp("http(s)?:\\/\\/www.acfun.cn\\/a\\/aa(\\d+)"),//合集
+    search: new RegExp("/search"),
     method: {
 
     },

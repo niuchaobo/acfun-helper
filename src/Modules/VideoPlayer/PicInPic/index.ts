@@ -11,6 +11,10 @@ let allOptions: Conf;
 let app: App<Element>;
 
 const main = async () => {
+    if (thisBrowser() == "FF") {
+        modLog("Incompatible browser.", module.name, "main");
+        return
+    }
     allOptions = await ExtOptions.getValue(module.name) as Conf;
     if (!allOptions.enable) {
         return

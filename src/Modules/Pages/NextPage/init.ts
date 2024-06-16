@@ -8,6 +8,11 @@ interface Conf {
 
 let allOptions: Conf;
 
+interface ModInitResp {
+    key: string
+    main: (e: any) => any
+}
+
 const main = async () => {
     allOptions = await ExtOptions.getValue(module.name) as Conf;
     if (!allOptions.enable) {
@@ -20,9 +25,11 @@ const main = async () => {
     const KeyMgr = globalThis.AcFunHelperFg.KeyMgr;
     for (let i in modList) {
         const mod = modList[i];
-        if(mod.init!=undefined){
-            const setting = await mod.init();
-            KeyMgr.Add(setting.key,setting.main);
+        if (mod.init != undefined) {
+            const setting: Array<ModInitResp> = await mod.init();
+            setting?.length && setting.forEach(e => {
+                KeyMgr.Add(e.key, e.main);
+            })
         }
     }
     KeyMgr.Hook();

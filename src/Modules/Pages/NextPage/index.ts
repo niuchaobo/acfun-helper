@@ -36,10 +36,10 @@ const init = async () => {
         menuList.push(e.id)
     })
 
-    return {
+    return [{
         key: "Shift+PageDown",
         main
-    }
+    }]
 }
 
 export const defaultConf: Conf = {
