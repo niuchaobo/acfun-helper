@@ -43,6 +43,7 @@ export default defineConfig({
   },
   entrypointsDir: "./Core/Entry",
   publicDir: "./Asset",
+  modulesDir: "./WxtModules",
   srcDir: "./src/",
   runner: {
 

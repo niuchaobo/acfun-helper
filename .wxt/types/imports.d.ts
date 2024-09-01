@@ -12,19 +12,23 @@ declare global {
   const createShadowRootUi: typeof import('wxt/client')['createShadowRootUi']
   const curry: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['curry']
   const debounce: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['debounce']
+  const defineAppConfig: typeof import('wxt/sandbox')['defineAppConfig']
   const defineBackground: typeof import('wxt/sandbox')['defineBackground']
   const defineConfig: typeof import('wxt')['defineConfig']
   const defineContentScript: typeof import('wxt/sandbox')['defineContentScript']
   const defineUnlistedScript: typeof import('wxt/sandbox')['defineUnlistedScript']
+  const defineWxtPlugin: typeof import('wxt/sandbox')['defineWxtPlugin']
   const fakeBrowser: typeof import('wxt/testing')['fakeBrowser']
   const getUpUid: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Get')['getUpUid']
   const hasThrowBanana: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Check')['hasThrowBanana']
+  const injectScript: typeof import('wxt/client')['injectScript']
   const isFollowed: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Check')['isFollowed']
   const isLogin: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Check')['isLogin']
   const removeRefTypeValueListener: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['removeRefTypeValueListener']
   const storage: typeof import('wxt/storage')['storage']
   const thisBrowser: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['thisBrowser']
   const throttle: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['throttle']
+  const useAppConfig: typeof import('wxt/client')['useAppConfig']
 }
 // for vue template auto import
 import { UnwrapRef } from 'vue'
@@ -41,47 +45,22 @@ declare module 'vue' {
     readonly createShadowRootUi: UnwrapRef<typeof import('wxt/client')['createShadowRootUi']>
     readonly curry: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['curry']>
     readonly debounce: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['debounce']>
+    readonly defineAppConfig: UnwrapRef<typeof import('wxt/sandbox')['defineAppConfig']>
     readonly defineBackground: UnwrapRef<typeof import('wxt/sandbox')['defineBackground']>
     readonly defineConfig: UnwrapRef<typeof import('wxt')['defineConfig']>
     readonly defineContentScript: UnwrapRef<typeof import('wxt/sandbox')['defineContentScript']>
     readonly defineUnlistedScript: UnwrapRef<typeof import('wxt/sandbox')['defineUnlistedScript']>
+    readonly defineWxtPlugin: UnwrapRef<typeof import('wxt/sandbox')['defineWxtPlugin']>
     readonly fakeBrowser: UnwrapRef<typeof import('wxt/testing')['fakeBrowser']>
     readonly getUpUid: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Get')['getUpUid']>
     readonly hasThrowBanana: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Check')['hasThrowBanana']>
+    readonly injectScript: UnwrapRef<typeof import('wxt/client')['injectScript']>
     readonly isFollowed: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Check')['isFollowed']>
     readonly isLogin: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Check')['isLogin']>
     readonly removeRefTypeValueListener: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['removeRefTypeValueListener']>
     readonly storage: UnwrapRef<typeof import('wxt/storage')['storage']>
     readonly thisBrowser: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['thisBrowser']>
     readonly throttle: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['throttle']>
+    readonly useAppConfig: UnwrapRef<typeof import('wxt/client')['useAppConfig']>
   }
 }
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
-    readonly ContentScriptContext: UnwrapRef<typeof import('wxt/client')['ContentScriptContext']>
-    readonly GlobalStyleManager: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/StyleManager')['GlobalStyleManager']>
-    readonly InvalidMatchPattern: UnwrapRef<typeof import('wxt/sandbox')['InvalidMatchPattern']>
-    readonly MatchPattern: UnwrapRef<typeof import('wxt/sandbox')['MatchPattern']>
-    readonly addRefTypeValueListener: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['addRefTypeValueListener']>
-    readonly browser: UnwrapRef<typeof import('wxt/browser')['browser']>
-    readonly createIframeUi: UnwrapRef<typeof import('wxt/client')['createIframeUi']>
-    readonly createIntegratedUi: UnwrapRef<typeof import('wxt/client')['createIntegratedUi']>
-    readonly createShadowRootUi: UnwrapRef<typeof import('wxt/client')['createShadowRootUi']>
-    readonly curry: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['curry']>
-    readonly debounce: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['debounce']>
-    readonly defineBackground: UnwrapRef<typeof import('wxt/sandbox')['defineBackground']>
-    readonly defineConfig: UnwrapRef<typeof import('wxt')['defineConfig']>
-    readonly defineContentScript: UnwrapRef<typeof import('wxt/sandbox')['defineContentScript']>
-    readonly defineUnlistedScript: UnwrapRef<typeof import('wxt/sandbox')['defineUnlistedScript']>
-    readonly fakeBrowser: UnwrapRef<typeof import('wxt/testing')['fakeBrowser']>
-    readonly getUpUid: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Get')['getUpUid']>
-    readonly hasThrowBanana: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Check')['hasThrowBanana']>
-    readonly isFollowed: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Check')['isFollowed']>
-    readonly isLogin: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Check')['isLogin']>
-    readonly removeRefTypeValueListener: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['removeRefTypeValueListener']>
-    readonly storage: UnwrapRef<typeof import('wxt/storage')['storage']>
-    readonly thisBrowser: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['thisBrowser']>
-    readonly throttle: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['throttle']>
-  }
-}
-

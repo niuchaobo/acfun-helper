@@ -1,4 +1,4 @@
-import { AcFunHelperBackend } from "./Background/background";
+import { AcFunHelperBackend } from "./Background/backend";
 import { AcFunHelperBgFrame, AcFunHelperFgFrame } from "./Core/Sigularity";
 import { AcFunHelperFrontend } from "./Frontend/frontend";
 import { GlobalStyleManager } from "./Utils/StyleManager";

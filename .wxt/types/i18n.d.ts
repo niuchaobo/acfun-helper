@@ -15,7 +15,7 @@ declare module "wxt/browser" {
   export interface WxtI18n extends I18n.Static {
     /**
      * The extension or app ID; you might use this string to construct URLs for resources inside the extension. Even unlocalized extensions can use this message.
-Note: You can't use this message in a manifest file.
+     * Note: You can't use this message in a manifest file.
      *
      * "<browser.runtime.id>"
      */
@@ -25,8 +25,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "<browser.i18n.getUiLocale()>"
      */
     getMessage(
@@ -75,8 +73,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "AcFun助手"
      */
     getMessage(
@@ -85,8 +81,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "AcFun助手"
      */
     getMessage(
@@ -95,8 +89,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "AcFun助手"
      */
     getMessage(
@@ -105,8 +97,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "进入主站"
      */
     getMessage(
@@ -115,8 +105,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "查看 $KEYWORD$ 在主站的有关内容"
      */
     getMessage(
@@ -125,8 +113,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "上次更新到 $LASTVIDEO$"
      */
     getMessage(
@@ -135,8 +121,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "概览"
      */
     getMessage(
@@ -145,8 +129,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "今天有 $LEN$ 个番剧更新。"
      */
     getMessage(
@@ -155,8 +137,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "AcFun 助手 - 番剧更新提示"
      */
     getMessage(
@@ -165,8 +145,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "今天大概有 $LEN$ 个番剧更新。"
      */
     getMessage(
@@ -175,8 +153,6 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "助手-我的番剧"
      */
     getMessage(
@@ -185,12 +161,15 @@ Note: You can't use this message in a manifest file.
       options?: GetMessageOptions,
     ): string;
     /**
-     * No message description.
-     *
      * "主站-番剧"
      */
     getMessage(
       messageName: "bangumiUpdateNotifyBtn1",
+      substitutions?: string | string[],
+      options?: GetMessageOptions,
+    ): string;
+    getMessage(
+      messageName: "@@extension_id" | "@@ui_locale" | "@@bidi_dir" | "@@bidi_reversed_dir" | "@@bidi_start_edge" | "@@bidi_end_edge" | "appName" | "appDesc" | "optTitle" | "omniboxDefaultSuggestion" | "omniboxInputSuggestion" | "bangumiUpdateNotifyItemDetailMessage" | "bangumiUpdateNotifyItemOverviewTitle" | "bangumiUpdateNotifyItemOverviewMessage" | "bangumiUpdateNotifyTitle" | "bangumiUpdateNotifyMessage" | "bangumiUpdateNotifyBtn0" | "bangumiUpdateNotifyBtn1",
       substitutions?: string | string[],
       options?: GetMessageOptions,
     ): string;
