@@ -10,10 +10,11 @@ import { module as bgTabSleep } from "./VideoPlayer/BgTabSleep/bgTabSleep";
 import { module as pictureInPicture } from "./VideoPlayer/PicInPic";
 import { module as liveMediaSession } from "./Live/LiveMediaSession/liveMediaSession";
 import { module as commentIterator } from "./Comment/iterator";
-import { module as nextPageInit } from "./Pages/NextPage/init";
 import { module as indexNextPage } from "./Pages/NextPage/index";
 import { module as normalPartListNextPage } from "./Pages/NextPage/partList";
+import { module as liveDanmuTime } from "@/Modules/Live/DanmuTime/liveDanmuTime";
+import { module as liveIndexPause } from "@/Modules/Live/IndexPause/liveIndexPause";
 
 export const features: Record<string, ModuleStd.manifest> = {
-    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, nextPageInit, indexNextPage, normalPartListNextPage,
+    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, indexNextPage, normalPartListNextPage, liveDanmuTime, liveIndexPause
 }

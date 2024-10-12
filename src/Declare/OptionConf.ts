@@ -9,9 +9,10 @@ import { defaultConf as LiveMediaSession } from "@/Modules/Live/LiveMediaSession
 import { defaultConf as CommentIterator } from "@/Modules/Comment/iterator"
 import { defaultConf as UserTag } from "@/Modules/Comment/UserTag/userTag"
 import { defaultConf as UpAndStaffTag } from "@/Modules/Comment/UpAndStaffTag/upAndStaffTag"
-import { defaultConf as InitNextPage } from "@/Modules/Pages/NextPage/init"
 import { defaultConf as IndexNextPage } from "@/Modules/Pages/NextPage/index"
 import { defaultConf as NormalPartListNextPage } from "@/Modules/Pages/NextPage/partList"
+import { defaultConf as LiveDanmuTime } from "@/Modules/Live/DanmuTime/liveDanmuTime"
+import { defaultConf as LiveIndexPause } from "@/Modules/Live/IndexPause/liveIndexPause"
 
 export const readOnlyKey: Array<string> = [
 
@@ -37,7 +38,8 @@ export const defaultOption: Record<string, any> = {
     CommentIterator,
     UserTag,
     UpAndStaffTag,
-    InitNextPage,
     IndexNextPage,
     NormalPartListNextPage,
+    LiveDanmuTime,
+    LiveIndexPause,
 }

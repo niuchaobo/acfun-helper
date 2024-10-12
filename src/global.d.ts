@@ -14,6 +14,7 @@ declare global {
 	var AcFunHelperDevKit;
 	var AcFunHelperStyleMgr: GlobalStyleManager;
 	var documentPictureInPicture: lib.TrustedTypesWindow;
+	var player:Player;
 }
 
 declare namespace CookieStore {
@@ -25,6 +26,10 @@ declare namespace CookieStore {
 	interface ChangedEvent extends Event {
 		name: string;
 	}
+}
+
+interface Player {
+	destroy():any
 }
 
 interface CookieStore {

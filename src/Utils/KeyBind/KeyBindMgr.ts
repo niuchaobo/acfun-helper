@@ -1,5 +1,10 @@
 import { tinykeys, KeyBindingMap } from "tinykeys";
 
+export interface KeyBindModInitResp {
+    key: string
+    main: (e: any) => any
+}
+
 const bindRelation: KeyBindingMap = {}
 
 /** 快捷键<>事件处理<>钩子 */
