@@ -14,7 +14,8 @@ import { module as indexNextPage } from "./Pages/NextPage/index";
 import { module as normalPartListNextPage } from "./Pages/NextPage/partList";
 import { module as liveDanmuTime } from "@/Modules/Live/DanmuTime/liveDanmuTime";
 import { module as liveIndexPause } from "@/Modules/Live/IndexPause/liveIndexPause";
+import { module as liveIndexCount } from "./Live/IndexCount/liveIndexCount";
 
 export const features: Record<string, ModuleStd.manifest> = {
-    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, indexNextPage, normalPartListNextPage, liveDanmuTime, liveIndexPause
+    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, indexNextPage, normalPartListNextPage, liveDanmuTime, liveIndexPause, liveIndexCount
 }

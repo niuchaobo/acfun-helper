@@ -49,7 +49,7 @@ const main = async () => {
 
 export const defaultConf: Conf = {
     enable: true,
-    type: "onlyMute"
+    type: "onlyMuteAndPause"
 }
 
 export const module: ModuleStd.manifest = {

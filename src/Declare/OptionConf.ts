@@ -13,6 +13,7 @@ import { defaultConf as IndexNextPage } from "@/Modules/Pages/NextPage/index"
 import { defaultConf as NormalPartListNextPage } from "@/Modules/Pages/NextPage/partList"
 import { defaultConf as LiveDanmuTime } from "@/Modules/Live/DanmuTime/liveDanmuTime"
 import { defaultConf as LiveIndexPause } from "@/Modules/Live/IndexPause/liveIndexPause"
+import { defaultConf as LiveIndexCount } from "@/Modules/Live/IndexCount/liveIndexCount"
 
 export const readOnlyKey: Array<string> = [
 
@@ -42,4 +43,5 @@ export const defaultOption: Record<string, any> = {
     NormalPartListNextPage,
     LiveDanmuTime,
     LiveIndexPause,
+    LiveIndexCount,
 }

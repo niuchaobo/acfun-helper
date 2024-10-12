@@ -189,7 +189,7 @@ export class DOMObserverSlim {
         this.observerInstance = obsv;
     }
 
-    static L1Cilds(target: Element, trigger: MutationCallback, devMode: boolean) {
+    static L1Cilds(target: Element, trigger: MutationCallback, devMode: boolean = false) {
         const inst = new DOMObserverSlim({
             name: "Main",
             targetNode: target,
