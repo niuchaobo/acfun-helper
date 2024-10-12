@@ -127,6 +127,7 @@ import Article from './Article/index.vue';
 import Live from './Live/index.vue';
 import Page from './Page/index.vue';
 import Tool from './Tool/index.vue';
+import { thisBrowser } from "@/Utils/Misc";
 
 let navigationDrawer: NavigationDrawer;
 const browserType = thisBrowser();
