@@ -6,7 +6,7 @@ import { GetAsyncDOM } from "@/Core/CoreUtils";
 import { isTargetPage, REG } from "@/Core/Regs";
 import { fetchPageInfo } from "./pageInfo";
 import { GlobalStyleManager } from "@/Utils/StyleManager";
-import { KeyBindMgr } from "@/Utils/KeyBind/KeyBindMgr"
+import { KeyBindMgr,KeyBindModInitResp } from "@/Utils/KeyBind/KeyBindMgr"
 
 interface AcFunHelperFgRuntimeData {
     dataset: {
@@ -69,7 +69,7 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
             }
             this.OnDOMContentLoaded(e);
         });
-
+        this.OnShortcutKeyBind();
 
     }
 
@@ -88,6 +88,19 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
         for (let featName in this.TypedModules[ModuleStd.SequentialType.OnDOMContentLoaded]) {
             this.TypedModules[ModuleStd.SequentialType.OnDOMContentLoaded][featName].main();
         }
+    }
+
+    async OnShortcutKeyBind(){
+        for (let featName in this.TypedModules[ModuleStd.SequentialType.OnPageKeyShotcutReg]) {
+            const mod = this.TypedModules[ModuleStd.SequentialType.OnPageKeyShotcutReg][featName];
+            if (mod.init != undefined) {
+                const setting:Array<KeyBindModInitResp> = await mod.init();
+                setting?.length && setting.forEach(e=>{
+                    this.KeyMgr.Add(e.key,e.main);
+                })
+            }
+        }
+        this.KeyMgr.Hook();
     }
 
 }
