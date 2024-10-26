@@ -3,7 +3,7 @@ import { ModuleStd } from "@/Declare/FeatureModule";
 export interface RegEntry {
     enabled: boolean;
     item: chrome.contextMenus.CreateProperties;
-    trigger: (...e: any) => any
+    trigger: (e:chrome.contextMenus.OnClickData,tabInfo:chrome.tabs.Tab) => any
 }
 
 //保存菜单与钩子的映射关系

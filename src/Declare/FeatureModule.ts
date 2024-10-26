@@ -22,7 +22,7 @@ export namespace ModuleStd {
 
     OnContextMenuReg,
     OnOmniboxObjectReg,
-    
+
     OnPageKeyShotcutReg,
   }
   export type ModApiTrigger = string
@@ -48,6 +48,7 @@ export namespace ModuleStd {
     disable?: (...args: any) => any;
     init?: (...args: any) => any;
     isEnabled?: (...args: any) => any;
+    runtimeMsgTrigger?: Record<string, (...args: any) => Promise<any> | undefined | void>;
   }
   export interface optManifest {
     modName: string,
