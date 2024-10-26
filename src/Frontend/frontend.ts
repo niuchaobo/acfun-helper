@@ -2,16 +2,17 @@ import { AcFunHelperFgFrame } from "@/Core/Sigularity";
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { features } from "@/Modules/FeatureRegistry";
 import { fgDebugLog, LogLevel, modLog } from "@/Core/CoreLibs/ConsoleProxy";
-import { GetAsyncDOM } from "@/Core/CoreUtils";
+import { GetAsyncDOM, MessageRouter } from "@/Core/CoreUtils";
 import { isTargetPage, REG } from "@/Core/Regs";
 import { fetchPageInfo } from "./pageInfo";
 import { GlobalStyleManager } from "@/Utils/StyleManager";
-import { KeyBindMgr,KeyBindModInitResp } from "@/Utils/KeyBind/KeyBindMgr"
+import { KeyBindMgr, KeyBindModInitResp } from "@/Utils/KeyBind/KeyBindMgr"
 
 interface AcFunHelperFgRuntimeData {
     dataset: {
         fetchDougaInfoStatus: boolean
         dougaInfo: APIs.DougaInfo
+        runtimeMsgTriggers: Record<string, (...args: any) => Promise<any> | undefined | void>
     }
 }
 
@@ -25,7 +26,8 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
         this.runtime = {
             dataset: {
                 fetchDougaInfoStatus: false,
-                dougaInfo: {} as APIs.DougaInfo
+                dougaInfo: {} as APIs.DougaInfo,
+                runtimeMsgTriggers: {},
             }
         }
         this.StyleManager = new GlobalStyleManager();
@@ -52,8 +54,16 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
                 }
                 this.TypedModules[module.sequentialType][module.name] = module;
             }
-
+            if (module.runtimeMsgTrigger && Object.keys(module.runtimeMsgTrigger).length != 0) {
+                this.runtime.dataset.runtimeMsgTriggers = { ...this.runtime.dataset.runtimeMsgTriggers, ...module.runtimeMsgTrigger }
+            }
         }
+
+        const FgMsgRouter = new MessageRouter.MsgRouter();
+        Object.keys(this.runtime.dataset.runtimeMsgTriggers).forEach((e => {
+            FgMsgRouter.on(e, this.runtime.dataset.runtimeMsgTriggers[e]);
+        }))
+        chrome.runtime.onMessage.addListener(FgMsgRouter.listener());
 
         window.addEventListener("load", (e) => {
             this.Loaded(e);
@@ -90,13 +100,13 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
         }
     }
 
-    async OnShortcutKeyBind(){
+    async OnShortcutKeyBind() {
         for (let featName in this.TypedModules[ModuleStd.SequentialType.OnPageKeyShotcutReg]) {
             const mod = this.TypedModules[ModuleStd.SequentialType.OnPageKeyShotcutReg][featName];
             if (mod.init != undefined) {
-                const setting:Array<KeyBindModInitResp> = await mod.init();
-                setting?.length && setting.forEach(e=>{
-                    this.KeyMgr.Add(e.key,e.main);
+                const setting: Array<KeyBindModInitResp> = await mod.init();
+                setting?.length && setting.forEach(e => {
+                    this.KeyMgr.Add(e.key, e.main);
                 })
             }
         }

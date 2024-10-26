@@ -3,6 +3,8 @@ import { ExtOptions } from "@/Core/CoreUtils";
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { bgFeatures } from "@/Modules/BgModules";
 import { hosts } from "./ExecHostReg";
+import { MessageRouter } from "@/Core/CoreUtils";
+import { MsgUsers } from "./MessageApi/msgApi";
 
 export class AcFunHelperBackend implements AcFunHelperBgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
@@ -14,6 +16,13 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
 
         this.TypedModules = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
         this.ExecHost = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.lordManifest["name"], ModuleStd.lordManifest>>;
+
+        const BgMsgRouter = new MessageRouter.MsgRouter();
+        Object.keys(MsgUsers).forEach((e=>{
+            BgMsgRouter.on(e,MsgUsers[e])
+        }))
+        chrome.runtime.onMessage.addListener(BgMsgRouter.listener());
+
         this.Init()
     }
 
