@@ -14,6 +14,12 @@ import { defaultConf as NormalPartListNextPage } from "@/Modules/Pages/NextPage/
 import { defaultConf as LiveDanmuTime } from "@/Modules/Live/DanmuTime/liveDanmuTime"
 import { defaultConf as LiveIndexPause } from "@/Modules/Live/IndexPause/liveIndexPause"
 import { defaultConf as LiveIndexCount } from "@/Modules/Live/IndexCount/liveIndexCount"
+<<<<<<< HEAD
+import { defaultConf as NextRecommend } from "@/Modules/VideoPlayer/NextRecommend/watchNextRecommend"
+import { defaultConf as Timeline } from "@/Modules/VideoPlayer/Timeline/timeline"
+import { defaultConf as TimelineMenu } from "@/Modules/Global/TimelineMenu/timelineMenu"
+=======
+>>>>>>> e6acea2 (feat: add LiveIndexCount)
 
 export const readOnlyKey: Array<string> = [
 
@@ -44,4 +50,10 @@ export const defaultOption: Record<string, any> = {
     LiveDanmuTime,
     LiveIndexPause,
     LiveIndexCount,
+<<<<<<< HEAD
+    NextRecommend,
+    Timeline,
+    TimelineMenu,
+=======
+>>>>>>> e6acea2 (feat: add LiveIndexCount)
 }

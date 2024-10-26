@@ -6,9 +6,9 @@ export default defineConfig({
   manifest: {
     name: "AcFun-Helper-Bang2",
     description: "test ext",
-    version: "2.1.1",
+    version: "2.2.1",
     default_locale: "zh_CN",
-    author: "ncb",
+    author: { "email": "348983704@qq.com" },
     action: {
       "default_title": "AcFun助手",
       "default_icon": "icon/icon128.png",
@@ -61,5 +61,12 @@ export default defineConfig({
       alias: {
       }
     },
+    css:{
+      preprocessorOptions:{
+        "sass":{
+          includePaths:["./src/"]
+        }
+      }
+    }
   }),
 });
