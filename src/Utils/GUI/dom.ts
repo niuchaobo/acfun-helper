@@ -14,7 +14,7 @@ export function maskElement(obj: HTMLElement, styleText: string = "", divName: s
 
 interface addElementPayload {
     tag?: string;
-    id: string;
+    id?: string;
     css?: string;
     target?: Element;
     classes?: string;
