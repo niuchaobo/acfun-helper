@@ -17,6 +17,7 @@ import { defaultConf as LiveIndexCount } from "@/Modules/Live/IndexCount/liveInd
 import { defaultConf as NextRecommend } from "@/Modules/VideoPlayer/NextRecommend/watchNextRecommend"
 import { defaultConf as Timeline } from "@/Modules/VideoPlayer/Timeline/timeline"
 import { defaultConf as TimelineMenu } from "@/Modules/Global/TimelineMenu/timelineMenu"
+import { defaultConf as PlayerScreenMode } from "@/Modules/VideoPlayer/PlayerScreenMode/playerMode"
 
 export const readOnlyKey: Array<string> = [
 
@@ -50,4 +51,5 @@ export const defaultOption: Record<string, any> = {
     NextRecommend,
     Timeline,
     TimelineMenu,
+    PlayerScreenMode
 }

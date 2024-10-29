@@ -18,8 +18,6 @@ const AcFunHelperDevKit = {
 
 globalThis.AcFunHelperDevKit = AcFunHelperDevKit;
 
-console.log(await ExtOptions.getAll())
-
 /**
  document.querySelectorAll(".ac-member-favourite-douga-item").forEach(e=>{
     if(e.children[1].children[0].innerText=="该视频已下架"){

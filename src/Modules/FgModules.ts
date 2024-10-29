@@ -14,17 +14,11 @@ import { module as indexNextPage } from "@/Modules/Pages/NextPage/index";
 import { module as normalPartListNextPage } from "@/Modules/Pages/NextPage/partList";
 import { module as liveDanmuTime } from "@/Modules/Live/DanmuTime/liveDanmuTime";
 import { module as liveIndexPause } from "@/Modules/Live/IndexPause/liveIndexPause";
-<<<<<<< HEAD
 import { module as liveIndexCount } from "@/Modules/Live/IndexCount/liveIndexCount";
 import { module as nextRecommend } from "@/Modules/VideoPlayer/NextRecommend/watchNextRecommend";
 import { module as timeline } from "./VideoPlayer/Timeline/timeline";
+import { module as playerScreenMode } from "./VideoPlayer/PlayerScreenMode/playerMode";
 
 export const features: Record<string, ModuleStd.manifest> = {
-    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, indexNextPage, normalPartListNextPage, liveDanmuTime, liveIndexPause, liveIndexCount, nextRecommend, timeline
-=======
-import { module as liveIndexCount } from "./Live/IndexCount/liveIndexCount";
-
-export const features: Record<string, ModuleStd.manifest> = {
-    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, indexNextPage, normalPartListNextPage, liveDanmuTime, liveIndexPause, liveIndexCount
->>>>>>> e6acea2 (feat: add LiveIndexCount)
+    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, indexNextPage, normalPartListNextPage, liveDanmuTime, liveIndexPause, liveIndexCount, nextRecommend, timeline, playerScreenMode
 }
