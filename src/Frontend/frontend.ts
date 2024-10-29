@@ -76,6 +76,7 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
                 fgDebugLog("Fg", "DOMContentLoaded", "fetchPageInfo successful.", LogLevel.Info);
                 this.runtime.dataset.fetchDougaInfoStatus = true;
                 this.runtime.dataset.dougaInfo = result.result;
+                this.OnPageInfoGot();
             }
             this.OnDOMContentLoaded(e);
         });
@@ -97,6 +98,12 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
     async OnDOMContentLoaded(e: Event) {
         for (let featName in this.TypedModules[ModuleStd.SequentialType.OnDOMContentLoaded]) {
             this.TypedModules[ModuleStd.SequentialType.OnDOMContentLoaded][featName].main();
+        }
+    }
+
+    async OnPageInfoGot() {
+        for (let featName in this.TypedModules[ModuleStd.SequentialType.OnPageInfoGot]) {
+            this.TypedModules[ModuleStd.SequentialType.OnPageInfoGot][featName].main();
         }
     }
 

@@ -24,6 +24,7 @@ export namespace ModuleStd {
     OnOmniboxObjectReg,
 
     OnPageKeyShotcutReg,
+    OnPageInfoGot,
   }
   export type ModApiTrigger = string
   export interface modApi {
