@@ -12,7 +12,6 @@ interface AcFunHelperFgRuntimeData {
     dataset: {
         fetchDougaInfoStatus: boolean
         dougaInfo: APIs.DougaInfo
-        runtimeMsgTriggers: Record<string, (...args: any) => Promise<any> | undefined | void>
     }
 }
 
@@ -21,49 +20,51 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
     runtime: AcFunHelperFgRuntimeData;
     StyleManager: GlobalStyleManager;
     KeyMgr: typeof KeyBindMgr = KeyBindMgr;
+    RuntimeMsgTriggers: Record<string, (...args: any) => Promise<any> | undefined | void>
+    MsgRouter;
     constructor() {
         this.TypedModules = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
         this.runtime = {
             dataset: {
                 fetchDougaInfoStatus: false,
                 dougaInfo: {} as APIs.DougaInfo,
-                runtimeMsgTriggers: {},
             }
         }
         this.StyleManager = new GlobalStyleManager();
         globalThis.AcFunHelperStyleMgr = this.StyleManager;
+        this.RuntimeMsgTriggers = {};
+        for (let i in ModuleStd.SequentialType) {
+            const SeqName = ModuleStd.SequentialType[i] as unknown as ModuleStd.SequentialType;
+            this.TypedModules[SeqName] = {}
+        }
+        this.MsgRouter = new MessageRouter.MsgRouter();
         this.Init();
     }
 
     async Init() {
         window.alitadebug = true;
         fgDebugLog("Fg", "Init", "Init...", LogLevel.Info);
+        Object.assign(globalThis, { jQuery, $: jQuery });
+
         for (let featName in features) {
             const module = features[featName];
             if (module.workSpace != ModuleStd.WorkSpace.Frontend) {
                 continue
             }
             if (!module.sequentialType) {
-                if (!this.TypedModules[ModuleStd.SequentialType.Loaded]) {
-                    this.TypedModules[ModuleStd.SequentialType.Loaded] = {};
-                }
                 this.TypedModules[ModuleStd.SequentialType.Loaded][module.name] = module;
             } else {
-                if (!this.TypedModules[module.sequentialType]) {
-                    this.TypedModules[module.sequentialType] = {};
-                }
                 this.TypedModules[module.sequentialType][module.name] = module;
             }
             if (module.runtimeMsgTrigger && Object.keys(module.runtimeMsgTrigger).length != 0) {
-                this.runtime.dataset.runtimeMsgTriggers = { ...this.runtime.dataset.runtimeMsgTriggers, ...module.runtimeMsgTrigger }
+                this.RuntimeMsgTriggers = { ...this.RuntimeMsgTriggers, ...module.runtimeMsgTrigger }
             }
         }
 
-        const FgMsgRouter = new MessageRouter.MsgRouter();
-        Object.keys(this.runtime.dataset.runtimeMsgTriggers).forEach((e => {
-            FgMsgRouter.on(e, this.runtime.dataset.runtimeMsgTriggers[e]);
+        Object.keys(this.RuntimeMsgTriggers).forEach((e => {
+            this.MsgRouter.on(e, this.RuntimeMsgTriggers[e]);
         }))
-        chrome.runtime.onMessage.addListener(FgMsgRouter.listener());
+        chrome.runtime.onMessage.addListener(this.MsgRouter.listener());
 
         window.addEventListener("load", (e) => {
             this.Loaded(e);
@@ -76,7 +77,6 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
                 fgDebugLog("Fg", "DOMContentLoaded", "fetchPageInfo successful.", LogLevel.Info);
                 this.runtime.dataset.fetchDougaInfoStatus = true;
                 this.runtime.dataset.dougaInfo = result.result;
-                this.OnPageInfoGot();
             }
             this.OnDOMContentLoaded(e);
         });
@@ -98,12 +98,6 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
     async OnDOMContentLoaded(e: Event) {
         for (let featName in this.TypedModules[ModuleStd.SequentialType.OnDOMContentLoaded]) {
             this.TypedModules[ModuleStd.SequentialType.OnDOMContentLoaded][featName].main();
-        }
-    }
-
-    async OnPageInfoGot() {
-        for (let featName in this.TypedModules[ModuleStd.SequentialType.OnPageInfoGot]) {
-            this.TypedModules[ModuleStd.SequentialType.OnPageInfoGot][featName].main();
         }
     }
 
