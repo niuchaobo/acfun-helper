@@ -1,12 +1,13 @@
 import { defineConfig } from 'wxt';
 import vue from '@vitejs/plugin-vue';
+import inject from '@rollup/plugin-inject';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   manifest: {
-    name: "AcFun-Helper-Bang2",
-    description: "test ext",
-    version: "2.2.1",
+    name: "AcFun-Helper",
+    description: "AcFun-Helper",
+    version: "2.0.21",
     default_locale: "zh_CN",
     author: { "email": "348983704@qq.com" },
     action: {
@@ -49,22 +50,30 @@ export default defineConfig({
 
   },
   vite: () => ({
-    plugins: [vue({
-      template: {
-        compilerOptions: {
-          // 所有以 mdui- 开头的标签名都是 mdui 组件
-          isCustomElement: (tag) => tag.startsWith('mdui-')
+    plugins: [
+      vue({
+        template: {
+          compilerOptions: {
+            // 所有以 mdui- 开头的标签名都是 mdui 组件
+            isCustomElement: (tag) => tag.startsWith('mdui-')
+          }
         }
-      }
-    })],
+      }),
+      inject({
+        jQuery: 'jquery',
+      }),
+    ],
     resolve: {
       alias: {
       }
     },
-    css:{
-      preprocessorOptions:{
-        "sass":{
-          includePaths:["./src/"]
+    optimizeDeps: {
+      include: ["jquery"],
+    },
+    css: {
+      preprocessorOptions: {
+        "sass": {
+          includePaths: ["./src/"]
         }
       }
     }
