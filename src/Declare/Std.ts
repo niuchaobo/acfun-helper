@@ -157,7 +157,20 @@ const videoQualitiesRefer: Record<string, videoQualitiesType> = {
   },
 };
 
+/**
+ * 每一千秒所播放的帧数
+ * @refer @伯翎飞云[2021年4月8日21:31:47]："电影23.976;60帧如果是NTSC的话是59.94;感知不强方向错了"
+ */
+const standardFrameRate:Record<string,number> = {
+  "24": 23976,
+  "25": 25000,
+  "30": 29970,
+  "60": 59940,
+  "120": 120000
+}
+
 export const Encylopedia = {
+  standardFrameRate,
   avaliableVideoQuality,
   videoQualitiesRefer,
 };
