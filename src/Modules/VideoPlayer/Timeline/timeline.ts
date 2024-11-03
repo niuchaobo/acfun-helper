@@ -12,7 +12,7 @@ interface Conf {
 let allOptions: Conf;
 
 const timeTagRegexp = new RegExp("[0-9]{1,3}[:时]?[0-9]{1,3}[:分][0-9]{1,2}秒?");
-const dotsClassName = ".AcFunHelper_chapterDots"
+const dotsClassName = ".AcFunHelperAnotchapterDots"
 
 const main = async () => {
     allOptions = await ExtOptions.getValue(module.name) as Conf;

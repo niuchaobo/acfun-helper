@@ -1,11 +1,11 @@
 <template>
     <span data-bind-key="AddABPlayUI">AB</span>
-    <div class="speed-panel acArbs-abplay-panel">
+    <div class="speed-panel AcFunHelperAnot-abplay-panel">
         <ul>
-            <li class='acArbs-updateAbPlayStart' data-val="A" @click="updateAbPlayStart">{{ startMsg }}</li>
-            <li class='acArbs-updateAbPlayEnd' data-val="B" @click="updateAbPlayEnd">{{ endMsg }}</li>
-            <li class='acArbs-abPlayHandler' @click="abPlayHandler">{{ handlerMsg }}</li>
-            <li class='acArbs-stopAbPlay' @click="stopAbPlay">{{ stopMsg }}</li>
+            <li class='AcFunHelperAnot-updateAbPlayStart' data-val="A" @click="updateAbPlayStart">{{ startMsg }}</li>
+            <li class='AcFunHelperAnot-updateAbPlayEnd' data-val="B" @click="updateAbPlayEnd">{{ endMsg }}</li>
+            <li class='AcFunHelperAnot-abPlayHandler' @click="abPlayHandler">{{ handlerMsg }}</li>
+            <li class='AcFunHelperAnot-stopAbPlay' @click="stopAbPlay">{{ stopMsg }}</li>
         </ul>
         <div class="transparent-placeholder"></div>
     </div>

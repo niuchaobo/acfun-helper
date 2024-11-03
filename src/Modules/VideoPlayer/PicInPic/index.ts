@@ -25,10 +25,10 @@ const main = async () => {
     }
     modLog("Init", module.name, "main")
     GetAsyncDOM.Get("div.control-btn.setting", () => {
-        addElement({ tag: "div", id: "acArbs-pictureInpicture", classes: "control-btn pip", target: document.querySelector("div.control-btn.setting") as Element, createMode: "after" });
+        addElement({ tag: "div", id: "AcFunHelperAnot-pictureInpicture", classes: "control-btn pip", target: document.querySelector("div.control-btn.setting") as Element, createMode: "after" });
         modLog("Init Container.", module.name, "main..GetAsyncDOM");
         app = createApp(Main);
-        app.mount("#acArbs-pictureInpicture");
+        app.mount("#AcFunHelperAnot-pictureInpicture");
         modLog("Mount App.", module.name, "main..GetAsyncDOM");
     })
 }

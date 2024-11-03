@@ -34,10 +34,10 @@ const main = async () => {
 
 const mountApp = () => {
     GetAsyncDOM.Get(".setting-panel>.setting-panel-content", () => {
-        addElement({ tag: "div", id: "acArbs-bgTabSleepUI", target: document.querySelector(".setting-panel>.setting-panel-content") as Element, classes: "acArbs-bgTabSleepUI", createMode: "append" });
+        addElement({ tag: "div", id: "AcFunHelperAnot-bgTabSleepUI", target: document.querySelector(".setting-panel>.setting-panel-content") as Element, classes: "AcFunHelperAnot-bgTabSleepUI", createMode: "append" });
         modLog("Init Container.", module.name, "mountApp..GetAsyncDOM")
         app = createApp(Main);
-        app.mount("#acArbs-bgTabSleepUI");
+        app.mount("#AcFunHelperAnot-bgTabSleepUI");
         modLog("Mount App.", module.name, "mountApp..GetAsyncDOM")
     })
 }

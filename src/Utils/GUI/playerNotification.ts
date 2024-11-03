@@ -7,7 +7,7 @@ export const PlayerNotification = (text: string, importantText: string = "") => 
         notif=addElement({
             target: target,
             createMode: "headChildAppend",
-            id: "acArbs-PlayerNotif",
+            id: "AcFunHelperAnot-PlayerNotif",
             thisHTML: `<div class="tip-item muted" ><div class="left-bottom-tip-text"><span>${text}</span>&nbsp;&nbsp;<span style='color:red;'>${importantText}</span></div></div>`
         })
     }

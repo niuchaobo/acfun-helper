@@ -15,6 +15,7 @@ declare global {
 	var AcFunHelperStyleMgr: GlobalStyleManager;
 	var documentPictureInPicture: lib.TrustedTypesWindow;
 	var player:Player;
+	var jQuery:JQuery;
 }
 
 declare namespace CookieStore {

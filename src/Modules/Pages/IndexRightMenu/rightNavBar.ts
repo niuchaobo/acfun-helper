@@ -73,13 +73,13 @@ const applyMenu = () => {
     }
 
     const outer = document.createElement("div");
-    outer.id = "acArbs-right-nav";
+    outer.id = "AcFunHelperAnot-right-nav";
     container.appendChild(outer);
 
     for (let item of navItems) {
         const inner = document.createElement("div");
 
-        inner.classList.add("acArbs-right-nav-item");
+        inner.classList.add("AcFunHelperAnot-right-nav-item");
         inner.innerText = item.name;
         inner.title = item.title;
         inner.dataset.id = item.id;
@@ -96,7 +96,7 @@ const adjustContainer = () => {
         return false
     }
     //add style
-    container.classList.add("acArbs-backTopCtr");
+    container.classList.add("AcFunHelperAnot-backTopCtr");
     return true
 }
 

@@ -6,11 +6,11 @@ import { addElement } from "@/Utils/GUI/dom";
 import { throttle } from "@/Utils/Misc";
 
 const progressBarOptions = {
-    id: "acArbs-proBar",
+    id: "AcFunHelperAnot-proBar",
     css: "z-index:100;transition: all 0.4s ease-out;position: fixed;bottom: 0px;width: 0%;box-shadow:rgb(125,125,125) -3px -1px 5px 0px;",
 };
 const progressLoadedBarOptions = {
-    id: "acArbs-proBar-loaded",
+    id: "AcFunHelperAnot-proBar-loaded",
     css: "z-index:99;transition: all 0.4s ease-out;position: fixed;bottom: 0px;width: 0%;",
 };
 let fullscreenProgressBarOptions;
@@ -55,12 +55,12 @@ const addUI = () => {
             return
         }
         fullscreenProgressBarOptions = {
-            id: "acArbs-proBar-inner",
+            id: "AcFunHelperAnot-proBar-inner",
             target: containerElem,
             css: "z-index:1000;transition: width 0.4s ease-out;position: fixed;bottom: 0px;width: 0%;box-shadow:rgb(125,125,125) -3px -1px 5px 0px;"
         };
         fullscreenProgressLoadBarOptions = {
-            id: "acArbs-proBar-innerLoaded",
+            id: "AcFunHelperAnot-proBar-innerLoaded",
             target: containerElem,
             css: "z-index:999;transition: width 0.4s ease-out;position: fixed;bottom: 0px;width: 0%;"
         };

@@ -1,6 +1,6 @@
 <template>
     <label>后台暂停</label>
-    <div class="control-checkbox acArbs-getSomeSleep" :data-bind-attr="getState()" @click="statusChange"></div>
+    <div class="control-checkbox AcFunHelperAnot-getSomeSleep" :data-bind-attr="getState()" @click="statusChange"></div>
 </template>
 
 <script setup lang="ts">
