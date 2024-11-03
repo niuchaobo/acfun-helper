@@ -18,7 +18,10 @@ import { module as liveIndexCount } from "@/Modules/Live/IndexCount/liveIndexCou
 import { module as nextRecommend } from "@/Modules/VideoPlayer/NextRecommend/watchNextRecommend";
 import { module as timeline } from "./VideoPlayer/Timeline/timeline";
 import { module as playerScreenMode } from "./VideoPlayer/PlayerScreenMode/playerMode";
+import { module as videoQualitySelect } from "./VideoPlayer/QualitySelect/qualitySelect";
+import { module as customVideoPlayRate } from "./VideoPlayer/CustomRate/customPlayRate";
+import { module as perFrameStep } from "./VideoPlayer/PerFrameStep/frameStepForward";
 
 export const features: Record<string, ModuleStd.manifest> = {
-    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, indexNextPage, normalPartListNextPage, liveDanmuTime, liveIndexPause, liveIndexCount, nextRecommend, timeline, playerScreenMode
+    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, indexNextPage, normalPartListNextPage, liveDanmuTime, liveIndexPause, liveIndexCount, nextRecommend, timeline, playerScreenMode, videoQualitySelect,customVideoPlayRate,perFrameStep
 }

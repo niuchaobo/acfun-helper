@@ -18,6 +18,9 @@ import { defaultConf as NextRecommend } from "@/Modules/VideoPlayer/NextRecommen
 import { defaultConf as Timeline } from "@/Modules/VideoPlayer/Timeline/timeline"
 import { defaultConf as TimelineMenu } from "@/Modules/Global/TimelineMenu/timelineMenu"
 import { defaultConf as PlayerScreenMode } from "@/Modules/VideoPlayer/PlayerScreenMode/playerMode"
+import { defaultConf as VideoQualitySelect } from "@/Modules/VideoPlayer/QualitySelect/qualitySelect"
+import { defaultConf as CustomVideoPlayRate } from "@/Modules/VideoPlayer/CustomRate/customPlayRate"
+import { defaultConf as PerFrameStep } from "@/Modules/VideoPlayer/PerFrameStep/frameStepForward"
 
 export const readOnlyKey: Array<string> = [
 
@@ -51,5 +54,8 @@ export const defaultOption: Record<string, any> = {
     NextRecommend,
     Timeline,
     TimelineMenu,
-    PlayerScreenMode
+    PlayerScreenMode,
+    VideoQualitySelect,
+    CustomVideoPlayRate,
+    PerFrameStep
 }
