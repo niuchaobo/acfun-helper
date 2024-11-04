@@ -2,6 +2,7 @@ import { ModuleStd } from "@/Declare/FeatureModule";
 import { ExtOptions } from "@/Core/CoreUtils";
 import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { isTargetPage, REG } from "@/Core/Regs";
+import { FgBroadcastChannelName } from "@/Frontend/frontend";
 
 interface Conf {
     enable: boolean
@@ -14,6 +15,7 @@ const main = async () => {
     if (!allOptions.enable) {
         return
     }
+    const MsgSw = new BroadcastChannel(FgBroadcastChannelName);
 
     if (!isTargetPage(REG.videoAndBangumi)) {
         return

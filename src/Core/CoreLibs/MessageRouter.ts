@@ -9,6 +9,7 @@ export enum ErrCode {
 }
 
 //msg example:{"action":"/bg/echo",{"data":"Hi there."}}
+//msg example:("/bg/echo",{"data":"Hi there."})
 
 type HasAlias<T extends string> = { [K in T]: { [P in K]: string } }[T]
 type MessageModuleType = (typeof chrome.runtime | typeof chrome.tabs)
@@ -139,7 +140,6 @@ class MsgRouter<T extends RoutingTargetEvent, U = Record<string, unknown>> {
 
     listener(): ExtractCallback<T> {
         return ((...args: Parameters<ExtractCallback<T>>) => {
-            console.log(args)
             const sendResponse = this.sendResponse(...args)
             this.resolver(...args).then(route => {
                 const fn = this.findHandler(route[Actionkey])
@@ -198,7 +198,43 @@ class MsgRouter<T extends RoutingTargetEvent, U = Record<string, unknown>> {
     }
 }
 
+class MsgSwitch<T extends RoutingTargetEvent, U = Record<string, unknown>> extends MsgRouter<T, U> {
+    constructor(public readonly resolver: Resolver<ExtractCallback<T>, U> = DefaultResolver) {
+        super(resolver);
+    }
+
+    findSwHandler(action: string): HandleOf<ExtractCallback<T>> {
+        const exact = this.routes.exact.find(r => r.match(action))
+        if (exact != null) {
+            return exact.handler().bind({
+                route: exact.match(action)
+            })
+        }
+
+        const regex = this.routes.regex.find(r => r.match(action))
+        if (regex != null) {
+            return regex.handler().bind({ route: regex.match(action) })
+        }
+        return () => { }
+    }
+
+    listener(): ExtractCallback<T> {
+        return ((args: MessageEvent) => {
+            const argList = [] as unknown as Parameters<ExtractCallback<T>>
+            for (let i in args.data) {
+                argList.push({
+                    [i]: args.data[i],
+                })
+            }
+            this.resolver(...argList).then(route => {
+                const fn = this.findSwHandler(route[Actionkey])
+                fn(...argList)
+            })
+        }) as ExtractCallback<T>
+    }
+}
+
 export const MessageRouter = {
-    MsgClient, MsgRouter,
+    MsgClient, MsgRouter, MsgSwitch,
     ErrCode
 }
