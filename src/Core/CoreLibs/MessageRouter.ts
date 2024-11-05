@@ -1,3 +1,5 @@
+import { features } from "@/Modules/FgModules";
+
 // https://github.com/otiai10/chromite
 const Actionkey = "__action__";
 const ActionKeyAlias = ["__action__", "__act__", "action"];
@@ -220,6 +222,7 @@ class MsgSwitch<T extends RoutingTargetEvent, U = Record<string, unknown>> exten
 
     listener(): ExtractCallback<T> {
         return ((args: MessageEvent) => {
+            console.log(args)
             const argList = [] as unknown as Parameters<ExtractCallback<T>>
             for (let i in args.data) {
                 argList.push({
@@ -234,7 +237,71 @@ class MsgSwitch<T extends RoutingTargetEvent, U = Record<string, unknown>> exten
     }
 }
 
+class MsgSwitchWithEventTrigger<T extends RoutingTargetEvent, U = Record<string, unknown>> extends MsgSwitch<T, U> {
+    EventTrigger: Record<"Fg" | "Bg", { "Events": Array<string>, "EventTriggers": Record<string, Array<(e: any) => any>> }>;
+    constructor(public readonly resolver: Resolver<ExtractCallback<T>, U> = DefaultResolver) {
+        super(resolver);
+        this.EventTrigger = {
+            "Fg": {
+                Events: [],
+                EventTriggers: {},
+            },
+            "Bg": {
+                Events: [],
+                EventTriggers: {},
+            }
+        }
+    }
+
+    findSwHandler(action: string): HandleOf<ExtractCallback<T>> {
+        const exact = this.routes.exact.find(r => r.match(action))
+        if (exact != null) {
+            return exact.handler().bind(this)
+        }
+
+        const regex = this.routes.regex.find(r => r.match(action))
+        if (regex != null) {
+            return regex.handler().bind(this)
+        }
+        return () => { }
+    }
+
+    EventBaseMsgTrigger(action: any, data: any) {
+        console.log(action, data)
+        const actionName: Record<"action", string> = action;
+        // /{fg,bg}/event/{on,trigger,off}/[eventName]
+        if (!actionName.action.includes("/event/")) {
+            return
+        }
+        const actionCtx = actionName.action.split('/').filter(c => c != '')
+        if (actionCtx.length < 4) {
+            return
+        }
+        const ground = actionCtx[0] == "fg" ? "Fg" : "Bg";
+        const eventType = actionCtx[2];
+        const eventName = actionCtx[3];
+        const srcModName = data?.["data"]?.["srcModName"];
+        const groundE = this.EventTrigger[ground];
+        switch (eventType) {
+            case "on":
+                groundE.Events.push(eventName);
+                groundE.EventTriggers?.[eventName] && groundE.EventTriggers[eventName].forEach(e => e(eventName));
+                break;
+            case "trigger":
+                !(groundE.EventTriggers?.[eventName]) && (groundE.EventTriggers[eventName] = [])
+                if (srcModName && eventName in groundE.EventTriggers && srcModName in features && features[srcModName]?.eventTrigger) {
+                    groundE.EventTriggers[eventName].push(features[srcModName].eventTrigger);
+                }
+                break;
+            case "off":
+                (eventName in groundE.Events) && groundE.Events.splice(groundE.Events.indexOf(eventName));
+                break;
+        }
+    }
+
+}
+
 export const MessageRouter = {
-    MsgClient, MsgRouter, MsgSwitch,
+    MsgClient, MsgRouter, MsgSwitch, MsgSwitchWithEventTrigger,
     ErrCode
 }

@@ -1,27 +1,27 @@
 import { ModuleStd } from "@/Declare/FeatureModule";
-import { module as navGlass } from "@/Modules/Theming/IndexTheming/navGlass"
-import { module as userId } from "@/Modules/Auth/userId"
-import { module as banana } from "@/Modules/Banana/banana"
-import { module as flexProgressbar } from "@/Modules/VideoPlayer/FlexProgressBar/flexProgressbar"
-import { module as rightNavBar } from "@/Modules/Pages/IndexRightMenu/rightNavBar"
-import { module as abPlay } from "@/Modules/VideoPlayer/ABPlay/abPlay"
-import { module as mediaSession } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession"
-import { module as bgTabSleep } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleep";
-import { module as pictureInPicture } from "@/Modules/VideoPlayer/PicInPic";
-import { module as liveMediaSession } from "@/Modules/Live/LiveMediaSession/liveMediaSession";
-import { module as commentIterator } from "@/Modules/Comment/iterator";
-import { module as indexNextPage } from "@/Modules/Pages/NextPage/index";
-import { module as normalPartListNextPage } from "@/Modules/Pages/NextPage/partList";
-import { module as liveDanmuTime } from "@/Modules/Live/DanmuTime/liveDanmuTime";
-import { module as liveIndexPause } from "@/Modules/Live/IndexPause/liveIndexPause";
-import { module as liveIndexCount } from "@/Modules/Live/IndexCount/liveIndexCount";
-import { module as nextRecommend } from "@/Modules/VideoPlayer/NextRecommend/watchNextRecommend";
-import { module as timeline } from "./VideoPlayer/Timeline/timeline";
-import { module as playerScreenMode } from "./VideoPlayer/PlayerScreenMode/playerMode";
-import { module as videoQualitySelect } from "./VideoPlayer/QualitySelect/qualitySelect";
-import { module as customVideoPlayRate } from "./VideoPlayer/CustomRate/customPlayRate";
-import { module as perFrameStep } from "./VideoPlayer/PerFrameStep/frameStepForward";
+import { module as NavGlass } from "@/Modules/Theming/IndexTheming/navGlass"
+import { module as UserId } from "@/Modules/Auth/userId"
+import { module as Banana } from "@/Modules/Banana/banana"
+import { module as FlexProgressbar } from "@/Modules/VideoPlayer/FlexProgressBar/flexProgressbar"
+import { module as RightNavBar } from "@/Modules/Pages/IndexRightMenu/rightNavBar"
+import { module as AbPlay } from "@/Modules/VideoPlayer/ABPlay/abPlay"
+import { module as MediaSession } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession"
+import { module as BgTabSleep } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleep";
+import { module as PictureInPicture } from "@/Modules/VideoPlayer/PicInPic";
+import { module as LiveMediaSession } from "@/Modules/Live/LiveMediaSession/liveMediaSession";
+import { module as CommentIterator } from "@/Modules/Comment/iterator";
+import { module as IndexNextPage } from "@/Modules/Pages/NextPage/index";
+import { module as NormalPartListNextPage } from "@/Modules/Pages/NextPage/partList";
+import { module as LiveDanmuTime } from "@/Modules/Live/DanmuTime/liveDanmuTime";
+import { module as LiveIndexPause } from "@/Modules/Live/IndexPause/liveIndexPause";
+import { module as LiveIndexCount } from "@/Modules/Live/IndexCount/liveIndexCount";
+import { module as NextRecommend } from "@/Modules/VideoPlayer/NextRecommend/watchNextRecommend";
+import { module as Timeline } from "./VideoPlayer/Timeline/timeline";
+import { module as PlayerScreenMode } from "./VideoPlayer/PlayerScreenMode/playerMode";
+import { module as VideoQualitySelect } from "./VideoPlayer/QualitySelect/qualitySelect";
+import { module as CustomVideoPlayRate } from "./VideoPlayer/CustomRate/customPlayRate";
+import { module as PerFrameStep } from "./VideoPlayer/PerFrameStep/frameStepForward";
 
 export const features: Record<string, ModuleStd.manifest> = {
-    navGlass, userId, banana, flexProgressbar, rightNavBar, abPlay, mediaSession, bgTabSleep, pictureInPicture, liveMediaSession, commentIterator, indexNextPage, normalPartListNextPage, liveDanmuTime, liveIndexPause, liveIndexCount, nextRecommend, timeline, playerScreenMode, videoQualitySelect,customVideoPlayRate,perFrameStep
+    NavGlass, UserId, Banana, FlexProgressbar, RightNavBar, AbPlay, MediaSession, BgTabSleep, PictureInPicture, LiveMediaSession, CommentIterator, IndexNextPage, NormalPartListNextPage, LiveDanmuTime, LiveIndexPause, LiveIndexCount, NextRecommend, Timeline, PlayerScreenMode, VideoQualitySelect, CustomVideoPlayRate, PerFrameStep
 }

@@ -49,6 +49,7 @@ export namespace ModuleStd {
     init?: (...args: any) => any;
     isEnabled?: (...args: any) => any;
     runtimeMsgTrigger?: Record<string, (...args: any) => Promise<any> | undefined | void>;
+    eventTrigger?: (...args: any) => any;
   }
   export interface optManifest {
     modName: string,

@@ -15,6 +15,8 @@ interface AcFunHelperFgRuntimeData {
     }
 }
 
+export const FgBroadcastChannelName = "AcFunHelperFgMsgSw";
+
 export class AcFunHelperFrontend implements AcFunHelperFgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
     runtime: AcFunHelperFgRuntimeData;
@@ -22,6 +24,8 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
     KeyMgr: typeof KeyBindMgr = KeyBindMgr;
     RuntimeMsgTriggers: Record<string, (...args: any) => Promise<any> | undefined | void>
     MsgRouter;
+    MsgSwitch;
+    BroadcastChannel;
     constructor() {
         this.TypedModules = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;
         this.runtime = {
@@ -37,6 +41,8 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
             const SeqName = ModuleStd.SequentialType[i] as unknown as ModuleStd.SequentialType;
             this.TypedModules[SeqName] = {}
         }
+        this.MsgSwitch = new MessageRouter.MsgSwitchWithEventTrigger();
+        this.BroadcastChannel = new BroadcastChannel(FgBroadcastChannelName);
         this.MsgRouter = new MessageRouter.MsgRouter();
         this.Init();
     }
@@ -65,6 +71,8 @@ export class AcFunHelperFrontend implements AcFunHelperFgFrame {
             this.MsgRouter.on(e, this.RuntimeMsgTriggers[e]);
         }))
         chrome.runtime.onMessage.addListener(this.MsgRouter.listener());
+        this.BroadcastChannel.addEventListener("message", this.MsgSwitch.listener());
+        this.MsgSwitch.on("/fg/event/{eventType}/{eventName}", this.MsgSwitch.EventBaseMsgTrigger);
 
         window.addEventListener("load", (e) => {
             this.Loaded(e);
