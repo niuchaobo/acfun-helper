@@ -72,9 +72,13 @@ export default defineConfig({
     },
     css: {
       preprocessorOptions: {
+        "scss": {
+          api: "modern-compiler",
+        },
         "sass": {
-          includePaths: ["./src/"]
-        }
+          includePaths: ["./src/"],
+          api: "modern-compiler",
+        },
       }
     }
   }),
