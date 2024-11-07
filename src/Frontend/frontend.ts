@@ -3,7 +3,7 @@ import { ModuleStd } from "@/Declare/FeatureModule";
 import { features } from "@/Modules/FeatureRegistry";
 import { fgDebugLog, LogLevel, modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { GetAsyncDOM, MessageRouter } from "@/Core/CoreUtils";
-import { isTargetPage, REG } from "@/Core/Regs";
+import { FgBroadcastChannelName, isTargetPage, REG } from "@/Core/Regs";
 import { fetchPageInfo } from "./pageInfo";
 import { GlobalStyleManager } from "@/Utils/StyleManager";
 import { KeyBindMgr, KeyBindModInitResp } from "@/Utils/KeyBind/KeyBindMgr"
@@ -15,7 +15,6 @@ interface AcFunHelperFgRuntimeData {
     }
 }
 
-export const FgBroadcastChannelName = "AcFunHelperFgMsgSw";
 
 export class AcFunHelperFrontend implements AcFunHelperFgFrame {
     TypedModules: Record<ModuleStd.SequentialType, Record<ModuleStd.manifest["name"], ModuleStd.manifest>>;

@@ -1,8 +1,7 @@
 import { ModuleStd } from "@/Declare/FeatureModule";
 import { ExtOptions } from "@/Core/CoreUtils";
 import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
-import { isTargetPage, REG } from "@/Core/Regs";
-import { FgBroadcastChannelName } from "@/Frontend/frontend";
+import { FgBroadcastChannelName, isTargetPage, REG } from "@/Core/Regs";
 
 interface Conf {
     enable: boolean

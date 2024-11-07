@@ -32,6 +32,8 @@ export const REG = {
     },
 }
 
+export const FgBroadcastChannelName = "AcFunHelperFgMsgSw";
+
 export const isTargetPage = (reg: RegExp) => {
     return reg.test(window.location.href)
 }
