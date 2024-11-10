@@ -6,16 +6,16 @@
         <div class="AcFunHelperAnot-danmaku-search-content" style="display:flex">
             <input id='AcFunHelperAnot-danmaku-search-input' v-model="searchContent" style="flex:1" @focus="">
             <div id='AcFunHelperAnot-danmaku-search-button' @click="searchStart" @keypress="searchStart"
-                class="AcFunHelperAnot-danmaku-search-button"
+                class="AcFunHelperAnot-danmaku-search-button" v-show="buttonEnabled"
                 :class="{ btnUnHide: !buttonStatus, btnHide: buttonStatus }">
                 ⏎
             </div>
             <div id='AcFunHelperAnot-danmaku-search-last' @click="searchLast"
-                :class="{ btnHide: buttonStatus, btnUnHide: !buttonStatus }"
+                :class="{ btnHide: buttonStatus, btnUnHide: !buttonStatus }" v-show="buttonEnabled"
                 class="AcFunHelperAnot-danmaku-search-button">
                 △
             </div>
-            <div id='AcFunHelperAnot-danmaku-search-next' @click="searchNext"
+            <div id='AcFunHelperAnot-danmaku-search-next' @click="searchNext" v-show="buttonEnabled"
                 :class="{ btnHide: buttonStatus, btnUnHide: !buttonStatus }"
                 class="AcFunHelperAnot-danmaku-search-button">
                 ▽
@@ -36,6 +36,7 @@ import { addElement } from '@/Utils/GUI/dom';
 import { ref } from 'vue';
 let lock = ref(true);
 let buttonStatus = ref(false);
+let buttonEnabled = ref(true);
 let searchContent = ref("");
 let isTitleShow = ref(true);
 let searchList: Array<Array<{ "time": string, "offsetTop": number, "item": HTMLElement, }>> = [];
@@ -61,43 +62,69 @@ const searchLast = () => {
     SearchMove("last")
 }
 
+//在点击下一页之后，弹幕列表的转换的时序不是连续的，在不定时间之后内容才会更换，所以我打算在原本的列表中加入一个tag放在最前或最后，这样的话首先判断tag还在不在，不在的话就可以安全执行了，如果在的话就等待这个tag对象被覆盖
+const pageChangeProbe = new GetAsyncDOM("", () => { }, 1500, true, () => { }, "", false, 30000, () => {
+    const target = document.querySelector(".danmaku-items")?.children[0] as HTMLDivElement
+    if (!target) {
+        return false
+    }
+    return target?.id != "AcFunHelperAnot-danmaku-note";
+},)
+
 const SearchMove = (type: "next" | "last" = "next") => {
-    let canChangePage = !$(".next-page").hasClass("disabled");
     if (type == "next") {
         index += 1
         if (searchList[locatedPageNum] != undefined && index != searchList[locatedPageNum].length) {
             JumpTo(locatedPageNum, index);
         } else {
-            index = 0;
-            if (canChangePage) {
-                console.log("page=================change===============", locatedPageNum);
+            const canChangeNextPage = !$(".next-page").hasClass("disabled");
+            if (canChangeNextPage) {
+                const insertParent = document.querySelector("ul.danmaku-items");
+                if (insertParent == null) {
+                    return
+                }
+                addElement({ "id": "AcFunHelperAnot-danmaku-note", "createMode": "headChildAppend", "target": insertParent, "tag": "div" })
                 $(".next-page").trigger("click");
-                $("#danmaku .list-body").scrollTop(0);
-                locatedPageNum += 1
-                //在点击下一页之后，弹幕列表的转换的时序不是连续的，在不定时间之后内容才会更换，所以我打算在原本的列表中加入一个tag放在最前或最后，这样的话首先判断tag还在不在，不在的话就可以安全执行了，如果在的话就等待这个tag对象被覆盖
-                const probe = new GetAsyncDOM("", () => {
-                    Search(locatedPageNum);
-                }, 3000, true, () => { }, "", false, 30000, () => {
-                    const target = document.querySelector(".danmaku-items")?.children[0] as HTMLDivElement
-                    if (!target) {
-                        return false
+                pageChangeProbe.probe().then(() => {
+                    locatedPageNum += 1
+                    index = 0;
+                    if (!(locatedPageNum in searchList)) {
+                        $("#danmaku .list-body").scrollTop(0);
+                        Search(locatedPageNum);
+                    } else {
+                        JumpTo(locatedPageNum, index);
                     }
-                    console.log(target?.id)
-                    return target?.id != "AcFunHelperAnot-danmaku-note";
-                },)
-                probe.probe();
+                })
             }
         }
     } else {
         index -= 1
         if (index < 0) {
-            if (locatedPageNum > 0) {
-                locatedPageNum -= 1;
+            const canChangeLastPage = !$(".last-page").hasClass("disabled");
+            if (locatedPageNum > 0 && canChangeLastPage) {
+                const insertParent = document.querySelector("ul.danmaku-items");
+                if (insertParent == null) {
+                    return
+                }
+                addElement({ "id": "AcFunHelperAnot-danmaku-note", "createMode": "headChildAppend", "target": insertParent, "tag": "div" })
                 $(".last-page").trigger("click");
+                pageChangeProbe.probe().then(() => {
+                    locatedPageNum -= 1;
+                    index = searchList[locatedPageNum].length - 1;
+                    if (!(locatedPageNum in searchList)) {
+                        $("#danmaku .list-body").scrollTop(0);
+                        Search(locatedPageNum);
+                    } else {
+                        JumpTo(locatedPageNum, index);
+                    }
+                })
+            } else {
+                index = 0;
+                locatedPageNum = 0;
             }
-            index = 0
+        } else {
+            JumpTo(locatedPageNum, index);
         }
-        JumpTo(locatedPageNum, index);
     }
 }
 
@@ -113,7 +140,6 @@ const searchStart = () => {
     if (!searchContent) {
         return
     }
-    console.log(lock.value, searchContent)
     searchInit();
     GetAsyncDOM.Get(".danmaku-item", Search, 200);
 }
@@ -131,11 +157,12 @@ const searchInit = () => {
     $("#danmaku .list-body").scrollTop(0);
 }
 
+//fixme: 翻页时，时序不对会导致第n+1页的searchList被覆盖
 const Search = (pageNum: number = 0) => {
-    const insertParent = document.querySelector("ul.danmaku-items");
-    if (insertParent != null) {
-        addElement({ "id": "AcFunHelperAnot-danmaku-note", "createMode": "headChildAppend", "target": insertParent, "tag": "div" })
+    if (pageNum < 0) {
+        return
     }
+    buttonEnabled.value = false
     const a = $("#danmaku .danmaku-item").get();
     if (!a.length) {
         return
@@ -166,6 +193,7 @@ const Search = (pageNum: number = 0) => {
     });
     lock.value = false;
     buttonStatus.value = false;
+    buttonEnabled.value = true;
     JumpTo(locatedPageNum, index);
     // locatedPageNum = parseInt($(".cur-page").text().trim().slice(1, -1)) ?? 1;
     // searchCounterReload();
@@ -180,6 +208,7 @@ const searchCounterReload = () => {
     });
 }
 
+//fixme: 从n页到n-1页之后，n-1页的颜色不会变化
 const JumpTo = (pageNum: number, targetIndex: number) => {
     console.log(pageNum, index, targetIndex, searchList)
     if (!searchList[pageNum].length) {
@@ -190,10 +219,10 @@ const JumpTo = (pageNum: number, targetIndex: number) => {
     }
     searchList[pageNum].forEach((item, i) => {
         if (i == targetIndex) {
-            $(item.item).css(selectColor);
-            $("#danmaku .list-body").scrollTop(item.offsetTop);
+            $(item["item"]).css(selectColor);
+            $("#danmaku .list-body").scrollTop(item["offsetTop"]);
         } else {
-            $(item.item).css(otherColor);
+            $(item["item"]).css(otherColor);
         }
     })
 }
