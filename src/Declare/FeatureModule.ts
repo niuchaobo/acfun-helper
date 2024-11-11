@@ -19,6 +19,7 @@ export namespace ModuleStd {
     OnAcLivePlayerLoaded,
     OnAcPaginationLoaded,
     OnDamakuLoaded,
+    OnModuleAllLoaded,
 
     OnContextMenuReg,
     OnOmniboxObjectReg,
