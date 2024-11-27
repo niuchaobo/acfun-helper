@@ -21,6 +21,8 @@ import { defaultConf as PlayerScreenMode } from "@/Modules/VideoPlayer/PlayerScr
 import { defaultConf as VideoQualitySelect } from "@/Modules/VideoPlayer/QualitySelect/qualitySelect"
 import { defaultConf as CustomVideoPlayRate } from "@/Modules/VideoPlayer/CustomRate/customPlayRate"
 import { defaultConf as PerFrameStep } from "@/Modules/VideoPlayer/PerFrameStep/frameStepForward"
+import { defaultConf as DanmakuSearch } from "@/Modules/VideoPlayer/DanmakuSearch/danmakuSearch"
+import { defaultConf as URLParam } from "@/Modules/UrlParam/urlParam"
 
 export const readOnlyKey: Array<string> = [
 
@@ -57,5 +59,7 @@ export const defaultOption: Record<string, any> = {
     PlayerScreenMode,
     VideoQualitySelect,
     CustomVideoPlayRate,
-    PerFrameStep
+    PerFrameStep,
+    DanmakuSearch,
+    URLParam,
 }

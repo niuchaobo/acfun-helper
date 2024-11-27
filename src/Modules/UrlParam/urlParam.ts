@@ -2,6 +2,7 @@ import { ModuleStd } from "@/Declare/FeatureModule";
 import { ExtOptions } from "@/Core/CoreUtils";
 import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { FgBroadcastChannelName, isTargetPage, REG } from "@/Core/Regs";
+import { buildinURLParamMod } from "./buildinMod";
 
 interface Conf {
     enable: boolean
@@ -32,8 +33,13 @@ const main = async () => {
     if (hashData && /acfunhelper=/.test(hashData)) {
         parsedHash = parser(hashData);
         for (let reactorName in parsedHash) {
-            reactors[reactorName] = parsedHash[reactorName];
-            MsgSw.postMessage({ "action": "/fg/event/on/urlparam-trigger-" + reactorName, "data": parsedHash[reactorName] });
+            if (reactorName in reactors) {
+                reactors[reactorName] = parsedHash[reactorName];
+                MsgSw.postMessage({ "action": "/fg/event/on/urlparam-trigger-" + reactorName, "data": parsedHash[reactorName] });
+            }
+            if (reactorName in buildinURLParamMod) {
+                buildinURLParamMod[reactorName](parsedHash[reactorName]);
+            }
         }
     }
 }
