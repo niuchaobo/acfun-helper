@@ -28,6 +28,8 @@ declare global {
   const storage: typeof import('wxt/storage')['storage']
   const thisBrowser: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['thisBrowser']
   const throttle: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['throttle']
+  const timeTagRegexp: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/TimeUtil')['timeTagRegexp']
+  const timeTagToTimeSecond: typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/TimeUtil')['timeTagToTimeSecond']
   const useAppConfig: typeof import('wxt/client')['useAppConfig']
 }
 // for vue template auto import
@@ -61,6 +63,8 @@ declare module 'vue' {
     readonly storage: UnwrapRef<typeof import('wxt/storage')['storage']>
     readonly thisBrowser: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['thisBrowser']>
     readonly throttle: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/Misc')['throttle']>
+    readonly timeTagRegexp: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/TimeUtil')['timeTagRegexp']>
+    readonly timeTagToTimeSecond: UnwrapRef<typeof import('E:/WorkGroup/Local/Nodejs/AcFun-Helper/main/src/utils/TimeUtil')['timeTagToTimeSecond']>
     readonly useAppConfig: UnwrapRef<typeof import('wxt/client')['useAppConfig']>
   }
 }

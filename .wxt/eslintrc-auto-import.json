@@ -27,6 +27,8 @@
     "storage": true,
     "thisBrowser": true,
     "throttle": true,
+    "timeTagRegexp": true,
+    "timeTagToTimeSecond": true,
     "useAppConfig": true
   }
 }
