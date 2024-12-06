@@ -23,7 +23,8 @@ import { module as CustomVideoPlayRate } from "./VideoPlayer/CustomRate/customPl
 import { module as PerFrameStep } from "./VideoPlayer/PerFrameStep/frameStepForward";
 import { module as DanmakuSearch } from "./VideoPlayer/DanmakuSearch/danmakuSearch";
 import { module as URLParam } from "./UrlParam/urlParam";
+import { module as ArticlePicDrag } from "./Article/picDrag";
 
 export const features: Record<string, ModuleStd.manifest> = {
-    NavGlass, UserId, Banana, FlexProgressbar, RightNavBar, AbPlay, MediaSession, BgTabSleep, PictureInPicture, LiveMediaSession, CommentIterator, IndexNextPage, NormalPartListNextPage, LiveDanmuTime, LiveIndexPause, LiveIndexCount, NextRecommend, Timeline, PlayerScreenMode, VideoQualitySelect, CustomVideoPlayRate, PerFrameStep, DanmakuSearch, URLParam
+    NavGlass, UserId, Banana, FlexProgressbar, RightNavBar, AbPlay, MediaSession, BgTabSleep, PictureInPicture, LiveMediaSession, CommentIterator, IndexNextPage, NormalPartListNextPage, LiveDanmuTime, LiveIndexPause, LiveIndexCount, NextRecommend, Timeline, PlayerScreenMode, VideoQualitySelect, CustomVideoPlayRate, PerFrameStep, DanmakuSearch, URLParam, ArticlePicDrag
 }
