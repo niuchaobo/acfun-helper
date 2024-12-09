@@ -24,6 +24,7 @@ import { defaultConf as PerFrameStep } from "@/Modules/VideoPlayer/PerFrameStep/
 import { defaultConf as DanmakuSearch } from "@/Modules/VideoPlayer/DanmakuSearch/danmakuSearch"
 import { defaultConf as URLParam } from "@/Modules/UrlParam/urlParam"
 import { defaultConf as ArticlePicDrag } from "@/Modules/Article/picDrag"
+import { defaultConf as UnreadMsg } from "@/Modules/Global/Messages/unread"
 
 export const readOnlyKey: Array<string> = [
 
@@ -63,5 +64,6 @@ export const defaultOption: Record<string, any> = {
     PerFrameStep,
     DanmakuSearch,
     URLParam,
-    ArticlePicDrag
+    ArticlePicDrag,
+    UnreadMsg,
 }
