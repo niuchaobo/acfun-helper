@@ -8,6 +8,7 @@ import { addElement } from "@/Utils/GUI/dom";
 import { createApp, App } from "vue";
 import Main from "./bgTabSleepUI.vue"
 import { Conf } from "./bgTabSleepConf";
+import { thisBrowser } from "@/Utils/Misc";
 
 let allOptions: Conf;
 let beforeChangeTabPlayStatus: boolean;

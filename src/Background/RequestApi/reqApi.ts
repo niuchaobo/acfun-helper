@@ -1,3 +1,5 @@
+import { thisBrowser } from "@/Utils/Misc"
+
 export const MainReqHandler = () => {
     // console.log(chrome.webRequest, chrome)
     // chrome.declarativeNetRequest.updateDynamicRules({

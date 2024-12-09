@@ -22,7 +22,9 @@ const main = async (): Promise<RegEntry> => {
             id: "4",
         },
         trigger: (params, tabInfo) => {
-            chrome.tabs.create({ url: 'https://www.acfun.cn/search?keyword=' + encodeURI(params.selectionText) });
+            if(params?.selectionText){
+                chrome.tabs.create({ url: 'https://www.acfun.cn/search?keyword=' + encodeURI(params.selectionText) });
+            }
         }
     }
 }

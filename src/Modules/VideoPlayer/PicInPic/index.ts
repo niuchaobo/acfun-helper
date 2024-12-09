@@ -6,6 +6,7 @@ import { createApp, App } from "vue";
 import Main from "./ui.vue";
 import { addElement } from "@/Utils/GUI/dom";
 import { Conf } from "./conf";
+import { thisBrowser } from "@/Utils/Misc";
 
 let allOptions: Conf;
 let app: App<Element>;
