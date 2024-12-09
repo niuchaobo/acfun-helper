@@ -1,6 +1,6 @@
 <template>
     <div class="control-btn pip">
-        <div class=" control-btn btn-pip" @click="toggle">
+        <div class="control-btn btn-pip" @click="toggle">
             <span class="btn-span setPictureInPictureMode"></span>
         </div>
         <span class="tip-pip">画中画x</span>

@@ -19,7 +19,7 @@
             </div>
         </template>
         <template v-if="navigationPart.live">
-            <NotFound404Img v-if="pushItemList.length == 0" description="咦？世界线变动了，你好像来到了没有登陆的奇怪地方~">
+            <NotFound404Img v-if="liveroomList.length == 0" description="咦？莫非时间不对，现在没人直播~">
             </NotFound404Img>
             <div v-else class="pushItemList">
                 <LiveRoomItem v-for="item in liveroomList" :followLiveRoom="item"></LiveRoomItem>
@@ -37,7 +37,7 @@
 
 <script lang="ts" setup>
 import 'mdui/components/button-icon.js';
-import { reactive, computed, ref, watch } from "vue";
+import { reactive, computed, ref, watch, onMounted, onBeforeMount } from "vue";
 import PushItem from './PushItem.vue';
 import LiveRoomItem from './LiveItem.vue'
 import NotFound404Img from "./404.vue"
@@ -79,8 +79,10 @@ const prepareDougaPushData = async () => {
     }
 }
 
-prepareDougaPushData()
-prepareLiveRoomData()
+onBeforeMount(() => {
+    prepareDougaPushData()
+    prepareLiveRoomData()
+})
 </script>
 
 <style lang="scss" scoped>
