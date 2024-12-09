@@ -27,7 +27,7 @@ export default defineConfig({
       128: 'icon/icon128.png',
     },
     permissions: [
-      "storage",
+      "storage","alarms",
       "tabs",
       "cookies",
       "notifications",

@@ -23,6 +23,7 @@ export namespace ModuleStd {
 
     OnContextMenuReg,
     OnOmniboxObjectReg,
+    onScheduleTaskReg,
 
     OnPageKeyShotcutReg,
   }
