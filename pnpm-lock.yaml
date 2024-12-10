@@ -11,6 +11,9 @@ importers:
       '@types/chrome':
         specifier: ^0.0.268
         version: 0.0.268
+      '@xmldom/xmldom':
+        specifier: ^0.9.6
+        version: 0.9.6
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -769,6 +772,10 @@ packages:
 
   '@wxt-dev/storage@1.0.1':
     resolution: {integrity: sha512-05fzQrr4z0WhdJ0rMQGmjCNTWAC7vrCtvlmu6ZWAKbxdc7k0+T9ui5qPIdF+PxcKPRavIY6ebowBy5KV9lRY0w==}
+
+  '@xmldom/xmldom@0.9.6':
+    resolution: {integrity: sha512-Su4xcxR0CPGwlDHNmVP09fqET9YxbyDXHaSob6JlBH7L6reTYaeim6zbk9o08UarO0L5GTRo3uzl0D+9lSxmvw==}
+    engines: {node: '>=14.6'}
 
   acorn@8.14.0:
     resolution: {integrity: sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA==}
@@ -3114,6 +3121,8 @@ snapshots:
     dependencies:
       async-mutex: 0.5.0
       dequal: 2.0.3
+
+  '@xmldom/xmldom@0.9.6': {}
 
   acorn@8.14.0: {}
 

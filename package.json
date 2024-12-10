@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@types/chrome": "^0.0.268",
+    "@xmldom/xmldom": "^0.9.6",
     "dayjs": "^1.11.13",
     "jquery": "^3.7.1",
     "material-design-icons": "^3.0.1",
