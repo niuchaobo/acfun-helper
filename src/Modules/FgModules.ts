@@ -8,13 +8,13 @@ import { module as AbPlay } from "@/Modules/VideoPlayer/ABPlay/abPlay"
 import { module as MediaSession } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession"
 import { module as BgTabSleep } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleep";
 import { module as PictureInPicture } from "@/Modules/VideoPlayer/PicInPic";
-import { module as LiveMediaSession } from "@/Modules/Live/LiveMediaSession/liveMediaSession";
+import { module as LiveMediaSession } from "@/Modules/Live/liveMediaSession";
 import { module as CommentIterator } from "@/Modules/Comment/iterator";
 import { module as IndexNextPage } from "@/Modules/Pages/NextPage/index";
 import { module as NormalPartListNextPage } from "@/Modules/Pages/NextPage/partList";
-import { module as LiveDanmuTime } from "@/Modules/Live/DanmuTime/liveDanmuTime";
-import { module as LiveIndexPause } from "@/Modules/Live/IndexPause/liveIndexPause";
-import { module as LiveIndexCount } from "@/Modules/Live/IndexCount/liveIndexCount";
+import { module as LiveDanmuTime } from "@/Modules/Live/liveDanmuTime";
+import { module as LiveIndexPause } from "@/Modules/Live/liveIndexPause";
+import { module as LiveIndexCount } from "@/Modules/Live/liveIndexCount";
 import { module as NextRecommend } from "@/Modules/VideoPlayer/NextRecommend/watchNextRecommend";
 import { module as Timeline } from "./VideoPlayer/Timeline/timeline";
 import { module as PlayerScreenMode } from "./VideoPlayer/PlayerScreenMode/playerMode";

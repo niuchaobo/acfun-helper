@@ -95,12 +95,9 @@ export interface HeadCdnUrl {
     freeTrafficCdn: boolean
 }
 
-export const api = {
-    get: "https://live.acfun.cn/api/channel/list?count=56&pcursor=&filters=[%7B%22filterType%22:3,+%22filterId%22:0%7D]",
-}
 
 export const getLiveDataByUid = async (uid: string) => {
-    const resp = await fetchResult(api.get + uid, "GET", "", "include");
+    const resp = await fetchResult(UserLiveBaseInfoUrl + uid, "GET", "", "include");
     if (resp) {
         return JSON.parse(resp) as UserLiveBaseInfo;
     }
