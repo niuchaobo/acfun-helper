@@ -7,7 +7,7 @@ export default defineConfig({
   manifest: {
     name: "AcFun-Helper",
     description: "AcFun-Helper",
-    version: "2.0.21",
+    version: "2.0.25",
     default_locale: "zh_CN",
     author: { "email": "348983704@qq.com" },
     action: {
@@ -43,10 +43,10 @@ export default defineConfig({
     },
   },
   entrypointsDir: "./Core/Entry",
-  publicDir: "./Asset",
+  publicDir: "./src/Asset",
   modulesDir: "./WxtModules",
   srcDir: "./src/",
-  runner: {
+  webExt: {
 
   },
   vite: () => ({

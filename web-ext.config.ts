@@ -1,7 +1,7 @@
 // ~/web-ext.config.ts
-import { defineRunnerConfig } from 'wxt';
+import { defineWebExtConfig } from 'wxt';
 
-export default defineRunnerConfig({
+export default defineWebExtConfig({
   disabled: true,
   binaries: {
     chrome: '/path/to/chrome-beta', // Use Chrome Beta instead of regular Chrome
