@@ -27,14 +27,19 @@ const main = async () => {
             return
         }
         DOMObserverSlim.L1Cilds(livefeedArea, e => {
-            const targetElem = e[0].target as HTMLElement;
-            const time = new Date();
-            const firstChild = targetElem.children[0].firstChild;
-            const span = document.createElement("span");
-            span.innerText = `[${time.toLocaleTimeString()}]`;
-            targetElem.children[0].insertBefore(span, firstChild);
+            e[0].addedNodes.forEach(e=>{
+                addTimeTagForElem(e as HTMLElement)
+            })
         })
     })
+}
+
+const addTimeTagForElem = (targetElem: HTMLElement) => {
+    const time = new Date();
+    const firstChild = targetElem.children[0].firstChild;
+    const span = document.createElement("span");
+    span.innerText = `[${time.toLocaleTimeString()}] `;
+    targetElem.children[0].insertBefore(span, firstChild);
 }
 
 export const defaultConf: Conf = {
