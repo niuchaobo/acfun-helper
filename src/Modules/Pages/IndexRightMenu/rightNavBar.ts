@@ -56,7 +56,7 @@ const collectItem = () => {
         if (titleDom) {
             navItems.push({
                 "name": partNameProc(titleDom.innerText),
-                "id": titleDom.id,
+                "id": item.id,
                 "title": !!subtitleDom ? subtitleDom.innerText : "",
             })
         }
