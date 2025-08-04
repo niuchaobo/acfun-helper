@@ -4,7 +4,7 @@ import { defaultConf as SearchMenu } from "@/Modules/Global/SearchMenu/searchMen
 import { defaultConf as OmniAcid } from "@/Modules/Global/Omnibox/acid"
 import { defaultConf as MediaSession } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession"
 import { defaultConf as BgTabSleep } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleepConf"
-import { defaultConf as PictureInPicture } from "@/Modules/VideoPlayer/PicInPic/conf"
+import { defaultConf as PictureInPicture } from "@/Modules/VideoPlayer/PicInPic/index"
 import { defaultConf as LiveMediaSession } from "@/Modules/Live/liveMediaSession"
 import { defaultConf as CommentIterator } from "@/Modules/Comment/iterator"
 import { defaultConf as UserTag } from "@/Modules/Comment/UserTag/userTag"
@@ -25,6 +25,8 @@ import { defaultConf as DanmakuSearch } from "@/Modules/VideoPlayer/DanmakuSearc
 import { defaultConf as URLParam } from "@/Modules/UrlParam/urlParam"
 import { defaultConf as ArticlePicDrag } from "@/Modules/Article/picDrag"
 import { defaultConf as UnreadMsg } from "@/Modules/Global/Messages/unread"
+import { defaultConf as HideRecommend } from "@/Modules/VideoPlayer/HideRecommend/hide-recommend"
+import { defaultConf as Banana } from "@/Modules/Banana/banana"
 
 export const readOnlyKey: Array<string> = [
 
@@ -32,6 +34,7 @@ export const readOnlyKey: Array<string> = [
 
 export const defaultOption: Record<string, any> = {
     logSetting: { "consoleOutput": true, "logLevel": 4 },
+    cache: {},
     userInfo: {
 
     },
@@ -66,4 +69,6 @@ export const defaultOption: Record<string, any> = {
     URLParam,
     ArticlePicDrag,
     UnreadMsg,
+    HideRecommend,
+    Banana,
 }

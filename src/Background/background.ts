@@ -18,8 +18,8 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
         this.ExecHost = {} as Record<ModuleStd.SequentialType, Record<ModuleStd.lordManifest["name"], ModuleStd.lordManifest>>;
 
         const BgMsgRouter = new MessageRouter.MsgRouter();
-        Object.keys(MsgUsers).forEach((e=>{
-            BgMsgRouter.on(e,MsgUsers[e])
+        Object.keys(MsgUsers).forEach((e => {
+            BgMsgRouter.on(e, MsgUsers[e])
         }))
         chrome.runtime.onMessage.addListener(BgMsgRouter.listener());
 
@@ -27,7 +27,6 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
     }
 
     Init() {
-        this.UpdateConf();
         //加载功能模块
         for (let featName in bgFeatures) {
             const module = bgFeatures[featName];
@@ -56,10 +55,12 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
     }
 
     onInstalled(details: chrome.runtime.InstalledDetails) {
-        this.UpdateConf();
         const versionNum = chrome.runtime.getManifest().version;
+        const previousVersion = details.previousVersion;
         if (details.reason === 'install') {
             // chrome.tabs.create({ url: chrome.runtime.getURL('bg/firstRun.html') });
+            //初始化配置
+            ExtOptions.saveAll(ExtOptions.sanitizeOptions({}))
             chrome.notifications.create("", {
                 type: 'basic',
                 iconUrl: 'icon/icon128.png',
@@ -68,7 +69,7 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
             });
         }
         if (details.reason === 'update') {
-            if (versionNum == details.previousVersion) {
+            if (versionNum == previousVersion) {
                 chrome.notifications.create("", {
                     type: 'basic',
                     iconUrl: 'icon/icon128.png',
@@ -76,6 +77,9 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
                     message: '重启了！'
                 });
                 return;
+            }
+            if (versionNum != undefined && previousVersion != undefined) {
+                ExtOptions.updateOptions(previousVersion, versionNum);
             }
             chrome.notifications.create("", {
                 type: 'basic',
@@ -86,10 +90,6 @@ export class AcFunHelperBackend implements AcFunHelperBgFrame {
         }
     }
 
-    UpdateConf() {
-        ExtOptions.saveAll(ExtOptions.sanitizeOptions({}))
-        console.log("配置更新完成");
-    }
 
 }
 
