@@ -26,5 +26,5 @@ import { module as URLParam } from "./UrlParam/urlParam";
 import { module as ArticlePicDrag } from "./Article/picDrag";
 
 export const features: Record<string, ModuleStd.manifest> = {
-    NavGlass, UserId, Banana, FlexProgressbar, RightNavBar, AbPlay, MediaSession, BgTabSleep, PictureInPicture, LiveMediaSession, CommentIterator, IndexNextPage, NormalPartListNextPage, LiveDanmuTime, LiveIndexPause, LiveIndexCount, NextRecommend, Timeline, PlayerScreenMode, VideoQualitySelect, CustomVideoPlayRate, PerFrameStep, DanmakuSearch, URLParam, ArticlePicDrag
+    NavGlass, UserId, Banana, FlexProgressbar, RightNavBar, AbPlay, MediaSession, BgTabSleep, PictureInPicture, LiveMediaSession, CommentIterator, IndexNextPage, NormalPartListNextPage, LiveDanmuTime, LiveIndexPause, LiveIndexCount, NextRecommend, Timeline, PlayerScreenMode, VideoQualitySelect, CustomVideoPlayRate, PerFrameStep, DanmakuSearch, URLParam, ArticlePicDrag,
 }

@@ -49,7 +49,6 @@ export namespace ModuleStd {
     enable?: (...args: any) => any;
     disable?: (...args: any) => any;
     init?: (...args: any) => any;
-    isEnabled?: (...args: any) => any;
     runtimeMsgTrigger?: Record<string, (...args: any) => Promise<any> | undefined | void>;
     eventTrigger?: (...args: any) => any;
     updateTrigger?: (...args: any) => any;
