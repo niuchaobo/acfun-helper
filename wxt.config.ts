@@ -7,7 +7,7 @@ export default defineConfig({
   manifest: {
     name: "AcFun-Helper",
     description: "AcFun-Helper",
-    version: "2.0.25",
+    version: "2.0.26",
     default_locale: "zh_CN",
     author: { "email": "348983704@qq.com" },
     action: {

@@ -25,7 +25,6 @@ import { defaultConf as DanmakuSearch } from "@/Modules/VideoPlayer/DanmakuSearc
 import { defaultConf as URLParam } from "@/Modules/UrlParam/urlParam"
 import { defaultConf as ArticlePicDrag } from "@/Modules/Article/picDrag"
 import { defaultConf as UnreadMsg } from "@/Modules/Global/Messages/unread"
-import { defaultConf as HideRecommend } from "@/Modules/VideoPlayer/HideRecommend/hide-recommend"
 import { defaultConf as Banana } from "@/Modules/Banana/banana"
 
 export const readOnlyKey: Array<string> = [
@@ -69,6 +68,5 @@ export const defaultOption: Record<string, any> = {
     URLParam,
     ArticlePicDrag,
     UnreadMsg,
-    HideRecommend,
     Banana,
 }
