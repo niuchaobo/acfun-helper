@@ -2,20 +2,34 @@ import { fetchResult } from "@/Core/CoreLibs/WebRequest"
 import { DOMParser, LiveNodeList } from "@xmldom/xmldom"
 import { Element as Element2 } from "@xmldom/xmldom"
 
+export enum MsgType {
+    Comment = "getComment",
+    Like = "getLike",
+    AtMe = "getAtMe",
+    Gift = "getGift",
+    SysMsg = "getSysMsg",
+    ResMsg = "getResMsg",
+}
+
 export const api = {
-    get: "https://message.acfun.cn/?quickViewId=upCollageMain&reqID=1&ajaxpipe=1",
+    getComment: "https://message.acfun.cn/?quickViewId=upCollageMain&reqID=1&ajaxpipe=1",
+    getLike: "https://message.acfun.cn/like?quickViewId=upCollageMain&reqID=1&ajaxpipe=1",
+    getAtMe: "https://message.acfun.cn/atmine?quickViewId=upCollageMain&reqID=2&ajaxpipe=1",
+    getGift: "https://message.acfun.cn/gift?quickViewId=upCollageMain&reqID=3&ajaxpipe=1",
+    getSysMsg: "https://message.acfun.cn/sysmsg?quickViewId=upCollageMain&reqID=6&ajaxpipe=1",
+    getResMsg: "https://message.acfun.cn/resmsg?quickViewId=upCollageMain&reqID=7&ajaxpipe=1",
 }
 
-export const getUnreadDetail = async () => {
-    return JSON.parse((await fetchResult(api.get, "GET", "", "include")).replace("/*<!-- fetch-stream -->*/", "").replaceAll("\\n", "")) as UnreadDetailType
+export const getUnreadDetail = async (apiEndp: string) => {
+    return JSON.parse((await fetchResult(apiEndp, "GET", "", "include")).replace("/*<!-- fetch-stream -->*/", "").replaceAll("\\n", "")) as UnreadDetailType
 }
 
-const getUnreadDetailDOM = async () => {
-    return new DOMParser().parseFromString((await getUnreadDetail())?.html, "text/html")
+const getUnreadDetailDOM = async (apiEndp: string) => {
+    return new DOMParser().parseFromString((await getUnreadDetail(apiEndp))?.html, "text/html")
 }
 
-const getUnreadDetailDOMByNum = async (num: number) => {
-    const raw = await getUnreadDetailDOM();
+const getUnreadDetailDOMByNum = async (apiEndp: string, num: number) => {
+    const raw = await getUnreadDetailDOM(apiEndp);
     if (num <= 0) {
         return
     }
@@ -28,8 +42,8 @@ const getUnreadDetailDOMByNum = async (num: number) => {
     return message;
 }
 
-const getUnreadDetailDOMRange = async (startIndex: number, endIndex: number) => {
-    const raw = await getUnreadDetailDOM();
+const getUnreadDetailDOMRange = async (apiEndp: string, startIndex: number, endIndex: number) => {
+    const raw = await getUnreadDetailDOM(apiEndp);
     if (startIndex <= 0) {
         startIndex = 1
     }
@@ -38,21 +52,21 @@ const getUnreadDetailDOMRange = async (startIndex: number, endIndex: number) => 
     if (!childList) {
         return
     }
-    const result:Array<string> = [];
-    endIndex+=1;
+    const result: Array<string> = [];
+    endIndex += 1;
     for (let index = startIndex; index < endIndex; index++) {
         let messageIndex = 2 * index - 1;
         if (messageIndex > childList.length) {
             break
         }
         const element = childList[messageIndex];
-        if(!element){
+        if (!element) {
             continue
         }
         const message = element.textContent?.replace(/\s{2,}/g, ' ');
         // let linkHref = element.getElementsByClassName("msg-reply") as unknown as LiveNodeList<Element2>;
         // let linkHrefAttr = linkHref[0].getAttribute("href")
-        if(!(message?.length)){
+        if (!(message?.length)) {
             continue
         }
         result.push(message);
