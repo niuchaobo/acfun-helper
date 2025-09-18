@@ -22,7 +22,7 @@ const main = async () => {
     }
     modLog("Init", module.name, "main")
     GetAsyncDOM.Get("div.container-controls > div.control-bar-top > div.box-right", () => {
-        addElement({ tag: "div", id: "AcFunHelperAnot-Abplay", target: document.querySelector(".box-right") as Element, classes: "control-btn speed AcFunHelperAnot-abplay", createMode: "headChildAppend" });
+        addElement({ tag: "div", id: "AcFunHelperAnot-Abplay", target: document.querySelector(".box-right") as Element, classes: "control-btn speed AcFunHelperAnot", createMode: "headChildAppend" });
         modLog("Init Container.", module.name, "main..GetAsyncDOM")
         app = createApp(Main);
         app.mount("#AcFunHelperAnot-Abplay");

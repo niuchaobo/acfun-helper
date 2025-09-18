@@ -64,7 +64,7 @@ const getVideoFrameRate = () => {
 }
 
 const appendUI = () => {
-    const contentElem = `<div class="control-btn speed frameStep">
+    const contentElem = `<div id="AcFunHelperAnot-frameStep" class="control-btn speed AcFunHelperAnot">
       <div class="speed-panel frameStep-panel">
         <ul>
           <li id="AcFunHelperAnot-PerFrameStep-f" data-mode="f"">下一帧</li>

@@ -26,8 +26,8 @@ const main = async () => {
 
 const renderControl = () => {
     let html = `<li class="setCustomPlaybackRate" data-val='1'>自定义</li>`;
-    jQuery(".speed[type!=abplay]").find("li:last").after(html);
-    jQuery(".speed[type!=abplay]").on("click", (e: JQuery.TriggeredEvent) => {
+    jQuery(".speed[class='control-btn speed']").find("li:last").after(html);
+    jQuery(".speed[class='control-btn speed']").on("click", (e: JQuery.TriggeredEvent) => {
         if (e.target.className === "setCustomPlaybackRate") {
             applyRate();
         } else {
