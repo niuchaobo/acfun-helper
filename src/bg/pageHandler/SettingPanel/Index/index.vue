@@ -25,14 +25,6 @@
                 target="_blank"
                 >Github</a
               ><br />
-              2.AcFunContributesInfoApi 稿件信息解析 @Sokwva
-              <a
-                href="https://gitee.com/sokwva/ac-fun-contributes-info-api"
-                target="_blank"
-                >Gitee</a
-              >
-              <br /><br />
-              <hr />
             </div>
             <div class="mdui-col-sm-6 mdui-col-md-4">
               免责声明<br /><br />下载的视频版权归视频所有者所有，除非视频所有者同意，否则下载的视频仅限作离线播放用途。任何未经授权的剪辑和再发布等行为均为侵犯版权的行为，请尊重创作者的劳动成果。

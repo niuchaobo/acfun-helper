@@ -291,7 +291,6 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.picDrag && this.reader.picDrag(this.options.picRotate);
 			this.options.LikeHeart && this.banana.LikeHeartFront("article");
 			this.options.uddPopUp && this.ce.uddPopUp(Number(this.options.uddPopUptype));
-			this.options.articleReadMode && this.reader.lightReadMode();
 			if (this.options.auto_throw && this.options.articleBanana) {
 				setTimeout(() => {
 					this.banana.articleBanana({ key: REG.acAid.exec(href)[2] })
