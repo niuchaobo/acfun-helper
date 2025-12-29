@@ -3,6 +3,7 @@ import "wxt/browser";
 
 declare module "wxt/browser" {
   export type PublicPath =
+    | ""
     | "/"
     | "/Image/404img.png"
     | "/Scss/globalVar.scss"

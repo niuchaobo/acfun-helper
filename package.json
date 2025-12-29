@@ -17,23 +17,23 @@
   "dependencies": {
     "@types/chrome": "^0.0.268",
     "@xmldom/xmldom": "^0.9.8",
-    "dayjs": "^1.11.13",
+    "dayjs": "^1.11.19",
     "jquery": "^3.7.1",
     "material-design-icons": "^3.0.1",
     "mdui": "^2.1.4",
-    "pinia": "^3.0.3",
+    "pinia": "^3.0.4",
     "tinykeys": "^2.1.0",
-    "vue": "^3.5.18"
+    "vue": "^3.5.26"
   },
   "devDependencies": {
     "@rollup/plugin-inject": "^5.0.5",
-    "@types/jquery": "^3.5.32",
+    "@types/jquery": "^3.5.33",
     "@vitejs/plugin-vue": "^5.2.4",
-    "sass": "^1.89.2",
-    "sass-loader": "^16.0.5",
-    "typescript": "^5.9.2",
+    "sass": "^1.97.1",
+    "sass-loader": "^16.0.6",
+    "typescript": "^5.9.3",
     "vue-tsc": "^2.2.12",
-    "wxt": "^0.20.0"
+    "wxt": "^0.20.13"
   },
   "nohoist": [
     "**/wxt"
