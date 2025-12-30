@@ -1,35 +1,38 @@
 <template>
     <h1>AB回放</h1>
     <div class="control">
-        <h3>Xttttttt
+        <h3>启用
         </h3>
-        <mdui-switch :checked="enable">Test</mdui-switch>
+        <mdui-switch :checked="allOptions.enable" @change="change"></mdui-switch>
     </div>
     <h1>AB回放</h1>
     <div class="control">
         <h3>XttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXtestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXtestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXtestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXtestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXtestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttestttttttttttttttttttttttttttttttttttttttttttttttttttttttttXtesttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
         </h3>
-        <mdui-switch :checked="enable" @change="change">Test</mdui-switch>
+        <mdui-switch :checked="allOptions.enable" @change="change">Test</mdui-switch>
     </div>
 </template>
 
-<script setup lang="ts">
-import { Conf } from "@/Modules/VideoPlayer/ABPlay/abPlayConf";
+<script async setup lang="ts">
+import { Conf, module } from "@/Modules/VideoPlayer/ABPlay/abPlay";
 import { ExtOptions } from "@/Core/CoreUtils";
-import { ref } from "vue";
-let allOptions: Promise<Conf>;
-let enable = ref(false);
-allOptions = ExtOptions.getValue("ABPlay") as Promise<Conf>
-allOptions.then(e => {
-    e.enable ? enable.value = true : enable.value = false;;
+import { ref, Ref } from "vue";
+import type { Switch } from 'mdui/components/switch.js';
+import { onMounted, onBeforeMount } from "vue";
+
+let allOptions: Ref<Conf> = ref({}) as Ref<Conf>;
+
+onBeforeMount(async () => {
+    allOptions.value = await ExtOptions.getValue(module.name) as Conf;
 })
 
-const change = (e:any)=>{
-    console.log(e)
-    const target = e.target;
+const change = async (e: CustomEvent) => {
+    const target = e.target as Switch;
     const checked = target.checked as boolean;
+    let tempAllOptions = await ExtOptions.getValue(module.name) as Conf;
+    tempAllOptions.enable = checked;
+    ExtOptions.setValue(module.name, tempAllOptions);
 }
-
 
 </script>
 <style lang="scss">

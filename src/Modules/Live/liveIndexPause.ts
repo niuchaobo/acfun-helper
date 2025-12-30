@@ -3,7 +3,7 @@ import { ExtOptions, GetAsyncDOM } from "@/Core/CoreUtils";
 import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { isTargetPage, REG } from "@/Core/Regs";
 
-interface Conf {
+export interface Conf {
     enable: boolean
     type: string
 }

@@ -1,14 +1,14 @@
 <template>
-    <h1>画中画</h1>
+    <h1>自定义倍速</h1>
     <div class="control">
-        <h3>Xttttttt
+        <h3>启用
         </h3>
-        <mdui-switch :checked="allOptions.enable" @change="change" data-id="enable">Test</mdui-switch>
+        <mdui-switch :checked="allOptions.enable" @change="change"></mdui-switch>
     </div>
 </template>
 
 <script async setup lang="ts">
-import { Conf, module } from "@/Modules/VideoPlayer/PicInPic/index"
+import { Conf, module } from "@/Modules/VideoPlayer/CustomRate/customPlayRate";
 import { ExtOptions } from "@/Core/CoreUtils";
 import { ref, Ref } from "vue";
 import type { Switch } from 'mdui/components/switch.js';

@@ -59,8 +59,8 @@
                             <mdui-list-item slot="header" icon="video_library" data-type="L1"
                                 data-id="Video">视频</mdui-list-item>
                             <div style="margin-left: 2.5rem">
-                                <mdui-list-item data-type="L2" data-id="ABPlay">AB回放</mdui-list-item>
-                                <mdui-list-item data-type="L2" data-id="BgTabSleep" v-if="browserType=='FF'">后台标签页暂停播放</mdui-list-item>
+                                <mdui-list-item data-type="L2" v-for="(comp, compName) of Parts.Video"
+                                    :data-id="compName">{{ comp.name }}</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                         <mdui-collapse-item id="articleEntry">
@@ -74,7 +74,7 @@
                             <mdui-list-item slot="header" icon="live_tv" data-type="L1"
                                 data-id="Live">直播</mdui-list-item>
                             <div style="margin-left: 2.5rem">
-                                <mdui-list-item>Item 2 - subitem</mdui-list-item>
+                                <mdui-list-item data-type="L2" data-id="liveIndexPause">直播主页播放器暂停</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                         <mdui-collapse-item id="pageEntry">
@@ -128,6 +128,7 @@ import Live from './Live/index.vue';
 import Page from './Page/index.vue';
 import Tool from './Tool/index.vue';
 import { thisBrowser } from "@/Utils/Misc";
+import { componentmap as VideoCompMap } from './Video/componentMap';
 
 let navigationDrawer: NavigationDrawer;
 const browserType = thisBrowser();
@@ -146,13 +147,7 @@ const Parts = {
     General: {
 
     },
-    Video: {
-        Player: {
-
-        },
-        Danmaku: {},
-        WatchLater: {},
-    },
+    Video: VideoCompMap,
     Article: {
         MangaMode: {},
         Ban: {},
@@ -174,6 +169,7 @@ const Parts = {
 }
 
 export type L1Part = keyof typeof Parts;
+let lastClickL1 = "";
 
 //TODO 现在的思路就是通过点击触发store里面的L1 L2的变动，当L1变动之后，切换子组件变动，L2变动之后，切换孙组件变动，通过Record<string,bool>和v-if去转换状态。
 const setPart = (e: any) => {
@@ -181,7 +177,7 @@ const setPart = (e: any) => {
     const target = e.target as HTMLElement;
     const partType = target.dataset.type;
     const id = target.dataset.id;
-    partType == "L1" ? !!id && (store.L1Part = id) : (!!id && store.L1Part != null) && (store.L2Part = id)
+    partType == "L1" ? !!id && (lastClickL1 = id) : (!!id && store.L1Part != null) && (store.L1Part = lastClickL1, store.L2Part = id)
     console.log(store.$state)
 }
 
@@ -195,7 +191,7 @@ const snackIt = () => {
 const toggleDevMode = () => {
     if (devModeClickCount == 6) {
         devMode.value = !devMode.value;
-        snackBarMsg.value = "开发者模式 (`ε´ )：" + (devMode.value ? "开！" : "关！")
+        snackBarMsg.value = "开发者模式：" + (devMode.value ? "开！(`ε´ )" : "关！")
         snackIt()
         devModeClickCount = 0
     }

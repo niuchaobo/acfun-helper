@@ -5,7 +5,7 @@ import { isTargetPage, REG } from "@/Core/Regs";
 
 type screenModeType = "default" | "film" | "web" | "desktop"
 
-interface Conf {
+export interface Conf {
     enable: boolean
     screenMode: screenModeType,
     autoExit: boolean

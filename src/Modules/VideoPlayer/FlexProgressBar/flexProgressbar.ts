@@ -130,7 +130,7 @@ interface StyleOptions {
     innerBarLoadHeight: string,
 }
 
-interface Conf {
+export interface Conf {
     enable: boolean,
     style: StyleOptions
 }

@@ -7,12 +7,23 @@ import { state } from "./bgTabSleepState";
 import { addElement } from "@/Utils/GUI/dom";
 import { createApp, App } from "vue";
 import Main from "./bgTabSleepUI.vue"
-import { Conf } from "./bgTabSleepConf";
 import { thisBrowser } from "@/Utils/Misc";
 
 let allOptions: Conf;
 let beforeChangeTabPlayStatus: boolean;
 let app: App<Element>;
+
+export interface Conf {
+    enable: boolean;
+    withVolume: boolean;
+}
+
+export const defaultConf: Conf = {
+    enable: false,
+    withVolume: false
+}
+
+
 
 const main = async () => {
     if (thisBrowser() == "FF") {
@@ -94,6 +105,12 @@ const trigger = () => {
     })
 }
 
+export const optMani: ModuleStd.optManifest = {
+    modName: "BgTabSleep",
+    name: "后台自动暂停",
+    description: "当切换标签页时，自动暂停（或同时调小音量，当切换回来时慢慢调大）视频播放、",
+    main
+}
 
 export const module: ModuleStd.manifest = {
     name: "BgTabSleep",

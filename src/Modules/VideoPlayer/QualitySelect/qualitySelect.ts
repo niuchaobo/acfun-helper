@@ -20,7 +20,7 @@ enum QulityPolicyTypes {
 
 type QualitiyPolicy = keyof typeof QulityPolicyTypes
 
-interface Conf {
+export interface Conf {
     enable: boolean
     preferQuality: QualitiyPolicy
     customFirst: AllQulitiesType

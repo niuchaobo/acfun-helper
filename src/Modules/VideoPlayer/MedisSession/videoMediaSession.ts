@@ -3,7 +3,7 @@ import { ExtOptions, GetAsyncDOM } from "@/Core/CoreUtils";
 import { REG, isTargetPage } from "@/Core/Regs";
 import { ModuleStd } from "@/Declare/FeatureModule";
 
-interface Conf {
+export interface Conf {
     enable: boolean
 }
 

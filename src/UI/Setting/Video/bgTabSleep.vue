@@ -15,7 +15,7 @@
 </template>
 
 <script async setup lang="ts">
-import { Conf } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleepConf"
+import { Conf, module } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleep"
 import { ExtOptions } from "@/Core/CoreUtils";
 import { ref, Ref } from "vue";
 import type { Switch } from 'mdui/components/switch.js';
@@ -24,20 +24,16 @@ import { onMounted, onBeforeMount } from "vue";
 let allOptions: Ref<Conf> = ref({}) as Ref<Conf>;
 
 onBeforeMount(async () => {
-    allOptions.value = await ExtOptions.getValue("BgTabSleep") as Conf;
+    allOptions.value = await ExtOptions.getValue(module.name) as Conf;
 })
 
-const change = async (e: any) => {
+const change = async (e: CustomEvent) => {
     const target = e.target as Switch;
     const checked = target.checked as boolean;
-    const id = target.dataset.id as keyof Conf;
-    if (id == undefined) {
-        return
-    }
-    allOptions.value[id] = checked;
-    ExtOptions.setValue("BgTabSleep", allOptions.value);
+    let tempAllOptions = await ExtOptions.getValue(module.name) as Conf;
+    tempAllOptions.enable = checked;
+    ExtOptions.setValue(module.name, tempAllOptions);
 }
-
 
 </script>
 <style lang="scss">

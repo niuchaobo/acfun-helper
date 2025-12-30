@@ -5,10 +5,16 @@ import { ModuleStd } from "@/Declare/FeatureModule";
 import { App, createApp } from "vue";
 import Main from "./abplay-ui.vue"
 import { addElement } from "@/Utils/GUI/dom";
-import { Conf } from "./abPlayConf";
 
 let app: App<Element>;
 let allOptions: Conf;
+export interface Conf {
+    enable: boolean,
+}
+
+export const defaultConf: Conf = {
+    enable: true,
+}
 
 const main = async () => {
     //加载配置
@@ -28,6 +34,13 @@ const main = async () => {
         app.mount("#AcFunHelperAnot-Abplay");
         modLog("Mount App.", module.name, "main..GetAsyncDOM")
     })
+}
+
+export const optMani: ModuleStd.optManifest = {
+    modName: "ABPlay",
+    name: "AB回放",
+    description: "AB回放是在设定的两个时间点之间重复播放。",
+    main
 }
 
 export const module: ModuleStd.manifest = {

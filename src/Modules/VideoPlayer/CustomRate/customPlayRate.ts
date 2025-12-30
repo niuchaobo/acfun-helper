@@ -4,7 +4,7 @@ import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { isTargetPage, REG } from "@/Core/Regs";
 import jQuery from "jquery";
 
-interface Conf {
+export interface Conf {
     enable: boolean
     defaultRate: number
 }

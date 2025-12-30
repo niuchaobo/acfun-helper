@@ -1,9 +1,9 @@
 import { defaultConf as FlexProgressBar } from "@/Modules/VideoPlayer/FlexProgressBar/flexProgressbar"
-import { defaultConf as ABPlay } from "@/Modules/VideoPlayer/ABPlay/abPlayConf"
+import { defaultConf as ABPlay } from "@/Modules/VideoPlayer/ABPlay/abPlay"
 import { defaultConf as SearchMenu } from "@/Modules/Global/SearchMenu/searchMenu"
 import { defaultConf as OmniAcid } from "@/Modules/Global/Omnibox/acid"
-import { defaultConf as MediaSession } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession"
-import { defaultConf as BgTabSleep } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleepConf"
+import { defaultConf as VideoMediaSession } from "@/Modules/VideoPlayer/MedisSession/videoMediaSession"
+import { defaultConf as BgTabSleep } from "@/Modules/VideoPlayer/BgTabSleep/bgTabSleep"
 import { defaultConf as PictureInPicture } from "@/Modules/VideoPlayer/PicInPic/index"
 import { defaultConf as LiveMediaSession } from "@/Modules/Live/liveMediaSession"
 import { defaultConf as CommentIterator } from "@/Modules/Comment/iterator"
@@ -45,7 +45,7 @@ export const defaultOption: Record<string, any> = {
 
     SearchMenu,
     OmniAcid,
-    MediaSession,
+    VideoMediaSession,
     BgTabSleep,
     PictureInPicture,
     LiveMediaSession,
@@ -69,4 +69,5 @@ export const defaultOption: Record<string, any> = {
     ArticlePicDrag,
     UnreadMsg,
     Banana,
+    LiveBanDanmu,
 }

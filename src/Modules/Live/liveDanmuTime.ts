@@ -38,6 +38,7 @@ const addTimeTagForElem = (targetElem: HTMLElement) => {
     const time = new Date();
     const firstChild = targetElem.children[0].firstChild;
     const span = document.createElement("span");
+    span.style.color = "#ccc";
     span.innerText = `[${time.toLocaleTimeString()}] `;
     targetElem.children[0].insertBefore(span, firstChild);
 }

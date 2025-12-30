@@ -5,7 +5,7 @@ import { isTargetPage, REG } from "@/Core/Regs";
 import { addElement } from "@/Utils/GUI/dom";
 import { timeTagRegexp, timeTagToTimeSecond } from "@/Utils/TimeUtil";
 
-interface Conf {
+export interface Conf {
     enable: boolean
 }
 
