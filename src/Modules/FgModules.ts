@@ -24,7 +24,9 @@ import { module as PerFrameStep } from "./VideoPlayer/PerFrameStep/frameStepForw
 import { module as DanmakuSearch } from "./VideoPlayer/DanmakuSearch/danmakuSearch";
 import { module as URLParam } from "./UrlParam/urlParam";
 import { module as ArticlePicDrag } from "./Article/picDrag";
+import { module as LiveBanDanmu } from "./Live/liveBanDanmuByType/liveBanDanmuByType";
 
 export const features: Record<string, ModuleStd.manifest> = {
     NavGlass, UserId, Banana, FlexProgressbar, RightNavBar, AbPlay, MediaSession, BgTabSleep, PictureInPicture, LiveMediaSession, CommentIterator, IndexNextPage, NormalPartListNextPage, LiveDanmuTime, LiveIndexPause, LiveIndexCount, NextRecommend, Timeline, PlayerScreenMode, VideoQualitySelect, CustomVideoPlayRate, PerFrameStep, DanmakuSearch, URLParam, ArticlePicDrag,
+    LiveBanDanmu,
 }

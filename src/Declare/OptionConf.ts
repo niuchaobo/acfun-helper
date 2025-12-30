@@ -26,6 +26,8 @@ import { defaultConf as URLParam } from "@/Modules/UrlParam/urlParam"
 import { defaultConf as ArticlePicDrag } from "@/Modules/Article/picDrag"
 import { defaultConf as UnreadMsg } from "@/Modules/Global/Messages/unread"
 import { defaultConf as Banana } from "@/Modules/Banana/banana"
+import { defaultConf as LiveBanDanmu } from "@/Modules/Live/liveBanDanmuByType/liveBanDanmuByType"
+import { defaultConf as LiveNotification } from "@/Modules/Global/Messages/liveNotif"
 
 export const readOnlyKey: Array<string> = [
 
@@ -70,4 +72,5 @@ export const defaultOption: Record<string, any> = {
     UnreadMsg,
     Banana,
     LiveBanDanmu,
+    LiveNotification,
 }
