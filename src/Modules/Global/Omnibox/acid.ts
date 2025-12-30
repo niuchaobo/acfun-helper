@@ -7,6 +7,10 @@ const regHander = new RegExp('-ac(.*)');
 
 const main = async (): Promise<RegEntry> => {
     allOptions = await ExtOptions.getValue(module.name) as Conf;
+    if (!allOptions) {
+        allOptions = defaultConf;
+    }
+
     if (!allOptions.enable) {
         return {
             enabled: false,

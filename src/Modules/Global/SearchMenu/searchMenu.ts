@@ -6,6 +6,12 @@ let allOptions: Conf;
 
 const main = async (): Promise<RegEntry> => {
     allOptions = await ExtOptions.getValue(module.name) as Conf;
+    
+    // 当配置不存在时使用默认配置
+    if (!allOptions) {
+        allOptions = defaultConf;
+    }
+    
     if (!allOptions.enable) {
         return {
             enabled: false,

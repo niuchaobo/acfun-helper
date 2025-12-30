@@ -11,6 +11,10 @@ let allOptions: Conf;
 
 const main = async () => {
     allOptions = await ExtOptions.getValue(module.name) as Conf;
+    if (!allOptions) {
+        allOptions = defaultConf;
+    }
+
     if (!allOptions.enable) {
         return {
             enabled: false,

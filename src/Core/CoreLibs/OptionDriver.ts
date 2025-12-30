@@ -67,10 +67,12 @@ export class ExtOptions {
      * 获取相关区域键为key的配置内容
      */
     _getValue(key: string) {
-        return new Promise<{ [key: string]: any }>((resolve, reject) => {
+        return new Promise<{ [key: string]: any } | undefined>((resolve, reject) => {
             chrome.storage[this.storageArea].get(key, (res) => {
-                if (res.length == 2 && JSON.stringify(res) == "{}") {
-                    reject(null);
+                // 当键不存在时，chrome.storage.get()返回空对象
+                if (Object.keys(res).length === 0) {
+                    // 返回undefined而不是拒绝Promise
+                    resolve(undefined);
                 } else {
                     resolve(res[key]);
                 }
@@ -289,5 +291,5 @@ export class ExtOptions {
         }
         return conf
     }
-    
+
 }
