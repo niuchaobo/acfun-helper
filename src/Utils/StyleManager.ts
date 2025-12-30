@@ -17,7 +17,7 @@ export class GlobalStyleManager {
     }
 
     add(rawName: string, id: string, content: string, specialTarget?: Element): boolean {
-        const name = "AcFunHelperAnot" + rawName + "-" + id;
+        const name = "AcFunHelperAnot-" + rawName + "-" + id;
         if (!!this.handlers[name]) {
             return false;
         } else {
@@ -36,7 +36,7 @@ export class GlobalStyleManager {
      * @returns 当前状态
      */
     toggle(rawName: string, id: string, disable?: boolean): boolean {
-        const name = "AcFunHelperAnot" + rawName + "-" + id;
+        const name = "AcFunHelperAnot-" + rawName + "-" + id;
         if (disable === undefined) {
             this.handlers[name].disabled = !this.handlers[name].disabled;
             return this.handlers[name].disabled;
@@ -48,7 +48,7 @@ export class GlobalStyleManager {
     }
 
     remove(rawName: string, id: string): boolean {
-        const name = "AcFunHelperAnot" + rawName + "_" + id;
+        const name = "AcFunHelperAnot-" + rawName + "_" + id;
         if (!!this.handlers[name]) {
             const h = this.handlers[name];
             h.remove();
