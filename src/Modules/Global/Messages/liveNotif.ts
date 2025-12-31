@@ -2,6 +2,7 @@ import { ModuleStd } from "@/Declare/FeatureModule";
 import { ExtOptions } from "@/Core/CoreUtils";
 import { modLog } from "@/Core/CoreLibs/ConsoleProxy";
 import { api, getMyFollowedLiveList, LiveList, User } from "@/Utils/Api/live/followLive";
+import { getLiveDataByUid, UserLiveBaseInfo } from "@/Utils/Api/live/liveBaseInfo";
 
 type UID = string
 
@@ -11,6 +12,8 @@ interface Conf {
     customLiveNotifEnable: boolean;
 
     liveUsers: Array<UID>;
+    customObserveUsers: Array<UID>;
+    customObserveUserStats: Array<UID>;
 }
 
 let allOptions: Conf;
@@ -28,6 +31,12 @@ const main = async () => {
         option: { periodInMinutes: 2 },
         task: [
             async () => {
+                let authInfo = await ExtOptions.getValue("LocalUserId") as unknown as string;
+                if (authInfo.length == 0) {
+                    //用户未登录
+                    return
+                }
+
                 allOptions.followedLiveNotifEnable && followedLiveCheck();
                 allOptions.customLiveNotifEnable && customLiveCheck();
             },
@@ -36,7 +45,7 @@ const main = async () => {
 
 }
 
-const createLiveUserNotification = (e:LiveList) => {
+const createLiveUserNotification = (e: LiveList | UserLiveBaseInfo) => {
     chrome.notifications.create("", {
         "type": "basic",
         "iconUrl": "/icon/icon128.png",
@@ -47,14 +56,9 @@ const createLiveUserNotification = (e:LiveList) => {
 }
 
 const followedLiveCheck = async () => {
-    let authInfo = await ExtOptions.getValue("LocalUserId") as unknown as string;
-    if (authInfo.length == 0) {
-        //用户未登录
-        return
-    }
-    let optionStorage = await ExtOptions.getValue(module.name) as Conf;
+    const optionStorage = await ExtOptions.getValue(module.name) as Conf;
 
-    let lastLiveUsers = optionStorage.liveUsers;
+    const lastLiveUsers = optionStorage.liveUsers;
     let liveUsers: Array<string> = [];
     let liveInfo: Record<UID, LiveList> = {};
     let apiFollowedUsers = await getMyFollowedLiveList();
@@ -67,9 +71,8 @@ const followedLiveCheck = async () => {
         return
     }
 
-    let diff = liveUsers.filter(item => !lastLiveUsers.includes(item));
+    const diff = liveUsers.filter(item => !lastLiveUsers.includes(item));
     diff.forEach(uid => {
-        //TODO:发出通知
         createLiveUserNotification(liveInfo[uid]);
     })
     optionStorage.liveUsers = liveUsers;
@@ -77,7 +80,32 @@ const followedLiveCheck = async () => {
 }
 
 const customLiveCheck = async () => {
+    const optionStorage = await ExtOptions.getValue(module.name) as Conf;
+    const customUsers = optionStorage.customObserveUsers;
 
+    if (customUsers.length == 0) {
+        return
+    }
+
+    const lastCustomObserveUserStats = optionStorage.customObserveUserStats;
+
+    let customObserveUserStats: Array<UID> = [];
+    let liveInfo: Record<UID, UserLiveBaseInfo> = {};
+    customUsers.forEach(async e => {
+        const apiRes = await getLiveDataByUid(e);
+        //判断api返回中有没有liveId
+        if (!("liveId" in apiRes)) {
+            return
+        }
+        customObserveUserStats.push(e);
+        liveInfo[e] = apiRes;
+    })
+    const diff = customUsers.filter(item => !lastCustomObserveUserStats.includes(item));
+    diff.forEach(uid => {
+        createLiveUserNotification(liveInfo[uid]);
+    })
+    optionStorage.customObserveUserStats = customObserveUserStats;
+    ExtOptions.setValue(module.name, optionStorage);
 }
 
 export const defaultConf: Conf = {
@@ -85,6 +113,8 @@ export const defaultConf: Conf = {
     followedLiveNotifEnable: true,
     customLiveNotifEnable: false,
     liveUsers: [],
+    customObserveUsers: [],
+    customObserveUserStats: [],
 }
 
 export const module: ModuleStd.manifest = {
