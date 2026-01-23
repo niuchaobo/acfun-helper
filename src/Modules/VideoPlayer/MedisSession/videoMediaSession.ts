@@ -27,7 +27,7 @@ let playerInst: HTMLVideoElement;
 let playingIndex: number;
 
 const main = async () => {
-    allOptions = await ExtOptions.getValue("MediaSession") as Conf;
+    allOptions = await ExtOptions.getValue(module.name) as Conf;
     if (!allOptions.enable) {
         return
     }
