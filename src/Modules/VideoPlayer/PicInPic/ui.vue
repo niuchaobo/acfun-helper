@@ -9,6 +9,15 @@
 
 <script setup lang="ts">
 import { modLog } from '@/Core/CoreLibs/ConsoleProxy';
+// import { defineProps  } from 'vue';
+
+const allOptions = defineProps({
+    mode: {
+        type: String,
+        required: true
+    }
+})
+
 //PIP是否已打开
 let status: boolean = false;
 
@@ -22,20 +31,44 @@ const log = (msg: string) => {
 const toggle = () => {
     if (status) {
         if ("documentPictureInPicture" in window) {
-            documentPIPDisable();
+            DisablePIP();
         } else {
-            document.exitPictureInPicture();
+            classicalPIPDisable();
         }
         status = false;
     } else {
         if ("documentPictureInPicture" in window) {
-            documentPIPEnable();
+            EnablePIP();
         } else {
-            document.getElementsByTagName("video")[0].requestPictureInPicture();
+            classicalPIPEnable();
         }
         status = true;
     }
     log("StatusChange: " + String(status));
+}
+
+const EnablePIP = () => {
+    if (allOptions.mode === "classical") {
+        classicalPIPEnable();
+        return
+    }
+    documentPIPEnable();
+}
+
+const DisablePIP = () => {
+    if (allOptions.mode === "classical") {
+        classicalPIPDisable();
+        return
+    }
+    documentPIPDisable();
+}
+
+const classicalPIPEnable = () => {
+    document.getElementsByTagName("video")[0].requestPictureInPicture();
+}
+
+const classicalPIPDisable = () => {
+    document.exitPictureInPicture();
 }
 
 /**

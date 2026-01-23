@@ -9,10 +9,12 @@ import { thisBrowser } from "@/Utils/Misc";
 
 export interface Conf {
     enable: boolean
+    mode: "classical" | "document_pip_api"
 }
 
 export const defaultConf: Conf = {
-    enable: true
+    enable: true,
+    mode: "classical"
 }
 
 let allOptions: Conf;
@@ -35,7 +37,7 @@ const main = async () => {
     GetAsyncDOM.Get("div.control-btn.setting", () => {
         addElement({ tag: "div", id: "AcFunHelperAnot-pictureInpicture", classes: "control-btn pip", target: document.querySelector("div.control-btn.setting") as Element, createMode: "after" });
         modLog("Init Container.", module.name, "main..GetAsyncDOM");
-        app = createApp(Main);
+        app = createApp(Main, allOptions as unknown as Record<string, unknown>);
         app.mount("#AcFunHelperAnot-pictureInpicture");
         modLog("Mount App.", module.name, "main..GetAsyncDOM");
     })

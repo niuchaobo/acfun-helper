@@ -1,9 +1,10 @@
 <template>
     <h1>画中画</h1>
     <div class="control">
-        <h3>Xttttttt
-        </h3>
-        <mdui-switch :checked="allOptions.enable" @change="change" data-id="enable">Test</mdui-switch>
+        <h3>启用</h3>
+        <mdui-switch :checked="allOptions.enable" @change="change" data-id="enable"></mdui-switch>
+        <h3>使用 DocumentPictureInPictureAPI</h3>
+        <mdui-switch :checked="allOptions.mode === 'classical'" @change="changeMode" data-id="mode"></mdui-switch>
     </div>
 </template>
 
@@ -19,6 +20,18 @@ let allOptions: Ref<Conf> = ref({}) as Ref<Conf>;
 onBeforeMount(async () => {
     allOptions.value = await ExtOptions.getValue(module.name) as Conf;
 })
+
+const changeMode = async (e: CustomEvent) => {
+    const target = e.target as Switch;
+    const checked = target.checked as boolean;
+    let tempAllOptions = await ExtOptions.getValue(module.name) as Conf;
+    if (checked) {
+        tempAllOptions.mode = "document_pip_api";
+    } else {
+        tempAllOptions.mode = "classical";
+    }
+    ExtOptions.setValue(module.name, tempAllOptions);
+}
 
 const change = async (e: CustomEvent) => {
     const target = e.target as Switch;
