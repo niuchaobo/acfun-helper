@@ -3,7 +3,7 @@
 declare module '#imports' {
   export { browser, Browser } from 'wxt/browser';
   export { storage, StorageArea, WxtStorage, WxtStorageItem, StorageItemKey, StorageAreaChanges, MigrationError } from 'wxt/utils/storage';
-  export { useAppConfig } from 'wxt/utils/app-config';
+  export { getAppConfig, useAppConfig } from 'wxt/utils/app-config';
   export { ContentScriptContext, WxtWindowEventMap } from 'wxt/utils/content-script-context';
   export { createIframeUi, IframeContentScriptUi, IframeContentScriptUiOptions } from 'wxt/utils/content-script-ui/iframe';
   export { createIntegratedUi, IntegratedContentScriptUi, IntegratedContentScriptUiOptions } from 'wxt/utils/content-script-ui/integrated';

@@ -16,24 +16,24 @@
   },
   "dependencies": {
     "@types/chrome": "^0.0.268",
-    "@xmldom/xmldom": "^0.9.8",
-    "dayjs": "^1.11.19",
+    "@xmldom/xmldom": "^0.9.9",
+    "dayjs": "^1.11.20",
     "jquery": "^3.7.1",
     "material-design-icons": "^3.0.1",
     "mdui": "^2.1.4",
     "pinia": "^3.0.4",
     "tinykeys": "^2.1.0",
-    "vue": "^3.5.26"
+    "vue": "^3.5.32"
   },
   "devDependencies": {
     "@rollup/plugin-inject": "^5.0.5",
-    "@types/jquery": "^3.5.33",
+    "@types/jquery": "^3.5.34",
     "@vitejs/plugin-vue": "^5.2.4",
-    "sass": "^1.97.1",
-    "sass-loader": "^16.0.6",
+    "sass": "^1.99.0",
+    "sass-loader": "^16.0.7",
     "typescript": "^5.9.3",
     "vue-tsc": "^2.2.12",
-    "wxt": "^0.20.13"
+    "wxt": "^0.20.20"
   },
   "nohoist": [
     "**/wxt"
