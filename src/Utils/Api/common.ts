@@ -1,0 +1,1 @@
+export const DEFAULT_AVATAR = "https://imgs.aixifan.com/style/image/defaultAvatar.jpg";

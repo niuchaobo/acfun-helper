@@ -6,7 +6,7 @@ import { getLiveDataByUid, UserLiveBaseInfo } from "@/Utils/Api/live/liveBaseInf
 
 type UID = string
 
-interface Conf {
+export interface Conf {
     enable: boolean;
     followedLiveNotifEnable: boolean;
     customLiveNotifEnable: boolean;
@@ -14,6 +14,8 @@ interface Conf {
     liveUsers: Array<UID>;
     customObserveUsers: Array<UID>;
     customObserveUserStats: Array<UID>;
+
+    customCreateBrowserTab: boolean;
 }
 
 let allOptions: Conf;
@@ -88,22 +90,27 @@ const customLiveCheck = async () => {
     }
 
     const lastCustomObserveUserStats = optionStorage.customObserveUserStats;
+    const needCreateBrowserTab = (optionStorage?.customCreateBrowserTab) ?? false;
 
     let customObserveUserStats: Array<UID> = [];
     let liveInfo: Record<UID, UserLiveBaseInfo> = {};
-    customUsers.forEach(async e => {
+    for (const e of customUsers) {
         const apiRes = await getLiveDataByUid(e);
         //判断api返回中有没有liveId
         if (!("liveId" in apiRes)) {
-            return
+            continue
         }
         customObserveUserStats.push(e);
         liveInfo[e] = apiRes;
-    })
-    const diff = customUsers.filter(item => !lastCustomObserveUserStats.includes(item));
-    diff.forEach(uid => {
+    }
+    const diff = customObserveUserStats.filter(item => !lastCustomObserveUserStats.includes(item));
+    if (diff.length == 0) {
+        return
+    }
+    await Promise.all(diff.map(async uid => {
         createLiveUserNotification(liveInfo[uid]);
-    })
+        needCreateBrowserTab && chrome.tabs.create({ url: `https://live.acfun.cn/live/${uid}` });
+    }))
     optionStorage.customObserveUserStats = customObserveUserStats;
     ExtOptions.setValue(module.name, optionStorage);
 }
@@ -115,6 +122,7 @@ export const defaultConf: Conf = {
     liveUsers: [],
     customObserveUsers: [],
     customObserveUserStats: [],
+    customCreateBrowserTab: false,
 }
 
 export const module: ModuleStd.manifest = {

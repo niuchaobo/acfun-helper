@@ -75,6 +75,7 @@
                                 data-id="Live">直播</mdui-list-item>
                             <div style="margin-left: 2.5rem">
                                 <mdui-list-item data-type="L2" data-id="liveIndexPause">直播主页播放器暂停</mdui-list-item>
+                                <mdui-list-item data-type="L2" data-id="liveCustomFollow">直播自定义关注</mdui-list-item>
                             </div>
                         </mdui-collapse-item>
                         <mdui-collapse-item id="pageEntry">
