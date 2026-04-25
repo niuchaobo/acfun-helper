@@ -52,6 +52,7 @@
         "fg/modules/urlparams.js",
         "fg/modules/danmakuFilter.js",
         "fg/modules/danmakuBeautify.js",
+        "fg/modules/aiTextHelper.js",
         "fg/fgApis.js",
         "fg/frontend.js"
       ],

@@ -140,6 +140,19 @@ const defaults = {
     keywords: [],
     regexPatterns: [],
   },
+  AITextHelperEnabled: true,
+  AITextHelperConfig: {
+    enabled: true,
+    apiProvider: 'local',
+    apiKey: '',
+    apiEndpoint: '',
+    summaryLength: 'medium',
+    commentAnalysisDepth: 'medium',
+    autoAnalyzeOnLoad: false,
+    showOnVideoPage: true,
+    showOnArticlePage: true,
+    showOnCommentArea: true
+  },
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 /**@type {InnerDefined.REGStruct} */

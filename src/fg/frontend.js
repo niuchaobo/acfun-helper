@@ -45,6 +45,8 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		this.runtime.dataset.core.status.readMore = true;
 		this.funcUrlParam = new FunctionalUrlParam(); //URLParam指令
 		this.runtime.dataset.core.status.urlparams = true;
+		this.aiTextHelper = new AITextHelper(); //AI文本助手
+		this.runtime.dataset.core.status.aiTextHelper = true;
 
 		chrome.runtime.onMessage.addListener(this.MessageRouterFg.FrontendMessageSwitch.bind(this)); //接收来自后台的消息
 		window.addEventListener("message", this.MessageRouterFg.FrontendMsgHandler.bind(this));
@@ -67,6 +69,7 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		str += this.pageBeautify.globalLiteAnimation();
 		createElementStyle(str, document.head, "AcFunHelper_Frontend");
 		this.ce.onLoad();
+		this.aiTextHelper.onLoad();
 	}
 
 	async loading() {
@@ -263,6 +266,8 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.onCommentAreaLoaded();
 			//自动投蕉
 			this.options.auto_throw && this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
+			//AI文本助手
+			this.options.AITextHelperEnabled && this.options.AITextHelperConfig.showOnVideoPage && this.aiTextHelper.addAIToVideoPage();
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {
@@ -307,6 +312,8 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
+			//AI文本助手
+			this.options.AITextHelperEnabled && this.options.AITextHelperConfig.showOnArticlePage && this.aiTextHelper.addAIToArticlePage();
 			return
 		}
 		//直播
@@ -354,6 +361,8 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		GetAsyncDomUtil.getAsyncDomClassic(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
+			//AI文本助手 - 评论分析
+			this.options.AITextHelperEnabled && this.options.AITextHelperConfig.showOnCommentArea && this.aiTextHelper.addAIToCommentArea();
 		}, 3000)
 	}
 
