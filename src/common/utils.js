@@ -114,6 +114,19 @@ const defaults = {
   wheelToChangeVolume: true,
   simpleCC: true,
   arubamuBatchToWatchLater: true,
+  AITextHelperEnabled: true,
+  AITextHelperConfig: {
+    enabled: true,
+    apiProvider: 'local',
+    apiKey: '',
+    apiEndpoint: '',
+    summaryLength: 'medium',
+    commentAnalysisDepth: 'medium',
+    autoAnalyzeOnLoad: false,
+    showOnVideoPage: true,
+    showOnArticlePage: true,
+    showOnCommentArea: true
+  },
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 /**@type {InnerDefined.REGStruct} */
