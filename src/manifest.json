@@ -50,6 +50,8 @@
         "fg/modules/block.js",
         "fg/modules/readMode.js",
         "fg/modules/urlparams.js",
+        "fg/modules/danmakuFilter.js",
+        "fg/modules/danmakuBeautify.js",
         "fg/modules/aiTextHelper.js",
         "fg/fgApis.js",
         "fg/frontend.js"
@@ -119,6 +121,8 @@
     "fg/nav.js",
     "fg/modules/videoSettingInject.js",
     "fg/modules/liveSettingInject.js",
+    "fg/modules/danmakuFilter.js",
+    "fg/modules/danmakuBeautify.js",
     "fg/littleMods/*"
   ]
 }

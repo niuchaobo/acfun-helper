@@ -35,6 +35,10 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		this.runtime.dataset.core.status.danmaku = true;
 		this.danmusearch = new Search();//弹幕列表搜索
 		this.runtime.dataset.core.status.danmakuSearch = true;
+		this.danmakuFilter = new DanmakuFilter(); //弹幕智能过滤
+		this.runtime.dataset.core.status.danmakuFilter = true;
+		this.danmakuBeautify = new DanmakuBeautify(); //弹幕美化
+		this.runtime.dataset.core.status.danmakuBeautify = true;
 		this.luckyTurntab = new LuckyTtab(); //幸运轮盘（抽奖）
 		this.runtime.dataset.core.status.luckyTurntab = true;
 		this.reader = new Reader(); //文章区阅读模式
@@ -149,6 +153,10 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 					//弹幕操作栏状态
 					this.options.hideDanmakuOperator.UI && this.videoSetting.hideDanmakuOperatorUI();
 					this.videoSetting.hideDanmakuOperator(this.options.hideDanmakuOperator.defaultMode, this.options.hideDanmakuOperator.maskSw);
+					//弹幕智能过滤
+					(this.options.danmakuSmartFilter.enabled || this.options.danmakuCustomBlock.enabled) && this.danmakuFilter.init(this.options);
+					//弹幕美化
+					this.options.danmakuBeautify.enabled && this.danmakuBeautify.init(this.options);
 					//播放器帧步进
 					this.options.frameStepSetting.enabled && this.videoSetting.frameStepFwdMain(this.options.frameStepSetting.controlUI)
 					//后台自动暂停
