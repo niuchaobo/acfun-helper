@@ -266,8 +266,13 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.onCommentAreaLoaded();
 			//自动投蕉
 			this.options.auto_throw && this.banana.throwBanana({ "key": REG.acVid.exec(href)[2] });
-			//AI文本助手
-			this.options.AITextHelperEnabled && this.options.AITextHelperConfig.showOnVideoPage && this.aiTextHelper.addAIToVideoPage();
+			//AI文本助手 - 添加内嵌按钮
+			try {
+				console.log('[Frontend] 尝试添加AI视频页面按钮');
+				this.aiTextHelper.addInlineButtons();
+			} catch (e) {
+				console.error('[Frontend] AI按钮添加失败:', e);
+			}
 		}
 		//视频与番剧页面功能
 		if (REG.videoAndBangumi.test(href)) {
@@ -312,8 +317,13 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 			this.options.commentPageEasyTrans && this.onCommentAreaLoaded();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
 			this.options.quickCommentSubmit && this.pageBeautify.quickCommentSubmit();
-			//AI文本助手
-			this.options.AITextHelperEnabled && this.options.AITextHelperConfig.showOnArticlePage && this.aiTextHelper.addAIToArticlePage();
+			//AI文本助手 - 添加内嵌按钮
+			try {
+				console.log('[Frontend] 尝试添加AI文章页面按钮');
+				this.aiTextHelper.addInlineButtons();
+			} catch (e) {
+				console.error('[Frontend] AI按钮添加失败:', e);
+			}
 			return
 		}
 		//直播
@@ -361,8 +371,13 @@ class AcFunHelperFrontend extends AcFunHelperFgFrame {
 		GetAsyncDomUtil.getAsyncDomClassic(".ac-pc-comment", () => {
 			this.options.commentPageEasyTrans && this.pageBeautify.commentPageEasyTrans();
 			this.options.pageTransKeyBind && this.pageBeautify.pageTransKeyBind("depList");
-			//AI文本助手 - 评论分析
-			this.options.AITextHelperEnabled && this.options.AITextHelperConfig.showOnCommentArea && this.aiTextHelper.addAIToCommentArea();
+			//AI文本助手 - 添加评论区按钮
+			try {
+				console.log('[Frontend] 尝试添加AI评论区按钮');
+				this.aiTextHelper.addInlineButtons();
+			} catch (e) {
+				console.error('[Frontend] AI评论区按钮添加失败:', e);
+			}
 		}, 3000)
 	}
 
