@@ -114,6 +114,32 @@ const defaults = {
   wheelToChangeVolume: true,
   simpleCC: true,
   arubamuBatchToWatchLater: true,
+  danmakuSmartFilter: {
+    enabled: false,
+    filterVulgar: true,
+    filterRepeat: true,
+    filterSpam: true,
+    filterInvalid: true,
+    repeatThreshold: 3,
+    spamThreshold: 5,
+    spamTimeWindow: 10000,
+  },
+  danmakuBeautify: {
+    enabled: false,
+    fontFamily: "Microsoft YaHei",
+    fontSize: 25,
+    opacity: 1,
+    shadowEnabled: true,
+    strokeEnabled: false,
+    strokeColor: "#000000",
+    shadowColor: "#000000",
+    shadowBlur: 2,
+  },
+  danmakuCustomBlock: {
+    enabled: false,
+    keywords: [],
+    regexPatterns: [],
+  },
 };
 const readOnlyKey = ["extendsName", "upUrlTemplate", "userInfo"];
 /**@type {InnerDefined.REGStruct} */

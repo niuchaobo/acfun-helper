@@ -18,6 +18,54 @@ const app = {
                     desc: "可以在弹幕列表中的弹幕条目的操作菜单按钮旁加入一个(⌂ 像房子一样)按钮快速跳转至发送用户页面"
                 },
                 {
+                    key: "danmakuSmartFilter-enabled",
+                    title: "弹幕智能过滤",
+                    split: true,
+                    desc: "自动屏蔽低俗、重复、刷屏、无效弹幕"
+                },
+                {
+                    key: "danmakuSmartFilter-filterVulgar",
+                    title: "低俗弹幕过滤",
+                    desc: "自动屏蔽包含低俗词汇的弹幕"
+                },
+                {
+                    key: "danmakuSmartFilter-filterRepeat",
+                    title: "重复弹幕过滤",
+                    desc: "自动屏蔽重复发送的相同内容弹幕"
+                },
+                {
+                    key: "danmakuSmartFilter-filterSpam",
+                    title: "刷屏弹幕过滤",
+                    desc: "自动屏蔽短时间内同一用户发送的大量弹幕"
+                },
+                {
+                    key: "danmakuSmartFilter-filterInvalid",
+                    title: "无效弹幕过滤",
+                    desc: "自动屏蔽无意义的符号、重复字符等无效弹幕"
+                },
+                {
+                    key: "danmakuBeautify-enabled",
+                    title: "弹幕美化",
+                    split: true,
+                    desc: "自定义弹幕字体、透明度、显示样式"
+                },
+                {
+                    key: "danmakuBeautify-shadowEnabled",
+                    title: "弹幕阴影效果",
+                    desc: "为弹幕添加阴影效果，提升可读性"
+                },
+                {
+                    key: "danmakuBeautify-strokeEnabled",
+                    title: "弹幕描边效果",
+                    desc: "为弹幕添加描边效果"
+                },
+                {
+                    key: "danmakuCustomBlock-enabled",
+                    title: "自定义弹幕屏蔽",
+                    split: true,
+                    desc: "手动添加屏蔽关键词，屏蔽包含这些关键词的弹幕"
+                },
+                {
                     key: "hideDanmakuOperator-defaultMode",
                     title: "隐藏弹幕操作菜单",
                     split: true,
