@@ -88,6 +88,7 @@ class AcFunHelperFgFrame {
                         videoPageBeautify: false,
                         helperFgPop: false,
                         block: false,
+                        aiTextHelper: false,
                     }
                 },
                 notes: {
